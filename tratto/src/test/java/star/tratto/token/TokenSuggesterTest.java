@@ -9,7 +9,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.MockedStatic;
 import star.tratto.dataset.oracles.OracleDatapoint;
-import star.tratto.dataset.OracleDatapointTest;
+import star.tratto.dataset.oracles.OracleDatapointTest;
 import star.tratto.oracle.OracleType;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.oraclegrammar.trattoGrammar.Oracle;
@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mockStatic;
 import static star.tratto.TestUtilities.readOracleDatapointsFromOraclesDataset;
 import static star.tratto.TestUtilities.readOraclesFromExternalFiles;
-import static star.tratto.dataset.OracleDatapointTest.getEmptyOracleDatapoint;
+import static star.tratto.dataset.oracles.OracleDatapointTest.getEmptyOracleDatapoint;
 import static star.tratto.oraclegrammar.custom.Splitter.split;
 import static star.tratto.token.TokenSuggester.*;
 

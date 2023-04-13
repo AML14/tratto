@@ -1,4 +1,4 @@
-package star.tratto.dataset;
+package star.tratto.dataset.tokens;
 
 import org.junit.jupiter.api.Test;
 import star.tratto.dataset.tokens.TokensDataset;

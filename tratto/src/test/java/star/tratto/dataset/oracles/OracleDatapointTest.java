@@ -1,8 +1,7 @@
-package star.tratto.dataset;
+package star.tratto.dataset.oracles;
 
 import org.apache.poi.ss.usermodel.Sheet;
 import org.junit.jupiter.api.Test;
-import star.tratto.dataset.oracles.OracleDatapoint;
 
 import static star.tratto.dataset.ExcelManager.getFirstSheet;
 
