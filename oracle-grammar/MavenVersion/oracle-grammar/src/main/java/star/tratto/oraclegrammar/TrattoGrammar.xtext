@@ -1,0 +1,330 @@
+/**
+ * Conventions:
+ * <ul>
+ *     <li>The ID rule is FORBIDDEN within a rule unless it is the only
+ *     element of the rule, i.e., as follows:
+ *     <pre>
+ *         ClassName:
+ *             ID;
+ *     </pre>
+ *     </li>
+ *     <li>String literals are FORBIDDEN in rules that contain other
+ *     elements besides string literals. For example, the following rule
+ *     does not follow this convention:
+ *     <pre>
+ *         VarInstanceOf:
+ *             Variable 'instanceof' Type;
+ *     </pre>
+ *     This rule would be valid if 'instanceof' was enclosed in a rule,
+ *     as follows:
+ *     <pre>
+ *         VarInstanceOf:
+ *             Variable InstanceOf Type;
+ *     </pre>
+ *     </li>
+ *     <li>All elements within a rule MUST be variables EXCEPT if the rule
+ *     contains only string literals or the ID rule. This way, it's easier
+ *     to retrieve them with Xtext libraries.</li>
+ *     <li>A variable within a rule CANNOT be assigned an alternative of
+ *     two or more different classes (e.g.,
+ *     <code>element=(FirstType|SecondType)</code> is not valid, while
+ *     <code>(firstElement=FirstType|secondElement=SecondType)</code> is
+ *     valid.</li>
+ *     <li>All variable names within a rule MUST be the same as their
+ *     respective class names but in camelCase, except in the following
+ *     cases:
+ *     <ul>
+ *         <li>When within the same element of a rule there are multiple
+ *         variables of the same class, each MUST have a different name.
+ *         </li>
+ *         <li>When, even in different elements of the same rule, there are
+ *         multiple variables of the same class, they MUST have different
+ *         names so as to differentiate which element of the rule is being
+ *         used.</li>
+ *         <li>When a variable is a list, it MUST be named as the plural of the
+ *         class name in camelCase.</li>
+ *     </ul>
+ *     </li>
+ * </ul>
+ */
+grammar star.tratto.oraclegrammar.TrattoGrammar with org.eclipse.xtext.common.Terminals
+
+generate trattoGrammar "http://www.tratto.star/oraclegrammar/TrattoGrammar"
+
+Model:
+    oracles+=Oracle*
+;
+
+Oracle:
+	(predicate=Predicate (questionMark=QuestionMark trueProperty=Predicate colon=Colon falseProperty=Predicate)?)? semicolon=Semicolon NL?
+;
+
+terminal NL:
+	('\r'? '\n')+
+;
+
+terminal S_STRING:
+	DOUBLE_QUOTE ( '\\' . /* 'b'|'t'|'n'|'f'|'r'|'u'|'"'|"'"|'\\' */ | !('\\'|'"') )* DOUBLE_QUOTE
+;
+
+terminal DOUBLE_QUOTE:
+	'"'
+;
+
+@Override
+terminal ID:
+	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'_'|'0'..'9')*
+;
+
+Predicate:
+	true=TRUE |
+	predicateNoTrue=PredicateNoTrue
+;
+
+PredicateNoTrue:
+	clause=Clause clauseContinuations+=ClauseContinuation*
+;
+
+Clause:
+	openingParenthesis=OpeningParenthesis predicateNoTrue=PredicateNoTrue closingParenthesis=ClosingParenthesis (eqOperator=EqOperator false=FALSE)? | clauseTrue=ClauseTrue
+;
+
+ClauseContinuation:
+	logicalOperator=LogicalOperator clause=Clause
+;
+
+ClauseTrue:
+	((arrayStreamClauseFromClass=ArrayStreamClauseFromClass | arrayStreamClauseFromVar=ArrayStreamClauseFromVar) arrayStreamClauseContinuation=ArrayStreamClauseContinuation) |
+	clauseWithVars=ClauseWithVars
+;
+
+ArrayStreamClauseFromClass:
+	arraysClass=ArraysClass period=Period streamMethod=StreamMethod openingParenthesis=OpeningParenthesis isolableVarOrClass=IsolableVarOrClass closingParenthesis=ClosingParenthesis
+;
+
+ArrayStreamClauseFromVar:
+	generalVarOrClass=GeneralVarOrClass period=Period streamMethod=StreamMethod openingParenthesis=OpeningParenthesis closingParenthesis=ClosingParenthesis
+;
+
+ArrayStreamClauseContinuation:
+	period=Period matchMethod=MatchMethod openingParenthesis=OpeningParenthesis matchMethodVar=MatchMethodVar rightArrow=RightArrow predicateNoTrue=PredicateNoTrue closingParenthesis=ClosingParenthesis
+;
+
+ClauseWithVars:
+	(firstThis=This firstEqOperator=EqOperator varOrClassWithModifiers=VarOrClassWithModifiers) |
+	(secondThis=This firstInstanceOfOperator=InstanceOfOperator firstClassName=ClassName) |
+	canEvaluateToPrimitive=CanEvaluateToPrimitive (
+		(secondEqOperator=EqOperator (thirdThis=This | firstEqIneqComparisonElement=EqIneqComparisonElement | firstOtherComparisonElement=OtherComparisonElement)) |
+		(ineqOperator=IneqOperator (secondEqIneqComparisonElement=EqIneqComparisonElement | secondOtherComparisonElement=OtherComparisonElement)) |
+		(nonEqIneqOperator=NonEqIneqOperator thirdOtherComparisonElement=OtherComparisonElement) |
+		(secondInstanceOfOperator=InstanceOfOperator secondClassName=ClassName)
+	)?
+;
+
+ClassName:
+	ID
+;
+
+EqIneqComparisonElement:
+	(boolean=BOOLEAN | null=NULL)
+;
+
+OtherComparisonElement:
+	(firstBitwiseNegateOperator=BitwiseNegateOperator? (sInt=S_INT | firstCanEvaluateToPrimitive=CanEvaluateToPrimitive (
+		((bitwiseLogicalOperator=BitwiseLogicalOperator | bitwiseShiftOperator=BitwiseShiftOperator) secondBitwiseNegateOperator=BitwiseNegateOperator? bitCompatibleElement=BitCompatibleElement) |
+		(firstArithmeticalOperator=ArithmeticalOperator firstDoubleCompatibleElement=DoubleCompatibleElement)
+	)?)) |
+	(double=DOUBLE | secondCanEvaluateToPrimitive=CanEvaluateToPrimitive (secondArithmeticalOperator=ArithmeticalOperator secondDoubleCompatibleElement=DoubleCompatibleElement)?)
+;
+
+BitCompatibleElement:
+	sInt=S_INT | canEvaluateToPrimitive=CanEvaluateToPrimitive
+;
+
+DoubleCompatibleElement:
+	bitCompatibleElement=BitCompatibleElement | double=DOUBLE
+;
+
+VarOrClassWithModifiers:
+	generalVarOrClass=GeneralVarOrClass varOrClassModifiers+=VarOrClassModifier*
+;
+
+IsolableVarOrClassWithModifiers:
+	isolableVarOrClass=IsolableVarOrClass varOrClassModifiers+=VarOrClassModifier*
+;
+
+ThisWithMandatoryModifiers:
+	this=This varOrClassModifiers+=VarOrClassModifier+
+;
+
+CanEvaluateToPrimitive:
+	isolableVarOrClassWithModifiers=IsolableVarOrClassWithModifiers | thisWithMandatoryModifiers=ThisWithMandatoryModifiers
+;
+
+VarOrClassModifier:
+	methodCallWithPeriod=MethodCallWithPeriod | classFieldWithPeriod=ClassFieldWithPeriod
+;
+
+ClassFieldWithPeriod:
+	period=Period classField=ClassField
+;
+
+ClassField:
+	ID
+;
+
+MethodCallWithPeriod:
+	period=Period methodCall=MethodCall
+;
+
+MethodCall:
+	methodName=MethodName openingParenthesis=OpeningParenthesis methodContent=MethodContent? closingParenthesis=ClosingParenthesis
+;
+
+MethodName:
+	ID
+;
+
+MethodContent:
+	methodArgument=MethodArgument methodContentContinuations+=MethodContentContinuation*
+;
+
+MethodContentContinuation:
+	comma=Comma methodArgument=MethodArgument
+;
+
+MethodArgument:
+	varOrClassWithModifiers=VarOrClassWithModifiers | double=DOUBLE | sInt=S_INT | sString=S_STRING | boolean=BOOLEAN | null=NULL | (className=ClassName period=Period classModifier=ClassModifier)
+;
+
+IsolableVarOrClass:
+	specificVarOrClass=SpecificVarOrClass | methodResultID=MethodResultID | matchMethodVar=MatchMethodVar
+;
+
+GeneralVarOrClass:
+	isolableVarOrClass=IsolableVarOrClass | this=This
+;
+
+SpecificVarOrClass:
+	ID
+;
+
+This:
+	'this'
+;
+
+MethodResultID:
+	'methodResultID'
+;
+
+ClassModifier:
+	'class'
+;
+
+InstanceOfOperator:
+	'instanceof'
+;
+
+EqOperator:
+	'=='
+;
+
+IneqOperator:
+	'!='
+;
+
+NonEqIneqOperator:
+	'>=' | '<=' | '>' | '<'
+;
+
+LogicalOperator:
+	'&&' | '||'
+;
+
+ArithmeticalOperator:
+	'+' | '-' | '/' | '*' | '%'
+;
+
+BitwiseLogicalOperator:
+	'|' | '&' | '^'
+;
+
+BitwiseShiftOperator:
+	'<<' | '>>' | '>>>'
+;
+
+BitwiseNegateOperator:
+	'~'
+;
+
+MatchMethod:
+	'allMatch' | 'noneMatch' | 'anyMatch'
+;
+
+ArraysClass:
+	'Arrays'
+;
+
+StreamMethod:
+	'stream'
+;
+
+MatchMethodVar:
+	'jdVar'
+;
+
+RightArrow:
+	'->'
+;
+
+QuestionMark:
+	'?'
+;
+
+Colon:
+	':'
+;
+
+Semicolon:
+	';'
+;
+
+OpeningParenthesis:
+	'('
+;
+
+ClosingParenthesis:
+	')'
+;
+
+Period:
+	'.'
+;
+
+Comma:
+	','
+;
+
+DOUBLE:
+	'-'? S_INT '.' S_INT
+;
+
+S_INT:
+	'-'? INT
+;
+
+TRUE:
+	'true'
+;
+
+FALSE:
+	'false'
+;
+
+BOOLEAN:
+	TRUE | FALSE
+;
+
+NULL:
+	'null'
+;
