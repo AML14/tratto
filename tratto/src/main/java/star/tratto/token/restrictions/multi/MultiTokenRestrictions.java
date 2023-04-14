@@ -27,6 +27,8 @@ public class MultiTokenRestrictions {
             // In a comparison, if previous element does not evaluate to integral, forbid BitwiseOperators:
             NoBitwiseOperatorRestriction.getInstance(),
             // Forbid elements that end an expression if it is not complete:
-            ForbidEndExpressionRestriction.getInstance()
+            ForbidEndExpressionRestriction.getInstance(),
+            // Forbid literal values if they are note type-compatible at that position:
+            LiteralValuesRestriction.getInstance()
     );
 }

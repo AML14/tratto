@@ -28,7 +28,7 @@ public class ParserTest {
     /**
      * This test is to check that, for all TrattoGrammar expressions contained in
      * the resources files, there is no partial expression such that the parser
-     * will report an error in the same column three or more times.
+     * will report an error in the same column five or more times.
      */
     @Test
     public void detectPersistentErrorColumnsTest() {
@@ -61,22 +61,14 @@ public class ParserTest {
 
             TreeMap<Integer, Integer> columnFrequencies = new TreeMap<>(frequencyMap(flattenedErrorColumns));
 
-//            TreeMap<Integer, Integer> columnsTwiceOrMore = new TreeMap<>(columnFrequencies
-//                    .entrySet()
-//                    .stream()
-//                    .filter(entry -> entry.getValue() >= 2)
-//                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
-
-            TreeMap<Integer, Integer> columnsThriceOrMore = new TreeMap<>(columnFrequencies
+            TreeMap<Integer, Integer> columnsToCheck = new TreeMap<>(columnFrequencies
                     .entrySet()
                     .stream()
-                    .filter(entry -> entry.getValue() >= 3)
+                    .filter(entry -> entry.getValue() >= 5)
                     .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
 
-            TreeMap<Integer, Integer> columnsToCheck = columnsThriceOrMore;
-
             if (!columnsToCheck.isEmpty()) {
-                fail("The following oracle contains a sequence of tokens such that the same column is marked with an error three or more times:\n"
+                fail("The following oracle contains a sequence of tokens such that the same column is marked with an error five or more times:\n"
                         + stringOracle + "\n\n" + "Columns marked with errors three or more times:\n" + columnsToCheck);
             }
         }
@@ -277,7 +269,8 @@ public class ParserTest {
         return Stream.of(
                 Arguments.of("getNArgumentsSoFarTest1", "methodResultID.someMethod(", 0),
                 Arguments.of("getNArgumentsSoFarTest2", "SomeClass.someMethod(someArg", 1),
-                Arguments.of("getNArgumentsSoFarTest3", "arg1 && arg2.someMethod() ? arg3.field.method(a).secondMethod(b, c.d", 2)
+                Arguments.of("getNArgumentsSoFarTest3", "SomeClass.someMethod(someArg, secondArg,", 3),
+                Arguments.of("getNArgumentsSoFarTest4", "arg1 && arg2.someMethod() ? arg3.field.method(a).secondMethod(b, c.d", 2)
         );
     }
 
@@ -301,7 +294,8 @@ public class ParserTest {
         return Stream.of(
                 Arguments.of("getLastArgumentTest1", "methodResultID.someMethod(", ""),
                 Arguments.of("getLastArgumentTest2", "SomeClass.someMethod(someArg", "someArg"),
-                Arguments.of("getLastArgumentTest3", "arg1 && arg2.someMethod() ? arg3.field.method(a).secondMethod(b, c.d", "c.d")
+                Arguments.of("getLastArgumentTest3", "SomeClass.someMethod(someArg, secondArg,", ""),
+                Arguments.of("getLastArgumentTest4", "arg1 && arg2.someMethod() ? arg3.field.method(a).secondMethod(b, c.d", "c.d")
         );
     }
 

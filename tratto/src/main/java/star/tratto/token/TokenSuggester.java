@@ -52,8 +52,10 @@ public class TokenSuggester {
 
         // TODO: Filter out tokens based on partialExpression and MultiTokenRestrictions
 
-        // TODO: Allow ints or doubles only if preceding var is number-like
-        // TODO: Allow booleans only if preceding var is boolean
+        // TODO: Forbid closing parenthesis if just opened method call and no method without arguments exists
+        // TODO: Forbid "class" modifier after "." if current method argument is not a class
+        // TODO: Forbid "stream" if previous expression is not instanceof java.util.Collection
+        // TODO: Forbid "Arrays" if nor this, methodResultID or some method argument is an array
 
         for (String token : tokensWithoutRestrictions) {
             switch (token) {
@@ -167,14 +169,22 @@ public class TokenSuggester {
 
     /**
      * Returns true if token1 is legal after partialExpression and considering that token2 is the next token.
-     * token1 is legal if its error column is not repeated when adding token2. There's one exception though:
-     * if the oracle so far ends with a relational operator different from "==" and token1 is "this" and token2
-     * is ".", the token "this" is actually legal.
+     * token1 is legal if its error column is not repeated when adding token2. There's a couple of exceptions
+     * though:
+     * 1) if the oracle so far ends with a relational operator different from "==" and token1 is "this" and token2
+     * is ".", the token "this" is actually legal;
+     * 2) if the oracle so far ends with a bitwise operator (plus an optional bitwise negate operator) and
+     * token1 is "this" and token2 is ".", the token "this" is actually legal.
      */
     private static boolean isToken1Legal(List<String> partialExpressionTokens, String token1, String token2) {
         return !isColumnsRepeated(getNextTwoTokensErrorColumns(partialExpressionTokens, token1, token2), 2)
                 ||
-                (token1.equals("this") && token2.equals(".") && partialExpressionTokens.get(partialExpressionTokens.size()-1).matches("(>=|<=|>|<|!=)"));
+                (token1.equals("this") && token2.equals(".") && partialExpressionTokens.get(partialExpressionTokens.size()-1).matches(">=|<=|>|<|!="))
+                ||
+                (token1.equals("this") && token2.equals(".") && partialExpressionTokens.size() >= 2 &&
+                (partialExpressionTokens.get(partialExpressionTokens.size()-1).matches("\\||\\^|&|>>>|>>|<<") ||
+                (partialExpressionTokens.get(partialExpressionTokens.size()-2).matches("\\||\\^|&|>>>|>>|<<") &&
+                partialExpressionTokens.get(partialExpressionTokens.size()-1).equals("~"))));
     }
 
     /**

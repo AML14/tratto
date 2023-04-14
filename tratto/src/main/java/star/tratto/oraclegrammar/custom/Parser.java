@@ -37,7 +37,8 @@ public class Parser {
     private static final String DUMMY_URI = "dummy:/dummy.tr";
 
     // Constants for handling conflictive partial oracles:
-    private static final String BIT_CONFLICTIVE_TOKENS_REGEX = ".*(\\||\\^|&|>>>|>>|<<)$";
+    private static final String BIT_CONFLICTIVE_TOKENS_REGEX = ".*(\\||\\^|&|>>>|>>|<<)~?$";
+    private static final String BIT_THIS_CONFLICTIVE_TOKENS_REGEX = ".*(\\||\\^|&|>>>|>>|<<)~?this$";
     private static final String THIS_ERROR_MESSAGE_REGEX = "no viable alternative at input '(<EOF>|this)'";
     private static final String PERIOD_ERROR_MESSAGE_REGEX = "(no viable alternative at input '<EOF>'|mismatched input '<EOF>' expecting 'stream')";
     private static final String AUX_VAR = "auxVarForConflictivePartialOracle";
@@ -85,6 +86,8 @@ public class Parser {
 
         if (compactOracle.matches(BIT_CONFLICTIVE_TOKENS_REGEX)) {
             auxOracleSuffix = AUX_VAR; // If ends with bit shift/logical operator, always add aux var to handle
+        } else if (compactOracle.matches(BIT_THIS_CONFLICTIVE_TOKENS_REGEX)) {
+            auxOracleSuffix = "." + AUX_VAR; // If ends with bit shift/logical operator and "this", add period and aux var
         } else if (compactOracle.endsWith(".") || compactOracle.endsWith("this")) {
             List<Resource.Diagnostic> parseErrors = loadOracle(partialOracle).getErrors();
             String firstParseErrorMessage = parseErrors.get(0).getMessage(); // Can safely assume there is at least one error
@@ -523,6 +526,10 @@ public class Parser {
         return methodModifiers.get(methodModifiers.size() - 1).getMethodCall();
     }
 
+    /**
+     * Note: if the partial method call ends with a comma (e.g., "method(a,"), then the comma counts
+     * as an argument (since one must necessarily follow), i.e., this method would return 2.
+     */
     public static int getNArgumentsSoFar(MethodCall methodCall) {
         MethodContent methodContent = methodCall.getMethodContent();
         if (methodContent == null || methodContent.getMethodArgument() == null) {
@@ -534,6 +541,10 @@ public class Parser {
         }
     }
 
+    /**
+     * Note: if the partial method call ends with a comma (e.g., "method(a,"), then the comma counts
+     * as an argument (since one must necessarily follow), i.e., this method would return an empty MethodArgument.
+     */
     public static MethodArgument getLastArgument(MethodCall methodCall) {
         MethodContent methodContent = methodCall.getMethodContent();
         if (methodContent == null || methodContent.getMethodArgument() == null) {

@@ -61,6 +61,24 @@ public class TokenSuggesterTest {
     }
 
     @ParameterizedTest(name = "{0}")
+    @MethodSource("getNextLegalTokensAccordingToGrammarSpecialCasesParameterizedTestData")
+    public void getNextLegalTokensAccordingToGrammarSpecialCasesTest(String testName, String partialExpression, List<String> someExpectedTokens, List<String> someNotExpectedTokens) {
+        List<String> partialExpressionTokens = split(parser.getPartialOracle(partialExpression));
+        List<String> nextLegalTokens = getNextLegalTokensAccordingToGrammar(partialExpressionTokens);
+        assertTrue(nextLegalTokens.containsAll(someExpectedTokens));
+        assertTrue(nextLegalTokens.stream().noneMatch(someNotExpectedTokens::contains));
+    }
+
+    private static Stream<Arguments> getNextLegalTokensAccordingToGrammarSpecialCasesParameterizedTestData() {
+        return Stream.of(
+                Arguments.of("conflictBitwiseOperatorThis", "arg1>=arg2>>this", List.of("."), Tokens.TOKENS.stream().filter(t -> !t.equals(".")).collect(Collectors.toList())),
+                Arguments.of("conflictTwoBitwiseOperatorsThis", "arg1>=arg2|~this", List.of("."), Tokens.TOKENS.stream().filter(t -> !t.equals(".")).collect(Collectors.toList())),
+                Arguments.of("conflictBitwiseOperator", "arg1>=arg2<<", List.of("this", "1", "methodResultID", "~"), List.of("|", "1.0", "true", "null")),
+                Arguments.of("conflictTwoBitwiseOperators", "arg1>=arg2^~", List.of("this", "1", "methodResultID"), List.of("|", "1.0", "true", "null", "~"))
+        );
+    }
+
+    @ParameterizedTest(name = "{0}")
     @MethodSource("tokenLegalContextRestrictionsStandardParameterizedTestData")
     public void isTokenLegalBasedOnContextRestrictionsStandard_ORACLE_TYPE_CONTEXT_RESTRICTION_Case_Legality(String testName, String token, String partialExpression, OracleType oracleType, boolean expected) {
         List<String> partialExpressionTokens = split(parser.getPartialOracle(partialExpression));
@@ -742,6 +760,47 @@ public class TokenSuggesterTest {
     }
 
     @ParameterizedTest(name = "{0}")
+    @MethodSource("restrictionEnabledLiteralValuesParameterizedTestData")
+    public void isRestrictionEnabled_LITERAL_VALUES_enabledCase(String testName, String partialExpression, OracleDatapoint oracleDatapoint, boolean expected, List<String> allowedTokens, List<String> forbiddenTokens) {
+        LiteralValuesRestriction restriction = LiteralValuesRestrictionTest.getLiteralValuesRestriction();
+        List<String> partialExpressionTokens = split(parser.getPartialOracle(partialExpression));
+        List<String> nextLegalTokens = getNextLegalTokensAccordingToGrammar(partialExpressionTokens);
+
+        // Preconditions
+        assertTrue(nextLegalTokens.stream().anyMatch(token -> restriction.getPossiblyRestrictedTokens().contains(token)));
+
+        boolean enabled = restriction.isEnabled(nextLegalTokens, split(parser.getPartialOracle(partialExpression)), oracleDatapoint);
+        assertEquals(expected, enabled);
+        if (allowedTokens != null && forbiddenTokens != null) {
+            assertTrue(restriction.getRestrictedTokens().containsAll(forbiddenTokens));
+            assertTrue(restriction.getRestrictedTokens().stream().noneMatch(allowedTokens::contains));
+        }
+    }
+
+    private static Stream<Arguments> restrictionEnabledLiteralValuesParameterizedTestData() {
+        return Stream.of(
+                Arguments.of("disabledEqualsFalse", "(o1==o2)==", oracleDatapoints.get(0), false, null, null),
+                Arguments.of("disabledTruePredicate", "", oracleDatapoints.get(0), false, null, null),
+                Arguments.of("enabledComparisonNull", "o1==", oracleDatapoints.get(0), true, List.of("null"), List.of("true", "false", "1", "1.0", "\"someString\"")),
+                Arguments.of("enabledComparisonBoolean", "o1.equals(o2)!=", oracleDatapoints.get(0), true, List.of("true", "false"), List.of("null", "1", "1.0", "\"someString\"")),
+                Arguments.of("enabledComparisonInt1", "this.getCoefficients().length==", oracleDatapoints.get(1), true, List.of("1"), List.of("null", "true", "false", "1.0", "\"someString\"")),
+                Arguments.of("enabledComparisonInt2", "this.getCoefficients().length!=", oracleDatapoints.get(1), true, List.of("1"), List.of("null", "true", "false", "1.0", "\"someString\"")),
+                Arguments.of("enabledComparisonInt3", "this.getCoefficients().length>=", oracleDatapoints.get(1), true, List.of("1"), List.of("null", "true", "false", "1.0", "\"someString\"")),
+                Arguments.of("enabledComparisonDouble1", "methodResultID.getReal()<", oracleDatapoints.get(1), true, List.of("1", "1.0"), List.of("null", "true", "false", "\"someString\"")),
+                Arguments.of("enabledComparisonIntWrapper1", "this.toString().chars().boxed().findFirst().get()==", oracleDatapoints.get(1), true, List.of("1", "null"), List.of("true", "false", "1.0", "\"someString\"")),
+                Arguments.of("enabledOperationInt1", "this.getCoefficients().length==this.getCoefficients().length^", oracleDatapoints.get(1), true, List.of("1"), List.of("null", "true", "false", "1.0", "\"someString\"")),
+                Arguments.of("enabledOperationInt2", "this.getCoefficients().length!=this.getCoefficients().length+", oracleDatapoints.get(1), true, List.of("1"), List.of("null", "true", "false", "1.0", "\"someString\"")),
+                Arguments.of("enabledOperationInt3", "this.getCoefficients().length>=this.getCoefficients().length>>~", oracleDatapoints.get(1), true, List.of("1"), List.of("null", "true", "false", "1.0", "\"someString\"")),
+                Arguments.of("enabledOperationDouble1", "methodResultID.getReal()<methodResultID.getValue()*", oracleDatapoints.get(1), true, List.of("1", "1.0"), List.of("null", "true", "false", "\"someString\"")),
+                Arguments.of("enabledOperationIntWrapper1", "this.toString().chars().boxed().findFirst().get()==this.getCoefficients().length-", oracleDatapoints.get(1), true, List.of("1", "null"), List.of("true", "false", "1.0", "\"someString\"")),
+                Arguments.of("enabledMethodArgObject", "o1.equals(", oracleDatapoints.get(0), true, List.of("null", "\"someString\""), List.of("true", "false", "1", "1.0")),
+                Arguments.of("disabledMethodArgAllAllowed", "String.valueOf(", oracleDatapoints.get(0), false, null, null),
+                Arguments.of("enabledMethodArgBooleanAndString", "Boolean.valueOf(", oracleDatapoints.get(0), true, List.of("null", "\"someString\"", "true", "false"), List.of("1", "1.0")),
+                Arguments.of("enabledMethodArgDouble1", "PolynomialFunction.evaluate(null, ", oracleDatapoints.get(1), true, List.of("1", "1.0"), List.of("null", "true", "false", "\"someString\"")),
+                Arguments.of("enabledMethodArgInt1", "BagUtils.EMPTY_BAG.add(null, ", oracleDatapoints.get(0), true, List.of("1"), List.of("null", "true", "false", "1.0", "\"someString\""))
+        );
+    }
+    @ParameterizedTest(name = "{0}")
     @MethodSource("restrictionEnabledNoNonEqIneqOperatorParameterizedTestData")
     public void isRestrictionEnabled_NO_NON_EQ_INEQ_OPERATOR_enabledCase(String testName, String partialExpression, boolean expected) {
         NoNonEqIneqOperatorRestriction restriction = NoNonEqIneqOperatorRestrictionTest.getNoNonEqIneqOperatorRestriction();
@@ -938,6 +997,21 @@ public class TokenSuggesterTest {
     }
 
     @ParameterizedTest(name = "{0}")
+    @MethodSource("restrictionEnabledLiteralValuesParameterizedTestData")
+    public void getNextLegalTokensWithContextPlusInfo_LiteralValuesRestrictionTest(String testName, String partialExpression, OracleDatapoint oracleDatapoint, boolean expected, List<String> allowedTokens, List<String> forbiddenTokens) {
+        List<Triplet<String, String, List<String>>> nextLegalTokensWithContextPlusInfo = getNextLegalTokensWithContextPlusInfo(split(parser.getPartialOracle(partialExpression)), oracleDatapoint);
+        List<String> restrictedTokens = LiteralValuesRestrictionTest.getLiteralValuesRestriction().getRestrictedTokens();
+        List<String> possiblyRestrictedTokens = LiteralValuesRestrictionTest.getLiteralValuesRestriction().getPossiblyRestrictedTokens();
+        if (expected) {
+            assertTrue(nextLegalTokensWithContextPlusInfo.stream().map(Triplet::getValue0).noneMatch(restrictedTokens::contains));
+            assertTrue(nextLegalTokensWithContextPlusInfo.stream().map(Triplet::getValue0).noneMatch(forbiddenTokens::contains));
+            assertTrue(nextLegalTokensWithContextPlusInfo.stream().map(Triplet::getValue0).anyMatch(allowedTokens::contains));
+        } else {
+            assertTrue(nextLegalTokensWithContextPlusInfo.stream().map(Triplet::getValue0).anyMatch(possiblyRestrictedTokens::contains));
+        }
+    }
+
+    @ParameterizedTest(name = "{0}")
     @MethodSource("restrictionEnabledMethodWithoutArgumentsParameterizedTestData")
     public void getNextLegalTokensWithContextPlusInfo_MethodWithoutArgumentsRestrictionTest(String testName, String partialExpression, OracleDatapoint oracleDatapoint, boolean expected) {
         List<Triplet<String, String, List<String>>> nextLegalTokensWithContextPlusInfo = getNextLegalTokensWithContextPlusInfo(split(parser.getPartialOracle(partialExpression)), oracleDatapoint);
@@ -969,8 +1043,8 @@ public class TokenSuggesterTest {
                 Arguments.of("ClassReturnType", "divisor.conjugate()", oracleDatapoints.get(3), List.of("instanceof", ".", "==", "!="), List.of("<", "&&", "?")),
                 Arguments.of("SomeContentAndClassName", "divisor.conjugate()==null && PolynomialSplineFunction", oracleDatapoints.get(3), List.of("."), List.of("instanceof", "<", "!=")),
                 Arguments.of("PrimitiveReturnType", "divisor.nthRoot(0).size()", oracleDatapoints.get(3), List.of("<"), List.of("instanceof", ".")),
-                Arguments.of("PrimitiveReturnTypeEquals", "divisor.nthRoot(0).size()==", oracleDatapoints.get(3), List.of("0", "~", "divisor"), List.of()),
-                Arguments.of("NonIntegralEquals", "divisor.nthRoot(0)==", oracleDatapoints.get(3), List.of("divisor"), List.of("~")), // TODO: Add "0" to 2nd list
+                Arguments.of("PrimitiveReturnTypeEquals", "divisor.nthRoot(0).size()==", oracleDatapoints.get(3), List.of("0", "~", "divisor"), List.of("1.0", "true", "false", "null")),
+                Arguments.of("NonIntegralEquals", "divisor.nthRoot(0)==", oracleDatapoints.get(3), List.of("divisor", "null"), List.of("~", "0", "1.0", "true", "false")),
                 Arguments.of("NonIntegralEqualsElement", "(divisor.nthRoot(0)==divisor", oracleDatapoints.get(3), List.of("."), List.of("&&", "+", "^", ">>", "instanceof", ")")),
                 Arguments.of("PredicateWithParenthesis", "(divisor.isNaN())", oracleDatapoints.get(3), List.of("==", "&&", "?"), List.of("instanceof", ".", ">", "!=", ":", ";")),
                 Arguments.of("ComparisonNoIntegral", "methodResultID==Complex.ZERO", oracleDatapoints.get(3), List.of(".", "&&", "?"), List.of("+", "^", ">>", "(")),
@@ -980,8 +1054,12 @@ public class TokenSuggesterTest {
                 Arguments.of("OpenMethodOnlyClosingParenthesis", "methodResultID.createComplex(this.getReal(), this.getImaginary()", oracleDatapoints.get(3), List.of(")"), Tokens.TOKENS.stream().filter(t -> !t.equals(")")).collect(Collectors.toList())),
                 Arguments.of("OpenMethodMultipleSignatures", "Complex.valueOf(this.getReal()", oracleDatapoints.get(3), List.of(",", ")"), Tokens.TOKENS.stream().filter(t -> !List.of(",", ")").contains(t)).collect(Collectors.toList())),
                 Arguments.of("OpenMethodNoArguments", "this.getReal(", oracleDatapoints.get(3), List.of(")"), Tokens.TOKENS.stream().filter(t -> !t.equals(")")).collect(Collectors.toList())),
-                Arguments.of("OpenMethodWithAndWithoutArguments", "List.of(", oracleDatapoints.get(0), List.of(")", "o1"), List.of("&&", "methodResultID"))
-        );
+                Arguments.of("OpenMethodWithAndWithoutArguments", "List.of(", oracleDatapoints.get(0), List.of(")", "o1", "\"stringValue\"", "\"alsoThis\"", "null"), List.of("&&", "methodResultID", "0", "1.0", "42", "true", "false")),
+                Arguments.of("OperationInt", "this.getCoefficients().length>=this.getCoefficients().length>>~", oracleDatapoints.get(1), List.of("1", "this", "PolynomialFunction"), List.of("null", "true", "false", "1.0", "\"someString\"")),
+                Arguments.of("MethodArgumentAllAllowed", "String.valueOf(", oracleDatapoints.get(0), List.of("0", "1", "true", "false", "null", "Bag"), List.of("methodResultID", "1.0")),
+                Arguments.of("MethodArgumentDoubleAllowed", "PolynomialFunction.evaluate(null, ", oracleDatapoints.get(1), List.of("1", "3.1", "PolynomialFunction"), List.of("null", "true", "false", "\"someString\""))
+
+                );
     }
 
 
