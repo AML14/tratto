@@ -29,14 +29,13 @@ import static star.tratto.util.StringUtils.fullyQualifiedClassName;
 
 public class JavaParserUtils {
     private static final Logger logger = LoggerFactory.getLogger(JavaParserUtils.class);
-
     private static JavaParser javaParser = getJavaParser();
+    private static final Parser parser = Parser.getInstance();
     private static final String SYNTHETIC_CLASS_NAME = "Tratto__AuxiliaryClass";
     private static final String SYNTHETIC_CLASS_SOURCE = "public class " + SYNTHETIC_CLASS_NAME + " {}";
     private static final String SYNTHETIC_METHOD_NAME = "__tratto__auxiliaryMethod";
     private static final Pattern METHOD_SIGNATURE = Pattern.compile("^ReflectionMethodDeclaration\\{method=(.*) \\S+ \\S+\\(.*\\}$");
     private static final Pattern PACKAGE_CLASS = Pattern.compile("[a-zA-Z_][a-zA-Z\\d_]*(\\.[a-zA-Z_][a-zA-Z\\d_]*)*"); // e.g., "a.b.C"
-    private static final Pattern SYMBOL_EXCEPTION_MESSAGE = Pattern.compile("^Solving (.*)");
 
     public static JavaParser getJavaParser() {
         if (javaParser == null) {
@@ -53,26 +52,16 @@ public class JavaParserUtils {
      * Given a syntactically valid Java expression, evaluates its return type, including package and class.
      * If the expression is not syntactically valid, the method will throw an exception.
      * @param expression The expression to evaluate, e.g., "methodResultID.negate().value(null).getField()".
+     *                   Must conform to TrattoGrammar.
      * @param oracleDatapoint OracleDatapoint containing additional necessary information for resolving types,
-     *                        e.g., class and method names and sources.
+     *                        e.g., class and method names and sources. NOTE: To handle Java expressions
+     *                        containing the token "jdVar", the oracleDatapoint must have its "oracle" field
+     *                        populated, even if it's a partial oracle (e.g., it's the oracle being currently
+     *                        generated). Then, the last occurring jdVar clause is looked for and its type is
+     *                        resolved, which will be used to resolve the type of the expression.
      * @return Pair of strings, where the first string is the package and the second string is the class.
      */
     public static Pair<String, String> getReturnTypeOfExpression(String expression, OracleDatapoint oracleDatapoint) {
-        return getReturnTypeOfExpressionInternal(expression, oracleDatapoint, null);
-    }
-
-    /**
-     * This method is exactly the same as {@link #getReturnTypeOfExpression(String, OracleDatapoint)}, but it allows
-     * to get the return type of an expression that contains the token "jdVar", by providing a representative value
-     * for this variable (e.g., <code>methodResultID.get(0)</code>).
-     * @param jdVarArrayElement Representative value for the variable "jdVar". This is usually obtained from
-     *                          {@link Parser#getJdVarArrayElement}.
-     */
-    public static Pair<String, String> getReturnTypeOfExpression(String expression, OracleDatapoint oracleDatapoint, String jdVarArrayElement) {
-        return getReturnTypeOfExpressionInternal(expression, oracleDatapoint, jdVarArrayElement);
-    }
-
-    private static Pair<String, String> getReturnTypeOfExpressionInternal(String expression, OracleDatapoint oracleDatapoint, String jdVarArrayElement) {
         // Handle null
         if ("null".equals(expression)) {
             return JavaTypes.NULL;
@@ -100,10 +89,8 @@ public class JavaParserUtils {
                     "(" + methodArguments.stream().map(Triplet::getValue0).collect(Collectors.joining(", ")) + ");");
         }
 
-        // Add statement related to jdVarArrayElement if it is not null
-        if (jdVarArrayElement != null) {
-            syntheticMethodBody.addStatement("var jdVar = " + jdVarArrayElement + ";");
-        }
+        // Handle jdVar if necessary
+        handleJdVarIfNecessary(syntheticMethodBody, expression, oracleDatapoint);
 
         // Add last statement where the expression will be evaluated
         syntheticMethodBody.addStatement("var returnType = " + expression + ";");
@@ -118,6 +105,18 @@ public class JavaParserUtils {
         }
 
         return getTypeFromResolvedType(returnType);
+    }
+
+    private static void handleJdVarIfNecessary(BlockStmt syntheticMethodBody, String expression, OracleDatapoint oracleDatapoint) {
+        if (!expression.contains("jdVar")) {
+            return;
+        }
+        String jdVarArrayElement = parser.getLastJdVarArrayElement(oracleDatapoint.getOracle());
+        if (jdVarArrayElement == null) { // Should never happen, but just in case
+            throw new IllegalStateException("Could not find a jdVar clause in the oracle, but the expression contains jdVar. " +
+                    "Expression: " + expression + ". Oracle: " + oracleDatapoint.getOracle());
+        }
+        syntheticMethodBody.addStatement("var jdVar = " + jdVarArrayElement + ";");
     }
 
     private static ResolvedType getReturnTypeOfLastStatementInSyntheticMethod(CompilationUnit cu, String className) {

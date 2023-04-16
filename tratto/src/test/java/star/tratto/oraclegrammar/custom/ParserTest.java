@@ -337,22 +337,30 @@ public class ParserTest {
     }
 
     @ParameterizedTest(name = "{0}")
-    @MethodSource("getJdVarArrayElementParameterizedTestData")
-    public void getJdVarArrayElementTest(String testName, String jdVarExpression, String oracle, String expectedJdVarArrayElement) {
-        String jdVarArrayElement = parser.getJdVarArrayElement(jdVarExpression, oracle);
+    @MethodSource("getLastJdVarArrayElementParameterizedTestData")
+    public void getLastJdVarArrayElementTest(String testName, String jdVarExpression, String oracle, String expectedJdVarArrayElement) {
+        String jdVarArrayElement = parser.getLastJdVarArrayElement(oracle, jdVarExpression);
         assertEquals(expectedJdVarArrayElement, jdVarArrayElement);
     }
 
-    private static Stream<Arguments> getJdVarArrayElementParameterizedTestData() {
+    private static Stream<Arguments> getLastJdVarArrayElementParameterizedTestData() {
         return Stream.of(
-                Arguments.of("getJdVarArrayElementTest1", "", "", null),
-                Arguments.of("getJdVarArrayElementTest2", "jdVar", "this.someMethod();", null),
-                Arguments.of("getJdVarArrayElementTest3", "jdVar", "Arrays.stream(someVar).anyMatch(jdVar -> jdVar.field==null);", "someVar[0]"),
-                Arguments.of("getJdVarArrayElementTest4", "jdVar.field", "this.stream().allMatch(jdVar -> jdVar.field==null);", "this.get(0)"),
-                Arguments.of("getJdVarArrayElementTest5", "jdVar==1", "methodResultID.stream().allMatch(jdVar -> jdVar == 1) && Arrays.stream(a).anyMatch(jdVar -> jdVar==null);", "methodResultID.get(0)"),
-                Arguments.of("getJdVarArrayElementTest6", "jdVar!=null", "methodResultID.stream().allMatch(jdVar -> jdVar!=null) && this.stream().anyMatch(jdVar -> jdVar!=null);", "this.get(0)"),
-                Arguments.of("getJdVarArrayElementTest7", "jdVar!=null && jdVar > 1", "Arrays.stream(a).allMatch(jdVar -> jdVar!=null && jdVar > 1) && Arrays.stream(b).anyMatch(jdVar -> jdVar!=null&&jdVar>1);", "b[0]"),
-                Arguments.of("getJdVarArrayElementTest8", "jdVar.field.method()", "c.stream().allMatch(jdVar -> jdVar.field.method()", "c.get(0)")
+                Arguments.of("getLastJdVarArrayElementTest1", "", "", null),
+                Arguments.of("getLastJdVarArrayElementTest2", "jdVar", "this.someMethod();", null),
+                Arguments.of("getLastJdVarArrayElementTest3", "jdVar", "Arrays.stream(someVar).anyMatch(jdVar -> jdVar.field==null);", "someVar[0]"),
+                Arguments.of("getLastJdVarArrayElementTest4", "jdVar.field", "this.stream().allMatch(jdVar -> jdVar.field==null);", "this.get(0)"),
+                Arguments.of("getLastJdVarArrayElementTest5", "jdVar==1", "methodResultID.stream().allMatch(jdVar -> jdVar == 1) && Arrays.stream(a).anyMatch(jdVar -> jdVar==null);", "methodResultID.get(0)"),
+                Arguments.of("getLastJdVarArrayElementTest6", "jdVar!=null", "methodResultID.stream().allMatch(jdVar -> jdVar!=null) && this.stream().anyMatch(jdVar -> jdVar!=null);", "this.get(0)"),
+                Arguments.of("getLastJdVarArrayElementTest7", "jdVar!=null && jdVar > 1", "Arrays.stream(a).allMatch(jdVar -> jdVar!=null && jdVar > 1) && Arrays.stream(b).anyMatch(jdVar -> jdVar!=null&&jdVar>1);", "b[0]"),
+                Arguments.of("getLastJdVarArrayElementTest8", "jdVar.field.method()", "c.stream().allMatch(jdVar -> jdVar.field.method()", "c.get(0)"),
+                Arguments.of("getLastJdVarArrayElementTest9", null, "", null),
+                Arguments.of("getLastJdVarArrayElementTest10", null, "this.someMethod();", null),
+                Arguments.of("getLastJdVarArrayElementTest11", null, "Arrays.stream(someVar).anyMatch(jdVar -> jdVar.field==null);", "someVar[0]"),
+                Arguments.of("getLastJdVarArrayElementTest12", null, "this.stream().allMatch(jdVar -> jdVar.field==null);", "this.get(0)"),
+                Arguments.of("getLastJdVarArrayElementTest13", null, "methodResultID.stream().allMatch(jdVar -> jdVar == 1) && Arrays.stream(a).anyMatch(jdVar -> jdVar==null);", "a[0]"),
+                Arguments.of("getLastJdVarArrayElementTest14", null, "methodResultID.stream().allMatch(jdVar -> jdVar!=null) && this.stream().anyMatch(jdVar -> jdVar!=null);", "this.get(0)"),
+                Arguments.of("getLastJdVarArrayElementTest15", null, "Arrays.stream(a).allMatch(jdVar -> jdVar!=null && jdVar > 1) && Arrays.stream(b).anyMatch(jdVar -> jdVar!=null&&jdVar>1);", "b[0]"),
+                Arguments.of("getLastJdVarArrayElementTest16", null, "c.stream().allMatch(jdVar -> jdVar.field.method()", "c.get(0)")
         );
     }
 

@@ -84,11 +84,19 @@ public class JavaParserUtilsTest {
         oracleDatapoint.setMethodSourceCode("public List<Integer> someMethod() { return List.of(1, 2, 3); }");
         oracleDatapoint.setClassSourceCode("import java.util.List; public class SomeClass { " + oracleDatapoint.getMethodSourceCode() + " }");
         oracleDatapoint.setTokensMethodArguments(List.of());
+        oracleDatapoint.setOracle("methodResultID.stream().anyMatch(jdVar -> jdVar.toString() != null);");
 
-        assertEquals(Pair.with("java.lang", "Integer"), getReturnTypeOfExpression("jdVar", oracleDatapoint, "methodResultID.get(0)"));
-        assertEquals(Pair.with("java.lang", "String"), getReturnTypeOfExpression("jdVar.toString()", oracleDatapoint, "methodResultID.get(0)"));
-        assertEquals(Pair.with("java.lang", "Integer"), getReturnTypeOfExpression("jdVar", oracleDatapoint, parser.getJdVarArrayElement("jdVar", "methodResultID.stream().anyMatch(jdVar -> jdVar.toString() != null);")));
-        assertEquals(Pair.with("java.lang", "String"), getReturnTypeOfExpression("jdVar.toString()", oracleDatapoint, parser.getJdVarArrayElement("jdVar", "methodResultID.stream().anyMatch(jdVar -> jdVar.toString() != null);")));
+        assertEquals(Pair.with("java.lang", "Integer"), getReturnTypeOfExpression("jdVar", oracleDatapoint));
+        assertEquals(Pair.with("java.lang", "String"), getReturnTypeOfExpression("jdVar.toString()", oracleDatapoint));
+    }
+
+    @Test
+    public void getReturnTypeOfExpressionOracle5Test() {
+        OracleDatapoint oracleDatapoint = oracleDatapoints.get(4);
+
+        assertEquals(Pair.with("org.apache.commons.math3.complex", "Complex"), getReturnTypeOfExpression("jdVar", oracleDatapoint));
+        assertEquals(Pair.with("", "double"), getReturnTypeOfExpression("jdVar.getArgument()", oracleDatapoint));
+        assertEquals(Pair.with("java.util", "List"), getReturnTypeOfExpression("jdVar.nthRoot(0)", oracleDatapoint));
     }
 
     @Test

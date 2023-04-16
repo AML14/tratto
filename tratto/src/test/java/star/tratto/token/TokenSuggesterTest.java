@@ -361,7 +361,8 @@ public class TokenSuggesterTest {
                 Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_PERIOD_Argument_Legal", "divisor", oracleDatapoints.get(3), true),
                 Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_PERIOD_SomeContentAndArgument_Legal", "methodResultID == null && divisor", oracleDatapoints.get(3), true),
                 Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_PERIOD_EvaluatesToPrimitive_Illegal", "divisor.isInfinite() && (this.isInfinite())==false ? (methodResultID.isNaN", oracleDatapoints.get(3), false),
-//                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_PERIOD_EvaluatesToPrimitive_Illegal", "divisor.isInfinite() && (this.isInfinite())==false ? methodResultID.stream().anyMatch(jdVar -> jdVar.isNaN", oracleDatapoints.get(3), false), // FIXME
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_PERIOD_EvaluatesToComplexJdVar_Legal", "true ? methodResultID.stream().noneMatch(jdVar -> jdVar", oracleDatapoints.get(4), true),
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_PERIOD_EvaluatesToPrimitiveJdVar_Illegal", "true ? methodResultID.stream().noneMatch(jdVar -> jdVar.getArgument()", oracleDatapoints.get(4), false),
                 Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_PERIOD_EvaluatesToObject_Legal", "divisor.isInfinite() && (this.isInfinite())==false ? (methodResultID.isNaN())==false && methodResultID == Complex.ZERO", oracleDatapoints.get(3), true),
                 Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_PERIOD_Arrays_Legal", "someVar && Arrays", oracleDatapoints.get(3), true),
                 Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_PERIOD_ArraysStream_Legal", "someVar && Arrays.stream(anotherVar)", oracleDatapoints.get(3), true),
@@ -1057,9 +1058,9 @@ public class TokenSuggesterTest {
                 Arguments.of("OpenMethodWithAndWithoutArguments", "List.of(", oracleDatapoints.get(0), List.of(")", "o1", "\"stringValue\"", "\"alsoThis\"", "null"), List.of("&&", "methodResultID", "0", "1.0", "42", "true", "false")),
                 Arguments.of("OperationInt", "this.getCoefficients().length>=this.getCoefficients().length>>~", oracleDatapoints.get(1), List.of("1", "this", "PolynomialFunction"), List.of("null", "true", "false", "1.0", "\"someString\"")),
                 Arguments.of("MethodArgumentAllAllowed", "String.valueOf(", oracleDatapoints.get(0), List.of("0", "1", "true", "false", "null", "Bag"), List.of("methodResultID", "1.0")),
-                Arguments.of("MethodArgumentDoubleAllowed", "PolynomialFunction.evaluate(null, ", oracleDatapoints.get(1), List.of("1", "3.1", "PolynomialFunction"), List.of("null", "true", "false", "\"someString\""))
-
-                );
+                Arguments.of("MethodArgumentDoubleAllowed", "PolynomialFunction.evaluate(null, ", oracleDatapoints.get(1), List.of("1", "3.1", "PolynomialFunction"), List.of("null", "true", "false", "\"someString\"")),
+                Arguments.of("JdVarComplexType", "true ? methodResultID.stream().noneMatch(jdVar -> jdVar.", oracleDatapoints.get(4), List.of("isInfinite", "equals", "isNaN"), List.of("nonExistingMethod", "class", "==", "&&"))
+        );
     }
 
 

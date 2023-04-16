@@ -325,14 +325,23 @@ public class Parser {
      * <code>methodResultID.stream().allMatch(jdVar -> jdVar.isValid());</code>, this method will return the
      * String "methodResultID.get(0)". NOTE: if there are multiple matches, this method returns the last
      * occurrence of jdVar.
-     * @param jdVarExpression the expression containing the token "jdVar"
+     *
      * @param oracle the oracle within which the expression is contained
+     * @param jdVarExpression the expression containing the token "jdVar"
      * @return null if the expression doesn't contain the token "jdVar", if the oracle doesn't contain the token
      * "jdVar", or if there are no matches for the token "jdVar" in the oracle. Otherwise, it returns a String
      * representing an element of the same type as jdVar.
      */
-    public String getJdVarArrayElement(String jdVarExpression, String oracle) {
-        if (!jdVarExpression.contains("jdVar") || !oracle.contains("jdVar")) {
+    public String getLastJdVarArrayElement(String oracle, String jdVarExpression) {
+        return getLastJdVarArrayElementInternal(oracle, jdVarExpression);
+    }
+
+    public String getLastJdVarArrayElement(String oracle) {
+        return getLastJdVarArrayElementInternal(oracle, null);
+    }
+
+    private String getLastJdVarArrayElementInternal(String oracle, String jdVarExpression) {
+        if (!oracle.contains("jdVar") || (jdVarExpression != null && !jdVarExpression.contains("jdVar"))) {
             return null;
         }
 
@@ -340,7 +349,7 @@ public class Parser {
                 .stream()
                 .filter(eo -> eo instanceof ClauseTrue
                         && ((ClauseTrue)eo).getArrayStreamClauseContinuation() != null
-                        && compactExpression(split(eo)).contains(compactExpression(jdVarExpression)))
+                        && (jdVarExpression == null || compactExpression(split(eo)).contains(compactExpression(jdVarExpression))))
                 .map(eo -> (ClauseTrue) eo)
                 .collect(Collectors.toList());
 
