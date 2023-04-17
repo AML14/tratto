@@ -1,4 +1,4 @@
-package data.collection.enums;
+package star.tratto.enums;
 
 import com.github.javaparser.ast.AccessSpecifier;
 import com.github.javaparser.ast.body.FieldDeclaration;

@@ -1,4 +1,4 @@
-package data.collection.enums;
+package star.tratto.enums;
 
 public enum OracleType {
     PRE("PRE"),
