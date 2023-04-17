@@ -1,4 +1,4 @@
-package data.collection.exceptions;
+package star.tratto.exceptions;
 
 public class FieldParentNodeNotFoundException extends Exception {
     public FieldParentNodeNotFoundException() {

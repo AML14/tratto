@@ -1,4 +1,4 @@
-package data.collection.exceptions;
+package star.tratto.exceptions;
 
 public class PrimaryTypeNotFoundException extends Exception {
     public PrimaryTypeNotFoundException() {
