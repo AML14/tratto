@@ -47,6 +47,8 @@ public class SingleTokenRestrictions {
             NoArraysRestriction.getInstance(),
             // Forbid "stream" if nor this, methodResultID or some method argument is a collection:
             NoStreamRestriction.getInstance(),
+            // Forbid "class" modifier if 2nd-to-last token is not a project class:
+            NoClassModifierRestriction.getInstance(),
             // Forbid "methodResultID" after "Arrays.stream(" if it is not an array:
             // Preconditions cannot mention methodResultID:
             // Normal postconditions cannot mention methodResultID in the guard:

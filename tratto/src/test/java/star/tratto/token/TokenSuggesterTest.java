@@ -614,6 +614,28 @@ public class TokenSuggesterTest {
     }
 
     @ParameterizedTest(name = "{0}")
+    @MethodSource("tokenLegalContextRestrictionsNoClassModifierParameterizedTestData")
+    public void isTokenLegalBasedOnContextRestrictions_NO_CLASS_MODIFIER_Case_Legality(String testName, String partialExpression, OracleDatapoint oracleDatapoint, boolean expected) {
+        String token = "class";
+        List<String> partialExpressionTokens = split(parser.getPartialOracle(partialExpression));
+
+        // Preconditions
+        assertTrue(getNextLegalTokensAccordingToGrammar(partialExpressionTokens).contains(token));
+        assertTrue(SingleTokenRestrictions.RESTRICTED_TOKENS.get(oracleDatapoint.getOracleType()).contains(token));
+
+        // Test
+        boolean legal = isTokenLegalBasedOnSingleTokenRestrictions(token, partialExpressionTokens, oracleDatapoint);
+        assertEquals(expected, legal);
+    }
+
+    private static Stream<Arguments> tokenLegalContextRestrictionsNoClassModifierParameterizedTestData() {
+        return Stream.of(
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_CLASS_MODIFIER_Variable_Illegal", "this.equals(divisor.", oracleDatapoints.get(3), false),
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_CLASS_MODIFIER_Class_Legal", "divisor.equals(Complex.", oracleDatapoints.get(3), true)
+        );
+    }
+
+    @ParameterizedTest(name = "{0}")
     @MethodSource("tokenLegalContextRestrictionsNoClosingParenthesisParameterizedTestData")
     public void isTokenLegalBasedOnContextRestrictions_NO_CLOSING_PARENTHESIS_Case_Legality(String testName, String partialExpression, OracleDatapoint oracleDatapoint, boolean expected) {
         String token = ")";
@@ -1132,6 +1154,9 @@ public class TokenSuggesterTest {
                 Arguments.of("OpenMethod", "methodResultID.createComplex(this.getReal()", oracleDatapoints.get(3), List.of(","), Tokens.TOKENS.stream().filter(t -> !t.equals(",")).collect(Collectors.toList())),
                 Arguments.of("OpenMethodOnlyClosingParenthesis", "methodResultID.createComplex(this.getReal(), this.getImaginary()", oracleDatapoints.get(3), List.of(")"), Tokens.TOKENS.stream().filter(t -> !t.equals(")")).collect(Collectors.toList())),
                 Arguments.of("OpenMethodMultipleSignatures", "Complex.valueOf(this.getReal()", oracleDatapoints.get(3), List.of(",", ")"), Tokens.TOKENS.stream().filter(t -> !List.of(",", ")").contains(t)).collect(Collectors.toList())),
+                Arguments.of("OpenMethodArgumentPeriod", "Complex.equals(divisor.", oracleDatapoints.get(3), List.of("isNaN", "isInfinite"), List.of("class")),
+                Arguments.of("OpenMethodArgumentMethodPeriodDeadEnd", "Complex.equals(divisor.isInfinite()", oracleDatapoints.get(3), List.of(), Tokens.TOKENS),
+                Arguments.of("OpenMethodArgumentPeriodClassDeadEnd", "Complex.equals(Complex.class", oracleDatapoints.get(3), List.of(), Tokens.TOKENS),
                 Arguments.of("OpenMethodNoArguments", "this.getReal(", oracleDatapoints.get(3), List.of(")"), Tokens.TOKENS.stream().filter(t -> !t.equals(")")).collect(Collectors.toList())),
                 Arguments.of("OpenMethodWithAndWithoutArguments", "List.of(", oracleDatapoints.get(0), List.of(")", "o1", "\"stringValue\"", "\"alsoThis\"", "null"), List.of("&&", "methodResultID", "0", "1.0", "42", "true", "false")),
                 Arguments.of("OperationInt", "this.getCoefficients().length>=this.getCoefficients().length>>~", oracleDatapoints.get(1), List.of("1", "this", "PolynomialFunction"), List.of("null", "true", "false", "1.0", "\"someString\"")),
@@ -1140,9 +1165,8 @@ public class TokenSuggesterTest {
                 Arguments.of("JdVarComplexType", "true ? methodResultID.stream().noneMatch(jdVar -> jdVar.", oracleDatapoints.get(4), List.of("isInfinite", "equals", "isNaN"), List.of("nonExistingMethod", "class", "==", "&&")),
                 Arguments.of("Empty", "", oracleDatapoints.get(0), List.of("Equator", "o1", "(", "true", "this", ";"), List.of("Arrays", "methodResultID", "jdVar", "1")),
                 Arguments.of("ArraysStreamDeadEnd", "true ? Arrays.stream(", oracleDatapoints.get(0), List.of(), Tokens.TOKENS),
+                Arguments.of("StreamDeadEnd", "true?methodResultID.stream().noneMatch(jdVar->jdVar==n", oracleDatapoints.get(4), List.of(), Tokens.TOKENS),
                 Arguments.of("ArraysStream", "true ? Arrays.stream(", oracleDatapoints.get(5), List.of("methodResultID", "coefficients"), Tokens.TOKENS.stream().filter(t -> !t.equals("methodResultID")).collect(Collectors.toList()))
         );
     }
-
-
 }
