@@ -566,6 +566,29 @@ public class TokenSuggesterTest {
     }
 
     @ParameterizedTest(name = "{0}")
+    @MethodSource("tokenLegalContextRestrictionsNoStreamParameterizedTestData")
+    public void isTokenLegalBasedOnContextRestrictions_NO_STREAM_Case_Legality(String testName, String partialExpression, OracleDatapoint oracleDatapoint, boolean expected) {
+        String token = "stream";
+        List<String> partialExpressionTokens = split(parser.getPartialOracle(partialExpression));
+
+        // Preconditions
+        assertTrue(getNextLegalTokensAccordingToGrammar(partialExpressionTokens).contains(token));
+        assertTrue(SingleTokenRestrictions.RESTRICTED_TOKENS.get(oracleDatapoint.getOracleType()).contains(token));
+
+        // Test
+        boolean legal = isTokenLegalBasedOnSingleTokenRestrictions(token, partialExpressionTokens, oracleDatapoint);
+        assertEquals(expected, legal);
+    }
+
+    private static Stream<Arguments> tokenLegalContextRestrictionsNoStreamParameterizedTestData() {
+        return Stream.of(
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_STREAM_ObjectType_Illegal", "o1.", oracleDatapoints.get(0), false),
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_STREAM_CollectionType_Legal", "true ? methodResultID.", oracleDatapoints.get(4), true),
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_STREAM_NonCollectionTypeButSomeIsCollection_Illegal", "this.", oracleDatapoints.get(4), false)
+        );
+    }
+
+    @ParameterizedTest(name = "{0}")
     @MethodSource("tokenLegalContextRestrictionsNoClosingParenthesisParameterizedTestData")
     public void isTokenLegalBasedOnContextRestrictions_NO_CLOSING_PARENTHESIS_Case_Legality(String testName, String partialExpression, OracleDatapoint oracleDatapoint, boolean expected) {
         String token = ")";
@@ -1091,6 +1114,7 @@ public class TokenSuggesterTest {
                 Arguments.of("MethodArgumentDoubleAllowed", "PolynomialFunction.evaluate(null, ", oracleDatapoints.get(1), List.of("1", "3.1", "PolynomialFunction"), List.of("null", "true", "false", "\"someString\"")),
                 Arguments.of("JdVarComplexType", "true ? methodResultID.stream().noneMatch(jdVar -> jdVar.", oracleDatapoints.get(4), List.of("isInfinite", "equals", "isNaN"), List.of("nonExistingMethod", "class", "==", "&&")),
                 Arguments.of("Empty", "", oracleDatapoints.get(0), List.of("Equator", "o1", "(", "true", "this", ";"), List.of("Arrays", "methodResultID", "jdVar", "1"))
+//                Arguments.of("ArraysStream", "Arrays.stream(", oracleDatapoints.get(0), List.of(), List.of()) // FIXME
         );
     }
 

@@ -50,7 +50,9 @@ public class SingleTokenRestrictions {
             // If last method argument does not comply with type, forbid closing parenthesis:
             NoClosingParenthesisRestriction.getInstance(),
             // Forbid "Arrays" if nor methodResultID or some method argument is an array:
-            NoArraysRestriction.getInstance()
+            NoArraysRestriction.getInstance(),
+            // Forbid "stream" if nor this, methodResultID or some method argument is a collection:
+            NoStreamRestriction.getInstance()
     );
 
     /**
