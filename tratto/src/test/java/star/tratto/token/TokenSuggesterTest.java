@@ -35,7 +35,6 @@ import static star.tratto.token.TokenSuggester.*;
 /**
  * This class contains tests not only for the TokenSuggester class, but also integration
  * tests involving all the implemented Context Restrictions (both Single and Multi).
- * // TODO: Include tests (also oracles in dataset) with jdVar
  */
 public class TokenSuggesterTest {
 
@@ -520,7 +519,6 @@ public class TokenSuggesterTest {
                 Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_COMMA_Null_Legal", "DerivativeStructure.atan2(null", oracleDatapoints.get(1), true),
                 Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_COMMA_ValidType2_Legal", "methodResultID.linearCombination(null", oracleDatapoints.get(1), true),
                 Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_COMMA_InvalidType2_Illegal", "DerivativeStructure.pow(this", oracleDatapoints.get(1), false),
-//                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_COMMA_ValidType3_Legal", "methodResultID.linearCombination(this.value(methodResult", oracleDatapoints.get(1), true), // TODO: Move to parenthesis test
                 Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_COMMA_ValidType3_Legal", "DerivativeStructure.pow(1", oracleDatapoints.get(1), true),
                 Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_COMMA_ValidType4_Legal", "DerivativeStructure.pow(1.1", oracleDatapoints.get(1), true),
                 Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_COMMA_InvalidType3_Illegal", "DerivativeStructure.pow(this.getCoefficients()", oracleDatapoints.get(1), false),
@@ -1020,8 +1018,6 @@ public class TokenSuggesterTest {
         // TODO: At each position, check that the suggested tokens match exactly the ones that are legal
     }
 
-    // TODO: For each MultiTokenRestriction, create an integration test calling getNextLegalTokensWithContextPlusInfo with the same parameterized data
-
     @ParameterizedTest(name = "{0}")
     @MethodSource("restrictionEnabledLastMethodNameParameterizedTestData")
     public void getNextLegalTokensWithContextPlusInfo_LastMethodNameRestrictionTest(String testName, String partialExpression, OracleDatapoint oracleDatapoint, boolean expected) {
@@ -1126,7 +1122,6 @@ public class TokenSuggesterTest {
         }
     }
 
-    // TODO: For the getNextLegalTokensWithContextPlusInfo method, create at least one parameterized test case targeted at exercising each Single and Multi TokenRestriction
     @ParameterizedTest(name = "{0}")
     @MethodSource("getNextLegalTokensWithContextPlusInfoTestParameterizedTestData")
     public void getNextLegalTokensWithContextPlusInfo_Restriction_CaseTest(String testName, String partialExpression, OracleDatapoint oracleDatapoint, List<String> someExpectedTokens, List<String> someNotExpectedTokens) {
