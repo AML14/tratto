@@ -44,12 +44,13 @@ public class RestrictionsUtils {
         MethodCall methodCall = findLastMethodCall(lastElementWithUnfinishedMethod);
         String methodName = methodCall.getMethodName(); // Can assume methodCall is not null
         int nArgsSoFar = getNArgumentsSoFar(methodCall);
-        // For NoClosingParenthesis restriction, methods without arguments are handled in a different ContextRestriction:
-        if (nextLegalToken.equals(")") && nArgsSoFar == 0) {
-            return false;
-        }
 
         List<MethodUsage> matchingMethods = getApplicableMethodsOfPrecedingExpr(lastElementWithUnfinishedMethod, methodName, oracleDatapoint);
+
+        // Previous check: if nArgsSoFar==0, make sure that there's at least one method with no arguments, otherwise return true
+        if (nArgsSoFar == 0) {
+            return matchingMethods.stream().noneMatch(m -> m.getNoParams() == 0);
+        }
 
         // If nextLegalToken==",", do not consider matchingMethods with <= nArgsSoFar. If nextLegalToken==")", do not consider matchingMethods with != nArgsSoFar
         // Also, the type of the current argument must be type-compatible with the type of the nArgsSoFar-th argument of the matchingMethod

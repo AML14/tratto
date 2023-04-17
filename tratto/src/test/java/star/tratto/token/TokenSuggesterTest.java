@@ -653,7 +653,7 @@ public class TokenSuggesterTest {
     private static Stream<Arguments> tokenLegalContextRestrictionsNoClosingParenthesisParameterizedTestData() {
         return Stream.of(
                 Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_CLOSING_PARENTHESIS_NotApplicable_Legal", "(o1==null", oracleDatapoints.get(0), true),
-                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_CLOSING_PARENTHESIS_NoArgsSoFar_Legal", "o1.equals(", oracleDatapoints.get(0), true),
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_CLOSING_PARENTHESIS_NoArgsSoFarNoMethodWithoutArgs_Illegal", "o1.equals(", oracleDatapoints.get(0), false),
                 Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_CLOSING_PARENTHESIS_Equals_Legal", "o1.equals(o2", oracleDatapoints.get(0), true),
                 Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_CLOSING_PARENTHESIS_ValidType_Legal", "methodResultID.atan2(this", oracleDatapoints.get(1), true),
                 Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_CLOSING_PARENTHESIS_InvalidType_Illegal", "methodResultID.atan2(this.degree()", oracleDatapoints.get(1), false),
@@ -1141,6 +1141,7 @@ public class TokenSuggesterTest {
                 Arguments.of("ClassName", "Complex", oracleDatapoints.get(3), List.of("."), List.of("instanceof", "<", "==")),
                 Arguments.of("MethodArgumentClassReturnType", "divisor", oracleDatapoints.get(3), List.of("instanceof", ".", "=="), List.of("<", "&&")),
                 Arguments.of("MethodName", "divisor.equals", oracleDatapoints.get(3), List.of("("), List.of("instanceof", "<", ".", "==")),
+                Arguments.of("MethodNameOpen", "divisor.equals(", oracleDatapoints.get(3), List.of("this", "divisor"), List.of(")")),
                 Arguments.of("ClassReturnType", "divisor.conjugate()", oracleDatapoints.get(3), List.of("instanceof", ".", "==", "!="), List.of("<", "&&", "?")),
                 Arguments.of("SomeContentAndClassName", "divisor.conjugate()==null && PolynomialSplineFunction", oracleDatapoints.get(3), List.of("."), List.of("instanceof", "<", "!=")),
                 Arguments.of("PrimitiveReturnType", "divisor.nthRoot(0).size()", oracleDatapoints.get(3), List.of("<"), List.of("instanceof", ".")),
