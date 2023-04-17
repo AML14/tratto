@@ -53,10 +53,33 @@ public class TokenEnricher {
         List<Triplet<String, String, List<String>>> enrichedTokensPlusInfo = new ArrayList<>();
 
         addMethodArgumentsAndClasses = true;
+        enrichedTokensPlusInfo.addAll(getMethodArgumentsAfterStream(partialExpressionTokens, oracleDatapoint));
         enrichedTokensPlusInfo.addAll(getClassNamesAfterInstanceOf(partialExpressionTokens, oracleDatapoint));
         enrichedTokensPlusInfo.addAll(getStaticAttributesAndMethods(partialExpressionTokens, oracleDatapoint));
         enrichedTokensPlusInfo.addAll(getNonStaticAttributesAndMethods(partialExpressionTokens, oracleDatapoint));
         enrichedTokensPlusInfo.addAll(getMethodArgumentsAndClassNames(partialExpressionTokens, oracleDatapoint));
+
+        return enrichedTokensPlusInfo;
+    }
+
+    /**
+     * If expression ends with "Arrays.stream(", return only method arguments that are arrays. Otherwise, return empty list.
+     */
+    static List<Triplet<String, String, List<String>>> getMethodArgumentsAfterStream(List<String> partialExpressionTokens, OracleDatapoint oracleDatapoint) {
+        List<Triplet<String, String, List<String>>> enrichedTokensPlusInfo = new ArrayList<>();
+
+        // Check if this token enriching rule applies. If so, set addMethodArgumentsAndClasses to false and continue. If not, return empty list
+        if (!compactExpression(partialExpressionTokens).endsWith("Arrays.stream(")) {
+            return enrichedTokensPlusInfo;
+        }
+        addMethodArgumentsAndClasses = false;
+
+        enrichedTokensPlusInfo.addAll(oracleDatapoint.getTokensMethodArguments()
+                .stream()
+                .filter(ma -> ma.getValue2().contains("[]"))
+                .map(triplet -> Triplet.with(triplet.getValue0(), "MethodArgument", List.of(triplet.getValue1(), triplet.getValue2())))
+                .collect(Collectors.toList())
+        );
 
         return enrichedTokensPlusInfo;
     }
@@ -200,6 +223,7 @@ public class TokenEnricher {
         return enrichedTokensPlusInfo.stream().distinct().collect(Collectors.toList()); // Possible duplicates among "variables" and "oracle" columns
     }
 
+    // TODO: If method argument is primitive, check type-compatibility with preceding expression
     static Collection<Triplet<String, String, List<String>>> getMethodArgumentsAndClassNames(List<String> partialExpressionTokens, OracleDatapoint oracleDatapoint) {
         List<Triplet<String, String, List<String>>> enrichedTokensPlusInfo = new ArrayList<>();
 

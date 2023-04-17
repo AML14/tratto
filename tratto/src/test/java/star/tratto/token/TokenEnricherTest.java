@@ -5,6 +5,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import star.tratto.dataset.oracles.OracleDatapoint;
+import star.tratto.dataset.oracles.OracleDatapointTest;
+import star.tratto.oracle.OracleType;
 import star.tratto.oraclegrammar.custom.Parser;
 
 import java.util.List;
@@ -86,6 +88,30 @@ public class TokenEnricherTest {
                         Triplet.with("EMPTY_BAG", "ClassField", List.of("org.apache.commons.collections4", "BagUtils", "public static final Bag EMPTY_BAG = UnmodifiableBag.unmodifiableBag(new HashBag<>())"))
                 ))
 
+        );
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("getMethodArgumentsAfterStreamParameterizedTestData")
+    public void getMethodArgumentsAfterStreamTest(String testName, String partialExpression, OracleDatapoint oracleDatapoint, List<Triplet<String, String, List<String>>> expectedTokens) {
+        List<String> partialExpressionTokens = split(parser.getPartialOracle(partialExpression));
+
+        // Preconditions
+        assertTrue(getNextLegalTokensAccordingToGrammar(partialExpressionTokens).contains("someVarOrClassOrFieldOrMethod"));
+
+        // Test
+        List<Triplet<String, String, List<String>>> enrichedTokens = getMethodArgumentsAfterStream(partialExpressionTokens, oracleDatapoint);
+        assertEquals(expectedTokens.size(), enrichedTokens.size());
+        assertTrue(expectedTokens.containsAll(enrichedTokens) && enrichedTokens.containsAll(expectedTokens));
+    }
+
+    private static Stream<Arguments> getMethodArgumentsAfterStreamParameterizedTestData() {
+        return Stream.of(
+                Arguments.of("getMethodArgumentsAfterStream_NotApplicable", "", oracleDatapoints.get(0), List.of()),
+                Arguments.of("getMethodArgumentsAfterStream_OneArgument", "true ? Arrays.stream(", oracleDatapoints.get(5), List.of(
+                        Triplet.with("coefficients", "MethodArgument", List.of("", "double[]"))
+                )),
+                Arguments.of("getMethodArgumentsAfterStream_NoCompatibleTokens", "Arrays.stream(", oracleDatapoints.get(0), List.of())
         );
     }
 

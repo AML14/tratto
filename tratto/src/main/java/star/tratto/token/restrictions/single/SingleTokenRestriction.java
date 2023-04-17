@@ -31,6 +31,8 @@ import java.util.List;
  * General conventions:
  * <ul>
  *     <li>It is forbidden that both the enablerTokens and disablerTokens are empty lists.</li>
+ *     <li>Two SingleContextRestrictions cannot have the same restrictedToken and oracleType.
+ *     {@link StandardSingleTokenRestriction}s must also be taken into account for this restriction.</li>
  * </ul>
  */
 public abstract class SingleTokenRestriction implements ContextRestriction {

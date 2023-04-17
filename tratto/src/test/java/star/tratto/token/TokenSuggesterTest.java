@@ -536,6 +536,31 @@ public class TokenSuggesterTest {
     }
 
     @ParameterizedTest(name = "{0}")
+    @MethodSource("tokenLegalContextRestrictionsNoMethodResultIDParameterizedTestData")
+    public void isTokenLegalBasedOnContextRestrictions_NO_METHOD_RESULT_ID_Case_Legality(String testName, String partialExpression, OracleDatapoint oracleDatapoint, boolean expected) {
+        String token = "methodResultID";
+        List<String> partialExpressionTokens = split(parser.getPartialOracle(partialExpression));
+
+        // Preconditions
+        assertTrue(getNextLegalTokensAccordingToGrammar(partialExpressionTokens).contains(token));
+        assertTrue(SingleTokenRestrictions.RESTRICTED_TOKENS.get(oracleDatapoint.getOracleType()).contains(token));
+
+        // Test
+        boolean legal = isTokenLegalBasedOnSingleTokenRestrictions(token, partialExpressionTokens, oracleDatapoint);
+        assertEquals(expected, legal);
+    }
+
+    private static Stream<Arguments> tokenLegalContextRestrictionsNoMethodResultIDParameterizedTestData() {
+        return Stream.of(
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_METHOD_RESULT_ID_ArraysNotApplicable_Illegal", "true ? Arrays.stream(", oracleDatapoints.get(4), false),
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_METHOD_RESULT_ID_Empty_Illegal", "", oracleDatapoints.get(4), false),
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_METHOD_RESULT_ID_ArraysApplicable_Legal", "true ? Arrays.stream(", oracleDatapoints.get(5), true),
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_METHOD_RESULT_ID_Empty_Illegal", "", oracleDatapoints.get(5), false),
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_METHOD_RESULT_ID_Guard_Illegal", "Arrays.stream(", oracleDatapoints.get(5), false)
+        );
+    }
+
+    @ParameterizedTest(name = "{0}")
     @MethodSource("tokenLegalContextRestrictionsNoArraysParameterizedTestData")
     public void isTokenLegalBasedOnContextRestrictions_NO_ARRAYS_Case_Legality(String testName, String partialExpression, OracleDatapoint oracleDatapoint, boolean expected) {
         String token = "Arrays";
@@ -1113,8 +1138,9 @@ public class TokenSuggesterTest {
                 Arguments.of("MethodArgumentAllAllowed", "String.valueOf(", oracleDatapoints.get(0), List.of("0", "1", "true", "false", "null", "Bag"), List.of("methodResultID", "1.0")),
                 Arguments.of("MethodArgumentDoubleAllowed", "PolynomialFunction.evaluate(null, ", oracleDatapoints.get(1), List.of("1", "3.1", "PolynomialFunction"), List.of("null", "true", "false", "\"someString\"")),
                 Arguments.of("JdVarComplexType", "true ? methodResultID.stream().noneMatch(jdVar -> jdVar.", oracleDatapoints.get(4), List.of("isInfinite", "equals", "isNaN"), List.of("nonExistingMethod", "class", "==", "&&")),
-                Arguments.of("Empty", "", oracleDatapoints.get(0), List.of("Equator", "o1", "(", "true", "this", ";"), List.of("Arrays", "methodResultID", "jdVar", "1"))
-//                Arguments.of("ArraysStream", "Arrays.stream(", oracleDatapoints.get(0), List.of(), List.of()) // FIXME
+                Arguments.of("Empty", "", oracleDatapoints.get(0), List.of("Equator", "o1", "(", "true", "this", ";"), List.of("Arrays", "methodResultID", "jdVar", "1")),
+                Arguments.of("ArraysStreamDeadEnd", "true ? Arrays.stream(", oracleDatapoints.get(0), List.of(), Tokens.TOKENS),
+                Arguments.of("ArraysStream", "true ? Arrays.stream(", oracleDatapoints.get(5), List.of("methodResultID", "coefficients"), Tokens.TOKENS.stream().filter(t -> !t.equals("methodResultID")).collect(Collectors.toList()))
         );
     }
 

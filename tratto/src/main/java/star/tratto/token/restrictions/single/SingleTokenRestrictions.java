@@ -17,22 +17,16 @@ public class SingleTokenRestrictions {
             new StandardSingleTokenRestriction(OracleType.PRE, "?", null, null, true),
             // true is not a valid Predicate in preconditions:
             new StandardSingleTokenRestriction(OracleType.PRE, "true", null, List.of(), true),
-            // Preconditions cannot mention methodResultID:
-            new StandardSingleTokenRestriction(OracleType.PRE, "methodResultID", null, null, true),
             // Preconditions must mention the argument of the method they refer to and/or this:
             PreYesArgumentOrThisRestriction.getInstance(),
             // Normal postconditions must make use of the ternary operator ( ? : ):
             new StandardSingleTokenRestriction(OracleType.NORMAL_POST, ";", List.of(), List.of("?"), false),
             // true is not a valid Predicate in the true property of normal postconditions:
             new StandardSingleTokenRestriction(OracleType.NORMAL_POST, "true", List.of("?"), List.of(), false),
-            // Normal postconditions cannot mention methodResultID in the guard:
-            new StandardSingleTokenRestriction(OracleType.NORMAL_POST, "methodResultID", null, List.of("?"), true),
             // Normal postconditions must mention methodResultID and/or this in the true property
             new StandardSingleTokenRestriction(OracleType.NORMAL_POST, ":", null, List.of("methodResultID", "this"), true),
             // Exceptional postconditions cannot make use of the ternary operator ( ? : ):
             new StandardSingleTokenRestriction(OracleType.EXCEPT_POST, "?", null, null, true),
-            // Exceptional postconditions cannot mention methodResultID:
-            new StandardSingleTokenRestriction(OracleType.EXCEPT_POST, "methodResultID", null, null, true),
             // "this" is forbidden if the method under test is static:
             NoThisRestriction.getInstance(),
             // "jdVar" is only allowed within the argument of a method performed on a stream (e.g., anyMatch), otherwise it is forbidden:
@@ -52,7 +46,12 @@ public class SingleTokenRestrictions {
             // Forbid "Arrays" if nor methodResultID or some method argument is an array:
             NoArraysRestriction.getInstance(),
             // Forbid "stream" if nor this, methodResultID or some method argument is a collection:
-            NoStreamRestriction.getInstance()
+            NoStreamRestriction.getInstance(),
+            // Forbid "methodResultID" after "Arrays.stream(" if it is not an array:
+            // Preconditions cannot mention methodResultID:
+            // Normal postconditions cannot mention methodResultID in the guard:
+            // Exceptional postconditions cannot mention methodResultID:
+            NoMethodResultIDRestriction.getInstance()
     );
 
     /**
