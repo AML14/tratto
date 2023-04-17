@@ -2,6 +2,7 @@ package star.tratto.enums;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public enum ConditionPrimitiveType {
     CONDITION_BOOLEAN("Z"),
@@ -101,7 +102,7 @@ public enum ConditionPrimitiveType {
                 .stream(ConditionPrimitiveType.values())
                 .filter(c -> c.name().startsWith("CONDITION"))
                 .map(c -> c.getValue())
-                .toList();
+                .collect(Collectors.toList());
         return conditionList;
     }
 
@@ -110,7 +111,7 @@ public enum ConditionPrimitiveType {
                 .stream(ConditionPrimitiveType.values())
                 .filter(c -> c.name().startsWith("JP"))
                 .map(c -> c.getValue())
-                .toList();
+                .collect(Collectors.toList());
         return jpList;
     }
 
