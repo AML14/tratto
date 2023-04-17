@@ -223,7 +223,6 @@ public class TokenEnricher {
         return enrichedTokensPlusInfo.stream().distinct().collect(Collectors.toList()); // Possible duplicates among "variables" and "oracle" columns
     }
 
-    // TODO: If method argument is primitive, check type-compatibility with preceding expression
     static Collection<Triplet<String, String, List<String>>> getMethodArgumentsAndClassNames(List<String> partialExpressionTokens, OracleDatapoint oracleDatapoint) {
         List<Triplet<String, String, List<String>>> enrichedTokensPlusInfo = new ArrayList<>();
 
