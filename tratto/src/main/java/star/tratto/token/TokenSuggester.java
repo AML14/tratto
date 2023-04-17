@@ -54,8 +54,7 @@ public class TokenSuggester {
 
         // TODO: Forbid closing parenthesis if just opened method call and no method without arguments exists
         // TODO: Forbid "class" modifier after "." if current method argument is not a class
-        // TODO: Forbid "stream" if previous expression is not instanceof java.util.Collection
-        // TODO: Forbid "Arrays" if nor this, methodResultID or some method argument is an array
+        // TODO: Forbid "stream" if nor this, methodResultID or some method argument is instanceof java.util.Collection
 
         for (String token : tokensWithoutRestrictions) {
             switch (token) {

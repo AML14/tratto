@@ -48,7 +48,9 @@ public class SingleTokenRestrictions {
             // If current method argument does not comply with type, forbid comma:
             NoCommaRestriction.getInstance(),
             // If last method argument does not comply with type, forbid closing parenthesis:
-            NoClosingParenthesisRestriction.getInstance()
+            NoClosingParenthesisRestriction.getInstance(),
+            // Forbid "Arrays" if nor methodResultID or some method argument is an array:
+            NoArraysRestriction.getInstance()
     );
 
     /**

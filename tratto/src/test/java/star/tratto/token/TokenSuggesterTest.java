@@ -536,6 +536,36 @@ public class TokenSuggesterTest {
     }
 
     @ParameterizedTest(name = "{0}")
+    @MethodSource("tokenLegalContextRestrictionsNoArraysParameterizedTestData")
+    public void isTokenLegalBasedOnContextRestrictions_NO_ARRAYS_Case_Legality(String testName, String partialExpression, OracleDatapoint oracleDatapoint, boolean expected) {
+        String token = "Arrays";
+        List<String> partialExpressionTokens = split(parser.getPartialOracle(partialExpression));
+
+        // Preconditions
+        assertTrue(getNextLegalTokensAccordingToGrammar(partialExpressionTokens).contains(token));
+        assertTrue(SingleTokenRestrictions.RESTRICTED_TOKENS.get(oracleDatapoint.getOracleType()).contains(token));
+
+        // Test
+        boolean legal = isTokenLegalBasedOnSingleTokenRestrictions(token, partialExpressionTokens, oracleDatapoint);
+        assertEquals(expected, legal);
+    }
+
+    private static Stream<Arguments> tokenLegalContextRestrictionsNoArraysParameterizedTestData() {
+        OracleDatapoint mockedOracleDatapoint = OracleDatapointTest.getEmptyOracleDatapoint();
+        mockedOracleDatapoint.setClassName("SomeClass");
+        mockedOracleDatapoint.setMethodSourceCode("public int[] someMethod(ArrayList<Integer> arg1, Integer arg2) { return null; }");
+        mockedOracleDatapoint.setClassSourceCode("import java.util.ArrayList; public class SomeClass { " + mockedOracleDatapoint.getMethodSourceCode() + " }");
+        mockedOracleDatapoint.setTokensMethodArguments(List.of(Triplet.with("arg1", "java.util", "ArrayList"), Triplet.with("arg2", "java.lang", "Integer")));
+        mockedOracleDatapoint.setOracleType(OracleType.NORMAL_POST);
+        mockedOracleDatapoint.setTokensProjectClasses(List.of());
+
+        return Stream.of(
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_ARRAYS_Empty_Illegal", "", oracleDatapoints.get(0), false),
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_ARRAYS_ArraysMethodResultID_Legal", "", mockedOracleDatapoint, true)
+        );
+    }
+
+    @ParameterizedTest(name = "{0}")
     @MethodSource("tokenLegalContextRestrictionsNoClosingParenthesisParameterizedTestData")
     public void isTokenLegalBasedOnContextRestrictions_NO_CLOSING_PARENTHESIS_Case_Legality(String testName, String partialExpression, OracleDatapoint oracleDatapoint, boolean expected) {
         String token = ")";
@@ -1059,7 +1089,8 @@ public class TokenSuggesterTest {
                 Arguments.of("OperationInt", "this.getCoefficients().length>=this.getCoefficients().length>>~", oracleDatapoints.get(1), List.of("1", "this", "PolynomialFunction"), List.of("null", "true", "false", "1.0", "\"someString\"")),
                 Arguments.of("MethodArgumentAllAllowed", "String.valueOf(", oracleDatapoints.get(0), List.of("0", "1", "true", "false", "null", "Bag"), List.of("methodResultID", "1.0")),
                 Arguments.of("MethodArgumentDoubleAllowed", "PolynomialFunction.evaluate(null, ", oracleDatapoints.get(1), List.of("1", "3.1", "PolynomialFunction"), List.of("null", "true", "false", "\"someString\"")),
-                Arguments.of("JdVarComplexType", "true ? methodResultID.stream().noneMatch(jdVar -> jdVar.", oracleDatapoints.get(4), List.of("isInfinite", "equals", "isNaN"), List.of("nonExistingMethod", "class", "==", "&&"))
+                Arguments.of("JdVarComplexType", "true ? methodResultID.stream().noneMatch(jdVar -> jdVar.", oracleDatapoints.get(4), List.of("isInfinite", "equals", "isNaN"), List.of("nonExistingMethod", "class", "==", "&&")),
+                Arguments.of("Empty", "", oracleDatapoints.get(0), List.of("Equator", "o1", "(", "true", "this", ";"), List.of("Arrays", "methodResultID", "jdVar", "1"))
         );
     }
 
