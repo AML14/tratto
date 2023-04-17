@@ -50,11 +50,6 @@ public class TokenSuggester {
         List<Triplet<String, String, List<String>>> nextLegalTokensWithContextPlusInfo = new ArrayList<>();
         List<String> tokensWithoutRestrictions = getNextLegalTokensWithoutRestrictions(partialExpressionTokens, oracleDatapoint);
 
-        // TODO: Filter out tokens based on partialExpression and MultiTokenRestrictions
-
-        // TODO: Forbid closing parenthesis if just opened method call and no method without arguments exists
-        // TODO: Forbid "class" modifier after "." if current method argument is not a class
-
         for (String token : tokensWithoutRestrictions) {
             switch (token) {
                 case "\"someString\"":
