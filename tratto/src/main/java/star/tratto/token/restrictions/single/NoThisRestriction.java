@@ -9,6 +9,8 @@ import star.tratto.util.JavaParserUtils;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import static star.tratto.util.JavaParserUtils.getMethodDeclaration;
+
 /**
  * "this" is forbidden if the method under test is static.
  */
@@ -34,13 +36,8 @@ public class NoThisRestriction extends SingleTokenRestriction {
             return false;
         }
 
-        MethodDeclaration methodDeclaration;
-        try {
-            methodDeclaration = javaParser.parseMethodDeclaration(oracleDatapoint.getMethodSourceCode()).getResult().get();
-        } catch (NoSuchElementException e) {
-            throw new IllegalArgumentException("The provided methodSourceCode cannot be parsed by JavaParser. Method source code:\n\n" + oracleDatapoint.getMethodSourceCode(), e);
-        }
-
-        return methodDeclaration.getModifiers().stream().anyMatch(modifier -> modifier.getKeyword() == Modifier.Keyword.STATIC);
+        return getMethodDeclaration(oracleDatapoint.getMethodSourceCode()).getModifiers()
+                .stream()
+                .anyMatch(modifier -> modifier.getKeyword() == Modifier.Keyword.STATIC);
     }
 }

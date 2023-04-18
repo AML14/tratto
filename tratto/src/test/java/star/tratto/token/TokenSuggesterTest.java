@@ -583,17 +583,28 @@ public class TokenSuggesterTest {
     }
 
     private static Stream<Arguments> tokenLegalContextRestrictionsNoArraysParameterizedTestData() {
-        OracleDatapoint mockedOracleDatapoint = OracleDatapointTest.getEmptyOracleDatapoint();
-        mockedOracleDatapoint.setClassName("SomeClass");
-        mockedOracleDatapoint.setMethodSourceCode("public int[] someMethod(ArrayList<Integer> arg1, Integer arg2) { return null; }");
-        mockedOracleDatapoint.setClassSourceCode("import java.util.ArrayList; public class SomeClass { " + mockedOracleDatapoint.getMethodSourceCode() + " }");
-        mockedOracleDatapoint.setTokensMethodArguments(List.of(Triplet.with("arg1", "java.util", "ArrayList"), Triplet.with("arg2", "java.lang", "Integer")));
-        mockedOracleDatapoint.setOracleType(OracleType.NORMAL_POST);
-        mockedOracleDatapoint.setTokensProjectClasses(List.of());
+        // Return type: array
+        OracleDatapoint mockedOracleDatapoint1 = OracleDatapointTest.getEmptyOracleDatapoint();
+        mockedOracleDatapoint1.setClassName("SomeClass");
+        mockedOracleDatapoint1.setMethodSourceCode("public int[] someMethod(ArrayList<Integer> arg1, Integer arg2) { return null; }");
+        mockedOracleDatapoint1.setClassSourceCode("import java.util.ArrayList; public class SomeClass { " + mockedOracleDatapoint1.getMethodSourceCode() + " }");
+        mockedOracleDatapoint1.setTokensMethodArguments(List.of(Triplet.with("arg1", "java.util", "ArrayList"), Triplet.with("arg2", "java.lang", "Integer")));
+        mockedOracleDatapoint1.setOracleType(OracleType.NORMAL_POST);
+        mockedOracleDatapoint1.setTokensProjectClasses(List.of());
+
+        // Return type: void
+        OracleDatapoint mockedOracleDatapoint2 = OracleDatapointTest.getEmptyOracleDatapoint();
+        mockedOracleDatapoint2.setClassName("SomeClass");
+        mockedOracleDatapoint2.setMethodSourceCode("public void someMethod(ArrayList<Integer> arg1, Integer arg2) { return; }");
+        mockedOracleDatapoint2.setClassSourceCode("import java.util.ArrayList; public class SomeClass { " + mockedOracleDatapoint2.getMethodSourceCode() + " }");
+        mockedOracleDatapoint2.setTokensMethodArguments(List.of(Triplet.with("arg1", "java.util", "ArrayList"), Triplet.with("arg2", "java.lang", "Integer")));
+        mockedOracleDatapoint2.setOracleType(OracleType.NORMAL_POST);
+        mockedOracleDatapoint2.setTokensProjectClasses(List.of());
 
         return Stream.of(
                 Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_ARRAYS_Empty_Illegal", "", oracleDatapoints.get(0), false),
-                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_ARRAYS_ArraysMethodResultID_Legal", "", mockedOracleDatapoint, true)
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_ARRAYS_ArraysMethodResultID_Legal", "", mockedOracleDatapoint1, true),
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_ARRAYS_ArraysMethodResultID_Legal", "", mockedOracleDatapoint2, false)
         );
     }
 

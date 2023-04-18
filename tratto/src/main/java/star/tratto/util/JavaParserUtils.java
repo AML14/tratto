@@ -20,6 +20,7 @@ import star.tratto.oraclegrammar.custom.Parser;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -343,5 +344,14 @@ public class JavaParserUtils {
         boolean isVoid = getTypeWithoutPackages(methodUsage.returnType()).equals("void");
         boolean isPrivate = methodUsage.getDeclaration().toString().matches(".*(method=private |method=.* private ).*");
         return !isVoid && !isPrivate;
+    }
+
+    public static MethodDeclaration getMethodDeclaration(String methodSourceCode) {
+        MethodDeclaration methodDeclaration;
+        try {
+            return javaParser.parseMethodDeclaration(methodSourceCode).getResult().get();
+        } catch (NoSuchElementException e) {
+            throw new IllegalArgumentException("The provided methodSourceCode cannot be parsed by JavaParser. Method source code:\n\n" + methodSourceCode, e);
+        }
     }
 }

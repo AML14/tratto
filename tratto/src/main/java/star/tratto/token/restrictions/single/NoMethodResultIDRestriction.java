@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+import static star.tratto.util.JavaParserUtils.getMethodDeclaration;
 import static star.tratto.util.JavaParserUtils.getReturnTypeOfExpression;
 import static star.tratto.util.StringUtils.compactExpression;
 
@@ -50,15 +51,8 @@ public class NoMethodResultIDRestriction extends SingleTokenRestriction {
             return false;
         }
 
-        MethodDeclaration methodDeclaration;
-        try {
-            methodDeclaration = javaParser.parseMethodDeclaration(oracleDatapoint.getMethodSourceCode()).getResult().get();
-        } catch (NoSuchElementException e) {
-            throw new IllegalArgumentException("The provided methodSourceCode cannot be parsed by JavaParser. Method source code:\n\n" + oracleDatapoint.getMethodSourceCode(), e);
-        }
-
         return
-                methodDeclaration.getType().isVoidType()
+                getMethodDeclaration(oracleDatapoint.getMethodSourceCode()).getType().isVoidType()
                 ||
                 oracleSpecificRestrictions.get(oracleDatapoint.getOracleType()).isEnabled(nextLegalToken, partialExpressionTokens, oracleDatapoint)
                 ||

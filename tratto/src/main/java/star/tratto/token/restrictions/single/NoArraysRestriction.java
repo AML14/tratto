@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static star.tratto.util.JavaParserUtils.getMethodDeclaration;
 import static star.tratto.util.JavaParserUtils.getReturnTypeOfExpression;
 
 /**
@@ -33,9 +34,10 @@ public class NoArraysRestriction extends SingleTokenRestriction {
             return false;
         }
 
-        String methodResultIDClass = getReturnTypeOfExpression("methodResultID", oracleDatapoint).getValue1();
+        boolean methodResultIDIsArray = !getMethodDeclaration(oracleDatapoint.getMethodSourceCode()).getType().isVoidType() &&
+                getReturnTypeOfExpression("methodResultID", oracleDatapoint).getValue1().contains("[]");
         List<String> methodArgumentsClasses = oracleDatapoint.getTokensMethodArguments().stream().map(Triplet::getValue2).collect(Collectors.toList());
 
-        return !methodResultIDClass.contains("[]") && methodArgumentsClasses.stream().noneMatch(c -> c.contains("[]"));
+        return !methodResultIDIsArray && methodArgumentsClasses.stream().noneMatch(c -> c.contains("[]"));
     }
 }
