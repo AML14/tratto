@@ -549,12 +549,21 @@ public class TokenSuggesterTest {
     }
 
     private static Stream<Arguments> tokenLegalContextRestrictionsNoMethodResultIDParameterizedTestData() {
+        OracleDatapoint mockedOracleDatapoint = OracleDatapointTest.getEmptyOracleDatapoint();
+        mockedOracleDatapoint.setClassName("SomeClass");
+        mockedOracleDatapoint.setMethodSourceCode("public void someMethod() { return; }");
+        mockedOracleDatapoint.setClassSourceCode("public class SomeClass { " + mockedOracleDatapoint.getMethodSourceCode() + " }");
+        mockedOracleDatapoint.setTokensMethodArguments(List.of());
+        mockedOracleDatapoint.setOracleType(OracleType.NORMAL_POST);
+        mockedOracleDatapoint.setTokensProjectClasses(List.of());
         return Stream.of(
                 Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_METHOD_RESULT_ID_ArraysNotApplicable_Illegal", "true ? Arrays.stream(", oracleDatapoints.get(4), false),
                 Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_METHOD_RESULT_ID_Empty_Illegal", "", oracleDatapoints.get(4), false),
                 Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_METHOD_RESULT_ID_ArraysApplicable_Legal", "true ? Arrays.stream(", oracleDatapoints.get(5), true),
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_METHOD_RESULT_ID_PostApplicable_Legal", "true ? ", oracleDatapoints.get(5), true),
                 Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_METHOD_RESULT_ID_Empty_Illegal", "", oracleDatapoints.get(5), false),
-                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_METHOD_RESULT_ID_Guard_Illegal", "Arrays.stream(", oracleDatapoints.get(5), false)
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_METHOD_RESULT_ID_Guard_Illegal", "Arrays.stream(", oracleDatapoints.get(5), false),
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_METHOD_RESULT_ID_VoidMethod_Illegal", "true ? ", mockedOracleDatapoint, false)
         );
     }
 
