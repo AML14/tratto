@@ -2,12 +2,11 @@ package star.tratto.token.restrictions.single;
 
 import org.javatuples.Pair;
 import star.tratto.dataset.oracles.OracleDatapoint;
-import star.tratto.util.StringUtils;
 
 import java.util.List;
 
-import static star.tratto.util.JavaParserUtils.getReturnTypeOfExpression;
-import static star.tratto.util.JavaParserUtils.isType1InstanceOfType2;
+import static star.tratto.util.javaparser.JavaParserUtils.getReturnTypeOfExpression;
+import static star.tratto.util.javaparser.JavaParserUtils.isType1InstanceOfType2;
 import static star.tratto.util.StringUtils.fullyQualifiedClassName;
 
 /**

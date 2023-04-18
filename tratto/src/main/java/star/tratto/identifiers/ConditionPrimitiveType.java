@@ -1,4 +1,4 @@
-package star.tratto.enums;
+package star.tratto.identifiers;
 
 import java.util.Arrays;
 import java.util.List;

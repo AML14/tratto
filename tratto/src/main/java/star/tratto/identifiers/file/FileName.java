@@ -1,4 +1,4 @@
-package star.tratto.enums;
+package star.tratto.identifiers.file;
 
 public enum FileName {
     ARRAY_METHODS("arrayMethods"),

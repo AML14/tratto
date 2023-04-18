@@ -1,4 +1,4 @@
-package star.tratto.enums;
+package star.tratto.identifiers.path;
 
 import java.nio.file.Paths;
 

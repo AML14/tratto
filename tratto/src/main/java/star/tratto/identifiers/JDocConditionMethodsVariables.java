@@ -1,4 +1,4 @@
-package star.tratto.enums;
+package star.tratto.identifiers;
 
 public enum JDocConditionMethodsVariables {
     RECEIVER_OBJECT_ID("receiverObjectID"),

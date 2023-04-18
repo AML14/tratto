@@ -3,11 +3,10 @@ package star.tratto.token.restrictions.single;
 import org.javatuples.Triplet;
 import star.tratto.dataset.oracles.OracleDatapoint;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static star.tratto.util.JavaParserUtils.getReturnTypeOfExpression;
+import static star.tratto.util.javaparser.JavaParserUtils.getReturnTypeOfExpression;
 
 /**
  * Forbid "Arrays" if nor methodResultID or some method argument is an array.

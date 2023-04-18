@@ -1,4 +1,4 @@
-package star.tratto.enums;
+package star.tratto.identifiers;
 
 import com.github.javaparser.ast.type.Type;
 

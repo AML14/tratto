@@ -4,7 +4,7 @@ import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import star.tratto.dataset.oracles.OracleDatapoint;
-import star.tratto.util.JavaParserUtils;
+import star.tratto.util.javaparser.JavaParserUtils;
 
 import java.util.List;
 import java.util.NoSuchElementException;

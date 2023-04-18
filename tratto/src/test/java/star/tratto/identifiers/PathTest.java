@@ -1,6 +1,7 @@
-package star.tratto.enums;
+package star.tratto.identifiers;
 
 import org.junit.jupiter.api.Test;
+import star.tratto.identifiers.path.Path;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

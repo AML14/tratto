@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static star.tratto.oraclegrammar.custom.Splitter.split;
-import static star.tratto.util.JavaParserUtils.getReturnTypeOfExpression;
-import static star.tratto.util.JavaParserUtils.isType1InstanceOfType2;
+import static star.tratto.util.javaparser.JavaParserUtils.getReturnTypeOfExpression;
+import static star.tratto.util.javaparser.JavaParserUtils.isType1InstanceOfType2;
 import static star.tratto.util.StringUtils.compactExpression;
 import static star.tratto.util.StringUtils.fullyQualifiedClassName;
 
