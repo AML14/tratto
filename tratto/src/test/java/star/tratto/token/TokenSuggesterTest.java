@@ -83,6 +83,7 @@ public class TokenSuggesterTest {
         List<String> partialExpressionTokens = split(parser.getPartialOracle(partialExpression));
         OracleDatapoint oracleDatapoint = getEmptyOracleDatapoint();
         oracleDatapoint.setOracleType(oracleType);
+        oracleDatapoint.setMethodSourceCode("public int[] someMethod();");
 
         // Preconditions
         assertTrue(getNextLegalTokensAccordingToGrammar(partialExpressionTokens).contains(token));

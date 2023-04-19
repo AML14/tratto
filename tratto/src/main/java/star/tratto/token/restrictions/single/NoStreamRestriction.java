@@ -2,7 +2,6 @@ package star.tratto.token.restrictions.single;
 
 import org.javatuples.Pair;
 import star.tratto.dataset.oracles.OracleDatapoint;
-import star.tratto.util.StringUtils;
 
 import java.util.List;
 

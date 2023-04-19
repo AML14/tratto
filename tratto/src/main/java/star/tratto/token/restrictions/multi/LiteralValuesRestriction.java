@@ -7,7 +7,6 @@ import star.tratto.dataset.oracles.OracleDatapoint;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.oraclegrammar.trattoGrammar.CanEvaluateToPrimitive;
 import star.tratto.oraclegrammar.trattoGrammar.MethodCall;
-import star.tratto.util.JavaParserUtils;
 
 import java.util.ArrayList;
 import java.util.List;

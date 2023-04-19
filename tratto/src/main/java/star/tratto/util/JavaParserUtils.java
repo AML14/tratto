@@ -68,11 +68,8 @@ public class JavaParserUtils {
             return JavaTypes.NULL;
         }
 
-        // Save information from method under test, extracted from oracleDatapoint
+        // Save information about class and method arguments
         String className = oracleDatapoint.getClassName();
-        MethodDeclaration method = javaParser.parseMethodDeclaration(oracleDatapoint.getMethodSourceCode()).getResult().get();
-        String methodName = method.getNameAsString();
-        String methodReturnType = method.getType().asString();
         List<Triplet<String, String, String>> methodArguments = oracleDatapoint.getTokensMethodArguments(); // <name, package, class>
 
         // Parse class that contains method under test and add synthetic method
@@ -84,10 +81,15 @@ public class JavaParserUtils {
             syntheticMethodBody.addStatement(methodArgument.getValue2() + " " + methodArgument.getValue0() + ";");
         }
 
-        // If the method is not void, add statement to save methodResultID
-        if (!"void".equals(methodReturnType)) {
-            syntheticMethodBody.addStatement(methodReturnType + " methodResultID = " + methodName +
-                    "(" + methodArguments.stream().map(Triplet::getValue0).collect(Collectors.joining(", ")) + ");");
+        // If the method is not constructor and not void, add statement to save methodResultID
+        MethodDeclaration method = getMethodDeclaration(oracleDatapoint.getMethodSourceCode());
+        if (method != null) {
+            String methodName = method.getNameAsString();
+            String methodReturnType = method.getType().asString();
+            if (!"void".equals(methodReturnType)) {
+                syntheticMethodBody.addStatement(methodReturnType + " methodResultID = " + methodName +
+                        "(" + methodArguments.stream().map(Triplet::getValue0).collect(Collectors.joining(", ")) + ");");
+            }
         }
 
         // Handle jdVar if necessary
@@ -346,12 +348,20 @@ public class JavaParserUtils {
         return !isVoid && !isPrivate;
     }
 
-    public static MethodDeclaration getMethodDeclaration(String methodSourceCode) {
-        MethodDeclaration methodDeclaration;
+    /**
+     * Unfortunately, JavaParser does not allow to parse constructors as method declarations. Since we don't
+     * need the constructor declaration for anything, if the passed methodSourceCode is from a constructor,
+     * this method returns null. This behavior must be handled by the caller.
+     * @return null if the passed method source code is actually a constructor
+     * @throws IllegalArgumentException if the provided methodSourceCode cannot be parsed by JavaParser
+     */
+    public static MethodDeclaration getMethodDeclaration(String methodSourceCode) throws IllegalArgumentException {
         try {
-            return javaParser.parseMethodDeclaration(methodSourceCode).getResult().get();
+            return javaParser.parseBodyDeclaration(methodSourceCode).getResult().get().asMethodDeclaration();
         } catch (NoSuchElementException e) {
             throw new IllegalArgumentException("The provided methodSourceCode cannot be parsed by JavaParser. Method source code:\n\n" + methodSourceCode, e);
+        } catch (IllegalStateException e) {
+            return null; // This happens when the methodSourceCode is actually a constructor
         }
     }
 }

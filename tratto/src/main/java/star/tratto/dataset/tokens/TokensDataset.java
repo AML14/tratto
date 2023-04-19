@@ -1,65 +1,59 @@
 package star.tratto.dataset.tokens;
 
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.javatuples.Triplet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import star.tratto.dataset.oracles.OracleDatapoint;
-import star.tratto.dataset.tokens.TokenDatapoint;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.oraclegrammar.trattoGrammar.Oracle;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import static star.tratto.dataset.ExcelManager.getFirstSheet;
 import static star.tratto.oraclegrammar.custom.Splitter.split;
-import static star.tratto.token.TokenSuggester.*;
+import static star.tratto.token.TokenSuggester.getNextLegalTokensWithContextPlusInfo;
 import static star.tratto.util.StringUtils.compactExpression;
 
 public class TokensDataset {
 
+    private static final Logger logger = LoggerFactory.getLogger(TokensDataset.class);
+
     private static final Parser parser = Parser.getInstance();
-    public static String ORACLES_DATASET_PATH = "src/main/resources/oracles-dataset.xlsx";
-    public static String TOKENS_DATASET_PATH = "src/main/resources/tokens-dataset.xlsx";
+    private static final ObjectMapper objectMapper = new ObjectMapper();
+    public static String ORACLES_DATASET_FOLDER = "src/main/resources/oracles-dataset/";
+    public static String TOKENS_DATASET_FOLDER = "src/main/resources/tokens-dataset/";
     private static int tokenIndex = 0;
 
     public static void main(String[] args) throws IOException {
-        // Read oracles dataset (Excel file) from src/main/resources/oracles-dataset.xlsx
-        Sheet oraclesDatasetSheet = getFirstSheet(ORACLES_DATASET_PATH);
+        File[] oraclesDatasetFiles = new File(ORACLES_DATASET_FOLDER).listFiles();
+        for (File oraclesDatasetFile : oraclesDatasetFiles) { // Assume that only dataset files are in the folder
+            logger.info("Processing file: {}", oraclesDatasetFile.getName());
+            List<Map> rawOracleDatapoints = objectMapper.readValue(oraclesDatasetFile, List.class);
+            File tokensDatasetFile = new File(TOKENS_DATASET_FOLDER + oraclesDatasetFile.getName());
+            tokensDatasetFile.delete();
+            FileOutputStream tokensDatasetOutputStream = new FileOutputStream(tokensDatasetFile, true);
+            tokensDatasetOutputStream.write("[".getBytes());
 
-        // Create tokens dataset Sheet
-        Sheet tokensDatasetSheet = new XSSFWorkbook().createSheet("Sheet1");
-
-        // Set tokens dataset header
-        Row tokensDatasetHeaderRow = tokensDatasetSheet.createRow(0);
-        for (String tokensDatasetHeaderRowCellName : TokenDatapoint.ATTRIBUTES) {
-            Cell headerRowCell = tokensDatasetHeaderRow.createCell(TokenDatapoint.ATTRIBUTES.indexOf(tokensDatasetHeaderRowCellName));
-            headerRowCell.setCellValue(tokensDatasetHeaderRowCellName);
-        }
-
-        for (Row oraclesDatasetRow : oraclesDatasetSheet) {
-            if (oraclesDatasetRow.getRowNum() == 0) { // Skip header row
-                continue;
+            for (Map rawOracleDatapoint : rawOracleDatapoints) {
+                OracleDatapoint oracleDatapoint = new OracleDatapoint(rawOracleDatapoint);
+                logger.info("Processing oracle: {}", oracleDatapoint.getOracle());
+                List<TokenDatapoint> tokenDatapoints = oracleDatapointToTokenDatapoints(oracleDatapoint);
+                if (!tokenDatapoints.isEmpty()) {
+                    tokensDatasetOutputStream.write(objectMapper.writeValueAsBytes(tokenDatapoints.get(0)));
+                }
+                for (int i=1; i<tokenDatapoints.size(); i++) {
+                    tokensDatasetOutputStream.write(",".getBytes());
+                    tokensDatasetOutputStream.write(objectMapper.writeValueAsBytes(tokenDatapoints.get(i)));
+                }
             }
-            for (TokenDatapoint tokenDatapoint : oracleDatapointToTokenDatapoints(new OracleDatapoint(oraclesDatasetRow))) {
-                int lastRowNum = tokensDatasetSheet.getLastRowNum();
-                Row tokensDatasetRow = tokensDatasetSheet.createRow(lastRowNum + 1); // Append row at the end
-                tokenDatapoint.updateRow(tokensDatasetRow);
-            }
-
+            tokensDatasetOutputStream.write("]".getBytes());
+            tokensDatasetOutputStream.close();
         }
-
-        // End. Write contents of tokens dataset workbook to src/main/resources/tokens-dataset.xlsx and close resources
-        FileOutputStream outputStream = new FileOutputStream(TOKENS_DATASET_PATH);
-        tokensDatasetSheet.getWorkbook().write(outputStream);
-
-        oraclesDatasetSheet.getWorkbook().close();
-        tokensDatasetSheet.getWorkbook().close();
-        outputStream.close();
     }
 
     /**

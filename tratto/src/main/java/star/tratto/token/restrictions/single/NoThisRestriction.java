@@ -7,7 +7,6 @@ import star.tratto.dataset.oracles.OracleDatapoint;
 import star.tratto.util.JavaParserUtils;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import static star.tratto.util.JavaParserUtils.getMethodDeclaration;
 
@@ -36,7 +35,9 @@ public class NoThisRestriction extends SingleTokenRestriction {
             return false;
         }
 
-        return getMethodDeclaration(oracleDatapoint.getMethodSourceCode()).getModifiers()
+        MethodDeclaration methodDeclaration = getMethodDeclaration(oracleDatapoint.getMethodSourceCode());
+        // If methodDeclaration is null, the method under test is a constructor, so "this" would be allowed
+        return methodDeclaration == null || methodDeclaration.getModifiers()
                 .stream()
                 .anyMatch(modifier -> modifier.getKeyword() == Modifier.Keyword.STATIC);
     }

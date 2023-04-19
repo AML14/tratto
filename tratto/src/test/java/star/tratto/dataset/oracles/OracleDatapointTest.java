@@ -1,18 +1,21 @@
 package star.tratto.dataset.oracles;
 
-import org.apache.poi.ss.usermodel.Sheet;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 
-import static star.tratto.dataset.ExcelManager.getFirstSheet;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+
+import static star.tratto.TestUtilities.ORACLES_DATASET_PATH;
 
 public class OracleDatapointTest {
 
-    private static final String oraclesDatasetPath = "src/main/resources/oracles-dataset.xlsx";
-
     @Test
-    public void oracleDatapointTest() {
-        Sheet oraclesDatasetSheet = getFirstSheet(oraclesDatasetPath);
-        OracleDatapoint oracleDatapoint = new OracleDatapoint(oraclesDatasetSheet.getRow(1));
+    public void oracleDatapointTest() throws IOException {
+        List<Map> rawOracleDatapoints = new ObjectMapper().readValue(new File(ORACLES_DATASET_PATH), List.class);
+        OracleDatapoint oracleDatapoint = new OracleDatapoint(rawOracleDatapoints.get(0));
 
         // TODO: Add assertions
         // For the moment, the test passes as long as no exceptions are thrown

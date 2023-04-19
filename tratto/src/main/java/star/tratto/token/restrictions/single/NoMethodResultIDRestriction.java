@@ -9,7 +9,6 @@ import star.tratto.util.JavaParserUtils;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 
 import static star.tratto.util.JavaParserUtils.getMethodDeclaration;
 import static star.tratto.util.JavaParserUtils.getReturnTypeOfExpression;
@@ -51,8 +50,9 @@ public class NoMethodResultIDRestriction extends SingleTokenRestriction {
             return false;
         }
 
+        MethodDeclaration methodDeclaration = getMethodDeclaration(oracleDatapoint.getMethodSourceCode());
         return
-                getMethodDeclaration(oracleDatapoint.getMethodSourceCode()).getType().isVoidType()
+                methodDeclaration != null && methodDeclaration.getType().isVoidType()
                 ||
                 oracleSpecificRestrictions.get(oracleDatapoint.getOracleType()).isEnabled(nextLegalToken, partialExpressionTokens, oracleDatapoint)
                 ||
