@@ -1,5 +1,7 @@
 package star.tratto.oraclegrammar.custom;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Injector;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
@@ -12,14 +14,22 @@ import org.eclipse.xtext.util.StringInputStream;
 import org.eclipse.xtext.xbase.lib.IteratorExtensions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import star.tratto.identifiers.file.FileFormat;
+import star.tratto.identifiers.file.FileName;
+import star.tratto.identifiers.path.Path;
 import star.tratto.oraclegrammar.TrattoGrammarStandaloneSetup;
 import star.tratto.oraclegrammar.trattoGrammar.*;
+import star.tratto.util.FileUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static star.tratto.oraclegrammar.custom.Splitter.split;
@@ -563,5 +573,89 @@ public class Parser {
         } else {
             return methodContent.getMethodContentContinuations().get(methodContent.getMethodContentContinuations().size() - 1).getMethodArgument();
         }
+    }
+
+    public static String removeNonVariableTokens(String oracle) {
+        // Define the path to the json file with the list of non-variable tokens
+        String jsonFilePath = FileUtils.getAbsolutePathToFile(Path.REPOS.getValue(), FileName.NON_VARIABLE_TOKENS, FileFormat.JSON);
+        // Instantiate an object mapper to read the json file
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            // Read the list of non-variable tokens
+            List<String> nonVariableTokenList = mapper.readValue(
+                    new File(jsonFilePath),
+                    new TypeReference<List<String>>(){}
+            );
+            // Iterate over the non-variable tokens
+            for (String token : nonVariableTokenList) {
+                // Replace the non-variable tokens with blank spaces
+                oracle = oracle.replaceAll(token, " ");
+            }
+            return oracle;
+        } catch (IOException e) {
+            // Manage exception if the file is not found
+            System.err.println("Unexpected error in processing the JSON file of the non variable tokens.");
+            e.printStackTrace();
+        }
+        return oracle;
+    }
+
+    public static String removeParenthesisContentFromOracle(String oracle) {
+        return oracle.replaceAll("(?:\\(|\\[).*?(?:\\)|\\])", "");
+    }
+
+    public static List<String> splitOracleInGroups(String oracle) {
+        List<String> oracleGroups = new ArrayList<>();
+        Pattern pattern = Pattern.compile("(?:\\(|\\[)(.*?)(?:\\)|\\])");
+        Matcher matcher = pattern.matcher(oracle);
+        boolean found = false;
+
+        while (matcher.find()) {
+            found = true;
+            String contentWithinParenthesis = matcher.group(1);
+            List<String> oracleSubGroups = splitOracleInGroups(contentWithinParenthesis);
+            oracleGroups.addAll(splitOraclesRemovingSpaces(oracleSubGroups));
+        }
+        if (found) {
+            String oracleWithoutParenthesis = removeParenthesisContentFromOracle(oracle);
+            oracleGroups.addAll(splitOracleRemovingSpaces(oracleWithoutParenthesis));
+            return oracleGroups;
+        }
+        // Return the whole oracle
+        oracleGroups.add(oracle);
+        return oracleGroups;
+    }
+
+    public static List<String> splitOracleByDot(String oracle) {
+        String[] subgroups = oracle.split(".");
+        return Arrays.asList(subgroups);
+    }
+
+    public static List<String> splitOraclesByDot(List<String> oracleList) {
+        List<String> oracleGroups = new ArrayList<>();
+        for (String oracle: oracleList) {
+            oracleGroups.addAll(splitOracleByDot(oracle));
+        }
+        return oracleGroups;
+    }
+
+    public static List<String> splitOracleRemovingSpaces(String oracle) {
+        String[] subgroups = oracle.split("\\s+");
+        for (int i = 0; i < subgroups.length; i++) {
+            subgroups[i] = subgroups[i].trim();
+        }
+        return Arrays.asList(subgroups);
+    }
+
+    public static List<String> splitOraclesRemovingSpaces(List<String> oraclesSubGroups) {
+        List<String> oracleSubGroups = new ArrayList<>();
+        for (String subOracle : oraclesSubGroups) {
+            String[] subgroups = subOracle.split("\\s+");
+            for (int i = 0; i < subgroups.length; i++) {
+                subgroups[i] = subgroups[i].trim();
+            }
+            oraclesSubGroups.addAll(Arrays.asList(subgroups));
+        }
+        return oraclesSubGroups;
     }
 }
