@@ -23,7 +23,6 @@ public class ProjectOracleGenerator {
     private int checkpoint;
     private Project project;
     private JDoctorCondition[] jDoctorConditions;
-    private JavaParser javaParser;
 
     /**
      * Create a new instance of ProjectOracleGenerator.
@@ -55,7 +54,6 @@ public class ProjectOracleGenerator {
             JDoctorCondition[] jDocConditions
     ) {
         this.project = project;
-        this.javaParser = JavaParserUtils.getJavaParser();
         this.jDoctorConditions = jDocConditions;
     }
 
@@ -76,6 +74,16 @@ public class ProjectOracleGenerator {
         }
 
         return oracleDPs;
+    }
+
+    /**
+     * This method generates a unique identifier for an oracle data point.
+     * @return the integer identifier of an oracle data point.
+     */
+    private int assignID() {
+        int id = this.idCounter;
+        this.idCounter++;
+        return id;
     }
 
     /**
@@ -150,7 +158,7 @@ public class ProjectOracleGenerator {
      * @return A hash map {@link HashMap<OracleDPAttrKey, OracleDPAttrValue>} composed of a single key
      * {@code OracleDPAttrKey.ID} whose value contains an integer representing the identifier of the oracle data-point.
      */
-    private HashMap<OracleDPAttrKey, OracleDPAttrValue> assignID() {
+    private HashMap<OracleDPAttrKey, OracleDPAttrValue> assignIDS() {
         HashMap<OracleDPAttrKey,OracleDPAttrValue> idMap = new HashMap<>();
         idMap.put(OracleDPAttrKey.ID, new OracleDPAttrValue<>(this.idCounter));
         this.idCounter++;
@@ -162,7 +170,7 @@ public class ProjectOracleGenerator {
      * @return A hash map {@link HashMap<OracleDPAttrKey, OracleDPAttrValue>} composed of a single key
      * {@code OracleDPAttrKey.TOKENS_GENERAL_GRAMMAR} whose value contains a list of the default grammar tokens
      */
-    private HashMap<OracleDPAttrKey, OracleDPAttrValue> defaultTokensGrammar() {
+    private HashMap<OracleDPAttrKey, OracleDPAttrValue> defaultTokensGrammarS() {
         HashMap<OracleDPAttrKey, OracleDPAttrValue> defaultTokensGrammarMap = new HashMap<>();
         String tokensGrammarPath = FileUtils.getAbsolutePathToFile(Path.REPOS.getValue(), FileName.TOKENS_GRAMMAR, FileFormat.JSON);
         List<String> tokenGrammarList = (List<String>) FileUtils.readJSONList(tokensGrammarPath);
@@ -177,7 +185,7 @@ public class ProjectOracleGenerator {
      * {@code OracleDPAttrKey.TOKENS_GENERAL_VALUES_GLOBAL_DICTIONARY} whose value contains a list of the default
      * values tokens
      */
-    private HashMap<OracleDPAttrKey, OracleDPAttrValue> defaultTokensGeneralValues() {
+    private HashMap<OracleDPAttrKey, OracleDPAttrValue> defaultTokensGeneralValuesS() {
         HashMap<OracleDPAttrKey,OracleDPAttrValue> defaultTokensGrammarMap = new HashMap<>();
         String tokenGeneralValuesPath = FileUtils.getAbsolutePathToFile(Path.REPOS.getValue(), FileName.TOKENS_GENERAL_VALUES, FileFormat.JSON);
         List<Pair<String,String>> tokenGeneralValuesList = ((List<List<String>>) FileUtils.readJSONList(tokenGeneralValuesPath)).stream().map(tokenList -> new Pair<>(tokenList.get(0),tokenList.get(1))).toList();
@@ -201,7 +209,7 @@ public class ProjectOracleGenerator {
      *     where the method/constructor to which a JDoctor condition refers is defined.</li>
      * </ol>
      */
-    private HashMap<OracleDPAttrKey, OracleDPAttrValue> extractClassInfo(
+    private HashMap<OracleDPAttrKey, OracleDPAttrValue> extractClassInfoS(
             Operation operation
     ) {
         HashMap<OracleDPAttrKey, OracleDPAttrValue> classMap = new HashMap<>();
@@ -257,7 +265,7 @@ public class ProjectOracleGenerator {
      *     each argument.</li>
      * </ol>
      */
-    private HashMap<OracleDPAttrKey, OracleDPAttrValue> extractMethodInfo(
+    private HashMap<OracleDPAttrKey, OracleDPAttrValue> extractMethodInfoS(
             Operation operation
     ) {
         HashMap<OracleDPAttrKey, OracleDPAttrValue> methodMap = new HashMap<>();
@@ -357,7 +365,7 @@ public class ProjectOracleGenerator {
      *     subexpression of the oracle defined within the JDoctor condition.
      * </ol>
      */
-    private HashMap<OracleDPAttrKey, OracleDPAttrValue> extractOracleInfo(
+    private HashMap<OracleDPAttrKey, OracleDPAttrValue> extractOracleInfoS(
             Operation operation,
             List<Triplet<String, String, String>> methodArgumentsTokenList,
             String oracle
@@ -438,7 +446,7 @@ public class ProjectOracleGenerator {
      *     pre-condition.</li>
      * </ol>
      */
-    private HashMap<OracleDPAttrKey, OracleDPAttrValue> extractPreConditionInfo(
+    private HashMap<OracleDPAttrKey, OracleDPAttrValue> extractPreConditionInfoS(
             PreCondition preCondition
     ) {
         HashMap<OracleDPAttrKey, OracleDPAttrValue> preConditionMap = new HashMap<>();
@@ -469,7 +477,7 @@ public class ProjectOracleGenerator {
      *     operator.</li>
      * </ol>
      */
-    private HashMap<OracleDPAttrKey, OracleDPAttrValue> extractPostConditionInfo(
+    private HashMap<OracleDPAttrKey, OracleDPAttrValue> extractPostConditionInfoS(
             List<PostCondition> postConditions
     ) {
         assert postConditions.size() <= 2;
@@ -511,7 +519,7 @@ public class ProjectOracleGenerator {
      *     within each class of the Java project under analysis. The attributes collected are static and non-private.</li>
      * </ol>
      */
-    private HashMap<OracleDPAttrKey, OracleDPAttrValue> extractProjectClassAndMethodTokens() {
+    private HashMap<OracleDPAttrKey, OracleDPAttrValue> extractProjectClassAndMethodTokensS() {
         HashMap<OracleDPAttrKey,OracleDPAttrValue> projectMapList = new HashMap<>();
         String srcPath = this.project.srcPath();
         File srcDir = new File(srcPath);
@@ -564,7 +572,7 @@ public class ProjectOracleGenerator {
      * {@code OracleDPAttrKey.PROJECT_NAME} whose value contains a string representing the name of the project under
      * analysis.
      */
-    private HashMap<OracleDPAttrKey, OracleDPAttrValue> extractProjectInfo() {
+    private HashMap<OracleDPAttrKey, OracleDPAttrValue> extractProjectInfoS() {
         HashMap<OracleDPAttrKey,OracleDPAttrValue> projectMapList = new HashMap<>();
         String projectName = this.project.projectName();
         projectMapList.put(OracleDPAttrKey.PROJECT_NAME, new OracleDPAttrValue<>(projectName));
@@ -585,7 +593,7 @@ public class ProjectOracleGenerator {
      *     throws-condition.</li>
      * </ol>
      */
-    private HashMap<OracleDPAttrKey, OracleDPAttrValue> extractThrowConditionInfo(
+    private HashMap<OracleDPAttrKey, OracleDPAttrValue> extractThrowConditionInfoS(
             ThrowsCondition throwsCondition
     ) {
         HashMap<OracleDPAttrKey, OracleDPAttrValue> throwsConditionMap = new HashMap<>();
@@ -607,7 +615,7 @@ public class ProjectOracleGenerator {
      * unit corresponding to the class to which the operation object of a JDoctor condition refers, if it is found.
      * Otherwise, the method returns an empty optional.
      */
-    public Optional<CompilationUnit> getClassCompilationUnit(Operation operation) {
+    public Optional<CompilationUnit> getClassCompilationUnitS(Operation operation) {
         List<String> wholePathList = Arrays.asList(operation.classname().split("\\."));
         String srcPath = this.project.srcPath();
         String classPath = Paths.get(srcPath, wholePathList.toArray(String[]::new)) + FileFormat.JAVA.getValue();
