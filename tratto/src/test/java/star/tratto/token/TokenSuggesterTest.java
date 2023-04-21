@@ -530,7 +530,9 @@ public class TokenSuggesterTest {
                 Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_COMMA_ValidType9_Legal", "methodResultID.createComplex(1.1", oracleDatapoints.get(3), true),
                 Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_COMMA_ValidType10_Legal", "methodResultID.createComplex(this.getArgument()", oracleDatapoints.get(3), true),
                 Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_COMMA_InvalidType5_Illegal", "methodResultID.createComplex(this.getArgument(), 5.1", oracleDatapoints.get(3), false),
-                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_COMMA_ValidType11_Legal", "this.equate(BagUtils.EMPTY_BAG", oracleDatapoints.get(0), true)
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_COMMA_InvalidType6_Illegal", "this.equate(BagUtils.EMPTY_BAG", oracleDatapoints.get(0), false),
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_COMMA_ValidType11_Legal", "this.equate(null", oracleDatapoints.get(0), true),
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_COMMA_ValidType12_Legal", "this.equate(o1", oracleDatapoints.get(0), true)
         );
     }
 
@@ -628,7 +630,8 @@ public class TokenSuggesterTest {
         return Stream.of(
                 Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_STREAM_ObjectType_Illegal", "o1.", oracleDatapoints.get(0), false),
                 Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_STREAM_CollectionType_Legal", "true ? methodResultID.", oracleDatapoints.get(4), true),
-                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_STREAM_NonCollectionTypeButSomeIsCollection_Illegal", "this.", oracleDatapoints.get(4), false)
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_STREAM_NonCollectionTypeButSomeIsCollection_Illegal", "this.", oracleDatapoints.get(4), false),
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_STREAM_ArraysClass", "true ? Arrays.", oracleDatapoints.get(5), true)
         );
     }
 
@@ -674,25 +677,29 @@ public class TokenSuggesterTest {
                 Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_CLOSING_PARENTHESIS_NotApplicable_Legal", "(o1==null", oracleDatapoints.get(0), true),
                 Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_CLOSING_PARENTHESIS_NoArgsSoFarNoMethodWithoutArgs_Illegal", "o1.equals(", oracleDatapoints.get(0), false),
                 Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_CLOSING_PARENTHESIS_Equals_Legal", "o1.equals(o2", oracleDatapoints.get(0), true),
-                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_CLOSING_PARENTHESIS_ValidType_Legal", "methodResultID.atan2(this", oracleDatapoints.get(1), true),
-                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_CLOSING_PARENTHESIS_InvalidType_Illegal", "methodResultID.atan2(this.degree()", oracleDatapoints.get(1), false),
-                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_CLOSING_PARENTHESIS_InvalidType2_Illegal", "DerivativeStructure.atan2(this.value(methodResultID), this", oracleDatapoints.get(1), false),
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_CLOSING_PARENTHESIS_InvalidType_Illegal", "methodResultID.atan2(this", oracleDatapoints.get(1), false),
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_CLOSING_PARENTHESIS_ValidType_Legal", "methodResultID.atan2(null", oracleDatapoints.get(1), true),
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_CLOSING_PARENTHESIS_InvalidType2_Illegal", "methodResultID.atan2(this.degree()", oracleDatapoints.get(1), false),
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_CLOSING_PARENTHESIS_InvalidType3_Illegal", "DerivativeStructure.atan2(this.value(methodResultID), this", oracleDatapoints.get(1), false),
                 Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_CLOSING_PARENTHESIS_ValidType2_Legal", "DerivativeStructure.atan2(methodResultID, methodResultID", oracleDatapoints.get(1), true),
                 Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_CLOSING_PARENTHESIS_Null_Legal", "DerivativeStructure.atan2(null, null", oracleDatapoints.get(1), true),
                 Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_CLOSING_PARENTHESIS_ValidType3_Legal", "methodResultID.linearCombination(null, null", oracleDatapoints.get(1), true),
-                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_CLOSING_PARENTHESIS_InvalidType3_Illegal", "DerivativeStructure.pow(this", oracleDatapoints.get(1), false),
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_CLOSING_PARENTHESIS_InvalidType4_Illegal", "DerivativeStructure.pow(this", oracleDatapoints.get(1), false),
                 Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_CLOSING_PARENTHESIS_ValidType4_Legal", "methodResultID.linearCombination(this.value(methodResultID", oracleDatapoints.get(1), true),
                 Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_CLOSING_PARENTHESIS_ValidType5_Legal", "methodResultID.pow(1", oracleDatapoints.get(1), true),
                 Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_CLOSING_PARENTHESIS_ValidType6_Legal", "methodResultID.pow(1.1", oracleDatapoints.get(1), true),
-                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_CLOSING_PARENTHESIS_InvalidType4_Illegal", "methodResultID.pow(this.getCoefficients()", oracleDatapoints.get(1), true),
-                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_CLOSING_PARENTHESIS_ValidType7_Legal", "methodResultID.pow(this.getCoefficients().length", oracleDatapoints.get(1), true),
-                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_CLOSING_PARENTHESIS_InvalidType5_Illegal", "PolynomialFunction.evaluate(this.getCoefficients(), this.getCoefficients()", oracleDatapoints.get(1), false),
-                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_CLOSING_PARENTHESIS_ValidType8_Legal", "PolynomialFunction.evaluate(this.getCoefficients(), this.getCoefficients().length", oracleDatapoints.get(1), true),
-                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_CLOSING_PARENTHESIS_ValidType9_Legal", "methodResultID.createComplex(1, 1", oracleDatapoints.get(3), true),
-                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_CLOSING_PARENTHESIS_ValidType10_Legal", "methodResultID.createComplex(1, 1.1", oracleDatapoints.get(3), true),
-                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_CLOSING_PARENTHESIS_ValidType11_Legal", "methodResultID.createComplex(1, this.getArgument()", oracleDatapoints.get(3), true),
-                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_CLOSING_PARENTHESIS_InvalidType6_Illegal", "methodResultID.createComplex(this.getArgument()", oracleDatapoints.get(3), false),
-                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_CLOSING_PARENTHESIS_ValidType12_Legal", "this.equate(BagUtils.EMPTY_BAG, BagUtils.EMPTY_BAG", oracleDatapoints.get(0), true)
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_CLOSING_PARENTHESIS_InvalidType5_Illegal", "methodResultID.pow(this.getCoefficients()", oracleDatapoints.get(1), false),
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_CLOSING_PARENTHESIS_ValidType7_Legal", "methodResultID.pow(null", oracleDatapoints.get(1), true),
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_CLOSING_PARENTHESIS_ValidType8_Legal", "methodResultID.pow(this.getCoefficients().length", oracleDatapoints.get(1), true),
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_CLOSING_PARENTHESIS_InvalidType6_Illegal", "PolynomialFunction.evaluate(this.getCoefficients(), this.getCoefficients()", oracleDatapoints.get(1), false),
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_CLOSING_PARENTHESIS_ValidType9_Legal", "PolynomialFunction.evaluate(this.getCoefficients(), this.getCoefficients().length", oracleDatapoints.get(1), true),
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_CLOSING_PARENTHESIS_ValidType10_Legal", "methodResultID.createComplex(1, 1", oracleDatapoints.get(3), true),
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_CLOSING_PARENTHESIS_ValidType11_Legal", "methodResultID.createComplex(1, 1.1", oracleDatapoints.get(3), true),
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_CLOSING_PARENTHESIS_ValidType12_Legal", "methodResultID.createComplex(1, this.getArgument()", oracleDatapoints.get(3), true),
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_CLOSING_PARENTHESIS_InvalidType7_Illegal", "methodResultID.createComplex(this.getArgument()", oracleDatapoints.get(3), false),
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_CLOSING_PARENTHESIS_InvalidType8_Illegal", "this.equate(BagUtils.EMPTY_BAG, BagUtils.EMPTY_BAG", oracleDatapoints.get(0), false),
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_CLOSING_PARENTHESIS_ValidType13_Legal", "this.equate(o1, o2", oracleDatapoints.get(0), true),
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_NO_CLOSING_PARENTHESIS_ValidType14_Legal", "this.hash(o2", oracleDatapoints.get(0), true)
         );
     }
 
@@ -1175,7 +1182,7 @@ public class TokenSuggesterTest {
                 Arguments.of("OpenMethodArgumentMethodPeriodDeadEnd", "Complex.equals(divisor.isInfinite()", oracleDatapoints.get(3), List.of(), Tokens.TOKENS),
                 Arguments.of("OpenMethodArgumentPeriodClassDeadEnd", "Complex.equals(Complex.class", oracleDatapoints.get(3), List.of(), Tokens.TOKENS),
                 Arguments.of("OpenMethodNoArguments", "this.getReal(", oracleDatapoints.get(3), List.of(")"), Tokens.TOKENS.stream().filter(t -> !t.equals(")")).collect(Collectors.toList())),
-                Arguments.of("OpenMethodWithAndWithoutArguments", "List.of(", oracleDatapoints.get(0), List.of(")", "o1", "\"stringValue\"", "\"alsoThis\"", "null"), List.of("&&", "methodResultID", "0", "1.0", "42", "true", "false")),
+                Arguments.of("OpenMethodWithAndWithoutArguments", "List.of(", oracleDatapoints.get(0), List.of(")", "o1", "null"), List.of("&&", "methodResultID", "0", "1.0", "42", "\"stringValue\"", "\"alsoThis\"", "true", "false")),
                 Arguments.of("OperationInt", "this.getCoefficients().length>=this.getCoefficients().length>>~", oracleDatapoints.get(1), List.of("1", "this", "PolynomialFunction"), List.of("null", "true", "false", "1.0", "\"someString\"")),
                 Arguments.of("MethodArgumentAllAllowed", "String.valueOf(", oracleDatapoints.get(0), List.of("0", "1", "true", "false", "null", "Bag"), List.of("methodResultID", "1.0")),
                 Arguments.of("MethodArgumentDoubleAllowed", "PolynomialFunction.evaluate(null, ", oracleDatapoints.get(1), List.of("1", "3.1", "PolynomialFunction"), List.of("null", "true", "false", "\"someString\"")),
@@ -1183,7 +1190,8 @@ public class TokenSuggesterTest {
                 Arguments.of("Empty", "", oracleDatapoints.get(0), List.of("Equator", "o1", "(", "true", "this", ";"), List.of("Arrays", "methodResultID", "jdVar", "1")),
                 Arguments.of("ArraysStreamDeadEnd", "true ? Arrays.stream(", oracleDatapoints.get(0), List.of(), Tokens.TOKENS),
                 Arguments.of("StreamDeadEnd", "true?methodResultID.stream().noneMatch(jdVar->jdVar==n", oracleDatapoints.get(4), List.of(), Tokens.TOKENS),
-                Arguments.of("ArraysStream", "true ? Arrays.stream(", oracleDatapoints.get(5), List.of("methodResultID", "coefficients"), Tokens.TOKENS.stream().filter(t -> !t.equals("methodResultID")).collect(Collectors.toList()))
+                Arguments.of("ArraysStream", "true ? Arrays.stream(", oracleDatapoints.get(5), List.of("methodResultID", "coefficients"), Tokens.TOKENS.stream().filter(t -> !t.equals("methodResultID")).collect(Collectors.toList())),
+                Arguments.of("ArraysPeriod", "true ? Arrays.", oracleDatapoints.get(5), List.of("stream"), Tokens.TOKENS.stream().filter(t -> !t.equals("stream")).collect(Collectors.toList()))
         );
     }
 }

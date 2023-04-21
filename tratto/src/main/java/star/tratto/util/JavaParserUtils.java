@@ -2,16 +2,19 @@ package star.tratto.util;
 
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.NodeList;
+import com.github.javaparser.ast.body.BodyDeclaration;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.type.TypeParameter;
 import com.github.javaparser.resolution.MethodUsage;
 import com.github.javaparser.resolution.UnsolvedSymbolException;
 import com.github.javaparser.resolution.declarations.ResolvedReferenceTypeDeclaration;
-import com.github.javaparser.resolution.declarations.ResolvedValueDeclaration;
 import com.github.javaparser.resolution.types.ResolvedType;
 import com.github.javaparser.symbolsolver.utils.SymbolSolverCollectionStrategy;
 import org.javatuples.Pair;
-import org.javatuples.Triplet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import star.tratto.dataset.oracles.OracleDatapoint;
@@ -21,6 +24,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -35,7 +39,7 @@ public class JavaParserUtils {
     private static final String SYNTHETIC_CLASS_NAME = "Tratto__AuxiliaryClass";
     private static final String SYNTHETIC_CLASS_SOURCE = "public class " + SYNTHETIC_CLASS_NAME + " {}";
     private static final String SYNTHETIC_METHOD_NAME = "__tratto__auxiliaryMethod";
-    private static final Pattern METHOD_SIGNATURE = Pattern.compile("^ReflectionMethodDeclaration\\{method=(.*) \\S+ \\S+\\(.*\\}$");
+    private static final Pattern METHOD_SIGNATURE = Pattern.compile("^ReflectionMethodDeclaration\\{method=((.*) )?\\S+ \\S+\\(.*\\}$|^JavassistMethodDeclaration\\{ctMethod\\=.*\\[((.*) )?\\S+ \\(.*\\).*\\]}$");
     private static final Pattern PACKAGE_CLASS = Pattern.compile("[a-zA-Z_][a-zA-Z\\d_]*(\\.[a-zA-Z_][a-zA-Z\\d_]*)*"); // e.g., "a.b.C"
 
     public static JavaParser getJavaParser() {
@@ -68,18 +72,14 @@ public class JavaParserUtils {
             return JavaTypes.NULL;
         }
 
-        // Save information about class and method arguments
-        String className = oracleDatapoint.getClassName();
-        List<Triplet<String, String, String>> methodArguments = oracleDatapoint.getTokensMethodArguments(); // <name, package, class>
-
-        // Parse class that contains method under test and add synthetic method
+        // Generate synthetic method
         CompilationUnit cu = javaParser.parse(oracleDatapoint.getClassSourceCode()).getResult().get();
-        BlockStmt syntheticMethodBody = cu.getLocalDeclarationFromClassname(className).get(0).addMethod(SYNTHETIC_METHOD_NAME).getBody().get();
-
-        // Add one statement per method argument
-        for (Triplet<String, String, String> methodArgument : methodArguments) {
-            syntheticMethodBody.addStatement(methodArgument.getValue2() + " " + methodArgument.getValue0() + ";");
-        }
+        String className = oracleDatapoint.getClassName();
+        MethodDeclaration syntheticMethod = getSyntheticMethod(
+                cu.getLocalDeclarationFromClassname(className).get(0),
+                getMethodOrConstructorDeclaration(oracleDatapoint.getMethodSourceCode())
+        );
+        BlockStmt syntheticMethodBody = syntheticMethod.getBody().get();
 
         // If the method is not constructor and not void, add statement to save methodResultID
         MethodDeclaration method = getMethodDeclaration(oracleDatapoint.getMethodSourceCode());
@@ -88,7 +88,7 @@ public class JavaParserUtils {
             String methodReturnType = method.getType().asString();
             if (!"void".equals(methodReturnType)) {
                 syntheticMethodBody.addStatement(methodReturnType + " methodResultID = " + methodName +
-                        "(" + methodArguments.stream().map(Triplet::getValue0).collect(Collectors.joining(", ")) + ");");
+                        "(" + syntheticMethod.getParameters().stream().map(Parameter::getNameAsString).collect(Collectors.joining(", ")) + ");");
             }
         }
 
@@ -108,6 +108,33 @@ public class JavaParserUtils {
         }
 
         return getTypeFromResolvedType(returnType);
+    }
+
+    /**
+     * Given the class and method under test, inserts into the class and returns a synthetic method
+     * with the same signature (in terms of type parameters and arguments) as the method under test.
+     */
+    private static MethodDeclaration getSyntheticMethod(ClassOrInterfaceDeclaration classUnderTest, BodyDeclaration<?> methodUnderTest) {
+        MethodDeclaration syntheticMethod = classUnderTest.addMethod(SYNTHETIC_METHOD_NAME);
+        syntheticMethod.setTypeParameters(getTypeParameters(methodUnderTest));
+        syntheticMethod.setParameters(getParameters(methodUnderTest));
+        return syntheticMethod;
+    }
+
+    /**
+     * Pass a null oracleDatapoint to create a synthetic method without any particularities. Otherwise,
+     * if the oracleDatapoint is not null, the method will be created with
+     * {@link #getSyntheticMethod(ClassOrInterfaceDeclaration, BodyDeclaration)} (see its documentation).
+     */
+    private static MethodDeclaration getSyntheticMethod(CompilationUnit cu, OracleDatapoint oracleDatapoint) {
+        if (oracleDatapoint != null) {
+            return getSyntheticMethod(
+                    cu.getLocalDeclarationFromClassname(oracleDatapoint.getClassName()).get(0),
+                    getMethodOrConstructorDeclaration(oracleDatapoint.getMethodSourceCode())
+            );
+        } else {
+            return cu.getLocalDeclarationFromClassname(SYNTHETIC_CLASS_NAME).get(0).addMethod(SYNTHETIC_METHOD_NAME);
+        }
     }
 
     private static void handleJdVarIfNecessary(BlockStmt syntheticMethodBody, String expression, OracleDatapoint oracleDatapoint) {
@@ -151,6 +178,19 @@ public class JavaParserUtils {
         if (resolvedType.isReferenceType()) {
             ResolvedReferenceTypeDeclaration type = resolvedType.asReferenceType().getTypeDeclaration().get();
             return Pair.with(type.getPackageName(), type.getClassName());
+        } else if (resolvedType.isArray()) {
+            StringBuilder suffix = new StringBuilder("[]");
+            ResolvedType arrayElement = resolvedType.asArrayType().getComponentType();
+            while (arrayElement.isArray()) {
+                arrayElement = arrayElement.asArrayType().getComponentType();
+                suffix.append("[]");
+            }
+            if (arrayElement.isReferenceType()) {
+                ResolvedReferenceTypeDeclaration arrayElementType = arrayElement.asReferenceType().getTypeDeclaration().get();
+                return Pair.with(arrayElementType.getPackageName(), arrayElementType.getClassName() + suffix);
+            } else {
+                return Pair.with("", arrayElement.describe() + suffix);
+            }
         } else {
             return Pair.with("", resolvedType.describe()); // Primitive type
         }
@@ -192,83 +232,301 @@ public class JavaParserUtils {
         return type;
     }
 
+//    /**
+//     * Similar to {@link #getResolvedReferenceTypeDeclaration(String)}, but it also takes into account
+//     * the oracleDatapoint. This is necessary when the type refers to a generic class like T, K, V, etc.
+//     */
+//    public static ResolvedReferenceTypeDeclaration getResolvedReferenceTypeDeclaration(String type, OracleDatapoint oracleDatapoint) {
+//        CompilationUnit cu = javaParser.parse(oracleDatapoint.getClassSourceCode()).getResult().get();
+//        BlockStmt syntheticMethodBody = getSyntheticMethod(
+//                cu.getLocalDeclarationFromClassname(oracleDatapoint.getClassName()).get(0),
+//                getMethodOrConstructorDeclaration(oracleDatapoint.getMethodSourceCode())
+//        ).getBody().get();
+//        return endGetResolvedReferenceTypeDeclaration(type, cu, oracleDatapoint.getClassName(), syntheticMethodBody);
+//    }
+
     /**
      * Given a fully qualified class name, returns the corresponding ResolvedReferenceTypeDeclaration.
      * This is useful to perform other operations on top of the returned object, such as getting all
      * methods and fields.
      * @param type Fully qualified type, e.g., "java.util.List"
+     * @throws UnsolvedSymbolException if the type cannot be resolved. For an alternative that does
+     * not throw this exception, see {@link #getResolvedReferenceTypeDeclarationSafe(String)}.
      */
-    public static ResolvedReferenceTypeDeclaration getResolvedReferenceTypeDeclaration(String type) {
+    static ResolvedReferenceTypeDeclaration getResolvedReferenceTypeDeclaration(String type) throws UnsolvedSymbolException {
         CompilationUnit cu = javaParser.parse(SYNTHETIC_CLASS_SOURCE).getResult().get();
         BlockStmt syntheticMethodBody = cu.getLocalDeclarationFromClassname(SYNTHETIC_CLASS_NAME).get(0).addMethod(SYNTHETIC_METHOD_NAME).getBody().get();
         syntheticMethodBody.addStatement(type + " type1Var;");
-        return getResolvedType(cu
+        return cu
                 .getLocalDeclarationFromClassname(SYNTHETIC_CLASS_NAME).get(0)
                 .getMethodsByName(SYNTHETIC_METHOD_NAME).get(0)
                 .getBody().get()
                 .getStatements().getLast().get()
                 .asExpressionStmt().getExpression()
                 .asVariableDeclarationExpr().getVariables().get(0)
-                .resolve()).asReferenceType().getTypeDeclaration().get();
+                .resolve().getType().asReferenceType().getTypeDeclaration().get();
     }
+
+    private static ResolvedType getResolvedType(String type) {
+        CompilationUnit cu = javaParser.parse(SYNTHETIC_CLASS_SOURCE).getResult().get();
+        BlockStmt syntheticMethodBody = cu.getLocalDeclarationFromClassname(SYNTHETIC_CLASS_NAME).get(0).addMethod(SYNTHETIC_METHOD_NAME).getBody().get();
+        syntheticMethodBody.addStatement(type + " type1Var;");
+        return cu
+                .getLocalDeclarationFromClassname(SYNTHETIC_CLASS_NAME).get(0)
+                .getMethodsByName(SYNTHETIC_METHOD_NAME).get(0)
+                .getBody().get()
+                .getStatements().getLast().get()
+                .asExpressionStmt().getExpression()
+                .asVariableDeclarationExpr().getVariables().get(0)
+                .resolve().getType();
+    }
+
+    /**
+     * Similar to {@link #getResolvedReferenceTypeDeclaration(String)}, but it does not throw an exception
+     * if the type is not resolved, it returns the Object type instead.
+     */
+    public static ResolvedReferenceTypeDeclaration getResolvedReferenceTypeDeclarationSafe(String type) {
+        try {
+            return getResolvedReferenceTypeDeclaration(type);
+        } catch (UnsolvedSymbolException e) {
+            logger.warn("Unresolvable type: {}", type);
+            return getObjectTypeDeclaration();
+        }
+    }
+
+    public static ResolvedReferenceTypeDeclaration getObjectTypeDeclaration() {
+        return getResolvedReferenceTypeDeclaration("java.lang.Object");
+    }
+
+//    /**
+//     * Auxiliary method with common code used at the end of the methods
+//     * {@link #getResolvedReferenceTypeDeclaration(String, OracleDatapoint)} and
+//     * {@link #getResolvedReferenceTypeDeclaration(String)}. It adds the syntheticMethodBody to the
+//     * cu and evaluates the type within the syntheticMethodBody.
+//     */
+//    private static ResolvedReferenceTypeDeclaration endGetResolvedReferenceTypeDeclaration(String type, CompilationUnit cu, String className, BlockStmt syntheticMethodBody) {
+//        syntheticMethodBody.addStatement(type + " type1Var;");
+//        return getResolvedType(cu
+//                .getLocalDeclarationFromClassname(className).get(0)
+//                .getMethodsByName(SYNTHETIC_METHOD_NAME).get(0)
+//                .getBody().get()
+//                .getStatements().getLast().get()
+//                .asExpressionStmt().getExpression()
+//                .asVariableDeclarationExpr().getVariables().get(0)
+//                .resolve()).asReferenceType().getTypeDeclaration().get();
+//    }
+
+//    /**
+//     * @param type1 Fully qualified type, e.g., "java.util.List"
+//     * @param type2 Fully qualified type, e.g., "java.lang.Object"
+//     * @return true if type1 is an instance of type2, false otherwise.
+//     * @throws UnsolvedSymbolException if the type cannot be resolved. For an alternative that does
+//     * not throw this exception, see {@link #isType1InstanceOfType2(String, String, OracleDatapoint)}.
+//     */
+//    public static boolean isType1InstanceOfType2(String type1, String type2) throws UnsolvedSymbolException {
+//        Boolean preliminaryChecks = startIsType1InstanceOfType2(type1, type2);
+//        if (preliminaryChecks != null) {
+//            return preliminaryChecks;
+//        }
+//
+//        // Parse class that contains method under test and add synthetic method that will contain the instanceof expression
+//        CompilationUnit cu = javaParser.parse(SYNTHETIC_CLASS_SOURCE).getResult().get();
+//        BlockStmt syntheticMethodBody = cu.getLocalDeclarationFromClassname(SYNTHETIC_CLASS_NAME).get(0).addMethod(SYNTHETIC_METHOD_NAME).getBody().get();
+//        syntheticMethodBody.addStatement(type1 + " type1Var;");
+//        syntheticMethodBody.addStatement(type2 + " type2Var;");
+//
+//        // Get result of instanceof expression
+//        return endIsType1InstanceOfType2(cu, SYNTHETIC_CLASS_NAME);
+//    }
 
     /**
      * @param type1 Fully qualified type, e.g., "java.util.List"
      * @param type2 Fully qualified type, e.g., "java.lang.Object"
+     * @param oracleDatapoint May be null. If not null, it is used to check if some type is generic
      * @return true if type1 is an instance of type2, false otherwise.
      */
-    public static boolean isType1InstanceOfType2(String type1, String type2) {
-        // If type1 or type2 is primitive, the instanceof operator cannot be used, so return false
+    public static boolean isType1InstanceOfType2(String type1, String type2, OracleDatapoint oracleDatapoint) {
+//        Boolean preliminaryChecks = startIsType1InstanceOfType2(type1, type2);
+//        if (preliminaryChecks != null) {
+//            return preliminaryChecks;
+//        }
+
+        // Preliminary checks
         if (JavaTypes.PRIMITIVE_TYPES.contains(type1) || JavaTypes.PRIMITIVE_TYPES.contains(type2)) {
             return false;
         }
+        if (type1.equals(type2)) {
+            return true;
+        }
+        ResolvedType resolvedType2;
+        try {
+            resolvedType2 = getResolvedType(type2);
+        } catch (UnsolvedSymbolException e) {
+            return false; // Either type2 is generic, or an unknown class. In both cases, type1 cannot be instanceof it
+        }
+//        if (oracleDatapoint != null && !Boolean.FALSE.equals(isTypeGeneric(type2, getClassAndMethodTypeParameters(oracleDatapoint)))) {
+//            return false;
+//        }
+
+        String classSourceCode;
+        String className;
+        if (oracleDatapoint != null) {
+            classSourceCode = oracleDatapoint.getClassSourceCode();
+            className = oracleDatapoint.getClassName();
+        } else {
+            classSourceCode = SYNTHETIC_CLASS_SOURCE;
+            className = SYNTHETIC_CLASS_NAME;
+        }
 
         // Parse class that contains method under test and add synthetic method that will contain the instanceof expression
-        CompilationUnit cu = javaParser.parse(SYNTHETIC_CLASS_SOURCE).getResult().get();
-        BlockStmt syntheticMethodBody = cu.getLocalDeclarationFromClassname(SYNTHETIC_CLASS_NAME).get(0).addMethod(SYNTHETIC_METHOD_NAME).getBody().get();
+        CompilationUnit cu = javaParser.parse(classSourceCode).getResult().get();
+        BlockStmt syntheticMethodBody = getSyntheticMethod(cu, oracleDatapoint).getBody().get();
         syntheticMethodBody.addStatement(type1 + " type1Var;");
-        syntheticMethodBody.addStatement(type2 + " type2Var;");
+//        syntheticMethodBody.addStatement(type2 + " type2Var;");
 
         // Get result of instanceof expression
-        return getResolvedType(cu
-                .getLocalDeclarationFromClassname(SYNTHETIC_CLASS_NAME).get(0)
-                .getMethodsByName(SYNTHETIC_METHOD_NAME).get(0)
-                .getBody().get()
-                .getStatements().getLast().get()
-                .asExpressionStmt().getExpression()
-                .asVariableDeclarationExpr().getVariables().get(0)
-                .resolve()).isAssignableBy(getResolvedType(cu
-                        .getLocalDeclarationFromClassname(SYNTHETIC_CLASS_NAME).get(0)
-                        .getMethodsByName(SYNTHETIC_METHOD_NAME).get(0)
-                        .getBody().get()
-                        .getStatements().getFirst().get()
-                        .asExpressionStmt().getExpression()
-                        .asVariableDeclarationExpr().getVariables().get(0)
-                        .resolve()));
+        try {
+            return resolvedType2.isAssignableBy(cu
+                            .getLocalDeclarationFromClassname(className).get(0)
+                            .getMethodsByName(SYNTHETIC_METHOD_NAME).get(0)
+                            .getBody().get()
+                            .getStatements().getFirst().get()
+                            .asExpressionStmt().getExpression()
+                            .asVariableDeclarationExpr().getVariables().get(0)
+                            .resolve().getType());
+        } catch (UnsolvedSymbolException e) {
+            logger.warn("Failed to evaluate instanceof within method:\n{}", syntheticMethodBody.getParentNode().get());
+            return false;
+        }
     }
 
-    /**
-     * This function is needed to handle cases where the type of a variable cannot be resolved. This
-     * should never happen, but it WILL happen for variables using generics (T, E, etc.). In those cases,
-     * we will return "java.lang.Object" as the type.
-     */
-    private static ResolvedType getResolvedType(ResolvedValueDeclaration resolvedValueDeclaration) {
-        ResolvedType resolvedType;
-        try {
-            resolvedType = resolvedValueDeclaration.getType();
-        } catch (UnsolvedSymbolException e) {
-            logger.warn("Unresolvable type for variable {}", resolvedValueDeclaration);
-            resolvedType = javaParser.parse(SYNTHETIC_CLASS_SOURCE).getResult().get()
-                    .getLocalDeclarationFromClassname(SYNTHETIC_CLASS_NAME).get(0)
-                    .addMethod(SYNTHETIC_METHOD_NAME).getBody().get()
-                    .addStatement("java.lang.Object objectVar;")
-                    .getStatements().getLast().get()
-                    .asExpressionStmt().getExpression()
-                    .asVariableDeclarationExpr().getVariables().get(0)
-                    .resolve().getType();
-        }
-        return resolvedType;
-    }
+//    /**
+//     * Auxiliary method with common code used at the start of the methods
+//     * {@link #isType1InstanceOfType2(String, String, OracleDatapoint)} and
+//     * {@link #isType1InstanceOfType2(String, String). It does some preliminary checks before evaluating
+//     * the more complex instanceof expression.
+//     * @return null if none of the checks apply.
+//     */
+//    private static Boolean startIsType1InstanceOfType2(String type1, String type2) {
+//        // If type1 or type2 is primitive, the instanceof operator cannot be used, so return false
+//        if (JavaTypes.PRIMITIVE_TYPES.contains(type1) || JavaTypes.PRIMITIVE_TYPES.contains(type2)) {
+//            return false;
+//        }
+//        if (type1.equals(type2)) {
+//            return true;
+//        }
+//        return null;
+//    }
+//
+//    /**
+//     * Auxiliary method with common code used at the end of the methods
+//     * {@link #isType1InstanceOfType2(String, String, OracleDatapoint)} and
+//     * {@link #isType1InstanceOfType2(String, String). It checks if type1 is instanceof type2.
+//     */
+//    private static boolean endIsType1InstanceOfType2(CompilationUnit cu, String className) {
+//        return cu
+//                .getLocalDeclarationFromClassname(className).get(0)
+//                .getMethodsByName(SYNTHETIC_METHOD_NAME).get(0)
+//                .getBody().get()
+//                .getStatements().getLast().get()
+//                .asExpressionStmt().getExpression()
+//                .asVariableDeclarationExpr().getVariables().get(0)
+//                .resolve().getType().isAssignableBy(cu
+//                        .getLocalDeclarationFromClassname(className).get(0)
+//                        .getMethodsByName(SYNTHETIC_METHOD_NAME).get(0)
+//                        .getBody().get()
+//                        .getStatements().getFirst().get()
+//                        .asExpressionStmt().getExpression()
+//                        .asVariableDeclarationExpr().getVariables().get(0)
+//                        .resolve().getType());
+//    }
+
+//    private static List<String> getClassAndMethodTypeParameters(OracleDatapoint oracleDatapoint) {
+//        List<String> typeParameters = new ArrayList<>();
+//        typeParameters.addAll(javaParser.parse(oracleDatapoint.getClassSourceCode()).getResult().get()
+//                .getLocalDeclarationFromClassname(oracleDatapoint.getClassName()).get(0)
+//                .getTypeParameters()
+//                .stream()
+//                .map(TypeParameter::getNameAsString)
+//                .collect(Collectors.toList()));
+//        typeParameters.addAll(getTypeParameters(getMethodOrConstructorDeclaration(oracleDatapoint.getMethodSourceCode()))
+//                .stream()
+//                .map(TypeParameter::getNameAsString)
+//                .collect(Collectors.toList()));
+//        return typeParameters.stream().distinct().collect(Collectors.toList());
+//    }
+
+//    /**
+//     * @return <ul>
+//     *     <li>false if type is not a generic because its type could be resolved without exceptions.</li>
+//     *     <li>true if type could not be resolved without exceptions, but it is one of the generics
+//     *     of the genericTypes list, so it's a known generic type.</li>
+//     *     <li>null if type could not be resolved without exceptions and it's not one of the generics
+//     *     of the genericTypes list. This indicates that either it is an unknown generic (e.g., if it's
+//     *     a generic defined in a different class), or it is an unknown class (this should never
+//     *     happen).</li>
+//     * </ul>
+//     */
+//    private static Boolean isTypeGeneric(String type, List<String> genericTypes) {
+//        if (JavaTypes.PRIMITIVE_TYPES.contains(type)) { // If type is primitive, it cannot be generic
+//            return false;
+//        }
+//        try {
+//            getResolvedType(type);
+//            return false;
+//        } catch (UnsolvedSymbolException e) {
+//            if (!genericTypes.contains(type.replaceAll("\\[\\]", ""))) { // Remove array to check type
+//                logger.warn("Unresolvable type: {}. Checked generics: {}", type, genericTypes);
+//                return null;
+//            }
+//            return true;
+//        }
+//    }
+
+//    private static ResolvedReferenceTypeDeclaration getResolvedReferenceTypeDeclaration(ResolvedType resolvedType) {
+//        if (resolvedType.isPrimitive()) {
+//            return resolvedType.asPrimitive();
+//        } else if (resolvedType.isArray()) {
+//            return resolvedType.asArrayType().
+//        }
+//    }
+
+//    /**
+//     * This function is needed to handle cases where the type of a variable cannot be resolved. This
+//     * should never happen, but it WILL happen for variables using generics (T, E, etc.). In those cases,
+//     * we will return "java.lang.Object" as the type.
+//     */
+//    private static ResolvedType getResolvedType(ResolvedValueDeclaration resolvedValueDeclaration) {
+//        ResolvedType resolvedType;
+//        try {
+//            resolvedType = resolvedValueDeclaration.getType();
+//        } catch (UnsolvedSymbolException e) {
+//            logger.warn("Unresolvable type for variable {}", ((JavaParserVariableDeclaration) resolvedValueDeclaration).getWrappedNode());
+//            resolvedType = javaParser.parse(SYNTHETIC_CLASS_SOURCE).getResult().get()
+//                    .getLocalDeclarationFromClassname(SYNTHETIC_CLASS_NAME).get(0)
+//                    .addMethod(SYNTHETIC_METHOD_NAME).getBody().get()
+//                    .addStatement("java.lang.Object objectVar;")
+//                    .getStatements().getLast().get()
+//                    .asExpressionStmt().getExpression()
+//                    .asVariableDeclarationExpr().getVariables().get(0)
+//                    .resolve().getType();
+//        }
+//        return resolvedType;
+//    }
+
+//    /**
+//     * This method is different from {@link #isType1InstanceOfType2} in that it can be used to compare
+//     * primitive types and primitive wrapper types. For instance, a boolean is assignable to a Boolean,
+//     * but not the other way around. Note that this method takes as input pairs of package and class
+//     * name, instead of fully qualified types.
+//     * @param type1 Pair with &lt;package, class&gt;, e.g., "&lt;java.util, List&gt;"
+//     * @param type2 Pair with &lt;package, class&gt;, e.g., "&lt;java.lang, Object&gt;"
+//     * @return true if a variable of type1 can be assigned to a variable of type2, false otherwise.
+//     */
+//    public static boolean isType1AssignableToType2(Pair<String, String> type1, Pair<String, String> type2) {
+//        return firstPartialConditionIsType1AssignableToType2(type1, type2) ||
+//                secondPartialConditionIsType1AssignableToType2(type1, type2);
+//    }
 
     /**
      * This method is different from {@link #isType1InstanceOfType2} in that it can be used to compare
@@ -277,28 +535,55 @@ public class JavaParserUtils {
      * name, instead of fully qualified types.
      * @param type1 Pair with &lt;package, class&gt;, e.g., "&lt;java.util, List&gt;"
      * @param type2 Pair with &lt;package, class&gt;, e.g., "&lt;java.lang, Object&gt;"
+     * @param oracleDatapoint May be null. If not null, it is used to check if some type is generic
      * @return true if a variable of type1 can be assigned to a variable of type2, false otherwise.
      */
-    public static boolean isType1AssignableToType2(Pair<String, String> type1, Pair<String, String> type2) {
+    public static boolean isType1AssignableToType2(Pair<String, String> type1, Pair<String, String> type2, OracleDatapoint oracleDatapoint) {
+//        return firstPartialConditionIsType1AssignableToType2(type1, type2) ||
+//                (!isTypeGeneric(fullyQualifiedClassName(type2), getClassAndMethodTypeParameters(oracleDatapoint)) &&
+//                secondPartialConditionIsType1AssignableToType2(type1, type2));
+
+
         // Cases to consider:
         // 1) left and right types are the same
         // 2) left type is null and right type is not primitive
         // 3) left type is primitive and right type is wrapper
         // 4) both types are numeric and left type is assignable to right type
         // 5) left type is instance of right type (both types are non-primitive)
-        return type1.equals(type2) ||
+        return
+                type1.equals(type2) ||
                 (type1.equals(JavaTypes.NULL) && !JavaTypes.PRIMITIVES.contains(type2)) ||
                 (JavaTypes.PRIMITIVES.contains(type1) && JavaTypes.PRIMITIVES_TO_WRAPPERS.get(type1).equals(type2)) ||
                 (JavaTypes.NUMBERS.contains(type1) && JavaTypes.NUMBERS.contains(type2) && isNumeric1AssignableToNumeric2(type1, type2)) ||
-                isType1InstanceOfType2(fullyQualifiedClassName(type1), fullyQualifiedClassName(type2));
+                isType1InstanceOfType2(fullyQualifiedClassName(type1), fullyQualifiedClassName(type2), oracleDatapoint);
+
     }
 
-    /**
-     * The JavaParser method getDeclarationAsString() may return leading or trailing spaces, this method
-     * fixes that.
-     */
+//    private static boolean firstPartialConditionIsType1AssignableToType2(Pair<String, String> type1, Pair<String, String> type2) {
+//        // Cases to consider:
+//        // 1) left and right types are the same
+//        // 2) left type is null and right type is not primitive
+//        return type1.equals(type2) ||
+//                (type1.equals(JavaTypes.NULL) && !JavaTypes.PRIMITIVES.contains(type2));
+//    }
+//
+//    private static boolean secondPartialConditionIsType1AssignableToType2(Pair<String, String> type1, Pair<String, String> type2) {
+//        // Cases to consider:
+//        // 1) left type is primitive and right type is wrapper
+//        // 2) both types are numeric and left type is assignable to right type
+//        // 3) left type is instance of right type (both types are non-primitive)
+//        return (JavaTypes.PRIMITIVES.contains(type1) && JavaTypes.PRIMITIVES_TO_WRAPPERS.get(type1).equals(type2)) ||
+//                (JavaTypes.NUMBERS.contains(type1) && JavaTypes.NUMBERS.contains(type2) && isNumeric1AssignableToNumeric2(type1, type2)) ||
+//                isType1InstanceOfType2(fullyQualifiedClassName(type1), fullyQualifiedClassName(type2));
+//    }
+
     public static String getMethodSignature(MethodDeclaration methodDeclaration) {
-        return methodDeclaration.getDeclarationAsString().trim();
+        String methodSignature = methodDeclaration.toString();
+        Optional<BlockStmt> methodBody = methodDeclaration.getBody();
+        if (methodBody.isPresent()) {
+            methodSignature = methodSignature.replace(methodBody.get().toString(), "");
+        }
+        return methodSignature.trim().replaceAll(";$", "");
     }
 
     /**
@@ -306,19 +591,27 @@ public class JavaParserUtils {
      * as it was written, so the best that we can do is to reconstruct it to a certain extent. This
      * has the following limitations:
      * <ul>
-     *     <li>We lose generics info that goes before the return type, e.g., the "&lt;T&gt;" in the
-     *     signature <code>"public static &lt;T&gt; boolean addAll ..."</code></li>
      *     <li>We lose modifiers and annotations before parameters, e.g., the "final" and "@NotNull" in
      *     the signature <code>"... addAll(@NotNull final T[] elements)"</code></li>
      *     <li>We lose parameter names, which are replaced by "arg0", "arg1", etc.</li>
      * </ul>
      */
     public static String getMethodSignature(MethodUsage methodUsage) {
-        Matcher matcher = METHOD_SIGNATURE.matcher(methodUsage.getDeclaration().toString());
+        String methodDeclaration = methodUsage.getDeclaration().toString();
+        Matcher matcher = METHOD_SIGNATURE.matcher(methodDeclaration);
         if (!matcher.find()) {
-            throw new IllegalStateException("Could not parse method signature: " + methodUsage.getDeclaration().toString());
+            throw new IllegalStateException("Could not parse method signature: " + methodDeclaration);
         }
-        String methodModifiers = matcher.group(1); // Previous regex is designed to match JUST the method modifiers in group 1
+        String methodModifiers = methodDeclaration.startsWith("ReflectionMethodDeclaration") ? matcher.group(1) : matcher.group(2);
+        // Take into account the case in which the method declaration refers to a method without an access specifier
+        if (methodModifiers == null) {
+            assert methodDeclaration.startsWith("ReflectionMethodDeclaration");
+            methodModifiers = "";
+        }
+        List<String> methodTypeParameters = new ArrayList<>();
+        for (int i=0; i < methodUsage.getDeclaration().getTypeParameters().size(); i++) {
+            methodTypeParameters.add(methodUsage.getDeclaration().getTypeParameters().get(i).getName());
+        }
         String methodReturnType = getTypeWithoutPackages(methodUsage.returnType());
         String methodName = methodUsage.getName();
         List<String> methodParameters = new ArrayList<>();
@@ -330,8 +623,10 @@ public class JavaParserUtils {
             methodExceptions.add(getTypeWithoutPackages(exceptionType));
         }
 
-        return methodModifiers + " " + methodReturnType + " " + methodName + "(" + String.join(", ", methodParameters) + ")" +
-                (methodExceptions.isEmpty() ? "" : " throws " + String.join(", ", methodExceptions));
+        return (methodModifiers + " " + (methodTypeParameters.isEmpty() ? "" : "<" + String.join(", ", methodTypeParameters) + ">") +
+                 " " + methodReturnType + " " + methodName + "(" + String.join(", ", methodParameters) + ")" +
+                (methodExceptions.isEmpty() ? "" : " throws " + String.join(", ", methodExceptions)))
+                .replaceAll(" +", " ").trim();
     }
 
     public static boolean isStaticNonVoidNonPrivateMethod(MethodUsage methodUsage) {
@@ -362,6 +657,35 @@ public class JavaParserUtils {
             throw new IllegalArgumentException("The provided methodSourceCode cannot be parsed by JavaParser. Method source code:\n\n" + methodSourceCode, e);
         } catch (IllegalStateException e) {
             return null; // This happens when the methodSourceCode is actually a constructor
+        }
+    }
+
+    private static BodyDeclaration<?> getMethodOrConstructorDeclaration(String methodSourceCode) {
+        BodyDeclaration<?> bodyDeclaration = javaParser.parseBodyDeclaration(methodSourceCode).getResult().get();
+        if (bodyDeclaration.isMethodDeclaration() || bodyDeclaration.isConstructorDeclaration()) {
+            return bodyDeclaration;
+        } else {
+            throw new IllegalArgumentException("The provided methodSourceCode is neither a constructor nor a method. Method source code:\n\n" + methodSourceCode);
+        }
+    }
+
+    private static NodeList<TypeParameter> getTypeParameters(BodyDeclaration<?> bodyDeclaration) {
+        if (bodyDeclaration.isMethodDeclaration()) {
+            return bodyDeclaration.asMethodDeclaration().getTypeParameters();
+        } else if (bodyDeclaration.isConstructorDeclaration()) {
+            return bodyDeclaration.asConstructorDeclaration().getTypeParameters();
+        } else {
+            throw new IllegalArgumentException("The provided bodyDeclaration is neither a constructor nor a method. Body declaration:\n\n" + bodyDeclaration);
+        }
+    }
+
+    private static NodeList<Parameter> getParameters(BodyDeclaration<?> bodyDeclaration) {
+        if (bodyDeclaration.isMethodDeclaration()) {
+            return bodyDeclaration.asMethodDeclaration().getParameters();
+        } else if (bodyDeclaration.isConstructorDeclaration()) {
+            return bodyDeclaration.asConstructorDeclaration().getParameters();
+        } else {
+            throw new IllegalArgumentException("The provided bodyDeclaration is neither a constructor nor a method. Body declaration:\n\n" + bodyDeclaration);
         }
     }
 }

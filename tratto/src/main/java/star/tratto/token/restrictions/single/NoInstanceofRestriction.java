@@ -5,10 +5,12 @@ import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.oraclegrammar.trattoGrammar.CanEvaluateToPrimitive;
 import star.tratto.token.restrictions.multi.LastMethodNameRestriction;
 import star.tratto.util.JavaParserUtils;
+import star.tratto.util.JavaTypes;
 
 import java.util.List;
 
 import static star.tratto.oraclegrammar.custom.Splitter.split;
+import static star.tratto.util.JavaParserUtils.getReturnTypeOfExpression;
 import static star.tratto.util.StringUtils.compactExpression;
 
 /**
@@ -50,7 +52,7 @@ public class NoInstanceofRestriction extends SingleTokenRestriction {
         if (elementPrecedingInstanceofTokens.size() == 1 && oracleDatapoint.isProjectClass(elementPrecedingInstanceofTokens.get(0))) {
             return true; // If element is class name, "instanceof" cannot follow
         } else { // Otherwise, evaluate return type. If it's primitive, rule is enabled, otherwise rule is disabled
-            return JavaParserUtils.getReturnTypeOfExpression(compactExpression(elementPrecedingInstanceofTokens), oracleDatapoint).getValue0().isEmpty();
+            return JavaTypes.PRIMITIVES.contains(getReturnTypeOfExpression(compactExpression(elementPrecedingInstanceofTokens), oracleDatapoint));
         }
 
 

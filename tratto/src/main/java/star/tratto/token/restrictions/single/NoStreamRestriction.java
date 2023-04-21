@@ -10,7 +10,8 @@ import static star.tratto.util.JavaParserUtils.isType1InstanceOfType2;
 import static star.tratto.util.StringUtils.fullyQualifiedClassName;
 
 /**
- * Forbid "stream" if nor this, methodResultID or some method argument is an array.
+ * Forbid "stream" if it is called upon a variable and nor this, methodResultID or some method argument
+ * is an array.
  */
 public class NoStreamRestriction extends SingleTokenRestriction {
 
@@ -32,6 +33,9 @@ public class NoStreamRestriction extends SingleTokenRestriction {
         if (!isRestrictedToken(nextLegalToken)) {
             return false;
         }
+        if (partialExpressionTokens.get(partialExpressionTokens.size() - 2).equals("Arrays")) {
+            return false; // This restriction applies only if "stream" is called upon a variable, not upon the Arrays class
+        }
 
         // If any of the variables is a collection, then "stream()" should be a method available within the oracleDatapoint
         boolean noneIsCollection = oracleDatapoint.getTokensMethodVariablesNonPrivateNonStaticNonVoidMethods().stream().noneMatch(m ->
@@ -45,6 +49,6 @@ public class NoStreamRestriction extends SingleTokenRestriction {
 
         // If "stream" is suggested as next legal token, then previous token is "." and token before that is a variable. Get its type
         Pair<String, String> streamVariableType = getReturnTypeOfExpression(partialExpressionTokens.get(partialExpressionTokens.size() - 2), oracleDatapoint);
-        return !isType1InstanceOfType2(fullyQualifiedClassName(streamVariableType), "java.util.Collection"); // If var is not Collection, "stream" is forbidden
+        return !isType1InstanceOfType2(fullyQualifiedClassName(streamVariableType), "java.util.Collection", oracleDatapoint); // If var is not Collection, "stream" is forbidden
     }
 }

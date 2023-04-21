@@ -32,7 +32,9 @@ public class TokensDataset {
     public static void main(String[] args) throws IOException {
         File[] oraclesDatasetFiles = new File(ORACLES_DATASET_FOLDER).listFiles();
         for (File oraclesDatasetFile : oraclesDatasetFiles) { // Assume that only dataset files are in the folder
+            logger.info("------------------------------------------------------------");
             logger.info("Processing file: {}", oraclesDatasetFile.getName());
+            logger.info("------------------------------------------------------------");
             List<Map> rawOracleDatapoints = objectMapper.readValue(oraclesDatasetFile, List.class);
             File tokensDatasetFile = new File(TOKENS_DATASET_FOLDER + oraclesDatasetFile.getName());
             tokensDatasetFile.delete();
@@ -106,6 +108,7 @@ public class TokensDataset {
         List<TokenDatapoint> tokenDatapoints = new ArrayList<>();
 
         // Create a new TokenDatapoint for each next legal token and add it to the list
+        boolean nextTokenActuallyLegal = false;
         for (Triplet<String, String, List<String>> legalTokenWithContext : nextLegalTokensWithContext) {
             String legalToken = legalTokenWithContext.getValue0();
             String legalTokenClass = legalTokenWithContext.getValue1();
@@ -113,7 +116,17 @@ public class TokensDataset {
             Boolean label = legalToken.equals(nextOracleToken);
             TokenDatapoint tokenDatapoint = new TokenDatapoint(tokenIndex++, label, oracleDatapoint, compactExpression(oracleSoFarTokens), legalToken, legalTokenClass, legalTokenInfo);
             tokenDatapoints.add(tokenDatapoint);
+            if (label) {
+                nextTokenActuallyLegal = true;
+            }
         }
+        assertTokenLegal(nextTokenActuallyLegal, nextOracleToken, oracleSoFarTokens);
         return tokenDatapoints;
+    }
+
+    private static void assertTokenLegal(boolean nextTokenActuallyLegal, String token, List<String> oracleSoFarTokens) {
+        if (!nextTokenActuallyLegal) {
+            throw new RuntimeException("Token '" + token + "' is not legal after partial oracle '" + compactExpression(oracleSoFarTokens) + "'");
+        }
     }
 }
