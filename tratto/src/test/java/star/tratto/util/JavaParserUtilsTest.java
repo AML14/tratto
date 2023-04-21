@@ -37,6 +37,7 @@ public class JavaParserUtilsTest {
         assertEquals(Pair.with("", "int[]"), getReturnTypeOfExpression("new int[0]", oracleDatapoint));
         assertEquals(Pair.with("", "int[][]"), getReturnTypeOfExpression("new int[0][0]", oracleDatapoint));
         assertEquals(Pair.with("java.lang", "Integer"), getReturnTypeOfExpression("new Integer(1)", oracleDatapoint));
+        assertEquals(Pair.with("java.lang", "Integer[][]"), getReturnTypeOfExpression("new Integer[0][0]", oracleDatapoint));
         assertEquals(Pair.with("java.util", "List"), getReturnTypeOfExpression("java.util.List.of(1)", oracleDatapoint));
         assertEquals(Pair.with("", "T"), getReturnTypeOfExpression("o1", oracleDatapoint));
         assertEquals(Pair.with("", "boolean"), getReturnTypeOfExpression("o1==null", oracleDatapoint));
