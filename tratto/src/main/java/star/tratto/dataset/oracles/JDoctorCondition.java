@@ -168,4 +168,24 @@ public class JDoctorCondition {
         @JsonProperty("description")
         private String description;
     }
+
+    public Operation getOperation() {
+        return this.operation;
+    }
+
+    public Identifiers getIdentifiers() {
+        return this.identifiers;
+    }
+
+    public List<ThrowsCondition> getThrowsConditions() {
+        return this.throwsConditions;
+    }
+
+    public List<PreCondition> getPreCondition() {
+        return this.preCondition;
+    }
+
+    public List<PostCondition> getPostConditions() {
+        return this.postConditions;
+    }
 }

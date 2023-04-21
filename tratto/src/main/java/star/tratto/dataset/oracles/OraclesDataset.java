@@ -19,7 +19,7 @@ public class OraclesDataset {
         String projectsPath = FileUtils.getAbsolutePathToFile(Path.REPOS.getValue(), FileName.INPUT_PROJECTS, FileFormat.JSON);
         List<Project> projects = ProjectParser.initialize(projectsPath);
         JDoctorConditionParser jDoctorConditionParser = new JDoctorConditionParser();
-        OracleDatapointGenerator oracleDPGenerator = new OracleDatapointGenerator();
+        ProjectOracleGenerator oracleDPGenerator = new ProjectOracleGenerator();
 
         for (Project project : projects) {
             System.out.println("Collecting data from: " + project.getProjectName());
