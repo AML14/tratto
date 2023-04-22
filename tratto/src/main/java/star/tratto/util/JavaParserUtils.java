@@ -24,7 +24,6 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -359,12 +358,14 @@ public class JavaParserUtils {
     }
 
     public static String getMethodSignature(MethodDeclaration methodDeclaration) {
-        String methodSignature = methodDeclaration.toString();
-        Optional<BlockStmt> methodBody = methodDeclaration.getBody();
-        if (methodBody.isPresent()) {
-            methodSignature = methodSignature.replace(methodBody.get().toString(), "");
+        String method = methodDeclaration.toString();
+        if (methodDeclaration.getBody().isPresent()) {
+            method = method.replace(methodDeclaration.getBody().get().toString(), "");
+        } // Once body is removed (if any), last line is the method signature. Remove everything before that
+        if (methodDeclaration.getComment().isPresent()) {
+            method = method.replaceAll("[\\s\\S]*\n", "");
         }
-        return methodSignature.trim().replaceAll(";$", "");
+        return method.trim().replaceAll(";$", "");
     }
 
     /**
