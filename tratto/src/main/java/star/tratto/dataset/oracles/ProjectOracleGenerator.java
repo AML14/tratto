@@ -4,6 +4,7 @@ import com.github.javaparser.ast.CompilationUnit;
 import org.javatuples.Pair;
 import org.javatuples.Quartet;
 import org.javatuples.Triplet;
+import star.tratto.dataset.oracles.JDoctorCondition.Operation;
 import star.tratto.dataset.oracles.JDoctorCondition.PreCondition;
 import star.tratto.dataset.oracles.JDoctorCondition.PostCondition;
 import star.tratto.dataset.oracles.JDoctorCondition.ThrowsCondition;
@@ -71,20 +72,21 @@ public class ProjectOracleGenerator {
         List<OracleDatapoint> oracleDPs = new ArrayList<>();
         // Generate an OracleDatapoint for each JDoctor condition.
         for (JDoctorCondition jDoctorCondition : this.jDoctorConditions) {
+            Operation operation = jDoctorCondition.getOperation();
             // Add all ThrowsCondition oracles to dataset.
             List<ThrowsCondition> throwsConditions = jDoctorCondition.getThrowsConditions();
             for (ThrowsCondition condition : throwsConditions) {
-                oracleDPs.add(getNextDatapoint(condition));
+                oracleDPs.add(getNextDatapoint(operation, condition));
             }
             // Add all PreCondition oracles to dataset.
             List<PreCondition> preConditions = jDoctorCondition.getPreCondition();
             for (PreCondition condition : preConditions) {
-                oracleDPs.add(getNextDatapoint(condition));
+                oracleDPs.add(getNextDatapoint(operation, condition));
             }
             // Add all PostCondition oracles to dataset.
             List<PostCondition> postConditions = jDoctorCondition.getPostConditions();
             for (PostCondition condition : postConditions) {
-                oracleDPs.add(getNextDatapoint(condition));
+                oracleDPs.add(getNextDatapoint(operation, condition));
             }
         }
         System.out.printf("Processed %s conditions.%n", this.idCounter - this.checkpoint);
@@ -92,26 +94,15 @@ public class ProjectOracleGenerator {
         return oracleDPs;
     }
 
-    private OracleDatapoint getNextDatapoint(Object condition) {
-        // returns empty datapoint if condition is not a valid condition.
-        if (!(
-                condition instanceof ThrowsCondition ||
-                condition instanceof PreCondition ||
-                condition instanceof PostCondition
-        )) {
-            return builder.build();
-        }
-
-        // build new OracleDatapoint:
+    private OracleDatapoint getNextDatapoint(Operation operation, Object condition) {
         // get id
         builder.setId(this.getId());
         // get oracle, oracleType, and javadocTag (specific to condition type)
         if (condition instanceof ThrowsCondition) this.getThrowsConditionInfo((ThrowsCondition) condition);
         if (condition instanceof PreCondition) this.getPreConditionInfo((PreCondition) condition);
         if (condition instanceof PostCondition) this.getPostConditionInfo((PostCondition) condition);
-
         // get projectName
-
+        builder.setProjectName(this.project.getProjectName());
         // get tokensProjectClasses, tokensProjectClassesNonPrivateStaticNonVoidMethods, tokensProjectClassesNonPrivateStaticAttributes
 
         // get className, packageName, classJavadoc, classSourceCode
@@ -139,11 +130,14 @@ public class ProjectOracleGenerator {
 
     private void getThrowsConditionInfo(ThrowsCondition throwsCondition) {
         builder.setOracleType(OracleType.EXCEPT_POST);
-        builder.setJavadocTag(throwsCondition.());
+        builder.setJavadocTag(throwsCondition.getDescription());
+        builder.setOracle(throwsCondition.getGuard().getCondition());
     }
 
     private void getPreConditionInfo(PreCondition preCondition) {
-
+        builder.setOracleType(OracleType.PRE);
+        builder.setJavadocTag(preCondition.getDescription());
+        builder.setOracle(preCondition.getGuard().getCondition());
     }
 
     private void getPostConditionInfo(PostCondition postCondition) {
