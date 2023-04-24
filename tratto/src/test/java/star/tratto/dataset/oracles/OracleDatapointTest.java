@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import static star.tratto.dataset.ExcelManager.getFirstSheet;
 
 public class OracleDatapointTest {
-
     private static final String oraclesDatasetPath = "src/main/resources/oracles-dataset.xlsx";
 
     @Test

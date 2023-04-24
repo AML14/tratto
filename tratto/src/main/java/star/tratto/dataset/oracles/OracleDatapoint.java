@@ -63,8 +63,7 @@ public class OracleDatapoint {
         this.tokensOracleVariablesNonPrivateNonStaticAttributes = (List<Quartet<String, String, String, String>>) parseMultiDataCell(oraclesDatasetRow, 21);
     }
 
-    // For testing purposes
-    OracleDatapoint() {
+    public OracleDatapoint() {
     }
 
     public boolean isProjectClass(String clazz) {
