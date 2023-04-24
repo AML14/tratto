@@ -8,7 +8,11 @@ import star.tratto.dataset.oracles.JDoctorCondition.Operation;
 import star.tratto.dataset.oracles.JDoctorCondition.PreCondition;
 import star.tratto.dataset.oracles.JDoctorCondition.PostCondition;
 import star.tratto.dataset.oracles.JDoctorCondition.ThrowsCondition;
+import star.tratto.identifiers.file.FileFormat;
+import star.tratto.identifiers.file.FileName;
+import star.tratto.identifiers.path.Path;
 import star.tratto.oracle.OracleType;
+import star.tratto.util.FileUtils;
 
 import java.io.File;
 import java.nio.file.Paths;
@@ -104,6 +108,7 @@ public class ProjectOracleGenerator {
         // get projectName
         builder.setProjectName(this.project.getProjectName());
         // get tokensProjectClasses, tokensProjectClassesNonPrivateStaticNonVoidMethods, tokensProjectClassesNonPrivateStaticAttributes
+        this.getProjectClassInfo();
 
         // get className, packageName, classJavadoc, classSourceCode
 
@@ -144,6 +149,25 @@ public class ProjectOracleGenerator {
 
     }
 
+    private void getProjectClassInfo() {
+        String sourcePath = this.project.getSrcPath();
+        File sourceDir = new File(sourcePath);
+        List<File> javaFiles = FileUtils.extractJavaFilesFromDirectory(sourceDir);
+        List<Pair<String, String>> projectClassesTokenList = new ArrayList<>();
+        List<Quartet<String, String, String, String>> projectClassesNonPrivateStaticNonVoidMethodsTokenlist = new ArrayList<>();
+        List<Quartet<String, String, String, String>> projectClassesNonPrivateStaticAttributes = new ArrayList<>();
+
+        String ignoreFilePath = Paths.get(
+                Path.REPOS.getValue(),
+                FileName.IGNORE_FILE.getValue() + FileFormat.JSON.getValue()
+        ).toString();
+        List<String> ignoreFileList = (List<String>) FileUtils.readJSONList(ignoreFilePath);
+
+        for (File javaFile : javaFiles) {
+
+        }
+    }
+
     /**
      * The method extracts all the general information of the class where the method/constructor to which a JDoctor
      * condition refers is defined.
@@ -160,6 +184,7 @@ public class ProjectOracleGenerator {
      *     where the method/constructor to which a JDoctor condition refers is defined.</li>
      * </ol>
      */
+    /*
     private HashMap<OracleDPAttrKey, OracleDPAttrValue> extractClassInfoS(
             Operation operation
     ) {
@@ -216,6 +241,7 @@ public class ProjectOracleGenerator {
      *     each argument.</li>
      * </ol>
      */
+    /*
     private HashMap<OracleDPAttrKey, OracleDPAttrValue> extractMethodInfoS(
             Operation operation
     ) {
@@ -316,6 +342,7 @@ public class ProjectOracleGenerator {
      *     subexpression of the oracle defined within the JDoctor condition.
      * </ol>
      */
+    /*
     private HashMap<OracleDPAttrKey, OracleDPAttrValue> extractOracleInfoS(
             Operation operation,
             List<Triplet<String, String, String>> methodArgumentsTokenList,
@@ -384,34 +411,6 @@ public class ProjectOracleGenerator {
     }
 
     /**
-     * The method extracts all the information related to a JDoctor pre-condition {@link PreCondition}, passed to the
-     * function.
-     * @param preCondition A JDoctor pre-condition {@link PreCondition}.
-     * @return A hash map {@link HashMap<OracleDPAttrKey, OracleDPAttrValue>} composed of three keys:
-     * <ol>
-     *     <li>{@code OracleDPAttrKey.ORACLE_TYPE} - the corresponding value contains the identifier of the type of
-     *     condition (always {@code OracleType.PRE})</li>
-     *     <li>{@code OracleDPAttrKey.JAVADOC_TAG} - the corresponding value contains the string representation
-     *     of the Javadoc tag from which the JDoctor pre-condition has been generated.</li>
-     *     <li>{@code OracleDPAttrKey.ORACLE} - the corresponding value contains the oracle associated to the JDoctor
-     *     pre-condition.</li>
-     * </ol>
-     */
-    private HashMap<OracleDPAttrKey, OracleDPAttrValue> extractPreConditionInfoS(
-            PreCondition preCondition
-    ) {
-        HashMap<OracleDPAttrKey, OracleDPAttrValue> preConditionMap = new HashMap<>();
-        OracleType oracleType = OracleType.PRE;
-        String javadocTag = preCondition.description();
-        Guard guard = preCondition.guard();
-        String oracle = guard.condition();
-        preConditionMap.put(OracleDPAttrKey.ORACLE_TYPE, new OracleDPAttrValue<>(oracleType));
-        preConditionMap.put(OracleDPAttrKey.JAVADOC_TAG, new OracleDPAttrValue<>(javadocTag));
-        preConditionMap.put(OracleDPAttrKey.ORACLE, new OracleDPAttrValue<>(oracle));
-        return preConditionMap;
-    }
-
-    /**
      * The method extracts all the information related to a list of JDoctor post-conditions {@link PreCondition}, passed
      * to the function. The list can be composed of one or two elements. If the list is composed of two elements, the two
      * post conditions are complementary, and refers to a condition of a ternary operator (if the condition is true, the
@@ -428,6 +427,7 @@ public class ProjectOracleGenerator {
      *     operator.</li>
      * </ol>
      */
+    /*
     private HashMap<OracleDPAttrKey, OracleDPAttrValue> extractPostConditionInfoS(
             List<PostCondition> postConditions
     ) {
@@ -470,6 +470,7 @@ public class ProjectOracleGenerator {
      *     within each class of the Java project under analysis. The attributes collected are static and non-private.</li>
      * </ol>
      */
+    /*
     private HashMap<OracleDPAttrKey, OracleDPAttrValue> extractProjectClassAndMethodTokensS() {
         HashMap<OracleDPAttrKey,OracleDPAttrValue> projectMapList = new HashMap<>();
         String srcPath = this.project.srcPath();
@@ -518,47 +519,6 @@ public class ProjectOracleGenerator {
     }
 
     /**
-     * The method extracts the name of the project under analysis.
-     * @return A hash map {@link HashMap<OracleDPAttrKey, OracleDPAttrValue>} composed of a single key
-     * {@code OracleDPAttrKey.PROJECT_NAME} whose value contains a string representing the name of the project under
-     * analysis.
-     */
-    private HashMap<OracleDPAttrKey, OracleDPAttrValue> extractProjectInfoS() {
-        HashMap<OracleDPAttrKey,OracleDPAttrValue> projectMapList = new HashMap<>();
-        String projectName = this.project.projectName();
-        projectMapList.put(OracleDPAttrKey.PROJECT_NAME, new OracleDPAttrValue<>(projectName));
-        return projectMapList;
-    }
-
-    /**
-     * The method extracts all the information related to a JDoctor throws-condition {@link ThrowsCondition}, passed to the
-     * function.
-     * @param throwsCondition A JDoctor throws-condition {@link ThrowsCondition}.
-     * @return A hash map {@link HashMap<OracleDPAttrKey, OracleDPAttrValue>} composed of three keys:
-     * <ol>
-     *     <li>{@code OracleDPAttrKey.ORACLE_TYPE} - the corresponding value contains the identifier of the type of
-     *     condition (always {@code OracleType.EXCEPT_POST})</li>
-     *     <li>{@code OracleDPAttrKey.JAVADOC_TAG} - the corresponding value contains the string representation
-     *     of the Javadoc tag from which the JDoctor throws-condition has been generated.</li>
-     *     <li>{@code OracleDPAttrKey.ORACLE} - the corresponding value contains the oracle associated to the JDoctor
-     *     throws-condition.</li>
-     * </ol>
-     */
-    private HashMap<OracleDPAttrKey, OracleDPAttrValue> extractThrowConditionInfoS(
-            ThrowsCondition throwsCondition
-    ) {
-        HashMap<OracleDPAttrKey, OracleDPAttrValue> throwsConditionMap = new HashMap<>();
-        OracleType oracleType = OracleType.EXCEPT_POST;
-        String javadocTag = throwsCondition.description();
-        Guard guard = throwsCondition.guard();
-        String oracle = guard.condition();
-        throwsConditionMap.put(OracleDPAttrKey.ORACLE_TYPE, new OracleDPAttrValue<>(oracleType));
-        throwsConditionMap.put(OracleDPAttrKey.JAVADOC_TAG, new OracleDPAttrValue<>(javadocTag));
-        throwsConditionMap.put(OracleDPAttrKey.ORACLE, new OracleDPAttrValue<>(oracle));
-        return throwsConditionMap;
-    }
-
-    /**
      * The method gets the JavaParser compilation unit {@link CompilationUnit} corresponding to the class to which the
      * operation object of a JDoctor condition refers.
      * @param operation A JDoctor operation object of a JDoctor condition.
@@ -566,6 +526,7 @@ public class ProjectOracleGenerator {
      * unit corresponding to the class to which the operation object of a JDoctor condition refers, if it is found.
      * Otherwise, the method returns an empty optional.
      */
+    /*
     public Optional<CompilationUnit> getClassCompilationUnitS(Operation operation) {
         List<String> wholePathList = Arrays.asList(operation.classname().split("\\."));
         String srcPath = this.project.srcPath();
@@ -573,4 +534,5 @@ public class ProjectOracleGenerator {
         Optional<CompilationUnit> cu = jpUtils.getCompilationUnitFromFilePath(classPath, true);
         return cu;
     }
+     */
 }
