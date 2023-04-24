@@ -55,6 +55,18 @@ public class JDoctorCondition {
         private String name;
         @JsonProperty("parameterTypes")
         private List<String> parameterTypes;
+
+        public String getClassName() {
+            return this.classname;
+        }
+
+        public String getName() {
+            return this.name;
+        }
+
+        public List<String> getParameterTypes() {
+            return this.parameterTypes;
+        }
     }
 
     /**
@@ -76,6 +88,18 @@ public class JDoctorCondition {
         private String receiverName;
         @JsonProperty("returnName")
         private String returnName;
+
+        public List<String> getParameters() {
+            return this.parameters;
+        }
+
+        public String getReceiverName() {
+            return this.receiverName;
+        }
+
+        public String getReturnName() {
+            return this.returnName;
+        }
     }
 
     /**
@@ -183,6 +207,14 @@ public class JDoctorCondition {
         private String condition;
         @JsonProperty("description")
         private String description;
+
+        public String getCondition() {
+            return this.condition;
+        }
+
+        public String getDescription() {
+            return this.description;
+        }
     }
 
     /**
@@ -199,6 +231,14 @@ public class JDoctorCondition {
         private String condition;
         @JsonProperty("description")
         private String description;
+
+        public String getCondition() {
+            return this.condition;
+        }
+
+        public String getDescription() {
+            return this.description;
+        }
     }
 
     public Operation getOperation() {
