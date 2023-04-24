@@ -191,6 +191,16 @@ public class JavaParserUtilsTest {
 //        assertTrue(isType1AssignableToType2(Pair.with("org.apache.commons.bcel6.classfile", "Attribute"), Pair.with("org.apache.commons.bcel6.classfile", "Attribute"), null));
     }
 
+    @Test
+    public void getMethodsOfTypeTest() {
+        assertTrue(getMethodsOfType("org.apache.commons.math3.analysis.polynomials.PolynomialFunction").stream().map(MethodUsage::getName).collect(Collectors.toList()).contains("polynomialDerivative"));
+        assertTrue(getMethodsOfType("unknown.pack.age.AndClass").stream().map(MethodUsage::getName).collect(Collectors.toList()).contains("equals"));
+        assertTrue(getMethodsOfType("T").stream().map(MethodUsage::getName).collect(Collectors.toList()).contains("equals"));
+        assertThrows(IllegalArgumentException.class, () -> getMethodsOfType("long"));
+        assertTrue(getMethodsOfType("long[]").stream().map(MethodUsage::getName).collect(Collectors.toList()).contains("clone"));
+        assertTrue(getMethodsOfType("java.lang.Long[]").stream().map(MethodUsage::getName).collect(Collectors.toList()).contains("clone"));
+    }
+
     @ParameterizedTest(name = "{0}")
     @MethodSource("getMethodSignatureFromDeclarationParameterizedTestData")
     public void getMethodSignatureFromDeclarationTest(String testName, String classSource, String className, String methodName, String expectedMethodSignature) {

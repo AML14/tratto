@@ -86,7 +86,7 @@ public class RestrictionsUtils {
                     .filter(c -> c.getValue0().equals(precedingExpr))
                     .collect(Collectors.toList());
             matchingClasses.forEach(c -> matchingMethods.addAll(
-                    getResolvedReferenceTypeDeclarationSafe(fullyQualifiedClassName(c.getValue1(), c.getValue0())).getAllMethods()
+                    getMethodsOfType(fullyQualifiedClassName(c.getValue1(), c.getValue0()))
                             .stream()
                             .filter(m -> m.getName().equals(methodName) && isStaticNonVoidNonPrivateMethod(m))
                             .collect(Collectors.toList())
@@ -94,7 +94,7 @@ public class RestrictionsUtils {
         } else {
             Pair<String, String> precedingExprReturnType = getReturnTypeOfExpression(precedingExpr, oracleDatapoint);
             matchingMethods.addAll(
-                    getResolvedReferenceTypeDeclarationSafe(fullyQualifiedClassName(precedingExprReturnType)).getAllMethods()
+                    getMethodsOfType(fullyQualifiedClassName(precedingExprReturnType))
                             .stream()
                             .filter(m -> m.getName().equals(methodName) && isNonStaticNonVoidNonPrivateMethod(m))
                             .collect(Collectors.toList())

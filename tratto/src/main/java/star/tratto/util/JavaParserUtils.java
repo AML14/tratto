@@ -19,9 +19,7 @@ import star.tratto.dataset.oracles.OracleDatapoint;
 import star.tratto.oraclegrammar.custom.Parser;
 
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.NoSuchElementException;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -234,33 +232,45 @@ public class JavaParserUtils {
      * This is useful to perform other operations on top of the returned object, such as getting all
      * methods and fields.
      * @param type Fully qualified type, e.g., "java.util.List"
-     * @throws UnsolvedSymbolException if the type cannot be resolved. For an alternative that does
-     * not throw this exception, see {@link #getResolvedReferenceTypeDeclarationSafe(String)}.
+     * @throws UnsolvedSymbolException if the type cannot be resolved.
      */
-    static ResolvedReferenceTypeDeclaration getResolvedReferenceTypeDeclaration(String type) throws UnsolvedSymbolException {
-        CompilationUnit cu = javaParser.parse(SYNTHETIC_CLASS_SOURCE).getResult().get();
-        BlockStmt syntheticMethodBody = getClassOrInterface(cu, SYNTHETIC_CLASS_NAME).addMethod(SYNTHETIC_METHOD_NAME).getBody().get();
-        syntheticMethodBody.addStatement(type + " type1Var;");
-        return getClassOrInterface(cu, SYNTHETIC_CLASS_NAME)
-                .getMethodsByName(SYNTHETIC_METHOD_NAME).get(0)
-                .getBody().get()
-                .getStatements().getLast().get()
-                .asExpressionStmt().getExpression()
-                .asVariableDeclarationExpr().getVariables().get(0)
-                .resolve().getType().asReferenceType().getTypeDeclaration().get();
+    static ResolvedReferenceTypeDeclaration getResolvedReferenceTypeDeclaration(String type) throws UnsolvedSymbolException, UnsupportedOperationException {
+        return getResolvedType(type).asReferenceType().getTypeDeclaration().get();
+    }
+
+    private static ResolvedReferenceTypeDeclaration getResolvedReferenceTypeDeclaration(ResolvedType resolvedType) throws UnsupportedOperationException {
+        return resolvedType.asReferenceType().getTypeDeclaration().get();
     }
 
     /**
-     * Similar to {@link #getResolvedReferenceTypeDeclaration(String)}, but it does not throw an exception
-     * if the type is not resolved, it returns the Object type instead.
+     * Given a fully qualified class name, returns all methods that can be called on top of that type.
+     * If the type is a regular reference type that can be resolved, retrieves applicable methods. If
+     * the type is a reference type but cannot be resolved (e.g., a generic type), retrieves methods
+     * from java.lang.Object. If the type is an array, retrieves methods from java.lang.Object. If the
+     * type is a primitive, throws an IllegalArgumentException.
+     * @throws IllegalArgumentException if the type is not a reference type or an array.
      */
-    public static ResolvedReferenceTypeDeclaration getResolvedReferenceTypeDeclarationSafe(String type) {
+    public static Set<MethodUsage> getMethodsOfType(String type) throws IllegalArgumentException {
+        ResolvedType resolvedType = null;
+        Set<MethodUsage> methods = new HashSet<>();
+        boolean useObjectMethods = true;
         try {
-            return getResolvedReferenceTypeDeclaration(type);
+            resolvedType = getResolvedType(type);
+            methods.addAll(getResolvedReferenceTypeDeclaration(resolvedType).getAllMethods());
+            useObjectMethods = false;
+        } catch (UnsupportedOperationException e) {
+            if (!resolvedType.isArray()) {
+                throw new IllegalArgumentException("Trying to retrieve available methods from a type that is not " +
+                        "a reference type or an array: " + type, e);
+            }
         } catch (UnsolvedSymbolException e) {
             logger.warn("Unresolvable type: {}", type);
-            return getResolvedReferenceTypeDeclaration("java.lang.Object");
+        } finally {
+            if (useObjectMethods) {
+                methods.addAll(getResolvedReferenceTypeDeclaration("java.lang.Object").getAllMethods());
+            }
         }
+        return methods;
     }
 
     /**
@@ -315,7 +325,10 @@ public class JavaParserUtils {
         }
     }
 
-    private static ResolvedType getResolvedType(String type) {
+    /**
+     * @throws UnsupportedOperationException if the type is an array or a primitive type.
+     */
+    private static ResolvedType getResolvedType(String type) throws UnsupportedOperationException {
         CompilationUnit cu = javaParser.parse(SYNTHETIC_CLASS_SOURCE).getResult().get();
         BlockStmt syntheticMethodBody = getClassOrInterface(cu, SYNTHETIC_CLASS_NAME).addMethod(SYNTHETIC_METHOD_NAME).getBody().get();
         syntheticMethodBody.addStatement(type + " type1Var;");
