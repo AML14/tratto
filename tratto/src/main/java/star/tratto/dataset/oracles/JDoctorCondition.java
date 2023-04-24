@@ -98,6 +98,18 @@ public class JDoctorCondition {
         private String description;
         @JsonProperty("guard")
         private Guard guard;
+
+        public String getException() {
+            return this.exception;
+        }
+
+        public String getDescription() {
+            return this.description;
+        }
+
+        public Guard getGuard() {
+            return this.guard;
+        }
     }
 
     /**
@@ -118,6 +130,18 @@ public class JDoctorCondition {
         @JsonProperty("description")
         private String description;
         @JsonProperty("guard") Guard guard;
+
+        public Property getProperty() {
+            return this.property;
+        }
+
+        public String getDescription() {
+            return this.description;
+        }
+
+        public Guard getGuard() {
+            return this.guard;
+        }
     }
 
     /**
@@ -134,6 +158,14 @@ public class JDoctorCondition {
         private String description;
         @JsonProperty("guard")
         private Guard guard;
+
+        public String getDescription() {
+            return this.description;
+        }
+
+        public Guard getGuard() {
+            return this.guard;
+        }
     }
 
 

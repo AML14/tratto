@@ -7,6 +7,7 @@ import org.javatuples.Triplet;
 import star.tratto.dataset.oracles.JDoctorCondition.PreCondition;
 import star.tratto.dataset.oracles.JDoctorCondition.PostCondition;
 import star.tratto.dataset.oracles.JDoctorCondition.ThrowsCondition;
+import star.tratto.oracle.OracleType;
 
 import java.io.File;
 import java.nio.file.Paths;
@@ -101,12 +102,15 @@ public class ProjectOracleGenerator {
             return builder.build();
         }
 
-        // build new OracleDatapoint
+        // build new OracleDatapoint:
         // get id
-        builder.setId(this.assignID());
-        // get projectName
+        builder.setId(this.getId());
+        // get oracle, oracleType, and javadocTag (specific to condition type)
+        if (condition instanceof ThrowsCondition) this.getThrowsConditionInfo((ThrowsCondition) condition);
+        if (condition instanceof PreCondition) this.getPreConditionInfo((PreCondition) condition);
+        if (condition instanceof PostCondition) this.getPostConditionInfo((PostCondition) condition);
 
-        // get oracle, oracleType, and javadocTag (condition type-specific)
+        // get projectName
 
         // get tokensProjectClasses, tokensProjectClassesNonPrivateStaticNonVoidMethods, tokensProjectClassesNonPrivateStaticAttributes
 
@@ -127,77 +131,23 @@ public class ProjectOracleGenerator {
      * This method generates a unique identifier for an oracle data point.
      * @return the integer identifier of an oracle data point.
      */
-    private int assignID() {
+    private int getId() {
         int id = this.idCounter;
         this.idCounter++;
         return id;
     }
 
-    /**
-     * The method generates all the oracle data-points for the Java project loaded, from the list of JDoctor conditions
-     * associated.
-     * @return The list of oracle data-points {@link OracleDP} produced for the loaded project, from the JDoctor
-     * conditions associated.
-     */
-    public List<OracleDP> generateS() {
-        List<OracleDP> oracleDPs = new ArrayList<>();
-        List<HashMap<OracleDPAttrKey,OracleDPAttrValue>> oraclesDPMap = new ArrayList<>();
-        HashMap<OracleDPAttrKey, OracleDPAttrValue> defaultTokensGrammarMap = this.defaultTokensGrammar();
-        HashMap<OracleDPAttrKey, OracleDPAttrValue> defaultTokensGeneralValuesMap = this.defaultTokensGeneralValues();
-        HashMap<OracleDPAttrKey, OracleDPAttrValue> projectInfoMap = this.extractProjectInfo();
-        HashMap<OracleDPAttrKey, OracleDPAttrValue> projectClassAndMethodTokensMap = this.extractProjectClassAndMethodTokens();
+    private void getThrowsConditionInfo(ThrowsCondition throwsCondition) {
+        builder.setOracleType(OracleType.EXCEPT_POST);
+        builder.setJavadocTag(throwsCondition.());
+    }
 
+    private void getPreConditionInfo(PreCondition preCondition) {
 
-        for (JDocCondition jDocCondition : jDocConditions) {
-            List<HashMap<OracleDPAttrKey,OracleDPAttrValue>> conditionMapList = new ArrayList<>();
-            List<ThrowsCondition> throwsConditions = jDocCondition.throwsConditions();
-            List<PreCondition> preConditions = jDocCondition.preConditions();
-            List<PostCondition> postConditions = jDocCondition.postConditions();
+    }
 
-            Operation operation = jDocCondition.operation();
-            Identifiers identifiers = jDocCondition.identifiers();
+    private void getPostConditionInfo(PostCondition postCondition) {
 
-            conditionMapList.addAll(
-                    throwsConditions
-                            .stream()
-                            .map(this::extractThrowConditionInfo)
-                            .toList()
-            );
-            conditionMapList.addAll(
-                    preConditions
-                            .stream()
-                            .map(this::extractPreConditionInfo)
-                            .toList()
-            );
-
-            if (postConditions.size() > 0 ) {
-                conditionMapList.add(extractPostConditionInfo(postConditions));
-            }
-
-            conditionMapList
-                    .stream()
-                    .peek(condition -> condition.putAll(this.assignID()))
-                    .peek(condition -> condition.putAll(defaultTokensGrammarMap))
-                    .peek(condition -> condition.putAll(defaultTokensGeneralValuesMap))
-                    .peek(condition -> condition.putAll(projectInfoMap))
-                    .peek(condition -> condition.putAll(projectClassAndMethodTokensMap))
-                    .peek(condition -> condition.putAll(this.extractClassInfo(operation)))
-                    .peek(condition -> condition.putAll(this.extractMethodInfo(operation)))
-                    .peek(condition -> condition.putAll(this.extractOracleInfo(
-                            operation,
-                            (List<Triplet<String, String, String>>) condition.get(OracleDPAttrKey.TOKENS_METHOD_ARGUMENTS).value(),
-                            (String) condition.get(OracleDPAttrKey.ORACLE).value()
-                    )))
-                    .toList();
-            oraclesDPMap.addAll(conditionMapList);
-        }
-        // Notify
-        System.out.println(String.format("Processed %s conditions.", this.idCounter - this.checkpoint));
-        this.checkpoint = this.idCounter;
-        // Generate oracle datapoints from the list of hashMap
-        oracleDPs.addAll(oraclesDPMap.stream().map(o -> OracleDP.generateOracleDPFromHashMap(o)).toList());
-        // Return the oracle datapoints
-        return oracleDPs;
     }
 
     /**
