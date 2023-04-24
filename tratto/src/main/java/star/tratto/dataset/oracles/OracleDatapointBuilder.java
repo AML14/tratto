@@ -3,9 +3,13 @@ package star.tratto.dataset.oracles;
 import org.javatuples.Pair;
 import org.javatuples.Quartet;
 import org.javatuples.Triplet;
+import star.tratto.identifiers.path.Path;
+import star.tratto.identifiers.file.*;
 import star.tratto.oracle.OracleType;
+import star.tratto.util.FileUtils;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class OracleDatapointBuilder {
     private OracleDatapoint datapoint;
@@ -16,6 +20,31 @@ public class OracleDatapointBuilder {
 
     public void reset() {
         this.datapoint = new OracleDatapoint();
+        this.setDefaultGrammarTokens();
+        this.setDefaultGeneralValues();
+    }
+
+    private void setDefaultGrammarTokens() {
+        String tokensGrammarPath = FileUtils.getAbsolutePathToFile(
+                Path.REPOS.getValue(),
+                FileName.TOKENS_GRAMMAR,
+                FileFormat.JSON
+        );
+        List<String> tokenGrammar = (List<String>) FileUtils.readJSONList(tokensGrammarPath);
+        this.setTokensGeneralGrammar(tokenGrammar);
+    }
+
+    private void setDefaultGeneralValues() {
+        String tokenGeneralValuesPath = FileUtils.getAbsolutePathToFile(
+                Path.REPOS.getValue(),
+                FileName.TOKENS_GENERAL_VALUES,
+                FileFormat.JSON
+        );
+        List<Pair<String, String>> tokenGeneralValues = ((List<List<String>>) FileUtils.readJSONList(tokenGeneralValuesPath))
+                .stream()
+                .map(tokenList -> new Pair<>(tokenList.get(0),tokenList.get(1)))
+                .collect(Collectors.toList());
+        this.setTokensGeneralValuesGlobalDictionary(tokenGeneralValues);
     }
 
     public void setId(Integer id) {
