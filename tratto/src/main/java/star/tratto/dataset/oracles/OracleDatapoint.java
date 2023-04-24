@@ -34,7 +34,7 @@ public class OracleDatapoint {
     private List<Pair<String, String>> tokensMethodJavadocValues; // <token, type>
     private List<Triplet<String, String, String>> tokensMethodArguments; // <token, package, class>
     private List<Quartet<String, String, String, String>> tokensMethodVariablesNonPrivateNonStaticNonVoidMethods; // <token, package, class, signature>
-    private List<Quartet<String, String, String, String>> tokensMethodVariablesNonPrivateNonStaticAttrributes; // <token, package, class, declaration>
+    private List<Quartet<String, String, String, String>> tokensMethodVariablesNonPrivateNonStaticAttributes; // <token, package, class, declaration>
     private List<Quartet<String, String, String, String>> tokensOracleVariablesNonPrivateNonStaticNonVoidMethods; // <token, package, class, signature>
     private List<Quartet<String, String, String, String>> tokensOracleVariablesNonPrivateNonStaticAttributes; // <token, package, class, declaration>
 
@@ -58,7 +58,7 @@ public class OracleDatapoint {
         this.tokensMethodJavadocValues = (List<Pair<String, String>>) parseMultiDataCell(oraclesDatasetRow, 16);
         this.tokensMethodArguments = (List<Triplet<String, String, String>>) parseMultiDataCell(oraclesDatasetRow, 17);
         this.tokensMethodVariablesNonPrivateNonStaticNonVoidMethods = (List<Quartet<String, String, String, String>>) parseMultiDataCell(oraclesDatasetRow, 18);
-        this.tokensMethodVariablesNonPrivateNonStaticAttrributes = (List<Quartet<String, String, String, String>>) parseMultiDataCell(oraclesDatasetRow, 19);
+        this.tokensMethodVariablesNonPrivateNonStaticAttributes = (List<Quartet<String, String, String, String>>) parseMultiDataCell(oraclesDatasetRow, 19);
         this.tokensOracleVariablesNonPrivateNonStaticNonVoidMethods = (List<Quartet<String, String, String, String>>) parseMultiDataCell(oraclesDatasetRow, 20);
         this.tokensOracleVariablesNonPrivateNonStaticAttributes = (List<Quartet<String, String, String, String>>) parseMultiDataCell(oraclesDatasetRow, 21);
     }
@@ -222,12 +222,12 @@ public class OracleDatapoint {
         this.tokensMethodVariablesNonPrivateNonStaticNonVoidMethods = tokensMethodVariablesNonPrivateNonStaticNonVoidMethods;
     }
 
-    public List<Quartet<String, String, String, String>> getTokensMethodVariablesNonPrivateNonStaticAttrributes() {
-        return tokensMethodVariablesNonPrivateNonStaticAttrributes;
+    public List<Quartet<String, String, String, String>> getTokensMethodVariablesNonPrivateNonStaticAttributes() {
+        return tokensMethodVariablesNonPrivateNonStaticAttributes;
     }
 
-    public void setTokensMethodVariablesNonPrivateNonStaticAttrributes(List<Quartet<String, String, String, String>> tokensMethodVariablesNonPrivateNonStaticAttrributes) {
-        this.tokensMethodVariablesNonPrivateNonStaticAttrributes = tokensMethodVariablesNonPrivateNonStaticAttrributes;
+    public void setTokensMethodVariablesNonPrivateNonStaticAttributes(List<Quartet<String, String, String, String>> tokensMethodVariablesNonPrivateNonStaticAttrributes) {
+        this.tokensMethodVariablesNonPrivateNonStaticAttributes = tokensMethodVariablesNonPrivateNonStaticAttrributes;
     }
 
     public List<Quartet<String, String, String, String>> getTokensOracleVariablesNonPrivateNonStaticNonVoidMethods() {
