@@ -1,11 +1,9 @@
 package star.tratto.dataset.oracles;
 
-import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import org.javatuples.Pair;
 import org.javatuples.Quartet;
 import org.javatuples.Triplet;
-import star.tratto.util.javaparser.JavaParserUtils;
 import star.tratto.dataset.oracles.JDoctorCondition.PreCondition;
 import star.tratto.dataset.oracles.JDoctorCondition.PostCondition;
 import star.tratto.dataset.oracles.JDoctorCondition.ThrowsCondition;
@@ -24,22 +22,27 @@ public class ProjectOracleGenerator {
     private Project project;
     private JDoctorCondition[] jDoctorConditions;
 
+    private final OracleDatapointBuilder builder;
+
     /**
      * Create a new instance of ProjectOracleGenerator.
-     * The constructor sets up:
+     * This constructor sets up:
      * <ul>
-     *     <li> A counter ({@link #idCounter}) used to provide unique
+     *     <li>A counter ({@link #idCounter}) used to provide unique
      *     identifiers of the generated oracle data points.</li>
      *     <li>A checkpoint that memorizes the last identifier used to
      *     generate a data point within a given project. The checkpoint is
      *     used to calculate the total number of oracles generated between
      *     projects.</li>
+     *     <li>A builder ({@link OracleDatapointBuilder}) used to
+     *     generate individual oracles.</li>
      * </ul>
      *
      */
     public ProjectOracleGenerator() {
         this.idCounter = 0;
         this.checkpoint = 0;
+        this.builder = new OracleDatapointBuilder();
     }
 
     /**
@@ -65,15 +68,59 @@ public class ProjectOracleGenerator {
      */
     public List<OracleDatapoint> generate() {
         List<OracleDatapoint> oracleDPs = new ArrayList<>();
-
         // Generate an OracleDatapoint for each JDoctor condition.
         for (JDoctorCondition jDoctorCondition : this.jDoctorConditions) {
+            // Add all ThrowsCondition oracles to dataset.
             List<ThrowsCondition> throwsConditions = jDoctorCondition.getThrowsConditions();
+            for (ThrowsCondition condition : throwsConditions) {
+                oracleDPs.add(getNextDatapoint(condition));
+            }
+            // Add all PreCondition oracles to dataset.
             List<PreCondition> preConditions = jDoctorCondition.getPreCondition();
+            for (PreCondition condition : preConditions) {
+                oracleDPs.add(getNextDatapoint(condition));
+            }
+            // Add all PostCondition oracles to dataset.
             List<PostCondition> postConditions = jDoctorCondition.getPostConditions();
+            for (PostCondition condition : postConditions) {
+                oracleDPs.add(getNextDatapoint(condition));
+            }
+        }
+        System.out.printf("Processed %s conditions.%n", this.idCounter - this.checkpoint);
+        this.checkpoint = this.idCounter;
+        return oracleDPs;
+    }
+
+    private OracleDatapoint getNextDatapoint(Object condition) {
+        // returns empty datapoint if condition is not a valid condition.
+        if (!(
+                condition instanceof ThrowsCondition ||
+                condition instanceof PreCondition ||
+                condition instanceof PostCondition
+        )) {
+            return builder.build();
         }
 
-        return oracleDPs;
+        // build new OracleDatapoint
+        // get id
+        builder.setId(this.assignID());
+        // get projectName
+
+        // get oracle, oracleType, and javadocTag (condition type-specific)
+
+        // get tokensProjectClasses, tokensProjectClassesNonPrivateStaticNonVoidMethods, tokensProjectClassesNonPrivateStaticAttributes
+
+        // get className, packageName, classJavadoc, classSourceCode
+
+        // get methodJavadoc, methodSourceCode, tokensMethodJavaDocValues, and tokensMethodArguments
+
+        // get tokensMethodVariablesNonPrivateNonStaticNonVoidMethods,
+        // tokensMethodVariablesNonPrivateNonStaticAttributes,
+        // tokensOracleVariablesNonPrivateNonStaticNonVoidMethods,
+        // and tokensOracleVariablesNonPrivateNonStaticAttributes
+
+        // return next OracleDatapoint
+        return builder.build();
     }
 
     /**
@@ -151,46 +198,6 @@ public class ProjectOracleGenerator {
         oracleDPs.addAll(oraclesDPMap.stream().map(o -> OracleDP.generateOracleDPFromHashMap(o)).toList());
         // Return the oracle datapoints
         return oracleDPs;
-    }
-
-    /**
-     * The method generates a unique identifier for an oracle data-point.
-     * @return A hash map {@link HashMap<OracleDPAttrKey, OracleDPAttrValue>} composed of a single key
-     * {@code OracleDPAttrKey.ID} whose value contains an integer representing the identifier of the oracle data-point.
-     */
-    private HashMap<OracleDPAttrKey, OracleDPAttrValue> assignIDS() {
-        HashMap<OracleDPAttrKey,OracleDPAttrValue> idMap = new HashMap<>();
-        idMap.put(OracleDPAttrKey.ID, new OracleDPAttrValue<>(this.idCounter));
-        this.idCounter++;
-        return idMap;
-    }
-
-    /**
-     * The method generates the default grammar tokens for a given data-point.
-     * @return A hash map {@link HashMap<OracleDPAttrKey, OracleDPAttrValue>} composed of a single key
-     * {@code OracleDPAttrKey.TOKENS_GENERAL_GRAMMAR} whose value contains a list of the default grammar tokens
-     */
-    private HashMap<OracleDPAttrKey, OracleDPAttrValue> defaultTokensGrammarS() {
-        HashMap<OracleDPAttrKey, OracleDPAttrValue> defaultTokensGrammarMap = new HashMap<>();
-        String tokensGrammarPath = FileUtils.getAbsolutePathToFile(Path.REPOS.getValue(), FileName.TOKENS_GRAMMAR, FileFormat.JSON);
-        List<String> tokenGrammarList = (List<String>) FileUtils.readJSONList(tokensGrammarPath);
-        defaultTokensGrammarMap.put(OracleDPAttrKey.TOKENS_GENERAL_GRAMMAR, new OracleDPAttrValue<>(tokenGrammarList));
-        return defaultTokensGrammarMap;
-    }
-
-    /**
-     * The method generates the default general values tokens for a given data-point, reading them from a json file where
-     * they are listed.
-     * @return A hash map {@link HashMap<OracleDPAttrKey, OracleDPAttrValue>} composed of a single key
-     * {@code OracleDPAttrKey.TOKENS_GENERAL_VALUES_GLOBAL_DICTIONARY} whose value contains a list of the default
-     * values tokens
-     */
-    private HashMap<OracleDPAttrKey, OracleDPAttrValue> defaultTokensGeneralValuesS() {
-        HashMap<OracleDPAttrKey,OracleDPAttrValue> defaultTokensGrammarMap = new HashMap<>();
-        String tokenGeneralValuesPath = FileUtils.getAbsolutePathToFile(Path.REPOS.getValue(), FileName.TOKENS_GENERAL_VALUES, FileFormat.JSON);
-        List<Pair<String,String>> tokenGeneralValuesList = ((List<List<String>>) FileUtils.readJSONList(tokenGeneralValuesPath)).stream().map(tokenList -> new Pair<>(tokenList.get(0),tokenList.get(1))).toList();
-        defaultTokensGrammarMap.put(OracleDPAttrKey.TOKENS_GENERAL_VALUES_GLOBAL_DICTIONARY, new OracleDPAttrValue<>(tokenGeneralValuesList));
-        return defaultTokensGrammarMap;
     }
 
     /**
