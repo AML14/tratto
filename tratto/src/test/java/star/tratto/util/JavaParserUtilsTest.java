@@ -249,8 +249,18 @@ public class JavaParserUtilsTest {
                 Arguments.of("test10", "import org.jgrapht.graph.*; " + classSource
                                 .replaceAll("public class", "public abstract class")
                                 .replaceAll("XXX", "\n    // *** Constructors ***\n    // another comment\n    /**\n     * hello\n     */\n    public static <V, E> E addEdgeWithVertices(Graph<V, E> g, V sourceVertex, V targetVertex);\n"),
-                        className, "addEdgeWithVertices", "public static <V, E> E addEdgeWithVertices(Graph<V, E> g, V sourceVertex, V targetVertex)")
-
+                        className, "addEdgeWithVertices", "public static <V, E> E addEdgeWithVertices(Graph<V, E> g, V sourceVertex, V targetVertex)"),
+                Arguments.of("test11", "import org.jgrapht.graph.*; " + classSource
+                                .replaceAll("XXX", "\n    /**\n     * hello\n     */\n    " +
+                                        "    private\n" +
+                                        "    // comment\n" +
+                                        "    static /* another */ @Nullable String someMethod(\n" +
+                                        "            // this is a param:\n" +
+                                        "            @Nullable String param1,\n" +
+                                        "            /* this is another param: */ int param2\n" +
+                                        "    ) { return \"\"; }"
+                                        ),
+                        className, "someMethod", "private static String someMethod(@Nullable String param1, int param2)")
         );
     }
 

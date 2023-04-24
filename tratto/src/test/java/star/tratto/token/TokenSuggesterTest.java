@@ -1184,7 +1184,7 @@ public class TokenSuggesterTest {
                 Arguments.of("OpenMethodNoArguments", "this.getReal(", oracleDatapoints.get(3), List.of(")"), Tokens.TOKENS.stream().filter(t -> !t.equals(")")).collect(Collectors.toList())),
                 Arguments.of("OpenMethodWithAndWithoutArguments", "List.of(", oracleDatapoints.get(0), List.of(")", "o1", "null"), List.of("&&", "methodResultID", "0", "1.0", "42", "\"stringValue\"", "\"alsoThis\"", "true", "false")),
                 Arguments.of("OperationInt", "this.getCoefficients().length>=this.getCoefficients().length>>~", oracleDatapoints.get(1), List.of("1", "this", "PolynomialFunction"), List.of("null", "true", "false", "1.0", "\"someString\"")),
-                Arguments.of("MethodArgumentAllAllowed", "String.valueOf(", oracleDatapoints.get(0), List.of("0", "1", "true", "false", "null", "Bag"), List.of("methodResultID", "1.0")),
+                Arguments.of("MethodArgumentAllAllowed", "String.valueOf(", oracleDatapoints.get(0), List.of("0", "1", "1.0", "true", "false", "null", "Bag"), List.of("methodResultID")),
                 Arguments.of("MethodArgumentDoubleAllowed", "PolynomialFunction.evaluate(null, ", oracleDatapoints.get(1), List.of("1", "3.1", "PolynomialFunction"), List.of("null", "true", "false", "\"someString\"")),
                 Arguments.of("JdVarComplexType", "true ? methodResultID.stream().noneMatch(jdVar -> jdVar.", oracleDatapoints.get(4), List.of("isInfinite", "equals", "isNaN"), List.of("nonExistingMethod", "class", "==", "&&")),
                 Arguments.of("Empty", "", oracleDatapoints.get(0), List.of("Equator", "o1", "(", "true", "this", ";"), List.of("Arrays", "methodResultID", "jdVar", "1")),

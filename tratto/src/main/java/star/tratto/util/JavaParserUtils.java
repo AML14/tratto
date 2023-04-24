@@ -2,6 +2,7 @@ package star.tratto.util;
 
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.BodyDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
@@ -75,7 +76,7 @@ public class JavaParserUtils {
         CompilationUnit cu = javaParser.parse(oracleDatapoint.getClassSourceCode()).getResult().get();
         String className = oracleDatapoint.getClassName();
         MethodDeclaration syntheticMethod = getSyntheticMethod(
-                cu.getLocalDeclarationFromClassname(className).get(0),
+                getClassOrInterface(cu, className),
                 getMethodOrConstructorDeclaration(oracleDatapoint.getMethodSourceCode())
         );
         BlockStmt syntheticMethodBody = syntheticMethod.getBody().get();
@@ -128,11 +129,11 @@ public class JavaParserUtils {
     private static MethodDeclaration getSyntheticMethod(CompilationUnit cu, OracleDatapoint oracleDatapoint) {
         if (oracleDatapoint != null) {
             return getSyntheticMethod(
-                    cu.getLocalDeclarationFromClassname(oracleDatapoint.getClassName()).get(0),
+                    getClassOrInterface(cu, oracleDatapoint.getClassName()),
                     getMethodOrConstructorDeclaration(oracleDatapoint.getMethodSourceCode())
             );
         } else {
-            return cu.getLocalDeclarationFromClassname(SYNTHETIC_CLASS_NAME).get(0).addMethod(SYNTHETIC_METHOD_NAME);
+            return getClassOrInterface(cu, SYNTHETIC_CLASS_NAME).addMethod(SYNTHETIC_METHOD_NAME);
         }
     }
 
@@ -149,7 +150,7 @@ public class JavaParserUtils {
     }
 
     private static ResolvedType getReturnTypeOfLastStatementInSyntheticMethod(CompilationUnit cu, String className) {
-        return cu.getLocalDeclarationFromClassname(className).get(0)
+        return getClassOrInterface(cu, className)
                 .getMethodsByName(SYNTHETIC_METHOD_NAME).get(0)
                 .getBody().get()
                 .getStatements().getLast().get()
@@ -241,10 +242,9 @@ public class JavaParserUtils {
      */
     static ResolvedReferenceTypeDeclaration getResolvedReferenceTypeDeclaration(String type) throws UnsolvedSymbolException {
         CompilationUnit cu = javaParser.parse(SYNTHETIC_CLASS_SOURCE).getResult().get();
-        BlockStmt syntheticMethodBody = cu.getLocalDeclarationFromClassname(SYNTHETIC_CLASS_NAME).get(0).addMethod(SYNTHETIC_METHOD_NAME).getBody().get();
+        BlockStmt syntheticMethodBody = getClassOrInterface(cu, SYNTHETIC_CLASS_NAME).addMethod(SYNTHETIC_METHOD_NAME).getBody().get();
         syntheticMethodBody.addStatement(type + " type1Var;");
-        return cu
-                .getLocalDeclarationFromClassname(SYNTHETIC_CLASS_NAME).get(0)
+        return getClassOrInterface(cu, SYNTHETIC_CLASS_NAME)
                 .getMethodsByName(SYNTHETIC_METHOD_NAME).get(0)
                 .getBody().get()
                 .getStatements().getLast().get()
@@ -304,14 +304,14 @@ public class JavaParserUtils {
 
         // Get result of instanceof expression
         try {
-            return resolvedType2.isAssignableBy(cu
-                            .getLocalDeclarationFromClassname(className).get(0)
-                            .getMethodsByName(SYNTHETIC_METHOD_NAME).get(0)
-                            .getBody().get()
-                            .getStatements().getFirst().get()
-                            .asExpressionStmt().getExpression()
-                            .asVariableDeclarationExpr().getVariables().get(0)
-                            .resolve().getType());
+            return resolvedType2.isAssignableBy(
+                    getClassOrInterface(cu, className)
+                    .getMethodsByName(SYNTHETIC_METHOD_NAME).get(0)
+                    .getBody().get()
+                    .getStatements().getFirst().get()
+                    .asExpressionStmt().getExpression()
+                    .asVariableDeclarationExpr().getVariables().get(0)
+                    .resolve().getType());
         } catch (UnsolvedSymbolException e) {
             logger.warn("Failed to evaluate instanceof within method:\n{}", syntheticMethodBody.getParentNode().get());
             return false;
@@ -320,10 +320,9 @@ public class JavaParserUtils {
 
     private static ResolvedType getResolvedType(String type) {
         CompilationUnit cu = javaParser.parse(SYNTHETIC_CLASS_SOURCE).getResult().get();
-        BlockStmt syntheticMethodBody = cu.getLocalDeclarationFromClassname(SYNTHETIC_CLASS_NAME).get(0).addMethod(SYNTHETIC_METHOD_NAME).getBody().get();
+        BlockStmt syntheticMethodBody = getClassOrInterface(cu, SYNTHETIC_CLASS_NAME).addMethod(SYNTHETIC_METHOD_NAME).getBody().get();
         syntheticMethodBody.addStatement(type + " type1Var;");
-        return cu
-                .getLocalDeclarationFromClassname(SYNTHETIC_CLASS_NAME).get(0)
+        return getClassOrInterface(cu, SYNTHETIC_CLASS_NAME)
                 .getMethodsByName(SYNTHETIC_METHOD_NAME).get(0)
                 .getBody().get()
                 .getStatements().getLast().get()
@@ -357,12 +356,29 @@ public class JavaParserUtils {
                 isType1InstanceOfType2(fullyQualifiedClassName(type1), fullyQualifiedClassName(type2), oracleDatapoint);
     }
 
+    public static ClassOrInterfaceDeclaration getClassOrInterface(CompilationUnit cu, String name) {
+        try {
+            return cu.getLocalDeclarationFromClassname(name).get(0);
+        } catch (NoSuchElementException|IndexOutOfBoundsException ignored) {}
+        try {
+            return cu.getClassByName(name).get();
+        } catch (NoSuchElementException ignored) {}
+        try {
+            return cu.getInterfaceByName(name).get();
+        } catch (NoSuchElementException e) {
+            throw new RuntimeException("Could not find class or interface " + name + " in compilation unit.", e);
+        }
+    }
+
     public static String getMethodSignature(MethodDeclaration methodDeclaration) {
         String method = methodDeclaration.toString();
-        if (methodDeclaration.getBody().isPresent()) {
+        if (methodDeclaration.getBody().isPresent()) { // Remove body
             method = method.replace(methodDeclaration.getBody().get().toString(), "");
-        } // Once body is removed (if any), last line is the method signature. Remove everything before that
-        if (methodDeclaration.getComment().isPresent()) {
+        }
+        for (Node comment: methodDeclaration.getAllContainedComments()) { // Remove comments within method signature
+            method = method.replace(comment.toString(), "");
+        }
+        if (methodDeclaration.getComment().isPresent()) { // At this point, last line is method signature. Remove everything before that
             method = method.replaceAll("[\\s\\S]*\n", "");
         }
         return method.trim().replaceAll(";$", "");
