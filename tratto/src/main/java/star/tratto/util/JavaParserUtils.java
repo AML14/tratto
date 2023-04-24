@@ -4,10 +4,7 @@ import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.NodeList;
-import com.github.javaparser.ast.body.BodyDeclaration;
-import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
-import com.github.javaparser.ast.body.MethodDeclaration;
-import com.github.javaparser.ast.body.Parameter;
+import com.github.javaparser.ast.body.*;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.type.TypeParameter;
 import com.github.javaparser.resolution.MethodUsage;
@@ -114,7 +111,7 @@ public class JavaParserUtils {
      * Given the class and method under test, inserts into the class and returns a synthetic method
      * with the same signature (in terms of type parameters and arguments) as the method under test.
      */
-    private static MethodDeclaration getSyntheticMethod(ClassOrInterfaceDeclaration classUnderTest, BodyDeclaration<?> methodUnderTest) {
+    private static MethodDeclaration getSyntheticMethod(TypeDeclaration<? extends TypeDeclaration<?>> classUnderTest, BodyDeclaration<?> methodUnderTest) {
         MethodDeclaration syntheticMethod = classUnderTest.addMethod(SYNTHETIC_METHOD_NAME);
         syntheticMethod.setTypeParameters(getTypeParameters(methodUnderTest));
         syntheticMethod.setParameters(getParameters(methodUnderTest));
@@ -124,7 +121,7 @@ public class JavaParserUtils {
     /**
      * Pass a null oracleDatapoint to create a synthetic method without any particularities. Otherwise,
      * if the oracleDatapoint is not null, the method will be created with
-     * {@link #getSyntheticMethod(ClassOrInterfaceDeclaration, BodyDeclaration)} (see its documentation).
+     * {@link #getSyntheticMethod(TypeDeclaration, BodyDeclaration)} (see its documentation).
      */
     private static MethodDeclaration getSyntheticMethod(CompilationUnit cu, OracleDatapoint oracleDatapoint) {
         if (oracleDatapoint != null) {
@@ -356,7 +353,7 @@ public class JavaParserUtils {
                 isType1InstanceOfType2(fullyQualifiedClassName(type1), fullyQualifiedClassName(type2), oracleDatapoint);
     }
 
-    public static ClassOrInterfaceDeclaration getClassOrInterface(CompilationUnit cu, String name) {
+    public static TypeDeclaration<? extends TypeDeclaration<?>> getClassOrInterface(CompilationUnit cu, String name) {
         try {
             return cu.getLocalDeclarationFromClassname(name).get(0);
         } catch (NoSuchElementException|IndexOutOfBoundsException ignored) {}
@@ -365,6 +362,9 @@ public class JavaParserUtils {
         } catch (NoSuchElementException ignored) {}
         try {
             return cu.getInterfaceByName(name).get();
+        } catch (NoSuchElementException ignored) {}
+        try {
+            return cu.getEnumByName(name).get();
         } catch (NoSuchElementException e) {
             throw new RuntimeException("Could not find class or interface " + name + " in compilation unit.", e);
         }
