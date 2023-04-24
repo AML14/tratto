@@ -123,8 +123,8 @@ public class OracleDatapointBuilder {
         this.datapoint.setTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(tokensMethodVariablesNonPrivateNonStaticNonVoidMethods);
     }
 
-    public void setTokensMethodVariablesNonPrivateNonStaticAttrributes(List<Quartet<String, String, String, String>> tokensMethodVariablesNonPrivateNonStaticAttrributes) {
-        this.datapoint.setTokensMethodVariablesNonPrivateNonStaticAttrributes(tokensMethodVariablesNonPrivateNonStaticAttrributes);
+    public void setTokensMethodVariablesNonPrivateNonStaticAttributes(List<Quartet<String, String, String, String>> tokensMethodVariablesNonPrivateNonStaticAttributes) {
+        this.datapoint.setTokensMethodVariablesNonPrivateNonStaticAttrributes(tokensMethodVariablesNonPrivateNonStaticAttributes);
     }
 
     public void setTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(List<Quartet<String, String, String, String>> tokensOracleVariablesNonPrivateNonStaticNonVoidMethods) {
