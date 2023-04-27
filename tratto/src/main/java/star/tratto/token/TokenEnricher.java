@@ -13,8 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static star.tratto.oraclegrammar.custom.Splitter.split;
-import static star.tratto.util.JavaParserUtils.getReturnTypeOfExpression;
-import static star.tratto.util.JavaParserUtils.isType1InstanceOfType2;
+import static star.tratto.util.JavaParserUtils.*;
 import static star.tratto.util.StringUtils.compactExpression;
 import static star.tratto.util.StringUtils.fullyQualifiedClassName;
 
@@ -112,7 +111,7 @@ public class TokenEnricher {
         // For each project class, check if return type of preceding expression is instanceof it. If so, add it to the list
         enrichedTokensPlusInfo.addAll(oracleDatapoint.getTokensProjectClasses()
                 .stream()
-                .filter(pair -> isType1InstanceOfType2(fullyQualifiedClassName(exprReturnType.getValue0(), exprReturnType.getValue1()), fullyQualifiedClassName(pair.getValue1(), pair.getValue0()), oracleDatapoint))
+                .filter(pair -> canType1BeInstanceOfType2(fullyQualifiedClassName(exprReturnType.getValue0(), exprReturnType.getValue1()), fullyQualifiedClassName(pair.getValue1(), pair.getValue0()), oracleDatapoint))
                 .map(pair -> Triplet.with(pair.getValue0(), "Class", List.of(pair.getValue1(), pair.getValue0())))
                 .collect(Collectors.toList())
         );
@@ -120,7 +119,7 @@ public class TokenEnricher {
         // Add default Java classes
         enrichedTokensPlusInfo.addAll(JavaTypes.TYPICAL
                 .stream()
-                .filter(pair -> isType1InstanceOfType2(fullyQualifiedClassName(exprReturnType.getValue0(), exprReturnType.getValue1()), fullyQualifiedClassName(pair.getValue0(), pair.getValue1()), oracleDatapoint))
+                .filter(pair -> canType1BeInstanceOfType2(fullyQualifiedClassName(exprReturnType.getValue0(), exprReturnType.getValue1()), fullyQualifiedClassName(pair.getValue0(), pair.getValue1()), oracleDatapoint))
                 .map(pair -> Triplet.with(pair.getValue1(), "Class", List.of(pair.getValue0(), pair.getValue1())))
                 .collect(Collectors.toList())
         );

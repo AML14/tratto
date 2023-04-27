@@ -232,7 +232,8 @@ public class JavaParserUtils {
      * This is useful to perform other operations on top of the returned object, such as getting all
      * methods and fields.
      * @param type Fully qualified type, e.g., "java.util.List"
-     * @throws UnsolvedSymbolException if the type cannot be resolved.
+     * @throws UnsolvedSymbolException if the type cannot be resolved
+     * @throws UnsupportedOperationException if the type is an array or a primitive type.
      */
     static ResolvedReferenceTypeDeclaration getResolvedReferenceTypeDeclaration(String type) throws UnsolvedSymbolException, UnsupportedOperationException {
         return getResolvedType(type).asReferenceType().getTypeDeclaration().get();
@@ -240,6 +241,22 @@ public class JavaParserUtils {
 
     private static ResolvedReferenceTypeDeclaration getResolvedReferenceTypeDeclaration(ResolvedType resolvedType) throws UnsupportedOperationException {
         return resolvedType.asReferenceType().getTypeDeclaration().get();
+    }
+
+    /**
+     * @throws UnsupportedOperationException if the type is an array or a primitive type.
+     */
+    private static ResolvedType getResolvedType(String type) throws UnsupportedOperationException {
+        CompilationUnit cu = javaParser.parse(SYNTHETIC_CLASS_SOURCE).getResult().get();
+        BlockStmt syntheticMethodBody = getClassOrInterface(cu, SYNTHETIC_CLASS_NAME).addMethod(SYNTHETIC_METHOD_NAME).getBody().get();
+        syntheticMethodBody.addStatement(type + " type1Var;");
+        return getClassOrInterface(cu, SYNTHETIC_CLASS_NAME)
+                .getMethodsByName(SYNTHETIC_METHOD_NAME).get(0)
+                .getBody().get()
+                .getStatements().getLast().get()
+                .asExpressionStmt().getExpression()
+                .asVariableDeclarationExpr().getVariables().get(0)
+                .resolve().getType();
     }
 
     /**
@@ -280,11 +297,42 @@ public class JavaParserUtils {
      * @return true if type1 is an instance of type2, false otherwise.
      */
     public static boolean isType1InstanceOfType2(String type1, String type2, OracleDatapoint oracleDatapoint) {
+        return isType1InstanceOfType2(type1, type2, oracleDatapoint, true);
+    }
+
+    /**
+     * Compared to {@link #isType1InstanceOfType2(String, String, OracleDatapoint)}, this method returns
+     * true if type1 and type2 can be compared using the instanceof operator. To better understand this
+     * difference, consider the following use cases:
+     * <ul>
+     *     <li><code>isType1InstanceOfType2("String", "Object", null)</code> returns <code>true</code></li>
+     *     <li><code>isType1InstanceOfType2("Object", "String", null)</code> returns <code>false</code></li>
+     *     <li><code>canType1BeInstanceOfType2("String", "Object", null)</code> returns <code>true</code></li>
+     *     <li><code>canType1BeInstanceOfType2("Object", "String", null)</code> returns <code>true</code></li>
+     * </ul>
+     * In other words, this method returns true if the expression "var1 instanceof type2" would compile,
+     * where var1 is a variable of type1.
+     */
+    public static boolean canType1BeInstanceOfType2(String type1, String type2, OracleDatapoint oracleDatapoint) {
+        return isType1InstanceOfType2(type1, type2, oracleDatapoint, false) || isType1InstanceOfType2(type2, type1, null, false);
+    }
+
+    /**
+     * Auxiliary method used both by {@link #isType1InstanceOfType2(String, String, OracleDatapoint)}
+     * and {@link #canType1BeInstanceOfType2}.
+     * @param checkEquality If true, returns true if type1 is equal to type2. If false, this check is
+     *                      not performed at all. Must be true if checking if type1 IS instanceof type2.
+     *                      Must be false if checking if type1 CAN BE instanceof type2. This is because
+     *                      type1 and type2 may be generics or unresolvable classes, and in those cases
+     *                      we cannot use the instanceof operator in a generated oracle, because it
+     *                      would not compile.
+     */
+    private static boolean isType1InstanceOfType2(String type1, String type2, OracleDatapoint oracleDatapoint, boolean checkEquality) {
         // Preliminary checks
         if (JavaTypes.PRIMITIVE_TYPES.contains(type1) || JavaTypes.PRIMITIVE_TYPES.contains(type2)) {
             return false;
         }
-        if (type1.equals(type2)) {
+        if (checkEquality && type1.equals(type2)) {
             return true;
         }
         ResolvedType resolvedType2;
@@ -313,32 +361,16 @@ public class JavaParserUtils {
         try {
             return resolvedType2.isAssignableBy(
                     getClassOrInterface(cu, className)
-                    .getMethodsByName(SYNTHETIC_METHOD_NAME).get(0)
-                    .getBody().get()
-                    .getStatements().getFirst().get()
-                    .asExpressionStmt().getExpression()
-                    .asVariableDeclarationExpr().getVariables().get(0)
-                    .resolve().getType());
+                            .getMethodsByName(SYNTHETIC_METHOD_NAME).get(0)
+                            .getBody().get()
+                            .getStatements().getFirst().get()
+                            .asExpressionStmt().getExpression()
+                            .asVariableDeclarationExpr().getVariables().get(0)
+                            .resolve().getType());
         } catch (UnsolvedSymbolException e) {
-            logger.warn("Failed to evaluate instanceof within method:\n{}", syntheticMethodBody.getParentNode().get());
+            logger.warn("Failed to evaluate instanceof within method. Expression: \"type1Var instanceof {}\". Method: \n{}", type2, syntheticMethodBody.getParentNode().get());
             return false;
         }
-    }
-
-    /**
-     * @throws UnsupportedOperationException if the type is an array or a primitive type.
-     */
-    private static ResolvedType getResolvedType(String type) throws UnsupportedOperationException {
-        CompilationUnit cu = javaParser.parse(SYNTHETIC_CLASS_SOURCE).getResult().get();
-        BlockStmt syntheticMethodBody = getClassOrInterface(cu, SYNTHETIC_CLASS_NAME).addMethod(SYNTHETIC_METHOD_NAME).getBody().get();
-        syntheticMethodBody.addStatement(type + " type1Var;");
-        return getClassOrInterface(cu, SYNTHETIC_CLASS_NAME)
-                .getMethodsByName(SYNTHETIC_METHOD_NAME).get(0)
-                .getBody().get()
-                .getStatements().getLast().get()
-                .asExpressionStmt().getExpression()
-                .asVariableDeclarationExpr().getVariables().get(0)
-                .resolve().getType();
     }
 
     /**

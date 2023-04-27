@@ -108,8 +108,10 @@ public class JavaParserUtilsTest {
         assertTrue(isType1InstanceOfType2("java.lang.String", "java.lang.String", null));
         assertTrue(isType1InstanceOfType2("String", "Object", null));
         assertTrue(isType1InstanceOfType2("String", "java.lang.Object", null));
+        assertFalse(isType1InstanceOfType2("Object", "String", null));
         assertTrue(isType1InstanceOfType2("java.util.List", "Object", null));
         assertFalse(isType1InstanceOfType2("String", "StringBuilder", null));
+        assertFalse(isType1InstanceOfType2("StringBuilder", "String", null));
         assertFalse(isType1InstanceOfType2("boolean", "boolean", null));
         assertTrue(isType1InstanceOfType2("Boolean", "Boolean", null));
         assertFalse(isType1InstanceOfType2("boolean", "Boolean", null));
@@ -128,7 +130,6 @@ public class JavaParserUtilsTest {
         assertFalse(isType1InstanceOfType2("java.lang.Double", "float", null));
         assertFalse(isType1InstanceOfType2("Double", "double", null));
         assertFalse(isType1InstanceOfType2("double", "Double", null));
-        assertFalse(isType1InstanceOfType2("StringBuilder", "String", null));
         assertTrue(isType1InstanceOfType2("T", "T", null));
         assertFalse(isType1InstanceOfType2("T", "java.lang.Object", null));
         assertTrue(isType1InstanceOfType2("T", "java.lang.Object", oracleDatapoints.get(0)));
@@ -136,6 +137,8 @@ public class JavaParserUtilsTest {
         assertFalse(isType1InstanceOfType2("java.lang.Object", "T", oracleDatapoints.get(0)));
         assertFalse(isType1InstanceOfType2("java.lang.Object", "non.existing.Clazz", null));
         assertFalse(isType1InstanceOfType2("java.lang.Object", "non.existing.Clazz", oracleDatapoints.get(0)));
+        assertFalse(isType1InstanceOfType2("non.existing.Clazz", "java.lang.Object", null));
+        assertFalse(isType1InstanceOfType2("non.existing.Clazz", "java.lang.Object", oracleDatapoints.get(0)));
         assertTrue(isType1InstanceOfType2("org.apache.commons.math3.ml.clustering.CentroidCluster", "org.apache.commons.math3.ml.clustering.Cluster", null));
         assertTrue(isType1InstanceOfType2("star.tratto.token.restrictions.multi.LastMethodNameRestriction", "star.tratto.token.restrictions.multi.MultiTokenRestriction", null));
         assertFalse(isType1InstanceOfType2("star.tratto.token.restrictions.multi.LastMethodNameRestriction", "star.tratto.token.restrictions.multi.MultiTokenRestrictions", null));
@@ -147,13 +150,64 @@ public class JavaParserUtilsTest {
     }
 
     @Test
+    public void canType1BeInstanceOfType2Test() {
+        assertTrue(canType1BeInstanceOfType2("String", "String", null));
+        assertTrue(canType1BeInstanceOfType2("String", "java.lang.String", null));
+        assertTrue(canType1BeInstanceOfType2("java.lang.String", "String", null));
+        assertTrue(canType1BeInstanceOfType2("java.lang.String", "java.lang.String", null));
+        assertTrue(canType1BeInstanceOfType2("String", "Object", null));
+        assertTrue(canType1BeInstanceOfType2("String", "java.lang.Object", null));
+        assertTrue(canType1BeInstanceOfType2("Object", "String", null));
+        assertTrue(canType1BeInstanceOfType2("java.util.List", "Object", null));
+        assertFalse(canType1BeInstanceOfType2("String", "StringBuilder", null));
+        assertFalse(canType1BeInstanceOfType2("StringBuilder", "String", null));
+        assertFalse(canType1BeInstanceOfType2("boolean", "boolean", null));
+        assertTrue(canType1BeInstanceOfType2("Boolean", "Boolean", null));
+        assertFalse(canType1BeInstanceOfType2("boolean", "Boolean", null));
+        assertFalse(canType1BeInstanceOfType2("Boolean", "boolean", null));
+        assertFalse(canType1BeInstanceOfType2("boolean", "java.lang.Boolean", null));
+        assertFalse(canType1BeInstanceOfType2("java.lang.Boolean", "boolean", null));
+        assertFalse(canType1BeInstanceOfType2("Integer", "int", null));
+        assertFalse(canType1BeInstanceOfType2("int", "Integer", null));
+        assertFalse(canType1BeInstanceOfType2("int", "Long", null));
+        assertFalse(canType1BeInstanceOfType2("java.lang.Long", "int", null));
+        assertFalse(canType1BeInstanceOfType2("long", "Long", null));
+        assertFalse(canType1BeInstanceOfType2("java.lang.Long", "long", null));
+        assertFalse(canType1BeInstanceOfType2("Float", "float", null));
+        assertFalse(canType1BeInstanceOfType2("float", "Float", null));
+        assertFalse(canType1BeInstanceOfType2("float", "Double", null));
+        assertFalse(canType1BeInstanceOfType2("java.lang.Double", "float", null));
+        assertFalse(canType1BeInstanceOfType2("Double", "double", null));
+        assertFalse(canType1BeInstanceOfType2("double", "Double", null));
+        assertFalse(canType1BeInstanceOfType2("T", "T", null));
+        assertFalse(canType1BeInstanceOfType2("T", "java.lang.Object", null));
+        assertTrue(canType1BeInstanceOfType2("T", "java.lang.Object", oracleDatapoints.get(0)));
+        assertFalse(canType1BeInstanceOfType2("java.lang.Object", "T", null));
+        assertFalse(canType1BeInstanceOfType2("java.lang.Object", "T", oracleDatapoints.get(0)));
+        assertFalse(canType1BeInstanceOfType2("java.lang.Object", "non.existing.Clazz", null));
+        assertFalse(canType1BeInstanceOfType2("java.lang.Object", "non.existing.Clazz", oracleDatapoints.get(0)));
+        assertFalse(canType1BeInstanceOfType2("non.existing.Clazz", "java.lang.Object", null));
+        assertFalse(canType1BeInstanceOfType2("non.existing.Clazz", "java.lang.Object", oracleDatapoints.get(0)));
+        assertTrue(canType1BeInstanceOfType2("org.apache.commons.math3.ml.clustering.CentroidCluster", "org.apache.commons.math3.ml.clustering.Cluster", null));
+        assertTrue(canType1BeInstanceOfType2("star.tratto.token.restrictions.multi.LastMethodNameRestriction", "star.tratto.token.restrictions.multi.MultiTokenRestriction", null));
+        assertFalse(canType1BeInstanceOfType2("star.tratto.token.restrictions.multi.LastMethodNameRestriction", "star.tratto.token.restrictions.multi.MultiTokenRestrictions", null));
+        assertTrue(canType1BeInstanceOfType2("star.tratto.oraclegrammar.generator.TrattoGrammarGenerator", "org.eclipse.xtext.generator.AbstractGenerator", null));
+        // Unexplicably, the following three assertions make PITest fail
+//        assertTrue(canType1BeInstanceOfType2("org.miv.pherd.Particle", "org.miv.pherd.Particle", null));
+//        assertTrue(canType1BeInstanceOfType2("plume.ArraysMDE", "plume.ArraysMDE", null));
+//        assertTrue(canType1BeInstanceOfType2("org.apache.commons.bcel6.classfile.Attribute", "org.apache.commons.bcel6.classfile.Attribute", null));
+    }
+
+    @Test
     public void isType1AssignableToType2Test() {
         assertTrue(isType1AssignableToType2(Pair.with("java.lang", "String"), Pair.with("java.lang", "String"), null));
         assertTrue(isType1AssignableToType2(Pair.with("java.lang", "String"), Pair.with("java.lang", "Object"), null));
+        assertFalse(isType1AssignableToType2(Pair.with("java.lang", "Object"), Pair.with("java.lang", "String"), null));
         assertTrue(isType1AssignableToType2(Pair.with("java.util", "List"), Pair.with("java.lang", "Object"), null));
         assertFalse(isType1AssignableToType2(Pair.with("java.lang", "Object"), Pair.with("java.util", "List"), null));
         assertFalse(isType1AssignableToType2(Pair.with("java.lang", "String"), Pair.with("java.lang", "StringBuilder"), null));
         assertFalse(isType1AssignableToType2(Pair.with("java.lang", "StringBuilder"), Pair.with("java.lang", "String"), null));
+        assertFalse(isType1AssignableToType2(Pair.with("java.lang", "String"), Pair.with("java.lang", "StringBuilder"), null));
         assertTrue(isType1AssignableToType2(Pair.with("", "boolean"), Pair.with("", "boolean"), null));
         assertTrue(isType1AssignableToType2(Pair.with("", "boolean"), Pair.with("java.lang", "Boolean"), null));
         assertFalse(isType1AssignableToType2(Pair.with("java.lang", "Boolean"), Pair.with("", "boolean"), null));
@@ -181,6 +235,8 @@ public class JavaParserUtilsTest {
         assertFalse(isType1AssignableToType2(Pair.with("java.lang", "Object"), Pair.with("", "T"), oracleDatapoints.get(0)));
         assertFalse(isType1AssignableToType2(Pair.with("java.lang", "Object"), Pair.with("non.existing", "Clazz"), null));
         assertFalse(isType1AssignableToType2(Pair.with("java.lang", "Object"), Pair.with("non.existing", "Clazz"), oracleDatapoints.get(0)));
+        assertFalse(isType1AssignableToType2(Pair.with("non.existing", "Clazz"), Pair.with("java.lang", "Object"), null));
+        assertFalse(isType1AssignableToType2(Pair.with("non.existing", "Clazz"), Pair.with("java.lang", "Object"), oracleDatapoints.get(0)));
         assertTrue(isType1AssignableToType2(Pair.with("org.apache.commons.math3.ml.clustering", "CentroidCluster"), Pair.with("org.apache.commons.math3.ml.clustering", "Cluster"), null));
         assertTrue(isType1AssignableToType2(Pair.with("star.tratto.token.restrictions.multi", "LastMethodNameRestriction"), Pair.with("star.tratto.token.restrictions.multi", "MultiTokenRestriction"), null));
         assertFalse(isType1AssignableToType2(Pair.with("star.tratto.token.restrictions.multi", "LastMethodNameRestriction"), Pair.with("star.tratto.token.restrictions.multi", "MultiTokenRestrictions"), null));
