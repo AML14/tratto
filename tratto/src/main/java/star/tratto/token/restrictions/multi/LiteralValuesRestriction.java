@@ -27,6 +27,8 @@ import static star.tratto.util.StringUtils.compactExpression;
  * or if it's a method argument).
  * <br>
  * The <code>restrictedTokens</code> attribute varies everytime this ContextRestriction is enabled.
+ * <br>
+ * TODO: Restrict numeric values according to the type (e.g., 128 cannot be assigned to a byte).
  */
 public class LiteralValuesRestriction extends MultiTokenRestriction {
 
@@ -39,7 +41,7 @@ public class LiteralValuesRestriction extends MultiTokenRestriction {
         private static final String STRING = "\"someString\"";
         private static final Pair<String, String> NULL_TYPE = Pair.with("", "null");
         private static final Pair<String, String> BOOLEAN_TYPE = Pair.with("", "boolean");
-        private static final Pair<String, String> INT_TYPE = Pair.with("", "int");
+        private static final Pair<String, String> INT_TYPE = Pair.with("", "byte"); // Byte to make it less restrictive
         private static final Pair<String, String> DOUBLE_TYPE = Pair.with("", "float"); // Float to make it less restrictive
         private static final Pair<String, String> STRING_TYPE = Pair.with("java.lang", "String");
         private final List<String> possiblyRestrictedTokens = List.of(NULL, TRUE, FALSE, INT, DOUBLE, STRING);
