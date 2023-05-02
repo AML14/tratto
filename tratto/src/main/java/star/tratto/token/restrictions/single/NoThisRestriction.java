@@ -16,7 +16,6 @@ import static star.tratto.util.JavaParserUtils.getMethodDeclaration;
 public class NoThisRestriction extends SingleTokenRestriction {
 
     private static NoThisRestriction instance;
-    private final JavaParser javaParser = JavaParserUtils.getJavaParser();
 
     private NoThisRestriction() {
         this.restrictedToken = "this";
@@ -36,7 +35,7 @@ public class NoThisRestriction extends SingleTokenRestriction {
         }
 
         MethodDeclaration methodDeclaration = getMethodDeclaration(oracleDatapoint.getMethodSourceCode());
-        // If methodDeclaration is null, the method under test is a constructor, so "this" would be allowed
+        // If methodDeclaration is null, the method under test is a constructor, so "this" would be forbidden
         return methodDeclaration == null || methodDeclaration.getModifiers()
                 .stream()
                 .anyMatch(modifier -> modifier.getKeyword() == Modifier.Keyword.STATIC);

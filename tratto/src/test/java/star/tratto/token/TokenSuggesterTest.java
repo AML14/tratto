@@ -307,12 +307,12 @@ public class TokenSuggesterTest {
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("tokenLegalContextRestrictionsPreYesArgumentOrThisParameterizedTestData")
-    public void isTokenLegalBasedOnContextRestrictions_PRE_YES_ARGUMENT_OR_THIS_Case_Legality(String testName, String partialExpression, String javadocTag, boolean expected) {
+    public void isTokenLegalBasedOnContextRestrictions_PRE_YES_ARGUMENT_OR_THIS_Case_Legality(String testName, String partialExpression, List<Triplet<String, String, String>> methodArguments, boolean expected) {
         String token = ";";
         List<String> partialExpressionTokens = split(parser.getPartialOracle(partialExpression));
         OracleDatapoint oracleDatapoint = getEmptyOracleDatapoint();
         oracleDatapoint.setOracleType(OracleType.PRE);
-        oracleDatapoint.setJavadocTag(javadocTag);
+        oracleDatapoint.setTokensMethodArguments(methodArguments);
 
         // Preconditions
         assertTrue(getNextLegalTokensAccordingToGrammar(partialExpressionTokens).contains(token));
@@ -325,19 +325,13 @@ public class TokenSuggesterTest {
 
     private static Stream<Arguments> tokenLegalContextRestrictionsPreYesArgumentOrThisParameterizedTestData() {
         return Stream.of(
-                Arguments.of("isTokenLegalBasedOnContextRestrictions_PRE_YES_ARGUMENT_OR_THIS_Default_Legal", "  ", "@param arg1", true),
-                Arguments.of("isTokenLegalBasedOnContextRestrictions_PRE_YES_ARGUMENT_OR_THIS_Enabled_Illegal", " arg2 ", "   @param  arg1 This is the parameter", false),
-//                Arguments.of("isTokenLegalBasedOnContextRestrictions_PRE_YES_ARGUMENT_OR_THIS_Disabled_this_Legal", "this", "@param arg1 This is the parameter", true), // "this" can never evaluate to boolean
-                Arguments.of("isTokenLegalBasedOnContextRestrictions_PRE_YES_ARGUMENT_OR_THIS_Disabled_argument_Legal", "arg1", "@param arg1 This is the parameter", true),
-                Arguments.of("isTokenLegalBasedOnContextRestrictions_PRE_YES_ARGUMENT_OR_THIS_Disabled_argument_this_Legal", "arg1.process(this)", "@param arg1 This is the parameter", true),
-                Arguments.of("isTokenLegalBasedOnContextRestrictions_PRE_YES_ARGUMENT_OR_THIS_Disabled_this_argument_Legal", "this.booleanProp && arg1", "@param arg1 This is the parameter", true),
-                Arguments.of("isTokenLegalBasedOnContextRestrictions_PRE_YES_ARGUMENT_OR_THIS_Disabled_argument_somethingElse_Legal", "arg1!=null", "@param arg1 This is the parameter", true),
-                Arguments.of("isTokenLegalBasedOnContextRestrictions_PRE_YES_ARGUMENT_OR_THIS_Disabled_this_somethingElse_Legal", "this.equals(arg2)", "@param arg1 This is the parameter", true),
-                Arguments.of("isTokenLegalBasedOnContextRestrictions_PRE_YES_ARGUMENT_OR_THIS_Disabled_argument_somethingElseLonger_Legal", "arg1!=null && arg2", "@param arg1 This is the parameter", true),
-                Arguments.of("isTokenLegalBasedOnContextRestrictions_PRE_YES_ARGUMENT_OR_THIS_Disabled_this_somethingElseLonger_Legal", "this.equals(arg3) || arg2", "@param arg1 This is the parameter", true),
-                Arguments.of("isTokenLegalBasedOnContextRestrictions_PRE_YES_ARGUMENT_OR_THIS_EnabledDisabled_this_Legal", "arg2&&this.prop", "@param otherParamName @param annotation ", true),
-                Arguments.of("isTokenLegalBasedOnContextRestrictions_PRE_YES_ARGUMENT_OR_THIS_EnabledDisabled_argument_Legal", "arg2&&arg1==null", "@param arg1 Javadoc tag.", true),
-                Arguments.of("isTokenLegalBasedOnContextRestrictions_PRE_YES_ARGUMENT_OR_THIS_EnabledDisabled_argument_this_Legal", "arg2&&arg1==null||this.prop", "@param arg1 Javadoc tag.", true)
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_PRE_YES_ARGUMENT_OR_THIS_Default_Legal", "  ", List.of(Triplet.with("arg1", "", "")), true),
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_PRE_YES_ARGUMENT_OR_THIS_Enabled_Illegal", " arg2 ", List.of(Triplet.with("arg1", "", "")), false),
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_PRE_YES_ARGUMENT_OR_THIS_Disabled_Legal", " arg2 ", List.of(Triplet.with("arg1", "", ""), Triplet.with("arg2", "", "")), true),
+//                Arguments.of("isTokenLegalBasedOnContextRestrictions_PRE_YES_ARGUMENT_OR_THIS_Disabled_this_Legal", "this", List.of(Triplet.with("arg1", "", "")), true), // "this" can never evaluate to boolean
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_PRE_YES_ARGUMENT_OR_THIS_Disabled_argument_Legal", "arg1", List.of(Triplet.with("arg1", "", "")), true),
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_PRE_YES_ARGUMENT_OR_THIS_Disabled_argument_this_Legal", "arg1.process(this)", List.of(Triplet.with("arg1", "", "")), true),
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_PRE_YES_ARGUMENT_OR_THIS_Disabled_this_somethingElse_Legal", "this.equals(arg2)", List.of(Triplet.with("arg1", "", "")), true)
         );
     }
 

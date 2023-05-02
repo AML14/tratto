@@ -7,6 +7,7 @@ import star.tratto.dataset.oracles.OracleDatapoint;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.oraclegrammar.trattoGrammar.CanEvaluateToPrimitive;
 import star.tratto.oraclegrammar.trattoGrammar.MethodCall;
+import star.tratto.util.JavaTypes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -107,6 +108,11 @@ public class LiteralValuesRestriction extends MultiTokenRestriction {
                 allowedTokens.add(TRUE);
                 allowedTokens.add(FALSE);
             }
+            // --- Necessary preprocessing: If the typeConstraint is a numeric primitive wrapper, we must convert it to its primitive type
+            if (JavaTypes.PRIMITIVE_WRAPPERS.contains(typeConstraint) && JavaTypes.NUMBERS.contains(typeConstraint)) {
+                typeConstraint = JavaTypes.WRAPPERS_TO_PRIMITIVES.get(typeConstraint);
+            }
+            // ---
             if (!allowedTokens.contains(INT) && isType1AssignableToType2(INT_TYPE, typeConstraint, oracleDatapoint)) {
                 allowedTokens.add(INT);
             }

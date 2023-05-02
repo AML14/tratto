@@ -10,6 +10,7 @@ import com.github.javaparser.ast.type.TypeParameter;
 import com.github.javaparser.resolution.MethodUsage;
 import com.github.javaparser.resolution.UnsolvedSymbolException;
 import com.github.javaparser.resolution.declarations.ResolvedReferenceTypeDeclaration;
+import com.github.javaparser.resolution.declarations.ResolvedTypeParameterDeclaration;
 import com.github.javaparser.resolution.types.ResolvedType;
 import com.github.javaparser.symbolsolver.utils.SymbolSolverCollectionStrategy;
 import org.javatuples.Pair;
@@ -314,6 +315,17 @@ public class JavaParserUtils {
      * where var1 is a variable of type1.
      */
     public static boolean canType1BeInstanceOfType2(String type1, String type2, OracleDatapoint oracleDatapoint) {
+        ResolvedType resolvedType2 = tryToGetResolvedType(type2);
+        if (resolvedType2 == null) {
+            return false; // Either type2 is generic, or an unknown class. In both cases, type1 cannot be instanceof it
+        }
+        try {
+            List<String> type2TypeParameters = resolvedType2.asReferenceType().getTypeDeclaration().get().getTypeParameters()
+                    .stream().map(ResolvedTypeParameterDeclaration::getName).collect(Collectors.toList());
+            if (type2TypeParameters.contains(type1)) {
+                return true; // Special case: type1 is a generic and a type parameter of type2
+            }
+        } catch (UnsupportedOperationException|NoSuchElementException|NullPointerException ignored) {}
         return isType1InstanceOfType2(type1, type2, oracleDatapoint, false) || isType1InstanceOfType2(type2, type1, null, false);
     }
 
@@ -335,10 +347,8 @@ public class JavaParserUtils {
         if (checkEquality && type1.equals(type2)) {
             return true;
         }
-        ResolvedType resolvedType2;
-        try {
-            resolvedType2 = getResolvedType(type2);
-        } catch (UnsolvedSymbolException e) {
+        ResolvedType resolvedType2 = tryToGetResolvedType(type2);
+        if (resolvedType2 == null) {
             return false; // Either type2 is generic, or an unknown class. In both cases, type1 cannot be instanceof it
         }
 
@@ -371,6 +381,16 @@ public class JavaParserUtils {
             logger.warn("Failed to evaluate instanceof within method. Expression: \"type1Var instanceof {}\". Method: \n{}", type2, syntheticMethodBody.getParentNode().get());
             return false;
         }
+    }
+
+    private static ResolvedType tryToGetResolvedType(String type2) {
+        ResolvedType resolvedType2;
+        try {
+            resolvedType2 = getResolvedType(type2);
+        } catch (UnsolvedSymbolException e) {
+            return null;
+        }
+        return resolvedType2;
     }
 
     /**

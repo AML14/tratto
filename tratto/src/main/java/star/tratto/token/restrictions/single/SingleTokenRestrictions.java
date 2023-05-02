@@ -17,7 +17,7 @@ public class SingleTokenRestrictions {
             new StandardSingleTokenRestriction(OracleType.PRE, "?", null, null, true),
             // true is not a valid Predicate in preconditions:
             new StandardSingleTokenRestriction(OracleType.PRE, "true", null, List.of(), true),
-            // Preconditions must mention the argument of the method they refer to and/or this:
+            // Preconditions must mention some argument of the method they refer to and/or this:
             PreYesArgumentOrThisRestriction.getInstance(),
             // Normal postconditions must make use of the ternary operator ( ? : ):
             new StandardSingleTokenRestriction(OracleType.NORMAL_POST, ";", List.of(), List.of("?"), false),
