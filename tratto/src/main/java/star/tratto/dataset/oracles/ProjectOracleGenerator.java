@@ -28,8 +28,6 @@ public class ProjectOracleGenerator {
     private Project project;
     private JDoctorCondition[] jDoctorConditions;
 
-    private final OracleDatapointBuilder builder;
-
     /**
      * Create a new instance of ProjectOracleGenerator.
      * This constructor sets up:
@@ -40,15 +38,12 @@ public class ProjectOracleGenerator {
      *     generate a data point within a given project. The checkpoint is
      *     used to calculate the total number of oracles generated between
      *     projects.</li>
-     *     <li>A builder ({@link OracleDatapointBuilder}) used to
-     *     generate individual oracles.</li>
      * </ul>
      *
      */
     public ProjectOracleGenerator() {
         this.idCounter = 0;
         this.checkpoint = 0;
-        this.builder = new OracleDatapointBuilder();
     }
 
     /**
@@ -89,9 +84,7 @@ public class ProjectOracleGenerator {
             }
             // Add all PostCondition oracles to dataset.
             List<PostCondition> postConditions = jDoctorCondition.getPostConditions();
-            for (PostCondition condition : postConditions) {
-                oracleDPs.add(getNextDatapoint(operation, condition));
-            }
+            oracleDPs.add(getNextDatapoint(operation, postConditions));
         }
         System.out.printf("Processed %s conditions.%n", this.idCounter - this.checkpoint);
         this.checkpoint = this.idCounter;
@@ -99,13 +92,11 @@ public class ProjectOracleGenerator {
     }
 
     private OracleDatapoint getNextDatapoint(Operation operation, Object condition) {
-        // get id
+        OracleDatapointBuilder builder = new OracleDatapointBuilder();
         builder.setId(this.getId());
-        // get oracle, oracleType, and javadocTag (specific to condition type)
-        if (condition instanceof ThrowsCondition) this.getThrowsConditionInfo((ThrowsCondition) condition);
-        if (condition instanceof PreCondition) this.getPreConditionInfo((PreCondition) condition);
-        if (condition instanceof PostCondition) this.getPostConditionInfo((PostCondition) condition);
-        // get projectName
+        builder.setConditionInfo(condition);
+
+        // get projectName.
         builder.setProjectName(this.project.getProjectName());
         // get tokensProjectClasses, tokensProjectClassesNonPrivateStaticNonVoidMethods, tokensProjectClassesNonPrivateStaticAttributes
         this.getProjectClassInfo();
@@ -131,22 +122,6 @@ public class ProjectOracleGenerator {
         int id = this.idCounter;
         this.idCounter++;
         return id;
-    }
-
-    private void getThrowsConditionInfo(ThrowsCondition throwsCondition) {
-        builder.setOracleType(OracleType.EXCEPT_POST);
-        builder.setJavadocTag(throwsCondition.getDescription());
-        builder.setOracle(throwsCondition.getGuard().getCondition());
-    }
-
-    private void getPreConditionInfo(PreCondition preCondition) {
-        builder.setOracleType(OracleType.PRE);
-        builder.setJavadocTag(preCondition.getDescription());
-        builder.setOracle(preCondition.getGuard().getCondition());
-    }
-
-    private void getPostConditionInfo(PostCondition postCondition) {
-
     }
 
     private void getProjectClassInfo() {

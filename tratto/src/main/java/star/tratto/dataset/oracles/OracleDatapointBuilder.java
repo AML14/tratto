@@ -3,6 +3,7 @@ package star.tratto.dataset.oracles;
 import org.javatuples.Pair;
 import org.javatuples.Quartet;
 import org.javatuples.Triplet;
+import star.tratto.dataset.oracles.JDoctorCondition.*;
 import star.tratto.identifiers.path.Path;
 import star.tratto.identifiers.file.*;
 import star.tratto.oracle.OracleType;
@@ -45,6 +46,54 @@ public class OracleDatapointBuilder {
                 .map(tokenList -> new Pair<>(tokenList.get(0),tokenList.get(1)))
                 .collect(Collectors.toList());
         this.setTokensGeneralValuesGlobalDictionary(tokenGeneralValues);
+    }
+
+    private void setThrowsConditionInfo(ThrowsCondition condition) {
+        this.setOracleType(OracleType.EXCEPT_POST);
+        this.setJavadocTag(condition.getDescription());
+        this.setOracle(condition.getGuard().getCondition());
+    }
+
+    private void setPreConditionInfo(PreCondition condition) {
+        this.setOracleType(OracleType.PRE);
+        this.setJavadocTag(condition.getDescription());
+        this.setOracle(condition.getGuard().getCondition());
+    }
+
+    private void setPostConditionInfo(List<PostCondition> conditionList) {
+        assert conditionList.size() >= 2;
+        // get base information from first post-condition.
+        PostCondition mainCondition = conditionList.get(0);
+        String mainTag = mainCondition.getDescription();
+        Guard mainGuard = mainCondition.getGuard();
+        Property mainProperty = mainCondition.getProperty();
+        // start building oracle.
+        String oracle = String.format("%s ? %s : ", mainGuard.getCondition(), mainProperty.getCondition());
+        // add to oracle.
+        if (conditionList.size() == 2) {
+            PostCondition secondCondition = conditionList.get(0);
+            String secondTag = secondCondition.getDescription();
+            assert mainTag.equals(secondTag);
+            Property secondProperty = secondCondition.getProperty();
+            oracle += String.format("%s;", secondProperty.getCondition());
+        } else {
+            oracle += "true;";
+        }
+        oracle = oracle.replaceAll("receiverObjectID", "this");
+        // add information to datapoint.
+        this.setOracleType(OracleType.NORMAL_POST);
+        this.setJavadocTag(mainTag);
+        this.setOracle(oracle);
+    }
+
+    public void setConditionInfo(Object condition) {
+        if (condition instanceof ThrowsCondition) {
+            this.setThrowsConditionInfo((ThrowsCondition) condition);
+        } else if (condition instanceof PreCondition) {
+            this.setPreConditionInfo((PreCondition) condition);
+        } else if (condition instanceof List<?>) {
+            this.setPostConditionInfo((List<PostCondition>) condition);
+        }
     }
 
     public void setId(Integer id) {
