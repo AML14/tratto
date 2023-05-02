@@ -95,9 +95,9 @@ public class ProjectOracleGenerator {
         OracleDatapointBuilder builder = new OracleDatapointBuilder();
         builder.setId(this.getId());
         builder.setConditionInfo(condition);
-
-        // get projectName.
         builder.setProjectName(this.project.getProjectName());
+
+
         // get tokensProjectClasses, tokensProjectClassesNonPrivateStaticNonVoidMethods, tokensProjectClassesNonPrivateStaticAttributes
         this.getProjectClassInfo();
 
