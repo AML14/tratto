@@ -1,21 +1,11 @@
 package star.tratto.dataset.oracles;
 
-import com.github.javaparser.ast.CompilationUnit;
-import org.javatuples.Pair;
-import org.javatuples.Quartet;
-import org.javatuples.Triplet;
 import star.tratto.dataset.oracles.JDoctorCondition.Operation;
 import star.tratto.dataset.oracles.JDoctorCondition.PreCondition;
 import star.tratto.dataset.oracles.JDoctorCondition.PostCondition;
 import star.tratto.dataset.oracles.JDoctorCondition.ThrowsCondition;
-import star.tratto.identifiers.file.FileFormat;
-import star.tratto.identifiers.file.FileName;
-import star.tratto.identifiers.path.Path;
-import star.tratto.oracle.OracleType;
-import star.tratto.util.FileUtils;
+import star.tratto.util.javaparser.DatasetUtils;
 
-import java.io.File;
-import java.nio.file.Paths;
 import java.util.*;
 
 /**
@@ -96,10 +86,12 @@ public class ProjectOracleGenerator {
         builder.setId(this.getId());
         builder.setConditionInfo(condition);
         builder.setProjectName(this.project.getProjectName());
+        builder.setClassSourceCode(DatasetUtils.getSourceCode(operation, this.project.getSrcPath()));
 
 
-        // get tokensProjectClasses, tokensProjectClassesNonPrivateStaticNonVoidMethods, tokensProjectClassesNonPrivateStaticAttributes
-        this.getProjectClassInfo();
+        // get tokensProjectClasses,
+        // tokensProjectClassesNonPrivateStaticNonVoidMethods,
+        // tokensProjectClassesNonPrivateStaticAttributes
 
         // get className, packageName, classJavadoc, classSourceCode
 
@@ -122,25 +114,6 @@ public class ProjectOracleGenerator {
         int id = this.idCounter;
         this.idCounter++;
         return id;
-    }
-
-    private void getProjectClassInfo() {
-        String sourcePath = this.project.getSrcPath();
-        File sourceDir = new File(sourcePath);
-        List<File> javaFiles = FileUtils.extractJavaFilesFromDirectory(sourceDir);
-        List<Pair<String, String>> projectClassesTokenList = new ArrayList<>();
-        List<Quartet<String, String, String, String>> projectClassesNonPrivateStaticNonVoidMethodsTokenlist = new ArrayList<>();
-        List<Quartet<String, String, String, String>> projectClassesNonPrivateStaticAttributes = new ArrayList<>();
-
-        String ignoreFilePath = Paths.get(
-                Path.REPOS.getValue(),
-                FileName.IGNORE_FILE.getValue() + FileFormat.JSON.getValue()
-        ).toString();
-        List<String> ignoreFileList = (List<String>) FileUtils.readJSONList(ignoreFilePath);
-
-        for (File javaFile : javaFiles) {
-
-        }
     }
 
     /**

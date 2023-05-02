@@ -3,6 +3,7 @@ package star.tratto.util.javaparser;
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.resolution.MethodUsage;
 import com.github.javaparser.resolution.UnsolvedSymbolException;
@@ -15,12 +16,16 @@ import org.javatuples.Triplet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import star.tratto.dataset.oracles.OracleDatapoint;
+import star.tratto.exceptions.PrimaryTypeNotFoundException;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.util.JavaTypes;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -330,6 +335,34 @@ public class JavaParserUtils {
 
         return methodModifiers + " " + methodReturnType + " " + methodName + "(" + String.join(", ", methodParameters) + ")" +
                 (methodExceptions.isEmpty() ? "" : " throws " + String.join(", ", methodExceptions));
+    }
+
+    private static TypeDeclaration<?> getPrimaryTypeFromCompilationUnit(
+            CompilationUnit cu
+    ) throws PrimaryTypeNotFoundException {
+        Optional<TypeDeclaration<?>> primaryType = cu.getPrimaryType();
+        if (primaryType.isEmpty()) {
+            throw new PrimaryTypeNotFoundException("The given compilation unit does not have a primary type.");
+        }
+        return primaryType.get();
+    }
+
+    public static String getSourceFromCompilationUnit(
+            CompilationUnit cu
+    ) throws PrimaryTypeNotFoundException {
+        // get primary class of CompilationUnit.
+        TypeDeclaration<?> jpClass = getPrimaryTypeFromCompilationUnit(cu);
+        // convert class to string.
+        return jpClass.toString();
+    }
+
+    public static Optional<CompilationUnit> getCompilationUnitFromFilePath(String filePath) {
+        File file = new File(filePath);
+        try {
+            return javaParser.parse(file).getResult();
+        } catch (FileNotFoundException e) {
+            return Optional.empty();
+        }
     }
 
     public static boolean isStaticNonVoidNonPrivateMethod(MethodUsage methodUsage) {
