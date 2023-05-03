@@ -87,10 +87,10 @@ public class ProjectOracleGenerator {
         builder.setConditionInfo(condition);
         builder.setProjectName(this.project.getProjectName());
         builder.setClassSourceCode(DatasetUtils.getSourceCode(operation, this.project.getSrcPath()));
+        builder.setPackageName(DatasetUtils.getPackageName(operation));
+        builder.setClassName(DatasetUtils.getClassName(operation));
 
         /*
-            private String packageName;
-            private String className;
             private String methodJavadoc;
             private String methodSourceCode;
             private String classJavadoc;

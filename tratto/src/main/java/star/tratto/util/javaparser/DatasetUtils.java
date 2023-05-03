@@ -29,6 +29,21 @@ public class DatasetUtils {
         return source;
     }
 
+    public static String getPackageName(
+            Operation operation
+    ) {
+        List<String> pathList = JDoctorUtils.getPathList(operation.getClassName());
+        List<String> packageList = JDoctorUtils.getPackageList(pathList);
+        return JDoctorUtils.getPackageNameFromPackageList(packageList);
+    }
+
+    public static String getClassName(
+            Operation operation
+    ) {
+        List<String> pathList = JDoctorUtils.getPathList(operation.getClassName());
+        return JDoctorUtils.getClassNameFromPathList(pathList);
+    }
+
     public static Optional<CompilationUnit> getClassCompilationUnit(
             Operation operation,
             String sourcePath
