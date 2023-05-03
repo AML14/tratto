@@ -96,6 +96,10 @@ public class OracleDatapointBuilder {
         }
     }
 
+    public void setMethodInfo(Operation operation) {
+
+    }
+
     public void setId(Integer id) {
         this.datapoint.setId(id);
     }
