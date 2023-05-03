@@ -188,6 +188,10 @@ public class OracleDatapointBuilder {
         this.datapoint.setTokensOracleVariablesNonPrivateNonStaticAttributes(tokensOracleVariablesNonPrivateNonStaticAttributes);
     }
 
+    public OracleDatapoint copy() {
+        return this.datapoint;
+    }
+
     public OracleDatapoint build() {
         OracleDatapoint oracleDP = this.datapoint;
         this.reset();

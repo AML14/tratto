@@ -89,19 +89,11 @@ public class ProjectOracleGenerator {
         builder.setClassSourceCode(DatasetUtils.getSourceCode(operation, this.project.getSrcPath()));
 
         /*
-            private Integer id;
-            private String oracle;
-            private OracleType oracleType;
-            private String projectName;
             private String packageName;
             private String className;
-            private String javadocTag;
             private String methodJavadoc;
             private String methodSourceCode;
             private String classJavadoc;
-            private String classSourceCode;
-            private List<String> tokensGeneralGrammar;
-            private List<Pair<String, String>> tokensGeneralValuesGlobalDictionary; // <token, type>
             private List<Pair<String, String>> tokensProjectClasses; // <token, package>
             private List<Quartet<String, String, String, String>> tokensProjectClassesNonPrivateStaticNonVoidMethods; // <token, package, class, signature>
             private List<Quartet<String, String, String, String>> tokensProjectClassesNonPrivateStaticAttributes; // <token, package, class, declaration>
