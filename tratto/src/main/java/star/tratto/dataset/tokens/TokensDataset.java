@@ -31,6 +31,11 @@ public class TokensDataset {
 
     public static void main(String[] args) throws IOException {
         File[] oraclesDatasetFiles = new File(ORACLES_DATASET_FOLDER).listFiles();
+        File oraclesWithErrorsFile = new File(TOKENS_DATASET_FOLDER + "oracles_with_errors.json");
+        oraclesWithErrorsFile.delete();
+        FileOutputStream oraclesWithErrorsOutputStream = new FileOutputStream(oraclesWithErrorsFile, true);
+        boolean firstOracleWithErrors = true;
+        oraclesWithErrorsOutputStream.write("[".getBytes());
         for (File oraclesDatasetFile : oraclesDatasetFiles) { // Assume that only dataset files are in the folder
             logger.info("------------------------------------------------------------");
             logger.info("Processing file: {}", oraclesDatasetFile.getName());
@@ -44,7 +49,19 @@ public class TokensDataset {
             for (Map rawOracleDatapoint : rawOracleDatapoints) {
                 OracleDatapoint oracleDatapoint = new OracleDatapoint(rawOracleDatapoint);
                 logger.info("Processing oracle: {}", oracleDatapoint.getOracle());
-                List<TokenDatapoint> tokenDatapoints = oracleDatapointToTokenDatapoints(oracleDatapoint);
+                List<TokenDatapoint> tokenDatapoints;
+                try {
+                    tokenDatapoints = oracleDatapointToTokenDatapoints(oracleDatapoint);
+                } catch (MissingTokenException e) {
+                    logger.error(e.getMessage());
+                    if (firstOracleWithErrors) {
+                        firstOracleWithErrors = false;
+                    } else {
+                        oraclesWithErrorsOutputStream.write(",".getBytes());
+                    }
+                    oraclesWithErrorsOutputStream.write(objectMapper.writeValueAsBytes(oracleDatapoint));
+                    continue;
+                }
                 if (!tokenDatapoints.isEmpty()) {
                     tokensDatasetOutputStream.write(objectMapper.writeValueAsBytes(tokenDatapoints.get(0)));
                 }
@@ -56,6 +73,8 @@ public class TokensDataset {
             tokensDatasetOutputStream.write("]".getBytes());
             tokensDatasetOutputStream.close();
         }
+        oraclesWithErrorsOutputStream.write("]".getBytes());
+        oraclesWithErrorsOutputStream.close();
     }
 
     /**
@@ -69,7 +88,7 @@ public class TokensDataset {
      *     actually goes next, label is true, otherwise it is false.</li>
      * </ol>
      */
-    private static List<TokenDatapoint> oracleDatapointToTokenDatapoints(OracleDatapoint oracleDatapoint) {
+    private static List<TokenDatapoint> oracleDatapointToTokenDatapoints(OracleDatapoint oracleDatapoint) throws MissingTokenException {
         // Split oracle into tokens
         String stringOracle = oracleDatapoint.getOracle();
         Oracle oracle = parser.getOracle(stringOracle);
@@ -101,7 +120,7 @@ public class TokensDataset {
      *                        label of each TokenDatapoint created (true if nextOracleToken is the token of that
      *                        TokenDatapoint, false otherwise).
      */
-    private static List<TokenDatapoint> oracleSoFarAndTokenToTokenDatapoints(OracleDatapoint oracleDatapoint, List<String> oracleSoFarTokens, String nextOracleToken) {
+    private static List<TokenDatapoint> oracleSoFarAndTokenToTokenDatapoints(OracleDatapoint oracleDatapoint, List<String> oracleSoFarTokens, String nextOracleToken) throws MissingTokenException {
         // Compute next legal tokens
         List<Triplet<String, String, List<String>>> nextLegalTokensWithContext = getNextLegalTokensWithContextPlusInfo(oracleSoFarTokens, oracleDatapoint);
 
@@ -124,9 +143,15 @@ public class TokensDataset {
         return tokenDatapoints;
     }
 
-    private static void assertTokenLegal(boolean nextTokenActuallyLegal, String token, List<String> oracleSoFarTokens) {
+    private static void assertTokenLegal(boolean nextTokenActuallyLegal, String token, List<String> oracleSoFarTokens) throws MissingTokenException {
         if (!nextTokenActuallyLegal) {
-            throw new RuntimeException("Token '" + token + "' is not legal after partial oracle '" + compactExpression(oracleSoFarTokens) + "'");
+            throw new MissingTokenException("Token '" + token + "' is not legal after partial oracle '" + compactExpression(oracleSoFarTokens) + "'");
+        }
+    }
+
+    public static class MissingTokenException extends Exception {
+        public MissingTokenException(String message) {
+            super(message);
         }
     }
 }
