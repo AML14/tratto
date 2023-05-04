@@ -5,6 +5,8 @@ import com.github.javaparser.ast.body.CallableDeclaration;
 import com.github.javaparser.ast.body.ConstructorDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.stmt.BlockStmt;
+import org.javatuples.Pair;
+import org.javatuples.Triplet;
 import star.tratto.dataset.oracles.JDoctorCondition.*;
 import star.tratto.exceptions.PrimaryTypeNotFoundException;
 import star.tratto.identifiers.JPCallableType;
@@ -24,6 +26,29 @@ public class DatasetUtils {
                 Optional.ofNullable(((ConstructorDeclaration) jpCallable).getBody()) :
                 ((MethodDeclaration) jpCallable).getBody();
         return jpSignature + (jpBody.isEmpty() ? ";" : jpBody.get().toString());
+    }
+
+    public static String getMethodSourceCode(
+            Operation operation,
+            String sourcePath
+    ) {
+        String className = operation.getClassName();
+        String methodName = operation.getName();
+        List<String> jDoctorConditionParamTypeNames = operation.getParameterTypes();
+        String methodSourceCode = "";
+        Optional<CompilationUnit> cu = getClassCompilationUnit(operation, sourcePath);
+
+        if (cu.isPresent()) {
+            if (className.equals(methodName)) {
+                // get constructor source code.
+            } else {
+                // get method source code.
+                // MethodDeclaration jpMethod = getMethodDeclaration(cu, methodName, jDoctorConditionParamTypeNames);
+                // methodSourceCode = JavaParserUtils.
+            }
+        }
+
+        return methodSourceCode;
     }
 
     public static String getClassJavadoc(
