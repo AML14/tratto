@@ -6,6 +6,7 @@ import star.tratto.dataset.oracles.JDoctorCondition.PostCondition;
 import star.tratto.dataset.oracles.JDoctorCondition.ThrowsCondition;
 import star.tratto.util.javaparser.DatasetUtils;
 
+import javax.xml.crypto.Data;
 import java.util.*;
 
 /**
@@ -83,17 +84,18 @@ public class ProjectOracleGenerator {
 
     private OracleDatapoint getNextDatapoint(Operation operation, Object condition) {
         OracleDatapointBuilder builder = new OracleDatapointBuilder();
+        String sourcePath = this.project.getSrcPath();
         builder.setId(this.getId());
         builder.setConditionInfo(condition);
         builder.setProjectName(this.project.getProjectName());
-        builder.setClassSourceCode(DatasetUtils.getSourceCode(operation, this.project.getSrcPath()));
+        builder.setClassSourceCode(DatasetUtils.getSourceCode(operation, sourcePath));
         builder.setPackageName(DatasetUtils.getPackageName(operation));
         builder.setClassName(DatasetUtils.getClassName(operation));
+        builder.setClassJavadoc(DatasetUtils.getClassJavadoc(operation, sourcePath));
 
         /*
             private String methodJavadoc;
             private String methodSourceCode;
-            private String classJavadoc;
             private List<Pair<String, String>> tokensProjectClasses; // <token, package>
             private List<Quartet<String, String, String, String>> tokensProjectClassesNonPrivateStaticNonVoidMethods; // <token, package, class, signature>
             private List<Quartet<String, String, String, String>> tokensProjectClassesNonPrivateStaticAttributes; // <token, package, class, declaration>

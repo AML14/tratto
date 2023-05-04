@@ -4,6 +4,7 @@ import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
+import com.github.javaparser.ast.comments.JavadocComment;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.resolution.MethodUsage;
 import com.github.javaparser.resolution.UnsolvedSymbolException;
@@ -17,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import star.tratto.dataset.oracles.OracleDatapoint;
 import star.tratto.exceptions.PrimaryTypeNotFoundException;
+import star.tratto.identifiers.Javadoc;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.util.JavaTypes;
 
@@ -354,6 +356,28 @@ public class JavaParserUtils {
         TypeDeclaration<?> jpClass = getPrimaryTypeFromCompilationUnit(cu);
         // convert class to string.
         return jpClass.toString();
+    }
+
+    public static String getJavadocFromCompilationUnit(
+            CompilationUnit cu
+    ) throws PrimaryTypeNotFoundException {
+        // get primary class of CompilationUnit.
+        TypeDeclaration<?> jpClass = getPrimaryTypeFromCompilationUnit(cu);
+        // try to retrieve class JavaDoc comment.
+        Optional<JavadocComment> jpJavadocComment = jpClass.getJavadocComment();
+        // if not found, extract using pattern matcher.
+        if (jpJavadocComment.isEmpty()) {
+            String input = jpClass.toString();
+            Pattern pattern = Pattern.compile("/\\*\\*(.*?)\\*/", Pattern.DOTALL);
+            Matcher matcher = pattern.matcher(input);
+            // if pattern is found, extract information.
+            if (matcher.find()) {
+                String content = matcher.group(1);
+                return Javadoc.METHOD_PREFIX.getValue() + content + Javadoc.METHOD_SUFFIX.getValue();
+            }
+            return "";
+        }
+        return Javadoc.CLASS_PREFIX.getValue() + jpJavadocComment.get().getContent() + Javadoc.CLASS_SUFFIX.getValue();
     }
 
     public static Optional<CompilationUnit> getCompilationUnitFromFilePath(String filePath) {
