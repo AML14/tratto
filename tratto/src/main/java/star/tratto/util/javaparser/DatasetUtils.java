@@ -1,8 +1,13 @@
 package star.tratto.util.javaparser;
 
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.body.CallableDeclaration;
+import com.github.javaparser.ast.body.ConstructorDeclaration;
+import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.stmt.BlockStmt;
 import star.tratto.dataset.oracles.JDoctorCondition.*;
 import star.tratto.exceptions.PrimaryTypeNotFoundException;
+import star.tratto.identifiers.JPCallableType;
 import star.tratto.identifiers.file.*;
 import static star.tratto.util.javaparser.JavaParserUtils.*;
 
@@ -10,6 +15,17 @@ import java.nio.file.Paths;
 import java.util.*;
 
 public class DatasetUtils {
+    private String getCallableSourceCode(
+            CallableDeclaration<?> jpCallable,
+            JPCallableType jpCallableType
+    ) {
+        String jpSignature = JavaParserUtils.getCallableSignature(jpCallable);
+        Optional<BlockStmt> jpBody = jpCallableType == JPCallableType.CONSTRUCTOR ?
+                Optional.ofNullable(((ConstructorDeclaration) jpCallable).getBody()) :
+                ((MethodDeclaration) jpCallable).getBody();
+        return jpSignature + (jpBody.isEmpty() ? ";" : jpBody.get().toString());
+    }
+
     public static String getClassJavadoc(
             Operation operation,
             String sourcePath
