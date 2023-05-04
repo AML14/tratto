@@ -28,6 +28,7 @@ public class TokensDataset {
     public static String ORACLES_DATASET_FOLDER = "src/main/resources/oracles-dataset/";
     public static String TOKENS_DATASET_FOLDER = "src/main/resources/tokens-dataset/";
     private static int tokenIndex = 0;
+    private static final boolean crashOnWrongOracle = false;
 
     public static void main(String[] args) throws IOException {
         File[] oraclesDatasetFiles = new File(ORACLES_DATASET_FOLDER).listFiles();
@@ -44,7 +45,13 @@ public class TokensDataset {
             for (Map rawOracleDatapoint : rawOracleDatapoints) {
                 OracleDatapoint oracleDatapoint = new OracleDatapoint(rawOracleDatapoint);
                 logger.info("Processing oracle: {}", oracleDatapoint.getOracle());
-                List<TokenDatapoint> tokenDatapoints = oracleDatapointToTokenDatapoints(oracleDatapoint);
+                List<TokenDatapoint> tokenDatapoints;
+                try {
+                    tokenDatapoints = oracleDatapointToTokenDatapoints(oracleDatapoint);
+                } catch (MissingTokenException e) {
+                    logger.error(e.getMessage());
+                    continue;
+                }
                 if (!tokenDatapoints.isEmpty()) {
                     tokensDatasetOutputStream.write(objectMapper.writeValueAsBytes(tokenDatapoints.get(0)));
                 }
@@ -126,7 +133,18 @@ public class TokensDataset {
 
     private static void assertTokenLegal(boolean nextTokenActuallyLegal, String token, List<String> oracleSoFarTokens) {
         if (!nextTokenActuallyLegal) {
-            throw new RuntimeException("Token '" + token + "' is not legal after partial oracle '" + compactExpression(oracleSoFarTokens) + "'");
+            String message = "Token '" + token + "' is not legal after partial oracle '" + compactExpression(oracleSoFarTokens) + "'";
+            if (crashOnWrongOracle) {
+                throw new RuntimeException(message);
+            } else {
+                throw new MissingTokenException(message);
+            }
+        }
+    }
+
+    public static class MissingTokenException extends RuntimeException {
+        public MissingTokenException(String message) {
+            super(message);
         }
     }
 }
