@@ -31,7 +31,10 @@ public class OracleDatapointBuilder {
                 FileName.TOKENS_GRAMMAR,
                 FileFormat.JSON
         );
-        List<String> tokenGrammar = (List<String>) FileUtils.readJSONList(tokensGrammarPath);
+        List<String> tokenGrammar = FileUtils.readJSONList(tokensGrammarPath)
+                .stream()
+                .map(e -> (String) e)
+                .collect(Collectors.toList());
         this.setTokensGeneralGrammar(tokenGrammar);
     }
 
@@ -41,9 +44,15 @@ public class OracleDatapointBuilder {
                 FileName.TOKENS_GENERAL_VALUES,
                 FileFormat.JSON
         );
-        List<Pair<String, String>> tokenGeneralValues = ((List<List<String>>) FileUtils.readJSONList(tokenGeneralValuesPath))
+        List<Pair<String, String>> tokenGeneralValues = FileUtils.readJSONList(tokenGeneralValuesPath)
                 .stream()
-                .map(tokenList -> new Pair<>(tokenList.get(0),tokenList.get(1)))
+                .map(e -> ((List<?>) e)
+                        .stream()
+                        .map(o -> (String) o)
+                        .collect(Collectors.toList()))
+                .collect(Collectors.toList())
+                .stream()
+                .map(tokenList -> new Pair<>(tokenList.get(0), tokenList.get(1)))
                 .collect(Collectors.toList());
         this.setTokensGeneralValuesGlobalDictionary(tokenGeneralValues);
     }
@@ -92,7 +101,11 @@ public class OracleDatapointBuilder {
         } else if (condition instanceof PreCondition) {
             this.setPreConditionInfo((PreCondition) condition);
         } else if (condition instanceof List<?>) {
-            this.setPostConditionInfo((List<PostCondition>) condition);
+            List<PostCondition> conditionList = ((List<?>) condition)
+                    .stream()
+                    .map(e -> (PostCondition) e)
+                    .collect(Collectors.toList());
+            this.setPostConditionInfo(conditionList);
         }
     }
 
