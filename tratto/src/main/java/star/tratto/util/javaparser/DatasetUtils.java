@@ -29,7 +29,7 @@ public class DatasetUtils {
         return javadoc;
     }
 
-    public static String getSourceCode(
+    public static String getClassSourceCode(
             Operation operation,
             String sourcePath
     ) {

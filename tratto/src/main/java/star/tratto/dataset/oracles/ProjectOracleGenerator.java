@@ -6,7 +6,6 @@ import star.tratto.dataset.oracles.JDoctorCondition.PostCondition;
 import star.tratto.dataset.oracles.JDoctorCondition.ThrowsCondition;
 import star.tratto.util.javaparser.DatasetUtils;
 
-import javax.xml.crypto.Data;
 import java.util.*;
 
 /**
@@ -88,7 +87,7 @@ public class ProjectOracleGenerator {
         builder.setId(this.getId());
         builder.setConditionInfo(condition);
         builder.setProjectName(this.project.getProjectName());
-        builder.setClassSourceCode(DatasetUtils.getSourceCode(operation, sourcePath));
+        builder.setClassSourceCode(DatasetUtils.getClassSourceCode(operation, sourcePath));
         builder.setPackageName(DatasetUtils.getPackageName(operation));
         builder.setClassName(DatasetUtils.getClassName(operation));
         builder.setClassJavadoc(DatasetUtils.getClassJavadoc(operation, sourcePath));
