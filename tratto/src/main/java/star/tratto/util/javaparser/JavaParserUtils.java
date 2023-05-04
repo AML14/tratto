@@ -2,6 +2,7 @@ package star.tratto.util.javaparser;
 
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.body.CallableDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.comments.JavadocComment;
@@ -302,8 +303,8 @@ public class JavaParserUtils {
      * The JavaParser method getDeclarationAsString() may return leading or trailing spaces, this method
      * fixes that.
      */
-    public static String getMethodSignature(MethodDeclaration methodDeclaration) {
-        return methodDeclaration.getDeclarationAsString().trim();
+    public static String getCallableSignature(CallableDeclaration<?> callableDeclaration) {
+        return callableDeclaration.getDeclarationAsString().trim();
     }
 
     /**
@@ -318,7 +319,7 @@ public class JavaParserUtils {
      *     <li>We lose parameter names, which are replaced by "arg0", "arg1", etc.</li>
      * </ul>
      */
-    public static String getMethodSignature(MethodUsage methodUsage) {
+    public static String getCallableSignature(MethodUsage methodUsage) {
         Matcher matcher = METHOD_SIGNATURE.matcher(methodUsage.getDeclaration().toString());
         if (!matcher.find()) {
             throw new IllegalStateException("Could not parse method signature: " + methodUsage.getDeclaration().toString());

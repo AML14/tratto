@@ -185,7 +185,7 @@ public class JavaParserUtilsTest {
                 .getResult().get()
                 .getLocalDeclarationFromClassname(className).get(0)
                 .getMethodsByName(methodName).get(0);
-        assertEquals(expectedMethodSignature, getMethodSignature(methodDeclaration));
+        assertEquals(expectedMethodSignature, getCallableSignature(methodDeclaration));
     }
 
     private static Stream<Arguments> getMethodSignatureFromDeclarationParameterizedTestData() {
@@ -215,7 +215,7 @@ public class JavaParserUtilsTest {
                 .stream()
                 .filter(method -> method.getName().equals(methodName))
                 .findFirst().get();
-        assertEquals(expectedMethodSignature, getMethodSignature(methodUsage));
+        assertEquals(expectedMethodSignature, getCallableSignature(methodUsage));
     }
 
     private static Stream<Arguments> getMethodSignatureFromUsageParameterizedTestData() {
