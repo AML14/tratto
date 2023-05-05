@@ -91,6 +91,7 @@ public class ProjectOracleGenerator {
         builder.setPackageName(DatasetUtils.getPackageName(operation));
         builder.setClassName(DatasetUtils.getClassName(operation));
         builder.setClassJavadoc(DatasetUtils.getClassJavadoc(operation, sourcePath));
+        builder.setTokensProjectClasses(DatasetUtils.getTokensProjectClasses(sourcePath));
 
         /*
             private String methodJavadoc;

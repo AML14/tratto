@@ -2,6 +2,7 @@ package star.tratto.util.javaparser;
 
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.body.CallableDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
@@ -18,6 +19,7 @@ import org.javatuples.Triplet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import star.tratto.dataset.oracles.OracleDatapoint;
+import star.tratto.exceptions.PackageDeclarationNotFoundException;
 import star.tratto.exceptions.PrimaryTypeNotFoundException;
 import star.tratto.identifiers.Javadoc;
 import star.tratto.oraclegrammar.custom.Parser;
@@ -338,6 +340,18 @@ public class JavaParserUtils {
 
         return methodModifiers + " " + methodReturnType + " " + methodName + "(" + String.join(", ", methodParameters) + ")" +
                 (methodExceptions.isEmpty() ? "" : " throws " + String.join(", ", methodExceptions));
+    }
+
+    public static PackageDeclaration getPackageDeclarationFromCompilationUnit(
+            CompilationUnit cu
+    ) throws PackageDeclarationNotFoundException {
+        Optional<PackageDeclaration> jpPackage = cu.getPackageDeclaration();
+        if (jpPackage.isEmpty()) {
+            throw new PackageDeclarationNotFoundException(
+                    "The Java Parser package declaration of the compilation unit is empty"
+            );
+        }
+        return jpPackage.get();
     }
 
     private static TypeDeclaration<?> getPrimaryTypeFromCompilationUnit(

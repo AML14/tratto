@@ -1,20 +1,28 @@
 package star.tratto.util.javaparser;
 
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.body.CallableDeclaration;
 import com.github.javaparser.ast.body.ConstructorDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
 import star.tratto.dataset.oracles.JDoctorCondition.*;
+import star.tratto.exceptions.PackageDeclarationNotFoundException;
 import star.tratto.exceptions.PrimaryTypeNotFoundException;
 import star.tratto.identifiers.JPCallableType;
 import star.tratto.identifiers.file.*;
+import star.tratto.identifiers.path.Path;
+import star.tratto.util.FileUtils;
+
 import static star.tratto.util.javaparser.JavaParserUtils.*;
 
+import java.io.File;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class DatasetUtils {
     private String getCallableSourceCode(
@@ -95,6 +103,62 @@ public class DatasetUtils {
         List<String> pathList = JDoctorUtils.getPathList(operation.getClassName());
         List<String> packageList = JDoctorUtils.getPackageList(pathList);
         return JDoctorUtils.getPackageNameFromPackageList(packageList);
+    }
+
+    private static List<Pair<String, String>> getClassNameAndPackageFromCompilationUnit(
+            CompilationUnit cu
+    ) throws PackageDeclarationNotFoundException {
+        List<Pair<String, String>> pairList = new ArrayList<>();
+        // get all classes in compilation unit.
+        List<TypeDeclaration<?>> jpClasses = cu.getTypes();
+        // get package.
+        PackageDeclaration jpPackage = getPackageDeclarationFromCompilationUnit(cu);
+        String packageName = jpPackage.getNameAsString();
+        // add pair for each class.
+        for (TypeDeclaration<?> jpClass : jpClasses) {
+            String className = jpClass.resolve().getClassName();
+            pairList.add(new Pair<>(className, packageName));
+        }
+        return pairList;
+    }
+
+    public static List<Pair<String, String>> getTokensProjectClasses(
+            String sourcePath
+    ) {
+        // get all files from source.
+        File sourceDir = new File(sourcePath);
+        List<File> javaFiles = FileUtils.extractJavaFilesFromDirectory(sourceDir);
+        List<Pair<String, String>> projectClasses = new ArrayList<>();
+        // get list of files to ignore.
+        String ignoreFilePath = Paths.get(
+                Path.REPOS.getValue(),
+                FileName.IGNORE_FILE.getValue() + FileFormat.JSON.getValue()
+        ).toString();
+        List<String> ignoreFileList = FileUtils.readJSONList(ignoreFilePath)
+                .stream()
+                .map(e -> (String) e)
+                .collect(Collectors.toList());
+        // iterate through each file and add class tokens.
+        for (File javaFile : javaFiles) {
+            String javaFilename = javaFile.getName().replace(FileFormat.JAVA.getValue(), "");
+            // ignore specified files.
+            if (ignoreFileList.contains(javaFilename)) {
+                continue;
+            }
+            String filePath = javaFile.getAbsolutePath();
+            Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnitFromFilePath(filePath);
+            // ignore if CompilationUnit is empty.
+            if (cu.isEmpty()) {
+                continue;
+            }
+            // add (package, class) token pairs.
+            try {
+                projectClasses.addAll(getClassNameAndPackageFromCompilationUnit(cu.get()));
+            } catch (PackageDeclarationNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        return projectClasses;
     }
 
     public static String getClassName(
