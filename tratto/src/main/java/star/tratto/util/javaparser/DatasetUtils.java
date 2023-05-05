@@ -8,7 +8,6 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import org.javatuples.Pair;
-import org.javatuples.Triplet;
 import star.tratto.dataset.oracles.JDoctorCondition.*;
 import star.tratto.exceptions.PackageDeclarationNotFoundException;
 import star.tratto.exceptions.PrimaryTypeNotFoundException;
@@ -36,6 +35,7 @@ public class DatasetUtils {
         return jpSignature + (jpBody.isEmpty() ? ";" : jpBody.get().toString());
     }
 
+    /*
     public static String getMethodSourceCode(
             Operation operation,
             String sourcePath
@@ -58,6 +58,7 @@ public class DatasetUtils {
 
         return methodSourceCode;
     }
+    */
 
     public static String getClassJavadoc(
             Operation operation,

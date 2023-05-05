@@ -96,7 +96,6 @@ public class ProjectOracleGenerator {
         /*
             private String methodJavadoc;
             private String methodSourceCode;
-            private List<Pair<String, String>> tokensProjectClasses; // <token, package>
             private List<Quartet<String, String, String, String>> tokensProjectClassesNonPrivateStaticNonVoidMethods; // <token, package, class, signature>
             private List<Quartet<String, String, String, String>> tokensProjectClassesNonPrivateStaticAttributes; // <token, package, class, declaration>
             private List<Pair<String, String>> tokensMethodJavadocValues; // <token, type>

@@ -13,8 +13,27 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class JDoctorUtils {
+    /**
+     * The method converts the list of JDoctor type names {@code jDoctorTypeNames} into a list of JavaParser type names.
+     * For example, the JDoctor type name <span>[D</span> represents a list of doubles, and the corresponding type name in
+     * JavaParser is <span>double[]</span>. The method apply these conversions from JDoctor type names to JavaParser type
+     * names.
+     *
+     * @param jDoctorTypeNames The list of JDoctor type names to convert
+     * @return The list of the corresponding JavaParser type names
+     */
+    public static List<String> convertJDoctorConditionTypeNames2JavaParserTypeNames(
+            List<String> jDoctorTypeNames
+    ) {
+        return jDoctorTypeNames
+                .stream()
+                .map(JDoctorUtils::convertConditionParameterType)
+                .collect(Collectors.toList());
+    }
+
     public static String convertConditionToArrayType(String arrayType) {
         int howMany = 0;
         for (char c : arrayType.toCharArray()) {
