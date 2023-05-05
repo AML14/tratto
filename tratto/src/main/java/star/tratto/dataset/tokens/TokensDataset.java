@@ -1,6 +1,7 @@
 package star.tratto.dataset.tokens;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.io.FileUtils;
 import org.javatuples.Triplet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,20 +29,23 @@ public class TokensDataset {
     public static String ORACLES_DATASET_FOLDER = "src/main/resources/oracles-dataset/";
     public static String TOKENS_DATASET_FOLDER = "src/main/resources/tokens-dataset/";
     private static int tokenIndex = 0;
+    private static int fileIndex = 0;
     private static final boolean crashOnWrongOracle = false;
 
     public static void main(String[] args) throws IOException {
+        File tokensDatasetFolder = new File(TOKENS_DATASET_FOLDER);
+        FileUtils.deleteDirectory(tokensDatasetFolder);
+        tokensDatasetFolder.mkdir();
         File[] oraclesDatasetFiles = new File(ORACLES_DATASET_FOLDER).listFiles();
         for (File oraclesDatasetFile : oraclesDatasetFiles) { // Assume that only dataset files are in the folder
             logger.info("------------------------------------------------------------");
             logger.info("Processing file: {}", oraclesDatasetFile.getName());
             logger.info("------------------------------------------------------------");
-            List<Map> rawOracleDatapoints = objectMapper.readValue(oraclesDatasetFile, List.class);
-            File tokensDatasetFile = new File(TOKENS_DATASET_FOLDER + oraclesDatasetFile.getName());
+            File tokensDatasetFile = new File(TOKENS_DATASET_FOLDER + fileIndex++ + "_" + oraclesDatasetFile.getName());
             tokensDatasetFile.delete();
             FileOutputStream tokensDatasetOutputStream = new FileOutputStream(tokensDatasetFile, true);
-            tokensDatasetOutputStream.write("[".getBytes());
 
+            List<Map> rawOracleDatapoints = objectMapper.readValue(oraclesDatasetFile, List.class);
             for (Map rawOracleDatapoint : rawOracleDatapoints) {
                 OracleDatapoint oracleDatapoint = new OracleDatapoint(rawOracleDatapoint);
                 logger.info("Processing oracle: {}", oracleDatapoint.getOracle());
@@ -52,11 +56,20 @@ public class TokensDataset {
                     logger.error(e.getMessage());
                     continue;
                 }
-                if (!tokenDatapoints.isEmpty()) {
-                    tokensDatasetOutputStream.write(objectMapper.writeValueAsBytes(tokenDatapoints.get(0)));
-                }
+
                 for (int i=1; i<tokenDatapoints.size(); i++) {
-                    tokensDatasetOutputStream.write(",".getBytes());
+                    if (tokensDatasetFile.length() == 0) {
+                        tokensDatasetOutputStream.write("[".getBytes());
+                    } else if (tokensDatasetFile.length() / 1000 / 1000 > 48) { // Limit file size to 50 MB
+                        tokensDatasetOutputStream.write("]".getBytes());
+                        tokensDatasetOutputStream.close();
+                        tokensDatasetFile = new File(TOKENS_DATASET_FOLDER + fileIndex++ + "_" + oraclesDatasetFile.getName());
+                        tokensDatasetFile.delete();
+                        tokensDatasetOutputStream = new FileOutputStream(tokensDatasetFile, true);
+                        tokensDatasetOutputStream.write("[".getBytes());
+                    } else {
+                        tokensDatasetOutputStream.write(",".getBytes());
+                    }
                     tokensDatasetOutputStream.write(objectMapper.writeValueAsBytes(tokenDatapoints.get(i)));
                 }
             }
