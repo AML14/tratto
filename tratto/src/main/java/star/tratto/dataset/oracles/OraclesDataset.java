@@ -22,6 +22,7 @@ public class OraclesDataset {
         ProjectOracleGenerator oracleDPGenerator = new ProjectOracleGenerator();
 
         for (Project project : projects) {
+            /*
             System.out.println("Collecting data from: " + project.getProjectName());
             JDoctorCondition[] jDocConditions = jDoctorConditionParser.parseJDoctorConditions(project);
             oracleDPGenerator.loadProject(
@@ -50,6 +51,7 @@ public class OraclesDataset {
                 );
                 System.err.println(errMsg);
             }
+             */
         }
     }
 }
