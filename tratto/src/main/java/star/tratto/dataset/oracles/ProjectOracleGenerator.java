@@ -85,13 +85,13 @@ public class ProjectOracleGenerator {
         OracleDatapointBuilder builder = new OracleDatapointBuilder();
         String sourcePath = this.project.getSrcPath();
         builder.setId(this.getId());
-        builder.setConditionInfo(condition);
+        // builder.setConditionInfo(condition);
         builder.setProjectName(this.project.getProjectName());
-        builder.setClassSourceCode(DatasetUtils.getClassSourceCode(operation, sourcePath));
+        // builder.setClassSourceCode(DatasetUtils.getClassSourceCode(operation, sourcePath));
         builder.setPackageName(DatasetUtils.getPackageName(operation));
-        builder.setClassName(DatasetUtils.getClassName(operation));
-        builder.setClassJavadoc(DatasetUtils.getClassJavadoc(operation, sourcePath));
-        builder.setTokensProjectClasses(DatasetUtils.getTokensProjectClasses(sourcePath));
+        // builder.setClassName(DatasetUtils.getClassName(operation));
+        // builder.setClassJavadoc(DatasetUtils.getClassJavadoc(operation, sourcePath));
+        // builder.setTokensProjectClasses(DatasetUtils.getTokensProjectClasses(sourcePath));
 
         /*
             private String methodJavadoc;
