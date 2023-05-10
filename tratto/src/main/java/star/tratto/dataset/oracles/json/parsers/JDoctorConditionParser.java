@@ -13,21 +13,20 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * A helper class that deserialize the JDoctor conditions in JSON format, generating the corresponding Java record
- * representations.
+ * A helper class that deserializes the JDoctor conditions in JSON format,
+ * generating the corresponding JDoctorCondition object representations.
  */
 public class JDoctorConditionParser {
     /**
-     * Given a Java project the method reads all the JSON files containing
-     * JDoctor conditions in JSON format, and returns an array of
-     * {@link JDoctorCondition} objects, representing the corresponding Java
-     * records of all the JDoctor conditions of the project.
+     * Given a Java project, the method reads all the JSON files containing
+     * JDoctor conditions in JSON format, and returns a list of
+     * {@link JDoctorCondition} objects, representing the corresponding
+     * data of all JDoctor conditions of the project.
      *
-     * @param project The Java project associated to the JDoctor conditions
+     * @param project The project associated to the JDoctor conditions
      *                to parse.
-     * @return An array of {@link JDoctorCondition} objects, representing the
-     * Java record representations of the original JDoctor conditions in the
-     * JSON format.
+     * @return A list of {@link JDoctorCondition} objects, representing the
+     * original JDoctor conditions in the JSON format.
      */
     public List<JDoctorCondition> parseJDoctorConditions(Project project) {
         // get path of JDoctor conditions.
@@ -44,12 +43,15 @@ public class JDoctorConditionParser {
     }
 
     /**
-     * The method reads a JSON file containing a list of JDoctor conditions, and maps it to a Java array of {@link JDoctorCondition}.
+     * The method reads a JSON file containing a list of JDoctor conditions,
+     * and maps it to a list of {@link JDoctorCondition}.
      *
-     * @param jDoctorConditionsFile A file {@link File} that points to the JSON file that contains the list of JDoctor
-     *                              conditions.
-     * @return An array of {@link JDoctorCondition} representing the Java record representations of the original JDoctor
-     * conditions in the JSON format, of the file passed to the function.
+     * @param jDoctorConditionsFile A file {@link File} that points to the
+     *                              JSON file that contains the list of
+     *                              JDoctor conditions.
+     * @return An array of {@link JDoctorCondition} representing the original
+     * JDoctor conditions in the JSON format, of the file passed to the
+     * function.
      */
     private List<JDoctorCondition> json2java(File jDoctorConditionsFile) {
         ObjectMapper objectMapper = new ObjectMapper();
