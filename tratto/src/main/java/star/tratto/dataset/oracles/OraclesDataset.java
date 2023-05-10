@@ -22,20 +22,12 @@ public class OraclesDataset {
         ProjectOracleGenerator oracleDPGenerator = new ProjectOracleGenerator();
 
         for (Project project : projects) {
-            /*
             System.out.println("Collecting data from: " + project.getProjectName());
-            JDoctorCondition[] jDocConditions = jDoctorConditionParser.parseJDoctorConditions(project);
-            oracleDPGenerator.loadProject(
-                    project,
-                    jDocConditions
-            );
+            // get JDoctor conditions and load project to generator.
+            List<JDoctorCondition> jDoctorConditions = jDoctorConditionParser.parseJDoctorConditions(project);
+            oracleDPGenerator.loadProject(project, jDoctorConditions);
             List<OracleDatapoint> oracleDPList = oracleDPGenerator.generate();
-            String fileName = String.format(
-                    "%s_%s",
-                    FileName.ORACLE_DATAPOINTS.getValue(),
-                    project.getProjectName()
-            );
-
+            /* Additional code for writing data points to file.
             try {
                 FileUtils.write(
                         Paths.get(Path.OUTPUT.getValue(), project.getProjectName()).toString(),
