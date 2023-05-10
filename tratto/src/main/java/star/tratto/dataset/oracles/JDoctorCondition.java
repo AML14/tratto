@@ -3,7 +3,6 @@ package star.tratto.dataset.oracles;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
-import java.util.concurrent.locks.Condition;
 
 /**
  * The record models the features of a JDoctor condition.
@@ -48,7 +47,7 @@ public class JDoctorCondition {
      *     conditions refers.</li>
      * </ol>
      */
-    public class Operation{
+    public static class Operation{
         @JsonProperty("classname")
         private String classname;
         @JsonProperty("name")
@@ -81,7 +80,7 @@ public class JDoctorCondition {
      *     by JDoctor (always *methodResultID*).</li>
      * </ol>
      */
-    public class Identifiers{
+    public static class Identifiers{
         @JsonProperty("parameters")
         private List<String> parameters;
         @JsonProperty("receiverName")
@@ -115,7 +114,7 @@ public class JDoctorCondition {
      *     is thrown.</li>
      * </ol>
      */
-    public class ThrowsCondition {
+    public static class ThrowsCondition {
         @JsonProperty("exception")
         private String exception;
         @JsonProperty("description")
@@ -148,7 +147,7 @@ public class JDoctorCondition {
      *     corresponding oracle must be true as well. Moreover, it contains the textual description of the guard condition.
      * </ol>
      */
-    public class PostCondition {
+    public static class PostCondition {
         @JsonProperty("property")
         private Property property;
         @JsonProperty("description")
@@ -177,7 +176,7 @@ public class JDoctorCondition {
      *     JDoctor pre-condition is verified. Moreover, it contains the textual description of the guard condition.</li>
      * </ol>
      */
-    public class PreCondition {
+    public static class PreCondition {
         @JsonProperty("description")
         private String description;
         @JsonProperty("guard")
@@ -202,7 +201,7 @@ public class JDoctorCondition {
      *     <li><span>description</span> The textual description of the guard JDoctor condition.</li>
      * </ol>
      */
-    public class Guard{
+    public static class Guard{
         @JsonProperty("condition")
         private String condition;
         @JsonProperty("description")
@@ -226,7 +225,7 @@ public class JDoctorCondition {
      *     <li><span>description</span> The textual description of the JDoctor post-condition oracle.</li>
      * </ol>
      */
-    public class Property {
+    public static class Property {
         @JsonProperty("condition")
         private String condition;
         @JsonProperty("description")
