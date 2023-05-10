@@ -16,7 +16,7 @@ public class ProjectOracleGenerator {
     private int idCounter;
     private int checkpoint;
     private Project project;
-    private JDoctorCondition[] jDoctorConditions;
+    private List<JDoctorCondition> jDoctorConditions;
 
     /**
      * Create a new instance of ProjectOracleGenerator.
@@ -45,7 +45,7 @@ public class ProjectOracleGenerator {
      */
     public void loadProject(
             Project project,
-            JDoctorCondition[] jDocConditions
+            List<JDoctorCondition> jDocConditions
     ) {
         this.project = project;
         this.jDoctorConditions = jDocConditions;
