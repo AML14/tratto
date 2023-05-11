@@ -9,6 +9,7 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import org.javatuples.Pair;
+import org.javatuples.Quartet;
 import star.tratto.dataset.oracles.JDoctorCondition.*;
 import star.tratto.exceptions.PackageDeclarationNotFoundException;
 import star.tratto.exceptions.PrimaryTypeNotFoundException;
@@ -86,13 +87,10 @@ public class DatasetUtils {
         return pairList;
     }
 
-    public static List<Pair<String, String>> getTokensProjectClasses(
-            String sourcePath
-    ) {
-        // get all files from source.
+    private static List<File> getValidJavaFiles(String sourcePath) {
+        // get all java files from source.
         File sourceDir = new File(sourcePath);
-        List<File> javaFiles = FileUtils.extractJavaFilesFromDirectory(sourceDir);
-        List<Pair<String, String>> projectClasses = new ArrayList<>();
+        List<File> allFiles = FileUtils.extractJavaFilesFromDirectory(sourceDir);
         // get list of files to ignore.
         String ignoreFilePath = Paths.get(
                 Path.REPOS.getValue(),
@@ -102,13 +100,24 @@ public class DatasetUtils {
                 .stream()
                 .map(e -> (String) e)
                 .collect(Collectors.toList());
+        // filter files.
+        List<File> validFiles = new ArrayList<>();
+        for (File file : allFiles) {
+            String filename = file.getName().replace(FileFormat.JAVA.getValue(), "");
+            if (!ignoreFileList.contains(filename)) {
+                validFiles.add(file);
+            }
+        }
+        return validFiles;
+    }
+
+    public static List<Pair<String, String>> getTokensProjectClasses(
+            String sourcePath
+    ) {
+        List<Pair<String, String>> projectClasses = new ArrayList<>();
+        List<File> javaFiles = getValidJavaFiles(sourcePath);
         // iterate through each file and add class tokens.
         for (File javaFile : javaFiles) {
-            String javaFilename = javaFile.getName().replace(FileFormat.JAVA.getValue(), "");
-            // ignore specified files.
-            if (ignoreFileList.contains(javaFilename)) {
-                continue;
-            }
             String filePath = javaFile.getAbsolutePath();
             Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnitFromFilePath(filePath);
             // ignore if CompilationUnit is empty.
@@ -123,6 +132,12 @@ public class DatasetUtils {
             }
         }
         return projectClasses;
+    }
+
+    public static List<Quartet<String, String, String, String>> getTokensProjectClassesNonPrivateNonStaticNonVoidMethods(
+            String sourcePath
+    ) {
+        return null;
     }
 
     public static String getClassName(
