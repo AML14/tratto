@@ -395,6 +395,13 @@ public class JavaParserUtils {
         return Javadoc.CLASS_PREFIX.getValue() + jpJavadocComment.get().getContent() + Javadoc.CLASS_SUFFIX.getValue();
     }
 
+    /**
+     * Get corresponding JavaParser compilation unit {@link CompilationUnit}
+     * from the given file path {@link String}.
+     *
+     * @param filePath the absolute path to the file.
+     * @return An optional JavaParser compilation unit {@link CompilationUnit}.
+     */
     public static Optional<CompilationUnit> getCompilationUnitFromFilePath(String filePath) {
         File file = new File(filePath);
         try {

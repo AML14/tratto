@@ -1,6 +1,7 @@
 package star.tratto.util.javaparser;
 
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.body.CallableDeclaration;
 import com.github.javaparser.ast.body.ConstructorDeclaration;
@@ -9,6 +10,7 @@ import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import org.javatuples.Pair;
 import star.tratto.dataset.oracles.JDoctorCondition.*;
+import star.tratto.exceptions.JPClassNotFoundException;
 import star.tratto.exceptions.PackageDeclarationNotFoundException;
 import star.tratto.exceptions.PrimaryTypeNotFoundException;
 import star.tratto.identifiers.JPCallableType;
@@ -169,6 +171,43 @@ public class DatasetUtils {
         return JDoctorUtils.getClassNameFromPathList(pathList);
     }
 
+    /**
+     * Gets the TypeDeclaration of a class from the given CompilationUnit.
+     *
+     * @param cu the compilation unit of a file.
+     * @param className the name of the desired class.
+     * @return returns the TypeDeclaration corresponding to ``className`` in
+     * ``cu`` (if it exists). Returns null if no such class exists.
+     */
+    public static TypeDeclaration<?> getTypeDeclaration(
+            CompilationUnit cu,
+            String className
+    ) {
+        // get all classes in the compilation unit.
+        NodeList<TypeDeclaration<?>> typeList = cu.getTypes();
+        // throw error if no classes are found.
+        if (typeList == null) {
+            return null;
+        }
+        // iterate through classes to find corresponding class.
+        for (TypeDeclaration<?> jpClass : typeList) {
+            if (jpClass.getNameAsString().equals(className)) {
+                return jpClass;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Gets the JavaParser compilation unit {@link CompilationUnit}
+     * corresponding to the class of the JDoctor condition.
+     *
+     * @param operation a JDoctor operation object of a JDoctor condition.
+     * @param sourcePath the source path of the relevant project.
+     * @return An optional JavaParser compilation unit {@link CompilationUnit}
+     * corresponding to the class of the JDoctor condition, if it is found.
+     * Otherwise, the method returns an empty optional.
+     */
     public static Optional<CompilationUnit> getClassCompilationUnit(
             Operation operation,
             String sourcePath
