@@ -61,44 +61,6 @@ public class DatasetUtils {
     }
     */
 
-    public static String getClassJavadoc(
-            Operation operation,
-            String sourcePath
-    ) {
-        String javadoc = "";
-        // get class of compilation unit.
-        Optional<CompilationUnit> cu = getClassCompilationUnit(operation, sourcePath);
-        if (cu.isPresent()) {
-            try {
-                javadoc = JavaParserUtils.getJavadocFromCompilationUnit(cu.get());
-            } catch (PrimaryTypeNotFoundException e) {
-                // return empty source code if class is not found.
-                e.printStackTrace();
-                return javadoc;
-            }
-        }
-        return javadoc;
-    }
-
-    public static String getClassSourceCode(
-            Operation operation,
-            String sourcePath
-    ) {
-        String source = "";
-        // get class of compilation unit.
-        Optional<CompilationUnit> cu = getClassCompilationUnit(operation, sourcePath);
-        if (cu.isPresent()) {
-            try {
-                source = JavaParserUtils.getSourceFromCompilationUnit(cu.get());
-            } catch (PrimaryTypeNotFoundException e) {
-                // return empty source code if class is not found.
-                e.printStackTrace();
-                return source;
-            }
-        }
-        return source;
-    }
-
     public static String getPackageName(
             Operation operation
     ) {

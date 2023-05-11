@@ -1,10 +1,13 @@
 package star.tratto.dataset.oracles;
 
+import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.body.TypeDeclaration;
 import star.tratto.dataset.oracles.JDoctorCondition.Operation;
 import star.tratto.dataset.oracles.JDoctorCondition.PreCondition;
 import star.tratto.dataset.oracles.JDoctorCondition.PostCondition;
 import star.tratto.dataset.oracles.JDoctorCondition.ThrowsCondition;
 import star.tratto.util.javaparser.DatasetUtils;
+import star.tratto.util.javaparser.JavaParserUtils;
 
 import java.util.*;
 
@@ -83,14 +86,20 @@ public class ProjectOracleGenerator {
 
     private OracleDatapoint getNextDatapoint(Operation operation, Object condition) {
         OracleDatapointBuilder builder = new OracleDatapointBuilder();
+        // get basic information of operation.
         String sourcePath = this.project.getSrcPath();
+        String projectName = this.project.getProjectName();
+        String className = DatasetUtils.getClassName(operation);
+        CompilationUnit cu = DatasetUtils.getClassCompilationUnit(operation, sourcePath).get();
+        TypeDeclaration<?> jpClass = DatasetUtils.getTypeDeclaration(cu, className);
+        // set data point information.
         builder.setId(this.getId());
         // builder.setConditionInfo(condition);
-        builder.setProjectName(this.project.getProjectName());
-        // builder.setClassSourceCode(DatasetUtils.getClassSourceCode(operation, sourcePath));
+        builder.setProjectName(projectName);
+        builder.setClassSourceCode(jpClass.toString());
         builder.setPackageName(DatasetUtils.getPackageName(operation));
-        // builder.setClassName(DatasetUtils.getClassName(operation));
-        // builder.setClassJavadoc(DatasetUtils.getClassJavadoc(operation, sourcePath));
+        builder.setClassName(className);
+        builder.setClassJavadoc(JavaParserUtils.getClassJavadoc(jpClass));
         // builder.setTokensProjectClasses(DatasetUtils.getTokensProjectClasses(sourcePath));
 
         /*

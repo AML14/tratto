@@ -364,23 +364,16 @@ public class JavaParserUtils {
         return primaryType.get();
     }
 
-    public static String getSourceFromCompilationUnit(
-            CompilationUnit cu
-    ) throws PrimaryTypeNotFoundException {
-        // get primary class of CompilationUnit.
-        TypeDeclaration<?> jpClass = getPrimaryTypeFromCompilationUnit(cu);
-        // convert class to string.
-        return jpClass.toString();
-    }
-
-    public static String getJavadocFromCompilationUnit(
-            CompilationUnit cu
-    ) throws PrimaryTypeNotFoundException {
-        // get primary class of CompilationUnit.
-        TypeDeclaration<?> jpClass = getPrimaryTypeFromCompilationUnit(cu);
-        // try to retrieve class JavaDoc comment.
+    /**
+     * Gets the Javadoc comment of the TypeDeclaration.
+     *
+     * @param jpClass a JavaParser class.
+     * @return A string {@link String} representing the Javadoc comment.
+     */
+    public static String getClassJavadoc(
+            TypeDeclaration<?> jpClass
+    ) {
         Optional<JavadocComment> jpJavadocComment = jpClass.getJavadocComment();
-        // if not found, extract using pattern matcher.
         if (jpJavadocComment.isEmpty()) {
             String input = jpClass.toString();
             Pattern pattern = Pattern.compile("/\\*\\*(.*?)\\*/", Pattern.DOTALL);
