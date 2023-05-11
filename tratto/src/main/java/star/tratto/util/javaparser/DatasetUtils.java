@@ -10,7 +10,6 @@ import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import org.javatuples.Pair;
 import star.tratto.dataset.oracles.JDoctorCondition.*;
-import star.tratto.exceptions.JPClassNotFoundException;
 import star.tratto.exceptions.PackageDeclarationNotFoundException;
 import star.tratto.exceptions.PrimaryTypeNotFoundException;
 import star.tratto.identifiers.JPCallableType;
