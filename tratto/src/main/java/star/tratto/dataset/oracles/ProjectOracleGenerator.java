@@ -94,7 +94,7 @@ public class ProjectOracleGenerator {
         TypeDeclaration<?> jpClass = DatasetUtils.getTypeDeclaration(cu, className);
         // set data point information.
         builder.setId(this.getId());
-        // builder.setConditionInfo(condition);
+        builder.setConditionInfo(condition);
         builder.setProjectName(projectName);
         builder.setClassSourceCode(jpClass.toString());
         builder.setPackageName(DatasetUtils.getPackageName(operation));

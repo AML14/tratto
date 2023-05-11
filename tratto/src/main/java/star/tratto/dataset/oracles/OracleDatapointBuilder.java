@@ -70,7 +70,7 @@ public class OracleDatapointBuilder {
     }
 
     private void setPostConditionInfo(List<PostCondition> conditionList) {
-        assert conditionList.size() >= 2;
+        assert conditionList.size() <= 2;
         // get base information from first post-condition.
         PostCondition mainCondition = conditionList.get(0);
         String mainTag = mainCondition.getDescription();
@@ -105,7 +105,9 @@ public class OracleDatapointBuilder {
                     .stream()
                     .map(e -> (PostCondition) e)
                     .collect(Collectors.toList());
-            this.setPostConditionInfo(conditionList);
+            if (conditionList.size() > 0) {
+                this.setPostConditionInfo(conditionList);
+            }
         }
     }
 
