@@ -3,10 +3,7 @@ package star.tratto.util.javaparser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.PackageDeclaration;
-import com.github.javaparser.ast.body.CallableDeclaration;
-import com.github.javaparser.ast.body.ConstructorDeclaration;
-import com.github.javaparser.ast.body.MethodDeclaration;
-import com.github.javaparser.ast.body.TypeDeclaration;
+import com.github.javaparser.ast.body.*;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import org.javatuples.Pair;
 import org.javatuples.Quartet;
@@ -111,6 +108,37 @@ public class DatasetUtils {
         return methodList;
     }
 
+    private static List<Quartet<String, String, String, String>> getNonPrivateStaticAttributes(
+            CompilationUnit cu
+    ) throws PackageDeclarationNotFoundException {
+        List<Quartet<String, String, String, String>> attributeList = new ArrayList<>();
+        // get package name.
+        String packageName = JavaParserUtils.getPackageDeclarationFromCompilationUnit(cu).getNameAsString();
+        // get all classes in compilation unit.
+        List<TypeDeclaration<?>> jpClasses = cu.getTypes();
+        // iterate over all classes.
+        for (TypeDeclaration<?> jpClass : jpClasses) {
+            String className = jpClass.getNameAsString();
+            List<FieldDeclaration> jpFields = jpClass.findAll(FieldDeclaration.class);
+            // iterate over all field declarations in a clas.
+            for (FieldDeclaration jpField : jpFields) {
+                // check if field declaration is non-private and static.
+                if (!jpField.isPrivate() && jpField.isStatic()) {
+                    // add each variable in declaration.
+                    for (VariableDeclarator jpVariable : jpField.getVariables()) {
+                        attributeList.add(new Quartet<>(
+                                jpVariable.getNameAsString(),
+                                packageName,
+                                className,
+                                JavaParserUtils.getVariableSignature(jpField, jpVariable)
+                        ));
+                    }
+                }
+            }
+        }
+        return attributeList;
+    }
+
     private static List<File> getValidJavaFiles(String sourcePath) {
         // get all java files from source.
         File sourceDir = new File(sourcePath);
@@ -173,6 +201,26 @@ public class DatasetUtils {
             }
         }
         return projectMethods;
+    }
+
+    public static List<Quartet<String, String, String, String>> getTokensProjectClassesNonPrivateStaticAttributes(
+            String sourcePath
+    ) {
+        List<Quartet<String, String, String, String>> attributeList = new ArrayList<>();
+        List<File> javaFiles = getValidJavaFiles(sourcePath);
+        // iterate through each file and add attribute tokens.
+        for (File javaFile : javaFiles) {
+            String filePath = javaFile.getAbsolutePath();
+            Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnitFromFilePath(filePath);
+            if (cu.isPresent()) {
+                try {
+                    attributeList.addAll(getNonPrivateStaticAttributes(cu.get()));
+                } catch (PackageDeclarationNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return attributeList;
     }
 
     public static String getClassName(

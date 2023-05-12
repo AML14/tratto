@@ -100,13 +100,13 @@ public class ProjectOracleGenerator {
         builder.setPackageName(DatasetUtils.getPackageName(operation));
         builder.setClassName(className);
         builder.setClassJavadoc(JavaParserUtils.getClassJavadoc(jpClass));
-        builder.setTokensProjectClasses(DatasetUtils.getTokensProjectClasses(sourcePath));
-        builder.setTokensProjectClassesNonPrivateStaticNonVoidMethods(DatasetUtils.getTokensProjectClassesNonPrivateStaticNonVoidMethods(sourcePath));
+        // builder.setTokensProjectClasses(DatasetUtils.getTokensProjectClasses(sourcePath));
+        // builder.setTokensProjectClassesNonPrivateStaticNonVoidMethods(DatasetUtils.getTokensProjectClassesNonPrivateStaticNonVoidMethods(sourcePath));
+        // builder.setTokensProjectClassesNonPrivateStaticAttributes(DatasetUtils.getTokensProjectClassesNonPrivateStaticAttributes(sourcePath));
 
         /*
             private String methodJavadoc;
             private String methodSourceCode;
-            private List<Quartet<String, String, String, String>> tokensProjectClassesNonPrivateStaticNonVoidMethods; // <token, package, class, signature>
             private List<Quartet<String, String, String, String>> tokensProjectClassesNonPrivateStaticAttributes; // <token, package, class, declaration>
             private List<Pair<String, String>> tokensMethodJavadocValues; // <token, type>
             private List<Triplet<String, String, String>> tokensMethodArguments; // <token, package, class>

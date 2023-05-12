@@ -3,9 +3,7 @@ package star.tratto.util.javaparser;
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.PackageDeclaration;
-import com.github.javaparser.ast.body.CallableDeclaration;
-import com.github.javaparser.ast.body.MethodDeclaration;
-import com.github.javaparser.ast.body.TypeDeclaration;
+import com.github.javaparser.ast.body.*;
 import com.github.javaparser.ast.comments.JavadocComment;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.resolution.MethodUsage;
@@ -299,6 +297,26 @@ public class JavaParserUtils {
                 (JavaTypes.PRIMITIVES.contains(type1) && JavaTypes.PRIMITIVES_TO_WRAPPERS.get(type1).equals(type2)) ||
                 (JavaTypes.NUMBERS.contains(type1) && JavaTypes.NUMBERS.contains(type2) && isNumeric1AssignableToNumeric2(type1, type2)) ||
                 isType1InstanceOfType2(fullyQualifiedClassName(type1), fullyQualifiedClassName(type2));
+    }
+
+    /**
+     * Gets the signature of a JavaParser variable declarator
+     * {@link VariableDeclarator}, and return its string representation.
+     *
+     * @param field the JP field declaration {@link FieldDeclaration}
+     * @param variable the JP variable declaration {@link VariableDeclarator}
+     * @return a string representation of the signature of the JavaParser
+     * variable declarator {@link VariableDeclarator}.
+     */
+    public static String getVariableSignature(FieldDeclaration field, VariableDeclarator variable) {
+        String signature = "";
+        signature += field.getAccessSpecifier().asString();
+        signature += field.isStatic() ? " static " : " ";
+        signature += field.isFinal() ? " final " : "";
+        signature += String.format("%s ", variable.getTypeAsString());
+        signature += String.format("%s", variable.getNameAsString());
+        signature += variable.getInitializer().isPresent() ? String.format(" = %s;", variable.getInitializer().get()) : ";";
+        return signature;
     }
 
     /**
