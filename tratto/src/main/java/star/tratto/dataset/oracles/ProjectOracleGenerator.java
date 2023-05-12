@@ -2,6 +2,8 @@ package star.tratto.dataset.oracles;
 
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.TypeDeclaration;
+import org.javatuples.Pair;
+import org.javatuples.Quartet;
 import star.tratto.dataset.oracles.JDoctorCondition.Operation;
 import star.tratto.dataset.oracles.JDoctorCondition.PreCondition;
 import star.tratto.dataset.oracles.JDoctorCondition.PostCondition;
@@ -16,10 +18,15 @@ import java.util.*;
  * a list of JDoctor conditions associated with its classes and methods.
  */
 public class ProjectOracleGenerator {
+    // generator fields.
     private int idCounter;
     private int checkpoint;
+    // project fields.
     private Project project;
     private List<JDoctorCondition> jDoctorConditions;
+    private List<Pair<String, String>> tokensProjectClasses;
+    private List<Quartet<String, String, String, String>> tokensProjectClassesMethods;
+    private List<Quartet<String, String, String, String>> tokensProjectClassesAttributes;
 
     /**
      * Create a new instance of ProjectOracleGenerator.
@@ -52,6 +59,9 @@ public class ProjectOracleGenerator {
     ) {
         this.project = project;
         this.jDoctorConditions = jDocConditions;
+        this.tokensProjectClasses = DatasetUtils.getTokensProjectClasses(this.project.getSrcPath());
+        this.tokensProjectClassesMethods = DatasetUtils.getTokensProjectClassesNonPrivateStaticNonVoidMethods(this.project.getSrcPath());
+        this.tokensProjectClassesAttributes = DatasetUtils.getTokensProjectClassesNonPrivateStaticAttributes(this.project.getSrcPath());
     }
 
     /**
@@ -100,9 +110,9 @@ public class ProjectOracleGenerator {
         builder.setPackageName(DatasetUtils.getPackageName(operation));
         builder.setClassName(className);
         builder.setClassJavadoc(JavaParserUtils.getClassJavadoc(jpClass));
-        // builder.setTokensProjectClasses(DatasetUtils.getTokensProjectClasses(sourcePath));
-        // builder.setTokensProjectClassesNonPrivateStaticNonVoidMethods(DatasetUtils.getTokensProjectClassesNonPrivateStaticNonVoidMethods(sourcePath));
-        // builder.setTokensProjectClassesNonPrivateStaticAttributes(DatasetUtils.getTokensProjectClassesNonPrivateStaticAttributes(sourcePath));
+        builder.setTokensProjectClasses(this.tokensProjectClasses);
+        builder.setTokensProjectClassesNonPrivateStaticNonVoidMethods(this.tokensProjectClassesMethods);
+        builder.setTokensProjectClassesNonPrivateStaticAttributes(this.tokensProjectClassesAttributes);
 
         /*
             private String methodJavadoc;
