@@ -114,10 +114,9 @@ public class ProjectOracleGenerator {
         builder.setTokensProjectClassesNonPrivateStaticNonVoidMethods(this.tokensProjectClassesMethods);
         builder.setTokensProjectClassesNonPrivateStaticAttributes(this.tokensProjectClassesAttributes);
 
-        /*
+        /* Remaining fields
             private String methodJavadoc;
             private String methodSourceCode;
-            private List<Quartet<String, String, String, String>> tokensProjectClassesNonPrivateStaticAttributes; // <token, package, class, declaration>
             private List<Pair<String, String>> tokensMethodJavadocValues; // <token, type>
             private List<Triplet<String, String, String>> tokensMethodArguments; // <token, package, class>
             private List<Quartet<String, String, String, String>> tokensMethodVariablesNonPrivateNonStaticNonVoidMethods; // <token, package, class, signature>
