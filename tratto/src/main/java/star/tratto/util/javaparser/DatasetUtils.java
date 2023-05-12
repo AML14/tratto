@@ -70,21 +70,45 @@ public class DatasetUtils {
         return JDoctorUtils.getPackageNameFromPackageList(packageList);
     }
 
-    private static List<Pair<String, String>> getClassNameAndPackageFromCompilationUnit(
+    private static List<Pair<String, String>> getClassNameAndPackage(
             CompilationUnit cu
     ) throws PackageDeclarationNotFoundException {
-        List<Pair<String, String>> pairList = new ArrayList<>();
+        List<Pair<String, String>> classList = new ArrayList<>();
+        // get package name.
+        String packageName = JavaParserUtils.getPackageDeclarationFromCompilationUnit(cu).getNameAsString();
         // get all classes in compilation unit.
         List<TypeDeclaration<?>> jpClasses = cu.getTypes();
-        // get package.
-        PackageDeclaration jpPackage = getPackageDeclarationFromCompilationUnit(cu);
-        String packageName = jpPackage.getNameAsString();
-        // add pair for each class.
+        // iterate over all classes.
         for (TypeDeclaration<?> jpClass : jpClasses) {
-            String className = jpClass.resolve().getClassName();
-            pairList.add(new Pair<>(className, packageName));
+            classList.add(new Pair<>(jpClass.getNameAsString(), packageName));
         }
-        return pairList;
+        return classList;
+    }
+
+    private static List<Quartet<String, String, String, String>> getNonPrivateStaticNonVoidMethods(
+            CompilationUnit cu
+    ) throws PackageDeclarationNotFoundException {
+        List<Quartet<String, String, String, String>> methodList = new ArrayList<>();
+        // get package name.
+        String packageName = JavaParserUtils.getPackageDeclarationFromCompilationUnit(cu).getNameAsString();
+        // get all classes in compilation unit.
+        List<TypeDeclaration<?>> jpClasses = cu.getTypes();
+        // iterate over all classes.
+        for (TypeDeclaration<?> jpClass : jpClasses) {
+            String className = jpClass.getNameAsString();
+            List<MethodDeclaration> jpMethods = jpClass.findAll(MethodDeclaration.class);
+            for (MethodDeclaration jpMethod : jpMethods) {
+                if (!jpMethod.isPrivate() && jpMethod.isStatic() && !jpMethod.getType().isVoidType()) {
+                    methodList.add(new Quartet<>(
+                            jpMethod.getNameAsString(),
+                            packageName,
+                            className,
+                            JavaParserUtils.getCallableSignature(jpMethod)
+                    ));
+                }
+            }
+        }
+        return methodList;
     }
 
     private static List<File> getValidJavaFiles(String sourcePath) {
@@ -120,24 +144,35 @@ public class DatasetUtils {
         for (File javaFile : javaFiles) {
             String filePath = javaFile.getAbsolutePath();
             Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnitFromFilePath(filePath);
-            // ignore if CompilationUnit is empty.
-            if (cu.isEmpty()) {
-                continue;
-            }
-            // add (package, class) token pairs.
-            try {
-                projectClasses.addAll(getClassNameAndPackageFromCompilationUnit(cu.get()));
-            } catch (PackageDeclarationNotFoundException e) {
-                e.printStackTrace();
+            if (cu.isPresent()) {
+                try {
+                    projectClasses.addAll(getClassNameAndPackage(cu.get()));
+                } catch (PackageDeclarationNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
         }
         return projectClasses;
     }
 
-    public static List<Quartet<String, String, String, String>> getTokensProjectClassesNonPrivateNonStaticNonVoidMethods(
+    public static List<Quartet<String, String, String, String>> getTokensProjectClassesNonPrivateStaticNonVoidMethods(
             String sourcePath
     ) {
-        return null;
+        List<Quartet<String, String, String, String>> projectMethods = new ArrayList<>();
+        List<File> javaFiles = getValidJavaFiles(sourcePath);
+        // iterate through each file and add method tokens.
+        for (File javaFile : javaFiles) {
+            String filePath = javaFile.getAbsolutePath();
+            Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnitFromFilePath(filePath);
+            if (cu.isPresent()) {
+                try {
+                    projectMethods.addAll(getNonPrivateStaticNonVoidMethods(cu.get()));
+                } catch (PackageDeclarationNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return projectMethods;
     }
 
     public static String getClassName(
