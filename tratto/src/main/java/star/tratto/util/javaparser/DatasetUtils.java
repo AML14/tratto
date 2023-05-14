@@ -2,15 +2,11 @@ package star.tratto.util.javaparser;
 
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.NodeList;
-import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.body.*;
-import com.github.javaparser.ast.stmt.BlockStmt;
 import org.javatuples.Pair;
 import org.javatuples.Quartet;
 import star.tratto.dataset.oracles.JDoctorCondition.*;
 import star.tratto.exceptions.PackageDeclarationNotFoundException;
-import star.tratto.exceptions.PrimaryTypeNotFoundException;
-import star.tratto.identifiers.JPCallableType;
 import star.tratto.identifiers.file.*;
 import star.tratto.identifiers.path.Path;
 import star.tratto.util.FileUtils;
@@ -23,42 +19,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class DatasetUtils {
-    private String getCallableSourceCode(
-            CallableDeclaration<?> jpCallable,
-            JPCallableType jpCallableType
-    ) {
-        String jpSignature = JavaParserUtils.getCallableSignature(jpCallable);
-        Optional<BlockStmt> jpBody = jpCallableType == JPCallableType.CONSTRUCTOR ?
-                Optional.ofNullable(((ConstructorDeclaration) jpCallable).getBody()) :
-                ((MethodDeclaration) jpCallable).getBody();
-        return jpSignature + (jpBody.isEmpty() ? ";" : jpBody.get().toString());
-    }
-
-    /*
-    public static String getMethodSourceCode(
-            Operation operation,
-            String sourcePath
-    ) {
-        String className = operation.getClassName();
-        String methodName = operation.getName();
-        List<String> jDoctorConditionParamTypeNames = operation.getParameterTypes();
-        String methodSourceCode = "";
-        Optional<CompilationUnit> cu = getClassCompilationUnit(operation, sourcePath);
-
-        if (cu.isPresent()) {
-            if (className.equals(methodName)) {
-                // get constructor source code.
-            } else {
-                // get method source code.
-                // MethodDeclaration jpMethod = getMethodDeclaration(cu, methodName, jDoctorConditionParamTypeNames);
-                // methodSourceCode = JavaParserUtils.
-            }
-        }
-
-        return methodSourceCode;
-    }
-    */
-
     public static String getPackageName(
             Operation operation
     ) {
@@ -228,6 +188,52 @@ public class DatasetUtils {
     ) {
         List<String> pathList = JDoctorUtils.getPathList(operation.getClassName());
         return JDoctorUtils.getClassNameFromPathList(pathList);
+    }
+
+    public static String getCallableName(
+            Operation operation
+    ) {
+        List<String> pathList = JDoctorUtils.getPathList(operation.getName());
+        return JDoctorUtils.getClassNameFromPathList(pathList);
+    }
+
+    /**
+     * Gets the CallableDeclaration from a given TypeDeclaration with a
+     * specified name and parameters.
+     *
+     * @param jpClass the TypeDeclaration containing the method.
+     * @param callableName the name of the method.
+     * @param parameterTypes the types of parameters.
+     * @return the corresponding method (if it exists). Returns null if no
+     * such method exists.
+     */
+    public static CallableDeclaration<?> getCallableDeclaration(
+            TypeDeclaration<?> jpClass,
+            String callableName,
+            List<String> parameterTypes
+    ) {
+        // iterate through each BodyDeclaration in the class.
+        for (BodyDeclaration<?> member : jpClass.getMembers()) {
+            // check if member is a function.
+            if (member.isCallableDeclaration()) {
+                // get function representation of member.
+                CallableDeclaration<?> callableDeclaration = member.asCallableDeclaration();
+                // check if function name is equal to callableName.
+                if (callableDeclaration.getNameAsString().equals(callableName)) {
+                    // get parameters of function.
+                    List<String> cdParamList = callableDeclaration.getParameters()
+                            .stream()
+                            .map(p -> p.getType().asString())
+                            .collect(Collectors.toList());
+                    // check parameters are equal to parameterTypes.
+                    if (cdParamList.equals(parameterTypes)) {
+                        return callableDeclaration;
+                    }
+                }
+            }
+        }
+        // return null if no such function is found.
+        return null;
     }
 
     /**
