@@ -1,5 +1,7 @@
 package star.tratto.util.javaparser;
 
+import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
+import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import star.tratto.identifiers.ConditionPrimitiveType;
 import star.tratto.identifiers.JPType;
 
@@ -60,8 +62,7 @@ public class JDoctorUtils {
             conditionParameterType = convertConditionToArrayType(conditionParameterType);
         }
         List<String> paramPathList = getPathList(conditionParameterType);
-        String className = getClassNameFromPathList(paramPathList);
-        return className;
+        return getClassNameFromPathList(paramPathList);
     }
 
     public static String convertToPrimitiveType(String primitiveType) {
@@ -113,8 +114,7 @@ public class JDoctorUtils {
         Matcher matcher = pattern.matcher(jpMethodString);
 
         if (matcher.find()) {
-            String extendsTypeString = removeSpuriousCharacters(matcher.group(1)) + "[]".repeat(howMany);
-            return extendsTypeString;
+            return removeSpuriousCharacters(matcher.group(1)) + "[]".repeat(howMany);
         } else {
             String errMsg = String.format(
                     "The jp method string %s does not match the regex built with jp param string %s",
@@ -177,20 +177,11 @@ public class JDoctorUtils {
     }
 
     public static boolean isGenericCondition(String conditionType) {
-        return
-                conditionType.equals("Object") ||
-                        conditionType.equals("Comparable");
-        //conditionType.equals("Collection");
+        return conditionType.equals("Object") || conditionType.equals("Comparable");
     }
 
     public static boolean isGenericConditionArray(String conditionType) {
-        return
-                conditionType.equals("Object[]") ||
-                        conditionType.equals("Comparable[]");
-    }
-
-    public static boolean isJPArray(String jpTypeName) {
-        return jpTypeName.endsWith("[]");
+        return conditionType.equals("Object[]") || conditionType.equals("Comparable[]");
     }
 
     public static boolean hasJPClassTypeGenerics(ClassOrInterfaceDeclaration jpClass) {
@@ -206,18 +197,11 @@ public class JDoctorUtils {
         // Using the Pattern and Matcher classes
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(jpMethodString);
-
-        if (matcher.find()) {
-            String extendsTypeString = removeSpuriousCharacters(matcher.group(1));
-            return true;
-        } else {
-            return false;
-        }
+        return matcher.find();
     }
 
     public static String removeSpuriousCharacters(String dirtyType) {
         String regex = "(super|\\s|\\?|;|<.*?>)";
-        String cleanType = dirtyType.replaceAll(regex, "");
-        return cleanType;
+        return dirtyType.replaceAll(regex, "");
     }
 }
