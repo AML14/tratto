@@ -210,6 +210,17 @@ public class DatasetUtils {
         return JDoctorUtils.getClassNameFromPathList(pathList);
     }
 
+    /**
+     * Evaluates whether a list of JDoctor parameters and a list of JavaParser
+     * parameters are equal. Primarily handles issues regarding different
+     * representations of generic types between lists.
+     *
+     * @param jDoctorParamList list of JDoctor parameters.
+     * @param jpParamList list of JavaParser parameters.
+     * @param jpCallable CallableDeclaration corresponding to jpParamList.
+     * @param jpClass TypeDeclaration corresponding to jpCallable.
+     * @return true iff the two lists represent the same parameters.
+     */
     private static boolean jpParamListEqualsJDoctorParamList(
             List<String> jDoctorParamList,
             List<String> jpParamList,
@@ -228,6 +239,8 @@ public class DatasetUtils {
             boolean jpParamIsStandard = JDoctorUtils.isGenericCondition(jpParam);
             boolean jpParamIsArray = jpParam.endsWith("[]");
             boolean jpParamIsGeneric = JavaParserUtils.isGenericType(jpParam, jpCallable, jpClass);
+            // case 1: both conditions represent generic objects (e.g. Object, Comparable).
+            // case 2: both conditions represent generic object arrays (e.g. Object[], Comparable[]).
             if (!(
                 (jDoctorParamIsStandard && jpParamIsStandard) ||
                 (jpParamIsGeneric && (
