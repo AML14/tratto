@@ -5,6 +5,7 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.body.*;
 import com.github.javaparser.ast.comments.JavadocComment;
+import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.resolution.MethodUsage;
 import com.github.javaparser.resolution.UnsolvedSymbolException;
@@ -372,16 +373,6 @@ public class JavaParserUtils {
         return jpPackage.get();
     }
 
-    private static TypeDeclaration<?> getPrimaryTypeFromCompilationUnit(
-            CompilationUnit cu
-    ) throws PrimaryTypeNotFoundException {
-        Optional<TypeDeclaration<?>> primaryType = cu.getPrimaryType();
-        if (primaryType.isEmpty()) {
-            throw new PrimaryTypeNotFoundException("The given compilation unit does not have a primary type.");
-        }
-        return primaryType.get();
-    }
-
     /**
      * Gets the Javadoc comment of the TypeDeclaration.
      *
@@ -404,6 +395,26 @@ public class JavaParserUtils {
             return "";
         }
         return Javadoc.CLASS_PREFIX.getValue() + jpJavadocComment.get().getContent() + Javadoc.CLASS_SUFFIX.getValue();
+    }
+
+    public static boolean isGenericType(
+            String jpTypeName,
+            CallableDeclaration<?> jpCallable,
+            TypeDeclaration<?> jpClass
+    ) {
+        List<String> jpClassGenericTypes = jpCallable.getTypeParameters()
+                .stream()
+                .map(NodeWithSimpleName::getNameAsString)
+                .collect(Collectors.toList());
+        if (jpClass instanceof ClassOrInterfaceDeclaration) {
+            jpClassGenericTypes.addAll(
+                    jpClass.asClassOrInterfaceDeclaration().getTypeParameters()
+                            .stream()
+                            .map(NodeWithSimpleName::getNameAsString)
+                            .collect(Collectors.toList())
+            );
+        }
+        return jpClassGenericTypes.contains(jpTypeName.replaceAll("\\[\\]", ""));
     }
 
     /**
