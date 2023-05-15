@@ -1,6 +1,7 @@
 package star.tratto.dataset.oracles;
 
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.body.CallableDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import org.javatuples.Pair;
 import org.javatuples.Quartet;
@@ -8,7 +9,9 @@ import star.tratto.dataset.oracles.JDoctorCondition.Operation;
 import star.tratto.dataset.oracles.JDoctorCondition.PreCondition;
 import star.tratto.dataset.oracles.JDoctorCondition.PostCondition;
 import star.tratto.dataset.oracles.JDoctorCondition.ThrowsCondition;
+import star.tratto.identifiers.JPCallableType;
 import star.tratto.util.javaparser.DatasetUtils;
+import star.tratto.util.javaparser.JDoctorUtils;
 import star.tratto.util.javaparser.JavaParserUtils;
 
 import java.util.*;
@@ -100,8 +103,15 @@ public class ProjectOracleGenerator {
         String sourcePath = this.project.getSrcPath();
         String projectName = this.project.getProjectName();
         String className = DatasetUtils.getClassName(operation);
+        String callableName = DatasetUtils.getCallableName(operation);
+        List<String> parameterTypes = JDoctorUtils.convertJDoctorConditionTypeNames2JavaParserTypeNames(operation.getParameterTypes());
         CompilationUnit cu = DatasetUtils.getClassCompilationUnit(operation, sourcePath).get();
         TypeDeclaration<?> jpClass = DatasetUtils.getTypeDeclaration(cu, className);
+        assert jpClass != null;
+        System.out.println(operation.getName());
+        System.out.println(parameterTypes);
+        CallableDeclaration<?> jpCallable = DatasetUtils.getCallableDeclaration(jpClass, callableName, parameterTypes);
+        assert jpCallable != null;
         // set data point information.
         builder.setId(this.getId());
         builder.setConditionInfo(condition);
@@ -113,6 +123,8 @@ public class ProjectOracleGenerator {
         builder.setTokensProjectClasses(this.tokensProjectClasses);
         builder.setTokensProjectClassesNonPrivateStaticNonVoidMethods(this.tokensProjectClassesMethods);
         builder.setTokensProjectClassesNonPrivateStaticAttributes(this.tokensProjectClassesAttributes);
+        builder.setMethodSourceCode(DatasetUtils.getCallableSourceCode(jpCallable));
+        System.out.println(builder.copy().getId());
 
         /* Remaining fields
             private String methodJavadoc;

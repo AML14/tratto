@@ -3,10 +3,12 @@ package star.tratto.util.javaparser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.*;
+import com.github.javaparser.ast.stmt.BlockStmt;
 import org.javatuples.Pair;
 import org.javatuples.Quartet;
 import star.tratto.dataset.oracles.JDoctorCondition.*;
 import star.tratto.exceptions.PackageDeclarationNotFoundException;
+import star.tratto.identifiers.JPCallableType;
 import star.tratto.identifiers.file.*;
 import star.tratto.identifiers.path.Path;
 import star.tratto.util.FileUtils;
@@ -40,6 +42,17 @@ public class DatasetUtils {
             classList.add(new Pair<>(jpClass.getNameAsString(), packageName));
         }
         return classList;
+    }
+
+    public static String getCallableSourceCode(
+            CallableDeclaration<?> jpCallable
+    ) {
+        JPCallableType jpCallableType = jpCallable.isConstructorDeclaration() ? JPCallableType.CONSTRUCTOR : JPCallableType.METHOD;
+        String jpSignature = JavaParserUtils.getCallableSignature(jpCallable);
+        Optional<BlockStmt> jpBody = (jpCallableType == JPCallableType.CONSTRUCTOR) ?
+                Optional.ofNullable(((ConstructorDeclaration) jpCallable).getBody()) :
+                ((MethodDeclaration) jpCallable).getBody();
+        return jpSignature + (jpBody.isEmpty() ? ";" : jpBody.get().toString());
     }
 
     private static List<Quartet<String, String, String, String>> getNonPrivateStaticNonVoidMethods(
@@ -197,37 +210,70 @@ public class DatasetUtils {
         return JDoctorUtils.getClassNameFromPathList(pathList);
     }
 
+    private static boolean jpParamListEqualsJDoctorParamList(
+            List<String> jDoctorParamList,
+            List<String> jpParamList,
+            CallableDeclaration<?> jpCallable,
+            TypeDeclaration<?> jpClass
+    ) {
+        if (jDoctorParamList.size() != jpParamList.size()) return false;
+        for (int i = 0; i < jDoctorParamList.size(); i++) {
+            String jDoctorParam = jDoctorParamList.get(i);
+            String jpParam = jpParamList.get(i);
+            // if parameters are identical, then continue.
+            if (jDoctorParam.equals(jpParam)) continue;
+            // otherwise, check if parameters are generics.
+            boolean jDoctorParamIsStandard = JDoctorUtils.isGenericCondition(jDoctorParam);
+            boolean jDoctorParamIsStandardArray = JDoctorUtils.isGenericConditionArray(jDoctorParam);
+            boolean jpParamIsStandard = JDoctorUtils.isGenericCondition(jpParam);
+            boolean jpParamIsArray = jpParam.endsWith("[]");
+            boolean jpParamIsGeneric = JavaParserUtils.isGenericType(jpParam, jpCallable, jpClass);
+            if (!(
+                (jDoctorParamIsStandard && jpParamIsStandard) ||
+                (jpParamIsGeneric && (
+                        jpParamIsStandard || (jDoctorParamIsStandardArray && jpParamIsArray)
+                ))
+            )) return false;
+        }
+        return true;
+    }
+
     /**
      * Gets the CallableDeclaration from a given TypeDeclaration with a
      * specified name and parameters.
      *
      * @param jpClass the TypeDeclaration containing the method.
-     * @param callableName the name of the method.
-     * @param parameterTypes the types of parameters.
+     * @param targetName the name of the desired method.
+     * @param targetParamList the parameters of the desired method.
      * @return the corresponding method (if it exists). Returns null if no
      * such method exists.
      */
     public static CallableDeclaration<?> getCallableDeclaration(
             TypeDeclaration<?> jpClass,
-            String callableName,
-            List<String> parameterTypes
+            String targetName,
+            List<String> targetParamList
     ) {
         // iterate through each BodyDeclaration in the class.
         for (BodyDeclaration<?> member : jpClass.getMembers()) {
             // check if member is a function.
             if (member.isCallableDeclaration()) {
                 // get function representation of member.
-                CallableDeclaration<?> callableDeclaration = member.asCallableDeclaration();
+                CallableDeclaration<?> currentCallable = member.asCallableDeclaration();
                 // check if function name is equal to callableName.
-                if (callableDeclaration.getNameAsString().equals(callableName)) {
+                if (currentCallable.getNameAsString().equals(targetName)) {
                     // get parameters of function.
-                    List<String> cdParamList = callableDeclaration.getParameters()
+                    List<String> currentParamList = currentCallable.getParameters()
                             .stream()
-                            .map(p -> p.getType().asString())
+                            .map(p -> JDoctorUtils.getJPTypeName(jpClass, currentCallable, p))
                             .collect(Collectors.toList());
-                    // check parameters are equal to parameterTypes.
-                    if (cdParamList.equals(parameterTypes)) {
-                        return callableDeclaration;
+                    // if parameters are equal, then return the current function.
+                    if (jpParamListEqualsJDoctorParamList(
+                            targetParamList,
+                            currentParamList,
+                            currentCallable,
+                            jpClass
+                    )) {
+                        return currentCallable;
                     }
                 }
             }
