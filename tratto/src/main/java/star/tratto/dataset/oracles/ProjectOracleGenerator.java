@@ -108,8 +108,6 @@ public class ProjectOracleGenerator {
         CompilationUnit cu = DatasetUtils.getClassCompilationUnit(operation, sourcePath).get();
         TypeDeclaration<?> jpClass = DatasetUtils.getTypeDeclaration(cu, className);
         assert jpClass != null;
-        System.out.println(operation.getName());
-        System.out.println(parameterTypes);
         CallableDeclaration<?> jpCallable = DatasetUtils.getCallableDeclaration(jpClass, callableName, parameterTypes);
         assert jpCallable != null;
         // set data point information.

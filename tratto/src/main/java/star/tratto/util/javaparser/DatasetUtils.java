@@ -231,7 +231,7 @@ public class DatasetUtils {
             if (!(
                 (jDoctorParamIsStandard && jpParamIsStandard) ||
                 (jpParamIsGeneric && (
-                        jpParamIsStandard || (jDoctorParamIsStandardArray && jpParamIsArray)
+                        jDoctorParamIsStandard || (jDoctorParamIsStandardArray && jpParamIsArray)
                 ))
             )) return false;
         }
