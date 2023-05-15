@@ -41,7 +41,7 @@ class OracleTrainer:
             self,
             model: Type[OracleClassifier],
             loss_fn: Type[Module],
-            optimizer: Type[optim],
+            optimizer: Type[optim.Adam],
             dl_train: Type[DataLoader],
             dl_val: Type[DataLoader]
     ):
@@ -76,7 +76,7 @@ class OracleTrainer:
         best_time:
             Best time for statistics performance
         """
-        print("Start Training...")
+        print("    Start Training...")
 
         # Dictionary of the statistics
         stats = {
@@ -111,7 +111,7 @@ class OracleTrainer:
             self.optimizer.zero_grad()
 
             for step, batch in enumerate(self.dl_train):
-                print(f"processing step {step+1} of {len(self.dl_train)}")
+                print(f"    Processing step {step+1} of {len(self.dl_train)}")
                 steps += 1
 
                 # Extract the inputs, the attention masks and the expected
@@ -183,11 +183,11 @@ class OracleTrainer:
                     # Breakpoint validation accuracy
                     if mean_v_accuracy > 90 and (not flag_90):
                         flag_90 = not flag_90
-                        print('-'*30)
-                        print("BREAKPOINT 90% VALIDATION ACCURACY")
-                        print('-'*30)
-                        print(f"TIME: {int(interval - start)}seconds")
-                        print('-'*30)
+                        print("    " + '-'*30)
+                        print("    " + "BREAKPOINT 90% VALIDATION ACCURACY")
+                        print("    " + '-'*30)
+                        print("    " + f"TIME: {int(interval - start)}seconds")
+                        print("    " + '-'*30)
                         stats['time_90'] = int(interval - start)
 
                     # Breakpoint validation accuracy - stop the
@@ -195,14 +195,14 @@ class OracleTrainer:
                     if mean_v_accuracy > break_end:
                         flag_end = not flag_end
                         interval = timeit.default_timer()
-                        print('-'*30)
-                        print("BREAKPOINT 100% VALIDATION ACCURACY")
-                        print('-'*30)
-                        print(f"TIME: {int(interval - start)} seconds")
-                        print('-'*30)
-                        print('-'*30)
-                        print(f"FINAL SAMPLES")
-                        print('-'*30)
+                        print("    " + '-'*30)
+                        print("    " + "BREAKPOINT 100% VALIDATION ACCURACY")
+                        print("    " + '-'*30)
+                        print("    " + f"TIME: {int(interval - start)} seconds")
+                        print("    " + '-'*30)
+                        print("    " + '-'*30)
+                        print("    " + f"FINAL SAMPLES")
+                        print("    " + '-'*30)
                         stats['time_100'] = int(interval - start)
                         break
 
@@ -248,17 +248,17 @@ class OracleTrainer:
         mean_v_accuracy: float
             Average validation accuracy
         """
-        print('-'*30)
-        print("STATISTICS")
-        print('-'*30)
-        print(f"EPOCH: [{epoch} / {num_epochs}]")
-        print(f"STEP: [{step} / {total_steps}]")
-        print(f"TRAINING LOSS: {mean_t_loss:.4f}")
-        print(f"TRAINING ACCURACY: {mean_t_accuracy:.2f}%")
-        print('-'*30)
-        print(f"VALIDATION LOSS: {mean_v_loss:.4f}")
-        print(f"VALIDATION ACCURACY: {mean_v_accuracy:.2f}%")
-        print('-'*30)
+        print("    " + '-'*30)
+        print("    " + "STATISTICS")
+        print("    " + '-'*30)
+        print("    " + f"EPOCH: [{epoch} / {num_epochs}]")
+        print("    " + f"STEP: [{step} / {total_steps}]")
+        print("    " + f"TRAINING LOSS: {mean_t_loss:.4f}")
+        print("    " + f"TRAINING ACCURACY: {mean_t_accuracy:.2f}%")
+        print("    " + '-'*30)
+        print("    " + f"VALIDATION LOSS: {mean_v_loss:.4f}")
+        print("    " + f"VALIDATION ACCURACY: {mean_v_accuracy:.2f}%")
+        print("    " + '-'*30)
 
     @staticmethod
     def plot_loss_accuracy(

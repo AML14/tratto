@@ -1,6 +1,6 @@
 from enum import Enum
 
-class HyperParameter(str, Enum):
+class HyperParameter(Enum):
     """
     Helper enums class: it defines the values of the hyperparameters of the model.
     """
