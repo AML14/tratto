@@ -9,10 +9,8 @@ import star.tratto.dataset.oracles.JDoctorCondition.Operation;
 import star.tratto.dataset.oracles.JDoctorCondition.PreCondition;
 import star.tratto.dataset.oracles.JDoctorCondition.PostCondition;
 import star.tratto.dataset.oracles.JDoctorCondition.ThrowsCondition;
-import star.tratto.identifiers.JPCallableType;
 import star.tratto.util.javaparser.DatasetUtils;
 import star.tratto.util.javaparser.JDoctorUtils;
-import star.tratto.util.javaparser.JavaParserUtils;
 
 import java.util.*;
 
@@ -111,7 +109,7 @@ public class ProjectOracleGenerator {
         CallableDeclaration<?> jpCallable = DatasetUtils.getCallableDeclaration(jpClass, callableName, parameterTypes);
         assert jpCallable != null;
         // set data point information.
-        builder.setId(this.getId());
+        builder.setId(this.idCounter);
         builder.setConditionInfo(condition);
         builder.setProjectName(projectName);
         builder.setClassSourceCode(jpClass.toString());
@@ -123,10 +121,9 @@ public class ProjectOracleGenerator {
         builder.setTokensProjectClassesNonPrivateStaticAttributes(this.tokensProjectClassesAttributes);
         builder.setMethodSourceCode(DatasetUtils.getCallableSourceCode(jpCallable));
         builder.setMethodJavadoc(DatasetUtils.getCallableJavadoc(jpCallable));
-        System.out.println(builder.copy().getMethodJavadoc());
+        builder.setTokensMethodJavadocValues(DatasetUtils.getValuesFromJavadoc(builder.copy().getMethodJavadoc()));
 
         /* Remaining fields
-            private String methodJavadoc;
             private List<Pair<String, String>> tokensMethodJavadocValues; // <token, type>
             private List<Triplet<String, String, String>> tokensMethodArguments; // <token, package, class>
             private List<Quartet<String, String, String, String>> tokensMethodVariablesNonPrivateNonStaticNonVoidMethods; // <token, package, class, signature>
@@ -135,16 +132,7 @@ public class ProjectOracleGenerator {
             private List<Quartet<String, String, String, String>> tokensOracleVariablesNonPrivateNonStaticAttributes;
          */
 
-        return builder.build();
-    }
-
-    /**
-     * This method generates a unique identifier for an oracle data point.
-     * @return the integer identifier of an oracle data point.
-     */
-    private int getId() {
-        int id = this.idCounter;
         this.idCounter++;
-        return id;
+        return builder.build();
     }
 }

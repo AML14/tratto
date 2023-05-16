@@ -11,6 +11,7 @@ import star.tratto.dataset.oracles.JDoctorCondition.*;
 import star.tratto.exceptions.PackageDeclarationNotFoundException;
 import star.tratto.identifiers.JPCallableType;
 import star.tratto.identifiers.Javadoc;
+import star.tratto.identifiers.JavadocValueType;
 import star.tratto.identifiers.file.*;
 import star.tratto.identifiers.path.Path;
 import star.tratto.util.FileUtils;
@@ -86,6 +87,66 @@ public class DatasetUtils {
         Optional<JavadocComment> jpJavadocComment = jpCallable.getJavadocComment();
         if (jpJavadocComment.isEmpty()) return getJavadocByPattern(jpCallable);
         return Javadoc.METHOD_PREFIX.getValue() + jpJavadocComment.get().getContent() + Javadoc.METHOD_SUFFIX;
+    }
+
+    private static List<Pair<String, String>> findAllNumericValuesInJavadoc(
+            String jpJavadoc
+    ) {
+        // Define regex that matches integer and decimal values with a string.
+        Pattern pattern = Pattern.compile("-?\\d+(\\.\\d+)?");
+        // Instantiate matcher.
+        Matcher matcher = pattern.matcher(jpJavadoc);
+        // Define pairs of numeric values [numericType, numericValue].
+        List<Pair<String, String>> numericValues = new ArrayList<>();
+        // Collect all numbers.
+        while (matcher.find()) {
+            String match = matcher.group();
+            if (match.contains(".")) {
+                // decimal value.
+                try {
+                    double realValue = Double.parseDouble(match);
+                    numericValues.add(new Pair<>(Double.toString(realValue), JavadocValueType.REAL.getValue()));
+                } catch (Exception e) {
+                    String errMsg = String.format("Number exceed maximum real value: %s", match);
+                    System.err.println(errMsg);
+                }
+            } else {
+                // integer value.
+                try {
+                    long longIntValue = Long.parseLong(match);
+                    numericValues.add(new Pair<>(Long.toString(longIntValue), JavadocValueType.INTEGER.getValue()));
+                } catch (NumberFormatException e) {
+                    String errMsg = String.format("Number exceed maximum integer value: %s", match);
+                    System.err.println(errMsg);
+                }
+            }
+        }
+        return numericValues;
+    }
+
+    private static List<Pair<String, String>> findAllStringValuesInJavadoc(
+            String jpJavadoc
+    ) {
+        // Define regex that matches a string value within a string.
+        Pattern pattern = Pattern.compile("\"([^\"]*)\"");
+        Matcher matcher = pattern.matcher(jpJavadoc);
+        // Define pairs of string values [stringValue, "String"]
+        List<Pair<String, String>> stringValues = new ArrayList<>();
+        // Collect all strings.
+        while (matcher.find()) {
+            String match = matcher.group(1);
+            stringValues.add(new Pair<>(match, "String"));
+        }
+        return stringValues;
+    }
+
+    public static List<Pair<String, String>> getValuesFromJavadoc(
+            String jpJavadoc
+    ) {
+        List<Pair<String, String>> pairList = new ArrayList<>();
+        pairList.addAll(findAllNumericValuesInJavadoc(jpJavadoc));
+        pairList.addAll(findAllStringValuesInJavadoc(jpJavadoc));
+        return pairList;
     }
 
     public static String getCallableSourceCode(
