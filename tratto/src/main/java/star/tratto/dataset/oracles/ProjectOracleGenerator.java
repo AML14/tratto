@@ -103,9 +103,14 @@ public class ProjectOracleGenerator {
         String className = DatasetUtils.getClassName(operation);
         String callableName = DatasetUtils.getCallableName(operation);
         List<String> parameterTypes = JDoctorUtils.convertJDoctorConditionTypeNames2JavaParserTypeNames(operation.getParameterTypes());
-        CompilationUnit cu = DatasetUtils.getClassCompilationUnit(operation, sourcePath).get();
+        // get CompilationUnit of operation class.
+        Optional<CompilationUnit> cuOptional = DatasetUtils.getClassCompilationUnit(operation, sourcePath);
+        if (cuOptional.isEmpty()) return builder.build();
+        CompilationUnit cu = cuOptional.get();
+        // get TypeDeclaration of class in CompilationUnit.
         TypeDeclaration<?> jpClass = DatasetUtils.getTypeDeclaration(cu, className);
         assert jpClass != null;
+        // get CallableDeclaration of method in TypeDeclaration.
         CallableDeclaration<?> jpCallable = DatasetUtils.getCallableDeclaration(jpClass, callableName, parameterTypes);
         assert jpCallable != null;
         // set data point information.
