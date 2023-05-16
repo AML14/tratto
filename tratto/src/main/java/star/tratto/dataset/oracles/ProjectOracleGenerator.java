@@ -122,6 +122,8 @@ public class ProjectOracleGenerator {
         builder.setTokensProjectClassesNonPrivateStaticNonVoidMethods(this.tokensProjectClassesMethods);
         builder.setTokensProjectClassesNonPrivateStaticAttributes(this.tokensProjectClassesAttributes);
         builder.setMethodSourceCode(DatasetUtils.getCallableSourceCode(jpCallable));
+        builder.setMethodJavadoc(DatasetUtils.getCallableJavadoc(jpCallable));
+        System.out.println(builder.copy().getMethodJavadoc());
 
         /* Remaining fields
             private String methodJavadoc;

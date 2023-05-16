@@ -48,6 +48,18 @@ public class DatasetUtils {
         return classList;
     }
 
+    private static String getJavadocByPattern(BodyDeclaration<?> jpNode) {
+        String input = jpNode.toString();
+        Pattern pattern = Pattern.compile("/\\*\\*(.*?)\\*/", Pattern.DOTALL);
+        Matcher matcher = pattern.matcher(input);
+        // if pattern is found, extract information.
+        if (matcher.find()) {
+            String content = matcher.group(1);
+            return Javadoc.METHOD_PREFIX.getValue() + content + Javadoc.METHOD_SUFFIX.getValue();
+        }
+        return "";
+    }
+
     /**
      * Gets the Javadoc comment of the TypeDeclaration.
      *
@@ -58,18 +70,22 @@ public class DatasetUtils {
             TypeDeclaration<?> jpClass
     ) {
         Optional<JavadocComment> jpJavadocComment = jpClass.getJavadocComment();
-        if (jpJavadocComment.isEmpty()) {
-            String input = jpClass.toString();
-            Pattern pattern = Pattern.compile("/\\*\\*(.*?)\\*/", Pattern.DOTALL);
-            Matcher matcher = pattern.matcher(input);
-            // if pattern is found, extract information.
-            if (matcher.find()) {
-                String content = matcher.group(1);
-                return Javadoc.METHOD_PREFIX.getValue() + content + Javadoc.METHOD_SUFFIX.getValue();
-            }
-            return "";
-        }
+        if (jpJavadocComment.isEmpty()) return getJavadocByPattern(jpClass);
         return Javadoc.CLASS_PREFIX.getValue() + jpJavadocComment.get().getContent() + Javadoc.CLASS_SUFFIX.getValue();
+    }
+
+    /**
+     * Gets the Javadoc comment of the BodyDeclaration.
+     *
+     * @param jpCallable a JavaParser function.
+     * @return A string {@link String} representing the Javadoc comment.
+     */
+    public static String getCallableJavadoc(
+            CallableDeclaration<?> jpCallable
+    ) {
+        Optional<JavadocComment> jpJavadocComment = jpCallable.getJavadocComment();
+        if (jpJavadocComment.isEmpty()) return getJavadocByPattern(jpCallable);
+        return Javadoc.METHOD_PREFIX.getValue() + jpJavadocComment.get().getContent() + Javadoc.METHOD_SUFFIX;
     }
 
     public static String getCallableSourceCode(
