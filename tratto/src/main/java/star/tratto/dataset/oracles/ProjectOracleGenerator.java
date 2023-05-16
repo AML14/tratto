@@ -117,16 +117,14 @@ public class ProjectOracleGenerator {
         builder.setClassSourceCode(jpClass.toString());
         builder.setPackageName(DatasetUtils.getPackageName(operation));
         builder.setClassName(className);
-        builder.setClassJavadoc(JavaParserUtils.getClassJavadoc(jpClass));
+        builder.setClassJavadoc(DatasetUtils.getClassJavadoc(jpClass));
         builder.setTokensProjectClasses(this.tokensProjectClasses);
         builder.setTokensProjectClassesNonPrivateStaticNonVoidMethods(this.tokensProjectClassesMethods);
         builder.setTokensProjectClassesNonPrivateStaticAttributes(this.tokensProjectClassesAttributes);
         builder.setMethodSourceCode(DatasetUtils.getCallableSourceCode(jpCallable));
-        System.out.println(builder.copy().getId());
 
         /* Remaining fields
             private String methodJavadoc;
-            private String methodSourceCode;
             private List<Pair<String, String>> tokensMethodJavadocValues; // <token, type>
             private List<Triplet<String, String, String>> tokensMethodArguments; // <token, package, class>
             private List<Quartet<String, String, String, String>> tokensMethodVariablesNonPrivateNonStaticNonVoidMethods; // <token, package, class, signature>

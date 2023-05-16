@@ -3,12 +3,14 @@ package star.tratto.util.javaparser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.*;
+import com.github.javaparser.ast.comments.JavadocComment;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import org.javatuples.Pair;
 import org.javatuples.Quartet;
 import star.tratto.dataset.oracles.JDoctorCondition.*;
 import star.tratto.exceptions.PackageDeclarationNotFoundException;
 import star.tratto.identifiers.JPCallableType;
+import star.tratto.identifiers.Javadoc;
 import star.tratto.identifiers.file.*;
 import star.tratto.identifiers.path.Path;
 import star.tratto.util.FileUtils;
@@ -18,6 +20,8 @@ import static star.tratto.util.javaparser.JavaParserUtils.*;
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class DatasetUtils {
@@ -42,6 +46,30 @@ public class DatasetUtils {
             classList.add(new Pair<>(jpClass.getNameAsString(), packageName));
         }
         return classList;
+    }
+
+    /**
+     * Gets the Javadoc comment of the TypeDeclaration.
+     *
+     * @param jpClass a JavaParser class.
+     * @return A string {@link String} representing the Javadoc comment.
+     */
+    public static String getClassJavadoc(
+            TypeDeclaration<?> jpClass
+    ) {
+        Optional<JavadocComment> jpJavadocComment = jpClass.getJavadocComment();
+        if (jpJavadocComment.isEmpty()) {
+            String input = jpClass.toString();
+            Pattern pattern = Pattern.compile("/\\*\\*(.*?)\\*/", Pattern.DOTALL);
+            Matcher matcher = pattern.matcher(input);
+            // if pattern is found, extract information.
+            if (matcher.find()) {
+                String content = matcher.group(1);
+                return Javadoc.METHOD_PREFIX.getValue() + content + Javadoc.METHOD_SUFFIX.getValue();
+            }
+            return "";
+        }
+        return Javadoc.CLASS_PREFIX.getValue() + jpJavadocComment.get().getContent() + Javadoc.CLASS_SUFFIX.getValue();
     }
 
     public static String getCallableSourceCode(

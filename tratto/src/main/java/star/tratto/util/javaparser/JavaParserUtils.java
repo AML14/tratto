@@ -373,30 +373,6 @@ public class JavaParserUtils {
         return jpPackage.get();
     }
 
-    /**
-     * Gets the Javadoc comment of the TypeDeclaration.
-     *
-     * @param jpClass a JavaParser class.
-     * @return A string {@link String} representing the Javadoc comment.
-     */
-    public static String getClassJavadoc(
-            TypeDeclaration<?> jpClass
-    ) {
-        Optional<JavadocComment> jpJavadocComment = jpClass.getJavadocComment();
-        if (jpJavadocComment.isEmpty()) {
-            String input = jpClass.toString();
-            Pattern pattern = Pattern.compile("/\\*\\*(.*?)\\*/", Pattern.DOTALL);
-            Matcher matcher = pattern.matcher(input);
-            // if pattern is found, extract information.
-            if (matcher.find()) {
-                String content = matcher.group(1);
-                return Javadoc.METHOD_PREFIX.getValue() + content + Javadoc.METHOD_SUFFIX.getValue();
-            }
-            return "";
-        }
-        return Javadoc.CLASS_PREFIX.getValue() + jpJavadocComment.get().getContent() + Javadoc.CLASS_SUFFIX.getValue();
-    }
-
     public static boolean isGenericType(
             String jpTypeName,
             CallableDeclaration<?> jpCallable,
