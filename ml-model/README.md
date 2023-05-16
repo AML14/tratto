@@ -90,7 +90,7 @@ nohup python3 cb_finetuning.py > log.out 2>&1 & echo $! > run.pid
 ```
 
 
-The command will run the training in background and will create and save the logs in the `log.out` file and the pid of the process 
+The command will run the training in background and will save the logs in the `log.out` file and the pid of the process 
 in the `run.pid` file.
 
 
