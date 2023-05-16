@@ -31,10 +31,12 @@ macOS and Windows systems.
    * **fullname_of_the_installer** - is the whole name of the downloaded installer (it is a _.sh_ file, like for example
      _Miniconda3-py39_23.3.1-0-Linux-aarch64.sh_)
 
+
 3. Close and re-open the terminal at the end of the installation. Check _conda_ has been successfully installated typing the command:
     ```bash
     conda --version
     ```
+
 
 ### Create and activate _conda_ environment
 
@@ -44,15 +46,18 @@ macOS and Windows systems.
     ```
    * **name_of_the_environment** - the name of the environment (for example _tratto_)
 
+
 5. Activate the conda environment
     ```bash
     conda activate [name_of_the_environment]
     ```
-   
+
+ 
 6. Install [_pip_](https://pip.pypa.io/en/stable/) if not already installed within _conda_
     ```bash
     conda install pip
     ```
+
 
 ### Install the requirements
   
@@ -60,11 +65,13 @@ macOS and Windows systems.
     ```bash
     cd [path_to_the_ml-model_folder]
     ```
-    
+   
+ 
 8. Install all the required dependencies
     ```bash
     pip install -r requirements.txt
     ```
+
 
 ## Training
 
@@ -74,11 +81,13 @@ Run the following command to start training the model
 python3 cb_finetuning.py
 ```
    
+
 If you want to run the training as a background process:
 
 ```bash
 nohup python3 cb_finetuning.py > log.out 2>&1 & echo $! > run.pid
 ```
+
 
 The command will run the training in background and will create and save the logs in the `log.out` file and the pid of the process 
 in the `run.pid` file.
