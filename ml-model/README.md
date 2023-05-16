@@ -23,6 +23,7 @@ macOS and Windows systems.
     * **path_to_destination_directory** - represents the destination path where the installer will be downloaded.
     * **conda_download_http_link** - is the link of the installer. You can choose the installer [here](https://docs.conda.io/en/latest/miniconda.html#linux-installers), copying the corresponding url.
 
+
 2. Execute the installer:
     ```bash
     bash [fullname_of_the_installer]
