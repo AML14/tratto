@@ -65,7 +65,7 @@ macOS and Windows systems.
     ```bash
     cd [path_to_the_ml-model_folder]
     ```
-   
+   * **path_to_the_ml-model_folder** - to path to the folder, like for examples `~/Users/johndoe/.../tratto/ml-model`
  
 8. Install all the required dependencies
     ```bash
