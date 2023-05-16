@@ -187,9 +187,7 @@ if __name__ == "__main__":
     with open(
         os.path.join(
             Path.OUTPUT.value,
-            FileName.LOSS_ACCURACY.value,
-            ".",
-            FileFormat.JSON
+            f"{FileName.LOSS_ACCURACY.value}.{FileFormat.JSON}"
         ),
         "w"
     ) as loss_file:
@@ -202,13 +200,12 @@ if __name__ == "__main__":
         json.dump(data, loss_file)
     # Close the file
     loss_file.close()
-
-
     # ## Save the statistics and the trained model
     #
     # Saves the statistics for future analysis, and the trained model for future use or improvements.
     # Saving the model we save the values of all the weights. In other words, we create a snapshot of
     # the state of the model, after the training.
     Printer.print_save_model()
-    torch.save(model.state_dict(), os.path.join(Path.OUTPUT.value, "tratto_model.pt"))
+    torch.save(model, "tratto_model.pt")
+    torch.save(model.state_dict(), os.path.join(Path.OUTPUT.value, "tratto_model_state_dict.pt"))
 
