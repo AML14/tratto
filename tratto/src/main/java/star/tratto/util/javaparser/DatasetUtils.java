@@ -5,8 +5,11 @@ import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.*;
 import com.github.javaparser.ast.comments.JavadocComment;
 import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.type.ClassOrInterfaceType;
+import com.github.javaparser.ast.type.Type;
 import org.javatuples.Pair;
 import org.javatuples.Quartet;
+import org.javatuples.Triplet;
 import star.tratto.dataset.oracles.JDoctorCondition.*;
 import star.tratto.exceptions.PackageDeclarationNotFoundException;
 import star.tratto.identifiers.JPCallableType;
@@ -147,6 +150,67 @@ public class DatasetUtils {
         pairList.addAll(findAllNumericValuesInJavadoc(jpJavadoc));
         pairList.addAll(findAllStringValuesInJavadoc(jpJavadoc));
         return pairList;
+    }
+
+    private static Optional<String> getClassNameFromCallableDeclaration(
+            TypeDeclaration<?> jpClass,
+            CallableDeclaration<?> jpCallable,
+            Parameter jpParameter
+    ) {
+        Type jpParameterType = jpParameter.getType();
+        if (jpParameterType.resolve().isTypeVariable()) {
+            // generic type.
+            return Optional.of(((ClassOrInterfaceType) jpParameterType).getNameAsString());
+        } else if (jpParameterType.resolve().isPrimitive()) {
+            // primitive type.
+            return Optional.of(jpParameterType.asPrimitiveType().toString());
+        } else if (jpParameterType.resolve().isArray()) {
+            // array type.
+            return Optional.of(JavaParserUtils.getTypeWithoutPackages(jpParameterType.resolve()));
+        } else if (jpParameterType.resolve().isReferenceType()) {
+            String typeName = JDoctorUtils.getJPTypeName(jpClass, jpCallable, jpParameter);
+            if (isGenericType(typeName, jpCallable, jpClass)) {
+                return Optional.of(typeName);
+            } else {
+                return Optional.of(getTypeWithoutPackages(jpParameterType.resolve()));
+            }
+        } else {
+            System.err.printf("Unexpected type %s in generating argument triplet.%n", jpParameterType);
+        }
+        return Optional.empty();
+    }
+
+    public static List<Triplet<String, String, String>> getTokensMethodArguments(
+            TypeDeclaration<?> jpClass,
+            CallableDeclaration<?> jpCallable
+    ) {
+        List<Triplet<String, String, String>> argumentList = new ArrayList<>();
+        List<Parameter> jpParameters = jpCallable.getParameters();
+        for (Parameter jpParameter : jpParameters) {
+            Type jpParameterType = jpParameter.getType();
+            Optional<String> jpParameterClassName = getClassNameFromCallableDeclaration(jpClass, jpCallable, jpParameter);
+            if (jpParameterClassName.isPresent()) {
+                if (jpParameterType.resolve().isReferenceType()) {
+                    //
+                    String typeName = JDoctorUtils.getJPTypeName(jpClass, jpCallable, jpParameter);
+                    if (isGenericType(typeName, jpCallable, jpClass)) {
+                        argumentList.add(new Triplet<>(jpParameter.getNameAsString(), "", typeName));
+                    } else {
+                        String className = JavaParserUtils.getTypeWithoutPackages(jpParameterType.resolve());
+                        String parameterPackageName = jpParameterType.resolve().asReferenceType().getQualifiedName()
+                                .replace(String.format(".%s", className), "");
+                        argumentList.add(new Triplet<>(
+                                jpParameter.getNameAsString(),
+                                parameterPackageName,
+                                className
+                        ));
+                    }
+                } else {
+                    argumentList.add(new Triplet<>(jpParameter.getNameAsString(), "", jpParameterClassName.get()));
+                }
+            }
+        }
+        return argumentList;
     }
 
     public static String getCallableSourceCode(

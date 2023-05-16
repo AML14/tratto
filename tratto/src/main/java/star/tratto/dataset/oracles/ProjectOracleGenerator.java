@@ -122,16 +122,16 @@ public class ProjectOracleGenerator {
         builder.setMethodSourceCode(DatasetUtils.getCallableSourceCode(jpCallable));
         builder.setMethodJavadoc(DatasetUtils.getCallableJavadoc(jpCallable));
         builder.setTokensMethodJavadocValues(DatasetUtils.getValuesFromJavadoc(builder.copy().getMethodJavadoc()));
+        builder.setTokensMethodArguments(DatasetUtils.getTokensMethodArguments(jpClass, jpCallable));
 
         /* Remaining fields
-            private List<Pair<String, String>> tokensMethodJavadocValues; // <token, type>
-            private List<Triplet<String, String, String>> tokensMethodArguments; // <token, package, class>
             private List<Quartet<String, String, String, String>> tokensMethodVariablesNonPrivateNonStaticNonVoidMethods; // <token, package, class, signature>
             private List<Quartet<String, String, String, String>> tokensMethodVariablesNonPrivateNonStaticAttributes; // <token, package, class, declaration>
             private List<Quartet<String, String, String, String>> tokensOracleVariablesNonPrivateNonStaticNonVoidMethods; // <token, package, class, signature>
             private List<Quartet<String, String, String, String>> tokensOracleVariablesNonPrivateNonStaticAttributes;
          */
 
+        // return new datapoint.
         this.idCounter++;
         return builder.build();
     }
