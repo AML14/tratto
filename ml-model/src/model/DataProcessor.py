@@ -770,7 +770,7 @@ class DataProcessor:
                   b_inputs,
                   max_length=max_len,
                   padding='max_length',
-                  truncation=True
+                  truncation=False
                 )
                 # Transform the list into a tensor stack
                 #
