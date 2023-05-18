@@ -1182,6 +1182,7 @@ public class TokenSuggesterTest {
                 Arguments.of("MethodArgumentDoubleAllowed", "PolynomialFunction.evaluate(null, ", oracleDatapoints.get(1), List.of("1", "3.1", "PolynomialFunction"), List.of("null", "true", "false", "\"someString\"")),
                 Arguments.of("JdVarComplexType", "true ? methodResultID.stream().noneMatch(jdVar -> jdVar.", oracleDatapoints.get(4), List.of("isInfinite", "equals", "isNaN"), List.of("nonExistingMethod", "class", "==", "&&")),
                 Arguments.of("Empty", "", oracleDatapoints.get(0), List.of("Equator", "o1", "(", "true", "this", ";"), List.of("Arrays", "methodResultID", "jdVar", "1")),
+                Arguments.of("StringSuggested", "o1.toString().equals(", oracleDatapoints.get(0), List.of("o1", "o2", "\"alsoThis\"", "\"stringValue\"", "\"\"", "Equator"), List.of("0", "methodResultID")),
                 Arguments.of("ArraysStreamDeadEnd", "true ? Arrays.stream(", oracleDatapoints.get(0), List.of(), Tokens.TOKENS),
                 Arguments.of("StreamDeadEnd", "true?methodResultID.stream().noneMatch(jdVar->jdVar==n", oracleDatapoints.get(4), List.of(), Tokens.TOKENS),
                 Arguments.of("ArraysStream", "true ? Arrays.stream(", oracleDatapoints.get(5), List.of("methodResultID", "coefficients"), Tokens.TOKENS.stream().filter(t -> !t.equals("methodResultID")).collect(Collectors.toList())),

@@ -30,6 +30,8 @@ public class TokensDataset {
     public static String TOKENS_DATASET_FOLDER = "src/main/resources/tokens-dataset/";
     private static int tokenIndex = 0;
     private static int fileIndex = 0;
+    private static int negativeSamples = 0;
+    private static int positiveSamples = 0;
     private static final boolean crashOnWrongOracle = false;
 
     public static void main(String[] args) throws IOException {
@@ -57,7 +59,7 @@ public class TokensDataset {
                     continue;
                 }
 
-                for (int i=1; i<tokenDatapoints.size(); i++) {
+                for (TokenDatapoint tokenDatapoint : tokenDatapoints) {
                     if (tokensDatasetFile.length() == 0) {
                         tokensDatasetOutputStream.write("[".getBytes());
                     } else if (tokensDatasetFile.length() / 1000 / 1000 > 48) { // Limit file size to 50 MB
@@ -70,12 +72,19 @@ public class TokensDataset {
                     } else {
                         tokensDatasetOutputStream.write(",".getBytes());
                     }
-                    tokensDatasetOutputStream.write(objectMapper.writeValueAsBytes(tokenDatapoints.get(i)));
+                    tokensDatasetOutputStream.write(objectMapper.writeValueAsBytes(tokenDatapoint));
                 }
             }
             tokensDatasetOutputStream.write("]".getBytes());
             tokensDatasetOutputStream.close();
         }
+
+        logger.info("------------------------------------------------------------");
+        logger.info("Finished generating tokens dataset.");
+        logger.info("Total samples: {}", positiveSamples + negativeSamples);
+        logger.info("Total positive samples: {}", positiveSamples);
+        logger.info("Total negative samples: {}", negativeSamples);
+        logger.info("------------------------------------------------------------");
     }
 
     /**
@@ -138,6 +147,9 @@ public class TokensDataset {
             tokenDatapoints.add(tokenDatapoint);
             if (label) {
                 nextTokenActuallyLegal = true;
+                positiveSamples++;
+            } else {
+                negativeSamples++;
             }
         }
         assertTokenLegal(nextTokenActuallyLegal, nextOracleToken, oracleSoFarTokens);
