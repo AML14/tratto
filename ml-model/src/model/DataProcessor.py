@@ -228,15 +228,16 @@ class DataProcessor:
         # The dataset is sorted according to the batch type the PyTorch Dataloader will
         # have to pruduce
         if batch_type == BatchType.HETEROGENEOUS:
-          self._sort_dataset_heterogeneously()
+            self._sort_dataset_heterogeneously()
         elif batch_type == BatchType.OMOGENEOUS:
-          self._sort_dataset_omogeneously()
+            self._sort_dataset_omogeneously()
         elif batch_type == BatchType.RANDOM:
-          self._sort_dataset_randomly()
+            self._sort_dataset_randomly()
         elif batch_type == BatchType.SORTED_BY_LENGTH:
-          self._sort_dataset_by_input_length()
+            self._sort_dataset_by_input_length()
         else:
-          raise Exception("Batch type not recognized.")
+            s_o_t_zip = list(zip(self._src, self._o_ids, self._tgt))
+            self._processed_dataset["d_sorted"] = s_o_t_zip
         # The sorted dataset is grouped in batches, and the batches are splitted in
         # training and validation datasets
         self._generate_train_val_batches()
