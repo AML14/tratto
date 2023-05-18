@@ -7,7 +7,7 @@
         "packageName": "org.apache.commons.collections4",
         "className": "Equator",
         "javadocTag": "@return whether the two objects are equal.",
-        "methodJavadoc": "/**\n     * Evaluates the two arguments for their equality.\n     * For the sake of illustration: This is a \"stringValue\"\n     * and 'alsoThis' and this is a number: 42.\n     *\n     * @param o1 the first object to be equated.\n     * @param o2 the second object to be equated.\n     * @return whether the two objects are equal.\n     */",
+        "methodJavadoc": "/**\n     * Evaluates the two arguments for their equality.\n     * For the sake of illustration: This is a \"stringValue\",\n     * and 'alsoThis', and \"\", and this is a number: 42.\n     *\n     * @param o1 the first object to be equated.\n     * @param o2 the second object to be equated.\n     * @return whether the two objects are equal.\n     */",
         "methodSourceCode": "boolean equate(T o1, T o2);",
         "classJavadoc": "/**\n * An equation function, which determines equality between objects of type T.\n * <p>\n * It is the functional sibling of {@link java.util.Comparator}; {@link Equator} is to\n * {@link Object} as {@link java.util.Comparator} is to {@link java.lang.Comparable}.\n * </p>\n *\n * @param <T> the types of object this {@link Equator} can evaluate.\n * @since 4.0\n */",
         "classSourceCode": "/*\n * Licensed to the Apache Software Foundation (ASF) under one or more contributor license\n * agreements. See the NOTICE file distributed with this work for additional information regarding\n * copyright ownership. The ASF licenses this file to You under the Apache License, Version 2.0 (the\n * \"License\"); you may not use this file except in compliance with the License. You may obtain a\n * copy of the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required by applicable\n * law or agreed to in writing, software distributed under the License is distributed on an \"AS IS\"\n * BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License\n * for the specific language governing permissions and limitations under the License.\n */\npackage org.apache.commons.collections4;\n\n/**\n * An equation function, which determines equality between objects of type T.\n * <p>\n * It is the functional sibling of {@link java.util.Comparator}; {@link Equator} is to\n * {@link Object} as {@link java.util.Comparator} is to {@link java.lang.Comparable}.\n *\n * @param <T> the types of object this {@link Equator} can evaluate.\n * @since 4.0\n * @version $Id$\n */\npublic interface Equator<T> {\n    /**\n     * Evaluates the two arguments for their equality.\n     *\n     * @param o1 the first object to be equated.\n     * @param o2 the second object to be equated.\n     * @return whether the two objects are equal.\n     */\n    boolean equate(T o1, T o2);\n\n    /**\n     * Calculates the hash for the object, based on the method of equality used in the equate\n     * method. This is used for classes that delegate their {@link Object#equals(Object) equals(Object)} method to an\n     * Equator (and so must also delegate their {@link Object#hashCode() hashCode()} method), or for implementations\n     * of {@link org.apache.commons.collections4.map.HashedMap} that use an Equator for the key objects.\n     *\n     * @param o the object to calculate the hash for.\n     * @return the hash of the object.\n     */\n    int hash(T o);\n}",
@@ -198,6 +198,10 @@
             ],
             [
                 "\"alsoThis\"",
+                "String"
+            ],
+            [
+                "\"\"",
                 "String"
             ],
             [
