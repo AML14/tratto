@@ -14,7 +14,6 @@ import org.javatuples.Pair;
 import org.javatuples.Quartet;
 import org.javatuples.Triplet;
 import star.tratto.dataset.oracles.JDoctorCondition.*;
-import star.tratto.dataset.oracles.Project;
 import star.tratto.exceptions.PackageDeclarationNotFoundException;
 import star.tratto.identifiers.JPCallableType;
 import star.tratto.identifiers.Javadoc;
@@ -27,7 +26,6 @@ import static star.tratto.util.javaparser.JavaParserUtils.*;
 
 import java.io.File;
 import java.nio.file.Paths;
-import java.sql.Array;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -385,6 +383,8 @@ public class DatasetUtils {
     }
 
     private List<Quartet<String, String, String, String>> getMethodsFromType(
+            TypeDeclaration<?> jpClass,
+            CallableDeclaration<?> jpCallable,
             ResolvedType jpType
     ) {
         List<Quartet<String, String, String, String>> methodList = new ArrayList<>();
@@ -400,7 +400,13 @@ public class DatasetUtils {
             }
         }
         // handle generic type.
-
+        if (JavaParserUtils.isGenericType(jpType.describe(), jpCallable, jpClass)) {
+            List<MethodUsage> genericMethods = JavaParserUtils.getGenericType().asReferenceType().getAllMethods()
+                    .stream()
+                    .map(MethodUsage::new)
+                    .collect(Collectors.toList());
+            methodList.addAll(convertMethodUsageToQuartet(genericMethods));
+        }
         // handle array type.
         if (jpType.isArray()) {
             String arraysMethodJsonPath = Paths.get(
@@ -423,7 +429,6 @@ public class DatasetUtils {
     }
 
     public List<Quartet<String, String, String, String>> getTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(
-            CompilationUnit cu,
             TypeDeclaration<?> jpClass,
             CallableDeclaration<?> jpCallable
     ) {
@@ -435,11 +440,19 @@ public class DatasetUtils {
         List<Quartet<String, String, String, String>> methodList = new ArrayList<>(convertMethodUsageToQuartet(allReceiverMethods));
         // add all methods of parameters.
         for (Parameter jpParam : jpCallable.getParameters()) {
-            methodList.addAll(getMethodsFromType(jpParam.getType().resolve()));
+            methodList.addAll(getMethodsFromType(
+                    jpClass,
+                    jpCallable,
+                    jpParam.getType().resolve()
+            ));
         }
         // add all methods of return type.
         if (jpCallable instanceof MethodDeclaration) {
-            methodList.addAll(getMethodsFromType(((MethodDeclaration) jpCallable).getType().resolve()));
+            methodList.addAll(getMethodsFromType(
+                    jpClass,
+                    jpCallable,
+                    ((MethodDeclaration) jpCallable).getType().resolve()
+            ));
         }
         return methodList;
     }
