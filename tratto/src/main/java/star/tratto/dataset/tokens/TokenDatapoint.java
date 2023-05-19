@@ -1,12 +1,9 @@
 package star.tratto.dataset.tokens;
 
-import org.apache.poi.ss.usermodel.Row;
 import star.tratto.dataset.oracles.OracleDatapoint;
 import star.tratto.oracle.OracleType;
 
 import java.util.List;
-
-import static star.tratto.dataset.ExcelManager.subElementListToCell;
 
 /**
  * Token containing the information as it is written to the tokens dataset
@@ -47,66 +44,6 @@ public class TokenDatapoint {
         this.token = token;
         this.tokenClass = tokenClass;
         this.tokenInfo = tokenInfo;
-    }
-
-    public static final List<String> ATTRIBUTES = List.of(
-            "id",
-            "label",
-            "oracleId",
-            "oracleType",
-            "projectName",
-            "packageName",
-            "className",
-            "javadocTag",
-            "methodJavadoc",
-            "methodSourceCode",
-            "classJavadoc",
-            "classSourceCode",
-            "oracleSoFar",
-            "token",
-            "tokenClass",
-            "tokenInfo"
-    );
-
-//    /**
-//     * The tokenClass of a TokenDatapoint is usually the same as the TrattoGrammar rule of that token
-//     * (e.g., "Semicolon"). However, for tokens representing vars (i.e., "someVarOrClassOrFieldOrMethod"),
-//     * we need to differentiate them. We do so based on the column they come from in the oracles dataset,
-//     * which represents the type of token (class, method, argument, etc.).
-//     */
-//    public static final Map<String, String> CONTEXTUAL_TOKENS_CLASSES = Map.of(
-//            "tokensGeneralValuesGlobalDictionary", "GlobalDictionaryValue",
-//            "tokensProjectClasses", "Class",
-//            "tokensProjectClassesNonPrivateStaticNonVoidMethods", "MethodName",
-//            "tokensProjectClassesNonPrivateStaticAttributes", "ClassField",
-//            "tokensMethodJavadocValues", "MethodJavadocValue",
-//            "tokensMethodArguments", "MethodArgument",
-//            "tokensMethodVariablesNonPrivateNonStaticNonVoidMethods", "MethodName",
-//            "tokensMethodVariablesNonPrivateNonStaticAttributes", "ClassField",
-//            "tokensOracleVariablesNonPrivateNonStaticNonVoidMethods", "MethodName",
-//            "tokensOracleVariablesNonPrivateNonStaticAttributes", "ClassField"
-//    );
-
-    /**
-     * Modify input row to reflect the information contained in this TokenDatapoint
-     */
-    public void updateRow(Row row) {
-        row.createCell(0).setCellValue(id);
-        row.createCell(1).setCellValue(label);
-        row.createCell(2).setCellValue(oracleId);
-        row.createCell(3).setCellValue(oracleType.toString());
-        row.createCell(4).setCellValue(projectName);
-        row.createCell(5).setCellValue(packageName);
-        row.createCell(6).setCellValue(className);
-        row.createCell(7).setCellValue(javadocTag);
-        row.createCell(8).setCellValue(methodJavadoc);
-        row.createCell(9).setCellValue(methodSourceCode);
-        row.createCell(10).setCellValue(classJavadoc);
-        row.createCell(11).setCellValue(classSourceCode);
-        row.createCell(12).setCellValue(oracleSoFar);
-        row.createCell(13).setCellValue(token);
-        row.createCell(14).setCellValue(tokenClass);
-        row.createCell(15).setCellValue(subElementListToCell(tokenInfo));
     }
 
     public Integer getId() {

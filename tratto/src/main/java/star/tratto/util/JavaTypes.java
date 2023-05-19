@@ -40,6 +40,10 @@ public class JavaTypes {
             .boxed()
             .collect(Collectors.toMap(PRIMITIVES::get, PRIMITIVE_WRAPPERS::get));
 
+    public static final Map<Pair<String, String>, Pair<String, String>> WRAPPERS_TO_PRIMITIVES = IntStream.range(0, PRIMITIVES.size())
+            .boxed()
+            .collect(Collectors.toMap(PRIMITIVE_WRAPPERS::get, PRIMITIVES::get));
+
     public static final List<Pair<String, String>> INTEGRALS = List.of(
             Pair.with("", "int"),
             Pair.with("", "long"),

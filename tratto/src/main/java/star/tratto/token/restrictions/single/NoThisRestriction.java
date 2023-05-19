@@ -7,7 +7,8 @@ import star.tratto.dataset.oracles.OracleDatapoint;
 import star.tratto.util.javaparser.JavaParserUtils;
 
 import java.util.List;
-import java.util.NoSuchElementException;
+
+import static star.tratto.util.JavaParserUtils.getMethodDeclaration;
 
 /**
  * "this" is forbidden if the method under test is static.
@@ -15,7 +16,6 @@ import java.util.NoSuchElementException;
 public class NoThisRestriction extends SingleTokenRestriction {
 
     private static NoThisRestriction instance;
-    private final JavaParser javaParser = JavaParserUtils.getJavaParser();
 
     private NoThisRestriction() {
         this.restrictedToken = "this";
@@ -34,13 +34,10 @@ public class NoThisRestriction extends SingleTokenRestriction {
             return false;
         }
 
-        MethodDeclaration methodDeclaration;
-        try {
-            methodDeclaration = javaParser.parseMethodDeclaration(oracleDatapoint.getMethodSourceCode()).getResult().get();
-        } catch (NoSuchElementException e) {
-            throw new IllegalArgumentException("The provided methodSourceCode cannot be parsed by JavaParser. Method source code:\n\n" + oracleDatapoint.getMethodSourceCode(), e);
-        }
-
-        return methodDeclaration.getModifiers().stream().anyMatch(modifier -> modifier.getKeyword() == Modifier.Keyword.STATIC);
+        MethodDeclaration methodDeclaration = getMethodDeclaration(oracleDatapoint.getMethodSourceCode());
+        // If methodDeclaration is null, the method under test is a constructor, so "this" would be forbidden
+        return methodDeclaration == null || methodDeclaration.getModifiers()
+                .stream()
+                .anyMatch(modifier -> modifier.getKeyword() == Modifier.Keyword.STATIC);
     }
 }

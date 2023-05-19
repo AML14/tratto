@@ -159,9 +159,9 @@ class DataProcessor:
         """
         # The list of batches of the tokenized (training or validation) datapoints
         if d_type == DatasetType.TRAINING:
-            b_tokenized= self.processed_dataset["b_train_tokenized"]
+            b_tokenized= self._processed_dataset["b_train_tokenized"]
         elif d_type == DatasetType.VALIDATION:
-            b_tokenized= self.processed_dataset["b_val_tokenized"]
+            b_tokenized= self._processed_dataset["b_val_tokenized"]
         else:
             raise Exception(f"Unrecognized DataType value: {d_type}")
 
@@ -228,15 +228,16 @@ class DataProcessor:
         # The dataset is sorted according to the batch type the PyTorch Dataloader will
         # have to pruduce
         if batch_type == BatchType.HETEROGENEOUS:
-          self._sort_dataset_heterogeneously()
+            self._sort_dataset_heterogeneously()
         elif batch_type == BatchType.OMOGENEOUS:
-          self._sort_dataset_omogeneously()
+            self._sort_dataset_omogeneously()
         elif batch_type == BatchType.RANDOM:
-          self._sort_dataset_randomly()
+            self._sort_dataset_randomly()
         elif batch_type == BatchType.SORTED_BY_LENGTH:
-          self._sort_dataset_by_input_length()
+            self._sort_dataset_by_input_length()
         else:
-          raise Exception("Batch type not recognized.")
+            s_o_t_zip = list(zip(self._src, self._o_ids, self._tgt))
+            self._processed_dataset["d_sorted"] = s_o_t_zip
         # The sorted dataset is grouped in batches, and the batches are splitted in
         # training and validation datasets
         self._generate_train_val_batches()
@@ -244,8 +245,30 @@ class DataProcessor:
         self._tokenize_batches()
 
     def pre_processing(self):
+        # drop column id (it is not relevant for training the model)
+        self._df_dataset = self._df_dataset.drop(['id'], axis=1)
+        # map empty cells to empty strings
+        self._df_dataset.fillna('', inplace=True)
+        # specify the type of each column in the dataset
+        self._df_dataset = self._df_dataset.astype({
+            'label': 'bool',
+            'oracleId': 'int64',
+            'oracleType': 'string',
+            'projectName': 'string',
+            'packageName': 'string',
+            'className': 'string',
+            'javadocTag': 'string',
+            'methodJavadoc': 'string',
+            'methodSourceCode': 'string',
+            'classJavadoc': 'string',
+            'classSourceCode': 'string',
+            'oracleSoFar': 'string',
+            'token': 'string',
+            'tokenClass': 'string',
+            'tokenInfo': 'string'
+        })
         # delete the oracle ids and the tgt labels from the input dataset
-        df_src = self._df_dataset.drop(['oracleId', 'label'], axis=1)
+        df_src = self._df_dataset.drop(['oracleId','oracleType','label'], axis=1)
         # create a dataframe for the oracle ids (we convert the boolean values to int64)
         df_oracle_ids = self._df_dataset[['oracleId']]
         # create a dataframe for the target labels (the apply function convert the
@@ -302,7 +325,7 @@ class DataProcessor:
         for the training and the validation datasets.
         """
         # The number of datapoints that compose the entire dataset
-        dp_len = len(self.processed_dataset["d_sorted"])
+        dp_len = len(self._processed_dataset["d_sorted"])
         # The number of datapoints that have to be assigned to the training dataset
         dp_train_len = math.floor(dp_len * self._training_ratio)
         # The number of datapoints that have to be assigned to the validation dataset
@@ -376,8 +399,8 @@ class DataProcessor:
             b_val_list.append(b_sorted_list[b_id])
         # The generated lists of batches are stored in the *processed_dataset* dict
         # of the instance of the class
-        self.processed_dataset["b_train"] = b_train_list
-        self.processed_dataset["b_val"] = b_val_list
+        self._processed_dataset["b_train"] = b_train_list
+        self._processed_dataset["b_val"] = b_val_list
 
     def _load_dataset(
             self,
@@ -397,29 +420,13 @@ class DataProcessor:
             -------
             df_dataset: pandas.DataFrame
                 A pandas DataFrame representation of the dataset
-            """
-        # read the dataset from the google drive path
-        df_dataset = pd.read_csv(os.path.join(d_path, FileName.INPUT_DATASET.value, '.', FileFormat.CSV))
-        # drop column id (it is not relevant for training the model)
-        df_dataset = df_dataset.drop(['id'], axis=1)
-        # map empty cells to empty strings
-        df_dataset.fillna('', inplace=True)
-        # specify the type of each column in the dataset
-        df_dataset.astype({
-            'oracleId': 'int64',
-            'projectName': 'string',
-            'packageName': 'string',
-            'className': 'string',
-            'javadocTag': 'string',
-            'methodJavadoc': 'string',
-            'methodSourceCode': 'string',
-            'classJavadoc': 'string',
-            'token': 'string',
-            'tokenInfo': 'string',
-            'tokenClass': 'string',
-            'notes': 'string',
-            'label': 'bool'
-        }).dtypes
+        """
+        # read the dataset
+        dfs = []
+        for file_name in os.listdir(os.path.join(d_path)):
+            df = pd.read_json(os.path.join(d_path, file_name))
+            dfs.append(df)
+        df_dataset = pd.concat(dfs)
         return df_dataset
 
     def _map_dataset_to_batches(
@@ -438,7 +445,7 @@ class DataProcessor:
             The total number of datapoints within the whole dataset
         """
         # The list of the whole sorted dataset
-        d_sorted = self.processed_dataset["d_sorted"]
+        d_sorted = self._processed_dataset["d_sorted"]
         # The rest of the division between the whole number of datapoints
         # and the batch size. The rest gives the number of datapoints in
         # the last batch (if the rest is 0 all the batches are full,
@@ -451,16 +458,16 @@ class DataProcessor:
         # Check if there is a batch not full and the selected sorting
         # algorithm let's to have the partially full batch in a random
         # position
-        if rest_flag and self.processed_dataset["rand_short_id"]:
+        if rest_flag and self._processed_dataset["rand_short_id"]:
             # Select the random index of the partially full batch
             short_batch_id = random.randrange(0,b_len)
             # Store the index of the partially full batch
-            self.processed_dataset["b_short_id"] = short_batch_id
+            self._processed_dataset["b_short_id"] = short_batch_id
         else:
             # If the position of the partially full batch cannot be
             # random, get the position that it must have in the
             # list of batches
-            short_batch_id = self.processed_dataset["b_short_id"]
+            short_batch_id = self._processed_dataset["b_short_id"]
         # Initialization of the batch list
         batches = []
         # Pointer of the position in the whole sorted dataset
@@ -513,7 +520,7 @@ class DataProcessor:
         # If the list has a partially full batch, get the index
         # The value is -1 if there is not a short batch (all the
         # batches in the list are full)
-        short_batch_id = self.processed_dataset["b_short_id"]
+        short_batch_id = self._processed_dataset["b_short_id"]
         # Generate a sorted list of indices
         b_ids = [i for i in range(b_len)]
         # Check if the partially full batch exists
@@ -630,9 +637,9 @@ class DataProcessor:
                   assert len(occurrences[o_id_rand]) == 0, "Occurences should be empty."
                   del occurrences_counter[o_id_rand]
                 s_o_t_zip_sorted.append(o_rand)
-        self.processed_dataset["d_sorted"] = s_o_t_zip_sorted
-        self.processed_dataset["b_short_id"]: b_len - 1
-        self.processed_dataset["rand_short_id"]: False
+        self._processed_dataset["d_sorted"] = s_o_t_zip_sorted
+        self._processed_dataset["b_short_id"]: b_len - 1
+        self._processed_dataset["rand_short_id"]: False
 
     def _sort_dataset_omogeneously(self):
         """
@@ -660,7 +667,7 @@ class DataProcessor:
         # The tuples are sorted using as key the second element of each tuple, which means
         # the oracle id of each input.
         s_o_t_zip_sorted = sorted(s_o_t_zip, key=lambda t: t[1])
-        self.processed_dataset["d_sorted"] = s_o_t_zip_sorted
+        self._processed_dataset["d_sorted"] = s_o_t_zip_sorted
 
     def _sort_dataset_randomly(
             self,
@@ -681,7 +688,7 @@ class DataProcessor:
         random.seed(seed)
         # Shuffle the datasets tuples randomly
         random.shuffle(s_o_t_zip)
-        self.processed_dataset["d_sorted"] = s_o_t_zip
+        self._processed_dataset["d_sorted"] = s_o_t_zip
 
     def _sort_dataset_by_input_length(self):
         """
@@ -720,7 +727,7 @@ class DataProcessor:
         # The tuples are sorted using as key the first element of each tuple, which means
         # the oracle id of each input.
         s_o_t_zip_sorted = sorted(s_o_t_zip, key=lambda t: t[0])
-        self.processed_dataset["d_sorted"] = s_o_t_zip_sorted
+        self._processed_dataset["d_sorted"] = s_o_t_zip_sorted
 
     def _tokenize_batches(self):
         """
@@ -728,9 +735,9 @@ class DataProcessor:
         training and validation datasets
         """
         # The batch list of the training dataset
-        b_train = self.processed_dataset["b_train"]
+        b_train = self._processed_dataset["b_train"]
         # The batch list of the validation dataset
-        b_val = self.processed_dataset["b_val"]
+        b_val = self._processed_dataset["b_val"]
         for d_type in DatasetType:
             if d_type == DatasetType.TRAINING:
                 batches = b_train
@@ -744,7 +751,7 @@ class DataProcessor:
                 # Extracts the corresponding targets datapoints from the batch
                 b_targets = [ t[2] for t in batch ]
                 # Computes the length of the longest input datapoint within the batch
-                max_len = reduce(lambda max_len, s: len(s) if len(s) > max_len else max_len, b_inputs,0)
+                max_len = 512 #reduce(lambda max_len, s: len(s) if len(s) > max_len else max_len, b_inputs,0)
                 # Tokenize the inputs datapoints of the batch
                 # The method generate a dictionary with two keys:
                 #
@@ -764,7 +771,7 @@ class DataProcessor:
                   b_inputs,
                   max_length=max_len,
                   padding='max_length',
-                  truncation=False
+                  truncation=True
                 )
                 # Transform the list into a tensor stack
                 #
@@ -784,9 +791,9 @@ class DataProcessor:
                 targets_tensor = torch.tensor(b_targets)
                 if d_type == DatasetType.TRAINING:
                     # Add the tuple representing the tokenized batch to the list of training dataset
-                    self.processed_dataset["b_train_tokenized"].append((t_inputs, t_attention_masks, targets_tensor))
+                    self._processed_dataset["b_train_tokenized"].append((t_inputs, t_attention_masks, targets_tensor))
                 elif d_type == DatasetType.VALIDATION:
                     # Add the tuple representing the tokenized batch to the list of validation dataset
-                    self.processed_dataset["b_val_tokenized"].append((t_inputs, t_attention_masks, targets_tensor))
+                    self._processed_dataset["b_val_tokenized"].append((t_inputs, t_attention_masks, targets_tensor))
                 else:
                     raise Exception(f"Unrecognized DataType value: {d_type}")

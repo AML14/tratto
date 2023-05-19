@@ -195,7 +195,7 @@ test_that(desc = "test_dataset_includes_correct_column_names_in_correct_order", 
 # tokensMethodJavadocValues	
 # tokensMethodArguments	
 # tokensMethodVariablesNonPrivateNonStaticNonVoidMethods	
-# tokensMethodVariablesNonPrivateNonStaticAttrributes	
+# tokensMethodVariablesNonPrivateNonStaticAttributes
 # tokensOracleVariablesNonPrivateNonStaticNonVoidMethods	
 # tokensOracleVariablesNonPrivateNonStaticAttributes
 

@@ -23,9 +23,12 @@ from src.enums.Path import Path
 from src.model.DataProcessor import DataProcessor
 from src.model.OracleClassifier import OracleClassifier
 from src.model.OracleTrainer import OracleTrainer
+from src.model.Printer import Printer
 from src.utils import utils
 
-if __name__() == "main":
+if __name__ == "__main__":
+    Printer.print_welcome()
+    Printer.print_load_gpu()
     device = utils.connect_to_device(DeviceType.GPU)
     d_path = Path.INPUT_DATASET.value
 
@@ -72,15 +75,20 @@ if __name__() == "main":
     # in the same way.
     #
     # Create DataProcessor instance
+    Printer.print_load_dataset()
     data_processor = DataProcessor(
         d_path,
         HyperParameter.BATCH_SIZE.value,
         HyperParameter.TRAINING_RATIO.value,
         tokenizer
     )
+    # Pre-processing data
+    Printer.print_pre_processing()
+    data_processor.pre_processing()
     # Process the data
-    data_processor.process_dataset(BatchType.RANDOM)
+    data_processor.processing(BatchType.RANDOM)
     # Get the train and validation sorted datasets
+    Printer.print_dataset_generation()
     train_dataset = data_processor.get_tokenized_dataset(DatasetType.TRAINING)
     val_dataset = data_processor.get_tokenized_dataset(DatasetType.VALIDATION)
 
@@ -132,7 +140,7 @@ if __name__() == "main":
     # that the model will process input data of this length\n# The +2 is given by the fact that the model add the
     # start token and the end token to each input of the model.
     src = data_processor.get_src()
-    max_input_len = reduce(lambda max_len, s: len(s) if len(s) > max_len else max_len, src,0) + 2
+    max_input_len = 512 #reduce(lambda max_len, s: len(s) if len(s) > max_len else max_len, src,0) + 2
     # Create instance of the model
     model = OracleClassifier(max_input_len)
     # The model is loaded on the gpu (or cpu, if not available)
@@ -148,20 +156,21 @@ if __name__() == "main":
     # validation dataset to evaluate how the model is able to generalize on unseen data.
     # During the validation phase the weights of the model are not updated.
     #
+    Printer.print_training_phase()
     # Adam optimizer with learning rate set with the value of the LR hyperparameter
-    optimizer = optim.Adam(model.parameters(), lr=HyperParameter.LR)
+    optimizer = optim.Adam(model.parameters(), lr=HyperParameter.LR.value)
     # The cross-entropy loss function is commonly used for classification tasks
     loss_fn = CrossEntropyLoss()
     # Instantiation of the trainer
-    oracle_trainer = OracleTrainer(loss_fn,optimizer,dl_train,dl_val)
+    oracle_trainer = OracleTrainer(model, loss_fn, optimizer, dl_train, dl_val)
 
     stats = {}
 
     try:
         # Train the model
         stats = oracle_trainer.train(
-            HyperParameter.NUM_EPOCHS,
-            HyperParameter.NUM_STEPS,
+            HyperParameter.NUM_EPOCHS.value,
+            HyperParameter.NUM_STEPS.value,
             device
         )
     except RuntimeError as e:
@@ -178,27 +187,25 @@ if __name__() == "main":
     with open(
         os.path.join(
             Path.OUTPUT.value,
-            FileName.LOSS_ACCURACY.value,
-            ".",
-            FileFormat.JSON
+            f"{FileName.LOSS_ACCURACY.value}.{FileFormat.JSON}"
         ),
         "w"
     ) as loss_file:
         data = {
             **stats,
-            "batch_size": HyperParameter.BATCH_SIZE,
-            "lr": HyperParameter.LR,
-            "num_epochs": HyperParameter.NUM_EPOCHS
+            "batch_size": HyperParameter.BATCH_SIZE.value,
+            "lr": HyperParameter.LR.value,
+            "num_epochs": HyperParameter.NUM_EPOCHS.value
         }
         json.dump(data, loss_file)
     # Close the file
     loss_file.close()
-
-
     # ## Save the statistics and the trained model
     #
     # Saves the statistics for future analysis, and the trained model for future use or improvements.
     # Saving the model we save the values of all the weights. In other words, we create a snapshot of
     # the state of the model, after the training.
-    torch.save(model.state_dict(), os.path.join(Path.OUTPUT.value, "tratto_model.pt"))
+    Printer.print_save_model()
+    torch.save(model, "tratto_model.pt")
+    torch.save(model.state_dict(), os.path.join(Path.OUTPUT.value, "tratto_model_state_dict.pt"))
 

@@ -1,0 +1,1546 @@
+[
+    {
+        "id": 1,
+        "oracle": "((o1==null)==false) && (o1.equals(o2)) ? methodResultID == true : true;",
+        "oracleType": "NORMAL_POST",
+        "projectName": "commons-collections4-4.1",
+        "packageName": "org.apache.commons.collections4",
+        "className": "Equator",
+        "javadocTag": "@return whether the two objects are equal.",
+        "methodJavadoc": "/**\n     * Evaluates the two arguments for their equality.\n     * For the sake of illustration: This is a \"stringValue\",\n     * and 'alsoThis', and \"\", and this is a number: 42.\n     *\n     * @param o1 the first object to be equated.\n     * @param o2 the second object to be equated.\n     * @return whether the two objects are equal.\n     */",
+        "methodSourceCode": "boolean equate(T o1, T o2);",
+        "classJavadoc": "/**\n * An equation function, which determines equality between objects of type T.\n * <p>\n * It is the functional sibling of {@link java.util.Comparator}; {@link Equator} is to\n * {@link Object} as {@link java.util.Comparator} is to {@link java.lang.Comparable}.\n * </p>\n *\n * @param <T> the types of object this {@link Equator} can evaluate.\n * @since 4.0\n */",
+        "classSourceCode": "/*\n * Licensed to the Apache Software Foundation (ASF) under one or more contributor license\n * agreements. See the NOTICE file distributed with this work for additional information regarding\n * copyright ownership. The ASF licenses this file to You under the Apache License, Version 2.0 (the\n * \"License\"); you may not use this file except in compliance with the License. You may obtain a\n * copy of the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required by applicable\n * law or agreed to in writing, software distributed under the License is distributed on an \"AS IS\"\n * BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License\n * for the specific language governing permissions and limitations under the License.\n */\npackage org.apache.commons.collections4;\n\n/**\n * An equation function, which determines equality between objects of type T.\n * <p>\n * It is the functional sibling of {@link java.util.Comparator}; {@link Equator} is to\n * {@link Object} as {@link java.util.Comparator} is to {@link java.lang.Comparable}.\n *\n * @param <T> the types of object this {@link Equator} can evaluate.\n * @since 4.0\n * @version $Id$\n */\npublic interface Equator<T> {\n    /**\n     * Evaluates the two arguments for their equality.\n     *\n     * @param o1 the first object to be equated.\n     * @param o2 the second object to be equated.\n     * @return whether the two objects are equal.\n     */\n    boolean equate(T o1, T o2);\n\n    /**\n     * Calculates the hash for the object, based on the method of equality used in the equate\n     * method. This is used for classes that delegate their {@link Object#equals(Object) equals(Object)} method to an\n     * Equator (and so must also delegate their {@link Object#hashCode() hashCode()} method), or for implementations\n     * of {@link org.apache.commons.collections4.map.HashedMap} that use an Equator for the key objects.\n     *\n     * @param o the object to calculate the hash for.\n     * @return the hash of the object.\n     */\n    int hash(T o);\n}",
+        "tokensGeneralGrammar": [
+            "null",
+            "true",
+            "false",
+            ",",
+            ".",
+            ":",
+            ";",
+            "?",
+            "jdVar",
+            "stream",
+            "Arrays",
+            "allMatch",
+            "noneMatch",
+            "anyMatch",
+            "~",
+            ">>",
+            "<<",
+            ">>>",
+            "|",
+            "&",
+            "^",
+            "+",
+            "-",
+            "/",
+            "*",
+            "%",
+            "&&",
+            "||",
+            ">=",
+            "<=",
+            ">",
+            "<",
+            "==",
+            "!=",
+            "instanceof",
+            "class",
+            "methodResultID",
+            "this"
+        ],
+        "tokensGeneralValuesGlobalDictionary": [
+            [
+                "0",
+                "int"
+            ],
+            [
+                "1",
+                "int"
+            ],
+            [
+                "2",
+                "int"
+            ],
+            [
+                "100.0",
+                "double"
+            ]
+        ],
+        "tokensProjectClasses": [
+            [
+                "Boolean",
+                "java.lang"
+            ],
+            [
+                "String",
+                "java.lang"
+            ],
+            [
+                "List",
+                "java.util"
+            ],
+            [
+                "AbstractBagDecorator",
+                "package.name.here"
+            ],
+            [
+                "CollectionBag",
+                "org.apache.commons.collections4.bag"
+            ],
+            [
+                "CollectionSortedBag",
+                "package.name.here"
+            ],
+            [
+                "DefaultEquator",
+                "package.name.here"
+            ],
+            [
+                "AbstractPropertiesFactory",
+                "package.name.here"
+            ],
+            [
+                "PropertiesFactory",
+                "package.name.here"
+            ],
+            [
+                "SortedProperties",
+                "package.name.here"
+            ],
+            [
+                "SortedPropertiesFactory",
+                "package.name.here"
+            ],
+            [
+                "ArrayUtils",
+                "package.name.here"
+            ],
+            [
+                "Bag",
+                "org.apache.commons.collections4"
+            ],
+            [
+                "BagUtils",
+                "org.apache.commons.collections4"
+            ],
+            [
+                "BidiMap",
+                "package.name.here"
+            ],
+            [
+                "BoundedCollection",
+                "package.name.here"
+            ],
+            [
+                "BoundedMap",
+                "package.name.here"
+            ],
+            [
+                "Closure",
+                "package.name.here"
+            ],
+            [
+                "ClosureUtils",
+                "package.name.here"
+            ],
+            [
+                "CollectionUtils",
+                "package.name.here"
+            ],
+            [
+                "ComparatorUtils",
+                "package.name.here"
+            ],
+            [
+                "EnumerationUtils",
+                "package.name.here"
+            ],
+            [
+                "Equator",
+                "package.name.here"
+            ]
+        ],
+        "tokensProjectClassesNonPrivateStaticNonVoidMethods": [
+            [
+                "collectionBag",
+                "org.apache.commons.collections4.bag",
+                "CollectionBag",
+                "public static <E> Bag<E> collectionBag(final Bag<E> bag)"
+            ],
+            [
+                "indexOf",
+                "org.apache.commons.collections4",
+                "ArrayUtils",
+                "static int indexOf(final Object[] array, final Object objectToFind, int startIndex)"
+            ]
+        ],
+        "tokensProjectClassesNonPrivateStaticAttributes": [
+            [
+                "INSTANCE",
+                "org.apache.commons.collections4.properties",
+                "PropertiesFactory",
+                "public static final PropertiesFactory INSTANCE = new PropertiesFactory()"
+            ],
+            [
+                "EMPTY_BAG",
+                "org.apache.commons.collections4",
+                "BagUtils",
+                "public static final Bag EMPTY_BAG = UnmodifiableBag.unmodifiableBag(new HashBag<>())"
+            ]
+        ],
+        "tokensMethodJavadocValues": [
+            [
+                "\"stringValue\"",
+                "String"
+            ],
+            [
+                "\"alsoThis\"",
+                "String"
+            ],
+            [
+                "\"\"",
+                "String"
+            ],
+            [
+                "42",
+                "int"
+            ]
+        ],
+        "tokensMethodArguments": [
+            [
+                "o1",
+                "java.lang",
+                "Object"
+            ],
+            [
+                "o2",
+                "java.lang",
+                "Object"
+            ]
+        ],
+        "tokensMethodVariablesNonPrivateNonStaticNonVoidMethods": [
+            [
+                "equals",
+                "java.lang",
+                "Object",
+                "public boolean equals(Object obj)"
+            ],
+            [
+                "toString",
+                "java.lang",
+                "Object",
+                "public String toString()"
+            ],
+            [
+                "getClass",
+                "java.lang",
+                "Object",
+                "public final native Class<?> getClass()"
+            ],
+            [
+                "hashCode",
+                "java.lang",
+                "Object",
+                "public native int hashCode()"
+            ],
+            [
+                "hash",
+                "org.apache.commons.collections4",
+                "Equator",
+                "int hash(T o)"
+            ]
+        ],
+        "tokensMethodVariablesNonPrivateNonStaticAttributes": [],
+        "tokensOracleVariablesNonPrivateNonStaticNonVoidMethods": [],
+        "tokensOracleVariablesNonPrivateNonStaticAttributes": []
+    },
+    {
+        "id": 2,
+        "oracle": "this.getCoefficients().length==0;",
+        "oracleType": "EXCEPT_POST",
+        "projectName": "commons-math3-3.6.1",
+        "packageName": "org.apache.commons.math3.analysis.polynomials",
+        "className": "PolynomialFunction",
+        "javadocTag": "@throws NoDataException if {@code coefficients} is empty.",
+        "methodJavadoc": "/** {@inheritDoc}\n     * @since 3.1\n     * @throws NoDataException if {@code coefficients} is empty.\n     * @throws NullArgumentException if {@code coefficients} is {@code null}.\n     */",
+        "methodSourceCode": "public DerivativeStructure value(final DerivativeStructure t)\n        throws NullArgumentException, NoDataException {\n        MathUtils.checkNotNull(coefficients);\n        int n = coefficients.length;\n        if (n == 0) {\n            throw new NoDataException(LocalizedFormats.EMPTY_POLYNOMIALS_COEFFICIENTS_ARRAY);\n        }\n        DerivativeStructure result =\n                new DerivativeStructure(t.getFreeParameters(), t.getOrder(), coefficients[n - 1]);\n        for (int j = n - 2; j >= 0; j--) {\n            result = result.multiply(t).add(coefficients[j]);\n        }\n        return result;\n    }",
+        "classJavadoc": "/**\n * Immutable representation of a real polynomial function with real coefficients.\n * <p>\n * <a href=\"http://mathworld.wolfram.com/HornersMethod.html\">Horner's Method</a>\n * is used to evaluate the function.</p>\n *\n */",
+        "classSourceCode": "/*\n * Licensed to the Apache Software Foundation (ASF) under one or more\n * contributor license agreements.  See the NOTICE file distributed with\n * this work for additional information regarding copyright ownership.\n * The ASF licenses this file to You under the Apache License, Version 2.0\n * (the \"License\"); you may not use this file except in compliance with\n * the License.  You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\npackage org.apache.commons.math3.analysis.polynomials;\n\nimport java.io.Serializable;\nimport java.util.Arrays;\n\nimport org.apache.commons.math3.analysis.DifferentiableUnivariateFunction;\nimport org.apache.commons.math3.analysis.ParametricUnivariateFunction;\nimport org.apache.commons.math3.analysis.UnivariateFunction;\nimport org.apache.commons.math3.analysis.differentiation.DerivativeStructure;\nimport org.apache.commons.math3.analysis.differentiation.UnivariateDifferentiableFunction;\nimport org.apache.commons.math3.exception.NoDataException;\nimport org.apache.commons.math3.exception.NullArgumentException;\nimport org.apache.commons.math3.exception.util.LocalizedFormats;\nimport org.apache.commons.math3.util.FastMath;\nimport org.apache.commons.math3.util.MathUtils;\n\n/**\n * Immutable representation of a real polynomial function with real coefficients.\n * <p>\n * <a href=\"http://mathworld.wolfram.com/HornersMethod.html\">Horner's Method</a>\n * is used to evaluate the function.</p>\n *\n */\npublic class PolynomialFunction implements UnivariateDifferentiableFunction, DifferentiableUnivariateFunction, Serializable {\n    /**\n     * Serialization identifier\n     */\n    private static final long serialVersionUID = -7726511984200295583L;\n    /**\n     * The coefficients of the polynomial, ordered by degree -- i.e.,\n     * coefficients[0] is the constant term and coefficients[n] is the\n     * coefficient of x^n where n is the degree of the polynomial.\n     */\n    private final double coefficients[];\n\n    /**\n     * Construct a polynomial with the given coefficients.  The first element\n     * of the coefficients array is the constant term.  Higher degree\n     * coefficients follow in sequence.  The degree of the resulting polynomial\n     * is the index of the last non-null element of the array, or 0 if all elements\n     * are null.\n     * <p>\n     * The constructor makes a copy of the input array and assigns the copy to\n     * the coefficients property.</p>\n     *\n     * @param c Polynomial coefficients.\n     * @throws NullArgumentException if {@code c} is {@code null}.\n     * @throws NoDataException if {@code c} is empty.\n     */\n    public PolynomialFunction(double c[])\n        throws NullArgumentException, NoDataException {\n        super();\n        MathUtils.checkNotNull(c);\n        int n = c.length;\n        if (n == 0) {\n            throw new NoDataException(LocalizedFormats.EMPTY_POLYNOMIALS_COEFFICIENTS_ARRAY);\n        }\n        while ((n > 1) && (c[n - 1] == 0)) {\n            --n;\n        }\n        this.coefficients = new double[n];\n        System.arraycopy(c, 0, this.coefficients, 0, n);\n    }\n\n    /**\n     * Compute the value of the function for the given argument.\n     * <p>\n     *  The value returned is </p><p>\n     *  {@code coefficients[n] * x^n + ... + coefficients[1] * x  + coefficients[0]}\n     * </p>\n     *\n     * @param x Argument for which the function value should be computed.\n     * @return the value of the polynomial at the given point.\n     * @see UnivariateFunction#value(double)\n     */\n    public double value(double x) {\n       return evaluate(coefficients, x);\n    }\n\n    /**\n     * Returns the degree of the polynomial.\n     *\n     * @return the degree of the polynomial.\n     */\n    public int degree() {\n        return coefficients.length - 1;\n    }\n\n    /**\n     * Returns a copy of the coefficients array.\n     * <p>\n     * Changes made to the returned copy will not affect the coefficients of\n     * the polynomial.</p>\n     *\n     * @return a fresh copy of the coefficients array.\n     */\n    public double[] getCoefficients() {\n        return coefficients.clone();\n    }\n\n    /**\n     * Uses Horner's Method to evaluate the polynomial with the given coefficients at\n     * the argument.\n     *\n     * @param coefficients Coefficients of the polynomial to evaluate.\n     * @param argument Input value.\n     * @return the value of the polynomial.\n     * @throws NoDataException if {@code coefficients} is empty.\n     * @throws NullArgumentException if {@code coefficients} is {@code null}.\n     */\n    protected static double evaluate(double[] coefficients, double argument)\n        throws NullArgumentException, NoDataException {\n        MathUtils.checkNotNull(coefficients);\n        int n = coefficients.length;\n        if (n == 0) {\n            throw new NoDataException(LocalizedFormats.EMPTY_POLYNOMIALS_COEFFICIENTS_ARRAY);\n        }\n        double result = coefficients[n - 1];\n        for (int j = n - 2; j >= 0; j--) {\n            result = argument * result + coefficients[j];\n        }\n        return result;\n    }\n\n\n    /** {@inheritDoc}\n     * @since 3.1\n     * @throws NoDataException if {@code coefficients} is empty.\n     * @throws NullArgumentException if {@code coefficients} is {@code null}.\n     */\n    public DerivativeStructure value(final DerivativeStructure t)\n        throws NullArgumentException, NoDataException {\n        MathUtils.checkNotNull(coefficients);\n        int n = coefficients.length;\n        if (n == 0) {\n            throw new NoDataException(LocalizedFormats.EMPTY_POLYNOMIALS_COEFFICIENTS_ARRAY);\n        }\n        DerivativeStructure result =\n                new DerivativeStructure(t.getFreeParameters(), t.getOrder(), coefficients[n - 1]);\n        for (int j = n - 2; j >= 0; j--) {\n            result = result.multiply(t).add(coefficients[j]);\n        }\n        return result;\n    }\n\n    /**\n     * Add a polynomial to the instance.\n     *\n     * @param p Polynomial to add.\n     * @return a new polynomial which is the sum of the instance and {@code p}.\n     */\n    public PolynomialFunction add(final PolynomialFunction p) {\n        // identify the lowest degree polynomial\n        final int lowLength  = FastMath.min(coefficients.length, p.coefficients.length);\n        final int highLength = FastMath.max(coefficients.length, p.coefficients.length);\n\n        // build the coefficients array\n        double[] newCoefficients = new double[highLength];\n        for (int i = 0; i < lowLength; ++i) {\n            newCoefficients[i] = coefficients[i] + p.coefficients[i];\n        }\n        System.arraycopy((coefficients.length < p.coefficients.length) ?\n                         p.coefficients : coefficients,\n                         lowLength,\n                         newCoefficients, lowLength,\n                         highLength - lowLength);\n\n        return new PolynomialFunction(newCoefficients);\n    }\n\n    /**\n     * Subtract a polynomial from the instance.\n     *\n     * @param p Polynomial to subtract.\n     * @return a new polynomial which is the instance minus {@code p}.\n     */\n    public PolynomialFunction subtract(final PolynomialFunction p) {\n        // identify the lowest degree polynomial\n        int lowLength  = FastMath.min(coefficients.length, p.coefficients.length);\n        int highLength = FastMath.max(coefficients.length, p.coefficients.length);\n\n        // build the coefficients array\n        double[] newCoefficients = new double[highLength];\n        for (int i = 0; i < lowLength; ++i) {\n            newCoefficients[i] = coefficients[i] - p.coefficients[i];\n        }\n        if (coefficients.length < p.coefficients.length) {\n            for (int i = lowLength; i < highLength; ++i) {\n                newCoefficients[i] = -p.coefficients[i];\n            }\n        } else {\n            System.arraycopy(coefficients, lowLength, newCoefficients, lowLength,\n                             highLength - lowLength);\n        }\n\n        return new PolynomialFunction(newCoefficients);\n    }\n\n    /**\n     * Negate the instance.\n     *\n     * @return a new polynomial with all coefficients negated\n     */\n    public PolynomialFunction negate() {\n        double[] newCoefficients = new double[coefficients.length];\n        for (int i = 0; i < coefficients.length; ++i) {\n            newCoefficients[i] = -coefficients[i];\n        }\n        return new PolynomialFunction(newCoefficients);\n    }\n\n    /**\n     * Multiply the instance by a polynomial.\n     *\n     * @param p Polynomial to multiply by.\n     * @return a new polynomial equal to this times {@code p}\n     */\n    public PolynomialFunction multiply(final PolynomialFunction p) {\n        double[] newCoefficients = new double[coefficients.length + p.coefficients.length - 1];\n\n        for (int i = 0; i < newCoefficients.length; ++i) {\n            newCoefficients[i] = 0.0;\n            for (int j = FastMath.max(0, i + 1 - p.coefficients.length);\n                 j < FastMath.min(coefficients.length, i + 1);\n                 ++j) {\n                newCoefficients[i] += coefficients[j] * p.coefficients[i-j];\n            }\n        }\n\n        return new PolynomialFunction(newCoefficients);\n    }\n\n    /**\n     * Returns the coefficients of the derivative of the polynomial with the given coefficients.\n     *\n     * @param coefficients Coefficients of the polynomial to differentiate.\n     * @return the coefficients of the derivative or {@code null} if coefficients has length 1.\n     * @throws NoDataException if {@code coefficients} is empty.\n     * @throws NullArgumentException if {@code coefficients} is {@code null}.\n     */\n    protected static double[] differentiate(double[] coefficients)\n        throws NullArgumentException, NoDataException {\n        MathUtils.checkNotNull(coefficients);\n        int n = coefficients.length;\n        if (n == 0) {\n            throw new NoDataException(LocalizedFormats.EMPTY_POLYNOMIALS_COEFFICIENTS_ARRAY);\n        }\n        if (n == 1) {\n            return new double[]{0};\n        }\n        double[] result = new double[n - 1];\n        for (int i = n - 1; i > 0; i--) {\n            result[i - 1] = i * coefficients[i];\n        }\n        return result;\n    }\n\n    /**\n     * Returns the derivative as a {@link PolynomialFunction}.\n     *\n     * @return the derivative polynomial.\n     */\n    public PolynomialFunction polynomialDerivative() {\n        return new PolynomialFunction(differentiate(coefficients));\n    }\n\n    /**\n     * Returns the derivative as a {@link UnivariateFunction}.\n     *\n     * @return the derivative function.\n     */\n    public UnivariateFunction derivative() {\n        return polynomialDerivative();\n    }\n\n    /**\n     * Returns a string representation of the polynomial.\n     *\n     * <p>The representation is user oriented. Terms are displayed lowest\n     * degrees first. The multiplications signs, coefficients equals to\n     * one and null terms are not displayed (except if the polynomial is 0,\n     * in which case the 0 constant term is displayed). Addition of terms\n     * with negative coefficients are replaced by subtraction of terms\n     * with positive coefficients except for the first displayed term\n     * (i.e. we display <code>-3</code> for a constant negative polynomial,\n     * but <code>1 - 3 x + x^2</code> if the negative coefficient is not\n     * the first one displayed).</p>\n     *\n     * @return a string representation of the polynomial.\n     */\n    @Override\n    public String toString() {\n        StringBuilder s = new StringBuilder();\n        if (coefficients[0] == 0.0) {\n            if (coefficients.length == 1) {\n                return \"0\";\n            }\n        } else {\n            s.append(toString(coefficients[0]));\n        }\n\n        for (int i = 1; i < coefficients.length; ++i) {\n            if (coefficients[i] != 0) {\n                if (s.length() > 0) {\n                    if (coefficients[i] < 0) {\n                        s.append(\" - \");\n                    } else {\n                        s.append(\" + \");\n                    }\n                } else {\n                    if (coefficients[i] < 0) {\n                        s.append(\"-\");\n                    }\n                }\n\n                double absAi = FastMath.abs(coefficients[i]);\n                if ((absAi - 1) != 0) {\n                    s.append(toString(absAi));\n                    s.append(' ');\n                }\n\n                s.append(\"x\");\n                if (i > 1) {\n                    s.append('^');\n                    s.append(Integer.toString(i));\n                }\n            }\n        }\n\n        return s.toString();\n    }\n\n    /**\n     * Creates a string representing a coefficient, removing \".0\" endings.\n     *\n     * @param coeff Coefficient.\n     * @return a string representation of {@code coeff}.\n     */\n    private static String toString(double coeff) {\n        final String c = Double.toString(coeff);\n        if (c.endsWith(\".0\")) {\n            return c.substring(0, c.length() - 2);\n        } else {\n            return c;\n        }\n    }\n\n    /** {@inheritDoc} */\n    @Override\n    public int hashCode() {\n        final int prime = 31;\n        int result = 1;\n        result = prime * result + Arrays.hashCode(coefficients);\n        return result;\n    }\n\n    /** {@inheritDoc} */\n    @Override\n    public boolean equals(Object obj) {\n        if (this == obj) {\n            return true;\n        }\n        if (!(obj instanceof PolynomialFunction)) {\n            return false;\n        }\n        PolynomialFunction other = (PolynomialFunction) obj;\n        if (!Arrays.equals(coefficients, other.coefficients)) {\n            return false;\n        }\n        return true;\n    }\n\n    /**\n     * Dedicated parametric polynomial class.\n     *\n     * @since 3.0\n     */\n    public static class Parametric implements ParametricUnivariateFunction {\n        /** {@inheritDoc} */\n        public double[] gradient(double x, double ... parameters) {\n            final double[] gradient = new double[parameters.length];\n            double xn = 1.0;\n            for (int i = 0; i < parameters.length; ++i) {\n                gradient[i] = xn;\n                xn *= x;\n            }\n            return gradient;\n        }\n\n        /** {@inheritDoc} */\n        public double value(final double x, final double ... parameters)\n            throws NoDataException {\n            return PolynomialFunction.evaluate(parameters, x);\n        }\n    }\n}",
+        "tokensGeneralGrammar": [
+            "null",
+            "true",
+            "false",
+            ",",
+            ".",
+            ":",
+            ";",
+            "?",
+            "jdVar",
+            "stream",
+            "Arrays",
+            "allMatch",
+            "noneMatch",
+            "anyMatch",
+            "~",
+            ">>",
+            "<<",
+            ">>>",
+            "|",
+            "&",
+            "^",
+            "+",
+            "-",
+            "/",
+            "*",
+            "%",
+            "&&",
+            "||",
+            ">=",
+            "<=",
+            ">",
+            "<",
+            "==",
+            "!=",
+            "instanceof",
+            "class",
+            "methodResultID",
+            "this"
+        ],
+        "tokensGeneralValuesGlobalDictionary": [
+            [
+                "0",
+                "int"
+            ],
+            [
+                "1",
+                "int"
+            ],
+            [
+                "2",
+                "int"
+            ],
+            [
+                "100.0",
+                "double"
+            ]
+        ],
+        "tokensProjectClasses": [
+            [
+                "RealFieldElement",
+                "org.apache.commons.math3"
+            ],
+            [
+                "Primes",
+                "org.apache.commons.math3.primes"
+            ],
+            [
+                "DifferentiableUnivariateFunction",
+                "org.apache.commons.math3.analysis"
+            ],
+            [
+                "UnivariateFunction",
+                "org.apache.commons.math3.analysis"
+            ],
+            [
+                "TrivariateFunction",
+                "org.apache.commons.math3.analysis"
+            ],
+            [
+                "MultivariateMatrixFunction",
+                "org.apache.commons.math3.analysis"
+            ],
+            [
+                "ParametricUnivariateFunction",
+                "org.apache.commons.math3.analysis"
+            ],
+            [
+                "UnivariateDifferentiableVectorFunction",
+                "org.apache.commons.math3.analysis.differentiation"
+            ],
+            [
+                "UnivariateDifferentiableMatrixFunction",
+                "org.apache.commons.math3.analysis.differentiation"
+            ],
+            [
+                "DSCompiler",
+                "org.apache.commons.math3.analysis.differentiation"
+            ],
+            [
+                "SparseGradient",
+                "org.apache.commons.math3.analysis.differentiation"
+            ],
+            [
+                "UnivariateFunctionDifferentiator",
+                "org.apache.commons.math3.analysis.differentiation"
+            ],
+            [
+                "UnivariateDifferentiableFunction",
+                "org.apache.commons.math3.analysis.differentiation"
+            ],
+            [
+                "MultivariateVectorFunction",
+                "org.apache.commons.math3.analysis"
+            ],
+            [
+                "DifferentiableMultivariateVectorFunction",
+                "org.apache.commons.math3.analysis"
+            ],
+            [
+                "PolynomialFunctionNewtonForm",
+                "org.apache.commons.math3.analysis.polynomials"
+            ],
+            [
+                "PolynomialFunctionLagrangeForm",
+                "org.apache.commons.math3.analysis.polynomials"
+            ],
+            [
+                "PolynomialSplineFunction",
+                "org.apache.commons.math3.analysis.polynomials"
+            ],
+            [
+                "PolynomialsUtils",
+                "org.apache.commons.math3.analysis.polynomials"
+            ],
+            [
+                "PolynomialFunction",
+                "org.apache.commons.math3.analysis.polynomials"
+            ],
+            [
+                "Complex",
+                "org.apache.commons.math3.complex"
+            ],
+            [
+                "Field",
+                "org.apache.commons.math3"
+            ],
+            [
+                "FieldElement",
+                "org.apache.commons.math3"
+            ],
+            [
+                "DerivativeStructure",
+                "org.apache.commons.math3.analysis.differentiation"
+            ]
+        ],
+        "tokensProjectClassesNonPrivateStaticNonVoidMethods": [
+            [
+                "collectionBag",
+                "org.apache.commons.collections4.bag",
+                "CollectionBag",
+                "public static <E> Bag<E> collectionBag(final Bag<E> bag)"
+            ],
+            [
+                "indexOf",
+                "org.apache.commons.collections4",
+                "ArrayUtils",
+                "static int indexOf(final Object[] array, final Object objectToFind, int startIndex)"
+            ]
+        ],
+        "tokensProjectClassesNonPrivateStaticAttributes": [
+            [
+                "INSTANCE",
+                "org.apache.commons.collections4.properties",
+                "PropertiesFactory",
+                "public static final PropertiesFactory INSTANCE = new PropertiesFactory()"
+            ],
+            [
+                "EMPTY_BAG",
+                "org.apache.commons.collections4",
+                "BagUtils",
+                "public static final Bag EMPTY_BAG = UnmodifiableBag.unmodifiableBag(new HashBag<>())"
+            ]
+        ],
+        "tokensMethodJavadocValues": [
+            [
+                "3.1",
+                "double"
+            ]
+        ],
+        "tokensMethodArguments": [
+            [
+                "t",
+                "org.apache.commons.math3.analysis.differentiation",
+                "DerivativeStructure"
+            ]
+        ],
+        "tokensMethodVariablesNonPrivateNonStaticNonVoidMethods": [
+            [
+                "getFreeParameters",
+                "org.apache.commons.math3.analysis.differentiation",
+                "DerivativeStructure",
+                "public int getFreeParameters()"
+            ],
+            [
+                "value",
+                "org.apache.commons.math3.analysis.polynomials",
+                "PolynomialFunction",
+                "public double value(double x)"
+            ],
+            [
+                "getCoefficients",
+                "org.apache.commons.math3.analysis.polynomials",
+                "PolynomialFunction",
+                "public double[] getCoefficients()"
+            ]
+        ],
+        "tokensMethodVariablesNonPrivateNonStaticAttributes": [],
+        "tokensOracleVariablesNonPrivateNonStaticNonVoidMethods": [
+            [
+                "clone",
+                "java.lang",
+                "Object",
+                "protected native Object clone() throws CloneNotSupportedException"
+            ]
+        ],
+        "tokensOracleVariablesNonPrivateNonStaticAttributes": [
+            [
+                "length",
+                "",
+                "double[]",
+                ""
+            ]
+        ]
+    },
+    {
+        "id": 3,
+        "oracle": "this instanceof PolynomialFunction && (t.equals(this))==false;",
+        "oracleType": "PRE",
+        "projectName": "commons-math3-3.6.1",
+        "packageName": "org.apache.commons.math3.analysis.polynomials",
+        "className": "PolynomialFunction",
+        "javadocTag": "@param t cannot be null and must be different to the current DerivativeStructure",
+        "methodJavadoc": "/** {@inheritDoc}\n     * @since 3.1\n     * @param t cannot be null and must be different to the current DerivativeStructure\n     * @throws NoDataException if {@code coefficients} is empty.\n     * @throws NullArgumentException if {@code coefficients} is {@code null}.\n     */",
+        "methodSourceCode": "public DerivativeStructure value(final DerivativeStructure t)\n        throws NullArgumentException, NoDataException {\n        MathUtils.checkNotNull(coefficients);\n        int n = coefficients.length;\n        if (n == 0) {\n            throw new NoDataException(LocalizedFormats.EMPTY_POLYNOMIALS_COEFFICIENTS_ARRAY);\n        }\n        DerivativeStructure result =\n                new DerivativeStructure(t.getFreeParameters(), t.getOrder(), coefficients[n - 1]);\n        for (int j = n - 2; j >= 0; j--) {\n            result = result.multiply(t).add(coefficients[j]);\n        }\n        return result;\n    }",
+        "classJavadoc": "/**\n * Immutable representation of a real polynomial function with real coefficients.\n * <p>\n * <a href=\"http://mathworld.wolfram.com/HornersMethod.html\">Horner's Method</a>\n * is used to evaluate the function.</p>\n *\n */",
+        "classSourceCode": "/*\n * Licensed to the Apache Software Foundation (ASF) under one or more\n * contributor license agreements.  See the NOTICE file distributed with\n * this work for additional information regarding copyright ownership.\n * The ASF licenses this file to You under the Apache License, Version 2.0\n * (the \"License\"); you may not use this file except in compliance with\n * the License.  You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\npackage org.apache.commons.math3.analysis.polynomials;\n\nimport java.io.Serializable;\nimport java.util.Arrays;\n\nimport org.apache.commons.math3.analysis.DifferentiableUnivariateFunction;\nimport org.apache.commons.math3.analysis.ParametricUnivariateFunction;\nimport org.apache.commons.math3.analysis.UnivariateFunction;\nimport org.apache.commons.math3.analysis.differentiation.DerivativeStructure;\nimport org.apache.commons.math3.analysis.differentiation.UnivariateDifferentiableFunction;\nimport org.apache.commons.math3.exception.NoDataException;\nimport org.apache.commons.math3.exception.NullArgumentException;\nimport org.apache.commons.math3.exception.util.LocalizedFormats;\nimport org.apache.commons.math3.util.FastMath;\nimport org.apache.commons.math3.util.MathUtils;\n\n/**\n * Immutable representation of a real polynomial function with real coefficients.\n * <p>\n * <a href=\"http://mathworld.wolfram.com/HornersMethod.html\">Horner's Method</a>\n * is used to evaluate the function.</p>\n *\n */\npublic class PolynomialFunction implements UnivariateDifferentiableFunction, DifferentiableUnivariateFunction, Serializable {\n    /**\n     * Serialization identifier\n     */\n    private static final long serialVersionUID = -7726511984200295583L;\n    /**\n     * The coefficients of the polynomial, ordered by degree -- i.e.,\n     * coefficients[0] is the constant term and coefficients[n] is the\n     * coefficient of x^n where n is the degree of the polynomial.\n     */\n    private final double coefficients[];\n\n    /**\n     * Construct a polynomial with the given coefficients.  The first element\n     * of the coefficients array is the constant term.  Higher degree\n     * coefficients follow in sequence.  The degree of the resulting polynomial\n     * is the index of the last non-null element of the array, or 0 if all elements\n     * are null.\n     * <p>\n     * The constructor makes a copy of the input array and assigns the copy to\n     * the coefficients property.</p>\n     *\n     * @param c Polynomial coefficients.\n     * @throws NullArgumentException if {@code c} is {@code null}.\n     * @throws NoDataException if {@code c} is empty.\n     */\n    public PolynomialFunction(double c[])\n        throws NullArgumentException, NoDataException {\n        super();\n        MathUtils.checkNotNull(c);\n        int n = c.length;\n        if (n == 0) {\n            throw new NoDataException(LocalizedFormats.EMPTY_POLYNOMIALS_COEFFICIENTS_ARRAY);\n        }\n        while ((n > 1) && (c[n - 1] == 0)) {\n            --n;\n        }\n        this.coefficients = new double[n];\n        System.arraycopy(c, 0, this.coefficients, 0, n);\n    }\n\n    /**\n     * Compute the value of the function for the given argument.\n     * <p>\n     *  The value returned is </p><p>\n     *  {@code coefficients[n] * x^n + ... + coefficients[1] * x  + coefficients[0]}\n     * </p>\n     *\n     * @param x Argument for which the function value should be computed.\n     * @return the value of the polynomial at the given point.\n     * @see UnivariateFunction#value(double)\n     */\n    public double value(double x) {\n       return evaluate(coefficients, x);\n    }\n\n    /**\n     * Returns the degree of the polynomial.\n     *\n     * @return the degree of the polynomial.\n     */\n    public int degree() {\n        return coefficients.length - 1;\n    }\n\n    /**\n     * Returns a copy of the coefficients array.\n     * <p>\n     * Changes made to the returned copy will not affect the coefficients of\n     * the polynomial.</p>\n     *\n     * @return a fresh copy of the coefficients array.\n     */\n    public double[] getCoefficients() {\n        return coefficients.clone();\n    }\n\n    /**\n     * Uses Horner's Method to evaluate the polynomial with the given coefficients at\n     * the argument.\n     *\n     * @param coefficients Coefficients of the polynomial to evaluate.\n     * @param argument Input value.\n     * @return the value of the polynomial.\n     * @throws NoDataException if {@code coefficients} is empty.\n     * @throws NullArgumentException if {@code coefficients} is {@code null}.\n     */\n    protected static double evaluate(double[] coefficients, double argument)\n        throws NullArgumentException, NoDataException {\n        MathUtils.checkNotNull(coefficients);\n        int n = coefficients.length;\n        if (n == 0) {\n            throw new NoDataException(LocalizedFormats.EMPTY_POLYNOMIALS_COEFFICIENTS_ARRAY);\n        }\n        double result = coefficients[n - 1];\n        for (int j = n - 2; j >= 0; j--) {\n            result = argument * result + coefficients[j];\n        }\n        return result;\n    }\n\n\n    /** {@inheritDoc}\n     * @since 3.1\n     * @throws NoDataException if {@code coefficients} is empty.\n     * @throws NullArgumentException if {@code coefficients} is {@code null}.\n     */\n    public DerivativeStructure value(final DerivativeStructure t)\n        throws NullArgumentException, NoDataException {\n        MathUtils.checkNotNull(coefficients);\n        int n = coefficients.length;\n        if (n == 0) {\n            throw new NoDataException(LocalizedFormats.EMPTY_POLYNOMIALS_COEFFICIENTS_ARRAY);\n        }\n        DerivativeStructure result =\n                new DerivativeStructure(t.getFreeParameters(), t.getOrder(), coefficients[n - 1]);\n        for (int j = n - 2; j >= 0; j--) {\n            result = result.multiply(t).add(coefficients[j]);\n        }\n        return result;\n    }\n\n    /**\n     * Add a polynomial to the instance.\n     *\n     * @param p Polynomial to add.\n     * @return a new polynomial which is the sum of the instance and {@code p}.\n     */\n    public PolynomialFunction add(final PolynomialFunction p) {\n        // identify the lowest degree polynomial\n        final int lowLength  = FastMath.min(coefficients.length, p.coefficients.length);\n        final int highLength = FastMath.max(coefficients.length, p.coefficients.length);\n\n        // build the coefficients array\n        double[] newCoefficients = new double[highLength];\n        for (int i = 0; i < lowLength; ++i) {\n            newCoefficients[i] = coefficients[i] + p.coefficients[i];\n        }\n        System.arraycopy((coefficients.length < p.coefficients.length) ?\n                         p.coefficients : coefficients,\n                         lowLength,\n                         newCoefficients, lowLength,\n                         highLength - lowLength);\n\n        return new PolynomialFunction(newCoefficients);\n    }\n\n    /**\n     * Subtract a polynomial from the instance.\n     *\n     * @param p Polynomial to subtract.\n     * @return a new polynomial which is the instance minus {@code p}.\n     */\n    public PolynomialFunction subtract(final PolynomialFunction p) {\n        // identify the lowest degree polynomial\n        int lowLength  = FastMath.min(coefficients.length, p.coefficients.length);\n        int highLength = FastMath.max(coefficients.length, p.coefficients.length);\n\n        // build the coefficients array\n        double[] newCoefficients = new double[highLength];\n        for (int i = 0; i < lowLength; ++i) {\n            newCoefficients[i] = coefficients[i] - p.coefficients[i];\n        }\n        if (coefficients.length < p.coefficients.length) {\n            for (int i = lowLength; i < highLength; ++i) {\n                newCoefficients[i] = -p.coefficients[i];\n            }\n        } else {\n            System.arraycopy(coefficients, lowLength, newCoefficients, lowLength,\n                             highLength - lowLength);\n        }\n\n        return new PolynomialFunction(newCoefficients);\n    }\n\n    /**\n     * Negate the instance.\n     *\n     * @return a new polynomial with all coefficients negated\n     */\n    public PolynomialFunction negate() {\n        double[] newCoefficients = new double[coefficients.length];\n        for (int i = 0; i < coefficients.length; ++i) {\n            newCoefficients[i] = -coefficients[i];\n        }\n        return new PolynomialFunction(newCoefficients);\n    }\n\n    /**\n     * Multiply the instance by a polynomial.\n     *\n     * @param p Polynomial to multiply by.\n     * @return a new polynomial equal to this times {@code p}\n     */\n    public PolynomialFunction multiply(final PolynomialFunction p) {\n        double[] newCoefficients = new double[coefficients.length + p.coefficients.length - 1];\n\n        for (int i = 0; i < newCoefficients.length; ++i) {\n            newCoefficients[i] = 0.0;\n            for (int j = FastMath.max(0, i + 1 - p.coefficients.length);\n                 j < FastMath.min(coefficients.length, i + 1);\n                 ++j) {\n                newCoefficients[i] += coefficients[j] * p.coefficients[i-j];\n            }\n        }\n\n        return new PolynomialFunction(newCoefficients);\n    }\n\n    /**\n     * Returns the coefficients of the derivative of the polynomial with the given coefficients.\n     *\n     * @param coefficients Coefficients of the polynomial to differentiate.\n     * @return the coefficients of the derivative or {@code null} if coefficients has length 1.\n     * @throws NoDataException if {@code coefficients} is empty.\n     * @throws NullArgumentException if {@code coefficients} is {@code null}.\n     */\n    protected static double[] differentiate(double[] coefficients)\n        throws NullArgumentException, NoDataException {\n        MathUtils.checkNotNull(coefficients);\n        int n = coefficients.length;\n        if (n == 0) {\n            throw new NoDataException(LocalizedFormats.EMPTY_POLYNOMIALS_COEFFICIENTS_ARRAY);\n        }\n        if (n == 1) {\n            return new double[]{0};\n        }\n        double[] result = new double[n - 1];\n        for (int i = n - 1; i > 0; i--) {\n            result[i - 1] = i * coefficients[i];\n        }\n        return result;\n    }\n\n    /**\n     * Returns the derivative as a {@link PolynomialFunction}.\n     *\n     * @return the derivative polynomial.\n     */\n    public PolynomialFunction polynomialDerivative() {\n        return new PolynomialFunction(differentiate(coefficients));\n    }\n\n    /**\n     * Returns the derivative as a {@link UnivariateFunction}.\n     *\n     * @return the derivative function.\n     */\n    public UnivariateFunction derivative() {\n        return polynomialDerivative();\n    }\n\n    /**\n     * Returns a string representation of the polynomial.\n     *\n     * <p>The representation is user oriented. Terms are displayed lowest\n     * degrees first. The multiplications signs, coefficients equals to\n     * one and null terms are not displayed (except if the polynomial is 0,\n     * in which case the 0 constant term is displayed). Addition of terms\n     * with negative coefficients are replaced by subtraction of terms\n     * with positive coefficients except for the first displayed term\n     * (i.e. we display <code>-3</code> for a constant negative polynomial,\n     * but <code>1 - 3 x + x^2</code> if the negative coefficient is not\n     * the first one displayed).</p>\n     *\n     * @return a string representation of the polynomial.\n     */\n    @Override\n    public String toString() {\n        StringBuilder s = new StringBuilder();\n        if (coefficients[0] == 0.0) {\n            if (coefficients.length == 1) {\n                return \"0\";\n            }\n        } else {\n            s.append(toString(coefficients[0]));\n        }\n\n        for (int i = 1; i < coefficients.length; ++i) {\n            if (coefficients[i] != 0) {\n                if (s.length() > 0) {\n                    if (coefficients[i] < 0) {\n                        s.append(\" - \");\n                    } else {\n                        s.append(\" + \");\n                    }\n                } else {\n                    if (coefficients[i] < 0) {\n                        s.append(\"-\");\n                    }\n                }\n\n                double absAi = FastMath.abs(coefficients[i]);\n                if ((absAi - 1) != 0) {\n                    s.append(toString(absAi));\n                    s.append(' ');\n                }\n\n                s.append(\"x\");\n                if (i > 1) {\n                    s.append('^');\n                    s.append(Integer.toString(i));\n                }\n            }\n        }\n\n        return s.toString();\n    }\n\n    /**\n     * Creates a string representing a coefficient, removing \".0\" endings.\n     *\n     * @param coeff Coefficient.\n     * @return a string representation of {@code coeff}.\n     */\n    private static String toString(double coeff) {\n        final String c = Double.toString(coeff);\n        if (c.endsWith(\".0\")) {\n            return c.substring(0, c.length() - 2);\n        } else {\n            return c;\n        }\n    }\n\n    /** {@inheritDoc} */\n    @Override\n    public int hashCode() {\n        final int prime = 31;\n        int result = 1;\n        result = prime * result + Arrays.hashCode(coefficients);\n        return result;\n    }\n\n    /** {@inheritDoc} */\n    @Override\n    public boolean equals(Object obj) {\n        if (this == obj) {\n            return true;\n        }\n        if (!(obj instanceof PolynomialFunction)) {\n            return false;\n        }\n        PolynomialFunction other = (PolynomialFunction) obj;\n        if (!Arrays.equals(coefficients, other.coefficients)) {\n            return false;\n        }\n        return true;\n    }\n\n    /**\n     * Dedicated parametric polynomial class.\n     *\n     * @since 3.0\n     */\n    public static class Parametric implements ParametricUnivariateFunction {\n        /** {@inheritDoc} */\n        public double[] gradient(double x, double ... parameters) {\n            final double[] gradient = new double[parameters.length];\n            double xn = 1.0;\n            for (int i = 0; i < parameters.length; ++i) {\n                gradient[i] = xn;\n                xn *= x;\n            }\n            return gradient;\n        }\n\n        /** {@inheritDoc} */\n        public double value(final double x, final double ... parameters)\n            throws NoDataException {\n            return PolynomialFunction.evaluate(parameters, x);\n        }\n    }\n}",
+        "tokensGeneralGrammar": [
+            "null",
+            "true",
+            "false",
+            ",",
+            ".",
+            ":",
+            ";",
+            "?",
+            "jdVar",
+            "stream",
+            "Arrays",
+            "allMatch",
+            "noneMatch",
+            "anyMatch",
+            "~",
+            ">>",
+            "<<",
+            ">>>",
+            "|",
+            "&",
+            "^",
+            "+",
+            "-",
+            "/",
+            "*",
+            "%",
+            "&&",
+            "||",
+            ">=",
+            "<=",
+            ">",
+            "<",
+            "==",
+            "!=",
+            "instanceof",
+            "class",
+            "methodResultID",
+            "this"
+        ],
+        "tokensGeneralValuesGlobalDictionary": [
+            [
+                "0",
+                "int"
+            ],
+            [
+                "1",
+                "int"
+            ],
+            [
+                "2",
+                "int"
+            ],
+            [
+                "100.0",
+                "double"
+            ]
+        ],
+        "tokensProjectClasses": [
+            [
+                "RealFieldElement",
+                "org.apache.commons.math3"
+            ],
+            [
+                "Primes",
+                "org.apache.commons.math3.primes"
+            ],
+            [
+                "DifferentiableUnivariateFunction",
+                "org.apache.commons.math3.analysis"
+            ],
+            [
+                "UnivariateFunction",
+                "org.apache.commons.math3.analysis"
+            ],
+            [
+                "TrivariateFunction",
+                "org.apache.commons.math3.analysis"
+            ],
+            [
+                "MultivariateMatrixFunction",
+                "org.apache.commons.math3.analysis"
+            ],
+            [
+                "ParametricUnivariateFunction",
+                "org.apache.commons.math3.analysis"
+            ],
+            [
+                "UnivariateDifferentiableVectorFunction",
+                "org.apache.commons.math3.analysis.differentiation"
+            ],
+            [
+                "UnivariateDifferentiableMatrixFunction",
+                "org.apache.commons.math3.analysis.differentiation"
+            ],
+            [
+                "DSCompiler",
+                "org.apache.commons.math3.analysis.differentiation"
+            ],
+            [
+                "SparseGradient",
+                "org.apache.commons.math3.analysis.differentiation"
+            ],
+            [
+                "UnivariateFunctionDifferentiator",
+                "org.apache.commons.math3.analysis.differentiation"
+            ],
+            [
+                "UnivariateDifferentiableFunction",
+                "org.apache.commons.math3.analysis.differentiation"
+            ],
+            [
+                "MultivariateVectorFunction",
+                "org.apache.commons.math3.analysis"
+            ],
+            [
+                "DifferentiableMultivariateVectorFunction",
+                "org.apache.commons.math3.analysis"
+            ],
+            [
+                "PolynomialFunctionNewtonForm",
+                "org.apache.commons.math3.analysis.polynomials"
+            ],
+            [
+                "PolynomialFunctionLagrangeForm",
+                "org.apache.commons.math3.analysis.polynomials"
+            ],
+            [
+                "PolynomialSplineFunction",
+                "org.apache.commons.math3.analysis.polynomials"
+            ],
+            [
+                "PolynomialsUtils",
+                "org.apache.commons.math3.analysis.polynomials"
+            ],
+            [
+                "PolynomialFunction",
+                "org.apache.commons.math3.analysis.polynomials"
+            ],
+            [
+                "Complex",
+                "org.apache.commons.math3.complex"
+            ],
+            [
+                "Field",
+                "org.apache.commons.math3"
+            ],
+            [
+                "FieldElement",
+                "org.apache.commons.math3"
+            ],
+            [
+                "DerivativeStructure",
+                "org.apache.commons.math3.analysis.differentiation"
+            ]
+        ],
+        "tokensProjectClassesNonPrivateStaticNonVoidMethods": [
+            [
+                "collectionBag",
+                "org.apache.commons.collections4.bag",
+                "CollectionBag",
+                "public static <E> Bag<E> collectionBag(final Bag<E> bag)"
+            ],
+            [
+                "indexOf",
+                "org.apache.commons.collections4",
+                "ArrayUtils",
+                "static int indexOf(final Object[] array, final Object objectToFind, int startIndex)"
+            ]
+        ],
+        "tokensProjectClassesNonPrivateStaticAttributes": [
+            [
+                "INSTANCE",
+                "org.apache.commons.collections4.properties",
+                "PropertiesFactory",
+                "public static final PropertiesFactory INSTANCE = new PropertiesFactory()"
+            ],
+            [
+                "EMPTY_BAG",
+                "org.apache.commons.collections4",
+                "BagUtils",
+                "public static final Bag EMPTY_BAG = UnmodifiableBag.unmodifiableBag(new HashBag<>())"
+            ]
+        ],
+        "tokensMethodJavadocValues": [],
+        "tokensMethodArguments": [
+            [
+                "t",
+                "org.apache.commons.math3.analysis.differentiation",
+                "DerivativeStructure"
+            ]
+        ],
+        "tokensMethodVariablesNonPrivateNonStaticNonVoidMethods": [
+            [
+                "getFreeParameters",
+                "org.apache.commons.math3.analysis.differentiation",
+                "DerivativeStructure",
+                "public int getFreeParameters()"
+            ],
+            [
+                "value",
+                "org.apache.commons.math3.analysis.polynomials",
+                "PolynomialFunction",
+                "public double value(double x)"
+            ],
+            [
+                "getCoefficients",
+                "org.apache.commons.math3.analysis.polynomials",
+                "PolynomialFunction",
+                "public double[] getCoefficients()"
+            ],
+            [
+                "equals",
+                "java.lang",
+                "Object",
+                "public boolean equals(Object obj)"
+            ],
+            [
+                "toString",
+                "java.lang",
+                "Object",
+                "public String toString()"
+            ],
+            [
+                "getClass",
+                "java.lang",
+                "Object",
+                "public final native Class<?> getClass()"
+            ],
+            [
+                "hashCode",
+                "java.lang",
+                "Object",
+                "public native int hashCode()"
+            ],
+            [
+                "hash",
+                "org.apache.commons.collections4",
+                "Equator",
+                "int hash(T o)"
+            ]
+        ],
+        "tokensMethodVariablesNonPrivateNonStaticAttributes": [],
+        "tokensOracleVariablesNonPrivateNonStaticNonVoidMethods": [],
+        "tokensOracleVariablesNonPrivateNonStaticAttributes": []
+    },
+    {
+        "id": 4,
+        "oracle": "divisor.isInfinite() && (this.isInfinite())==false ? (methodResultID.isNaN())==false && methodResultID == Complex.ZERO : true;",
+        "oracleType": "NORMAL_POST",
+        "projectName": "commons-math3-3.6.1",
+        "packageName": "org.apache.commons.math3.complex",
+        "className": "Complex",
+        "javadocTag": "@return {@code this / divisor}.",
+        "methodJavadoc": "/**\n     * Returns a {@code Complex} whose value is\n     * {@code (this / divisor)}.\n     * Implements the definitional formula\n     * <pre>\n     *  <code>\n     *    a + bi          ac + bd + (bc - ad)i\n     *    ----------- = -------------------------\n     *    c + di         c<sup>2</sup> + d<sup>2</sup>\n     *  </code>\n     * </pre>\n     * but uses\n     * <a href=\"http://doi.acm.org/10.1145/1039813.1039814\">\n     * prescaling of operands</a> to limit the effects of overflows and\n     * underflows in the computation.\n     * <p>\n     * {@code Infinite} and {@code NaN} values are handled according to the\n     * following rules, applied in the order presented:\n     * <ul>\n     *  <li>If either {@code this} or {@code divisor} has a {@code NaN} value\n     *   in either part, {@link #NaN} is returned.\n     *  </li>\n     *  <li>If {@code divisor} equals {@link #ZERO}, {@link #NaN} is returned.\n     *  </li>\n     *  <li>If {@code this} and {@code divisor} are both infinite,\n     *   {@link #NaN} is returned.\n     *  </li>\n     *  <li>If {@code this} is finite (i.e., has no {@code Infinite} or\n     *   {@code NaN} parts) and {@code divisor} is infinite (one or both parts\n     *   infinite), {@link #ZERO} is returned.\n     *  </li>\n     *  <li>If {@code this} is infinite and {@code divisor} is finite,\n     *   {@code NaN} values are returned in the parts of the result if the\n     *   {@link java.lang.Double} rules applied to the definitional formula\n     *   force {@code NaN} results.\n     *  </li>\n     * </ul>\n     *\n     * @param divisor Value by which this {@code Complex} is to be divided.\n     * @return {@code this / divisor}.\n     * @throws NullArgumentException if {@code divisor} is {@code null}.\n     */",
+        "methodSourceCode": "public Complex divide(Complex divisor)\n        throws NullArgumentException {\n        MathUtils.checkNotNull(divisor);\n        if (isNaN || divisor.isNaN) {\n            return NaN;\n        }\n\n        final double c = divisor.getReal();\n        final double d = divisor.getImaginary();\n        if (c == 0.0 && d == 0.0) {\n            return NaN;\n        }\n\n        if (divisor.isInfinite() && !isInfinite()) {\n            return ZERO;\n        }\n\n        if (FastMath.abs(c) < FastMath.abs(d)) {\n            double q = c / d;\n            double denominator = c * q + d;\n            return createComplex((real * q + imaginary) / denominator,\n                (imaginary * q - real) / denominator);\n        } else {\n            double q = d / c;\n            double denominator = d * q + c;\n            return createComplex((imaginary * q + real) / denominator,\n                (imaginary - real * q) / denominator);\n        }\n    }",
+        "classJavadoc": "/**\n * Representation of a Complex number, i.e. a number which has both a\n * real and imaginary part.\n * <p>\n * Implementations of arithmetic operations handle {@code NaN} and\n * infinite values according to the rules for {@link java.lang.Double}, i.e.\n * {@link #equals} is an equivalence relation for all instances that have\n * a {@code NaN} in either real or imaginary part, e.g. the following are\n * considered equal:\n * <ul>\n *  <li>{@code 1 + NaNi}</li>\n *  <li>{@code NaN + i}</li>\n *  <li>{@code NaN + NaNi}</li>\n * </ul><p>\n * Note that this contradicts the IEEE-754 standard for floating\n * point numbers (according to which the test {@code x == x} must fail if\n * {@code x} is {@code NaN}). The method\n * {@link org.apache.commons.math3.util.Precision#equals(double,double,int)\n * equals for primitive double} in {@link org.apache.commons.math3.util.Precision}\n * conforms with IEEE-754 while this class conforms with the standard behavior\n * for Java object types.</p>\n *\n */",
+        "classSourceCode": "/*\n * Licensed to the Apache Software Foundation (ASF) under one or more\n * contributor license agreements.  See the NOTICE file distributed with\n * this work for additional information regarding copyright ownership.\n * The ASF licenses this file to You under the Apache License, Version 2.0\n * (the \"License\"); you may not use this file except in compliance with\n * the License.  You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\n\npackage org.apache.commons.math3.complex;\n\nimport java.io.Serializable;\nimport java.util.ArrayList;\nimport java.util.List;\n\nimport org.apache.commons.math3.FieldElement;\nimport org.apache.commons.math3.exception.NotPositiveException;\nimport org.apache.commons.math3.exception.NullArgumentException;\nimport org.apache.commons.math3.exception.util.LocalizedFormats;\nimport org.apache.commons.math3.util.FastMath;\nimport org.apache.commons.math3.util.MathUtils;\nimport org.apache.commons.math3.util.Precision;\n\n/**\n * Representation of a Complex number, i.e. a number which has both a\n * real and imaginary part.\n * <p>\n * Implementations of arithmetic operations handle {@code NaN} and\n * infinite values according to the rules for {@link java.lang.Double}, i.e.\n * {@link #equals} is an equivalence relation for all instances that have\n * a {@code NaN} in either real or imaginary part, e.g. the following are\n * considered equal:\n * <ul>\n *  <li>{@code 1 + NaNi}</li>\n *  <li>{@code NaN + i}</li>\n *  <li>{@code NaN + NaNi}</li>\n * </ul><p>\n * Note that this contradicts the IEEE-754 standard for floating\n * point numbers (according to which the test {@code x == x} must fail if\n * {@code x} is {@code NaN}). The method\n * {@link org.apache.commons.math3.util.Precision#equals(double,double,int)\n * equals for primitive double} in {@link org.apache.commons.math3.util.Precision}\n * conforms with IEEE-754 while this class conforms with the standard behavior\n * for Java object types.</p>\n *\n */\npublic class Complex implements FieldElement<Complex>, Serializable  {\n    /** The square root of -1. A number representing \"0.0 + 1.0i\" */\n    public static final Complex I = new Complex(0.0, 1.0);\n    // CHECKSTYLE: stop ConstantName\n    /** A complex number representing \"NaN + NaNi\" */\n    public static final Complex NaN = new Complex(Double.NaN, Double.NaN);\n    // CHECKSTYLE: resume ConstantName\n    /** A complex number representing \"+INF + INFi\" */\n    public static final Complex INF = new Complex(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);\n    /** A complex number representing \"1.0 + 0.0i\" */\n    public static final Complex ONE = new Complex(1.0, 0.0);\n    /** A complex number representing \"0.0 + 0.0i\" */\n    public static final Complex ZERO = new Complex(0.0, 0.0);\n\n    /** Serializable version identifier */\n    private static final long serialVersionUID = -6195664516687396620L;\n\n    /** The imaginary part. */\n    private final double imaginary;\n    /** The real part. */\n    private final double real;\n    /** Record whether this complex number is equal to NaN. */\n    protected final transient boolean isNaN;\n    /** Record whether this complex number is infinite. */\n    private final transient boolean isInfinite;\n\n    /**\n     * Create a complex number given only the real part.\n     *\n     * @param real Real part.\n     */\n    public Complex(double real) {\n        this(real, 0.0);\n    }\n\n    /**\n     * Create a complex number given the real and imaginary parts.\n     *\n     * @param real Real part.\n     * @param imaginary Imaginary part.\n     */\n    public Complex(double real, double imaginary) {\n        this.real = real;\n        this.imaginary = imaginary;\n\n        isNaN = Double.isNaN(real) || Double.isNaN(imaginary);\n        isInfinite = !isNaN &&\n            (Double.isInfinite(real) || Double.isInfinite(imaginary));\n    }\n\n    /**\n     * Return the absolute value of this complex number.\n     * Returns {@code NaN} if either real or imaginary part is {@code NaN}\n     * and {@code Double.POSITIVE_INFINITY} if neither part is {@code NaN},\n     * but at least one part is infinite.\n     *\n     * @return the absolute value.\n     */\n    public double abs() {\n        if (isNaN) {\n            return Double.NaN;\n        }\n        if (isInfinite()) {\n            return Double.POSITIVE_INFINITY;\n        }\n        if (FastMath.abs(real) < FastMath.abs(imaginary)) {\n            if (imaginary == 0.0) {\n                return FastMath.abs(real);\n            }\n            double q = real / imaginary;\n            return FastMath.abs(imaginary) * FastMath.sqrt(1 + q * q);\n        } else {\n            if (real == 0.0) {\n                return FastMath.abs(imaginary);\n            }\n            double q = imaginary / real;\n            return FastMath.abs(real) * FastMath.sqrt(1 + q * q);\n        }\n    }\n\n    public Complex add(Complex addend) throws NullArgumentException {\n        MathUtils.checkNotNull(addend);\n        if (isNaN || addend.isNaN) {\n            return NaN;\n        }\n\n        return createComplex(real + addend.getReal(),\n                             imaginary + addend.getImaginary());\n    }\n\n    /**\n     * Returns a {@code Complex} whose value is {@code (this + addend)},\n     * with {@code addend} interpreted as a real number.\n     *\n     * @param addend Value to be added to this {@code Complex}.\n     * @return {@code this + addend}.\n     * @see #add(Complex)\n     */\n    public Complex add(double addend) {\n        if (isNaN || Double.isNaN(addend)) {\n            return NaN;\n        }\n\n        return createComplex(real + addend, imaginary);\n    }\n\n    public Complex conjugate() {\n        if (isNaN) {\n            return NaN;\n        }\n\n        return createComplex(real, -imaginary);\n    }\n\n    /**\n     * Returns a {@code Complex} whose value is\n     * {@code (this / divisor)}.\n     * Implements the definitional formula\n     * <pre>\n     *  <code>\n     *    a + bi          ac + bd + (bc - ad)i\n     *    ----------- = -------------------------\n     *    c + di         c<sup>2</sup> + d<sup>2</sup>\n     *  </code>\n     * </pre>\n     * but uses\n     * <a href=\"http://doi.acm.org/10.1145/1039813.1039814\">\n     * prescaling of operands</a> to limit the effects of overflows and\n     * underflows in the computation.\n     * <p>\n     * {@code Infinite} and {@code NaN} values are handled according to the\n     * following rules, applied in the order presented:\n     * <ul>\n     *  <li>If either {@code this} or {@code divisor} has a {@code NaN} value\n     *   in either part, {@link #NaN} is returned.\n     *  </li>\n     *  <li>If {@code divisor} equals {@link #ZERO}, {@link #NaN} is returned.\n     *  </li>\n     *  <li>If {@code this} and {@code divisor} are both infinite,\n     *   {@link #NaN} is returned.\n     *  </li>\n     *  <li>If {@code this} is finite (i.e., has no {@code Infinite} or\n     *   {@code NaN} parts) and {@code divisor} is infinite (one or both parts\n     *   infinite), {@link #ZERO} is returned.\n     *  </li>\n     *  <li>If {@code this} is infinite and {@code divisor} is finite,\n     *   {@code NaN} values are returned in the parts of the result if the\n     *   {@link java.lang.Double} rules applied to the definitional formula\n     *   force {@code NaN} results.\n     *  </li>\n     * </ul>\n     *\n     * @param divisor Value by which this {@code Complex} is to be divided.\n     * @return {@code this / divisor}.\n     * @throws NullArgumentException if {@code divisor} is {@code null}.\n     */\n    public Complex divide(Complex divisor)\n        throws NullArgumentException {\n        MathUtils.checkNotNull(divisor);\n        if (isNaN || divisor.isNaN) {\n            return NaN;\n        }\n\n        final double c = divisor.getReal();\n        final double d = divisor.getImaginary();\n        if (c == 0.0 && d == 0.0) {\n            return NaN;\n        }\n\n        if (divisor.isInfinite() && !isInfinite()) {\n            return ZERO;\n        }\n\n        if (FastMath.abs(c) < FastMath.abs(d)) {\n            double q = c / d;\n            double denominator = c * q + d;\n            return createComplex((real * q + imaginary) / denominator,\n                (imaginary * q - real) / denominator);\n        } else {\n            double q = d / c;\n            double denominator = d * q + c;\n            return createComplex((imaginary * q + real) / denominator,\n                (imaginary - real * q) / denominator);\n        }\n    }\n\n    /**\n     * Returns a {@code Complex} whose value is {@code (this / divisor)},\n     * with {@code divisor} interpreted as a real number.\n     *\n     * @param  divisor Value by which this {@code Complex} is to be divided.\n     * @return {@code this / divisor}.\n     * @see #divide(Complex)\n     */\n    public Complex divide(double divisor) {\n        if (isNaN || Double.isNaN(divisor)) {\n            return NaN;\n        }\n        if (divisor == 0d) {\n            return NaN;\n        }\n        if (Double.isInfinite(divisor)) {\n            return !isInfinite() ? ZERO : NaN;\n        }\n        return createComplex(real / divisor,\n                             imaginary  / divisor);\n    }\n\n    /** {@inheritDoc} */\n    public Complex reciprocal() {\n        if (isNaN) {\n            return NaN;\n        }\n\n        if (real == 0.0 && imaginary == 0.0) {\n            return INF;\n        }\n\n        if (isInfinite) {\n            return ZERO;\n        }\n\n        if (FastMath.abs(real) < FastMath.abs(imaginary)) {\n            double q = real / imaginary;\n            double scale = 1. / (real * q + imaginary);\n            return createComplex(scale * q, -scale);\n        } else {\n            double q = imaginary / real;\n            double scale = 1. / (imaginary * q + real);\n            return createComplex(scale, -scale * q);\n        }\n    }\n\n    @Override\n    public boolean equals(Object other) {\n        if (this == other) {\n            return true;\n        }\n        if (other instanceof Complex){\n            Complex c = (Complex) other;\n            if (c.isNaN) {\n                return isNaN;\n            } else {\n                return MathUtils.equals(real, c.real) &&\n                    MathUtils.equals(imaginary, c.imaginary);\n            }\n        }\n        return false;\n    }\n\n    /**\n     * Test for the floating-point equality between Complex objects.\n     * It returns {@code true} if both arguments are equal or within the\n     * range of allowed error (inclusive).\n     *\n     * @param x First value (cannot be {@code null}).\n     * @param y Second value (cannot be {@code null}).\n     * @param maxUlps {@code (maxUlps - 1)} is the number of floating point\n     * values between the real (resp. imaginary) parts of {@code x} and\n     * {@code y}.\n     * @return {@code true} if there are fewer than {@code maxUlps} floating\n     * point values between the real (resp. imaginary) parts of {@code x}\n     * and {@code y}.\n     *\n     * @see Precision#equals(double,double,int)\n     * @since 3.3\n     */\n    public static boolean equals(Complex x, Complex y, int maxUlps) {\n        return Precision.equals(x.real, y.real, maxUlps) &&\n            Precision.equals(x.imaginary, y.imaginary, maxUlps);\n    }\n\n    /**\n     * Returns {@code true} iff the values are equal as defined by\n     * {@link #equals(Complex,Complex,int) equals(x, y, 1)}.\n     *\n     * @param x First value (cannot be {@code null}).\n     * @param y Second value (cannot be {@code null}).\n     * @return {@code true} if the values are equal.\n     *\n     * @since 3.3\n     */\n    public static boolean equals(Complex x, Complex y) {\n        return equals(x, y, 1);\n    }\n\n    /**\n     * Returns {@code true} if, both for the real part and for the imaginary\n     * part, there is no double value strictly between the arguments or the\n     * difference between them is within the range of allowed error\n     * (inclusive).  Returns {@code false} if either of the arguments is NaN.\n     *\n     * @param x First value (cannot be {@code null}).\n     * @param y Second value (cannot be {@code null}).\n     * @param eps Amount of allowed absolute error.\n     * @return {@code true} if the values are two adjacent floating point\n     * numbers or they are within range of each other.\n     *\n     * @see Precision#equals(double,double,double)\n     * @since 3.3\n     */\n    public static boolean equals(Complex x, Complex y, double eps) {\n        return Precision.equals(x.real, y.real, eps) &&\n            Precision.equals(x.imaginary, y.imaginary, eps);\n    }\n\n    /**\n     * Returns {@code true} if, both for the real part and for the imaginary\n     * part, there is no double value strictly between the arguments or the\n     * relative difference between them is smaller or equal to the given\n     * tolerance. Returns {@code false} if either of the arguments is NaN.\n     *\n     * @param x First value (cannot be {@code null}).\n     * @param y Second value (cannot be {@code null}).\n     * @param eps Amount of allowed relative error.\n     * @return {@code true} if the values are two adjacent floating point\n     * numbers or they are within range of each other.\n     *\n     * @see Precision#equalsWithRelativeTolerance(double,double,double)\n     * @since 3.3\n     */\n    public static boolean equalsWithRelativeTolerance(Complex x, Complex y,\n                                                      double eps) {\n        return Precision.equalsWithRelativeTolerance(x.real, y.real, eps) &&\n            Precision.equalsWithRelativeTolerance(x.imaginary, y.imaginary, eps);\n    }\n\n    /**\n     * Get a hashCode for the complex number.\n     * Any {@code Double.NaN} value in real or imaginary part produces\n     * the same hash code {@code 7}.\n     *\n     * @return a hash code value for this object.\n     */\n    @Override\n    public int hashCode() {\n        if (isNaN) {\n            return 7;\n        }\n        return 37 * (17 * MathUtils.hash(imaginary) +\n            MathUtils.hash(real));\n    }\n\n    /**\n     * Access the imaginary part.\n     *\n     * @return the imaginary part.\n     */\n    public double getImaginary() {\n        return imaginary;\n    }\n\n    /**\n     * Access the real part.\n     *\n     * @return the real part.\n     */\n    public double getReal() {\n        return real;\n    }\n\n    /**\n     * Checks whether either or both parts of this complex number is\n     * {@code NaN}.\n     *\n     * @return true if either or both parts of this complex number is\n     * {@code NaN}; false otherwise.\n     */\n    public boolean isNaN() {\n        return isNaN;\n    }\n\n    /**\n     * Checks whether either the real or imaginary part of this complex number\n     * takes an infinite value (either {@code Double.POSITIVE_INFINITY} or\n     * {@code Double.NEGATIVE_INFINITY}) and neither part\n     * is {@code NaN}.\n     *\n     * @return true if one or both parts of this complex number are infinite\n     * and neither part is {@code NaN}.\n     */\n    public boolean isInfinite() {\n        return isInfinite;\n    }\n\n    public Complex multiply(Complex factor)\n        throws NullArgumentException {\n        MathUtils.checkNotNull(factor);\n        if (isNaN || factor.isNaN) {\n            return NaN;\n        }\n        if (Double.isInfinite(real) ||\n            Double.isInfinite(imaginary) ||\n            Double.isInfinite(factor.real) ||\n            Double.isInfinite(factor.imaginary)) {\n            // we don't use isInfinite() to avoid testing for NaN again\n            return INF;\n        }\n        return createComplex(real * factor.real - imaginary * factor.imaginary,\n                             real * factor.imaginary + imaginary * factor.real);\n    }\n\n    /**\n     * Returns a {@code Complex} whose value is {@code this * factor}, with {@code factor}\n     * interpreted as a integer number.\n     *\n     * @param  factor value to be multiplied by this {@code Complex}.\n     * @return {@code this * factor}.\n     * @see #multiply(Complex)\n     */\n    public Complex multiply(final int factor) {\n        if (isNaN) {\n            return NaN;\n        }\n        if (Double.isInfinite(real) ||\n            Double.isInfinite(imaginary)) {\n            return INF;\n        }\n        return createComplex(real * factor, imaginary * factor);\n    }\n\n    /**\n     * Returns a {@code Complex} whose value is {@code this * factor}, with {@code factor}\n     * interpreted as a real number.\n     *\n     * @param  factor value to be multiplied by this {@code Complex}.\n     * @return {@code this * factor}.\n     * @see #multiply(Complex)\n     */\n    public Complex multiply(double factor) {\n        if (isNaN || Double.isNaN(factor)) {\n            return NaN;\n        }\n        if (Double.isInfinite(real) ||\n            Double.isInfinite(imaginary) ||\n            Double.isInfinite(factor)) {\n            // we don't use isInfinite() to avoid testing for NaN again\n            return INF;\n        }\n        return createComplex(real * factor, imaginary * factor);\n    }\n\n    /**\n     * Returns a {@code Complex} whose value is {@code (-this)}.\n     * Returns {@code NaN} if either real or imaginary\n     * part of this Complex number is {@code Double.NaN}.\n     *\n     * @return {@code -this}.\n     */\n    public Complex negate() {\n        if (isNaN) {\n            return NaN;\n        }\n\n        return createComplex(-real, -imaginary);\n    }\n\n    /**\n     * Returns a {@code Complex} whose value is\n     * {@code (this - subtrahend)}.\n     * Uses the definitional formula\n     * <p>\n     *  {@code (a + bi) - (c + di) = (a-c) + (b-d)i}\n     * </p>\n     * If either {@code this} or {@code subtrahend} has a {@code NaN]} value in either part,\n     * {@link #NaN} is returned; otherwise infinite and {@code NaN} values are\n     * returned in the parts of the result according to the rules for\n     * {@link java.lang.Double} arithmetic.\n     *\n     * @param  subtrahend value to be subtracted from this {@code Complex}.\n     * @return {@code this - subtrahend}.\n     * @throws NullArgumentException if {@code subtrahend} is {@code null}.\n     */\n    public Complex subtract(Complex subtrahend)\n        throws NullArgumentException {\n        MathUtils.checkNotNull(subtrahend);\n        if (isNaN || subtrahend.isNaN) {\n            return NaN;\n        }\n\n        return createComplex(real - subtrahend.getReal(),\n                             imaginary - subtrahend.getImaginary());\n    }\n\n    /**\n     * Returns a {@code Complex} whose value is\n     * {@code (this - subtrahend)}.\n     *\n     * @param  subtrahend value to be subtracted from this {@code Complex}.\n     * @return {@code this - subtrahend}.\n     * @see #subtract(Complex)\n     */\n    public Complex subtract(double subtrahend) {\n        if (isNaN || Double.isNaN(subtrahend)) {\n            return NaN;\n        }\n        return createComplex(real - subtrahend, imaginary);\n    }\n\n    /**\n     * Compute the\n     * <a href=\"http://mathworld.wolfram.com/InverseCosine.html\" TARGET=\"_top\">\n     * inverse cosine</a> of this complex number.\n     * Implements the formula:\n     * <p>\n     *  {@code acos(z) = -i (log(z + i (sqrt(1 - z<sup>2</sup>))))}\n     * </p>\n     * Returns {@link Complex#NaN} if either real or imaginary part of the\n     * input argument is {@code NaN} or infinite.\n     *\n     * @return the inverse cosine of this complex number.\n     * @since 1.2\n     */\n    public Complex acos() {\n        if (isNaN) {\n            return NaN;\n        }\n\n        return this.add(this.sqrt1z().multiply(I)).log().multiply(I.negate());\n    }\n\n    /**\n     * Compute the\n     * <a href=\"http://mathworld.wolfram.com/InverseSine.html\" TARGET=\"_top\">\n     * inverse sine</a> of this complex number.\n     * Implements the formula:\n     * <p>\n     *  {@code asin(z) = -i (log(sqrt(1 - z<sup>2</sup>) + iz))}\n     * </p><p>\n     * Returns {@link Complex#NaN} if either real or imaginary part of the\n     * input argument is {@code NaN} or infinite.</p>\n     *\n     * @return the inverse sine of this complex number.\n     * @since 1.2\n     */\n    public Complex asin() {\n        if (isNaN) {\n            return NaN;\n        }\n\n        return sqrt1z().add(this.multiply(I)).log().multiply(I.negate());\n    }\n\n    /**\n     * Compute the\n     * <a href=\"http://mathworld.wolfram.com/InverseTangent.html\" TARGET=\"_top\">\n     * inverse tangent</a> of this complex number.\n     * Implements the formula:\n     * <p>\n     * {@code atan(z) = (i/2) log((i + z)/(i - z))}\n     * </p><p>\n     * Returns {@link Complex#NaN} if either real or imaginary part of the\n     * input argument is {@code NaN} or infinite.</p>\n     *\n     * @return the inverse tangent of this complex number\n     * @since 1.2\n     */\n    public Complex atan() {\n        if (isNaN) {\n            return NaN;\n        }\n\n        return this.add(I).divide(I.subtract(this)).log()\n                .multiply(I.divide(createComplex(2.0, 0.0)));\n    }\n\n    public Complex cos() {\n        if (isNaN) {\n            return NaN;\n        }\n\n        return createComplex(FastMath.cos(real) * FastMath.cosh(imaginary),\n                             -FastMath.sin(real) * FastMath.sinh(imaginary));\n    }\n\n    public Complex cosh() {\n        if (isNaN) {\n            return NaN;\n        }\n\n        return createComplex(FastMath.cosh(real) * FastMath.cos(imaginary),\n                             FastMath.sinh(real) * FastMath.sin(imaginary));\n    }\n\n    public Complex exp() {\n        if (isNaN) {\n            return NaN;\n        }\n\n        double expReal = FastMath.exp(real);\n        return createComplex(expReal *  FastMath.cos(imaginary),\n                             expReal * FastMath.sin(imaginary));\n    }\n\n    public Complex log() {\n        if (isNaN) {\n            return NaN;\n        }\n\n        return createComplex(FastMath.log(abs()),\n                             FastMath.atan2(imaginary, real));\n    }\n\n    public Complex pow(Complex x)\n        throws NullArgumentException {\n        MathUtils.checkNotNull(x);\n        return this.log().multiply(x).exp();\n    }\n\n    /**\n     * Returns of value of this complex number raised to the power of {@code x}.\n     *\n     * @param  x exponent to which this {@code Complex} is to be raised.\n     * @return <code>this<sup>x</sup></code>.\n     * @see #pow(Complex)\n     */\n     public Complex pow(double x) {\n        return this.log().multiply(x).exp();\n    }\n\n    public Complex sin() {\n        if (isNaN) {\n            return NaN;\n        }\n\n        return createComplex(FastMath.sin(real) * FastMath.cosh(imaginary),\n                             FastMath.cos(real) * FastMath.sinh(imaginary));\n    }\n\n    public Complex sinh() {\n        if (isNaN) {\n            return NaN;\n        }\n\n        return createComplex(FastMath.sinh(real) * FastMath.cos(imaginary),\n            FastMath.cosh(real) * FastMath.sin(imaginary));\n    }\n\n    public Complex sqrt() {\n        if (isNaN) {\n            return NaN;\n        }\n\n        if (real == 0.0 && imaginary == 0.0) {\n            return createComplex(0.0, 0.0);\n        }\n\n        double t = FastMath.sqrt((FastMath.abs(real) + abs()) / 2.0);\n        if (real >= 0.0) {\n            return createComplex(t, imaginary / (2.0 * t));\n        } else {\n            return createComplex(FastMath.abs(imaginary) / (2.0 * t),\n                                 FastMath.copySign(1d, imaginary) * t);\n        }\n    }\n\n    public Complex sqrt1z() {\n        return createComplex(1.0, 0.0).subtract(this.multiply(this)).sqrt();\n    }\n\n    public Complex tan() {\n        if (isNaN || Double.isInfinite(real)) {\n            return NaN;\n        }\n        if (imaginary > 20.0) {\n            return createComplex(0.0, 1.0);\n        }\n        if (imaginary < -20.0) {\n            return createComplex(0.0, -1.0);\n        }\n\n        double real2 = 2.0 * real;\n        double imaginary2 = 2.0 * imaginary;\n        double d = FastMath.cos(real2) + FastMath.cosh(imaginary2);\n\n        return createComplex(FastMath.sin(real2) / d,\n                             FastMath.sinh(imaginary2) / d);\n    }\n\n    public Complex tanh() {\n        if (isNaN || Double.isInfinite(imaginary)) {\n            return NaN;\n        }\n        if (real > 20.0) {\n            return createComplex(1.0, 0.0);\n        }\n        if (real < -20.0) {\n            return createComplex(-1.0, 0.0);\n        }\n        double real2 = 2.0 * real;\n        double imaginary2 = 2.0 * imaginary;\n        double d = FastMath.cosh(real2) + FastMath.cos(imaginary2);\n\n        return createComplex(FastMath.sinh(real2) / d,\n                             FastMath.sin(imaginary2) / d);\n    }\n\n    \n    public double getArgument() {\n        return FastMath.atan2(getImaginary(), getReal());\n    }\n\n    public List<Complex> nthRoot(int n) throws NotPositiveException {\n\n        if (n <= 0) {\n            throw new NotPositiveException(LocalizedFormats.CANNOT_COMPUTE_NTH_ROOT_FOR_NEGATIVE_N,\n                                           n);\n        }\n\n        final List<Complex> result = new ArrayList<Complex>();\n\n        if (isNaN) {\n            result.add(NaN);\n            return result;\n        }\n        if (isInfinite()) {\n            result.add(INF);\n            return result;\n        }\n\n        // nth root of abs -- faster / more accurate to use a solver here?\n        final double nthRootOfAbs = FastMath.pow(abs(), 1.0 / n);\n\n        // Compute nth roots of complex number with k = 0, 1, ... n-1\n        final double nthPhi = getArgument() / n;\n        final double slice = 2 * FastMath.PI / n;\n        double innerPart = nthPhi;\n        for (int k = 0; k < n ; k++) {\n            // inner part\n            final double realPart = nthRootOfAbs *  FastMath.cos(innerPart);\n            final double imaginaryPart = nthRootOfAbs *  FastMath.sin(innerPart);\n            result.add(createComplex(realPart, imaginaryPart));\n            innerPart += slice;\n        }\n\n        return result;\n    }\n\n    /**\n     * Create a complex number given the real and imaginary parts.\n     *\n     * @param realPart Real part.\n     * @param imaginaryPart Imaginary part.\n     * @return a new complex number instance.\n     * @since 1.2\n     * @see #valueOf(double, double)\n     */\n    protected Complex createComplex(double realPart,\n                                    double imaginaryPart) {\n        return new Complex(realPart, imaginaryPart);\n    }\n\n    /**\n     * Create a complex number given the real and imaginary parts.\n     *\n     * @param realPart Real part.\n     * @param imaginaryPart Imaginary part.\n     * @return a Complex instance.\n     */\n    public static Complex valueOf(double realPart,\n                                  double imaginaryPart) {\n        if (Double.isNaN(realPart) ||\n            Double.isNaN(imaginaryPart)) {\n            return NaN;\n        }\n        return new Complex(realPart, imaginaryPart);\n    }\n\n    /**\n     * Create a complex number given only the real part.\n     *\n     * @param realPart Real part.\n     * @return a Complex instance.\n     */\n    public static Complex valueOf(double realPart) {\n        if (Double.isNaN(realPart)) {\n            return NaN;\n        }\n        return new Complex(realPart);\n    }\n\n    protected final Object readResolve() {\n        return createComplex(real, imaginary);\n    }\n\n    /** {@inheritDoc} */\n    public ComplexField getField() {\n        return ComplexField.getInstance();\n    }\n\n    /** {@inheritDoc} */\n    @Override\n    public String toString() {\n        return \"(\" + real + \", \" + imaginary + \")\";\n    }\n\n}",
+        "tokensGeneralGrammar": [
+            "null",
+            "true",
+            "false",
+            ",",
+            ".",
+            ":",
+            ";",
+            "?",
+            "jdVar",
+            "stream",
+            "Arrays",
+            "allMatch",
+            "noneMatch",
+            "anyMatch",
+            "~",
+            ">>",
+            "<<",
+            ">>>",
+            "|",
+            "&",
+            "^",
+            "+",
+            "-",
+            "/",
+            "*",
+            "%",
+            "&&",
+            "||",
+            ">=",
+            "<=",
+            ">",
+            "<",
+            "==",
+            "!=",
+            "instanceof",
+            "class",
+            "methodResultID",
+            "this"
+        ],
+        "tokensGeneralValuesGlobalDictionary": [
+            [
+                "0",
+                "int"
+            ],
+            [
+                "1",
+                "int"
+            ],
+            [
+                "2",
+                "int"
+            ],
+            [
+                "100.0",
+                "double"
+            ]
+        ],
+        "tokensProjectClasses": [
+            [
+                "RealFieldElement",
+                "org.apache.commons.math3"
+            ],
+            [
+                "Primes",
+                "org.apache.commons.math3.primes"
+            ],
+            [
+                "DifferentiableUnivariateFunction",
+                "org.apache.commons.math3.analysis"
+            ],
+            [
+                "UnivariateFunction",
+                "org.apache.commons.math3.analysis"
+            ],
+            [
+                "TrivariateFunction",
+                "org.apache.commons.math3.analysis"
+            ],
+            [
+                "MultivariateMatrixFunction",
+                "org.apache.commons.math3.analysis"
+            ],
+            [
+                "ParametricUnivariateFunction",
+                "org.apache.commons.math3.analysis"
+            ],
+            [
+                "UnivariateDifferentiableVectorFunction",
+                "org.apache.commons.math3.analysis.differentiation"
+            ],
+            [
+                "UnivariateDifferentiableMatrixFunction",
+                "org.apache.commons.math3.analysis.differentiation"
+            ],
+            [
+                "DSCompiler",
+                "org.apache.commons.math3.analysis.differentiation"
+            ],
+            [
+                "SparseGradient",
+                "org.apache.commons.math3.analysis.differentiation"
+            ],
+            [
+                "UnivariateFunctionDifferentiator",
+                "org.apache.commons.math3.analysis.differentiation"
+            ],
+            [
+                "UnivariateDifferentiableFunction",
+                "org.apache.commons.math3.analysis.differentiation"
+            ],
+            [
+                "MultivariateVectorFunction",
+                "org.apache.commons.math3.analysis"
+            ],
+            [
+                "DifferentiableMultivariateVectorFunction",
+                "org.apache.commons.math3.analysis"
+            ],
+            [
+                "PolynomialFunctionNewtonForm",
+                "org.apache.commons.math3.analysis.polynomials"
+            ],
+            [
+                "PolynomialFunctionLagrangeForm",
+                "org.apache.commons.math3.analysis.polynomials"
+            ],
+            [
+                "PolynomialSplineFunction",
+                "org.apache.commons.math3.analysis.polynomials"
+            ],
+            [
+                "PolynomialsUtils",
+                "org.apache.commons.math3.analysis.polynomials"
+            ],
+            [
+                "PolynomialFunction",
+                "org.apache.commons.math3.analysis.polynomials"
+            ],
+            [
+                "Complex",
+                "org.apache.commons.math3.complex"
+            ],
+            [
+                "Field",
+                "org.apache.commons.math3"
+            ],
+            [
+                "FieldElement",
+                "org.apache.commons.math3"
+            ],
+            [
+                "DerivativeStructure",
+                "org.apache.commons.math3.analysis.differentiation"
+            ]
+        ],
+        "tokensProjectClassesNonPrivateStaticNonVoidMethods": [],
+        "tokensProjectClassesNonPrivateStaticAttributes": [
+            [
+                "I",
+                "org.apache.commons.math3.complex",
+                "Complex",
+                "public static final Complex I = new Complex(0.0, 1.0)"
+            ],
+            [
+                "NaN",
+                "org.apache.commons.math3.complex",
+                "Complex",
+                "public static final Complex NaN = new Complex(Double.NaN, Double.NaN)"
+            ],
+            [
+                "INF",
+                "org.apache.commons.math3.complex",
+                "Complex",
+                "public static final Complex INF = new Complex(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY)"
+            ],
+            [
+                "ONE",
+                "org.apache.commons.math3.complex",
+                "Complex",
+                "public static final Complex ONE = new Complex(1.0, 0.0)"
+            ],
+            [
+                "ZERO",
+                "org.apache.commons.math3.complex",
+                "Complex",
+                "public static final Complex ZERO = new Complex(0.0, 0.0)"
+            ]
+        ],
+        "tokensMethodJavadocValues": [],
+        "tokensMethodArguments": [
+            [
+                "divisor",
+                "org.apache.commons.math3.complex",
+                "Complex"
+            ]
+        ],
+        "tokensMethodVariablesNonPrivateNonStaticNonVoidMethods": [
+            [
+                "isInfinite",
+                "org.apache.commons.math3.complex",
+                "Complex",
+                "public boolean isInfinite()"
+            ],
+            [
+                "isNaN",
+                "org.apache.commons.math3.complex",
+                "Complex",
+                "public boolean isNaN()"
+            ],
+            [
+                "equals",
+                "java.lang",
+                "Object",
+                "public boolean equals(Object obj)"
+            ],
+            [
+                "toString",
+                "java.lang",
+                "Object",
+                "public String toString()"
+            ],
+            [
+                "getClass",
+                "java.lang",
+                "Object",
+                "public final native Class<?> getClass()"
+            ],
+            [
+                "hashCode",
+                "java.lang",
+                "Object",
+                "public native int hashCode()"
+            ],
+            [
+                "hash",
+                "org.apache.commons.collections4",
+                "Equator",
+                "int hash(T o)"
+            ]
+        ],
+        "tokensMethodVariablesNonPrivateNonStaticAttributes": [
+            [
+                "isNaN",
+                "org.apache.commons.math3.complex",
+                "Complex",
+                "protected final transient boolean isNaN"
+            ]
+        ],
+        "tokensOracleVariablesNonPrivateNonStaticNonVoidMethods": [
+            [
+                "isInfinite",
+                "org.apache.commons.math3.complex",
+                "Complex",
+                "public boolean isInfinite()"
+            ]
+        ],
+        "tokensOracleVariablesNonPrivateNonStaticAttributes": []
+    },
+    {
+        "id": 5,
+        "oracle": "true ? methodResultID.stream().noneMatch(jdVar -> jdVar == null) : true;",
+        "oracleType": "NORMAL_POST",
+        "projectName": "commons-math3-3.6.1",
+        "packageName": "org.apache.commons.math3.complex",
+        "className": "Complex",
+        "javadocTag": "@return a List of all {@code n}-th roots of {@code this}.",
+        "methodJavadoc": "/**\n     * Computes the n-th roots of this complex number.\n     * The nth roots are defined by the formula:\n     * <pre>\n     *  <code>\n     *   z<sub>k</sub> = abs<sup>1/n</sup> (cos(phi + 2&pi;k/n) + i (sin(phi + 2&pi;k/n))\n     *  </code>\n     * </pre>\n     * for <i>{@code k=0, 1, ..., n-1}</i>, where {@code abs} and {@code phi}\n     * are respectively the {@link #abs() modulus} and\n     * {@link #getArgument() argument} of this complex number.\n     * <p>\n     * If one or both parts of this complex number is NaN, a list with just\n     * one element, {@link #NaN} is returned.\n     * if neither part is NaN, but at least one part is infinite, the result\n     * is a one-element list containing {@link #INF}.\n     *\n     * @param n Degree of root.\n     * @return a List of all {@code n}-th roots of {@code this}.\n     * @throws NotPositiveException if {@code n <= 0}.\n     * @since 2.0\n     */",
+        "methodSourceCode": "public List<Complex> nthRoot(int n) throws NotPositiveException {\n\n        if (n <= 0) {\n            throw new NotPositiveException(LocalizedFormats.CANNOT_COMPUTE_NTH_ROOT_FOR_NEGATIVE_N,\n                                           n);\n        }\n\n        final List<Complex> result = new ArrayList<Complex>();\n\n        if (isNaN) {\n            result.add(NaN);\n            return result;\n        }\n        if (isInfinite()) {\n            result.add(INF);\n            return result;\n        }\n\n        // nth root of abs -- faster / more accurate to use a solver here?\n        final double nthRootOfAbs = FastMath.pow(abs(), 1.0 / n);\n\n        // Compute nth roots of complex number with k = 0, 1, ... n-1\n        final double nthPhi = getArgument() / n;\n        final double slice = 2 * FastMath.PI / n;\n        double innerPart = nthPhi;\n        for (int k = 0; k < n ; k++) {\n            // inner part\n            final double realPart = nthRootOfAbs *  FastMath.cos(innerPart);\n            final double imaginaryPart = nthRootOfAbs *  FastMath.sin(innerPart);\n            result.add(createComplex(realPart, imaginaryPart));\n            innerPart += slice;\n        }\n\n        return result;\n    }",
+        "classJavadoc": "/**\n * Representation of a Complex number, i.e. a number which has both a\n * real and imaginary part.\n * <p>\n * Implementations of arithmetic operations handle {@code NaN} and\n * infinite values according to the rules for {@link java.lang.Double}, i.e.\n * {@link #equals} is an equivalence relation for all instances that have\n * a {@code NaN} in either real or imaginary part, e.g. the following are\n * considered equal:\n * <ul>\n *  <li>{@code 1 + NaNi}</li>\n *  <li>{@code NaN + i}</li>\n *  <li>{@code NaN + NaNi}</li>\n * </ul><p>\n * Note that this contradicts the IEEE-754 standard for floating\n * point numbers (according to which the test {@code x == x} must fail if\n * {@code x} is {@code NaN}). The method\n * {@link org.apache.commons.math3.util.Precision#equals(double,double,int)\n * equals for primitive double} in {@link org.apache.commons.math3.util.Precision}\n * conforms with IEEE-754 while this class conforms with the standard behavior\n * for Java object types.</p>\n *\n */",
+        "classSourceCode": "/*\n * Licensed to the Apache Software Foundation (ASF) under one or more\n * contributor license agreements.  See the NOTICE file distributed with\n * this work for additional information regarding copyright ownership.\n * The ASF licenses this file to You under the Apache License, Version 2.0\n * (the \"License\"); you may not use this file except in compliance with\n * the License.  You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\n\npackage org.apache.commons.math3.complex;\n\nimport java.io.Serializable;\nimport java.util.ArrayList;\nimport java.util.List;\n\nimport org.apache.commons.math3.FieldElement;\nimport org.apache.commons.math3.exception.NotPositiveException;\nimport org.apache.commons.math3.exception.NullArgumentException;\nimport org.apache.commons.math3.exception.util.LocalizedFormats;\nimport org.apache.commons.math3.util.FastMath;\nimport org.apache.commons.math3.util.MathUtils;\nimport org.apache.commons.math3.util.Precision;\n\n/**\n * Representation of a Complex number, i.e. a number which has both a\n * real and imaginary part.\n * <p>\n * Implementations of arithmetic operations handle {@code NaN} and\n * infinite values according to the rules for {@link java.lang.Double}, i.e.\n * {@link #equals} is an equivalence relation for all instances that have\n * a {@code NaN} in either real or imaginary part, e.g. the following are\n * considered equal:\n * <ul>\n *  <li>{@code 1 + NaNi}</li>\n *  <li>{@code NaN + i}</li>\n *  <li>{@code NaN + NaNi}</li>\n * </ul><p>\n * Note that this contradicts the IEEE-754 standard for floating\n * point numbers (according to which the test {@code x == x} must fail if\n * {@code x} is {@code NaN}). The method\n * {@link org.apache.commons.math3.util.Precision#equals(double,double,int)\n * equals for primitive double} in {@link org.apache.commons.math3.util.Precision}\n * conforms with IEEE-754 while this class conforms with the standard behavior\n * for Java object types.</p>\n *\n */\npublic class Complex implements FieldElement<Complex>, Serializable  {\n    /** The square root of -1. A number representing \"0.0 + 1.0i\" */\n    public static final Complex I = new Complex(0.0, 1.0);\n    // CHECKSTYLE: stop ConstantName\n    /** A complex number representing \"NaN + NaNi\" */\n    public static final Complex NaN = new Complex(Double.NaN, Double.NaN);\n    // CHECKSTYLE: resume ConstantName\n    /** A complex number representing \"+INF + INFi\" */\n    public static final Complex INF = new Complex(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);\n    /** A complex number representing \"1.0 + 0.0i\" */\n    public static final Complex ONE = new Complex(1.0, 0.0);\n    /** A complex number representing \"0.0 + 0.0i\" */\n    public static final Complex ZERO = new Complex(0.0, 0.0);\n\n    /** Serializable version identifier */\n    private static final long serialVersionUID = -6195664516687396620L;\n\n    /** The imaginary part. */\n    private final double imaginary;\n    /** The real part. */\n    private final double real;\n    /** Record whether this complex number is equal to NaN. */\n    protected final transient boolean isNaN;\n    /** Record whether this complex number is infinite. */\n    private final transient boolean isInfinite;\n\n    /**\n     * Create a complex number given only the real part.\n     *\n     * @param real Real part.\n     */\n    public Complex(double real) {\n        this(real, 0.0);\n    }\n\n    /**\n     * Create a complex number given the real and imaginary parts.\n     *\n     * @param real Real part.\n     * @param imaginary Imaginary part.\n     */\n    public Complex(double real, double imaginary) {\n        this.real = real;\n        this.imaginary = imaginary;\n\n        isNaN = Double.isNaN(real) || Double.isNaN(imaginary);\n        isInfinite = !isNaN &&\n            (Double.isInfinite(real) || Double.isInfinite(imaginary));\n    }\n\n    /**\n     * Return the absolute value of this complex number.\n     * Returns {@code NaN} if either real or imaginary part is {@code NaN}\n     * and {@code Double.POSITIVE_INFINITY} if neither part is {@code NaN},\n     * but at least one part is infinite.\n     *\n     * @return the absolute value.\n     */\n    public double abs() {\n        if (isNaN) {\n            return Double.NaN;\n        }\n        if (isInfinite()) {\n            return Double.POSITIVE_INFINITY;\n        }\n        if (FastMath.abs(real) < FastMath.abs(imaginary)) {\n            if (imaginary == 0.0) {\n                return FastMath.abs(real);\n            }\n            double q = real / imaginary;\n            return FastMath.abs(imaginary) * FastMath.sqrt(1 + q * q);\n        } else {\n            if (real == 0.0) {\n                return FastMath.abs(imaginary);\n            }\n            double q = imaginary / real;\n            return FastMath.abs(real) * FastMath.sqrt(1 + q * q);\n        }\n    }\n\n    public Complex add(Complex addend) throws NullArgumentException {\n        MathUtils.checkNotNull(addend);\n        if (isNaN || addend.isNaN) {\n            return NaN;\n        }\n\n        return createComplex(real + addend.getReal(),\n                             imaginary + addend.getImaginary());\n    }\n\n    /**\n     * Returns a {@code Complex} whose value is {@code (this + addend)},\n     * with {@code addend} interpreted as a real number.\n     *\n     * @param addend Value to be added to this {@code Complex}.\n     * @return {@code this + addend}.\n     * @see #add(Complex)\n     */\n    public Complex add(double addend) {\n        if (isNaN || Double.isNaN(addend)) {\n            return NaN;\n        }\n\n        return createComplex(real + addend, imaginary);\n    }\n\n    public Complex conjugate() {\n        if (isNaN) {\n            return NaN;\n        }\n\n        return createComplex(real, -imaginary);\n    }\n\n    /**\n     * Returns a {@code Complex} whose value is\n     * {@code (this / divisor)}.\n     * Implements the definitional formula\n     * <pre>\n     *  <code>\n     *    a + bi          ac + bd + (bc - ad)i\n     *    ----------- = -------------------------\n     *    c + di         c<sup>2</sup> + d<sup>2</sup>\n     *  </code>\n     * </pre>\n     * but uses\n     * <a href=\"http://doi.acm.org/10.1145/1039813.1039814\">\n     * prescaling of operands</a> to limit the effects of overflows and\n     * underflows in the computation.\n     * <p>\n     * {@code Infinite} and {@code NaN} values are handled according to the\n     * following rules, applied in the order presented:\n     * <ul>\n     *  <li>If either {@code this} or {@code divisor} has a {@code NaN} value\n     *   in either part, {@link #NaN} is returned.\n     *  </li>\n     *  <li>If {@code divisor} equals {@link #ZERO}, {@link #NaN} is returned.\n     *  </li>\n     *  <li>If {@code this} and {@code divisor} are both infinite,\n     *   {@link #NaN} is returned.\n     *  </li>\n     *  <li>If {@code this} is finite (i.e., has no {@code Infinite} or\n     *   {@code NaN} parts) and {@code divisor} is infinite (one or both parts\n     *   infinite), {@link #ZERO} is returned.\n     *  </li>\n     *  <li>If {@code this} is infinite and {@code divisor} is finite,\n     *   {@code NaN} values are returned in the parts of the result if the\n     *   {@link java.lang.Double} rules applied to the definitional formula\n     *   force {@code NaN} results.\n     *  </li>\n     * </ul>\n     *\n     * @param divisor Value by which this {@code Complex} is to be divided.\n     * @return {@code this / divisor}.\n     * @throws NullArgumentException if {@code divisor} is {@code null}.\n     */\n    public Complex divide(Complex divisor)\n        throws NullArgumentException {\n        MathUtils.checkNotNull(divisor);\n        if (isNaN || divisor.isNaN) {\n            return NaN;\n        }\n\n        final double c = divisor.getReal();\n        final double d = divisor.getImaginary();\n        if (c == 0.0 && d == 0.0) {\n            return NaN;\n        }\n\n        if (divisor.isInfinite() && !isInfinite()) {\n            return ZERO;\n        }\n\n        if (FastMath.abs(c) < FastMath.abs(d)) {\n            double q = c / d;\n            double denominator = c * q + d;\n            return createComplex((real * q + imaginary) / denominator,\n                (imaginary * q - real) / denominator);\n        } else {\n            double q = d / c;\n            double denominator = d * q + c;\n            return createComplex((imaginary * q + real) / denominator,\n                (imaginary - real * q) / denominator);\n        }\n    }\n\n    /**\n     * Returns a {@code Complex} whose value is {@code (this / divisor)},\n     * with {@code divisor} interpreted as a real number.\n     *\n     * @param  divisor Value by which this {@code Complex} is to be divided.\n     * @return {@code this / divisor}.\n     * @see #divide(Complex)\n     */\n    public Complex divide(double divisor) {\n        if (isNaN || Double.isNaN(divisor)) {\n            return NaN;\n        }\n        if (divisor == 0d) {\n            return NaN;\n        }\n        if (Double.isInfinite(divisor)) {\n            return !isInfinite() ? ZERO : NaN;\n        }\n        return createComplex(real / divisor,\n                             imaginary  / divisor);\n    }\n\n    /** {@inheritDoc} */\n    public Complex reciprocal() {\n        if (isNaN) {\n            return NaN;\n        }\n\n        if (real == 0.0 && imaginary == 0.0) {\n            return INF;\n        }\n\n        if (isInfinite) {\n            return ZERO;\n        }\n\n        if (FastMath.abs(real) < FastMath.abs(imaginary)) {\n            double q = real / imaginary;\n            double scale = 1. / (real * q + imaginary);\n            return createComplex(scale * q, -scale);\n        } else {\n            double q = imaginary / real;\n            double scale = 1. / (imaginary * q + real);\n            return createComplex(scale, -scale * q);\n        }\n    }\n\n    @Override\n    public boolean equals(Object other) {\n        if (this == other) {\n            return true;\n        }\n        if (other instanceof Complex){\n            Complex c = (Complex) other;\n            if (c.isNaN) {\n                return isNaN;\n            } else {\n                return MathUtils.equals(real, c.real) &&\n                    MathUtils.equals(imaginary, c.imaginary);\n            }\n        }\n        return false;\n    }\n\n    /**\n     * Test for the floating-point equality between Complex objects.\n     * It returns {@code true} if both arguments are equal or within the\n     * range of allowed error (inclusive).\n     *\n     * @param x First value (cannot be {@code null}).\n     * @param y Second value (cannot be {@code null}).\n     * @param maxUlps {@code (maxUlps - 1)} is the number of floating point\n     * values between the real (resp. imaginary) parts of {@code x} and\n     * {@code y}.\n     * @return {@code true} if there are fewer than {@code maxUlps} floating\n     * point values between the real (resp. imaginary) parts of {@code x}\n     * and {@code y}.\n     *\n     * @see Precision#equals(double,double,int)\n     * @since 3.3\n     */\n    public static boolean equals(Complex x, Complex y, int maxUlps) {\n        return Precision.equals(x.real, y.real, maxUlps) &&\n            Precision.equals(x.imaginary, y.imaginary, maxUlps);\n    }\n\n    /**\n     * Returns {@code true} iff the values are equal as defined by\n     * {@link #equals(Complex,Complex,int) equals(x, y, 1)}.\n     *\n     * @param x First value (cannot be {@code null}).\n     * @param y Second value (cannot be {@code null}).\n     * @return {@code true} if the values are equal.\n     *\n     * @since 3.3\n     */\n    public static boolean equals(Complex x, Complex y) {\n        return equals(x, y, 1);\n    }\n\n    /**\n     * Returns {@code true} if, both for the real part and for the imaginary\n     * part, there is no double value strictly between the arguments or the\n     * difference between them is within the range of allowed error\n     * (inclusive).  Returns {@code false} if either of the arguments is NaN.\n     *\n     * @param x First value (cannot be {@code null}).\n     * @param y Second value (cannot be {@code null}).\n     * @param eps Amount of allowed absolute error.\n     * @return {@code true} if the values are two adjacent floating point\n     * numbers or they are within range of each other.\n     *\n     * @see Precision#equals(double,double,double)\n     * @since 3.3\n     */\n    public static boolean equals(Complex x, Complex y, double eps) {\n        return Precision.equals(x.real, y.real, eps) &&\n            Precision.equals(x.imaginary, y.imaginary, eps);\n    }\n\n    /**\n     * Returns {@code true} if, both for the real part and for the imaginary\n     * part, there is no double value strictly between the arguments or the\n     * relative difference between them is smaller or equal to the given\n     * tolerance. Returns {@code false} if either of the arguments is NaN.\n     *\n     * @param x First value (cannot be {@code null}).\n     * @param y Second value (cannot be {@code null}).\n     * @param eps Amount of allowed relative error.\n     * @return {@code true} if the values are two adjacent floating point\n     * numbers or they are within range of each other.\n     *\n     * @see Precision#equalsWithRelativeTolerance(double,double,double)\n     * @since 3.3\n     */\n    public static boolean equalsWithRelativeTolerance(Complex x, Complex y,\n                                                      double eps) {\n        return Precision.equalsWithRelativeTolerance(x.real, y.real, eps) &&\n            Precision.equalsWithRelativeTolerance(x.imaginary, y.imaginary, eps);\n    }\n\n    /**\n     * Get a hashCode for the complex number.\n     * Any {@code Double.NaN} value in real or imaginary part produces\n     * the same hash code {@code 7}.\n     *\n     * @return a hash code value for this object.\n     */\n    @Override\n    public int hashCode() {\n        if (isNaN) {\n            return 7;\n        }\n        return 37 * (17 * MathUtils.hash(imaginary) +\n            MathUtils.hash(real));\n    }\n\n    /**\n     * Access the imaginary part.\n     *\n     * @return the imaginary part.\n     */\n    public double getImaginary() {\n        return imaginary;\n    }\n\n    /**\n     * Access the real part.\n     *\n     * @return the real part.\n     */\n    public double getReal() {\n        return real;\n    }\n\n    /**\n     * Checks whether either or both parts of this complex number is\n     * {@code NaN}.\n     *\n     * @return true if either or both parts of this complex number is\n     * {@code NaN}; false otherwise.\n     */\n    public boolean isNaN() {\n        return isNaN;\n    }\n\n    /**\n     * Checks whether either the real or imaginary part of this complex number\n     * takes an infinite value (either {@code Double.POSITIVE_INFINITY} or\n     * {@code Double.NEGATIVE_INFINITY}) and neither part\n     * is {@code NaN}.\n     *\n     * @return true if one or both parts of this complex number are infinite\n     * and neither part is {@code NaN}.\n     */\n    public boolean isInfinite() {\n        return isInfinite;\n    }\n\n    public Complex multiply(Complex factor)\n        throws NullArgumentException {\n        MathUtils.checkNotNull(factor);\n        if (isNaN || factor.isNaN) {\n            return NaN;\n        }\n        if (Double.isInfinite(real) ||\n            Double.isInfinite(imaginary) ||\n            Double.isInfinite(factor.real) ||\n            Double.isInfinite(factor.imaginary)) {\n            // we don't use isInfinite() to avoid testing for NaN again\n            return INF;\n        }\n        return createComplex(real * factor.real - imaginary * factor.imaginary,\n                             real * factor.imaginary + imaginary * factor.real);\n    }\n\n    /**\n     * Returns a {@code Complex} whose value is {@code this * factor}, with {@code factor}\n     * interpreted as a integer number.\n     *\n     * @param  factor value to be multiplied by this {@code Complex}.\n     * @return {@code this * factor}.\n     * @see #multiply(Complex)\n     */\n    public Complex multiply(final int factor) {\n        if (isNaN) {\n            return NaN;\n        }\n        if (Double.isInfinite(real) ||\n            Double.isInfinite(imaginary)) {\n            return INF;\n        }\n        return createComplex(real * factor, imaginary * factor);\n    }\n\n    /**\n     * Returns a {@code Complex} whose value is {@code this * factor}, with {@code factor}\n     * interpreted as a real number.\n     *\n     * @param  factor value to be multiplied by this {@code Complex}.\n     * @return {@code this * factor}.\n     * @see #multiply(Complex)\n     */\n    public Complex multiply(double factor) {\n        if (isNaN || Double.isNaN(factor)) {\n            return NaN;\n        }\n        if (Double.isInfinite(real) ||\n            Double.isInfinite(imaginary) ||\n            Double.isInfinite(factor)) {\n            // we don't use isInfinite() to avoid testing for NaN again\n            return INF;\n        }\n        return createComplex(real * factor, imaginary * factor);\n    }\n\n    /**\n     * Returns a {@code Complex} whose value is {@code (-this)}.\n     * Returns {@code NaN} if either real or imaginary\n     * part of this Complex number is {@code Double.NaN}.\n     *\n     * @return {@code -this}.\n     */\n    public Complex negate() {\n        if (isNaN) {\n            return NaN;\n        }\n\n        return createComplex(-real, -imaginary);\n    }\n\n    /**\n     * Returns a {@code Complex} whose value is\n     * {@code (this - subtrahend)}.\n     * Uses the definitional formula\n     * <p>\n     *  {@code (a + bi) - (c + di) = (a-c) + (b-d)i}\n     * </p>\n     * If either {@code this} or {@code subtrahend} has a {@code NaN]} value in either part,\n     * {@link #NaN} is returned; otherwise infinite and {@code NaN} values are\n     * returned in the parts of the result according to the rules for\n     * {@link java.lang.Double} arithmetic.\n     *\n     * @param  subtrahend value to be subtracted from this {@code Complex}.\n     * @return {@code this - subtrahend}.\n     * @throws NullArgumentException if {@code subtrahend} is {@code null}.\n     */\n    public Complex subtract(Complex subtrahend)\n        throws NullArgumentException {\n        MathUtils.checkNotNull(subtrahend);\n        if (isNaN || subtrahend.isNaN) {\n            return NaN;\n        }\n\n        return createComplex(real - subtrahend.getReal(),\n                             imaginary - subtrahend.getImaginary());\n    }\n\n    /**\n     * Returns a {@code Complex} whose value is\n     * {@code (this - subtrahend)}.\n     *\n     * @param  subtrahend value to be subtracted from this {@code Complex}.\n     * @return {@code this - subtrahend}.\n     * @see #subtract(Complex)\n     */\n    public Complex subtract(double subtrahend) {\n        if (isNaN || Double.isNaN(subtrahend)) {\n            return NaN;\n        }\n        return createComplex(real - subtrahend, imaginary);\n    }\n\n    /**\n     * Compute the\n     * <a href=\"http://mathworld.wolfram.com/InverseCosine.html\" TARGET=\"_top\">\n     * inverse cosine</a> of this complex number.\n     * Implements the formula:\n     * <p>\n     *  {@code acos(z) = -i (log(z + i (sqrt(1 - z<sup>2</sup>))))}\n     * </p>\n     * Returns {@link Complex#NaN} if either real or imaginary part of the\n     * input argument is {@code NaN} or infinite.\n     *\n     * @return the inverse cosine of this complex number.\n     * @since 1.2\n     */\n    public Complex acos() {\n        if (isNaN) {\n            return NaN;\n        }\n\n        return this.add(this.sqrt1z().multiply(I)).log().multiply(I.negate());\n    }\n\n    /**\n     * Compute the\n     * <a href=\"http://mathworld.wolfram.com/InverseSine.html\" TARGET=\"_top\">\n     * inverse sine</a> of this complex number.\n     * Implements the formula:\n     * <p>\n     *  {@code asin(z) = -i (log(sqrt(1 - z<sup>2</sup>) + iz))}\n     * </p><p>\n     * Returns {@link Complex#NaN} if either real or imaginary part of the\n     * input argument is {@code NaN} or infinite.</p>\n     *\n     * @return the inverse sine of this complex number.\n     * @since 1.2\n     */\n    public Complex asin() {\n        if (isNaN) {\n            return NaN;\n        }\n\n        return sqrt1z().add(this.multiply(I)).log().multiply(I.negate());\n    }\n\n    /**\n     * Compute the\n     * <a href=\"http://mathworld.wolfram.com/InverseTangent.html\" TARGET=\"_top\">\n     * inverse tangent</a> of this complex number.\n     * Implements the formula:\n     * <p>\n     * {@code atan(z) = (i/2) log((i + z)/(i - z))}\n     * </p><p>\n     * Returns {@link Complex#NaN} if either real or imaginary part of the\n     * input argument is {@code NaN} or infinite.</p>\n     *\n     * @return the inverse tangent of this complex number\n     * @since 1.2\n     */\n    public Complex atan() {\n        if (isNaN) {\n            return NaN;\n        }\n\n        return this.add(I).divide(I.subtract(this)).log()\n                .multiply(I.divide(createComplex(2.0, 0.0)));\n    }\n\n    public Complex cos() {\n        if (isNaN) {\n            return NaN;\n        }\n\n        return createComplex(FastMath.cos(real) * FastMath.cosh(imaginary),\n                             -FastMath.sin(real) * FastMath.sinh(imaginary));\n    }\n\n    public Complex cosh() {\n        if (isNaN) {\n            return NaN;\n        }\n\n        return createComplex(FastMath.cosh(real) * FastMath.cos(imaginary),\n                             FastMath.sinh(real) * FastMath.sin(imaginary));\n    }\n\n    public Complex exp() {\n        if (isNaN) {\n            return NaN;\n        }\n\n        double expReal = FastMath.exp(real);\n        return createComplex(expReal *  FastMath.cos(imaginary),\n                             expReal * FastMath.sin(imaginary));\n    }\n\n    public Complex log() {\n        if (isNaN) {\n            return NaN;\n        }\n\n        return createComplex(FastMath.log(abs()),\n                             FastMath.atan2(imaginary, real));\n    }\n\n    public Complex pow(Complex x)\n        throws NullArgumentException {\n        MathUtils.checkNotNull(x);\n        return this.log().multiply(x).exp();\n    }\n\n    /**\n     * Returns of value of this complex number raised to the power of {@code x}.\n     *\n     * @param  x exponent to which this {@code Complex} is to be raised.\n     * @return <code>this<sup>x</sup></code>.\n     * @see #pow(Complex)\n     */\n     public Complex pow(double x) {\n        return this.log().multiply(x).exp();\n    }\n\n    public Complex sin() {\n        if (isNaN) {\n            return NaN;\n        }\n\n        return createComplex(FastMath.sin(real) * FastMath.cosh(imaginary),\n                             FastMath.cos(real) * FastMath.sinh(imaginary));\n    }\n\n    public Complex sinh() {\n        if (isNaN) {\n            return NaN;\n        }\n\n        return createComplex(FastMath.sinh(real) * FastMath.cos(imaginary),\n            FastMath.cosh(real) * FastMath.sin(imaginary));\n    }\n\n    public Complex sqrt() {\n        if (isNaN) {\n            return NaN;\n        }\n\n        if (real == 0.0 && imaginary == 0.0) {\n            return createComplex(0.0, 0.0);\n        }\n\n        double t = FastMath.sqrt((FastMath.abs(real) + abs()) / 2.0);\n        if (real >= 0.0) {\n            return createComplex(t, imaginary / (2.0 * t));\n        } else {\n            return createComplex(FastMath.abs(imaginary) / (2.0 * t),\n                                 FastMath.copySign(1d, imaginary) * t);\n        }\n    }\n\n    public Complex sqrt1z() {\n        return createComplex(1.0, 0.0).subtract(this.multiply(this)).sqrt();\n    }\n\n    public Complex tan() {\n        if (isNaN || Double.isInfinite(real)) {\n            return NaN;\n        }\n        if (imaginary > 20.0) {\n            return createComplex(0.0, 1.0);\n        }\n        if (imaginary < -20.0) {\n            return createComplex(0.0, -1.0);\n        }\n\n        double real2 = 2.0 * real;\n        double imaginary2 = 2.0 * imaginary;\n        double d = FastMath.cos(real2) + FastMath.cosh(imaginary2);\n\n        return createComplex(FastMath.sin(real2) / d,\n                             FastMath.sinh(imaginary2) / d);\n    }\n\n    public Complex tanh() {\n        if (isNaN || Double.isInfinite(imaginary)) {\n            return NaN;\n        }\n        if (real > 20.0) {\n            return createComplex(1.0, 0.0);\n        }\n        if (real < -20.0) {\n            return createComplex(-1.0, 0.0);\n        }\n        double real2 = 2.0 * real;\n        double imaginary2 = 2.0 * imaginary;\n        double d = FastMath.cosh(real2) + FastMath.cos(imaginary2);\n\n        return createComplex(FastMath.sinh(real2) / d,\n                             FastMath.sin(imaginary2) / d);\n    }\n\n    \n    public double getArgument() {\n        return FastMath.atan2(getImaginary(), getReal());\n    }\n\n    public List<Complex> nthRoot(int n) throws NotPositiveException {\n\n        if (n <= 0) {\n            throw new NotPositiveException(LocalizedFormats.CANNOT_COMPUTE_NTH_ROOT_FOR_NEGATIVE_N,\n                                           n);\n        }\n\n        final List<Complex> result = new ArrayList<Complex>();\n\n        if (isNaN) {\n            result.add(NaN);\n            return result;\n        }\n        if (isInfinite()) {\n            result.add(INF);\n            return result;\n        }\n\n        // nth root of abs -- faster / more accurate to use a solver here?\n        final double nthRootOfAbs = FastMath.pow(abs(), 1.0 / n);\n\n        // Compute nth roots of complex number with k = 0, 1, ... n-1\n        final double nthPhi = getArgument() / n;\n        final double slice = 2 * FastMath.PI / n;\n        double innerPart = nthPhi;\n        for (int k = 0; k < n ; k++) {\n            // inner part\n            final double realPart = nthRootOfAbs *  FastMath.cos(innerPart);\n            final double imaginaryPart = nthRootOfAbs *  FastMath.sin(innerPart);\n            result.add(createComplex(realPart, imaginaryPart));\n            innerPart += slice;\n        }\n\n        return result;\n    }\n\n    /**\n     * Create a complex number given the real and imaginary parts.\n     *\n     * @param realPart Real part.\n     * @param imaginaryPart Imaginary part.\n     * @return a new complex number instance.\n     * @since 1.2\n     * @see #valueOf(double, double)\n     */\n    protected Complex createComplex(double realPart,\n                                    double imaginaryPart) {\n        return new Complex(realPart, imaginaryPart);\n    }\n\n    /**\n     * Create a complex number given the real and imaginary parts.\n     *\n     * @param realPart Real part.\n     * @param imaginaryPart Imaginary part.\n     * @return a Complex instance.\n     */\n    public static Complex valueOf(double realPart,\n                                  double imaginaryPart) {\n        if (Double.isNaN(realPart) ||\n            Double.isNaN(imaginaryPart)) {\n            return NaN;\n        }\n        return new Complex(realPart, imaginaryPart);\n    }\n\n    /**\n     * Create a complex number given only the real part.\n     *\n     * @param realPart Real part.\n     * @return a Complex instance.\n     */\n    public static Complex valueOf(double realPart) {\n        if (Double.isNaN(realPart)) {\n            return NaN;\n        }\n        return new Complex(realPart);\n    }\n\n    protected final Object readResolve() {\n        return createComplex(real, imaginary);\n    }\n\n    /** {@inheritDoc} */\n    public ComplexField getField() {\n        return ComplexField.getInstance();\n    }\n\n    /** {@inheritDoc} */\n    @Override\n    public String toString() {\n        return \"(\" + real + \", \" + imaginary + \")\";\n    }\n\n}",
+        "tokensGeneralGrammar": [
+            "null",
+            "true",
+            "false",
+            ",",
+            ".",
+            ":",
+            ";",
+            "?",
+            "jdVar",
+            "stream",
+            "Arrays",
+            "allMatch",
+            "noneMatch",
+            "anyMatch",
+            "~",
+            ">>",
+            "<<",
+            ">>>",
+            "|",
+            "&",
+            "^",
+            "+",
+            "-",
+            "/",
+            "*",
+            "%",
+            "&&",
+            "||",
+            ">=",
+            "<=",
+            ">",
+            "<",
+            "==",
+            "!=",
+            "instanceof",
+            "class",
+            "methodResultID",
+            "this"
+        ],
+        "tokensGeneralValuesGlobalDictionary": [
+            [
+                "0",
+                "int"
+            ],
+            [
+                "1",
+                "int"
+            ],
+            [
+                "2",
+                "int"
+            ],
+            [
+                "100.0",
+                "double"
+            ]
+        ],
+        "tokensProjectClasses": [
+            [
+                "RealFieldElement",
+                "org.apache.commons.math3"
+            ],
+            [
+                "Primes",
+                "org.apache.commons.math3.primes"
+            ],
+            [
+                "DifferentiableUnivariateFunction",
+                "org.apache.commons.math3.analysis"
+            ],
+            [
+                "UnivariateFunction",
+                "org.apache.commons.math3.analysis"
+            ],
+            [
+                "TrivariateFunction",
+                "org.apache.commons.math3.analysis"
+            ],
+            [
+                "MultivariateMatrixFunction",
+                "org.apache.commons.math3.analysis"
+            ],
+            [
+                "ParametricUnivariateFunction",
+                "org.apache.commons.math3.analysis"
+            ],
+            [
+                "UnivariateDifferentiableVectorFunction",
+                "org.apache.commons.math3.analysis.differentiation"
+            ],
+            [
+                "UnivariateDifferentiableMatrixFunction",
+                "org.apache.commons.math3.analysis.differentiation"
+            ],
+            [
+                "DSCompiler",
+                "org.apache.commons.math3.analysis.differentiation"
+            ],
+            [
+                "SparseGradient",
+                "org.apache.commons.math3.analysis.differentiation"
+            ],
+            [
+                "UnivariateFunctionDifferentiator",
+                "org.apache.commons.math3.analysis.differentiation"
+            ],
+            [
+                "UnivariateDifferentiableFunction",
+                "org.apache.commons.math3.analysis.differentiation"
+            ],
+            [
+                "MultivariateVectorFunction",
+                "org.apache.commons.math3.analysis"
+            ],
+            [
+                "DifferentiableMultivariateVectorFunction",
+                "org.apache.commons.math3.analysis"
+            ],
+            [
+                "PolynomialFunctionNewtonForm",
+                "org.apache.commons.math3.analysis.polynomials"
+            ],
+            [
+                "PolynomialFunctionLagrangeForm",
+                "org.apache.commons.math3.analysis.polynomials"
+            ],
+            [
+                "PolynomialSplineFunction",
+                "org.apache.commons.math3.analysis.polynomials"
+            ],
+            [
+                "PolynomialsUtils",
+                "org.apache.commons.math3.analysis.polynomials"
+            ],
+            [
+                "PolynomialFunction",
+                "org.apache.commons.math3.analysis.polynomials"
+            ],
+            [
+                "Complex",
+                "org.apache.commons.math3.complex"
+            ],
+            [
+                "Field",
+                "org.apache.commons.math3"
+            ],
+            [
+                "FieldElement",
+                "org.apache.commons.math3"
+            ],
+            [
+                "DerivativeStructure",
+                "org.apache.commons.math3.analysis.differentiation"
+            ]
+        ],
+        "tokensProjectClassesNonPrivateStaticNonVoidMethods": [],
+        "tokensProjectClassesNonPrivateStaticAttributes": [
+            [
+                "I",
+                "org.apache.commons.math3.complex",
+                "Complex",
+                "public static final Complex I = new Complex(0.0, 1.0)"
+            ],
+            [
+                "NaN",
+                "org.apache.commons.math3.complex",
+                "Complex",
+                "public static final Complex NaN = new Complex(Double.NaN, Double.NaN)"
+            ],
+            [
+                "INF",
+                "org.apache.commons.math3.complex",
+                "Complex",
+                "public static final Complex INF = new Complex(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY)"
+            ],
+            [
+                "ONE",
+                "org.apache.commons.math3.complex",
+                "Complex",
+                "public static final Complex ONE = new Complex(1.0, 0.0)"
+            ],
+            [
+                "ZERO",
+                "org.apache.commons.math3.complex",
+                "Complex",
+                "public static final Complex ZERO = new Complex(0.0, 0.0)"
+            ]
+        ],
+        "tokensMethodJavadocValues": [],
+        "tokensMethodArguments": [
+            [
+                "n",
+                "",
+                "int"
+            ]
+        ],
+        "tokensMethodVariablesNonPrivateNonStaticNonVoidMethods": [
+            [
+                "isInfinite",
+                "org.apache.commons.math3.complex",
+                "Complex",
+                "public boolean isInfinite()"
+            ],
+            [
+                "isNaN",
+                "org.apache.commons.math3.complex",
+                "Complex",
+                "public boolean isNaN()"
+            ],
+            [
+                "stream",
+                "java.util",
+                "Collection",
+                "public Stream<E>  stream()"
+            ],
+            [
+                "equals",
+                "java.lang",
+                "Object",
+                "public boolean equals(Object obj)"
+            ],
+            [
+                "toString",
+                "java.lang",
+                "Object",
+                "public String toString()"
+            ],
+            [
+                "getClass",
+                "java.lang",
+                "Object",
+                "public final native Class<?> getClass()"
+            ],
+            [
+                "hashCode",
+                "java.lang",
+                "Object",
+                "public native int hashCode()"
+            ],
+            [
+                "hash",
+                "org.apache.commons.collections4",
+                "Equator",
+                "int hash(T o)"
+            ]
+        ],
+        "tokensMethodVariablesNonPrivateNonStaticAttributes": [
+            [
+                "isNaN",
+                "org.apache.commons.math3.complex",
+                "Complex",
+                "protected final transient boolean isNaN"
+            ]
+        ],
+        "tokensOracleVariablesNonPrivateNonStaticNonVoidMethods": [
+            [
+                "isInfinite",
+                "org.apache.commons.math3.complex",
+                "Complex",
+                "public boolean isInfinite()"
+            ]
+        ],
+        "tokensOracleVariablesNonPrivateNonStaticAttributes": []
+    },
+    {
+        "id": 6,
+        "oracle": "true ? Arrays.stream(coefficients).noneMatch(jdVar -> jdVar == 1) && methodResultID != null : true;",
+        "oracleType": "NORMAL_POST",
+        "projectName": "commons-math3-3.6.1",
+        "packageName": "org.apache.commons.math3.analysis.polynomials",
+        "className": "PolynomialFunction",
+        "javadocTag": "@return the coefficients of the derivative or {@code null} if coefficients has length 1.",
+        "methodJavadoc": "/**\n     * Returns the coefficients of the derivative of the polynomial with the given coefficients.\n     *\n     * @param coefficients Coefficients of the polynomial to differentiate.\n     * @return the coefficients of the derivative or {@code null} if coefficients has length 1.\n     * @throws NoDataException if {@code coefficients} is empty.\n     * @throws NullArgumentException if {@code coefficients} is {@code null}.\n     */",
+        "methodSourceCode": "protected static double[] differentiate(double[] coefficients)\n        throws NullArgumentException, NoDataException {\n        MathUtils.checkNotNull(coefficients);\n        int n = coefficients.length;\n        if (n == 0) {\n            throw new NoDataException(LocalizedFormats.EMPTY_POLYNOMIALS_COEFFICIENTS_ARRAY);\n        }\n        if (n == 1) {\n            return new double[]{0};\n        }\n        double[] result = new double[n - 1];\n        for (int i = n - 1; i > 0; i--) {\n            result[i - 1] = i * coefficients[i];\n        }\n        return result;\n    }",
+        "classJavadoc": "/**\n * Immutable representation of a real polynomial function with real coefficients.\n * <p>\n * <a href=\"http://mathworld.wolfram.com/HornersMethod.html\">Horner's Method</a>\n * is used to evaluate the function.</p>\n *\n */",
+        "classSourceCode": "/*\n * Licensed to the Apache Software Foundation (ASF) under one or more\n * contributor license agreements.  See the NOTICE file distributed with\n * this work for additional information regarding copyright ownership.\n * The ASF licenses this file to You under the Apache License, Version 2.0\n * (the \"License\"); you may not use this file except in compliance with\n * the License.  You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\npackage org.apache.commons.math3.analysis.polynomials;\n\nimport java.io.Serializable;\nimport java.util.Arrays;\n\nimport org.apache.commons.math3.analysis.DifferentiableUnivariateFunction;\nimport org.apache.commons.math3.analysis.ParametricUnivariateFunction;\nimport org.apache.commons.math3.analysis.UnivariateFunction;\nimport org.apache.commons.math3.analysis.differentiation.DerivativeStructure;\nimport org.apache.commons.math3.analysis.differentiation.UnivariateDifferentiableFunction;\nimport org.apache.commons.math3.exception.NoDataException;\nimport org.apache.commons.math3.exception.NullArgumentException;\nimport org.apache.commons.math3.exception.util.LocalizedFormats;\nimport org.apache.commons.math3.util.FastMath;\nimport org.apache.commons.math3.util.MathUtils;\n\n/**\n * Immutable representation of a real polynomial function with real coefficients.\n * <p>\n * <a href=\"http://mathworld.wolfram.com/HornersMethod.html\">Horner's Method</a>\n * is used to evaluate the function.</p>\n *\n */\npublic class PolynomialFunction implements UnivariateDifferentiableFunction, DifferentiableUnivariateFunction, Serializable {\n    /**\n     * Serialization identifier\n     */\n    private static final long serialVersionUID = -7726511984200295583L;\n    /**\n     * The coefficients of the polynomial, ordered by degree -- i.e.,\n     * coefficients[0] is the constant term and coefficients[n] is the\n     * coefficient of x^n where n is the degree of the polynomial.\n     */\n    private final double coefficients[];\n\n    /**\n     * Construct a polynomial with the given coefficients.  The first element\n     * of the coefficients array is the constant term.  Higher degree\n     * coefficients follow in sequence.  The degree of the resulting polynomial\n     * is the index of the last non-null element of the array, or 0 if all elements\n     * are null.\n     * <p>\n     * The constructor makes a copy of the input array and assigns the copy to\n     * the coefficients property.</p>\n     *\n     * @param c Polynomial coefficients.\n     * @throws NullArgumentException if {@code c} is {@code null}.\n     * @throws NoDataException if {@code c} is empty.\n     */\n    public PolynomialFunction(double c[])\n        throws NullArgumentException, NoDataException {\n        super();\n        MathUtils.checkNotNull(c);\n        int n = c.length;\n        if (n == 0) {\n            throw new NoDataException(LocalizedFormats.EMPTY_POLYNOMIALS_COEFFICIENTS_ARRAY);\n        }\n        while ((n > 1) && (c[n - 1] == 0)) {\n            --n;\n        }\n        this.coefficients = new double[n];\n        System.arraycopy(c, 0, this.coefficients, 0, n);\n    }\n\n    /**\n     * Compute the value of the function for the given argument.\n     * <p>\n     *  The value returned is </p><p>\n     *  {@code coefficients[n] * x^n + ... + coefficients[1] * x  + coefficients[0]}\n     * </p>\n     *\n     * @param x Argument for which the function value should be computed.\n     * @return the value of the polynomial at the given point.\n     * @see UnivariateFunction#value(double)\n     */\n    public double value(double x) {\n       return evaluate(coefficients, x);\n    }\n\n    /**\n     * Returns the degree of the polynomial.\n     *\n     * @return the degree of the polynomial.\n     */\n    public int degree() {\n        return coefficients.length - 1;\n    }\n\n    /**\n     * Returns a copy of the coefficients array.\n     * <p>\n     * Changes made to the returned copy will not affect the coefficients of\n     * the polynomial.</p>\n     *\n     * @return a fresh copy of the coefficients array.\n     */\n    public double[] getCoefficients() {\n        return coefficients.clone();\n    }\n\n    /**\n     * Uses Horner's Method to evaluate the polynomial with the given coefficients at\n     * the argument.\n     *\n     * @param coefficients Coefficients of the polynomial to evaluate.\n     * @param argument Input value.\n     * @return the value of the polynomial.\n     * @throws NoDataException if {@code coefficients} is empty.\n     * @throws NullArgumentException if {@code coefficients} is {@code null}.\n     */\n    protected static double evaluate(double[] coefficients, double argument)\n        throws NullArgumentException, NoDataException {\n        MathUtils.checkNotNull(coefficients);\n        int n = coefficients.length;\n        if (n == 0) {\n            throw new NoDataException(LocalizedFormats.EMPTY_POLYNOMIALS_COEFFICIENTS_ARRAY);\n        }\n        double result = coefficients[n - 1];\n        for (int j = n - 2; j >= 0; j--) {\n            result = argument * result + coefficients[j];\n        }\n        return result;\n    }\n\n\n    /** {@inheritDoc}\n     * @since 3.1\n     * @throws NoDataException if {@code coefficients} is empty.\n     * @throws NullArgumentException if {@code coefficients} is {@code null}.\n     */\n    public DerivativeStructure value(final DerivativeStructure t)\n        throws NullArgumentException, NoDataException {\n        MathUtils.checkNotNull(coefficients);\n        int n = coefficients.length;\n        if (n == 0) {\n            throw new NoDataException(LocalizedFormats.EMPTY_POLYNOMIALS_COEFFICIENTS_ARRAY);\n        }\n        DerivativeStructure result =\n                new DerivativeStructure(t.getFreeParameters(), t.getOrder(), coefficients[n - 1]);\n        for (int j = n - 2; j >= 0; j--) {\n            result = result.multiply(t).add(coefficients[j]);\n        }\n        return result;\n    }\n\n    /**\n     * Add a polynomial to the instance.\n     *\n     * @param p Polynomial to add.\n     * @return a new polynomial which is the sum of the instance and {@code p}.\n     */\n    public PolynomialFunction add(final PolynomialFunction p) {\n        // identify the lowest degree polynomial\n        final int lowLength  = FastMath.min(coefficients.length, p.coefficients.length);\n        final int highLength = FastMath.max(coefficients.length, p.coefficients.length);\n\n        // build the coefficients array\n        double[] newCoefficients = new double[highLength];\n        for (int i = 0; i < lowLength; ++i) {\n            newCoefficients[i] = coefficients[i] + p.coefficients[i];\n        }\n        System.arraycopy((coefficients.length < p.coefficients.length) ?\n                         p.coefficients : coefficients,\n                         lowLength,\n                         newCoefficients, lowLength,\n                         highLength - lowLength);\n\n        return new PolynomialFunction(newCoefficients);\n    }\n\n    /**\n     * Subtract a polynomial from the instance.\n     *\n     * @param p Polynomial to subtract.\n     * @return a new polynomial which is the instance minus {@code p}.\n     */\n    public PolynomialFunction subtract(final PolynomialFunction p) {\n        // identify the lowest degree polynomial\n        int lowLength  = FastMath.min(coefficients.length, p.coefficients.length);\n        int highLength = FastMath.max(coefficients.length, p.coefficients.length);\n\n        // build the coefficients array\n        double[] newCoefficients = new double[highLength];\n        for (int i = 0; i < lowLength; ++i) {\n            newCoefficients[i] = coefficients[i] - p.coefficients[i];\n        }\n        if (coefficients.length < p.coefficients.length) {\n            for (int i = lowLength; i < highLength; ++i) {\n                newCoefficients[i] = -p.coefficients[i];\n            }\n        } else {\n            System.arraycopy(coefficients, lowLength, newCoefficients, lowLength,\n                             highLength - lowLength);\n        }\n\n        return new PolynomialFunction(newCoefficients);\n    }\n\n    /**\n     * Negate the instance.\n     *\n     * @return a new polynomial with all coefficients negated\n     */\n    public PolynomialFunction negate() {\n        double[] newCoefficients = new double[coefficients.length];\n        for (int i = 0; i < coefficients.length; ++i) {\n            newCoefficients[i] = -coefficients[i];\n        }\n        return new PolynomialFunction(newCoefficients);\n    }\n\n    /**\n     * Multiply the instance by a polynomial.\n     *\n     * @param p Polynomial to multiply by.\n     * @return a new polynomial equal to this times {@code p}\n     */\n    public PolynomialFunction multiply(final PolynomialFunction p) {\n        double[] newCoefficients = new double[coefficients.length + p.coefficients.length - 1];\n\n        for (int i = 0; i < newCoefficients.length; ++i) {\n            newCoefficients[i] = 0.0;\n            for (int j = FastMath.max(0, i + 1 - p.coefficients.length);\n                 j < FastMath.min(coefficients.length, i + 1);\n                 ++j) {\n                newCoefficients[i] += coefficients[j] * p.coefficients[i-j];\n            }\n        }\n\n        return new PolynomialFunction(newCoefficients);\n    }\n\n    /**\n     * Returns the coefficients of the derivative of the polynomial with the given coefficients.\n     *\n     * @param coefficients Coefficients of the polynomial to differentiate.\n     * @return the coefficients of the derivative or {@code null} if coefficients has length 1.\n     * @throws NoDataException if {@code coefficients} is empty.\n     * @throws NullArgumentException if {@code coefficients} is {@code null}.\n     */\n    protected static double[] differentiate(double[] coefficients)\n        throws NullArgumentException, NoDataException {\n        MathUtils.checkNotNull(coefficients);\n        int n = coefficients.length;\n        if (n == 0) {\n            throw new NoDataException(LocalizedFormats.EMPTY_POLYNOMIALS_COEFFICIENTS_ARRAY);\n        }\n        if (n == 1) {\n            return new double[]{0};\n        }\n        double[] result = new double[n - 1];\n        for (int i = n - 1; i > 0; i--) {\n            result[i - 1] = i * coefficients[i];\n        }\n        return result;\n    }\n\n    /**\n     * Returns the derivative as a {@link PolynomialFunction}.\n     *\n     * @return the derivative polynomial.\n     */\n    public PolynomialFunction polynomialDerivative() {\n        return new PolynomialFunction(differentiate(coefficients));\n    }\n\n    /**\n     * Returns the derivative as a {@link UnivariateFunction}.\n     *\n     * @return the derivative function.\n     */\n    public UnivariateFunction derivative() {\n        return polynomialDerivative();\n    }\n\n    /**\n     * Returns a string representation of the polynomial.\n     *\n     * <p>The representation is user oriented. Terms are displayed lowest\n     * degrees first. The multiplications signs, coefficients equals to\n     * one and null terms are not displayed (except if the polynomial is 0,\n     * in which case the 0 constant term is displayed). Addition of terms\n     * with negative coefficients are replaced by subtraction of terms\n     * with positive coefficients except for the first displayed term\n     * (i.e. we display <code>-3</code> for a constant negative polynomial,\n     * but <code>1 - 3 x + x^2</code> if the negative coefficient is not\n     * the first one displayed).</p>\n     *\n     * @return a string representation of the polynomial.\n     */\n    @Override\n    public String toString() {\n        StringBuilder s = new StringBuilder();\n        if (coefficients[0] == 0.0) {\n            if (coefficients.length == 1) {\n                return \"0\";\n            }\n        } else {\n            s.append(toString(coefficients[0]));\n        }\n\n        for (int i = 1; i < coefficients.length; ++i) {\n            if (coefficients[i] != 0) {\n                if (s.length() > 0) {\n                    if (coefficients[i] < 0) {\n                        s.append(\" - \");\n                    } else {\n                        s.append(\" + \");\n                    }\n                } else {\n                    if (coefficients[i] < 0) {\n                        s.append(\"-\");\n                    }\n                }\n\n                double absAi = FastMath.abs(coefficients[i]);\n                if ((absAi - 1) != 0) {\n                    s.append(toString(absAi));\n                    s.append(' ');\n                }\n\n                s.append(\"x\");\n                if (i > 1) {\n                    s.append('^');\n                    s.append(Integer.toString(i));\n                }\n            }\n        }\n\n        return s.toString();\n    }\n\n    /**\n     * Creates a string representing a coefficient, removing \".0\" endings.\n     *\n     * @param coeff Coefficient.\n     * @return a string representation of {@code coeff}.\n     */\n    private static String toString(double coeff) {\n        final String c = Double.toString(coeff);\n        if (c.endsWith(\".0\")) {\n            return c.substring(0, c.length() - 2);\n        } else {\n            return c;\n        }\n    }\n\n    /** {@inheritDoc} */\n    @Override\n    public int hashCode() {\n        final int prime = 31;\n        int result = 1;\n        result = prime * result + Arrays.hashCode(coefficients);\n        return result;\n    }\n\n    /** {@inheritDoc} */\n    @Override\n    public boolean equals(Object obj) {\n        if (this == obj) {\n            return true;\n        }\n        if (!(obj instanceof PolynomialFunction)) {\n            return false;\n        }\n        PolynomialFunction other = (PolynomialFunction) obj;\n        if (!Arrays.equals(coefficients, other.coefficients)) {\n            return false;\n        }\n        return true;\n    }\n\n    /**\n     * Dedicated parametric polynomial class.\n     *\n     * @since 3.0\n     */\n    public static class Parametric implements ParametricUnivariateFunction {\n        /** {@inheritDoc} */\n        public double[] gradient(double x, double ... parameters) {\n            final double[] gradient = new double[parameters.length];\n            double xn = 1.0;\n            for (int i = 0; i < parameters.length; ++i) {\n                gradient[i] = xn;\n                xn *= x;\n            }\n            return gradient;\n        }\n\n        /** {@inheritDoc} */\n        public double value(final double x, final double ... parameters)\n            throws NoDataException {\n            return PolynomialFunction.evaluate(parameters, x);\n        }\n    }\n}",
+        "tokensGeneralGrammar": [
+            "null",
+            "true",
+            "false",
+            ",",
+            ".",
+            ":",
+            ";",
+            "?",
+            "jdVar",
+            "stream",
+            "Arrays",
+            "allMatch",
+            "noneMatch",
+            "anyMatch",
+            "~",
+            ">>",
+            "<<",
+            ">>>",
+            "|",
+            "&",
+            "^",
+            "+",
+            "-",
+            "/",
+            "*",
+            "%",
+            "&&",
+            "||",
+            ">=",
+            "<=",
+            ">",
+            "<",
+            "==",
+            "!=",
+            "instanceof",
+            "class",
+            "methodResultID",
+            "this"
+        ],
+        "tokensGeneralValuesGlobalDictionary": [
+            [
+                "0",
+                "int"
+            ],
+            [
+                "1",
+                "int"
+            ],
+            [
+                "2",
+                "int"
+            ],
+            [
+                "100.0",
+                "double"
+            ]
+        ],
+        "tokensProjectClasses": [
+            [
+                "RealFieldElement",
+                "org.apache.commons.math3"
+            ],
+            [
+                "Primes",
+                "org.apache.commons.math3.primes"
+            ],
+            [
+                "DifferentiableUnivariateFunction",
+                "org.apache.commons.math3.analysis"
+            ],
+            [
+                "UnivariateFunction",
+                "org.apache.commons.math3.analysis"
+            ],
+            [
+                "TrivariateFunction",
+                "org.apache.commons.math3.analysis"
+            ],
+            [
+                "MultivariateMatrixFunction",
+                "org.apache.commons.math3.analysis"
+            ],
+            [
+                "ParametricUnivariateFunction",
+                "org.apache.commons.math3.analysis"
+            ],
+            [
+                "UnivariateDifferentiableVectorFunction",
+                "org.apache.commons.math3.analysis.differentiation"
+            ],
+            [
+                "UnivariateDifferentiableMatrixFunction",
+                "org.apache.commons.math3.analysis.differentiation"
+            ],
+            [
+                "DSCompiler",
+                "org.apache.commons.math3.analysis.differentiation"
+            ],
+            [
+                "SparseGradient",
+                "org.apache.commons.math3.analysis.differentiation"
+            ],
+            [
+                "UnivariateFunctionDifferentiator",
+                "org.apache.commons.math3.analysis.differentiation"
+            ],
+            [
+                "UnivariateDifferentiableFunction",
+                "org.apache.commons.math3.analysis.differentiation"
+            ],
+            [
+                "MultivariateVectorFunction",
+                "org.apache.commons.math3.analysis"
+            ],
+            [
+                "DifferentiableMultivariateVectorFunction",
+                "org.apache.commons.math3.analysis"
+            ],
+            [
+                "PolynomialFunctionNewtonForm",
+                "org.apache.commons.math3.analysis.polynomials"
+            ],
+            [
+                "PolynomialFunctionLagrangeForm",
+                "org.apache.commons.math3.analysis.polynomials"
+            ],
+            [
+                "PolynomialSplineFunction",
+                "org.apache.commons.math3.analysis.polynomials"
+            ],
+            [
+                "PolynomialsUtils",
+                "org.apache.commons.math3.analysis.polynomials"
+            ],
+            [
+                "PolynomialFunction",
+                "org.apache.commons.math3.analysis.polynomials"
+            ],
+            [
+                "Complex",
+                "org.apache.commons.math3.complex"
+            ],
+            [
+                "Field",
+                "org.apache.commons.math3"
+            ],
+            [
+                "FieldElement",
+                "org.apache.commons.math3"
+            ],
+            [
+                "DerivativeStructure",
+                "org.apache.commons.math3.analysis.differentiation"
+            ]
+        ],
+        "tokensProjectClassesNonPrivateStaticNonVoidMethods": [
+            [
+                "collectionBag",
+                "org.apache.commons.collections4.bag",
+                "CollectionBag",
+                "public static <E> Bag<E> collectionBag(final Bag<E> bag)"
+            ],
+            [
+                "indexOf",
+                "org.apache.commons.collections4",
+                "ArrayUtils",
+                "static int indexOf(final Object[] array, final Object objectToFind, int startIndex)"
+            ]
+        ],
+        "tokensProjectClassesNonPrivateStaticAttributes": [
+            [
+                "INSTANCE",
+                "org.apache.commons.collections4.properties",
+                "PropertiesFactory",
+                "public static final PropertiesFactory INSTANCE = new PropertiesFactory()"
+            ],
+            [
+                "EMPTY_BAG",
+                "org.apache.commons.collections4",
+                "BagUtils",
+                "public static final Bag EMPTY_BAG = UnmodifiableBag.unmodifiableBag(new HashBag<>())"
+            ]
+        ],
+        "tokensMethodJavadocValues": [
+            [
+                "1",
+                "int"
+            ]
+        ],
+        "tokensMethodArguments": [
+            [
+                "coefficients",
+                "",
+                "double[]"
+            ]
+        ],
+        "tokensMethodVariablesNonPrivateNonStaticNonVoidMethods": [
+            [
+                "getFreeParameters",
+                "org.apache.commons.math3.analysis.differentiation",
+                "DerivativeStructure",
+                "public int getFreeParameters()"
+            ],
+            [
+                "value",
+                "org.apache.commons.math3.analysis.polynomials",
+                "PolynomialFunction",
+                "public double value(double x)"
+            ],
+            [
+                "getCoefficients",
+                "org.apache.commons.math3.analysis.polynomials",
+                "PolynomialFunction",
+                "public double[] getCoefficients()"
+            ]
+        ],
+        "tokensMethodVariablesNonPrivateNonStaticAttributes": [],
+        "tokensOracleVariablesNonPrivateNonStaticNonVoidMethods": [],
+        "tokensOracleVariablesNonPrivateNonStaticAttributes": []
+    }
+]
