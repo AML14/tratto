@@ -7,6 +7,7 @@ import star.tratto.dataset.oracles.OracleDatapoint;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.oraclegrammar.trattoGrammar.CanEvaluateToPrimitive;
 import star.tratto.oraclegrammar.trattoGrammar.MethodCall;
+import star.tratto.util.JavaTypes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +17,7 @@ import static star.tratto.oraclegrammar.custom.Parser.findLastMethodCall;
 import static star.tratto.oraclegrammar.custom.Parser.getNArgumentsSoFar;
 import static star.tratto.oraclegrammar.custom.Splitter.split;
 import static star.tratto.token.restrictions.RestrictionsUtils.getApplicableMethodsOfPrecedingExpr;
-import static star.tratto.util.javaparser.JavaParserUtils.*;
+import static star.tratto.util.JavaParserUtils.*;
 import static star.tratto.util.StringUtils.compactExpression;
 
 /**
@@ -27,6 +28,8 @@ import static star.tratto.util.StringUtils.compactExpression;
  * or if it's a method argument).
  * <br>
  * The <code>restrictedTokens</code> attribute varies everytime this ContextRestriction is enabled.
+ * <br>
+ * TODO: Restrict numeric values according to the type (e.g., 128 cannot be assigned to a byte).
  */
 public class LiteralValuesRestriction extends MultiTokenRestriction {
 
@@ -39,7 +42,7 @@ public class LiteralValuesRestriction extends MultiTokenRestriction {
         private static final String STRING = "\"someString\"";
         private static final Pair<String, String> NULL_TYPE = Pair.with("", "null");
         private static final Pair<String, String> BOOLEAN_TYPE = Pair.with("", "boolean");
-        private static final Pair<String, String> INT_TYPE = Pair.with("", "int");
+        private static final Pair<String, String> INT_TYPE = Pair.with("", "byte"); // Byte to make it less restrictive
         private static final Pair<String, String> DOUBLE_TYPE = Pair.with("", "float"); // Float to make it less restrictive
         private static final Pair<String, String> STRING_TYPE = Pair.with("java.lang", "String");
         private final List<String> possiblyRestrictedTokens = List.of(NULL, TRUE, FALSE, INT, DOUBLE, STRING);
@@ -76,13 +79,13 @@ public class LiteralValuesRestriction extends MultiTokenRestriction {
                 matchingMethods.forEach(m -> {
                     if (m.getNoParams() > nextArgIndex) {
                         Pair<String, String> nextArgType = getTypeFromResolvedType(m.getParamType(nextArgIndex));
-                        updateAllowedTokens(allowedTokens, nextArgType, true);
+                        updateAllowedTokens(allowedTokens, nextArgType, true, oracleDatapoint);
                     }
                 });
             } else if (nextLegalTokens.contains(INT)) { // We are within comparison/operation
                 CanEvaluateToPrimitive leftElementOfComparison = parser.findLastCanEvalToPrimInClauseWithVars(String.join(" ", partialExpressionTokens));
                 Pair<String, String> leftType = getReturnTypeOfExpression(compactExpression(split(leftElementOfComparison)), oracleDatapoint);
-                updateAllowedTokens(allowedTokens, leftType, false);
+                updateAllowedTokens(allowedTokens, leftType, false, oracleDatapoint);
             } else {
                 return false; // This may happen if false is suggested but it's not a comparison (e.g., "(a==b)==false") or if true is suggested as a whole predicate
             }
@@ -97,21 +100,26 @@ public class LiteralValuesRestriction extends MultiTokenRestriction {
             return possiblyRestrictedTokens.stream().anyMatch(tokens::contains);
         }
 
-        private void updateAllowedTokens(List<String> allowedTokens, Pair<String, String> typeConstraint, boolean isMethodArg) {
-            if (!allowedTokens.contains(NULL) && isType1AssignableToType2(NULL_TYPE, typeConstraint)) {
+        private void updateAllowedTokens(List<String> allowedTokens, Pair<String, String> typeConstraint, boolean isMethodArg, OracleDatapoint oracleDatapoint) {
+            if (!allowedTokens.contains(NULL) && isType1AssignableToType2(NULL_TYPE, typeConstraint, oracleDatapoint)) {
                 allowedTokens.add(NULL);
             }
-            if (!allowedTokens.contains(TRUE) && isType1AssignableToType2(BOOLEAN_TYPE, typeConstraint)) {
+            if (!allowedTokens.contains(TRUE) && isType1AssignableToType2(BOOLEAN_TYPE, typeConstraint, oracleDatapoint)) {
                 allowedTokens.add(TRUE);
                 allowedTokens.add(FALSE);
             }
-            if (!allowedTokens.contains(INT) && isType1AssignableToType2(INT_TYPE, typeConstraint)) {
+            // --- Necessary preprocessing: If the typeConstraint is a numeric primitive wrapper, we must convert it to its primitive type
+            if (JavaTypes.PRIMITIVE_WRAPPERS.contains(typeConstraint) && JavaTypes.NUMBERS.contains(typeConstraint)) {
+                typeConstraint = JavaTypes.WRAPPERS_TO_PRIMITIVES.get(typeConstraint);
+            }
+            // ---
+            if (!allowedTokens.contains(INT) && isType1AssignableToType2(INT_TYPE, typeConstraint, oracleDatapoint)) {
                 allowedTokens.add(INT);
             }
-            if (!allowedTokens.contains(DOUBLE) && isType1AssignableToType2(DOUBLE_TYPE, typeConstraint)) {
+            if (!allowedTokens.contains(DOUBLE) && isType1AssignableToType2(DOUBLE_TYPE, typeConstraint, oracleDatapoint)) {
                 allowedTokens.add(DOUBLE);
             }
-            if (!allowedTokens.contains(STRING) && isType1AssignableToType2(STRING_TYPE, typeConstraint) && isMethodArg) {
+            if (!allowedTokens.contains(STRING) && isType1AssignableToType2(STRING_TYPE, typeConstraint, oracleDatapoint) && isMethodArg) {
                 allowedTokens.add(STRING); // Strings are only allowed as method arguments
             }
         }

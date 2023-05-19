@@ -6,6 +6,7 @@ import star.tratto.dataset.oracles.OracleDatapoint;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.oraclegrammar.trattoGrammar.ClassFieldWithPeriod;
 import star.tratto.token.restrictions.multi.LastMethodNameRestriction;
+import star.tratto.util.JavaTypes;
 
 import java.util.List;
 
@@ -55,7 +56,7 @@ public class NoPeriodRestriction extends SingleTokenRestriction {
         } else {
             String precedingExpr = compactExpression(precedingExprTokensWithPeriod.subList(0, precedingExprTokensWithPeriod.size() - 1));
             Pair<String, String> returnType = getReturnTypeOfExpression(precedingExpr, oracleDatapoint);
-            if (!returnType.getValue0().isEmpty() || returnType.getValue1().contains("[]")) { // Return type has package or type is an array
+            if (!JavaTypes.PRIMITIVES.contains(returnType) || returnType.getValue1().contains("[]")) { // Return type has package or type is an array
                 return false; // Expression preceding period does not evaluate to a primitive type
             }
         }

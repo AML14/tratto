@@ -52,19 +52,25 @@ def connect_to_device(device_type: Type[DeviceType] = DeviceType.GPU):
     device: torch.Device
         the Pytorch device to use to train and validate the model
     """
+    torch.cuda.empty_cache()
     if not device_type in [DeviceType.GPU, DeviceType.CPU]:
         raise Exception(f"Unrecognized device type: {device_type}")
     if device_type == DeviceType.GPU and torch.cuda.is_available():
+        print(f'    There are {torch.cuda.device_count()} GPU(s) available.')
         # Set the gpu as device to perform the training
-        device = torch.device("cuda:0")
-        print(f'There are {torch.cuda.device_count()} GPU(s) available.')
-        print(f'We will use the GPU: torch.cuda.get_device_name(0)')
+        device = torch.device("cuda:1")
+        print(f'    We will use the GPU: {torch.cuda.get_device_name(1)}')
     else:
         # Set the cpu as device to perform the training
         device = torch.device("cpu")
-        print('No GPU available, using the CPU instead.')
+        print('    No GPU available, using the CPU instead.')
     return device
 
+def check_cuda_device():
+    device_ids = list(range(device_count))
+    if len(device_ids) > 0:
+        os.environ["CUDA_VISIBLE_DEVICES"] = ",".join(str(i) for i in device_ids)
+    return device_ids
 
 def import_dataset(file_path: str, file_format: FileFormat):
     """
@@ -142,3 +148,22 @@ def export_file(file_path: str, content: Union[str, dict, Type[Element]], file_f
         with open(file_path, mode) as xml_out_file:
             xml_out_file.write(xml_str)
         return
+
+def ddp_setup(rank, world_size):
+    """
+        The method sets up a distributed data parallel instances to exploit multiple gpus
+
+        Parameters
+        ----------
+        rank: str
+            A unique identifier of each process
+        world_size: int
+            The total number of processes
+    """
+    os.environ['MASTER_ADDR'] = 'localhost'
+    os.environ['MASTER_PORT'] = '12355'
+    torch.distributed.init_process_group(backend="nccl", rank=rank, world_size=world_size)
+
+def cleanup():
+    # Destroy data distributed parallel instances
+    torch.distributed.destroy_process_group()

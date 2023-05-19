@@ -1,25 +1,26 @@
 package star.tratto;
 
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import star.tratto.dataset.oracles.OracleDatapoint;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-
-import static star.tratto.dataset.ExcelManager.getFirstSheet;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class TestUtilities {
 
     private static final Logger logger = LoggerFactory.getLogger(TestUtilities.class);
 
-    private static final String ORACLES_DATASET_PATH = "src/test/resources/oracles-dataset.xlsx";
+    private static final ObjectMapper objectMapper = new ObjectMapper();
+    public static final String ORACLES_DATASET_PATH = "src/test/resources/oracles-dataset/test-dataset.json";
 
     public static List<String> readOraclesFromExternalFiles() {
         // Read oracles from external files
@@ -37,18 +38,15 @@ public class TestUtilities {
     }
 
     public static List<OracleDatapoint> readOracleDatapointsFromOraclesDataset() {
-        List<OracleDatapoint> oracleDatapoints = new ArrayList<>();
-        Sheet oraclesDatasetSheet = getFirstSheet(ORACLES_DATASET_PATH);
-        for (Row oraclesDatasetRow : oraclesDatasetSheet) {
-            if (oraclesDatasetRow.getRowNum() == 0) { // Skip header row
-                continue;
-            }
-            oracleDatapoints.add(new OracleDatapoint(oraclesDatasetRow));
-        }
+        List<OracleDatapoint> oracleDatapoints;
         try {
-            oraclesDatasetSheet.getWorkbook().close();
+            oracleDatapoints = ((List<Map>)objectMapper.readValue(new File(ORACLES_DATASET_PATH), List.class))
+                    .stream()
+                    .map(OracleDatapoint::new)
+                    .collect(Collectors.toList());
         } catch (IOException e) {
-            logger.error("Error closing the oracles dataset file: {}" + e.getMessage());
+            logger.error("Error reading the oracles dataset file");
+            throw new RuntimeException(e);
         }
         return oracleDatapoints;
     }

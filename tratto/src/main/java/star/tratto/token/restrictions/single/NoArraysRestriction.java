@@ -1,12 +1,14 @@
 package star.tratto.token.restrictions.single;
 
+import com.github.javaparser.ast.body.MethodDeclaration;
 import org.javatuples.Triplet;
 import star.tratto.dataset.oracles.OracleDatapoint;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static star.tratto.util.javaparser.JavaParserUtils.getReturnTypeOfExpression;
+import static star.tratto.util.JavaParserUtils.getMethodDeclaration;
+import static star.tratto.util.JavaParserUtils.getReturnTypeOfExpression;
 
 /**
  * Forbid "Arrays" if nor methodResultID or some method argument is an array.
@@ -32,9 +34,11 @@ public class NoArraysRestriction extends SingleTokenRestriction {
             return false;
         }
 
-        String methodResultIDClass = getReturnTypeOfExpression("methodResultID", oracleDatapoint).getValue1();
+        MethodDeclaration methodDeclaration = getMethodDeclaration(oracleDatapoint.getMethodSourceCode());
+        boolean methodResultIDIsArray = methodDeclaration != null && !methodDeclaration.getType().isVoidType() &&
+                getReturnTypeOfExpression("methodResultID", oracleDatapoint).getValue1().contains("[]");
         List<String> methodArgumentsClasses = oracleDatapoint.getTokensMethodArguments().stream().map(Triplet::getValue2).collect(Collectors.toList());
 
-        return !methodResultIDClass.contains("[]") && methodArgumentsClasses.stream().noneMatch(c -> c.contains("[]"));
+        return !methodResultIDIsArray && methodArgumentsClasses.stream().noneMatch(c -> c.contains("[]"));
     }
 }

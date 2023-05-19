@@ -1,12 +1,14 @@
 package star.tratto.token.restrictions.single;
 
+import org.javatuples.Triplet;
 import star.tratto.dataset.oracles.OracleDatapoint;
 import star.tratto.oracle.OracleType;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
- * Preconditions must mention the argument of the method they refer to and/or this.
+ * Preconditions must mention some argument of the method they refer to and/or this.
  */
 public class PreYesArgumentOrThisRestriction extends SingleTokenRestriction {
 
@@ -31,16 +33,11 @@ public class PreYesArgumentOrThisRestriction extends SingleTokenRestriction {
             return false;
         }
 
-        String methodArgument;
-        try {
-            methodArgument = oracleDatapoint.getJavadocTag().split("^ *@param +")[1].split(" +")[0];
-        } catch (NullPointerException e) {
-            throw new IllegalArgumentException("The provided oracleDatapoint does not contain a Javadoc tag with the correct format. The format should be " +
-                    "\"@param <methodArgument> <description>\". Javadoc tag: " + oracleDatapoint.getJavadocTag(), e);
-        }
+        List<String> disablerTokens = oracleDatapoint.getTokensMethodArguments().stream().map(Triplet::getValue0).collect(Collectors.toList());
+        disablerTokens.add("this");
 
         // This ContextRestriction can be treated as a standard ContextRestriction by including the method argument and "this" as disabler tokens
-        StandardSingleTokenRestriction standardRestriction = new StandardSingleTokenRestriction(oracleType, restrictedToken, enablerTokens, List.of(methodArgument, "this"), false);
+        StandardSingleTokenRestriction standardRestriction = new StandardSingleTokenRestriction(oracleType, restrictedToken, enablerTokens, disablerTokens, false);
 
         return standardRestriction.isEnabled(nextLegalToken, partialExpressionTokens, oracleDatapoint);
     }

@@ -1,65 +1,90 @@
 package star.tratto.dataset.tokens;
 
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.io.FileUtils;
 import org.javatuples.Triplet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import star.tratto.dataset.oracles.OracleDatapoint;
-import star.tratto.dataset.tokens.TokenDatapoint;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.oraclegrammar.trattoGrammar.Oracle;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import static star.tratto.dataset.ExcelManager.getFirstSheet;
 import static star.tratto.oraclegrammar.custom.Splitter.split;
-import static star.tratto.token.TokenSuggester.*;
+import static star.tratto.token.TokenSuggester.getNextLegalTokensWithContextPlusInfo;
 import static star.tratto.util.StringUtils.compactExpression;
 
 public class TokensDataset {
 
+    private static final Logger logger = LoggerFactory.getLogger(TokensDataset.class);
+
     private static final Parser parser = Parser.getInstance();
-    public static String ORACLES_DATASET_PATH = "src/main/resources/oracles-dataset.xlsx";
-    public static String TOKENS_DATASET_PATH = "src/main/resources/tokens-dataset.xlsx";
+    private static final ObjectMapper objectMapper = new ObjectMapper();
+    public static String ORACLES_DATASET_FOLDER = "src/main/resources/oracles-dataset/";
+    public static String TOKENS_DATASET_FOLDER = "src/main/resources/tokens-dataset/";
     private static int tokenIndex = 0;
+    private static int fileIndex = 0;
+    private static int negativeSamples = 0;
+    private static int positiveSamples = 0;
+    private static final boolean crashOnWrongOracle = false;
 
     public static void main(String[] args) throws IOException {
-        // Read oracles dataset (Excel file) from src/main/resources/oracles-dataset.xlsx
-        Sheet oraclesDatasetSheet = getFirstSheet(ORACLES_DATASET_PATH);
+        File tokensDatasetFolder = new File(TOKENS_DATASET_FOLDER);
+        FileUtils.deleteDirectory(tokensDatasetFolder);
+        tokensDatasetFolder.mkdir();
+        File[] oraclesDatasetFiles = new File(ORACLES_DATASET_FOLDER).listFiles();
+        for (File oraclesDatasetFile : oraclesDatasetFiles) { // Assume that only dataset files are in the folder
+            logger.info("------------------------------------------------------------");
+            logger.info("Processing file: {}", oraclesDatasetFile.getName());
+            logger.info("------------------------------------------------------------");
+            File tokensDatasetFile = new File(TOKENS_DATASET_FOLDER + fileIndex++ + "_" + oraclesDatasetFile.getName());
+            tokensDatasetFile.delete();
+            FileOutputStream tokensDatasetOutputStream = new FileOutputStream(tokensDatasetFile, true);
 
-        // Create tokens dataset Sheet
-        Sheet tokensDatasetSheet = new XSSFWorkbook().createSheet("Sheet1");
+            List<Map> rawOracleDatapoints = objectMapper.readValue(oraclesDatasetFile, List.class);
+            for (Map rawOracleDatapoint : rawOracleDatapoints) {
+                OracleDatapoint oracleDatapoint = new OracleDatapoint(rawOracleDatapoint);
+                logger.info("Processing oracle: {}", oracleDatapoint.getOracle());
+                List<TokenDatapoint> tokenDatapoints;
+                try {
+                    tokenDatapoints = oracleDatapointToTokenDatapoints(oracleDatapoint);
+                } catch (MissingTokenException e) {
+                    logger.error(e.getMessage());
+                    continue;
+                }
 
-        // Set tokens dataset header
-        Row tokensDatasetHeaderRow = tokensDatasetSheet.createRow(0);
-        for (String tokensDatasetHeaderRowCellName : TokenDatapoint.ATTRIBUTES) {
-            Cell headerRowCell = tokensDatasetHeaderRow.createCell(TokenDatapoint.ATTRIBUTES.indexOf(tokensDatasetHeaderRowCellName));
-            headerRowCell.setCellValue(tokensDatasetHeaderRowCellName);
+                for (TokenDatapoint tokenDatapoint : tokenDatapoints) {
+                    if (tokensDatasetFile.length() == 0) {
+                        tokensDatasetOutputStream.write("[".getBytes());
+                    } else if (tokensDatasetFile.length() / 1000 / 1000 > 48) { // Limit file size to 50 MB
+                        tokensDatasetOutputStream.write("]".getBytes());
+                        tokensDatasetOutputStream.close();
+                        tokensDatasetFile = new File(TOKENS_DATASET_FOLDER + fileIndex++ + "_" + oraclesDatasetFile.getName());
+                        tokensDatasetFile.delete();
+                        tokensDatasetOutputStream = new FileOutputStream(tokensDatasetFile, true);
+                        tokensDatasetOutputStream.write("[".getBytes());
+                    } else {
+                        tokensDatasetOutputStream.write(",".getBytes());
+                    }
+                    tokensDatasetOutputStream.write(objectMapper.writeValueAsBytes(tokenDatapoint));
+                }
+            }
+            tokensDatasetOutputStream.write("]".getBytes());
+            tokensDatasetOutputStream.close();
         }
 
-        for (Row oraclesDatasetRow : oraclesDatasetSheet) {
-            if (oraclesDatasetRow.getRowNum() == 0) { // Skip header row
-                continue;
-            }
-            for (TokenDatapoint tokenDatapoint : oracleDatapointToTokenDatapoints(new OracleDatapoint(oraclesDatasetRow))) {
-                int lastRowNum = tokensDatasetSheet.getLastRowNum();
-                Row tokensDatasetRow = tokensDatasetSheet.createRow(lastRowNum + 1); // Append row at the end
-                tokenDatapoint.updateRow(tokensDatasetRow);
-            }
-
-        }
-
-        // End. Write contents of tokens dataset workbook to src/main/resources/tokens-dataset.xlsx and close resources
-        FileOutputStream outputStream = new FileOutputStream(TOKENS_DATASET_PATH);
-        tokensDatasetSheet.getWorkbook().write(outputStream);
-
-        oraclesDatasetSheet.getWorkbook().close();
-        tokensDatasetSheet.getWorkbook().close();
-        outputStream.close();
+        logger.info("------------------------------------------------------------");
+        logger.info("Finished generating tokens dataset.");
+        logger.info("Total samples: {}", positiveSamples + negativeSamples);
+        logger.info("Total positive samples: {}", positiveSamples);
+        logger.info("Total negative samples: {}", negativeSamples);
+        logger.info("------------------------------------------------------------");
     }
 
     /**
@@ -112,6 +137,7 @@ public class TokensDataset {
         List<TokenDatapoint> tokenDatapoints = new ArrayList<>();
 
         // Create a new TokenDatapoint for each next legal token and add it to the list
+        boolean nextTokenActuallyLegal = false;
         for (Triplet<String, String, List<String>> legalTokenWithContext : nextLegalTokensWithContext) {
             String legalToken = legalTokenWithContext.getValue0();
             String legalTokenClass = legalTokenWithContext.getValue1();
@@ -119,7 +145,31 @@ public class TokensDataset {
             Boolean label = legalToken.equals(nextOracleToken);
             TokenDatapoint tokenDatapoint = new TokenDatapoint(tokenIndex++, label, oracleDatapoint, compactExpression(oracleSoFarTokens), legalToken, legalTokenClass, legalTokenInfo);
             tokenDatapoints.add(tokenDatapoint);
+            if (label) {
+                nextTokenActuallyLegal = true;
+                positiveSamples++;
+            } else {
+                negativeSamples++;
+            }
         }
+        assertTokenLegal(nextTokenActuallyLegal, nextOracleToken, oracleSoFarTokens);
         return tokenDatapoints;
+    }
+
+    private static void assertTokenLegal(boolean nextTokenActuallyLegal, String token, List<String> oracleSoFarTokens) {
+        if (!nextTokenActuallyLegal) {
+            String message = "Token '" + token + "' is not legal after partial oracle '" + compactExpression(oracleSoFarTokens) + "'";
+            if (crashOnWrongOracle) {
+                throw new RuntimeException(message);
+            } else {
+                throw new MissingTokenException(message);
+            }
+        }
+    }
+
+    public static class MissingTokenException extends RuntimeException {
+        public MissingTokenException(String message) {
+            super(message);
+        }
     }
 }

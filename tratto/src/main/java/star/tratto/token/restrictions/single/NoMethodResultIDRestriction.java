@@ -1,27 +1,33 @@
 package star.tratto.token.restrictions.single;
 
+import com.github.javaparser.JavaParser;
+import com.github.javaparser.ast.body.MethodDeclaration;
 import star.tratto.dataset.oracles.OracleDatapoint;
 import star.tratto.oracle.OracleType;
+import star.tratto.util.JavaParserUtils;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static star.tratto.util.javaparser.JavaParserUtils.getReturnTypeOfExpression;
+import static star.tratto.util.JavaParserUtils.getMethodDeclaration;
+import static star.tratto.util.JavaParserUtils.getReturnTypeOfExpression;
 import static star.tratto.util.StringUtils.compactExpression;
 
 /**
- * This ContextRestriction is a bit different compared to the rest because it needs to handle two scenarios,
- * one applicable to all oracles, and another applicable depending on the oracle type. The two scenarios
- * are as follows:
- * 1) Forbid "methodResultID" after "Arrays.stream(" if it is not an array.
- * 2) Preconditions cannot mention methodResultID, normal postconditions cannot mention methodResultID
+ * This ContextRestriction is a bit different compared to the rest because it needs to handle three
+ * scenarios, two applicable to all oracles, and one applicable depending on the oracle type. The three
+ * scenarios are as follows:
+ * 1) Forbid "methodResultID" if method under test is void.
+ * 2) Forbid "methodResultID" after "Arrays.stream(" if it is not an array.
+ * 3) Preconditions cannot mention methodResultID, normal postconditions cannot mention methodResultID
  * in the guard, and exceptional postconditions cannot mention methodResultID:
  */
 public class NoMethodResultIDRestriction extends SingleTokenRestriction {
 
     private static NoMethodResultIDRestriction instance;
     private final Map<OracleType, StandardSingleTokenRestriction> oracleSpecificRestrictions;
+    private final JavaParser javaParser = JavaParserUtils.getJavaParser();
 
     private NoMethodResultIDRestriction() {
         this.restrictedToken = "methodResultID";
@@ -43,7 +49,12 @@ public class NoMethodResultIDRestriction extends SingleTokenRestriction {
         if (!isRestrictedToken(nextLegalToken)) {
             return false;
         }
-        return oracleSpecificRestrictions.get(oracleDatapoint.getOracleType()).isEnabled(nextLegalToken, partialExpressionTokens, oracleDatapoint)
+
+        MethodDeclaration methodDeclaration = getMethodDeclaration(oracleDatapoint.getMethodSourceCode());
+        return
+                methodDeclaration != null && methodDeclaration.getType().isVoidType()
+                ||
+                oracleSpecificRestrictions.get(oracleDatapoint.getOracleType()).isEnabled(nextLegalToken, partialExpressionTokens, oracleDatapoint)
                 ||
                 (
                         compactExpression(partialExpressionTokens).endsWith("Arrays.stream(")
