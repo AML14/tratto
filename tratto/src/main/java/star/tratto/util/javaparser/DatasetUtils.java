@@ -7,10 +7,14 @@ import com.github.javaparser.ast.comments.JavadocComment;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.type.Type;
+import com.github.javaparser.resolution.MethodUsage;
+import com.github.javaparser.resolution.declarations.ResolvedReferenceTypeDeclaration;
+import com.github.javaparser.resolution.types.ResolvedType;
 import org.javatuples.Pair;
 import org.javatuples.Quartet;
 import org.javatuples.Triplet;
 import star.tratto.dataset.oracles.JDoctorCondition.*;
+import star.tratto.dataset.oracles.Project;
 import star.tratto.exceptions.PackageDeclarationNotFoundException;
 import star.tratto.identifiers.JPCallableType;
 import star.tratto.identifiers.Javadoc;
@@ -23,6 +27,7 @@ import static star.tratto.util.javaparser.JavaParserUtils.*;
 
 import java.io.File;
 import java.nio.file.Paths;
+import java.sql.Array;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -363,6 +368,80 @@ public class DatasetUtils {
             }
         }
         return attributeList;
+    }
+
+    private List<Quartet<String, String, String, String>> convertMethodUsageToQuartet(
+            List<MethodUsage> jpMethods
+    ) {
+        return new ArrayList<>(jpMethods)
+                .stream()
+                .map(jpMethod -> new Quartet<>(
+                        jpMethod.getName(),
+                        jpMethod.declaringType().getClassName(),
+                        jpMethod.declaringType().getPackageName(),
+                        JavaParserUtils.getCallableSignature(jpMethod)
+                ))
+                .collect(Collectors.toList());
+    }
+
+    private List<Quartet<String, String, String, String>> getMethodsFromType(
+            ResolvedType jpType
+    ) {
+        List<Quartet<String, String, String, String>> methodList = new ArrayList<>();
+        // handle base type.
+        if (jpType.isReferenceType()) {
+            Optional<ResolvedReferenceTypeDeclaration> jpTypeDeclaration = jpType.asReferenceType().getTypeDeclaration();
+            if (jpTypeDeclaration.isPresent()) {
+                List<MethodUsage> allMethods = jpTypeDeclaration.get().getAllMethods()
+                        .stream()
+                        .filter(JavaParserUtils::isNonStaticNonVoidNonPrivateMethod)
+                        .collect(Collectors.toList());
+                methodList.addAll(convertMethodUsageToQuartet(allMethods));
+            }
+        }
+        // handle generic type.
+
+        // handle array type.
+        if (jpType.isArray()) {
+            String arraysMethodJsonPath = Paths.get(
+                    Path.REPOS.getValue(),
+                    FileName.ARRAY_METHODS.getValue() + FileFormat.JSON.getValue()
+            ).toString();
+            List<List<String>> arrayMethods = FileUtils.readJSONList(arraysMethodJsonPath)
+                    .stream()
+                    .map(e -> ((List<?>) e)
+                            .stream()
+                            .map(o -> (String) o)
+                            .collect(Collectors.toList()))
+                    .collect(Collectors.toList());
+            methodList.addAll(arrayMethods
+                    .stream()
+                    .map(m -> new Quartet<>(m.get(0), "", jpType.describe(), m.get(1)))
+                    .collect(Collectors.toList()));
+        }
+        return methodList;
+    }
+
+    public List<Quartet<String, String, String, String>> getTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(
+            CompilationUnit cu,
+            TypeDeclaration<?> jpClass,
+            CallableDeclaration<?> jpCallable
+    ) {
+        // add all methods of the base class (receiverObjectID -> this).
+        List<MethodUsage> allReceiverMethods = new ArrayList<>(jpClass.resolve().getAllMethods())
+                .stream()
+                .filter(JavaParserUtils::isNonStaticNonVoidNonPrivateMethod)
+                .collect(Collectors.toList());
+        List<Quartet<String, String, String, String>> methodList = new ArrayList<>(convertMethodUsageToQuartet(allReceiverMethods));
+        // add all methods of parameters.
+        for (Parameter jpParam : jpCallable.getParameters()) {
+            methodList.addAll(getMethodsFromType(jpParam.getType().resolve()));
+        }
+        // add all methods of return type.
+        if (jpCallable instanceof MethodDeclaration) {
+            methodList.addAll(getMethodsFromType(((MethodDeclaration) jpCallable).getType().resolve()));
+        }
+        return methodList;
     }
 
     public static String getClassName(
