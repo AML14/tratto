@@ -163,7 +163,7 @@ def main(rank: int, world_size: int):
     # that the model will process input data of this length\n# The +2 is given by the fact that the model add the
     # start token and the end token to each input of the model.
     src = data_processor.get_src()
-    max_input_len = 1024  # reduce(lambda max_len, s: len(s) if len(s) > max_len else max_len, src,0) + 2
+    max_input_len = 512  # reduce(lambda max_len, s: len(s) if len(s) > max_len else max_len, src,0) + 2
     # Create instance of the model
     model = OracleClassifier(max_input_len)
     # The model is loaded on the gpu (or cpu, if not available)

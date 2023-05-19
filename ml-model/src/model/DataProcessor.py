@@ -751,7 +751,7 @@ class DataProcessor:
                 # Extracts the corresponding targets datapoints from the batch
                 b_targets = [ t[2] for t in batch ]
                 # Computes the length of the longest input datapoint within the batch
-                max_len = reduce(lambda max_len, s: len(s) if len(s) > max_len else max_len, b_inputs,0)
+                max_len = 512 #reduce(lambda max_len, s: len(s) if len(s) > max_len else max_len, b_inputs,0)
                 # Tokenize the inputs datapoints of the batch
                 # The method generate a dictionary with two keys:
                 #
@@ -771,7 +771,7 @@ class DataProcessor:
                   b_inputs,
                   max_length=max_len,
                   padding='max_length',
-                  truncation=False
+                  truncation=True
                 )
                 # Transform the list into a tensor stack
                 #
