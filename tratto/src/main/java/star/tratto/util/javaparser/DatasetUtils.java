@@ -368,7 +368,7 @@ public class DatasetUtils {
         return attributeList;
     }
 
-    private List<Quartet<String, String, String, String>> convertMethodUsageToQuartet(
+    private static List<Quartet<String, String, String, String>> convertMethodUsageToQuartet(
             List<MethodUsage> jpMethods
     ) {
         return new ArrayList<>(jpMethods)
@@ -382,7 +382,7 @@ public class DatasetUtils {
                 .collect(Collectors.toList());
     }
 
-    private List<Quartet<String, String, String, String>> getMethodsFromType(
+    private static List<Quartet<String, String, String, String>> getMethodsFromType(
             TypeDeclaration<?> jpClass,
             CallableDeclaration<?> jpCallable,
             ResolvedType jpType
@@ -428,7 +428,7 @@ public class DatasetUtils {
         return methodList;
     }
 
-    public List<Quartet<String, String, String, String>> getTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(
+    public static List<Quartet<String, String, String, String>> getTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(
             TypeDeclaration<?> jpClass,
             CallableDeclaration<?> jpCallable
     ) {

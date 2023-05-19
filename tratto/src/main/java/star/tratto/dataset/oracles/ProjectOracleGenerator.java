@@ -128,6 +128,8 @@ public class ProjectOracleGenerator {
         builder.setMethodJavadoc(DatasetUtils.getCallableJavadoc(jpCallable));
         builder.setTokensMethodJavadocValues(DatasetUtils.getValuesFromJavadoc(builder.copy().getMethodJavadoc()));
         builder.setTokensMethodArguments(DatasetUtils.getTokensMethodArguments(jpClass, jpCallable));
+        builder.setTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(DatasetUtils.getTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(jpClass, jpCallable));
+        System.out.println(builder.copy().getId());
 
         /* Remaining fields
             private List<Quartet<String, String, String, String>> tokensMethodVariablesNonPrivateNonStaticNonVoidMethods; // <token, package, class, signature>
