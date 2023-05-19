@@ -252,6 +252,20 @@ public class JavaParserUtils {
     }
 
     /**
+     * @return A generic "java.lang.Object" type.
+     */
+    public static ResolvedType getGenericType() {
+        return javaParser.parse(SYNTHETIC_CLASS_SOURCE).getResult().get()
+                .getLocalDeclarationFromClassname(SYNTHETIC_CLASS_NAME).get(0)
+                .addMethod(SYNTHETIC_METHOD_NAME).getBody().get()
+                .addStatement("java.lang.Object objectVar;")
+                .getStatements().getLast().get()
+                .asExpressionStmt().getExpression()
+                .asVariableDeclarationExpr().getVariables().get(0)
+                .resolve().getType();
+    }
+
+    /**
      * This function is needed to handle cases where the type of a variable cannot be resolved. This
      * should never happen, but it WILL happen for variables using generics (T, E, etc.). In those cases,
      * we will return "java.lang.Object" as the type.
@@ -262,14 +276,7 @@ public class JavaParserUtils {
             resolvedType = resolvedValueDeclaration.getType();
         } catch (UnsolvedSymbolException e) {
             logger.warn("Unresolvable type for variable {}", resolvedValueDeclaration);
-            resolvedType = javaParser.parse(SYNTHETIC_CLASS_SOURCE).getResult().get()
-                    .getLocalDeclarationFromClassname(SYNTHETIC_CLASS_NAME).get(0)
-                    .addMethod(SYNTHETIC_METHOD_NAME).getBody().get()
-                    .addStatement("java.lang.Object objectVar;")
-                    .getStatements().getLast().get()
-                    .asExpressionStmt().getExpression()
-                    .asVariableDeclarationExpr().getVariables().get(0)
-                    .resolve().getType();
+            resolvedType = getGenericType();
         }
         return resolvedType;
     }
