@@ -61,8 +61,7 @@ public class OracleDatapoint {
         this.tokensOracleVariablesNonPrivateNonStaticAttributes = ((List<List<String>>) oracleDatapointMap.get("tokensOracleVariablesNonPrivateNonStaticAttributes")).stream().map(Quartet::fromCollection).collect(Collectors.toList());
     }
 
-    // For testing purposes
-    OracleDatapoint() {
+    public OracleDatapoint() {
     }
 
     public boolean isProjectClass(String clazz) {
