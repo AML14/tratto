@@ -2,9 +2,12 @@ package star.tratto.util.javaparser;
 
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.PackageDeclaration;
+import com.github.javaparser.ast.body.*;
+import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
+import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.NodeList;
-import com.github.javaparser.ast.body.*;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.type.TypeParameter;
 import com.github.javaparser.resolution.MethodUsage;
@@ -17,10 +20,16 @@ import org.javatuples.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import star.tratto.dataset.oracles.OracleDatapoint;
+import star.tratto.exceptions.PackageDeclarationNotFoundException;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.util.JavaTypes;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.nio.file.Paths;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Optional;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -384,6 +393,20 @@ public class JavaParserUtils {
         }
     }
 
+    /**
+     * @return A generic "java.lang.Object" type.
+     */
+    public static ResolvedType getGenericType() {
+        return javaParser.parse(SYNTHETIC_CLASS_SOURCE).getResult().get()
+                .getLocalDeclarationFromClassname(SYNTHETIC_CLASS_NAME).get(0)
+                .addMethod(SYNTHETIC_METHOD_NAME).getBody().get()
+                .addStatement("java.lang.Object objectVar;")
+                .getStatements().getLast().get()
+                .asExpressionStmt().getExpression()
+                .asVariableDeclarationExpr().getVariables().get(0)
+                .resolve().getType();
+    }
+
     private static ResolvedType tryToGetResolvedType(String type2) {
         ResolvedType resolvedType2;
         try {
@@ -434,6 +457,26 @@ public class JavaParserUtils {
         } catch (NoSuchElementException e) {
             throw new RuntimeException("Could not find class or interface " + name + " in compilation unit.", e);
         }
+    }
+
+    /**
+     * Gets the signature of a JavaParser variable declarator
+     * {@link VariableDeclarator}, and return its string representation.
+     *
+     * @param field the JP field declaration {@link FieldDeclaration}
+     * @param variable the JP variable declaration {@link VariableDeclarator}
+     * @return a string representation of the signature of the JavaParser
+     * variable declarator {@link VariableDeclarator}.
+     */
+    public static String getVariableSignature(FieldDeclaration field, VariableDeclarator variable) {
+        String signature = "";
+        signature += field.getAccessSpecifier().asString();
+        signature += field.isStatic() ? " static " : " ";
+        signature += field.isFinal() ? " final " : "";
+        signature += String.format("%s ", variable.getTypeAsString());
+        signature += String.format("%s", variable.getNameAsString());
+        signature += variable.getInitializer().isPresent() ? String.format(" = %s;", variable.getInitializer().get()) : ";";
+        return signature;
     }
 
     public static String getMethodSignature(MethodDeclaration methodDeclaration) {
@@ -488,9 +531,57 @@ public class JavaParserUtils {
         }
 
         return (methodModifiers + " " + (methodTypeParameters.isEmpty() ? "" : "<" + String.join(", ", methodTypeParameters) + ">") +
-                 " " + methodReturnType + " " + methodName + "(" + String.join(", ", methodParameters) + ")" +
+                " " + methodReturnType + " " + methodName + "(" + String.join(", ", methodParameters) + ")" +
                 (methodExceptions.isEmpty() ? "" : " throws " + String.join(", ", methodExceptions)))
                 .replaceAll(" +", " ").trim();
+    }
+
+    public static PackageDeclaration getPackageDeclarationFromCompilationUnit(
+            CompilationUnit cu
+    ) throws PackageDeclarationNotFoundException {
+        Optional<PackageDeclaration> jpPackage = cu.getPackageDeclaration();
+        if (jpPackage.isEmpty()) {
+            throw new PackageDeclarationNotFoundException(
+                    "The Java Parser package declaration of the compilation unit is empty"
+            );
+        }
+        return jpPackage.get();
+    }
+
+    public static boolean isGenericType(
+            String jpTypeName,
+            CallableDeclaration<?> jpCallable,
+            TypeDeclaration<?> jpClass
+    ) {
+        List<String> jpClassGenericTypes = jpCallable.getTypeParameters()
+                .stream()
+                .map(NodeWithSimpleName::getNameAsString)
+                .collect(Collectors.toList());
+        if (jpClass instanceof ClassOrInterfaceDeclaration) {
+            jpClassGenericTypes.addAll(
+                    jpClass.asClassOrInterfaceDeclaration().getTypeParameters()
+                            .stream()
+                            .map(NodeWithSimpleName::getNameAsString)
+                            .collect(Collectors.toList())
+            );
+        }
+        return jpClassGenericTypes.contains(jpTypeName.replaceAll("\\[\\]", ""));
+    }
+
+    /**
+     * Get corresponding JavaParser compilation unit {@link CompilationUnit}
+     * from the given file path {@link String}.
+     *
+     * @param filePath the absolute path to the file.
+     * @return An optional JavaParser compilation unit {@link CompilationUnit}.
+     */
+    public static Optional<CompilationUnit> getCompilationUnitFromFilePath(String filePath) {
+        File file = new File(filePath);
+        try {
+            return javaParser.parse(file).getResult();
+        } catch (FileNotFoundException e) {
+            return Optional.empty();
+        }
     }
 
     public static boolean isStaticNonVoidNonPrivateMethod(MethodUsage methodUsage) {

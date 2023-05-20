@@ -220,7 +220,7 @@ public class DatasetUtils {
             CallableDeclaration<?> jpCallable
     ) {
         JPCallableType jpCallableType = jpCallable.isConstructorDeclaration() ? JPCallableType.CONSTRUCTOR : JPCallableType.METHOD;
-        String jpSignature = JavaParserUtils.getCallableSignature(jpCallable);
+        String jpSignature = jpCallable.getSignature().asString().trim();
         Optional<BlockStmt> jpBody = (jpCallableType == JPCallableType.CONSTRUCTOR) ?
                 Optional.ofNullable(((ConstructorDeclaration) jpCallable).getBody()) :
                 ((MethodDeclaration) jpCallable).getBody();
@@ -245,7 +245,7 @@ public class DatasetUtils {
                             jpMethod.getNameAsString(),
                             packageName,
                             className,
-                            JavaParserUtils.getCallableSignature(jpMethod)
+                            JavaParserUtils.getMethodSignature(jpMethod)
                     ));
                 }
             }
@@ -377,7 +377,7 @@ public class DatasetUtils {
                         jpMethod.getName(),
                         jpMethod.declaringType().getClassName(),
                         jpMethod.declaringType().getPackageName(),
-                        JavaParserUtils.getCallableSignature(jpMethod)
+                        JavaParserUtils.getMethodSignature(jpMethod)
                 ))
                 .collect(Collectors.toList());
     }
@@ -599,6 +599,6 @@ public class DatasetUtils {
     ) {
         List<String> pathList = Arrays.asList(operation.getClassName().split("\\."));
         String classPath = Paths.get(sourcePath, pathList.toArray(String[]::new)) + FileFormat.JAVA.getValue();
-        return getCompilationUnitFromFilePath(classPath);
+        return JavaParserUtils.getCompilationUnitFromFilePath(classPath);
     }
 }
