@@ -1,4 +1,4 @@
-package star.tratto.util;
+package star.tratto.util.javaparser;
 
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import star.tratto.dataset.oracles.OracleDatapoint;
 import star.tratto.oraclegrammar.custom.Parser;
+import star.tratto.util.JavaTypes;
 
 import java.nio.file.Paths;
 import java.util.*;

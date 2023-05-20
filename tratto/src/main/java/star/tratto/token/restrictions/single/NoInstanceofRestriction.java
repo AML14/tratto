@@ -4,13 +4,12 @@ import star.tratto.dataset.oracles.OracleDatapoint;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.oraclegrammar.trattoGrammar.CanEvaluateToPrimitive;
 import star.tratto.token.restrictions.multi.LastMethodNameRestriction;
-import star.tratto.util.JavaParserUtils;
 import star.tratto.util.JavaTypes;
 
 import java.util.List;
 
 import static star.tratto.oraclegrammar.custom.Splitter.split;
-import static star.tratto.util.JavaParserUtils.getReturnTypeOfExpression;
+import static star.tratto.util.javaparser.JavaParserUtils.getReturnTypeOfExpression;
 import static star.tratto.util.StringUtils.compactExpression;
 
 /**

@@ -8,7 +8,7 @@ import star.tratto.util.javaparser.JavaParserUtils;
 
 import java.util.List;
 
-import static star.tratto.util.JavaParserUtils.getMethodDeclaration;
+import static star.tratto.util.javaparser.JavaParserUtils.getMethodDeclaration;
 
 /**
  * "this" is forbidden if the method under test is static.
