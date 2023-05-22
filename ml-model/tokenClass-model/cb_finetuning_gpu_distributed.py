@@ -4,6 +4,7 @@
 import os
 import torch
 import json
+import traceback
 import torch.optim as optim
 import torch.multiprocessing as mp
 from torch.utils.data import DataLoader, DistributedSampler
@@ -17,6 +18,7 @@ from src.enums.FileFormat import FileFormat
 from src.enums.FileName import FileName
 from src.enums.HyperParameter import HyperParameter
 from src.enums.Path import Path
+from src.enums.ClassificationType import ClassificationType
 from src.model.DataProcessor import DataProcessor
 from src.model.OracleClassifier import OracleClassifier
 from src.model.OracleTrainer import OracleTrainer
@@ -84,7 +86,7 @@ def main(rank: int, world_size: int):
         )
         # Pre-processing data
         Printer.print_pre_processing()
-        data_processor.pre_processing()
+        data_processor.pre_processing(ClassificationType.CATEGORY_PREDICTION)
         # Process the data
         data_processor.processing()
 
@@ -254,6 +256,7 @@ def main(rank: int, world_size: int):
         del model
         utils.release_memory()
     except:
+        traceback.print_exc()
         print("Release memory, after unexpected error...")
         # Release memory
         utils.release_memory()
@@ -262,4 +265,4 @@ def main(rank: int, world_size: int):
 if __name__ == "__main__":
     Printer.print_welcome()
     world_size = torch.cuda.device_count()
-    mp.spawn(main, args=(world_size), nprocs=world_size)
+    mp.spawn(main, args=([world_size]), nprocs=world_size)

@@ -87,7 +87,7 @@ def main(rank: int, world_size: int):
         )
         # Pre-processing data
         Printer.print_pre_processing()
-        data_processor.pre_processing()
+        data_processor.pre_processing(ClassificationType.CATEGORY_PREDICTION)
         # Process the data
         data_processor.processing(BatchType.RANDOM)
         # Get the train and validation sorted datasets

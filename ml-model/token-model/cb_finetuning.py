@@ -20,6 +20,7 @@ from src.enums.FileFormat import FileFormat
 from src.enums.FileName import FileName
 from src.enums.HyperParameter import HyperParameter
 from src.enums.Path import Path
+from src.enums.ClassificationType import ClassificationType
 from src.model.DataProcessor import DataProcessor
 from src.model.OracleClassifier import OracleClassifier
 from src.model.OracleTrainer import OracleTrainer
@@ -85,7 +86,7 @@ if __name__ == "__main__":
         )
         # Pre-processing data
         Printer.print_pre_processing()
-        data_processor.pre_processing()
+        data_processor.pre_processing(ClassificationType.CATEGORY_PREDICTION)
         # Process the data
         data_processor.processing(BatchType.RANDOM)
         # Get the train and validation sorted datasets

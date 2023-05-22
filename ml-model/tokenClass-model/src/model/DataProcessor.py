@@ -384,7 +384,7 @@ class DataProcessor:
         src = df_src_concat.to_numpy().tolist()
         # map target classes to vectors
         self.map_column_values_to_one_shot_vectors("tokenClass","tokenClassVectorized")
-        tgt = self._df_dataset["tokenClassVectorized"].to_numpy.tolist()
+        tgt = self._df_dataset["tokenClassVectorized"].to_numpy().tolist()
         # Split the dataset into training and test sets with stratified sampling based on target classes
         self._src, self._tgt, self._src_test, self._tgt_test = train_test_split(src, tgt, test_size=self._test_ratio, stratify=tgt)
 
@@ -442,7 +442,7 @@ class DataProcessor:
         dfs = []
 
         # datasets path
-        oracles_dataset = os.path.join(d_path, "dataset")
+        oracles_dataset = os.path.join(d_path)
         # collects partial dataframes from oracles
         for file_name in os.listdir(oracles_dataset):
             df = pd.read_json(os.path.join(oracles_dataset,  file_name))
