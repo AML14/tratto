@@ -30,5 +30,9 @@ class Printer:
         print("[6] Saving model")
 
     @staticmethod
+    def print_training_fold(fold_idx):
+        print(f"    [5.{fold_idx}] Training - fold {fold_idx}")
+
+    @staticmethod
     def print_training_phase():
         print("[5] Training phase")

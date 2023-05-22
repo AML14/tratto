@@ -16,5 +16,7 @@ class HyperParameter(Enum):
     NUM_SPLITS = 5
     # number of steps after which computes the validation loss and accuracy
     NUM_STEPS = 100
-    # percentage of the dataset that will be used for training (the remaining percentage will be for validation)
+    # percentage of the dataset that will be used for training (the remaining percentage will be for validation and test)
     TRAINING_RATIO = 0.8
+    # percentage of the dataset that will be used for test (the remaining percentage will be for training and validation)
+    TEST_RATIO = 0.1

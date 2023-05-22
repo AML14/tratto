@@ -3,6 +3,7 @@ import os
 import csv
 import json
 import torch
+import gc
 from xml.dom import minidom
 import xml.etree.ElementTree as ET
 from xml.etree.ElementTree import Element

@@ -2,17 +2,12 @@
 # coding: utf-8
 
 import os
-import numpy as np
 import torch
-import timeit
-import math
 import json
 import torch.optim as optim
-from functools import reduce
 from torch.utils.data import DataLoader, SequentialSampler
 from torch.nn import CrossEntropyLoss
 from transformers import AutoTokenizer
-from sklearn.model_selection import StratifiedKFold
 
 from src.enums.BatchType import BatchType
 from src.enums.DatasetType import DatasetType
@@ -82,45 +77,15 @@ if __name__ == "__main__":
             d_path,
             HyperParameter.BATCH_SIZE.value,
             HyperParameter.TRAINING_RATIO.value,
-            tokenizer
+            HyperParameter.TEST_RATIO.value,
+            tokenizer,
+            HyperParameter.NUM_SPLITS.value
         )
         # Pre-processing data
         Printer.print_pre_processing()
         data_processor.pre_processing()
         # Process the data
-        data_processor.processing(BatchType.RANDOM)
-        # Get the train and validation sorted datasets
-        Printer.print_dataset_generation()
-        train_dataset = data_processor.get_tokenized_dataset(DatasetType.TRAINING)
-        val_dataset = data_processor.get_tokenized_dataset(DatasetType.VALIDATION)
-
-        # DataLoader
-        #
-        # DataLoader is a pytorch class that takes care of shuffling/sampling/weigthed
-        # sampling, batching, and using multiprocessing to load the data, in an efficient
-        # and transparent way.
-        # We define a dataloader for both the training and the validation dataset.
-        # The dataloader generates the real batches of datapoints that we will use to
-        # feed the model.
-        # We use an helper PyTorch class, **SequentialSampler**, to create the batches
-        # selecting the datapoints sequentially, from the training and validation datasets.
-        # Indeed, we used the **DataProcessor** class to sort the dataset in specific way,
-        # simulating the creation of batches of data before the **DataLoader**, minimizing
-        # the padding (in the case of *BatchType.HOMOGENEOUS*) or maximizing the
-        # diversity within the dataset (in the case of *BatchType.HETEROGENEOUS*). The
-        # use of the **SequentialSampler** will guarantee to maintain this criteria for
-        # the creation of the batches.
-        #
-        # Create instance of training and validation dataloaders
-        dl_train = DataLoader(
-            train_dataset,
-            sampler = SequentialSampler(train_dataset),
-            batch_size = HyperParameter.BATCH_SIZE.value
-        )
-        dl_val = DataLoader(val_dataset,
-            sampler = SequentialSampler(val_dataset),
-            batch_size = HyperParameter.BATCH_SIZE.value
-        )
+        data_processor.processing()
 
         # ## Model
         # The **OracleClassifier** represents our fine-tuned model.
@@ -142,12 +107,11 @@ if __name__ == "__main__":
         # that the model will process input data of this length\n# The +2 is given by the fact that the model add the
         # start token and the end token to each input of the model.
         src = data_processor.get_src()
-        max_input_len = 512 #reduce(lambda max_len, s: len(s) if len(s) > max_len else max_len, src,0) + 2
+        max_input_len = 512  # reduce(lambda max_len, s: len(s) if len(s) > max_len else max_len, src,0) + 2
         # Create instance of the model
         model = OracleClassifier(max_input_len)
         # The model is loaded on the gpu (or cpu, if not available)
         model.to(device)
-
 
         # ## Training
         #
@@ -162,50 +126,92 @@ if __name__ == "__main__":
         # Adam optimizer with learning rate set with the value of the LR hyperparameter
         optimizer = optim.Adam(model.parameters(), lr=HyperParameter.LR.value)
         # Compute weights
-        class_weights = compute_class_weights("tokenClass") 
+        class_weights = data_processor.compute_class_weights("tokenClass")
         # The cross-entropy loss function is commonly used for classification tasks
         loss_fn = CrossEntropyLoss(weight=class_weights)
-        # Instantiation of the trainer
-        oracle_trainer = OracleTrainer(model, loss_fn, optimizer, dl_train, dl_val)
 
         stats = {}
 
-        try:
-            # Train the model
-            stats = oracle_trainer.train(
-                HyperParameter.NUM_EPOCHS.value,
-                HyperParameter.NUM_STEPS.value,
-                device
-            )
-        except RuntimeError as e:
-            print("Runtime Exception...")
-            if device.type == "cuda":
-                # Release memory
-                del model
-                utils.release_memory()
-            raise e
+        # Stratified cross-validation training
+        for i in range(HyperParameter.NUM_SPLITS.value):
+            # Get the train and validation sorted datasets
+            Printer.print_dataset_generation()
+            train_dataset = data_processor.get_tokenized_dataset(DatasetType.TRAINING, i)
+            val_dataset = data_processor.get_tokenized_dataset(DatasetType.VALIDATION, i)
 
-        # Check if the directory exists, to save the statistics of the training
-        if not os.path.exists(Path.OUTPUT.value):
-            # If the path does not exists, create it
-            os.makedirs(Path.OUTPUT.value)
-        # Save the statistics in json format
-        with open(
-            os.path.join(
-                Path.OUTPUT.value,
-                f"{FileName.LOSS_ACCURACY.value}.{FileFormat.JSON}"
-            ),
-            "w"
-        ) as loss_file:
-            data = {
-                **stats,
-                "batch_size": HyperParameter.BATCH_SIZE.value,
-                "lr": HyperParameter.LR.value,
-                "num_epochs": HyperParameter.NUM_EPOCHS.value
-            }
-            json.dump(data, loss_file)
-        # Close the file
-        loss_file.close()
+            # DataLoader
+            #
+            # DataLoader is a pytorch class that takes care of shuffling/sampling/weigthed
+            # sampling, batching, and using multiprocessing to load the data, in an efficient
+            # and transparent way.
+            # We define a dataloader for both the training and the validation dataset.
+            # The dataloader generates the real batches of datapoints that we will use to
+            # feed the model.
+            # We use an helper PyTorch class, **SequentialSampler**, to create the batches
+            # selecting the datapoints sequentially, from the training and validation datasets.
+            # Indeed, we used the **DataProcessor** class to sort the dataset in specific way,
+            # simulating the creation of batches of data before the **DataLoader**, minimizing
+            # the padding (in the case of *BatchType.HOMOGENEOUS*) or maximizing the
+            # diversity within the dataset (in the case of *BatchType.HETEROGENEOUS*). The
+            # use of the **SequentialSampler** will guarantee to maintain this criteria for
+            # the creation of the batches.
+            #
+            # Create instance of training and validation dataloaders
+            dl_train = DataLoader(
+                train_dataset,
+                sampler = SequentialSampler(train_dataset),
+                batch_size = HyperParameter.BATCH_SIZE.value
+            )
+            dl_val = DataLoader(val_dataset,
+                sampler = SequentialSampler(val_dataset),
+                batch_size = HyperParameter.BATCH_SIZE.value
+            )
+            # Instantiation of the trainer
+            oracle_trainer = OracleTrainer(model, loss_fn, optimizer, dl_train, dl_val)
+            try:
+                # Train the model
+                stats[f"fold_{i}"] = oracle_trainer.train(
+                    HyperParameter.NUM_EPOCHS.value,
+                    HyperParameter.NUM_STEPS.value,
+                    device
+                )
+            except RuntimeError as e:
+                print("Runtime Exception...")
+                if device.type == "cuda":
+                    # Release memory
+                    del model
+                    utils.release_memory()
+                raise e
+
+            # Check if the directory exists, to save the statistics of the training
+            if not os.path.exists(Path.OUTPUT.value):
+                # If the path does not exists, create it
+                os.makedirs(Path.OUTPUT.value)
+            # Save the statistics in json format
+            with open(
+                os.path.join(
+                    Path.OUTPUT.value,
+                    f"{FileName.LOSS_ACCURACY.value}_fold_{i}.{FileFormat.JSON}"
+                ),
+                "w"
+            ) as loss_file:
+                data = {
+                    **stats[f"fold_{i}"],
+                    "batch_size": HyperParameter.BATCH_SIZE.value,
+                    "lr": HyperParameter.LR.value,
+                    "num_epochs": HyperParameter.NUM_EPOCHS.value
+                }
+                json.dump(data, loss_file)
+            # Close the file
+            loss_file.close()
+            # ## Save the statistics and the trained model
+            #
+            # Saves the statistics for future analysis, and the trained model for future use or improvements.
+            # Saving the model we save the values of all the weights. In other words, we create a snapshot of
+            # the state of the model, after the training.
+            Printer.print_save_model()
+            torch.save(model, os.path.join(Path.OUTPUT.value, f"tratto_model_fold{i}.pt"))
+            torch.save(model.module.state_dict(), os.path.join(Path.OUTPUT.value, f"tratto_model_state_dict_fold_{i}.pt"))
         # ## Save the statistics and the trained model
         #
         # Saves the statistics for future analysis, and the trained model for future use or improvements.
@@ -217,7 +223,7 @@ if __name__ == "__main__":
         # Release memory
         del model
         utils.release_memory()
-    except e:
+    except:
         print("Release memory, after unexpected error...")
         # Release memory
         utils.release_memory()
