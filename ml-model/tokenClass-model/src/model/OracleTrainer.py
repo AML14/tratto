@@ -192,9 +192,9 @@ class OracleTrainer:
                     # Compute accuracy
                     t_accuracy = accuracy_score(labels_numpy, predictions_numpy)
                     # Compute precision
-                    t_precision = precision_score(labels_numpy, predictions_numpy)
+                    t_precision = precision_score(labels_numpy, predictions_numpy, average="macro", zero_division=1)
                     # Compute recall
-                    t_recall = recall_score(labels_numpy, predictions_numpy)
+                    t_recall = recall_score(labels_numpy, predictions_numpy, average="macro", zero_division=1)
 
                     # Validation phase
                     mean_v_loss, v_f1, v_accuracy, v_precision, v_recall = self.validation(device)
@@ -273,23 +273,23 @@ class OracleTrainer:
                 Average training loss
             v_loss: float
                 Average validation loss
-            f1_score_t: float
+            t_f1_score: float
                 F1 score of the training phase
-            accuracy_t: float
+            t_accuracy: float
                 Accuracy of the training phase
-            precision_t: float
+            t_precision: float
                 Precision of the training phase
-            recall_t: float
+            t_recall: float
                 Recall of the training phase
-            mean_v_loss: float
+            v_loss: float
                 Average validation loss
-            f1_score_v: float
+            v_f1_score: float
                 F1 score of the validation phase
-            accuracy_v: float
+            v_accuracy: float
                 Accuracy of the validation phase
-            precision_v: float
+            v_precision: float
                 Precision of the validation phase
-            recall_v: float
+            v_recall: float
                 Recall of the validation phase
         """
         print("    " + '-'*30)
@@ -350,7 +350,7 @@ class OracleTrainer:
             stats: dict
     ):
         """
-        The method plots the trend of the loss and f1_score
+        The method plots the trend of the loss and f1 score
 
         Parameters
         ----------
@@ -363,16 +363,16 @@ class OracleTrainer:
         """
         for i in range(2):
             for j in range(2):
-                title = ('Training ' if j == 0 else 'Validation') + ('Loss' if i == 0 else 'f1_score')
-                dict_label = ('t_' if j == 0 else 'v_') + ('loss' if i == 0 else 'f1_score')
+                title = ('Training ' if j == 0 else 'Validation') + ('Loss' if i == 0 else 'F1-score')
+                dict_label = ('t_' if j == 0 else 'v_') + ('loss' if i == 0 else 'f1-score')
                 color = 'blue'
                 ax[i][j].set_title(title, fontsize=30)
                 ax[i][j].set_xlabel("steps", fontsize=30)
                 ax[i][j].set_ylabel("loss", fontsize=30)
                 ax[i][j].plot(range(0, len(stats['t_loss']) * steps, steps), np.array(stats[dict_label])[:], '-', color=color)
         for i in range(2):
-            title = 'Training and Validation ' + ('Loss' if i == 0 else 'f1_score')
-            dict_label = 'loss' if i == 0 else 'f1_score'
+            title = 'Training and Validation ' + ('Loss' if i == 0 else 'F1-score')
+            dict_label = 'loss' if i == 0 else 'f1-score'
             ax[2][i].set_title(title, fontsize=30)
             ax[2][i].set_xlabel("steps", fontsize=30)
             ax[2][i].set_ylabel("loss", fontsize=30)
@@ -440,12 +440,12 @@ class OracleTrainer:
         labels_numpy = np.array(all_labels)
         v_f1 = f1_score(labels_numpy, predictions_numpy, average="macro")
         # Compute accuracy
-        accuracy = accuracy_score(labels_numpy, predictions_numpy)
+        v_accuracy = accuracy_score(labels_numpy, predictions_numpy)
         # Compute precision
-        precision = precision_score(labels_numpy, predictions_numpy)
+        v_precision = precision_score(labels_numpy, predictions_numpy, average="macro", zero_division=1)
         # Compute recall
-        recall = recall_score(labels_numpy, predictions_numpy)
-        return mean_v_loss, v_f1, accuracy, precision, recall
+        v_recall = recall_score(labels_numpy, predictions_numpy, average="macro", zero_division=1)
+        return mean_v_loss, v_f1, v_accuracy, v_precision, v_recall
 
     def evaluation(
         self,
@@ -510,9 +510,9 @@ class OracleTrainer:
         # Compute accuracy
         test_accuracy = accuracy_score(labels_numpy, predictions_numpy)
         # Compute precision
-        test_precision = precision_score(labels_numpy, predictions_numpy)
+        test_precision = precision_score(labels_numpy, predictions_numpy, average='macro', zero_division=1)
         # Compute recall
-        test_recall = recall_score(labels_numpy, predictions_numpy)
+        test_recall = recall_score(labels_numpy, predictions_numpy, average='macro', zero_division=1)
         # Perform testing to measure performances on unseen data
         self.print_evaluation_stats(test_f1, test_accuracy, test_precision, test_recall)
         stats["test_f1"] = test_f1

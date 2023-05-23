@@ -234,7 +234,10 @@ def main(rank: int, world_size: int, classification_type: ClassificationType):
             # Check if the directory exists, to save the statistics of the training
             if not os.path.exists(Path.OUTPUT.value):
                 # If the path does not exists, create it
-                os.makedirs(Path.OUTPUT.value)
+                try:
+                    os.makedirs(Path.OUTPUT.value)
+                except FileExistsError as e:
+                    pass
             # Perform testing phase to measure performances on unseen data
             stats_test = oracle_trainer.evaluation(rank)
             stats[f"fold_{fold}"] = {
@@ -309,4 +312,5 @@ if __name__ == "__main__":
             classification_type = ClassificationType(options.classification_type.upper())
         except:
             print(f"Classification type {options.classification_type} not recognized. Classification type {ClassificationType.CATEGORY_PREDICTION} used.")
+    utils.release_memory()
     mp.spawn(main, args=([world_size, classification_type]), nprocs=world_size)
