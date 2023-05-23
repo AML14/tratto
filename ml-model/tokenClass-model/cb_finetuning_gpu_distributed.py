@@ -138,7 +138,7 @@ def main(rank: int, world_size: int, classification_type: ClassificationType):
         # Compute weights
         class_weights = data_processor.compute_weights("tokenClass")
         # The cross-entropy loss function is commonly used for classification tasks
-        loss_fn = CrossEntropyLoss(weight=class_weights)
+        loss_fn = CrossEntropyLoss(weight=torch.tensor(class_weights).to(rank))
 
         # initialize statistics
         stats = {}
@@ -146,7 +146,7 @@ def main(rank: int, world_size: int, classification_type: ClassificationType):
         # Stratified cross-validation training
         for fold in range(HyperParameter.NUM_SPLITS.value):
             # Get the train, validation, and test sorted datasets
-            Printer.print_dataset_generation()
+            #Printer.print_dataset_generation()
             train_dataset = data_processor.get_tokenized_dataset(DatasetType.TRAINING, fold)
             val_dataset = data_processor.get_tokenized_dataset(DatasetType.VALIDATION, fold)
             test_dataset = data_processor.get_tokenized_dataset(DatasetType.TEST)
@@ -216,7 +216,7 @@ def main(rank: int, world_size: int, classification_type: ClassificationType):
             )
 
             # Instantiation of the trainer
-            oracle_trainer = OracleTrainer(model, loss_fn, optimizer, dl_train, dl_val)
+            oracle_trainer = OracleTrainer(model, loss_fn, optimizer, dl_train, dl_val, dl_test)
             # Perform the training
             try:
                 # Train the model

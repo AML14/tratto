@@ -155,7 +155,7 @@ if __name__ == "__main__":
         # Compute weights
         class_weights = data_processor.compute_weights("tokenClass")
         # The cross-entropy loss function is commonly used for classification tasks
-        loss_fn = CrossEntropyLoss(weight=torch.tensor(class_weights))
+        loss_fn = CrossEntropyLoss(weight=torch.tensor(class_weights).to(device))
 
         stats = {}
 
@@ -169,7 +169,7 @@ if __name__ == "__main__":
 
             # DataLoader
             #
-            # DataLoader is a pytorch class that takes care of shuffling/sampling/weigthed
+            # DataLoader is a pytorch class that takes care of shuffling/sampling/weighted
             # sampling, batching, and using multiprocessing to load the data, in an efficient
             # and transparent way.
             # We define a dataloader for both the training and the validation dataset.

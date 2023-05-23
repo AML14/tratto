@@ -11,7 +11,7 @@ class Printer:
 
     @staticmethod
     def print_dataset_generation():
-        print("[4] Training and validation dataset generation phase")
+        print("[5] Training and validation dataset generation phase")
 
     @staticmethod
     def print_load_dataset():
@@ -35,4 +35,4 @@ class Printer:
 
     @staticmethod
     def print_training_phase():
-        print("[5] Training phase")
+        print("[4] Training phase")
