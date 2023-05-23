@@ -487,6 +487,8 @@ class OracleTrainer:
         # The validation phase is performed without accumulating
         # the gradient descent and without updating the weights
         # of the model
+
+        print("        Performing testing evaluation...")
         with torch.no_grad():
             for batch in iter(self._dl_test):
                 # Extract the inputs, the attention masks and the
