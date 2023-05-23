@@ -411,6 +411,8 @@ class OracleTrainer:
         # The validation phase is performed without accumulating
         # the gradient descent and without updating the weights
         # of the model
+
+        print("        Performing validation step...")
         with torch.no_grad():
             for batch in iter(self._dl_val):
                 total_steps += 1
