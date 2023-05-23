@@ -7,12 +7,12 @@ import json
 import traceback
 import torch.optim as optim
 import torch.multiprocessing as mp
+import optparse
 from torch.utils.data import DataLoader, DistributedSampler
 from torch.nn.parallel import DistributedDataParallel as DDP
 from torch.nn import CrossEntropyLoss
 from transformers import AutoTokenizer
 
-from src.enums.BatchType import BatchType
 from src.enums.DatasetType import DatasetType
 from src.enums.FileFormat import FileFormat
 from src.enums.FileName import FileName
@@ -25,7 +25,7 @@ from src.model.OracleTrainer import OracleTrainer
 from src.model.Printer import Printer
 from src.utils import utils
 
-def main(rank: int, world_size: int):
+def main(rank: int, world_size: int, classification_type: ClassificationType):
     try:
         d_path = Path.INPUT_DATASET.value
         # Setup distributed model with multiple gpus
@@ -86,7 +86,7 @@ def main(rank: int, world_size: int):
         )
         # Pre-processing data
         Printer.print_pre_processing()
-        data_processor.pre_processing(ClassificationType.CATEGORY_PREDICTION)
+        data_processor.pre_processing(classification_type)
         # Process the data
         data_processor.processing()
 
@@ -111,8 +111,10 @@ def main(rank: int, world_size: int):
         # start token and the end token to each input of the model.
         src = data_processor.get_src()
         max_input_len = 512  # reduce(lambda max_len, s: len(s) if len(s) > max_len else max_len, src,0) + 2
+        # get the output size of the classification task
+        linear_size = data_processor.get_tgt_classes_size()
         # Create instance of the model
-        model = OracleClassifier(max_input_len)
+        model = OracleClassifier(linear_size, max_input_len)
         # The model is loaded on the gpu (or cpu, if not available)
         model.to(rank)
         # Wrap the model with DDP
@@ -264,5 +266,23 @@ def main(rank: int, world_size: int):
 
 if __name__ == "__main__":
     Printer.print_welcome()
+    def get_options():
+        opt_parser = optparse.OptionParser()
+        opt_parser.add_option(
+            "-c", "--classification_type",
+            action="store",
+            type="string",
+            dest="classification_type",
+            help="Select the classification type: LABEL_PREDICTION or CATEGORY_PREDICTION"
+        )
+        options, args = opt_parser.parse_args()
+        return options
+    options = get_options()
     world_size = torch.cuda.device_count()
-    mp.spawn(main, args=([world_size]), nprocs=world_size)
+    classification_type = ClassificationType.CATEGORY_PREDICTION
+    if options.classification_type is not None:
+        try:
+            classification_type = ClassificationType(options.classification_type.upper())
+        except:
+            print(f"Classification type {options.classification_type} not recognized. Classification type {ClassificationType.CATEGORY_PREDICTION} used.")
+    mp.spawn(main, args=([world_size, classification_type]), nprocs=world_size)

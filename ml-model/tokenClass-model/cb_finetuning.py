@@ -5,6 +5,7 @@ import os
 import torch
 import json
 import traceback
+import optparse
 import torch.optim as optim
 from torch.utils.data import DataLoader, SequentialSampler
 from torch.nn import CrossEntropyLoss
@@ -25,11 +26,32 @@ from src.model.Printer import Printer
 from src.utils import utils
 
 if __name__ == "__main__":
+    def get_options():
+        opt_parser = optparse.OptionParser()
+        opt_parser.add_option(
+            "-c", "--classification_type",
+            action="store",
+            type="string",
+            dest="classification_type",
+            help="Select the classification type: LABEL_PREDICTION or CATEGORY_PREDICTION"
+        )
+        options, args = opt_parser.parse_args()
+        return options
+
+    options = get_options()
+
     try:
         Printer.print_welcome()
+        if options.classification_type is not None:
+            try:
+                classification_type = ClassificationType(options.classification_type.upper())
+            except:
+                print(f"Classification type {options.classification_type} not recognized. Classification type {ClassificationType.CATEGORY_PREDICTION} used.")
         Printer.print_load_gpu()
         device = utils.connect_to_device(DeviceType.GPU)
         d_path = Path.INPUT_DATASET.value
+        classification_type = ClassificationType.CATEGORY_PREDICTION
+
 
         ## Tokenizer
         #
@@ -83,9 +105,10 @@ if __name__ == "__main__":
             tokenizer,
             HyperParameter.NUM_SPLITS.value
         )
+        class_weights = data_processor.compute_weights("tokenClass")
         # Pre-processing data
         Printer.print_pre_processing()
-        data_processor.pre_processing(ClassificationType.CATEGORY_PREDICTION)
+        data_processor.pre_processing(classification_type)
         # Process the data
         data_processor.processing()
 
@@ -110,8 +133,10 @@ if __name__ == "__main__":
         # start token and the end token to each input of the model.
         src = data_processor.get_src()
         max_input_len = 512  # reduce(lambda max_len, s: len(s) if len(s) > max_len else max_len, src,0) + 2
+        # get the output size of the classification task
+        linear_size = data_processor.get_tgt_classes_size()
         # Create instance of the model
-        model = OracleClassifier(max_input_len)
+        model = OracleClassifier(linear_size, max_input_len)
         # The model is loaded on the gpu (or cpu, if not available)
         model.to(device)
 
@@ -130,7 +155,7 @@ if __name__ == "__main__":
         # Compute weights
         class_weights = data_processor.compute_weights("tokenClass")
         # The cross-entropy loss function is commonly used for classification tasks
-        loss_fn = CrossEntropyLoss(weight=class_weights)
+        loss_fn = CrossEntropyLoss(weight=torch.tensor(class_weights))
 
         stats = {}
 

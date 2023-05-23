@@ -13,7 +13,7 @@ class HyperParameter(Enum):
     # number of epochs to train the model
     NUM_EPOCHS = 1
     # Specify the number of folds for cross-validation
-    NUM_SPLITS = 5
+    NUM_SPLITS = 2
     # number of steps after which computes the validation loss and accuracy
     NUM_STEPS = 100
     # percentage of the dataset that will be used for training (the remaining percentage will be for validation and test)

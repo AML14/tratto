@@ -129,6 +129,12 @@ class DataProcessor:
         # Return the computed weights
         return class_weights
 
+    def get_tgt_classes_size(self):
+        classes_size = len(self._tgt_map.keys())
+        if classes_size == 0:
+            print("[Warn] - classes size is 0")
+        return classes_size
+
     def get_src(self):
         """
         The method returns a copy of the list of input datapoints for training and validation

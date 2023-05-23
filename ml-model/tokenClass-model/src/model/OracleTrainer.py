@@ -186,8 +186,6 @@ class OracleTrainer:
                         time_over = True
                         stats['time_100'] = math.inf
                         break
-            if flag_end or time_over:
-                break
         return stats
 
     @staticmethod

@@ -19,17 +19,21 @@ class OracleClassifier(Module):
 
     Parameters
     ----------
+    linear_size: int
+        The output of the last feed-forward layer (the size represents the number of classes)
     max_input_len: int
         The length of the longest input in the whole dataset
     """
     def __init__(
             self,
-            max_input_len: int = 512
+            linear_size: int,
+            max_input_len: int = 512,
     ):
         super(OracleClassifier, self).__init__()
         # First layer of the model: the pre-trained codeBERT model
         self.codebert_transformer = AutoModel.from_pretrained("microsoft/codebert-base")
         # Setup of the pre-trained model layer
+        """
         self.codebert_transformer.config.max_position_embeddings = max_input_len
         self.codebert_transformer.base_model.embeddings.position_ids = torch.arange(max_input_len).expand((1, -1))
         self.codebert_transformer.base_model.embeddings.token_type_ids = torch.zeros(max_input_len).expand((1, -1)).int()
@@ -37,6 +41,7 @@ class OracleClassifier(Module):
         self.codebert_transformer.base_model.embeddings.position_embeddings.weight = torch.nn.Parameter(
             torch.cat((orig_pos_emb, orig_pos_emb))
         )
+        """
 
         # The last layer of the pre-trained codeBERT model. It is necessary to
         # get the size of the output layer and understand the size of the next
@@ -46,8 +51,8 @@ class OracleClassifier(Module):
         # Second layer of the model: the fully-connected layer.
         # The size of the input is equal to the dimension of the output vector
         # of the pre-trained codeBERT model, while the size of the output is
-        # a vector of two elements (the two classes of our classifier)
-        self.linear = Linear(hidden_size, 2)
+        # a vector of {@code linear_size} elements (the classes of our classifier)
+        self.linear = Linear(hidden_size, linear_size)
 
     def forward(
             self,
