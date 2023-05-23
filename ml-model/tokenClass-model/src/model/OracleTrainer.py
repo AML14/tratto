@@ -8,7 +8,7 @@ import torch.optim as optim
 from torch.nn import Module
 from torch.utils.data import DataLoader
 
-from sklearn.metrics import average_precision_score, accuracy_score, precision_score, recall_score
+from sklearn.metrics import f1_score, accuracy_score, precision_score, recall_score
 from src.model.OracleClassifier import OracleClassifier
 
 
@@ -17,7 +17,7 @@ class OracleTrainer:
     The *OracleTrainer* class is an helper class that, given the loss
     function, the optimizer, the model, and the training and validation
     datasets perform the training of the model and computes the loss and
-    the auprc of the training and validation phases, saves the statistics
+    the f1 score of the training and validation phases, saves the statistics
     of the training, and have auxiliary methods that let to visualize the
     trend of the training and the validation, over the epochs.
 
@@ -108,8 +108,8 @@ class OracleTrainer:
         stats = {
             't_loss': [],
             'v_loss': [],
-            't_auprc': [],
-            'v_auprc': [],
+            't_f1_score': [],
+            'v_f1_score': [],
             't_accuracy': [],
             'v_accuracy': [],
             't_precision': [],
@@ -125,12 +125,12 @@ class OracleTrainer:
         # with all the batch of the training dataset. After a given
         # number of *accumulation_steps* the trainer performs the
         # backpropagation and updates the weights accordingly.
-        # Moreover, it computes the auprc and the total loss of
+        # Moreover, it computes the f1 score and the total loss of
         # the training, and performs the validation to understand how
         # well the model generalize on the validation data.
         for epoch in range(1, num_epochs + 1):
             total_loss = 0
-            auprc_t = 0
+            t_f1 = 0
             trained_total = 0
             predicted_correct = 0
             all_predictions = []
@@ -184,26 +184,32 @@ class OracleTrainer:
                 if (steps % num_steps) == 0:
                     # Compute average statistics for the loss
                     mean_t_loss = total_loss / (num_steps / accumulation_steps)
-                    # Compute the auprc of the model within the accumulation
+                    # Compute the f1 score of the model within the accumulation
                     # steps
                     predictions_numpy = np.array(all_predictions)
                     labels_numpy = np.array(all_labels)
-                    auprc_t = average_precision_score(labels_numpy, predictions_numpy)
+                    t_f1 = f1_score(labels_numpy, predictions_numpy, average="macro")
+                    # Compute accuracy
+                    t_accuracy = accuracy_score(labels_numpy, predictions_numpy)
+                    # Compute precision
+                    t_precision = precision_score(labels_numpy, predictions_numpy)
+                    # Compute recall
+                    t_recall = recall_score(labels_numpy, predictions_numpy)
 
                     # Validation phase
-                    mean_v_loss, auprc_v, accuracy, precision, recall = self.validation(device)
+                    mean_v_loss, v_f1, v_accuracy, v_precision, v_recall = self.validation(device)
 
                     # Update the statistics
                     stats['t_loss'].append(mean_t_loss)
                     stats['v_loss'].append(mean_v_loss)
-                    stats['t_auprc'].append(mean_t_loss)
-                    stats['v_auprc'].append(mean_v_loss)
-                    stats['t_accuracy'].append(mean_t_loss)
-                    stats['v_accuracy'].append(mean_v_loss)
-                    stats['t_precision'].append(mean_t_loss)
-                    stats['v_precision'].append(mean_v_loss)
-                    stats['t_recall'].append(mean_t_loss)
-                    stats['v_recall'].append(mean_v_loss)
+                    stats['t_f1_score'].append(t_f1)
+                    stats['v_f1_score'].append(v_f1)
+                    stats['t_accuracy'].append(t_accuracy)
+                    stats['v_accuracy'].append(v_accuracy)
+                    stats['t_precision'].append(t_precision)
+                    stats['v_precision'].append(v_precision)
+                    stats['t_recall'].append(t_recall)
+                    stats['v_recall'].append(v_recall)
 
                     # Print the statistics
                     self.print_stats(
@@ -211,10 +217,18 @@ class OracleTrainer:
                         num_epochs,
                         step + 1,
                         len(self._dl_train),
-                        mean_t_loss,
-                        auprc_t,
-                        mean_v_loss,
-                        auprc_t
+                        {
+                            't_loss': mean_t_loss,
+                            'v_loss': mean_v_loss,
+                            't_f1_score': t_f1,
+                            'v_f1_score': v_f1,
+                            't_accuracy': t_accuracy,
+                            'v_accuracy': v_accuracy,
+                            't_precision': t_precision,
+                            'v_precision': v_precision,
+                            't_recall': t_recall,
+                            'v_recall': v_recall
+                        }
                     )
 
                     # Reset the total loss
@@ -237,10 +251,7 @@ class OracleTrainer:
             num_epochs: int,
             step: int,
             total_steps: int,
-            mean_t_loss: float,
-            auprc_t: float,
-            mean_v_loss: float,
-            auprc_v: float
+            stats
     ):
         """
         The method prints the statistics of the training and validation phases
@@ -257,84 +268,89 @@ class OracleTrainer:
             The total number of steps within an epoch
         mean_t_loss: float
             Average training loss
-        auprc_t: float
-            Area Under the Precision-Recall Curve of the training phase
-        accuracy_t: float
-            Accuracy of the training phase
-        precision_t: float
-            Precision of the training phase
-        recall_t: float
-            Recall of the training phase
-        mean_v_loss: float
-            Average validation loss
-        auprc_v: float
-            Area Under the Precision-Recall Curve of the validation phase
-        accuracy_v: float
-            Accuracy of the validation phase
-        precision_v: float
-            Precision of the validation phase
-        recall_v: float
-            Recall of the validation phase
+        stats: dict
+            t_loss: float
+                Average training loss
+            v_loss: float
+                Average validation loss
+            f1_score_t: float
+                F1 score of the training phase
+            accuracy_t: float
+                Accuracy of the training phase
+            precision_t: float
+                Precision of the training phase
+            recall_t: float
+                Recall of the training phase
+            mean_v_loss: float
+                Average validation loss
+            f1_score_v: float
+                F1 score of the validation phase
+            accuracy_v: float
+                Accuracy of the validation phase
+            precision_v: float
+                Precision of the validation phase
+            recall_v: float
+                Recall of the validation phase
         """
         print("    " + '-'*30)
         print("    " + "STATISTICS")
         print("    " + '-'*30)
         print("    " + f"EPOCH: [{epoch} / {num_epochs}]")
         print("    " + f"STEP: [{step} / {total_steps}]")
-        print("    " + f"TRAINING LOSS: {mean_t_loss:.4f}")
-        print("    " + f"TRAINING AUPRC: {auprc_t:.2f}%")
-        print("    " + f"TRAINING ACCURACY: {accuracy_t:.2f}%")
-        print("    " + f"TRAINING PRECISION: {precision_t:.2f}%")
-        print("    " + f"TRAINING RECALL: {recall_t:.2f}%")
+        print("    " + f"TRAINING LOSS: {stats['t_loss']:.4f}")
+        print("    " + f"TRAINING F1 SCORE: {stats['t_f1_score']:.2f}%")
+        print("    " + f"TRAINING ACCURACY: {stats['t_accuracy']:.2f}%")
+        print("    " + f"TRAINING PRECISION: {stats['t_precision']:.2f}%")
+        print("    " + f"TRAINING RECALL: {stats['t_recall']:.2f}%")
         print("    " + '-'*30)
-        print("    " + f"VALIDATION LOSS: {mean_v_loss:.4f}")
-        print("    " + f"VALIDATION AUPRC: {auprc_v:.2f}%")
-        print("    " + f"VALIDATION ACCURACY: {accuracy_v:.2f}%")
-        print("    " + f"VALIDATION PRECISION: {precision_v:.2f}%")
-        print("    " + f"VALIDATION RECALL: {recall_v:.2f}%")
+        print("    " + f"VALIDATION LOSS: {stats['v_loss']:.4f}")
+        print("    " + f"VALIDATION F1 SCORE: {stats['v_f1_score']:.2f}%")
+        print("    " + f"VALIDATION ACCURACY: {stats['v_accuracy']:.2f}%")
+        print("    " + f"VALIDATION PRECISION: {stats['v_precision']:.2f}%")
+        print("    " + f"VALIDATION RECALL: {stats['v_recall']:.2f}%")
         print("    " + '-'*30)
 
     @staticmethod
     def print_evaluation_stats(
-            auprc_t: float,
-            accuracy: float,
-            precision_t: float,
-            recall: float
+            test_f1_score: float,
+            test_accuracy: float,
+            test_precision: float,
+            test_recall: float
     ):
         """
         The method prints the statistics of the testing phases
 
         Parameters
         ----------
-        auprc_t: float
-            Area Under the Precision-Recall Curve of the testing phase
-        accuracy_t: float
+        test_f1_scoret: float
+            F1 score of the testing phase
+        test_accuracy: float
             Accuracy of the testing phase
-        precision_t: float
+        test_precision: float
             Precision of the testing phase
-        recall_t: float
+        test_recall: float
             Recall of the testing phase
         """
         print("    " + '-'*30)
         print("    " + "TESTING STATISTICS")
         print("    " + '-'*30)
-        print("    " + f"TESTING AUPRC: {auprc_t:.2f}%")
+        print("    " + f"TESTING F1 SCORE: {test_f1_score:.2f}%")
         print("    " + '-'*30)
-        print("    " + f"TESTING ACCURACY: {accuracy_t:.2f}%")
+        print("    " + f"TESTING ACCURACY: {test_accuracy:.2f}%")
         print("    " + '-'*30)
-        print("    " + f"TESTING PRECISION: {precision_t:.2f}%")
+        print("    " + f"TESTING PRECISION: {test_precision:.2f}%")
         print("    " + '-'*30)
-        print("    " + f"TESTING RECALL: {recall_t:.2f}%")
+        print("    " + f"TESTING RECALL: {test_recall:.2f}%")
         print("    " + '-'*30)
 
     @staticmethod
-    def plot_loss_auprc(
+    def plot_loss_f1_score(
             steps: int,
             ax: any,
             stats: dict
     ):
         """
-        The method plots the trend of the loss and auprc
+        The method plots the trend of the loss and f1_score
 
         Parameters
         ----------
@@ -347,16 +363,16 @@ class OracleTrainer:
         """
         for i in range(2):
             for j in range(2):
-                title = ('Training ' if j == 0 else 'Validation') + ('Loss' if i == 0 else 'AUPRC')
-                dict_label = ('t_' if j == 0 else 'v_') + ('loss' if i == 0 else 'auprc')
+                title = ('Training ' if j == 0 else 'Validation') + ('Loss' if i == 0 else 'f1_score')
+                dict_label = ('t_' if j == 0 else 'v_') + ('loss' if i == 0 else 'f1_score')
                 color = 'blue'
                 ax[i][j].set_title(title, fontsize=30)
                 ax[i][j].set_xlabel("steps", fontsize=30)
                 ax[i][j].set_ylabel("loss", fontsize=30)
                 ax[i][j].plot(range(0, len(stats['t_loss']) * steps, steps), np.array(stats[dict_label])[:], '-', color=color)
         for i in range(2):
-            title = 'Training and Validation ' + ('Loss' if i == 0 else 'AUPRC')
-            dict_label = 'loss' if i == 0 else 'auprc'
+            title = 'Training and Validation ' + ('Loss' if i == 0 else 'f1_score')
+            dict_label = 'loss' if i == 0 else 'f1_score'
             ax[2][i].set_title(title, fontsize=30)
             ax[2][i].set_xlabel("steps", fontsize=30)
             ax[2][i].set_ylabel("loss", fontsize=30)
@@ -379,8 +395,8 @@ class OracleTrainer:
         -------
         mean_v_loss: float
             Average loss of the validation phase
-        auprc:
-            Area Under the Precision-Recall Curve of the validation phase
+        v_f1:
+            F1 score of the validation phase
         """
         # model in evaluation mode
         self._model.eval()
@@ -418,18 +434,18 @@ class OracleTrainer:
                 all_labels.extend(expected_out.detach().cpu().numpy())
         # Compute the average validation loss
         mean_v_loss = total_loss / len(self._dl_val)
-        # Compute the auprc of the model within the accumulation
+        # Compute the f1score of the model within the accumulation
         # steps
         predictions_numpy = np.array(all_predictions)
         labels_numpy = np.array(all_labels)
-        auprc = average_precision_score(labels_numpy, predictions_numpy)
+        v_f1 = f1_score(labels_numpy, predictions_numpy, average="macro")
         # Compute accuracy
         accuracy = accuracy_score(labels_numpy, predictions_numpy)
         # Compute precision
         precision = precision_score(labels_numpy, predictions_numpy)
         # Compute recall
         recall = recall_score(labels_numpy, predictions_numpy)
-        return mean_v_loss, auprc, accuracy, precision, recall
+        return mean_v_loss, v_f1, accuracy, precision, recall
 
     def evaluation(
         self,
@@ -451,7 +467,7 @@ class OracleTrainer:
         # Dictionary of the statistics
         stats = {
             'test_loss': [],
-            'test_auprc': [],
+            'test_f1_score': [],
             'test_accuracy': [],
             'test_precision': [],
             'test_recall': []
@@ -471,7 +487,6 @@ class OracleTrainer:
         # of the model
         with torch.no_grad():
             for batch in iter(self._dl_test):
-                total_steps += 1
                 # Extract the inputs, the attention masks and the
                 # targets from the batch
                 src_input = batch[0].to(device)
@@ -487,17 +502,21 @@ class OracleTrainer:
                 # Accumulate predictions and labels
                 all_predictions.extend(predicted.detach().cpu().numpy())
                 all_labels.extend(expected_out.detach().cpu().numpy())
-        # Compute the auprc of the model within the accumulation
+        # Compute the f1 score of the model within the accumulation
         # steps
         predictions_numpy = np.array(all_predictions)
         labels_numpy = np.array(all_labels)
-        auprc = average_precision_score(labels_numpy, predictions_numpy)
+        test_f1 = f1_score(labels_numpy, predictions_numpy, average='macro')
         # Compute accuracy
-        accuracy = accuracy_score(labels_numpy, predictions_numpy)
+        test_accuracy = accuracy_score(labels_numpy, predictions_numpy)
         # Compute precision
-        precision = precision_score(labels_numpy, predictions_numpy)
+        test_precision = precision_score(labels_numpy, predictions_numpy)
         # Compute recall
-        recall = recall_score(labels_numpy, predictions_numpy)
+        test_recall = recall_score(labels_numpy, predictions_numpy)
         # Perform testing to measure performances on unseen data
-        self.print_evaluation_stats(auprc, accuracy, precision, recall)
+        self.print_evaluation_stats(test_f1, test_accuracy, test_precision, test_recall)
+        stats["test_f1"] = test_f1
+        stats["test_accuracy"] = test_accuracy
+        stats["test_precision"] = test_precision
+        stats["test_recall"] = test_recall
         return stats

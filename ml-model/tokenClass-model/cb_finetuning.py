@@ -162,7 +162,7 @@ if __name__ == "__main__":
         # Stratified cross-validation training
         for fold in range(HyperParameter.NUM_SPLITS.value):
             # Get the train, validation, and test sorted datasets
-            Printer.print_dataset_generation()
+            #Printer.print_dataset_generation()
             train_dataset = data_processor.get_tokenized_dataset(DatasetType.TRAINING, fold)
             val_dataset = data_processor.get_tokenized_dataset(DatasetType.VALIDATION, fold)
             test_dataset = data_processor.get_tokenized_dataset(DatasetType.TEST)
@@ -200,6 +200,8 @@ if __name__ == "__main__":
             )
             # Instantiation of the trainer
             oracle_trainer = OracleTrainer(model, loss_fn, optimizer, dl_train, dl_val, dl_test)
+            # Perform testing phase
+            stats_test = oracle_trainer.evaluation(device)
             try:
                 # Train the model
                 stats[f"fold_{fold}"] = oracle_trainer.train(
@@ -215,7 +217,7 @@ if __name__ == "__main__":
                     utils.release_memory()
                 raise e
             # Perform testing phase
-            stats_test = oracle_trainer.evaluation(device)
+            #stats_test = oracle_trainer.evaluation(device)
             stats[f"fold_{fold}"] = {
                 **stats[f"fold_{fold}"],
                 **stats_test
