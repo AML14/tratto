@@ -161,10 +161,11 @@ if __name__ == "__main__":
 
         # Stratified cross-validation training
         for fold in range(HyperParameter.NUM_SPLITS.value):
-            # Get the train and validation sorted datasets
+            # Get the train, validation, and test sorted datasets
             Printer.print_dataset_generation()
             train_dataset = data_processor.get_tokenized_dataset(DatasetType.TRAINING, fold)
             val_dataset = data_processor.get_tokenized_dataset(DatasetType.VALIDATION, fold)
+            test_dataset = data_processor.get_tokenized_dataset(DatasetType.TEST)
 
             # DataLoader
             #
@@ -183,7 +184,7 @@ if __name__ == "__main__":
             # use of the **SequentialSampler** will guarantee to maintain this criteria for
             # the creation of the batches.
             #
-            # Create instance of training and validation dataloaders
+            # Create instance of training, validation, and test dataloaders
             dl_train = DataLoader(
                 train_dataset,
                 sampler = SequentialSampler(train_dataset),
@@ -193,8 +194,12 @@ if __name__ == "__main__":
                 sampler = SequentialSampler(val_dataset),
                 batch_size = HyperParameter.BATCH_SIZE.value
             )
+            dl_test = DataLoader(test_dataset,
+                sampler = SequentialSampler(val_dataset),
+                batch_size = HyperParameter.BATCH_SIZE.value
+            )
             # Instantiation of the trainer
-            oracle_trainer = OracleTrainer(model, loss_fn, optimizer, dl_train, dl_val)
+            oracle_trainer = OracleTrainer(model, loss_fn, optimizer, dl_train, dl_val, dl_test)
             try:
                 # Train the model
                 stats[f"fold_{fold}"] = oracle_trainer.train(
@@ -209,7 +214,12 @@ if __name__ == "__main__":
                     del model
                     utils.release_memory()
                 raise e
-
+            # Perform testing phase
+            stats_test = oracle_trainer.evaluation()
+            stats[f"fold_{fold}"] = {
+                **stats[f"fold_{fold}"],
+                **stats_test
+            }
             # Check if the directory exists, to save the statistics of the training
             if not os.path.exists(Path.OUTPUT.value):
                 # If the path does not exists, create it

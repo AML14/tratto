@@ -145,10 +145,11 @@ def main(rank: int, world_size: int, classification_type: ClassificationType):
 
         # Stratified cross-validation training
         for fold in range(HyperParameter.NUM_SPLITS.value):
-            # Get the train and validation sorted datasets
+            # Get the train, validation, and test sorted datasets
             Printer.print_dataset_generation()
             train_dataset = data_processor.get_tokenized_dataset(DatasetType.TRAINING, fold)
             val_dataset = data_processor.get_tokenized_dataset(DatasetType.VALIDATION, fold)
+            test_dataset = data_processor.get_tokenized_dataset(DatasetType.TEST)
 
             # DataLoader - TO BE UPDATED!
             #
@@ -182,6 +183,13 @@ def main(rank: int, world_size: int, classification_type: ClassificationType):
                 shuffle=False,
                 drop_last=False
             )
+            test_sampler = DistributedSampler(
+                test_dataset,
+                num_replicas=world_size,
+                rank=rank,
+                shuffle=False,
+                drop_last=False
+            )
             dl_train = DataLoader(
                 train_dataset,
                 batch_size=HyperParameter.BATCH_SIZE.value,
@@ -198,6 +206,15 @@ def main(rank: int, world_size: int, classification_type: ClassificationType):
                 shuffle=False,
                 sampler=val_sampler
             )
+            dl_test = DataLoader(
+                test_dataset,
+                batch_size=HyperParameter.BATCH_SIZE.value,
+                pin_memory=False,
+                drop_last=False,
+                shuffle=False,
+                sampler=test_sampler
+            )
+
             # Instantiation of the trainer
             oracle_trainer = OracleTrainer(model, loss_fn, optimizer, dl_train, dl_val)
             # Perform the training
@@ -218,6 +235,12 @@ def main(rank: int, world_size: int, classification_type: ClassificationType):
             if not os.path.exists(Path.OUTPUT.value):
                 # If the path does not exists, create it
                 os.makedirs(Path.OUTPUT.value)
+            # Perform testing phase to measure performances on unseen data
+            stats_test = oracle_trainer.evaluation()
+            stats[f"fold_{fold}"] = {
+                **stats[f"fold_{fold}"],
+                **stats_test
+            }
             # Save the statistics in json format
             with open(
                     os.path.join(
@@ -243,6 +266,7 @@ def main(rank: int, world_size: int, classification_type: ClassificationType):
             Printer.print_save_model()
             torch.save(model, os.path.join(Path.OUTPUT.value, f"tratto_model_fold{fold}.pt"))
             torch.save(model.module.state_dict(), os.path.join(Path.OUTPUT.value, f"tratto_model_state_dict_fold_{fold}.pt"))
+
         # ## Save the statistics and the trained model
         #
         # Saves the statistics for future analysis, and the trained model for future use or improvements.

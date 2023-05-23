@@ -66,11 +66,15 @@ class DataProcessor:
             - b_val_tokenized: contains a list (each element representing a fold) of lists of batches for the validation
               dataset, after the original dataset has been splitted (according to *training_ratio* value), grouped in
               batches, and tokenized
+            - b_test_tokenized: contains a list of batches for the validation dataset, after the testing dataset has been 
+              grouped in batches, and tokenized
             - b_train: contains a list (each element representing a fold) of lists of batches for the training dataset,
               after the original dataset has been splitted (according to *training_ratio* value) and grouped in batches,
               but not tokenized yet
             - b_val: contains a list (each element representing a fold) of lists of batches for the training dataset,
               after the original dataset has been splitted (according to *training_ratio* value) and grouped in batches,
+              but not tokenized yet
+            - b_test: contains a list of batches for the testing dataset, after the testing dataset has been grouped in batches,
               but not tokenized yet
     """
     def __init__(
@@ -97,8 +101,10 @@ class DataProcessor:
         self._processed_dataset = {
             "b_train_tokenized": [],
             "b_val_tokenized": [],
+            "b_test_tokenized": [],
             "b_train": [],
-            "b_val": []
+            "b_val": [],
+            "b_test": []
         }
 
     def compute_weights(self, column_name: str):
@@ -193,6 +199,7 @@ class DataProcessor:
             The dataset type that the method must return
                 - DatasetType.TRAINING for the training dataset
                 - DatasetType.VALIDATION for the validation dataset
+                - DatasetType.TEST for the test dataset
         fold_idx: int
             The index of the fold (0 by default)
 
@@ -214,6 +221,8 @@ class DataProcessor:
             b_tokenized = self._processed_dataset["b_train_tokenized"][fold_idx]
         elif d_type == DatasetType.VALIDATION:
             b_tokenized = self._processed_dataset["b_val_tokenized"][fold_idx]
+        elif d_type == DatasetType.TEST:
+            b_tokenized = self._processed_dataset["b_test_tokenized"]
         else:
             raise Exception(f"Unrecognized DataType value: {d_type}")
 
@@ -313,6 +322,12 @@ class DataProcessor:
             # The batches of datapoints in the training and validation datasets are tokenized
             self._processed_dataset["b_train_tokenized"].append(self._tokenize_batches(t_batches))
             self._processed_dataset["b_val_tokenized"].append(self._tokenize_batches(v_batches))
+        # Group test set in batches
+        test_batches = self._generate_batches(self._src_test, self._tgt_test, self._batch_size)
+        self._processed_dataset["b_test"] = test_batches
+        # The batches of datapoints in the test set are tokenized
+        self._processed_dataset["b_test_tokenized"] = self._tokenize_batches(test_batches)
+        
 
     def pre_processing(self, classification_type: Type[ClassificationType]):
         # drop column id (it is not relevant for training the model)
@@ -445,7 +460,7 @@ class DataProcessor:
         # datasets path
         oracles_dataset = os.path.join(d_path)
         # collects partial dataframes from oracles
-        for file_name in os.listdir(oracles_dataset):
+        for file_name in os.listdir(oracles_dataset)[:10]:
             df = pd.read_json(os.path.join(oracles_dataset,  file_name))
             dfs.append(df)
         df_dataset = pd.concat(dfs)
