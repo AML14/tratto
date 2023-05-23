@@ -431,7 +431,7 @@ class OracleTrainer:
         recall = recall_score(labels_numpy, predictions_numpy)
         return mean_v_loss, auprc, accuracy, precision, recall
 
-    def evaluation():
+    def evaluation(self):
         """
         The method computes the testing phase.
 
