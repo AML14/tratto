@@ -1,7 +1,7 @@
 import os
 import math
 import random
-from typing import Type
+from typing import Type, Dict, Union
 import sys
 
 #sys.path.append(f"{os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..')}")
@@ -47,6 +47,9 @@ class DataProcessor:
         The list of expected class values (in one-shot vector format) for each datapoint in input to the model.
         This target list is used to train and validate the model.
         Initially set to None
+    tgt_map : Dict[str,list[int]]
+        The dictionary is composed of all the unique target values, in string format (as key), and the corresponding
+        one-shot vector representation (as value)
     src_test : list[str]
         The list of input datapoints (strings concatenated).
         This source list is used to test the model.
@@ -55,22 +58,20 @@ class DataProcessor:
         The list of expected values (in one-shot vector format) for a subset of datapoint in input to the model.
         This target list is used to test the model.
         Initially set to None
-    processed_dataset: dict
+    processed_dataset: Dict[str,list[list[Union[str,int]]]]
         Dictionary of the processed dataset:
-            - d_sorted: contains the tuples of (input, oracle_id, target) datapoints
-              after the original dataset has been sorted according to the selected criteria
-            - b_train_tokenized: contains the list of batches for the training dataset,
-              after the original dataset has been splitted (according to *training_ratio*
-              value), grouped in batches, and tokenized
-            - b_val_tokenized: contains the list of batches for the validation dataset,
-              after the original dataset has been splitted (according to *training_ratio*
-              value), grouped in batches, and tokenized
-            - b_train: contains the list of batches for the training dataset, after
-              the original dataset has been splitted (according to *training_ratio*
-              value) and grouped in batches, but not tokenized yet
-            - b_val: contains the list of batches for the training dataset, after
-              the original dataset has been splitted (according to *training_ratio*
-              value) and grouped in batches, but not tokenized yet
+            - b_train_tokenized: contains a list (each element representing a fold) of lists of batches for the training
+              dataset, after the original dataset has been splitted (according to *training_ratio* value), grouped in
+              batches, and tokenized
+            - b_val_tokenized: contains a list (each element representing a fold) of lists of batches for the validation
+              dataset, after the original dataset has been splitted (according to *training_ratio* value), grouped in
+              batches, and tokenized
+            - b_train: contains a list (each element representing a fold) of lists of batches for the training dataset,
+              after the original dataset has been splitted (according to *training_ratio* value) and grouped in batches,
+              but not tokenized yet
+            - b_val: contains a list (each element representing a fold) of lists of batches for the training dataset,
+              after the original dataset has been splitted (according to *training_ratio* value) and grouped in batches,
+              but not tokenized yet
     """
     def __init__(
             self,
@@ -89,6 +90,7 @@ class DataProcessor:
         self._df_dataset = self._load_dataset(d_path)
         self._src = None
         self._tgt = None
+        self._tgt_map = {}
         self._src_test = None
         self._tgt_test = None
         self._n_split = n_split
@@ -274,6 +276,7 @@ class DataProcessor:
             vector = np.zeros(len(unique_values))
             vector[i] = 1.0
             mapping[value] = list(vector)
+        self._tgt_map = mapping
         # Add a new column to the original DataFrame with the mapped vectors
         self._df_dataset[new_column_name] = self._df_dataset[column_name].map(mapping)
 
@@ -287,8 +290,10 @@ class DataProcessor:
         datasets of each fold.
         """
         # Create the cross-validation splitter
-        cross_validation = StratifiedKFold(n_splits=self._n_split, shuffle=True)
-        for fold, (t_fold_indices, v_fold_indices) in enumerate(cross_validation.split(self._src, self._tgt)):
+        cross_validation = StratifiedKFold(n_splits=self._n_split, shuffle=True, random_state=42)
+        print(f"        Generating {self._n_split} folds for cross-validation.")
+        for fold, (t_fold_indices, v_fold_indices) in enumerate(cross_validation.split(self._src, np.array([np.array(dp) for dp in self._tgt]))):
+            print(f"            Processing fold {fold + 1}.")
             # Split the dataset into training and validation sets for the current fold
             t_src_fold_data = [self._src[i] for i in t_fold_indices]
             t_tgt_fold_data = [self._tgt[i] for i in t_fold_indices]
@@ -306,6 +311,10 @@ class DataProcessor:
     def pre_processing(self, classification_type: Type[ClassificationType]):
         # drop column id (it is not relevant for training the model)
         self._df_dataset = self._df_dataset.drop(['id'], axis=1)
+        # replicate single occurrences
+        single_occurrence_rows = self._df_dataset[self._df_dataset['tokenClass'].map(self._df_dataset['tokenClass'].value_counts()) == 1]
+        for i in range(self._n_split):
+            self._df_dataset = pd.concat([self._df_dataset, single_occurrence_rows], ignore_index=True)
         # map empty cells to empty strings
         self._df_dataset.fillna('', inplace=True)
         # specify the type of each column in the dataset
@@ -332,19 +341,6 @@ class DataProcessor:
         # if the model predicts classes, remove the label from the input
         if classification_type == ClassificationType.CATEGORY_PREDICTION:
             df_src = df_src.drop(['tokenClass'], axis=1)
-        
-        # create a dataframe for the oracle ids (we convert the boolean values to int64)
-        df_oracle_ids = self._df_dataset[['oracleId']]
-        
-        # generate target, depending on classification type
-        """if classification_type == ClassificationType.CATEGORY_PREDICTION:
-            # map target classes to vectors
-            map_column_values_to_one_shot_vectors("tokenClass","tokenClassVectorized")
-            df_tgt = self._df_dataset["tokenClassVectorized"]
-        else:
-            # create a dataframe for the target labels (the apply function convert the
-            # boolean labels to 0s and 1s
-            df_tgt = self._df_dataset[['label']].replace({True: 1, False: 0})"""
 
         # The apply function maps each row of the src dataset with multiple columns, to
         # a row with a single column containing the concatenation of the strings of each
@@ -382,11 +378,10 @@ class DataProcessor:
         # The pandas dataframe is transformed in a list of strings: each string is a input
         # to the model
         src = df_src_concat.to_numpy().tolist()
-        # map target classes to vectors
         self.map_column_values_to_one_shot_vectors("tokenClass","tokenClassVectorized")
-        tgt = self._df_dataset["tokenClassVectorized"].to_numpy().tolist()
+        tgt = self._df_dataset["tokenClass"].values
         # Split the dataset into training and test sets with stratified sampling based on target classes
-        self._src, self._tgt, self._src_test, self._tgt_test = train_test_split(src, tgt, test_size=self._test_ratio, stratify=tgt)
+        self._src, self._src_test, self._tgt, self._tgt_test = train_test_split(src, tgt, test_size=self._test_ratio, stratify=tgt)
 
     def _generate_batches(self, src_data: list[str], tgt_data: list[list[float]], batch_size: int):
         """
@@ -511,8 +506,10 @@ class DataProcessor:
             t_inputs = torch.stack([torch.tensor(ids) for ids in t_src_dict['input_ids']])
             # Transform the list into a tensor stack
             t_attention_masks = torch.stack([torch.tensor(mask) for mask in t_src_dict['attention_mask']])
+            # map targets value into one-shot vectors
+            b_targets_one_shot = list(map(lambda t: self._tgt_map[t],b_targets))
             # Transform the targets into a tensor list
-            targets_tensor = torch.tensor(b_targets)
+            targets_tensor = torch.tensor(b_targets_one_shot)
             # Append triplet to list of tokenized batches
             tokenized_batches.append((t_inputs, t_attention_masks, targets_tensor))
         # return list of tokenized batches

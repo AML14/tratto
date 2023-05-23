@@ -4,12 +4,14 @@
 import os
 import torch
 import json
+import traceback
 import torch.optim as optim
 from torch.utils.data import DataLoader, SequentialSampler
 from torch.nn import CrossEntropyLoss
 from transformers import AutoTokenizer
 
 from src.enums.BatchType import BatchType
+from src.enums.ClassificationType import ClassificationType
 from src.enums.DatasetType import DatasetType
 from src.enums.DeviceType import DeviceType
 from src.enums.FileFormat import FileFormat
@@ -83,7 +85,7 @@ if __name__ == "__main__":
         )
         # Pre-processing data
         Printer.print_pre_processing()
-        data_processor.pre_processing()
+        data_processor.pre_processing(ClassificationType.CATEGORY_PREDICTION)
         # Process the data
         data_processor.processing()
 
@@ -126,18 +128,18 @@ if __name__ == "__main__":
         # Adam optimizer with learning rate set with the value of the LR hyperparameter
         optimizer = optim.Adam(model.parameters(), lr=HyperParameter.LR.value)
         # Compute weights
-        class_weights = data_processor.compute_class_weights("tokenClass")
+        class_weights = data_processor.compute_weights("tokenClass")
         # The cross-entropy loss function is commonly used for classification tasks
         loss_fn = CrossEntropyLoss(weight=class_weights)
 
         stats = {}
 
         # Stratified cross-validation training
-        for i in range(HyperParameter.NUM_SPLITS.value):
+        for fold in range(HyperParameter.NUM_SPLITS.value):
             # Get the train and validation sorted datasets
             Printer.print_dataset_generation()
-            train_dataset = data_processor.get_tokenized_dataset(DatasetType.TRAINING, i)
-            val_dataset = data_processor.get_tokenized_dataset(DatasetType.VALIDATION, i)
+            train_dataset = data_processor.get_tokenized_dataset(DatasetType.TRAINING, fold)
+            val_dataset = data_processor.get_tokenized_dataset(DatasetType.VALIDATION, fold)
 
             # DataLoader
             #
@@ -170,7 +172,7 @@ if __name__ == "__main__":
             oracle_trainer = OracleTrainer(model, loss_fn, optimizer, dl_train, dl_val)
             try:
                 # Train the model
-                stats[f"fold_{i}"] = oracle_trainer.train(
+                stats[f"fold_{fold}"] = oracle_trainer.train(
                     HyperParameter.NUM_EPOCHS.value,
                     HyperParameter.NUM_STEPS.value,
                     device
@@ -191,12 +193,12 @@ if __name__ == "__main__":
             with open(
                 os.path.join(
                     Path.OUTPUT.value,
-                    f"{FileName.LOSS_ACCURACY.value}_fold_{i}.{FileFormat.JSON}"
+                    f"{FileName.LOSS_ACCURACY.value}_fold_{fold}.{FileFormat.JSON}"
                 ),
                 "w"
             ) as loss_file:
                 data = {
-                    **stats[f"fold_{i}"],
+                    **stats[f"fold_{fold}"],
                     "batch_size": HyperParameter.BATCH_SIZE.value,
                     "lr": HyperParameter.LR.value,
                     "num_epochs": HyperParameter.NUM_EPOCHS.value
@@ -210,8 +212,8 @@ if __name__ == "__main__":
             # Saving the model we save the values of all the weights. In other words, we create a snapshot of
             # the state of the model, after the training.
             Printer.print_save_model()
-            torch.save(model, os.path.join(Path.OUTPUT.value, f"tratto_model_fold{i}.pt"))
-            torch.save(model.module.state_dict(), os.path.join(Path.OUTPUT.value, f"tratto_model_state_dict_fold_{i}.pt"))
+            torch.save(model, os.path.join(Path.OUTPUT.value, f"tratto_model_fold{fold}.pt"))
+            torch.save(model.module.state_dict(), os.path.join(Path.OUTPUT.value, f"tratto_model_state_dict_fold_{fold}.pt"))
         # ## Save the statistics and the trained model
         #
         # Saves the statistics for future analysis, and the trained model for future use or improvements.
@@ -224,6 +226,7 @@ if __name__ == "__main__":
         del model
         utils.release_memory()
     except:
+        traceback.print_exc()
         print("Release memory, after unexpected error...")
         # Release memory
         utils.release_memory()

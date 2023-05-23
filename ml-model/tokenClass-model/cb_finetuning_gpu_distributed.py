@@ -134,7 +134,7 @@ def main(rank: int, world_size: int):
         # Adam optimizer with learning rate set with the value of the LR hyperparameter
         optimizer = optim.Adam(model.parameters(), lr=HyperParameter.LR.value)
         # Compute weights
-        class_weights = data_processor.compute_class_weights("tokenClass")
+        class_weights = data_processor.compute_weights("tokenClass")
         # The cross-entropy loss function is commonly used for classification tasks
         loss_fn = CrossEntropyLoss(weight=class_weights)
 
@@ -142,11 +142,11 @@ def main(rank: int, world_size: int):
         stats = {}
 
         # Stratified cross-validation training
-        for i in range(HyperParameter.NUM_SPLITS.value):
+        for fold in range(HyperParameter.NUM_SPLITS.value):
             # Get the train and validation sorted datasets
             Printer.print_dataset_generation()
-            train_dataset = data_processor.get_tokenized_dataset(DatasetType.TRAINING, i)
-            val_dataset = data_processor.get_tokenized_dataset(DatasetType.VALIDATION, i)
+            train_dataset = data_processor.get_tokenized_dataset(DatasetType.TRAINING, fold)
+            val_dataset = data_processor.get_tokenized_dataset(DatasetType.VALIDATION, fold)
 
             # DataLoader - TO BE UPDATED!
             #
@@ -201,7 +201,7 @@ def main(rank: int, world_size: int):
             # Perform the training
             try:
                 # Train the model
-                stats[f"fold_{i}"] = oracle_trainer.train(
+                stats[f"fold_{fold}"] = oracle_trainer.train(
                     HyperParameter.NUM_EPOCHS.value,
                     HyperParameter.NUM_STEPS.value,
                     rank
@@ -220,12 +220,12 @@ def main(rank: int, world_size: int):
             with open(
                     os.path.join(
                         Path.OUTPUT.value,
-                        f"{FileName.LOSS_ACCURACY.value}_fold_{i}.{FileFormat.JSON}"
+                        f"{FileName.LOSS_ACCURACY.value}_fold_{fold}.{FileFormat.JSON}"
                     ),
                     "w"
             ) as loss_file:
                 data = {
-                    **stats[f"fold_{i}"],
+                    **stats[f"fold_{fold}"],
                     "batch_size": HyperParameter.BATCH_SIZE.value,
                     "lr": HyperParameter.LR.value,
                     "num_epochs": HyperParameter.NUM_EPOCHS.value
@@ -239,8 +239,8 @@ def main(rank: int, world_size: int):
             # Saving the model we save the values of all the weights. In other words, we create a snapshot of
             # the state of the model, after the training.
             Printer.print_save_model()
-            torch.save(model, os.path.join(Path.OUTPUT.value, f"tratto_model_fold{i}.pt"))
-            torch.save(model.module.state_dict(), os.path.join(Path.OUTPUT.value, f"tratto_model_state_dict_fold_{i}.pt"))
+            torch.save(model, os.path.join(Path.OUTPUT.value, f"tratto_model_fold{fold}.pt"))
+            torch.save(model.module.state_dict(), os.path.join(Path.OUTPUT.value, f"tratto_model_state_dict_fold_{fold}.pt"))
         # ## Save the statistics and the trained model
         #
         # Saves the statistics for future analysis, and the trained model for future use or improvements.
