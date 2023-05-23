@@ -1,7 +1,7 @@
 import math
 import timeit
 import numpy as np
-from typing import Type
+from typing import Type, Union
 
 import torch
 import torch.optim as optim
@@ -81,7 +81,7 @@ class OracleTrainer:
             self,
             num_epochs: int,
             num_steps: int,
-            gpu_id: int,
+            device: Union[int,str],
             best_time: float = math.inf
     ):
         """
@@ -93,8 +93,8 @@ class OracleTrainer:
             The number of epochs to train the model
         num_steps: int
             The number of steps after which compute the gradients and upldate the weights
-        gpu_id: int
-            The identifier of the rank gpu
+        device: Union[int,str]
+            The identifier of the rank gpu or the cpu
         best_time:
             Best time for statistics performance
         
@@ -148,9 +148,9 @@ class OracleTrainer:
 
                 # Extract the inputs, the attention masks and the expected
                 # outputs from the batch
-                src_input = batch[0].to(gpu_id)
-                masks_input = batch[1].to(gpu_id)
-                tgt_out = batch[2].to(gpu_id)
+                src_input = batch[0].to(device)
+                masks_input = batch[1].to(device)
+                tgt_out = batch[2].to(device)
 
                 # Train the model
                 outputs = self._model(src_input, masks_input)
@@ -191,7 +191,7 @@ class OracleTrainer:
                     auprc_t = average_precision_score(labels_numpy, predictions_numpy)
 
                     # Validation phase
-                    mean_v_loss, auprc_v, accuracy, precision, recall = self.validation(gpu_id)
+                    mean_v_loss, auprc_v, accuracy, precision, recall = self.validation(device)
 
                     # Update the statistics
                     stats['t_loss'].append(mean_t_loss)
@@ -365,15 +365,15 @@ class OracleTrainer:
 
     def validation(
             self,
-            gpu_id: int
+            device: Union[int,str]
     ):
         """
         The method computes the validation phase.
 
         Parameters
         ----------
-        gpu_id: int
-            The identifier of the rank gpu
+        device: int
+            The identifier of the rank gpu or the cpu
 
         Returns
         -------
@@ -400,9 +400,9 @@ class OracleTrainer:
                 total_steps += 1
                 # Extract the inputs, the attention masks and the
                 # targets from the batch
-                src_input = batch[0].to(gpu_id)
-                masks_input = batch[1].to(gpu_id)
-                tgt_out = batch[2].to(gpu_id)
+                src_input = batch[0].to(device)
+                masks_input = batch[1].to(device)
+                tgt_out = batch[2].to(device)
                 # Feed the model
                 outputs = self._model(src_input, masks_input)
                 # Compute the loss
@@ -431,14 +431,17 @@ class OracleTrainer:
         recall = recall_score(labels_numpy, predictions_numpy)
         return mean_v_loss, auprc, accuracy, precision, recall
 
-    def evaluation(self):
+    def evaluation(
+        self,
+        device: Union[int,str]
+    ):
         """
         The method computes the testing phase.
 
         Parameters
         ----------
-        gpu_id: int
-            The identifier of the rank gpu
+        device: int
+            The identifier of the rank gpu or the cpu
 
         Returns
         -------
@@ -471,9 +474,9 @@ class OracleTrainer:
                 total_steps += 1
                 # Extract the inputs, the attention masks and the
                 # targets from the batch
-                src_input = batch[0].to(gpu_id)
-                masks_input = batch[1].to(gpu_id)
-                tgt_out = batch[2].to(gpu_id)
+                src_input = batch[0].to(device)
+                masks_input = batch[1].to(device)
+                tgt_out = batch[2].to(device)
                 # Feed the model
                 outputs = self._model(src_input, masks_input)
                 # Exctract the predicted values and the expected output

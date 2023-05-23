@@ -236,7 +236,7 @@ def main(rank: int, world_size: int, classification_type: ClassificationType):
                 # If the path does not exists, create it
                 os.makedirs(Path.OUTPUT.value)
             # Perform testing phase to measure performances on unseen data
-            stats_test = oracle_trainer.evaluation()
+            stats_test = oracle_trainer.evaluation(rank)
             stats[f"fold_{fold}"] = {
                 **stats[f"fold_{fold}"],
                 **stats_test

@@ -215,7 +215,7 @@ if __name__ == "__main__":
                     utils.release_memory()
                 raise e
             # Perform testing phase
-            stats_test = oracle_trainer.evaluation()
+            stats_test = oracle_trainer.evaluation(device)
             stats[f"fold_{fold}"] = {
                 **stats[f"fold_{fold}"],
                 **stats_test

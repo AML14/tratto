@@ -269,19 +269,21 @@ class DataProcessor:
         # return the dataset
         return t_dataset
         
-    def map_column_values_to_one_shot_vectors(self, column_name: str, new_column_name: str):
+    def map_column_values_to_one_shot_vectors(self, column_name: str):
         """
-        The method insert a new column to the dataset, containing the corrispondent one-shot vector representation
-        of the unique values of the column of the dataset to which the column name passed to the function refers.
-        The new column inserted to the dataset will have the name equals to the string represented by the parameter 
-        *new_column_name* passed to the function.
+        The method create a dictionary that maps the unique values of a column of the dataset, to the corresponding one-shot
+        vectors representations.
 
         Parameters
         ----------
         column_name: str
             The name of the column of the dataset from which to map the values into the one-shot vector representation
-        new_column_name: str
-            The name of the new column of the dataset where to save the one-shot vector representations
+        
+        Returns
+        -------
+        mapping: Dict[obj,list[int]]
+            The dictionary that maps the unique values of the column of the dataset, to the corresponding one-shot
+            vectors representations.
         """
         # Get unique values
         unique_values = np.unique(self._df_dataset[column_name])
@@ -291,9 +293,7 @@ class DataProcessor:
             vector = np.zeros(len(unique_values))
             vector[i] = 1.0
             mapping[value] = list(vector)
-        self._tgt_map = mapping
-        # Add a new column to the original DataFrame with the mapped vectors
-        self._df_dataset[new_column_name] = self._df_dataset[column_name].map(mapping)
+        return mapping
 
 
     def processing(self):
@@ -399,10 +399,12 @@ class DataProcessor:
         # The pandas dataframe is transformed in a list of strings: each string is a input
         # to the model
         src = df_src_concat.to_numpy().tolist()
-        self.map_column_values_to_one_shot_vectors("tokenClass","tokenClassVectorized")
+        # Get the list of target values from the dataframe
         tgt = self._df_dataset["tokenClass"].values
         # Split the dataset into training and test sets with stratified sampling based on target classes
         self._src, self._src_test, self._tgt, self._tgt_test = train_test_split(src, tgt, test_size=self._test_ratio, stratify=tgt)
+        # Generate the mapping of the target column unique values to the corresponding one-shot representations
+        self._tgt_map = self.map_column_values_to_one_shot_vectors("tokenClass")
 
     def _generate_batches(self, src_data: list[str], tgt_data: list[list[float]], batch_size: int):
         """
