@@ -153,7 +153,7 @@ if __name__ == "__main__":
         # Adam optimizer with learning rate set with the value of the LR hyperparameter
         optimizer = optim.Adam(model.parameters(), lr=HyperParameter.LR.value)
         # Compute weights
-        class_weights = data_processor.compute_weights("tokenClass")
+        class_weights = data_processor.compute_weights("tokenClass" if classification_type == ClassificationType.CATEGORY_PREDICTION else "label")
         # The cross-entropy loss function is commonly used for classification tasks
         loss_fn = CrossEntropyLoss(weight=torch.tensor(class_weights).to(device))
 
