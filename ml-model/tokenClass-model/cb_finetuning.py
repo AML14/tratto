@@ -41,16 +41,16 @@ if __name__ == "__main__":
     options = get_options()
 
     try:
-        Printer.print_welcome()
+        classification_type = ClassificationType.CATEGORY_PREDICTION
         if options.classification_type is not None:
             try:
                 classification_type = ClassificationType(options.classification_type.upper())
             except:
                 print(f"Classification type {options.classification_type} not recognized. Classification type {ClassificationType.CATEGORY_PREDICTION} used.")
+        Printer.print_welcome(classification_type)
         Printer.print_load_gpu()
         device = utils.connect_to_device(DeviceType.GPU)
         d_path = Path.INPUT_DATASET.value
-        classification_type = ClassificationType.CATEGORY_PREDICTION
 
 
         ## Tokenizer
@@ -161,6 +161,9 @@ if __name__ == "__main__":
 
         # Stratified cross-validation training
         for fold in range(HyperParameter.NUM_SPLITS.value):
+            print("        " + "-" * 25)
+            print(f"        Cross-validation | Fold {fold}")
+            print("        " + "-" * 25)
             # Get the train, validation, and test sorted datasets
             #Printer.print_dataset_generation()
             train_dataset = data_processor.get_tokenized_dataset(DatasetType.TRAINING, fold)
@@ -195,11 +198,13 @@ if __name__ == "__main__":
                 batch_size = HyperParameter.BATCH_SIZE.value
             )
             dl_test = DataLoader(test_dataset,
-                sampler = SequentialSampler(val_dataset),
+                sampler = SequentialSampler(test_dataset),
                 batch_size = HyperParameter.BATCH_SIZE.value
             )
             # Instantiation of the trainer
             oracle_trainer = OracleTrainer(model, loss_fn, optimizer, dl_train, dl_val, dl_test)
+            # Perform testing phase
+            stats_test = oracle_trainer.evaluation(device)
             try:
                 # Train the model
                 stats[f"fold_{fold}"] = oracle_trainer.train(
@@ -248,18 +253,20 @@ if __name__ == "__main__":
             # the state of the model, after the training.
             Printer.print_save_model()
             torch.save(model, os.path.join(Path.OUTPUT.value, f"tratto_model_fold{fold}.pt"))
-            torch.save(model.module.state_dict(), os.path.join(Path.OUTPUT.value, f"tratto_model_state_dict_fold_{fold}.pt"))
+            torch.save(model.state_dict(), os.path.join(Path.OUTPUT.value, f"tratto_model_state_dict_fold_{fold}.pt"))
         # ## Save the statistics and the trained model
         #
         # Saves the statistics for future analysis, and the trained model for future use or improvements.
         # Saving the model we save the values of all the weights. In other words, we create a snapshot of
         # the state of the model, after the training.
         Printer.print_save_model()
-        torch.save(model, "tratto_model.pt")
+        torch.save(model, os.path.join(Path.OUTPUT.value, f"tratto_model.pt"))
         torch.save(model.state_dict(), os.path.join(Path.OUTPUT.value, "tratto_model_state_dict.pt"))
         # Release memory
         del model
         utils.release_memory()
+        print("        " + "-" * 18)
+        print("Training completed")
     except:
         traceback.print_exc()
         print("Release memory, after unexpected error...")

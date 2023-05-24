@@ -103,7 +103,7 @@ class OracleTrainer:
         stats: dict
             The statistics of the testing phase
         """
-        print("    Start Training...")
+        print("        Start Training...")
         # Dictionary of the statistics
         stats = {
             't_loss': [],
@@ -143,7 +143,7 @@ class OracleTrainer:
             self._optimizer.zero_grad()
 
             for step, batch in enumerate(self._dl_train):
-                print(f"        Processing step {step+1} of {len(self._dl_train)}")
+                print(f"            Processing step {step+1} of {len(self._dl_train)}")
                 steps += 1
 
                 # Extract the inputs, the attention masks and the expected
@@ -292,23 +292,23 @@ class OracleTrainer:
             v_recall: float
                 Recall of the validation phase
         """
-        print("    " + '-'*30)
-        print("    " + "STATISTICS")
-        print("    " + '-'*30)
-        print("    " + f"EPOCH: [{epoch} / {num_epochs}]")
-        print("    " + f"STEP: [{step} / {total_steps}]")
-        print("    " + f"TRAINING LOSS: {stats['t_loss']:.4f}")
-        print("    " + f"TRAINING F1 SCORE: {stats['t_f1_score']:.2f}%")
-        print("    " + f"TRAINING ACCURACY: {stats['t_accuracy']:.2f}%")
-        print("    " + f"TRAINING PRECISION: {stats['t_precision']:.2f}%")
-        print("    " + f"TRAINING RECALL: {stats['t_recall']:.2f}%")
-        print("    " + '-'*30)
-        print("    " + f"VALIDATION LOSS: {stats['v_loss']:.4f}")
-        print("    " + f"VALIDATION F1 SCORE: {stats['v_f1_score']:.2f}%")
-        print("    " + f"VALIDATION ACCURACY: {stats['v_accuracy']:.2f}%")
-        print("    " + f"VALIDATION PRECISION: {stats['v_precision']:.2f}%")
-        print("    " + f"VALIDATION RECALL: {stats['v_recall']:.2f}%")
-        print("    " + '-'*30)
+        print("            " + '-'*30)
+        print("            " + "STATISTICS")
+        print("            " + '-'*30)
+        print("            " + f"EPOCH: [{epoch} / {num_epochs}]")
+        print("            " + f"STEP: [{step} / {total_steps}]")
+        print("            " + f"TRAINING LOSS: {stats['t_loss']:.4f}")
+        print("            " + f"TRAINING F1 SCORE: {stats['t_f1_score']:.2f}%")
+        print("            " + f"TRAINING ACCURACY: {stats['t_accuracy']:.2f}%")
+        print("            " + f"TRAINING PRECISION: {stats['t_precision']:.2f}%")
+        print("            " + f"TRAINING RECALL: {stats['t_recall']:.2f}%")
+        print("            " + '-'*30)
+        print("            " + f"VALIDATION LOSS: {stats['v_loss']:.4f}")
+        print("            " + f"VALIDATION F1 SCORE: {stats['v_f1_score']:.2f}%")
+        print("            " + f"VALIDATION ACCURACY: {stats['v_accuracy']:.2f}%")
+        print("            " + f"VALIDATION PRECISION: {stats['v_precision']:.2f}%")
+        print("            " + f"VALIDATION RECALL: {stats['v_recall']:.2f}%")
+        print("            " + '-'*30)
 
     @staticmethod
     def print_evaluation_stats(
@@ -331,17 +331,17 @@ class OracleTrainer:
         test_recall: float
             Recall of the testing phase
         """
-        print("    " + '-'*30)
-        print("    " + "TESTING STATISTICS")
-        print("    " + '-'*30)
-        print("    " + f"TESTING F1 SCORE: {test_f1_score:.2f}%")
-        print("    " + '-'*30)
-        print("    " + f"TESTING ACCURACY: {test_accuracy:.2f}%")
-        print("    " + '-'*30)
-        print("    " + f"TESTING PRECISION: {test_precision:.2f}%")
-        print("    " + '-'*30)
-        print("    " + f"TESTING RECALL: {test_recall:.2f}%")
-        print("    " + '-'*30)
+        print("            " + '-'*30)
+        print("            " + "TESTING STATISTICS")
+        print("            " + '-'*30)
+        print("            " + f"TESTING F1 SCORE: {test_f1_score:.2f}%")
+        print("            " + '-'*30)
+        print("            " + f"TESTING ACCURACY: {test_accuracy:.2f}%")
+        print("            " + '-'*30)
+        print("            " + f"TESTING PRECISION: {test_precision:.2f}%")
+        print("            " + '-'*30)
+        print("            " + f"TESTING RECALL: {test_recall:.2f}%")
+        print("            " + '-'*30)
 
     @staticmethod
     def plot_loss_f1_score(

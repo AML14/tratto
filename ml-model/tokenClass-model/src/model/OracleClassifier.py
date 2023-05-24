@@ -27,7 +27,7 @@ class OracleClassifier(Module):
     def __init__(
             self,
             linear_size: int,
-            max_input_len: int = 512,
+            max_input_len: int = 512
     ):
         super(OracleClassifier, self).__init__()
         # First layer of the model: the pre-trained codeBERT model

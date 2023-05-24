@@ -340,7 +340,7 @@ class DataProcessor:
         self._df_dataset.fillna('', inplace=True)
         # specify the type of each column in the dataset
         self._df_dataset = self._df_dataset.astype({
-            'label': 'bool',
+            'label': 'str',
             'oracleId': 'int64',
             'oracleType': 'string',
             'projectName': 'string',
@@ -400,11 +400,11 @@ class DataProcessor:
         # to the model
         src = df_src_concat.to_numpy().tolist()
         # Get the list of target values from the dataframe
-        tgt = self._df_dataset["tokenClass"].values
+        tgt = self._df_dataset["tokenClass"].values if classification_type == ClassificationType.CATEGORY_PREDICTION else self._df_dataset["label"].values
         # Split the dataset into training and test sets with stratified sampling based on target classes
         self._src, self._src_test, self._tgt, self._tgt_test = train_test_split(src, tgt, test_size=self._test_ratio, stratify=tgt)
         # Generate the mapping of the target column unique values to the corresponding one-shot representations
-        self._tgt_map = self.map_column_values_to_one_shot_vectors("tokenClass")
+        self._tgt_map = self.map_column_values_to_one_shot_vectors("tokenClass" if classification_type == ClassificationType.CATEGORY_PREDICTION else "label")
 
     def _generate_batches(self, src_data: list[str], tgt_data: list[list[float]], batch_size: int):
         """
