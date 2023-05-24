@@ -1,6 +1,7 @@
 package star.tratto.util.javaparser;
 
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.*;
 import com.github.javaparser.ast.comments.JavadocComment;
@@ -8,12 +9,16 @@ import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.type.Type;
 import com.github.javaparser.resolution.MethodUsage;
+import com.github.javaparser.resolution.declarations.ResolvedMethodDeclaration;
 import com.github.javaparser.resolution.declarations.ResolvedReferenceTypeDeclaration;
+import com.github.javaparser.resolution.declarations.ResolvedTypeDeclaration;
+import com.github.javaparser.resolution.types.ResolvedReferenceType;
 import com.github.javaparser.resolution.types.ResolvedType;
 import org.javatuples.Pair;
 import org.javatuples.Quartet;
 import org.javatuples.Triplet;
 import star.tratto.dataset.oracles.JDoctorCondition.*;
+import star.tratto.exceptions.JPClassNotFoundException;
 import star.tratto.exceptions.PackageDeclarationNotFoundException;
 import star.tratto.identifiers.JPCallableType;
 import star.tratto.identifiers.Javadoc;
@@ -377,7 +382,7 @@ public class DatasetUtils {
                         jpMethod.getName(),
                         jpMethod.declaringType().getClassName(),
                         jpMethod.declaringType().getPackageName(),
-                        JavaParserUtils.getMethodSignature(jpMethod)
+                        jpMethod.getSignature()
                 ))
                 .collect(Collectors.toList());
     }
@@ -404,6 +409,7 @@ public class DatasetUtils {
             List<MethodUsage> genericMethods = JavaParserUtils.getGenericType().asReferenceType().getAllMethods()
                     .stream()
                     .map(MethodUsage::new)
+                    .filter(JavaParserUtils::isNonStaticNonVoidNonPrivateMethod)
                     .collect(Collectors.toList());
             methodList.addAll(convertMethodUsageToQuartet(genericMethods));
         }
@@ -431,12 +437,9 @@ public class DatasetUtils {
     public static List<Quartet<String, String, String, String>> getTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(
             TypeDeclaration<?> jpClass,
             CallableDeclaration<?> jpCallable
-    ) {
+    ) throws JPClassNotFoundException {
         // add all methods of the base class (receiverObjectID -> this).
-        List<MethodUsage> allReceiverMethods = new ArrayList<>(jpClass.resolve().getAllMethods())
-                .stream()
-                .filter(JavaParserUtils::isNonStaticNonVoidNonPrivateMethod)
-                .collect(Collectors.toList());
+        List<MethodUsage> allReceiverMethods = JavaParserUtils.getAllAvailableMethodUsages(jpClass);
         List<Quartet<String, String, String, String>> methodList = new ArrayList<>(convertMethodUsageToQuartet(allReceiverMethods));
         // add all methods of parameters.
         for (Parameter jpParam : jpCallable.getParameters()) {

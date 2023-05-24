@@ -20,6 +20,7 @@ import org.javatuples.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import star.tratto.dataset.oracles.OracleDatapoint;
+import star.tratto.exceptions.JPClassNotFoundException;
 import star.tratto.exceptions.PackageDeclarationNotFoundException;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.util.JavaTypes;
@@ -566,6 +567,21 @@ public class JavaParserUtils {
             );
         }
         return jpClassGenericTypes.contains(jpTypeName.replaceAll("\\[\\]", ""));
+    }
+
+    public static List<MethodUsage> getAllAvailableMethodUsages(
+            TypeDeclaration<?> jpClass
+    ) throws JPClassNotFoundException {
+        try {
+            return new ArrayList<>(jpClass.resolve().getAllMethods());
+        } catch (UnsolvedSymbolException | IllegalArgumentException e) {
+            String errMsg = String.format(
+                    "Impossible to get all the methods of class %s.",
+                    jpClass.getNameAsString()
+            );
+            System.err.printf(errMsg);
+            throw new JPClassNotFoundException(errMsg);
+        }
     }
 
     /**

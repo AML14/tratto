@@ -9,6 +9,7 @@ import star.tratto.dataset.oracles.JDoctorCondition.Operation;
 import star.tratto.dataset.oracles.JDoctorCondition.PreCondition;
 import star.tratto.dataset.oracles.JDoctorCondition.PostCondition;
 import star.tratto.dataset.oracles.JDoctorCondition.ThrowsCondition;
+import star.tratto.exceptions.JPClassNotFoundException;
 import star.tratto.util.javaparser.DatasetUtils;
 import star.tratto.util.javaparser.JDoctorUtils;
 
@@ -128,7 +129,11 @@ public class ProjectOracleGenerator {
         builder.setMethodJavadoc(DatasetUtils.getCallableJavadoc(jpCallable));
         builder.setTokensMethodJavadocValues(DatasetUtils.getValuesFromJavadoc(builder.copy().getMethodJavadoc()));
         builder.setTokensMethodArguments(DatasetUtils.getTokensMethodArguments(jpClass, jpCallable));
-        builder.setTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(DatasetUtils.getTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(jpClass, jpCallable));
+        try {
+            builder.setTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(DatasetUtils.getTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(jpClass, jpCallable));
+        } catch (JPClassNotFoundException e) {
+            e.printStackTrace();
+        }
         System.out.println(builder.copy().getId());
 
         /* Remaining fields
