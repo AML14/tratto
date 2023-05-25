@@ -28,7 +28,7 @@ from src.utils import utils
 
 def main(rank: int, world_size: int, classification_type: ClassificationType):
     try:
-        d_path = Path.TOKEN_CLASS_DATASET.value if model_type == ModelType.TOKEN_CLASS else Path.TOKEN_DATASET
+        d_path = Path.DATASET
         # Setup distributed model with multiple gpus
         utils.ddp_setup(rank, world_size)
 
