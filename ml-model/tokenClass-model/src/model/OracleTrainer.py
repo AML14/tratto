@@ -102,7 +102,6 @@ class OracleTrainer:
         stats: dict
             The statistics of the testing phase
         """
-        print("        Start Training...")
         # Dictionary of the statistics
         stats = {
             't_loss': [],
@@ -128,6 +127,7 @@ class OracleTrainer:
         # the training, and performs the validation to understand how
         # well the model generalize on the validation data.
         for epoch in range(1, num_epochs + 1):
+            print(f"        Start training - Epoch {epoch} of {num_epochs}")
             total_loss = 0
             t_f1 = 0
             trained_total = 0
