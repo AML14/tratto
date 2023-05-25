@@ -11,5 +11,4 @@ class Path(str, Enum):
     ROOT_PATH = ROOT_PATH
     TOKEN_CLASS_DATASET = os.path.join(ROOT_PATH, "dataset_tokenClass")
     TOKEN_DATASET = os.path.join(ROOT_PATH, "dataset_token")
-    DATASET = os.path.join(ROOT_PATH, "dataset")
     OUTPUT = os.path.join(ROOT_PATH, "output")

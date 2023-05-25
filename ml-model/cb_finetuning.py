@@ -64,7 +64,7 @@ if __name__ == "__main__":
         Printer.print_welcome(classification_type, model_type)
         Printer.print_load_gpu()
         device = utils.connect_to_device(DeviceType.GPU)
-        d_path = Path.DATASET
+        d_path = Path.TOKEN_CLASS_DATASET.value if model_type == ModelType.TOKEN_CLASS else Path.TOKEN_DATASET
 
 
         ## Tokenizer
