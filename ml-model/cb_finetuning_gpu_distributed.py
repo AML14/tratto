@@ -26,7 +26,7 @@ from src.model.OracleTrainer import OracleTrainer
 from src.model.Printer import Printer
 from src.utils import utils
 
-def main(rank: int, world_size: int, classification_type: ClassificationType):
+def main(rank: int, world_size: int, classification_type: ClassificationType, model_type):
     try:
         d_path = Path.TOKEN_CLASSES_DATASET.value if model_type == ModelType.TOKEN_CLASSES else Path.TOKEN_VALUES_DATASET
         # Setup distributed model with multiple gpus
@@ -328,4 +328,4 @@ if __name__ == "__main__":
         except:
             print(f"Model type {options.model_type} not recognized. Classification type {ModelType.TOKEN_CLASS} used.")
     Printer.print_welcome(classification_type, model_type)
-    mp.spawn(main, args=([world_size, classification_type]), nprocs=world_size)
+    mp.spawn(main, args=([world_size, classification_type, model_type]), nprocs=world_size)
