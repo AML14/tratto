@@ -2,8 +2,8 @@
 class Printer:
     @staticmethod
     def print_welcome(classification_type: str, model_type: str):
-        classification_str = f"Performing {classification_type.replace('_', ' ')} classification task."
-        model_str = f"Training model in predicting next {model_type.replace('_', ' ')}."
+        classification_str = f"Performing {classification_type.replace('_', ' ')} classification task"
+        model_str = f"Training model in predicting next {model_type.replace('_', ' ')}"
 
         print("")
         print("**********************************")
@@ -11,9 +11,9 @@ class Printer:
         print("*      CodeBert Finetuning       *")
         print("**********************************")
         print("-"*len(classification_str))
-        print(f"Performing {classification_type.replace('_', ' ')} classification task.")
+        print(classification_str)
         print(f"-"*len(classification_str))
-        print(f"Training model in predicting next {model_type.replace('_', ' ')}.")
+        print(model_str)
         print(f"-" * len(model_str))
         print("")
 
@@ -22,8 +22,8 @@ class Printer:
         print("[5] Training and validation dataset generation phase")
 
     @staticmethod
-    def print_load_dataset():
-        print("[2] Load dataset-tokens phase")
+    def print_load_dataset(d_path: str):
+        print(f"[2] Load {'token-values-dataset' if d_path.endswith('token-values-dataset') else 'token-classes-dataset'} phase")
 
     @staticmethod
     def print_load_gpu():

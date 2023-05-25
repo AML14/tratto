@@ -9,6 +9,6 @@ class Path(str, Enum):
     Helper enums class: it defines the paths of the projects relevant folders
     """
     ROOT_PATH = ROOT_PATH
-    TOKEN_CLASS_DATASET = os.path.join(ROOT_PATH, "dataset_tokenClass")
-    TOKEN_DATASET = os.path.join(ROOT_PATH, "dataset_token")
+    TOKEN_CLASSES_DATASET = os.path.join(ROOT_PATH, "token-classes-dataset")
+    TOKEN_VALUES_DATASET = os.path.join(ROOT_PATH, "token-values-dataset")
     OUTPUT = os.path.join(ROOT_PATH, "output")

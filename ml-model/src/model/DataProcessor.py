@@ -331,7 +331,7 @@ class DataProcessor:
         # drop column id (it is not relevant for training the model)
         self._df_dataset = self._df_dataset.drop(['id'], axis=1)
         # replicate single occurrences
-        if model_type == ModelType.TOKEN_CLASS:
+        if model_type == ModelType.TOKEN_CLASSES:
             single_occurrence_rows = self._df_dataset[self._df_dataset['tokenClass'].map(self._df_dataset['tokenClass'].value_counts()) == 1]
         else:
             single_occurrence_rows = self._df_dataset[self._df_dataset['token'].map(self._df_dataset['token'].value_counts()) == 1]
@@ -361,7 +361,7 @@ class DataProcessor:
         # delete the oracle ids and the tgt labels from the input dataset
         df_src = self._df_dataset.drop(['label','oracleId','projectName','classJavadoc','classSourceCode'], axis=1)
         # if the model predicts classes, remove the label from the input
-        if model_type == ModelType.TOKEN_CLASS:
+        if model_type == ModelType.TOKEN_CLASSES:
             df_src = df_src.drop(['token','tokenInfo'], axis=1)
             if classification_type == ClassificationType.CATEGORY_PREDICTION:
                 df_src = df_src.drop(['tokenClass'], axis=1)
@@ -407,14 +407,14 @@ class DataProcessor:
         # to the model
         src = df_src_concat.to_numpy().tolist()
         # Get the list of target values from the dataframe
-        if model_type == ModelType.TOKEN_CLASS:
+        if model_type == ModelType.TOKEN_CLASSES:
             tgt = self._df_dataset["tokenClass"].values if classification_type == ClassificationType.CATEGORY_PREDICTION else self._df_dataset["label"].values
         else:
             tgt = self._df_dataset["token"].values if classification_type == ClassificationType.CATEGORY_PREDICTION else self._df_dataset["label"].values
         # Split the dataset into training and test sets with stratified sampling based on target classes
         self._src, self._src_test, self._tgt, self._tgt_test = train_test_split(src, tgt, test_size=self._test_ratio, stratify=tgt)
         # Generate the mapping of the target column unique values to the corresponding one-shot representations
-        if model_type == ModelType.TOKEN_CLASS:
+        if model_type == ModelType.TOKEN_CLASSES:
             self._tgt_map = self.map_column_values_to_one_shot_vectors("tokenClass" if classification_type == ClassificationType.CATEGORY_PREDICTION else "label")
         else:
             self._tgt_map = self.map_column_values_to_one_shot_vectors("token" if classification_type == ClassificationType.CATEGORY_PREDICTION else "label")

@@ -41,7 +41,7 @@ if __name__ == "__main__":
             action="store",
             type="string",
             dest="model_type",
-            help="Select the model type: TOKEN_CLASS or TOKEN"
+            help="Select the model type: TOKEN_CLASSES or TOKEN_VALUES"
         )
         options, args = opt_parser.parse_args()
         return options
@@ -49,7 +49,7 @@ if __name__ == "__main__":
     options = get_options()
 
     try:
-        model_type = ModelType.TOKEN_CLASS
+        model_type = ModelType.TOKEN_CLASSES
         classification_type = ClassificationType.CATEGORY_PREDICTION
         if options.classification_type is not None:
             try:
@@ -60,11 +60,11 @@ if __name__ == "__main__":
             try:
                 model_type = ModelType(options.model_type.upper())
             except:
-                print(f"Model type {options.model_type} not recognized. Classification type {ModelType.TOKEN_CLASS} used.")
+                print(f"Model type {options.model_type} not recognized. Classification type {ModelType.TOKEN_CLASSES} used.")
         Printer.print_welcome(classification_type, model_type)
         Printer.print_load_gpu()
         device = utils.connect_to_device(DeviceType.GPU)
-        d_path = Path.TOKEN_CLASS_DATASET.value if model_type == ModelType.TOKEN_CLASS else Path.TOKEN_DATASET
+        d_path = Path.TOKEN_CLASSES_DATASET.value if model_type == ModelType.TOKEN_CLASSES else Path.TOKEN_VALUES_DATASET
 
 
         ## Tokenizer

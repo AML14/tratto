@@ -28,7 +28,7 @@ from src.utils import utils
 
 def main(rank: int, world_size: int, classification_type: ClassificationType):
     try:
-        d_path = Path.TOKEN_CLASS_DATASET.value if model_type == ModelType.TOKEN_CLASS else Path.TOKEN_DATASET
+        d_path = Path.TOKEN_CLASSES_DATASET.value if model_type == ModelType.TOKEN_CLASSES else Path.TOKEN_VALUES_DATASET
         # Setup distributed model with multiple gpus
         utils.ddp_setup(rank, world_size)
 
@@ -300,14 +300,14 @@ if __name__ == "__main__":
             action="store",
             type="string",
             dest="model_type",
-            help="Select the model type: TOKEN_CLASS or TOKEN"
+            help="Select the model type: TOKEN_CLASSES or TOKEN_VALUES"
         )
         options, args = opt_parser.parse_args()
         return options
     options = get_options()
     world_size = torch.cuda.device_count()
     classification_type = ClassificationType.CATEGORY_PREDICTION
-    model_type = ModelType.TOKEN_CLASS
+    model_type = ModelType.TOKEN_CLASSES
     classification_type = ClassificationType.CATEGORY_PREDICTION
     if options.classification_type is not None:
         try:
