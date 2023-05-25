@@ -151,9 +151,11 @@ class OracleTrainer:
                 masks_input = batch[1].to(device)
                 tgt_out = batch[2].to(device)
 
+                print(f"                Model predictions...")
                 # Train the model
                 outputs = self._model(src_input, masks_input)
 
+                print(f"                Computing loss...")
                 # Compute the loss
                 loss = self._loss_fn(outputs, tgt_out)
                 loss.backward()
@@ -171,6 +173,7 @@ class OracleTrainer:
                 all_labels.extend(expected_out.detach().cpu().numpy())
 
                 if (steps % accumulation_steps) == 0:
+                    print(f"                Weigths update...")
                     # Update the weights of the model
                     self._optimizer.step()
                     self._optimizer.zero_grad()
@@ -407,18 +410,18 @@ class OracleTrainer:
 
         print("        Performing validation step...")
         with torch.no_grad():
-            batch_iterator = iter(self._dl_val)
-            batch_len = len(batch_iterator)
-            for batch_id, batch in enumerate(iter(self._dl_val)):
-                print(f"            Processing batch {batch_id} of {batch_len}")
+            for batch_id, batch in enumerate(self._dl_val):
+                print(f"            Processing batch {batch_id} of {len(self._dl_val)}")
                 total_steps += 1
                 # Extract the inputs, the attention masks and the
                 # targets from the batch
                 src_input = batch[0].to(device)
                 masks_input = batch[1].to(device)
                 tgt_out = batch[2].to(device)
+                print(f"                Model predictions...")
                 # Feed the model
                 outputs = self._model(src_input, masks_input)
+                print(f"                Computing loss...")
                 # Compute the loss
                 loss = self._loss_fn(outputs, tgt_out)
                 total_loss += loss.item()
@@ -436,6 +439,7 @@ class OracleTrainer:
         # steps
         predictions_numpy = np.array(all_predictions)
         labels_numpy = np.array(all_labels)
+        print(f"                Computing statistics...")
         v_f1 = f1_score(labels_numpy, predictions_numpy, average="macro")
         # Compute accuracy
         v_accuracy = accuracy_score(labels_numpy, predictions_numpy)
@@ -486,12 +490,14 @@ class OracleTrainer:
 
         print("        Performing testing evaluation...")
         with torch.no_grad():
-            for batch in iter(self._dl_test):
+            for batch_id, batch in enumerate(self._dl_test):
+                print(f"            Processing batch {batch_id} of {len(self._dl_test)}")
                 # Extract the inputs, the attention masks and the
                 # targets from the batch
                 src_input = batch[0].to(device)
                 masks_input = batch[1].to(device)
                 tgt_out = batch[2].to(device)
+                print(f"                Model predictions...")
                 # Feed the model
                 outputs = self._model(src_input, masks_input)
                 # Exctract the predicted values and the expected output
@@ -502,6 +508,7 @@ class OracleTrainer:
                 # Accumulate predictions and labels
                 all_predictions.extend(predicted.detach().cpu().numpy())
                 all_labels.extend(expected_out.detach().cpu().numpy())
+        print(f"                Computing statistics...")
         # Compute the f1 score of the model within the accumulation
         # steps
         predictions_numpy = np.array(all_predictions)

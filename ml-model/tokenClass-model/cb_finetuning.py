@@ -193,11 +193,13 @@ if __name__ == "__main__":
                 sampler = SequentialSampler(train_dataset),
                 batch_size = HyperParameter.BATCH_SIZE.value
             )
-            dl_val = DataLoader(val_dataset,
+            dl_val = DataLoader(
+                val_dataset,
                 sampler = SequentialSampler(val_dataset),
                 batch_size = HyperParameter.BATCH_SIZE.value
             )
-            dl_test = DataLoader(test_dataset,
+            dl_test = DataLoader(
+                test_dataset,
                 sampler = SequentialSampler(test_dataset),
                 batch_size = HyperParameter.BATCH_SIZE.value
             )

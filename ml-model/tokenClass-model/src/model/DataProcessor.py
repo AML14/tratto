@@ -312,8 +312,8 @@ class DataProcessor:
             # Split the dataset into training and validation sets for the current fold
             t_src_fold_data = [self._src[i] for i in t_fold_indices]
             t_tgt_fold_data = [self._tgt[i] for i in t_fold_indices]
-            v_src_fold_data = [self._src[i] for i in t_fold_indices]
-            v_tgt_fold_data = [self._tgt[i] for i in t_fold_indices]
+            v_src_fold_data = [self._src[i] for i in v_fold_indices]
+            v_tgt_fold_data = [self._tgt[i] for i in v_fold_indices]
             # The training and validation datasets are grouped in batches
             t_batches = self._generate_batches(t_src_fold_data, t_tgt_fold_data, self._batch_size)
             v_batches = self._generate_batches(v_src_fold_data, v_tgt_fold_data, self._batch_size)
