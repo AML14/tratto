@@ -136,6 +136,13 @@ def main(rank: int, world_size: int, classification_type: ClassificationType):
         # Adam optimizer with learning rate set with the value of the LR hyperparameter
         optimizer = optim.Adam(model.parameters(), lr=HyperParameter.LR.value)
         # Compute weights
+        if classification_type == ClassificationType.CATEGORY_PREDICTION:
+            if model_type == ModelType.TOKEN_CLASSES:
+                label_weights = "tokenClass"
+            else:
+                label_weights = "token"
+        else:
+            label_weights = "label"
         class_weights = data_processor.compute_weights("tokenClass" if classification_type == ClassificationType.CATEGORY_PREDICTION else "label")
         # The cross-entropy loss function is commonly used for classification tasks
         loss_fn = CrossEntropyLoss(weight=torch.tensor(class_weights).to(rank))
