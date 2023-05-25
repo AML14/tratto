@@ -81,8 +81,7 @@ class OracleTrainer:
             self,
             num_epochs: int,
             num_steps: int,
-            device: Union[int,str],
-            best_time: float = math.inf
+            device: Union[int,str]
     ):
         """
         The method perform the training and validation phases of the model.
@@ -237,12 +236,6 @@ class OracleTrainer:
                     # Clear the predictions and labels lists
                     all_predictions = []
                     all_labels = []
-
-                    # If time is over, stop the training
-                    if int(interval - start) > best_time or int(interval - start) > 6000:
-                        time_over = True
-                        stats['time_100'] = math.inf
-                        break
         return stats
 
     @staticmethod
@@ -414,7 +407,10 @@ class OracleTrainer:
 
         print("        Performing validation step...")
         with torch.no_grad():
-            for batch in iter(self._dl_val):
+            batch_iterator = iter(self._dl_val)
+            batch_len = len(batch_iterator)
+            for batch_id, batch in enumerate(iter(self._dl_val)):
+                print(f"            Processing batch {batch_id} of {batch_len}")
                 total_steps += 1
                 # Extract the inputs, the attention masks and the
                 # targets from the batch
