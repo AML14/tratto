@@ -4,6 +4,16 @@ TRATTO neural module is a PyTorch model fine-tuned on the task of predicting the
 The model is fine-tuned from the pre-trained [CodeBERT](https://huggingface.co/microsoft/codebert-base) model (publicly 
 available on [HuggingFace](https://huggingface.co/)).
 
+## Download datasets
+
+You can download the datasets to train the model at the following links:
+
+1. [token-classes-dataset](https://uses0-my.sharepoint.com/:u:/g/personal/amarlop_us_es/EfhSQDH7I4BOouNGAeclVwABb0-PqecclECYwrEIPQ1IXg?download=1) 
+2. [token-values-dataset](https://uses0-my.sharepoint.com/:u:/g/personal/amarlop_us_es/ERdhUoRSjc5FjRcTWcvkjUYBPYrOk_pAtW8iiNxc4VOleg?download=1)
+
+Unzip the downloaded files, within `tratto/ml-model`, and check that the name of the datasets are exactly `token-classes-dataset` and `token-values-dataset`,
+otherwise rename them.
+
 ## Installation
 
 In order to set up the environment is not strictly necessary, but recommended to create a [_venv_](https://docs.python.org/3/library/venv.html) 
