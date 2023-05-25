@@ -61,7 +61,7 @@ if __name__ == "__main__":
                 model_type = ModelType(options.model_type.upper())
             except:
                 print(f"Model type {options.model_type} not recognized. Classification type {ModelType.TOKEN_CLASS} used.")
-        Printer.print_welcome(classification_type)
+        Printer.print_welcome(classification_type, model_type)
         Printer.print_load_gpu()
         device = utils.connect_to_device(DeviceType.GPU)
         d_path = Path.TOKEN_CLASS_DATASET.value if model_type == ModelType.TOKEN_CLASS else Path.TOKEN_DATASET

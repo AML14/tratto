@@ -286,7 +286,6 @@ def main(rank: int, world_size: int, classification_type: ClassificationType):
 
 
 if __name__ == "__main__":
-    Printer.print_welcome()
     def get_options():
         opt_parser = optparse.OptionParser()
         opt_parser.add_option(
@@ -305,8 +304,6 @@ if __name__ == "__main__":
         )
         options, args = opt_parser.parse_args()
         return options
-
-
     options = get_options()
     world_size = torch.cuda.device_count()
     classification_type = ClassificationType.CATEGORY_PREDICTION
@@ -323,4 +320,5 @@ if __name__ == "__main__":
             model_type = ModelType(options.model_type.upper())
         except:
             print(f"Model type {options.model_type} not recognized. Classification type {ModelType.TOKEN_CLASS} used.")
+    Printer.print_welcome(classification_type, model_type)
     mp.spawn(main, args=([world_size, classification_type]), nprocs=world_size)

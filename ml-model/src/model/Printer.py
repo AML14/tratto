@@ -1,14 +1,20 @@
 
 class Printer:
     @staticmethod
-    def print_welcome(classification_type: str):
+    def print_welcome(classification_type: str, model_type: str):
+        classification_str = f"Performing {classification_type.replace('_', ' ')} classification task."
+        model_str = f"Training model in predicting next {model_type.replace('_', ' ')}."
+
         print("")
         print("**********************************")
         print("* TRATTO NEURAL MODEL - TRAINING *")
         print("*      CodeBert Finetuning       *")
         print("**********************************")
-        print("")
+        print("-"*len(classification_str))
         print(f"Performing {classification_type.replace('_', ' ')} classification task.")
+        print(f"-"*len(classification_str))
+        print(f"Training model in predicting next {model_type.replace('_', ' ')}.")
+        print(f"-" * len(model_str))
         print("")
 
     @staticmethod
