@@ -110,7 +110,7 @@ if __name__ == "__main__":
         # in the same way.
         #
         # Create DataProcessor instance
-        Printer.print_load_dataset()
+        Printer.print_load_dataset(d_path)
         data_processor = DataProcessor(
             d_path,
             HyperParameter.BATCH_SIZE.value,

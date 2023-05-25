@@ -75,7 +75,7 @@ def main(rank: int, world_size: int, classification_type: ClassificationType):
         # in the same way.
         #
         # Create DataProcessor instance
-        Printer.print_load_dataset()
+        Printer.print_load_dataset(d_path)
 
         data_processor = DataProcessor(
             d_path,
