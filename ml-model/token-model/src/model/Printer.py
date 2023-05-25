@@ -1,17 +1,19 @@
 
 class Printer:
     @staticmethod
-    def print_welcome():
+    def print_welcome(classification_type: str):
         print("")
         print("**********************************")
         print("* TRATTO NEURAL MODEL - TRAINING *")
         print("*      CodeBert Finetuning       *")
         print("**********************************")
         print("")
+        print(f"Performing {classification_type.replace('_', ' ')} classification task.")
+        print("")
 
     @staticmethod
     def print_dataset_generation():
-        print("[4] Training and validation dataset generation phase")
+        print("[5] Training and validation dataset generation phase")
 
     @staticmethod
     def print_load_dataset():
@@ -30,5 +32,9 @@ class Printer:
         print("[6] Saving model")
 
     @staticmethod
+    def print_training_fold(fold_idx):
+        print(f"    [5.{fold_idx}] Training - fold {fold_idx}")
+
+    @staticmethod
     def print_training_phase():
-        print("[5] Training phase")
+        print("[4] Training phase")

@@ -105,7 +105,6 @@ if __name__ == "__main__":
             tokenizer,
             HyperParameter.NUM_SPLITS.value
         )
-        class_weights = data_processor.compute_weights("tokenClass")
         # Pre-processing data
         Printer.print_pre_processing()
         data_processor.pre_processing(classification_type)
@@ -157,6 +156,7 @@ if __name__ == "__main__":
         # The cross-entropy loss function is commonly used for classification tasks
         loss_fn = CrossEntropyLoss(weight=torch.tensor(class_weights).to(device))
 
+        # initialize statistics
         stats = {}
 
         # Stratified cross-validation training
@@ -178,14 +178,6 @@ if __name__ == "__main__":
             # We define a dataloader for both the training and the validation dataset.
             # The dataloader generates the real batches of datapoints that we will use to
             # feed the model.
-            # We use an helper PyTorch class, **SequentialSampler**, to create the batches
-            # selecting the datapoints sequentially, from the training and validation datasets.
-            # Indeed, we used the **DataProcessor** class to sort the dataset in specific way,
-            # simulating the creation of batches of data before the **DataLoader**, minimizing
-            # the padding (in the case of *BatchType.HOMOGENEOUS*) or maximizing the
-            # diversity within the dataset (in the case of *BatchType.HETEROGENEOUS*). The
-            # use of the **SequentialSampler** will guarantee to maintain this criteria for
-            # the creation of the batches.
             #
             # Create instance of training, validation, and test dataloaders
             dl_train = DataLoader(
@@ -259,7 +251,6 @@ if __name__ == "__main__":
         # Saves the statistics for future analysis, and the trained model for future use or improvements.
         # Saving the model we save the values of all the weights. In other words, we create a snapshot of
         # the state of the model, after the training.
-        Printer.print_save_model()
         torch.save(model, os.path.join(Path.OUTPUT.value, f"tratto_model.pt"))
         torch.save(model.state_dict(), os.path.join(Path.OUTPUT.value, "tratto_model_state_dict.pt"))
         # Release memory

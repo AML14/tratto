@@ -6,3 +6,4 @@ class DatasetType(str, Enum):
     """
     TRAINING = "TRAINING"
     VALIDATION = "VALIDATION"
+    TEST = "TEST"

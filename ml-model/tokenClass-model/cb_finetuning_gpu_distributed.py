@@ -136,7 +136,7 @@ def main(rank: int, world_size: int, classification_type: ClassificationType):
         # Adam optimizer with learning rate set with the value of the LR hyperparameter
         optimizer = optim.Adam(model.parameters(), lr=HyperParameter.LR.value)
         # Compute weights
-        class_weights = data_processor.compute_weights("tokenClass")
+        class_weights = data_processor.compute_weights("tokenClass" if classification_type == ClassificationType.CATEGORY_PREDICTION else "label")
         # The cross-entropy loss function is commonly used for classification tasks
         loss_fn = CrossEntropyLoss(weight=torch.tensor(class_weights).to(rank))
 
@@ -145,13 +145,16 @@ def main(rank: int, world_size: int, classification_type: ClassificationType):
 
         # Stratified cross-validation training
         for fold in range(HyperParameter.NUM_SPLITS.value):
+            print("        " + "-" * 25)
+            print(f"        Cross-validation | Fold {fold}")
+            print("        " + "-" * 25)
             # Get the train, validation, and test sorted datasets
             #Printer.print_dataset_generation()
             train_dataset = data_processor.get_tokenized_dataset(DatasetType.TRAINING, fold)
             val_dataset = data_processor.get_tokenized_dataset(DatasetType.VALIDATION, fold)
             test_dataset = data_processor.get_tokenized_dataset(DatasetType.TEST)
 
-            # DataLoader - TO BE UPDATED!
+            # DataLoader
             #
             # DataLoader is a pytorch class that takes care of shuffling/sampling/weigthed
             # sampling, batching, and using multiprocessing to load the data, in an efficient
@@ -159,14 +162,6 @@ def main(rank: int, world_size: int, classification_type: ClassificationType):
             # We define a dataloader for both the training and the validation dataset.
             # The dataloader generates the real batches of datapoints that we will use to
             # feed the model.
-            # We use an helper PyTorch class, **SequentialSampler**, to create the batches
-            # selecting the datapoints sequentially, from the training and validation datasets.
-            # Indeed, we used the **DataProcessor** class to sort the dataset in specific way,
-            # simulating the creation of batches of data before the **DataLoader**, minimizing
-            # the padding (in the case of *BatchType.HOMOGENEOUS*) or maximizing the
-            # diversity within the dataset (in the case of *BatchType.HETEROGENEOUS*). The
-            # use of the **SequentialSampler** will guarantee to maintain this criteria for
-            # the creation of the batches.
             #
             # Create instance of training and validation dataloaders
             train_sampler = DistributedSampler(
@@ -231,6 +226,12 @@ def main(rank: int, world_size: int, classification_type: ClassificationType):
                 utils.release_memory()
                 utils.cleanup()
                 raise e
+            # Perform testing phase to measure performances on unseen data
+            stats_test = oracle_trainer.evaluation(rank)
+            stats[f"fold_{fold}"] = {
+                **stats[f"fold_{fold}"],
+                **stats_test
+            }
             # Check if the directory exists, to save the statistics of the training
             if not os.path.exists(Path.OUTPUT.value):
                 # If the path does not exists, create it
@@ -238,12 +239,6 @@ def main(rank: int, world_size: int, classification_type: ClassificationType):
                     os.makedirs(Path.OUTPUT.value)
                 except FileExistsError as e:
                     pass
-            # Perform testing phase to measure performances on unseen data
-            stats_test = oracle_trainer.evaluation(rank)
-            stats[f"fold_{fold}"] = {
-                **stats[f"fold_{fold}"],
-                **stats_test
-            }
             # Save the statistics in json format
             with open(
                     os.path.join(
@@ -275,10 +270,9 @@ def main(rank: int, world_size: int, classification_type: ClassificationType):
         # Saves the statistics for future analysis, and the trained model for future use or improvements.
         # Saving the model we save the values of all the weights. In other words, we create a snapshot of
         # the state of the model, after the training.
-        Printer.print_save_model()
         torch.save(model, os.path.join(Path.OUTPUT.value, "tratto_model.pt"))
         torch.save(model.module.state_dict(), os.path.join(Path.OUTPUT.value, "tratto_model_state_dict.pt"))
-
+        
         # Destroy data distributed parallel instances
         utils.cleanup()
         # Release memory

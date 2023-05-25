@@ -2,34 +2,30 @@
 # coding: utf-8
 
 import os
-import numpy as np
 import torch
-import timeit
-import math
 import json
+import traceback
 import torch.optim as optim
 import torch.multiprocessing as mp
-from functools import reduce
-from torch.utils.data import DataLoader, SequentialSampler, DistributedSampler
-from torch.distributed import destroy_process_group
+import optparse
+from torch.utils.data import DataLoader, DistributedSampler
 from torch.nn.parallel import DistributedDataParallel as DDP
 from torch.nn import CrossEntropyLoss
 from transformers import AutoTokenizer
 
-from src.enums.BatchType import BatchType
 from src.enums.DatasetType import DatasetType
-from src.enums.DeviceType import DeviceType
 from src.enums.FileFormat import FileFormat
 from src.enums.FileName import FileName
 from src.enums.HyperParameter import HyperParameter
 from src.enums.Path import Path
+from src.enums.ClassificationType import ClassificationType
 from src.model.DataProcessor import DataProcessor
 from src.model.OracleClassifier import OracleClassifier
 from src.model.OracleTrainer import OracleTrainer
 from src.model.Printer import Printer
 from src.utils import utils
 
-def main(rank: int, world_size: int):
+def main(rank: int, world_size: int, classification_type: ClassificationType):
     try:
         d_path = Path.INPUT_DATASET.value
         # Setup distributed model with multiple gpus
@@ -79,70 +75,20 @@ def main(rank: int, world_size: int):
         #
         # Create DataProcessor instance
         Printer.print_load_dataset()
+
         data_processor = DataProcessor(
             d_path,
             HyperParameter.BATCH_SIZE.value,
             HyperParameter.TRAINING_RATIO.value,
-            tokenizer
+            HyperParameter.TEST_RATIO.value,
+            tokenizer,
+            HyperParameter.NUM_SPLITS.value
         )
         # Pre-processing data
         Printer.print_pre_processing()
-        data_processor.pre_processing(ClassificationType.CATEGORY_PREDICTION)
+        data_processor.pre_processing(classification_type)
         # Process the data
-        data_processor.processing(BatchType.RANDOM)
-        # Get the train and validation sorted datasets
-        Printer.print_dataset_generation()
-        train_dataset = data_processor.get_tokenized_dataset(DatasetType.TRAINING)
-        val_dataset = data_processor.get_tokenized_dataset(DatasetType.VALIDATION)
-
-        # DataLoader - TO BE UPDATED!
-        #
-        # DataLoader is a pytorch class that takes care of shuffling/sampling/weigthed
-        # sampling, batching, and using multiprocessing to load the data, in an efficient
-        # and transparent way.
-        # We define a dataloader for both the training and the validation dataset.
-        # The dataloader generates the real batches of datapoints that we will use to
-        # feed the model.
-        # We use an helper PyTorch class, **SequentialSampler**, to create the batches
-        # selecting the datapoints sequentially, from the training and validation datasets.
-        # Indeed, we used the **DataProcessor** class to sort the dataset in specific way,
-        # simulating the creation of batches of data before the **DataLoader**, minimizing
-        # the padding (in the case of *BatchType.HOMOGENEOUS*) or maximizing the
-        # diversity within the dataset (in the case of *BatchType.HETEROGENEOUS*). The
-        # use of the **SequentialSampler** will guarantee to maintain this criteria for
-        # the creation of the batches.
-        #
-        # Create instance of training and validation dataloaders
-        train_sampler = DistributedSampler(
-            train_dataset,
-            num_replicas=world_size,
-            rank=rank,
-            shuffle=False,
-            drop_last=False
-        )
-        val_sampler = DistributedSampler(
-            val_dataset,
-            num_replicas=world_size,
-            rank=rank,
-            shuffle=False,
-            drop_last=False
-        )
-        dl_train = DataLoader(
-            train_dataset,
-            batch_size=HyperParameter.BATCH_SIZE.value,
-            pin_memory=False,
-            drop_last=False,
-            shuffle=False,
-            sampler=train_sampler
-        )
-        dl_val = DataLoader(
-            val_dataset,
-            batch_size=HyperParameter.BATCH_SIZE.value,
-            pin_memory=False,
-            drop_last=False,
-            shuffle=False,
-            sampler=val_sampler
-        )
+        data_processor.processing()
 
         # ## Model
         # The **OracleClassifier** represents our fine-tuned model.
@@ -165,8 +111,10 @@ def main(rank: int, world_size: int):
         # start token and the end token to each input of the model.
         src = data_processor.get_src()
         max_input_len = 512  # reduce(lambda max_len, s: len(s) if len(s) > max_len else max_len, src,0) + 2
+        # get the output size of the classification task
+        linear_size = data_processor.get_tgt_classes_size()
         # Create instance of the model
-        model = OracleClassifier(max_input_len)
+        model = OracleClassifier(linear_size, max_input_len)
         # The model is loaded on the gpu (or cpu, if not available)
         model.to(rank)
         # Wrap the model with DDP
@@ -187,64 +135,151 @@ def main(rank: int, world_size: int):
         Printer.print_training_phase()
         # Adam optimizer with learning rate set with the value of the LR hyperparameter
         optimizer = optim.Adam(model.parameters(), lr=HyperParameter.LR.value)
-        # Define the class weights based on the imbalance ratio
-        class_weights = torch.tensor([1.0, float(HyperParameter.IMBALANCE_RATIO.value)])
+        # Compute weights
+        class_weights = data_processor.compute_weights("token" if classification_type == ClassificationType.CATEGORY_PREDICTION else "label")
         # The cross-entropy loss function is commonly used for classification tasks
-        loss_fn = CrossEntropyLoss(weight=class_weights)
-        # Instantiation of the trainer
-        oracle_trainer = OracleTrainer(model, loss_fn, optimizer, dl_train, dl_val)
+        loss_fn = CrossEntropyLoss(weight=torch.tensor(class_weights).to(rank))
 
+        # initialize statistics
         stats = {}
 
-        try:
-            # Train the model
-            stats = oracle_trainer.train(
-                HyperParameter.NUM_EPOCHS.value,
-                HyperParameter.NUM_STEPS.value,
-                rank
+        # Stratified cross-validation training
+        for fold in range(HyperParameter.NUM_SPLITS.value):
+            print("        " + "-" * 25)
+            print(f"        Cross-validation | Fold {fold}")
+            print("        " + "-" * 25)
+            # Get the train, validation, and test sorted datasets
+            #Printer.print_dataset_generation()
+            train_dataset = data_processor.get_tokenized_dataset(DatasetType.TRAINING, fold)
+            val_dataset = data_processor.get_tokenized_dataset(DatasetType.VALIDATION, fold)
+            test_dataset = data_processor.get_tokenized_dataset(DatasetType.TEST)
+
+            # DataLoader
+            #
+            # DataLoader is a pytorch class that takes care of shuffling/sampling/weigthed
+            # sampling, batching, and using multiprocessing to load the data, in an efficient
+            # and transparent way.
+            # We define a dataloader for both the training and the validation dataset.
+            # The dataloader generates the real batches of datapoints that we will use to
+            # feed the model.
+            #
+            # Create instance of training and validation dataloaders
+            train_sampler = DistributedSampler(
+                train_dataset,
+                num_replicas=world_size,
+                rank=rank,
+                shuffle=False,
+                drop_last=False
             )
-        except RuntimeError as e:
-            print("Runtime Exception...")
-            del model
-            utils.release_memory()
-            utils.cleanup()
-            raise e
-        # Check if the directory exists, to save the statistics of the training
-        if not os.path.exists(Path.OUTPUT.value):
-            # If the path does not exists, create it
-            os.makedirs(Path.OUTPUT.value)
-        # Save the statistics in json format
-        with open(
-                os.path.join(
-                    Path.OUTPUT.value,
-                    f"{FileName.LOSS_ACCURACY.value}.{FileFormat.JSON}"
-                ),
-                "w"
-        ) as loss_file:
-            data = {
-                **stats,
-                "batch_size": HyperParameter.BATCH_SIZE.value,
-                "lr": HyperParameter.LR.value,
-                "num_epochs": HyperParameter.NUM_EPOCHS.value
+            val_sampler = DistributedSampler(
+                val_dataset,
+                num_replicas=world_size,
+                rank=rank,
+                shuffle=False,
+                drop_last=False
+            )
+            test_sampler = DistributedSampler(
+                test_dataset,
+                num_replicas=world_size,
+                rank=rank,
+                shuffle=False,
+                drop_last=False
+            )
+            dl_train = DataLoader(
+                train_dataset,
+                batch_size=HyperParameter.BATCH_SIZE.value,
+                pin_memory=False,
+                drop_last=False,
+                shuffle=False,
+                sampler=train_sampler
+            )
+            dl_val = DataLoader(
+                val_dataset,
+                batch_size=HyperParameter.BATCH_SIZE.value,
+                pin_memory=False,
+                drop_last=False,
+                shuffle=False,
+                sampler=val_sampler
+            )
+            dl_test = DataLoader(
+                test_dataset,
+                batch_size=HyperParameter.BATCH_SIZE.value,
+                pin_memory=False,
+                drop_last=False,
+                shuffle=False,
+                sampler=test_sampler
+            )
+
+            # Instantiation of the trainer
+            oracle_trainer = OracleTrainer(model, loss_fn, optimizer, dl_train, dl_val, dl_test)
+            # Perform the training
+            try:
+                # Train the model
+                stats[f"fold_{fold}"] = oracle_trainer.train(
+                    HyperParameter.NUM_EPOCHS.value,
+                    HyperParameter.NUM_STEPS.value,
+                    rank
+                )
+            except RuntimeError as e:
+                print("Runtime Exception...")
+                del model
+                utils.release_memory()
+                utils.cleanup()
+                raise e
+            # Perform testing phase to measure performances on unseen data
+            stats_test = oracle_trainer.evaluation(rank)
+            stats[f"fold_{fold}"] = {
+                **stats[f"fold_{fold}"],
+                **stats_test
             }
-            json.dump(data, loss_file)
-        # Close the file
-        loss_file.close()
+            # Check if the directory exists, to save the statistics of the training
+            if not os.path.exists(Path.OUTPUT.value):
+                # If the path does not exists, create it
+                try:
+                    os.makedirs(Path.OUTPUT.value)
+                except FileExistsError as e:
+                    pass
+            # Save the statistics in json format
+            with open(
+                    os.path.join(
+                        Path.OUTPUT.value,
+                        f"{FileName.LOSS_ACCURACY.value}_fold_{fold}.{FileFormat.JSON}"
+                    ),
+                    "w"
+            ) as loss_file:
+                data = {
+                    **stats[f"fold_{fold}"],
+                    "batch_size": HyperParameter.BATCH_SIZE.value,
+                    "lr": HyperParameter.LR.value,
+                    "num_epochs": HyperParameter.NUM_EPOCHS.value
+                }
+                json.dump(data, loss_file)
+            # Close the file
+            loss_file.close()
+            # ## Save the statistics and the trained model
+            #
+            # Saves the statistics for future analysis, and the trained model for future use or improvements.
+            # Saving the model we save the values of all the weights. In other words, we create a snapshot of
+            # the state of the model, after the training.
+            Printer.print_save_model()
+            torch.save(model, os.path.join(Path.OUTPUT.value, f"tratto_model_fold{fold}.pt"))
+            torch.save(model.module.state_dict(), os.path.join(Path.OUTPUT.value, f"tratto_model_state_dict_fold_{fold}.pt"))
+
         # ## Save the statistics and the trained model
         #
         # Saves the statistics for future analysis, and the trained model for future use or improvements.
         # Saving the model we save the values of all the weights. In other words, we create a snapshot of
         # the state of the model, after the training.
-        Printer.print_save_model()
-        torch.save(model, "tratto_model.pt")
+        torch.save(model, os.path.join(Path.OUTPUT.value, "tratto_model.pt"))
         torch.save(model.module.state_dict(), os.path.join(Path.OUTPUT.value, "tratto_model_state_dict.pt"))
-
+        
         # Destroy data distributed parallel instances
         utils.cleanup()
         # Release memory
         del model
         utils.release_memory()
-    except e:
+    except:
+        traceback.print_exc()
         print("Release memory, after unexpected error...")
         # Release memory
         utils.release_memory()
@@ -252,5 +287,24 @@ def main(rank: int, world_size: int):
 
 if __name__ == "__main__":
     Printer.print_welcome()
+    def get_options():
+        opt_parser = optparse.OptionParser()
+        opt_parser.add_option(
+            "-c", "--classification_type",
+            action="store",
+            type="string",
+            dest="classification_type",
+            help="Select the classification type: LABEL_PREDICTION or CATEGORY_PREDICTION"
+        )
+        options, args = opt_parser.parse_args()
+        return options
+    options = get_options()
     world_size = torch.cuda.device_count()
-    mp.spawn(main, args=[world_size], nprocs=world_size)
+    classification_type = ClassificationType.CATEGORY_PREDICTION
+    if options.classification_type is not None:
+        try:
+            classification_type = ClassificationType(options.classification_type.upper())
+        except:
+            print(f"Classification type {options.classification_type} not recognized. Classification type {ClassificationType.CATEGORY_PREDICTION} used.")
+    utils.release_memory()
+    mp.spawn(main, args=([world_size, classification_type]), nprocs=world_size)

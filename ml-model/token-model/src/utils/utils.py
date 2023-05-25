@@ -3,6 +3,7 @@ import os
 import csv
 import json
 import torch
+import gc
 from xml.dom import minidom
 import xml.etree.ElementTree as ET
 from xml.etree.ElementTree import Element
@@ -56,14 +57,14 @@ def connect_to_device(device_type: Type[DeviceType] = DeviceType.GPU):
     if not device_type in [DeviceType.GPU, DeviceType.CPU]:
         raise Exception(f"Unrecognized device type: {device_type}")
     if device_type == DeviceType.GPU and torch.cuda.is_available():
-        print(f'    There are {torch.cuda.device_count()} GPU(s) available.')
+        print(f'        There are {torch.cuda.device_count()} GPU(s) available.')
         # Set the gpu as device to perform the training
         device = torch.device("cuda:0")
-        print(f'    We will use the GPU: {torch.cuda.get_device_name(1)}')
+        print(f'        We will use the GPU: {torch.cuda.get_device_name(1)}')
     else:
         # Set the cpu as device to perform the training
         device = torch.device("cpu")
-        print('    No GPU available, using the CPU instead.')
+        print('        No GPU available, using the CPU instead.')
     return device
 
 def check_cuda_device():
@@ -161,9 +162,14 @@ def ddp_setup(rank, world_size):
             The total number of processes
     """
     os.environ['MASTER_ADDR'] = 'localhost'
-    os.environ['MASTER_PORT'] = '12355'
+    os.environ['MASTER_PORT'] = '12353'
     torch.distributed.init_process_group(backend="nccl", rank=rank, world_size=world_size)
 
 def cleanup():
     # Destroy data distributed parallel instances
     torch.distributed.destroy_process_group()
+
+def release_memory():
+    # Release memory on GPU
+    torch.cuda.empty_cache() 
+    gc.collect()
