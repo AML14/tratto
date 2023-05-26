@@ -1,7 +1,7 @@
 import math
 import timeit
 import numpy as np
-from typing import Type, Union
+from typing import Type, Union, Tuple, Dict
 
 import torch
 import torch.optim as optim
@@ -40,6 +40,9 @@ class OracleTrainer:
     dl_test: DataLoader
         The test dataloader which contains the batches of datapoints
         for the testing phase
+    classifier_ids_labels:
+        The method compute the list of labels of the classification model, in the form of a list of tuples where the first
+        element is an incremental index, while the second element is the name of the class
 
     Attributes
     ----------
@@ -60,6 +63,10 @@ class OracleTrainer:
     dl_test: DataLoader
         The test dataloader which contains the batches of datapoints
         for the testing phase
+    classifier_ids_labels:
+        The dictionary of labels of the classification model, where the value is the name of a class, while the key element
+        is a numerical identifier representing the index of the one-shot vector representing the class, with value equals
+        to 1.0.
     """
     def __init__(
             self,
@@ -68,7 +75,8 @@ class OracleTrainer:
             optimizer: Type[optim.Adam],
             dl_train: Type[DataLoader],
             dl_val: Type[DataLoader],
-            dl_test: Type[DataLoader]
+            dl_test: Type[DataLoader],
+            classifier_ids_labels: Dict[int,str]
     ):
         self._model = model
         self._dl_train = dl_train
@@ -76,6 +84,7 @@ class OracleTrainer:
         self._dl_test = dl_test
         self._loss_fn = loss_fn
         self._optimizer = optimizer
+        self._classifier_ids_labels = classifier_ids_labels
 
     def train(
             self,
@@ -190,13 +199,17 @@ class OracleTrainer:
                     # steps
                     predictions_numpy = np.array(all_predictions)
                     labels_numpy = np.array(all_labels)
-                    t_f1 = f1_score(labels_numpy, predictions_numpy, average="macro")
+
+                    t_f1 = f1_score(labels_numpy, predictions_numpy, average=None, zero_division=1, labels=list(self._classifier_ids_labels.keys()))
+                    t_f1 = [[self._classifier_ids_labels[i], score] for i, score in enumerate(t_f1)]
                     # Compute accuracy
                     t_accuracy = accuracy_score(labels_numpy, predictions_numpy)
                     # Compute precision
-                    t_precision = precision_score(labels_numpy, predictions_numpy, average="macro", zero_division=1)
+                    t_precision = precision_score(labels_numpy, predictions_numpy, average=None, zero_division=1, labels=list(self._classifier_ids_labels.keys()))
+                    t_precision = [[self._classifier_ids_labels[i], score] for i, score in enumerate(t_precision)]
                     # Compute recall
-                    t_recall = recall_score(labels_numpy, predictions_numpy, average="macro", zero_division=1)
+                    t_recall = recall_score(labels_numpy, predictions_numpy, average=None, zero_division=1, labels=list(self._classifier_ids_labels.keys()))
+                    t_recall = [[self._classifier_ids_labels[i], score] for i, score in enumerate(t_recall)]
 
                     # Validation phase
                     mean_v_loss, v_f1, v_accuracy, v_precision, v_recall = self.validation(device)
@@ -247,7 +260,7 @@ class OracleTrainer:
             num_epochs: int,
             step: int,
             total_steps: int,
-            stats
+            stats: dict
     ):
         """
         The method prints the statistics of the training and validation phases
@@ -269,24 +282,24 @@ class OracleTrainer:
                 Average training loss
             v_loss: float
                 Average validation loss
-            t_f1_score: float
-                F1 score of the training phase
+            t_f1_score: list[Tuple[str,float]]
+                F1 score of the training phase, for each class of the model
             t_accuracy: float
                 Accuracy of the training phase
-            t_precision: float
-                Precision of the training phase
-            t_recall: float
-                Recall of the training phase
+            t_precision: list[Tuple[str,float]]
+                Precision of the training phase, for each class of the model
+            t_recall: list[Tuple[str,float]]
+                Recall of the training phase, for each class of the model
             v_loss: float
                 Average validation loss
-            v_f1_score: float
-                F1 score of the validation phase
+            v_f1_score: list[Tuple[str,float]]
+                F1 score of the validation phase, for each class of the model
             v_accuracy: float
                 Accuracy of the validation phase
-            v_precision: float
-                Precision of the validation phase
-            v_recall: float
-                Recall of the validation phase
+            v_precision: list[Tuple[str,float]]
+                Precision of the validation phase, for each class of the model
+            v_recall: list[Tuple[str,float]]
+                Recall of the validation phase, for each class of the model
         """
         print("            " + '-'*30)
         print("            " + "STATISTICS")
@@ -294,49 +307,58 @@ class OracleTrainer:
         print("            " + f"EPOCH: [{epoch} / {num_epochs}]")
         print("            " + f"STEP: [{step} / {total_steps}]")
         print("            " + f"TRAINING LOSS: {stats['t_loss']:.4f}")
-        print("            " + f"TRAINING F1 SCORE: {stats['t_f1_score']:.2f}")
         print("            " + f"TRAINING ACCURACY: {stats['t_accuracy']:.2f}")
-        print("            " + f"TRAINING PRECISION: {stats['t_precision']:.2f}")
-        print("            " + f"TRAINING RECALL: {stats['t_recall']:.2f}")
+        for class_label, score in stats['t_f1_score']:
+            print("            " + f"TRAINING F1 SCORE - {class_label}: {score:.2f}")
+        for class_label, score in stats['t_precision']:
+            print("            " + f"TRAINING PRECISION - {class_label}: {score:.2f}")
+        for class_label, score in stats['t_recall']:
+            print("            " + f"TRAINING RECALL - {class_label}: {score:.2f}")
         print("            " + '-'*30)
         print("            " + f"VALIDATION LOSS: {stats['v_loss']:.4f}")
-        print("            " + f"VALIDATION F1 SCORE: {stats['v_f1_score']:.2f}")
         print("            " + f"VALIDATION ACCURACY: {stats['v_accuracy']:.2f}")
-        print("            " + f"VALIDATION PRECISION: {stats['v_precision']:.2f}")
-        print("            " + f"VALIDATION RECALL: {stats['v_recall']:.2f}")
+        for class_label, score in stats['v_precision']:
+            print("            " + f"VALIDATION F1 SCORE - {class_label}: {score:.2f}")
+        for class_label, score in stats['v_precision']:
+            print("            " + f"VALIDATION PRECISION - {class_label}: {score:.2f}")
+        for class_label, score in stats['v_precision']:
+            print("            " + f"VALIDATION RECALL - {class_label}: {score:.2f}")
         print("            " + '-'*30)
 
     @staticmethod
     def print_evaluation_stats(
-            test_f1_score: float,
-            test_accuracy: float,
-            test_precision: float,
-            test_recall: float
+            test_f1_score: list[Tuple[str,float]],
+            test_accuracy: list[Tuple[str,float]],
+            test_precision: list[Tuple[str,float]],
+            test_recall: list[Tuple[str,float]]
     ):
         """
         The method prints the statistics of the testing phases
 
         Parameters
         ----------
-        test_f1_scoret: float
-            F1 score of the testing phase
+        test_f1_scoret: list[Tuple[str,float]]
+            F1 score of the testing phase, for each class of the model
         test_accuracy: float
             Accuracy of the testing phase
-        test_precision: float
-            Precision of the testing phase
-        test_recall: float
-            Recall of the testing phase
+        test_precision: list[Tuple[str,float]]
+            Precision of the testing phase, for each class of the model
+        test_recall: list[Tuple[str,float]]
+            Recall of the testing phase, for each class of the model
         """
         print("            " + '-'*30)
         print("            " + "TESTING STATISTICS")
         print("            " + '-'*30)
-        print("            " + f"TESTING F1 SCORE: {test_f1_score:.2f}")
-        print("            " + '-'*30)
         print("            " + f"TESTING ACCURACY: {test_accuracy:.2f}")
         print("            " + '-'*30)
-        print("            " + f"TESTING PRECISION: {test_precision:.2f}")
+        for class_label, score in test_f1_score:
+            print("            " + f"TESTING F1 SCORE - {class_label}: {score:.2f}")
         print("            " + '-'*30)
-        print("            " + f"TESTING RECALL: {test_recall:.2f}")
+        for class_label, score in test_f1_score:
+            print("            " + f"TESTING PRECISION - {class_label}: {score:.2f}")
+        print("            " + '-'*30)
+        for class_label, score in test_f1_score:
+            print("            " + f"TESTING RECALL - {class_label}: {score:.2f}")
         print("            " + '-'*30)
 
     @staticmethod
@@ -441,12 +463,15 @@ class OracleTrainer:
         labels_numpy = np.array(all_labels)
         print(f"                Computing statistics...")
         v_f1 = f1_score(labels_numpy, predictions_numpy, average="macro")
+        v_f1 = [[self._classifier_ids_labels[i], score] for i, score in enumerate(v_f1)]
         # Compute accuracy
         v_accuracy = accuracy_score(labels_numpy, predictions_numpy)
         # Compute precision
-        v_precision = precision_score(labels_numpy, predictions_numpy, average="macro", zero_division=1)
+        v_precision = precision_score(labels_numpy, predictions_numpy, average="None", zero_division=1, labels=list(self._classifier_ids_labels.keys()))
+        v_f1 = [[self._classifier_ids_labels[i], score] for i, score in enumerate(v_f1)]
         # Compute recall
-        v_recall = recall_score(labels_numpy, predictions_numpy, average="macro", zero_division=1)
+        v_recall = recall_score(labels_numpy, predictions_numpy, average="None", zero_division=1, labels=list(self._classifier_ids_labels.keys()))
+        v_recall = [[self._classifier_ids_labels[i], score] for i, score in enumerate(v_recall)]
         return mean_v_loss, v_f1, v_accuracy, v_precision, v_recall
 
     def evaluation(
@@ -513,13 +538,16 @@ class OracleTrainer:
         # steps
         predictions_numpy = np.array(all_predictions)
         labels_numpy = np.array(all_labels)
-        test_f1 = f1_score(labels_numpy, predictions_numpy, average='macro')
+        test_f1 = f1_score(labels_numpy, predictions_numpy, average=None, labels=list(self._classifier_ids_labels.keys()), zero_division=1)
+        test_f1 = [[self._classifier_ids_labels[i], score] for i, score in enumerate(test_f1)]
         # Compute accuracy
         test_accuracy = accuracy_score(labels_numpy, predictions_numpy)
         # Compute precision
-        test_precision = precision_score(labels_numpy, predictions_numpy, average='macro', zero_division=1)
+        test_precision = precision_score(labels_numpy, predictions_numpy, average=None, zero_division=1, labels=list(self._classifier_ids_labels.keys()))
+        test_precision = [[self._classifier_ids_labels[i], score] for i, score in enumerate(test_precision)]
         # Compute recall
-        test_recall = recall_score(labels_numpy, predictions_numpy, average='macro', zero_division=1)
+        test_recall = recall_score(labels_numpy, predictions_numpy, average=None, zero_division=1, labels=list(self._classifier_ids_labels.keys()))
+        test_recall = [[self._classifier_ids_labels[i], score] for i, score in enumerate(test_recall)]
         # Perform testing to measure performances on unseen data
         self.print_evaluation_stats(test_f1, test_accuracy, test_precision, test_recall)
         stats["test_f1"] = test_f1

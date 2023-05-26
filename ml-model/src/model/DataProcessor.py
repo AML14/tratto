@@ -133,7 +133,27 @@ class DataProcessor:
         # Return the computed weights
         return class_weights
 
+    def get_ids_labels(self):
+        """
+        The method computes the dictionary of labels of the classification model, where the value is the name of a class,
+        while the key element is a numerical identifier representing the index of the one-shot vector representing the class,
+        with value equals to 1.0.
+
+        Returns
+        -------
+        The dictionary of labels. The keys are numerical identifiers (int), while the values are strings representing the
+        name of the corresponding class.
+        """
+        return { i:k for i,k in enumerate(self._tgt_map.keys()) }
+
     def get_tgt_classes_size(self):
+        """
+        The method computes the number of classes of the classification model.
+
+        Returns
+        -------
+        The number of classes of the classification model.
+        """
         classes_size = len(self._tgt_map.keys())
         if classes_size == 0:
             print("[Warn] - classes size is 0")

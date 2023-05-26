@@ -216,7 +216,8 @@ if __name__ == "__main__":
                 batch_size = HyperParameter.BATCH_SIZE.value
             )
             # Instantiation of the trainer
-            oracle_trainer = OracleTrainer(model, loss_fn, optimizer, dl_train, dl_val, dl_test)
+            classifier_ids_labels = data_processor.get_ids_labels()
+            oracle_trainer = OracleTrainer(model, loss_fn, optimizer, dl_train, dl_val, dl_test, classifier_ids_labels)
             try:
                 # Train the model
                 stats[f"fold_{fold}"] = oracle_trainer.train(
