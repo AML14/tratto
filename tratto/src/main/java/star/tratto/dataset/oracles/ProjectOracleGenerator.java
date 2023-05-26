@@ -3,6 +3,7 @@ package star.tratto.dataset.oracles;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.CallableDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
+import com.github.javaparser.resolution.UnsolvedSymbolException;
 import org.javatuples.Pair;
 import org.javatuples.Quartet;
 import star.tratto.dataset.oracles.JDoctorCondition.Operation;
@@ -132,7 +133,7 @@ public class ProjectOracleGenerator {
         try {
             builder.setTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(DatasetUtils.getTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(jpClass, jpCallable));
             builder.setTokensMethodVariablesNonPrivateNonStaticAttributes(DatasetUtils.getTokensMethodVariablesNonPrivateNonStaticAttributes(jpClass, jpCallable));
-        } catch (JPClassNotFoundException e) {
+        } catch (JPClassNotFoundException | UnsolvedSymbolException e) {
             e.printStackTrace();
         }
         System.out.println(builder.copy().getId());

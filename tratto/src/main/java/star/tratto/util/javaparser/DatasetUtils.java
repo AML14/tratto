@@ -18,7 +18,6 @@ import org.javatuples.Triplet;
 import star.tratto.dataset.oracles.JDoctorCondition.*;
 import star.tratto.exceptions.JPClassNotFoundException;
 import star.tratto.exceptions.PackageDeclarationNotFoundException;
-import star.tratto.identifiers.FieldFeature;
 import star.tratto.identifiers.JPCallableType;
 import star.tratto.identifiers.Javadoc;
 import star.tratto.identifiers.JavadocValueType;
@@ -31,7 +30,6 @@ import static star.tratto.util.javaparser.JavaParserUtils.*;
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -475,14 +473,11 @@ public class DatasetUtils {
     }
 
     private static List<Quartet<String, String, String, String>> getFieldsFromType(
-            TypeDeclaration<?> jpClass,
-            CallableDeclaration<?> jpCallable,
             ResolvedType jpType
     ) {
         List<Quartet<String, String, String, String>> fieldList = new ArrayList<>();
         // check that type is not primitive.
         if (jpType.isReferenceType()) {
-            List<ResolvedFieldDeclaration> fieldNotFound = new ArrayList<>();
             Optional<ResolvedReferenceTypeDeclaration> jpTypeDeclaration = jpType.asReferenceType().getTypeDeclaration();
             // get reference declaration of type.
             if (jpTypeDeclaration.isPresent()) {
@@ -496,7 +491,7 @@ public class DatasetUtils {
                             .collect(Collectors.toList());
                     return convertFieldDeclarationToQuartet(jpFields);
                 }
-
+                return convertFieldDeclarationToQuartet(jpTypeDeclaration.get().getAllFields());
             } else if (!(
                     jpType.isPrimitive() || jpType.isVoid() || jpType.isTypeVariable() || jpType.isArray()
             )) {
@@ -522,16 +517,12 @@ public class DatasetUtils {
         // add all fields of parameters.
         for (Parameter jpParam : jpCallable.getParameters()) {
             attributeList.addAll(getFieldsFromType(
-                    jpClass,
-                    jpCallable,
                     jpParam.getType().resolve()
             ));
         }
         // add all fields of return type.
         if (jpCallable instanceof MethodDeclaration) {
             attributeList.addAll(getFieldsFromType(
-                    jpClass,
-                    jpCallable,
                     ((MethodDeclaration) jpCallable).getType().resolve()
             ));
         }
