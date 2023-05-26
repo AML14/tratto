@@ -60,13 +60,13 @@ public class OracleDatapointBuilder {
     private void setThrowsConditionInfo(ThrowsCondition condition) {
         this.setOracleType(OracleType.EXCEPT_POST);
         this.setJavadocTag(condition.getDescription());
-        this.setOracle(condition.getGuard().getCondition());
+        this.setOracle(String.format("%s;", condition.getGuard().getCondition()).replaceAll("receiverObjectID", "this"));
     }
 
     private void setPreConditionInfo(PreCondition condition) {
         this.setOracleType(OracleType.PRE);
         this.setJavadocTag(condition.getDescription());
-        this.setOracle(condition.getGuard().getCondition());
+        this.setOracle(String.format("%s;", condition.getGuard().getCondition()).replaceAll("receiverObjectID", "this"));
     }
 
     private void setPostConditionInfo(List<PostCondition> conditionList) {

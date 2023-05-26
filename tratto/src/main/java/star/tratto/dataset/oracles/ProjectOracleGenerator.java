@@ -120,6 +120,7 @@ public class ProjectOracleGenerator {
         assert jpCallable != null;
         // set data point information.
         builder.setConditionInfo(condition);
+        System.out.println(builder.copy().getOracle());
         builder.setProjectName(projectName);
         builder.setClassSourceCode(jpClass.toString());
         builder.setPackageName(packageName);
