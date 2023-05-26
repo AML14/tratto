@@ -462,15 +462,15 @@ class OracleTrainer:
         predictions_numpy = np.array(all_predictions)
         labels_numpy = np.array(all_labels)
         print(f"                Computing statistics...")
-        v_f1 = f1_score(labels_numpy, predictions_numpy, average="macro")
+        v_f1 = f1_score(labels_numpy, predictions_numpy, average=None, zero_division=1, labels=list(self._classifier_ids_labels.keys()))
         v_f1 = [[self._classifier_ids_labels[i], score] for i, score in enumerate(v_f1)]
         # Compute accuracy
         v_accuracy = accuracy_score(labels_numpy, predictions_numpy)
         # Compute precision
-        v_precision = precision_score(labels_numpy, predictions_numpy, average="None", zero_division=1, labels=list(self._classifier_ids_labels.keys()))
+        v_precision = precision_score(labels_numpy, predictions_numpy, average=None, zero_division=1, labels=list(self._classifier_ids_labels.keys()))
         v_f1 = [[self._classifier_ids_labels[i], score] for i, score in enumerate(v_f1)]
         # Compute recall
-        v_recall = recall_score(labels_numpy, predictions_numpy, average="None", zero_division=1, labels=list(self._classifier_ids_labels.keys()))
+        v_recall = recall_score(labels_numpy, predictions_numpy, average=None, zero_division=1, labels=list(self._classifier_ids_labels.keys()))
         v_recall = [[self._classifier_ids_labels[i], score] for i, score in enumerate(v_recall)]
         return mean_v_loss, v_f1, v_accuracy, v_precision, v_recall
 
