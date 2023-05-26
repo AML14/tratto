@@ -496,7 +496,6 @@ public class DatasetUtils {
                             .collect(Collectors.toList());
                     return convertFieldDeclarationToQuartet(jpFields);
                 }
-                List<ResolvedFieldDeclaration> jpResolvedFields = jpTypeDeclaration.get().getAllFields();
 
             } else if (!(
                     jpType.isPrimitive() || jpType.isVoid() || jpType.isTypeVariable() || jpType.isArray()
@@ -522,11 +521,19 @@ public class DatasetUtils {
         List<Quartet<String, String, String, String>> attributeList = new ArrayList<>(convertFieldDeclarationToQuartet(jpReceiverFields));
         // add all fields of parameters.
         for (Parameter jpParam : jpCallable.getParameters()) {
-
+            attributeList.addAll(getFieldsFromType(
+                    jpClass,
+                    jpCallable,
+                    jpParam.getType().resolve()
+            ));
         }
         // add all fields of return type.
         if (jpCallable instanceof MethodDeclaration) {
-
+            attributeList.addAll(getFieldsFromType(
+                    jpClass,
+                    jpCallable,
+                    ((MethodDeclaration) jpCallable).getType().resolve()
+            ));
         }
         return attributeList;
     }
