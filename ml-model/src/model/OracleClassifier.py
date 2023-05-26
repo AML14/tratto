@@ -1,7 +1,7 @@
 from typing import Type
 
 import torch
-from torch.nn import Module, Linear, Sequential, Dropout
+from torch.nn import Module, Linear, Sequential, Dropout, ReLU
 from transformers import AutoModel
 
 
@@ -51,10 +51,12 @@ class OracleClassifier(Module):
 
         self.fc1 = Sequential(
             Linear(hidden_size, 128),
+            ReLU(),
             Dropout(p=0.2)
         )
         self.fc2 = Sequential(
             Linear(128, 64),
+            ReLU(),
             Dropout(p=0.2)
         )
         # Second layer of the model: the fully-connected layer.
