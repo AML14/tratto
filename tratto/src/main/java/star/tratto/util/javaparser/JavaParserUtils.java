@@ -1,17 +1,15 @@
 package star.tratto.util.javaparser;
 
 import com.github.javaparser.JavaParser;
-import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.PackageDeclaration;
+import com.github.javaparser.ast.*;
 import com.github.javaparser.ast.body.*;
 import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
 import com.github.javaparser.ast.body.MethodDeclaration;
-import com.github.javaparser.ast.Node;
-import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.type.TypeParameter;
 import com.github.javaparser.resolution.MethodUsage;
 import com.github.javaparser.resolution.UnsolvedSymbolException;
+import com.github.javaparser.resolution.declarations.ResolvedFieldDeclaration;
 import com.github.javaparser.resolution.declarations.ResolvedReferenceTypeDeclaration;
 import com.github.javaparser.resolution.declarations.ResolvedTypeParameterDeclaration;
 import com.github.javaparser.resolution.types.ResolvedType;
@@ -461,6 +459,23 @@ public class JavaParserUtils {
     }
 
     /**
+     * Gets the signature of a JavaParser resolved field declaration
+     * {@link ResolvedFieldDeclaration} and return its string representation.
+     *
+     * @param jpField resolved field declaration to generate the signature.
+     * @return a string representation of the signature of the declaration.
+     */
+    public static String getFieldSignature(
+            ResolvedFieldDeclaration jpField
+    ) {
+        String signature = "";
+        signature += jpField.accessSpecifier().asString();
+        signature += jpField.isStatic() ? " static " : "";
+        signature += jpField.getName();
+        return signature;
+    }
+
+    /**
      * Gets the signature of a JavaParser variable declarator
      * {@link VariableDeclarator}, and return its string representation.
      *
@@ -598,6 +613,10 @@ public class JavaParserUtils {
         } catch (FileNotFoundException e) {
             return Optional.empty();
         }
+    }
+
+    public static boolean isNonPrivateNonStaticAttribute(ResolvedFieldDeclaration fieldDeclaration) {
+        return !fieldDeclaration.isStatic() && !(fieldDeclaration.accessSpecifier() == AccessSpecifier.PRIVATE);
     }
 
     public static boolean isStaticNonVoidNonPrivateMethod(MethodUsage methodUsage) {
