@@ -468,7 +468,7 @@ class OracleTrainer:
         v_accuracy = accuracy_score(labels_numpy, predictions_numpy)
         # Compute precision
         v_precision = precision_score(labels_numpy, predictions_numpy, average=None, zero_division=1, labels=list(self._classifier_ids_labels.keys()))
-        v_f1 = [[self._classifier_ids_labels[i], score] for i, score in enumerate(v_f1)]
+        v_precision = [[self._classifier_ids_labels[i], score] for i, score in enumerate(v_precision)]
         # Compute recall
         v_recall = recall_score(labels_numpy, predictions_numpy, average=None, zero_division=1, labels=list(self._classifier_ids_labels.keys()))
         v_recall = [[self._classifier_ids_labels[i], score] for i, score in enumerate(v_recall)]
