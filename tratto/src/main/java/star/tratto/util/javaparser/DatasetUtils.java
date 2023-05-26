@@ -9,20 +9,26 @@ import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.type.Type;
 import com.github.javaparser.resolution.MethodUsage;
+import com.github.javaparser.resolution.UnsolvedSymbolException;
 import com.github.javaparser.resolution.declarations.ResolvedFieldDeclaration;
+import com.github.javaparser.resolution.declarations.ResolvedMethodDeclaration;
 import com.github.javaparser.resolution.declarations.ResolvedReferenceTypeDeclaration;
 import com.github.javaparser.resolution.types.ResolvedType;
 import org.javatuples.Pair;
 import org.javatuples.Quartet;
 import org.javatuples.Triplet;
 import star.tratto.dataset.oracles.JDoctorCondition.*;
+import star.tratto.dataset.oracles.OracleDatapoint;
 import star.tratto.exceptions.JPClassNotFoundException;
 import star.tratto.exceptions.PackageDeclarationNotFoundException;
+import star.tratto.exceptions.ResolvedTypeNotFound;
 import star.tratto.identifiers.JPCallableType;
 import star.tratto.identifiers.Javadoc;
 import star.tratto.identifiers.JavadocValueType;
 import star.tratto.identifiers.file.*;
 import star.tratto.identifiers.path.Path;
+import star.tratto.oraclegrammar.custom.Parser;
+import star.tratto.oraclegrammar.custom.Splitter;
 import star.tratto.util.FileUtils;
 
 import static star.tratto.util.javaparser.JavaParserUtils.*;
@@ -448,6 +454,69 @@ public class DatasetUtils {
             ));
         }
         return methodList;
+    }
+
+    public static List<Quartet<String, String, String, String>> getTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(
+            TypeDeclaration<?> jpClass,
+            CallableDeclaration<?> jpCallable,
+            List<Triplet<String, String, String>> methodArgs,
+            String oracle
+    ) {
+        List<Quartet<String, String, String, String>> methodList = new ArrayList<>();
+        List<LinkedList<String>> oracleSubexpressions = Parser.getInstance().getAllMethodsAndAttributes(oracle)
+                .stream()
+                .map(e -> new LinkedList<>(Splitter.split(e)))
+                .collect(Collectors.toList());
+        for (LinkedList<String> oracleSubexpression : oracleSubexpressions) {
+            String subexpression = String.join("", oracleSubexpression).replaceAll("receiverObjectID", "this");
+            try {
+                ResolvedType jpType = JavaParserUtils.getResolvedTypeOfExpression(
+                        jpClass,
+                        jpCallable,
+                        methodArgs,
+                        subexpression
+                );
+                methodList.addAll(getMethodsFromType(jpClass, jpCallable, jpType));
+            } catch (UnsolvedSymbolException | ResolvedTypeNotFound e) {
+                ResolvedType fieldType = JavaParserUtils.getGenericType();
+                // Get all methods from Object
+                List<MethodUsage> jpReturnTypeMethods = fieldType.asReferenceType().getAllMethods()
+                        .stream()
+                        .map(MethodUsage::new)
+                        .collect(Collectors.toList());
+                methodList.addAll(convertMethodUsageToQuartet(jpReturnTypeMethods));
+            }
+        }
+        return methodList;
+    }
+
+    public static List<Quartet<String, String, String, String>> getTokensOracleVariablesNonPrivateNonStaticAttributes(
+            TypeDeclaration<?> jpClass,
+            CallableDeclaration<?> jpCallable,
+            List<Triplet<String, String, String>> methodArgs,
+            String oracle
+    ) {
+        List<Quartet<String, String, String, String>> attributeList = new ArrayList<>();
+        List<LinkedList<String>> oracleSubexpressions = Parser.getInstance().getAllMethodsAndAttributes(oracle)
+                .stream()
+                .map(e -> new LinkedList<>(Splitter.split(e)))
+                .collect(Collectors.toList());
+        for (LinkedList<String> oracleSubexpression : oracleSubexpressions) {
+            String subexpression = String.join("", oracleSubexpression).replaceAll("receiverObjectID", "this");
+            try {
+                ResolvedType jpType = JavaParserUtils.getResolvedTypeOfExpression(
+                        jpClass,
+                        jpCallable,
+                        methodArgs,
+                        subexpression
+                );
+                attributeList.addAll(getFieldsFromType(jpType));
+            } catch (UnsolvedSymbolException | ResolvedTypeNotFound e) {
+                ResolvedType jpType = JavaParserUtils.getGenericType();
+                attributeList.addAll(getFieldsFromType(jpType));
+            }
+        }
+        return attributeList;
     }
 
     private static List<Quartet<String, String, String, String>> convertFieldDeclarationToQuartet(
