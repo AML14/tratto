@@ -90,7 +90,9 @@ public class ProjectOracleGenerator {
             }
             // Add all PostCondition oracles to dataset.
             List<PostCondition> postConditions = jDoctorCondition.getPostConditions();
-            oracleDPs.add(getNextDatapoint(operation, postConditions));
+            if (postConditions.size() > 0) {
+                oracleDPs.add(getNextDatapoint(operation, postConditions));
+            }
         }
         System.out.printf("Processed %s conditions.%n", this.idCounter - this.checkpoint);
         this.checkpoint = this.idCounter;
@@ -134,14 +136,13 @@ public class ProjectOracleGenerator {
         try {
             builder.setTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(DatasetUtils.getTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(jpClass, jpCallable));
             builder.setTokensMethodVariablesNonPrivateNonStaticAttributes(DatasetUtils.getTokensMethodVariablesNonPrivateNonStaticAttributes(jpClass, jpCallable));
+            // builder.setTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(DatasetUtils.getTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(jpClass, jpCallable, builder.copy()));
         } catch (JPClassNotFoundException | UnsolvedSymbolException e) {
             e.printStackTrace();
         }
         System.out.println(builder.copy().getId());
 
         /* Remaining fields
-            private List<Quartet<String, String, String, String>> tokensMethodVariablesNonPrivateNonStaticNonVoidMethods; // <token, package, class, signature>
-            private List<Quartet<String, String, String, String>> tokensMethodVariablesNonPrivateNonStaticAttributes; // <token, package, class, declaration>
             private List<Quartet<String, String, String, String>> tokensOracleVariablesNonPrivateNonStaticNonVoidMethods; // <token, package, class, signature>
             private List<Quartet<String, String, String, String>> tokensOracleVariablesNonPrivateNonStaticAttributes;
          */
