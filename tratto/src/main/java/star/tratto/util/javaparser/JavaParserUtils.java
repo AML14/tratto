@@ -15,11 +15,13 @@ import com.github.javaparser.resolution.declarations.ResolvedTypeParameterDeclar
 import com.github.javaparser.resolution.types.ResolvedType;
 import com.github.javaparser.symbolsolver.utils.SymbolSolverCollectionStrategy;
 import org.javatuples.Pair;
+import org.javatuples.Triplet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import star.tratto.dataset.oracles.OracleDatapoint;
 import star.tratto.exceptions.JPClassNotFoundException;
 import star.tratto.exceptions.PackageDeclarationNotFoundException;
+import star.tratto.exceptions.ResolvedTypeNotFound;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.util.JavaTypes;
 
@@ -56,6 +58,51 @@ public class JavaParserUtils {
             javaParser.getParserConfiguration().setSymbolResolver(strategy.getParserConfiguration().getSymbolResolver().get());
         }
         return javaParser;
+    }
+
+    public static ResolvedType getResolvedTypeOfExpression(
+            TypeDeclaration<?> jpClass,
+            CallableDeclaration<?> jpCallable,
+            List<Triplet<String, String, String>> methodArgs,
+            String expression
+    ) throws ResolvedTypeNotFound {
+        String SYNTHETIC_METHOD_NAME = "__tratto__auxiliaryMethod";
+        if (jpClass instanceof ClassOrInterfaceDeclaration) {
+            BlockStmt syntheticMethodBody = jpClass.addMethod(SYNTHETIC_METHOD_NAME).getBody().get();
+            // add statement per method argument.
+            for (Triplet<String, String, String> methodArg : methodArgs) {
+                syntheticMethodBody.addStatement(methodArg.getValue2() + " " + methodArg.getValue0() + ";");
+            }
+            // get method declaration.
+            if (!jpCallable.getNameAsString().equals(jpClass.getNameAsString())) {
+                String jpMethodType = ((MethodDeclaration) jpCallable).getType().asString();
+                if (!jpMethodType.equals("void")) {
+                    syntheticMethodBody.addStatement(
+                            jpMethodType + " methodResultID = " + jpCallable.getNameAsString() + "(" +
+                                    methodArgs
+                                            .stream()
+                                            .map(Triplet::getValue0)
+                                            .collect(Collectors.joining(", "))
+                                    + ");"
+                    );
+                }
+                syntheticMethodBody.addStatement("var returnType = " + expression + ";");
+                return jpClass.asClassOrInterfaceDeclaration()
+                        .getMethodsByName(SYNTHETIC_METHOD_NAME).get(0)
+                        .getBody().get()
+                        .getStatements().getLast().get()
+                        .asExpressionStmt().getExpression()
+                        .asVariableDeclarationExpr().getVariables().get(0)
+                        .getInitializer().get()
+                        .calculateResolvedType();
+            }
+        }
+        throw new ResolvedTypeNotFound(String.format(
+                "ResolvedType of expression %s of class %s and method %s not found",
+                expression,
+                jpClass.getNameAsString(),
+                jpCallable.getNameAsString()
+        ));
     }
 
     /**
