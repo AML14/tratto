@@ -457,7 +457,7 @@ class OracleTrainer:
                 all_labels.extend(expected_out.detach().cpu().numpy())
         # Compute the average validation loss
         mean_v_loss = total_loss / len(self._dl_val)
-        # Compute the f1score of the model within the accumulation
+        # Compute the f1_score of the model within the accumulation
         # steps
         predictions_numpy = np.array(all_predictions)
         labels_numpy = np.array(all_labels)

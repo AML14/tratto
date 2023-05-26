@@ -1,7 +1,7 @@
 from typing import Type
 
 import torch
-from torch.nn import Module, Linear
+from torch.nn import Module, Linear, Sequential, Dropout
 from transformers import AutoModel
 
 
@@ -48,11 +48,20 @@ class OracleClassifier(Module):
         # fully-connected layer (the output vector of the pre-trained codeBERT
         # model will represent the input vector of the fully-connected layer)
         hidden_size = self.codebert_transformer.config.to_dict()['hidden_size']
+
+        self.fc1 = Sequential(
+            Linear(hidden_size, 128),
+            Dropout(p=0.2)
+        )
+        self.fc2 = Sequential(
+            Linear(128, 64),
+            Dropout(p=0.2)
+        )
         # Second layer of the model: the fully-connected layer.
         # The size of the input is equal to the dimension of the output vector
         # of the pre-trained codeBERT model, while the size of the output is
         # a vector of {@code linear_size} elements (the classes of our classifier)
-        self.linear = Linear(hidden_size, linear_size)
+        self.linear = Linear(64, linear_size)
 
     def forward(
             self,
@@ -118,5 +127,7 @@ class OracleClassifier(Module):
         """
         output = self.codebert_transformer(input_ids, input_masks)
         output = output.pooler_output
+        output = self.fc1(output)
+        output = self.fc2(output)
         output = self.linear(output)
         return output
