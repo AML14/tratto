@@ -119,7 +119,6 @@ public class ProjectOracleGenerator {
         CallableDeclaration<?> jpCallable = DatasetUtils.getCallableDeclaration(jpClass, callableName, parameterTypes);
         assert jpCallable != null;
         // set data point information.
-        builder.setId(this.idCounter);
         builder.setConditionInfo(condition);
         builder.setProjectName(projectName);
         builder.setClassSourceCode(jpClass.toString());
@@ -133,9 +132,20 @@ public class ProjectOracleGenerator {
         builder.setMethodJavadoc(DatasetUtils.getCallableJavadoc(jpCallable));
         builder.setTokensMethodJavadocValues(DatasetUtils.getValuesFromJavadoc(builder.copy().getMethodJavadoc()));
         builder.setTokensMethodArguments(DatasetUtils.getTokensMethodArguments(jpClass, jpCallable));
+        // get method variable and oracle variable tokens.
         try {
-            builder.setTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(DatasetUtils.getTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(jpClass, jpCallable));
-            builder.setTokensMethodVariablesNonPrivateNonStaticAttributes(DatasetUtils.getTokensMethodVariablesNonPrivateNonStaticAttributes(jpClass, jpCallable));
+            builder.setTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(
+                    DatasetUtils.getTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(
+                            jpClass,
+                            jpCallable
+                    )
+            );
+            builder.setTokensMethodVariablesNonPrivateNonStaticAttributes(
+                    DatasetUtils.getTokensMethodVariablesNonPrivateNonStaticAttributes(
+                            jpClass,
+                            jpCallable
+                    )
+            );
             builder.setTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(
                     DatasetUtils.getTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(
                             jpClass,
@@ -155,14 +165,8 @@ public class ProjectOracleGenerator {
         } catch (JPClassNotFoundException | UnsolvedSymbolException e) {
             e.printStackTrace();
         }
-        System.out.println(builder.copy().getId());
-
-        /* Remaining fields
-            private List<Quartet<String, String, String, String>> tokensOracleVariablesNonPrivateNonStaticNonVoidMethods; // <token, package, class, signature>
-            private List<Quartet<String, String, String, String>> tokensOracleVariablesNonPrivateNonStaticAttributes;
-         */
-
         // return new datapoint.
+        builder.setId(this.idCounter);
         this.idCounter++;
         return builder.build();
     }
