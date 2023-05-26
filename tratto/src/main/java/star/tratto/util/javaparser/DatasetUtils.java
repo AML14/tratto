@@ -9,10 +9,8 @@ import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.type.Type;
 import com.github.javaparser.resolution.MethodUsage;
-import com.github.javaparser.resolution.declarations.ResolvedMethodDeclaration;
+import com.github.javaparser.resolution.declarations.ResolvedFieldDeclaration;
 import com.github.javaparser.resolution.declarations.ResolvedReferenceTypeDeclaration;
-import com.github.javaparser.resolution.declarations.ResolvedTypeDeclaration;
-import com.github.javaparser.resolution.types.ResolvedReferenceType;
 import com.github.javaparser.resolution.types.ResolvedType;
 import org.javatuples.Pair;
 import org.javatuples.Quartet;
@@ -20,6 +18,7 @@ import org.javatuples.Triplet;
 import star.tratto.dataset.oracles.JDoctorCondition.*;
 import star.tratto.exceptions.JPClassNotFoundException;
 import star.tratto.exceptions.PackageDeclarationNotFoundException;
+import star.tratto.identifiers.FieldFeature;
 import star.tratto.identifiers.JPCallableType;
 import star.tratto.identifiers.Javadoc;
 import star.tratto.identifiers.JavadocValueType;
@@ -32,6 +31,7 @@ import static star.tratto.util.javaparser.JavaParserUtils.*;
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -460,14 +460,85 @@ public class DatasetUtils {
         return methodList;
     }
 
-    public static String getClassName(
+    private static List<Quartet<String, String, String, String>> convertFieldDeclarationToQuartet(
+            List<ResolvedFieldDeclaration> jpFields
+    ) {
+        return new ArrayList<>(jpFields)
+                .stream()
+                .map(jpField -> new Quartet<>(
+                        jpField.declaringType().getClassName(),
+                        jpField.declaringType().getPackageName(),
+                        jpField.getName(),
+                        JavaParserUtils.getFieldSignature(jpField)
+                ))
+                .collect(Collectors.toList());
+    }
+
+    private static List<Quartet<String, String, String, String>> getFieldsFromType(
+            TypeDeclaration<?> jpClass,
+            CallableDeclaration<?> jpCallable,
+            ResolvedType jpType
+    ) {
+        List<Quartet<String, String, String, String>> fieldList = new ArrayList<>();
+        // check that type is not primitive.
+        if (jpType.isReferenceType()) {
+            List<ResolvedFieldDeclaration> fieldNotFound = new ArrayList<>();
+            Optional<ResolvedReferenceTypeDeclaration> jpTypeDeclaration = jpType.asReferenceType().getTypeDeclaration();
+            // get reference declaration of type.
+            if (jpTypeDeclaration.isPresent()) {
+                Optional<Node> jpNode = jpTypeDeclaration.get().toAst();
+                // check if node is found and is a class.
+                if (jpNode.isPresent() && jpNode.get() instanceof TypeDeclaration<?>) {
+                    List<ResolvedFieldDeclaration> jpFields = ((TypeDeclaration<?>) jpNode.get()).getFields()
+                            .stream()
+                            .map(FieldDeclaration::resolve)
+                            .filter(JavaParserUtils::isNonPrivateNonStaticAttribute)
+                            .collect(Collectors.toList());
+                    return convertFieldDeclarationToQuartet(jpFields);
+                }
+                List<ResolvedFieldDeclaration> jpResolvedFields = jpTypeDeclaration.get().getAllFields();
+
+            } else if (!(
+                    jpType.isPrimitive() || jpType.isVoid() || jpType.isTypeVariable() || jpType.isArray()
+            )) {
+                System.err.printf(
+                        "Return type %s different from ReferenceType, PrimitiveType, " +
+                        "ArrayType, TypeVariable, and VoidType not yet supported%n", jpType
+                );
+            }
+        }
+        return fieldList;
+    }
+
+    public static List<Quartet<String, String, String, String>> getTokensMethodVariablesNonPrivateNonStaticAttributes(
+            TypeDeclaration<?> jpClass,
+            CallableDeclaration<?> jpCallable
+    ) {
+        // add all fields of the base class (receiverObjectID -> this).
+        List<ResolvedFieldDeclaration> jpReceiverFields = jpClass.getFields()
+                .stream()
+                .map(FieldDeclaration::resolve)
+                .collect(Collectors.toList());
+        List<Quartet<String, String, String, String>> attributeList = new ArrayList<>(convertFieldDeclarationToQuartet(jpReceiverFields));
+        // add all fields of parameters.
+        for (Parameter jpParam : jpCallable.getParameters()) {
+
+        }
+        // add all fields of return type.
+        if (jpCallable instanceof MethodDeclaration) {
+
+        }
+        return attributeList;
+    }
+
+    public static String getOperationClassName(
             Operation operation
     ) {
         List<String> pathList = JDoctorUtils.getPathList(operation.getClassName());
         return JDoctorUtils.getClassNameFromPathList(pathList);
     }
 
-    public static String getCallableName(
+    public static String getOperationCallableName(
             Operation operation
     ) {
         List<String> pathList = JDoctorUtils.getPathList(operation.getName());

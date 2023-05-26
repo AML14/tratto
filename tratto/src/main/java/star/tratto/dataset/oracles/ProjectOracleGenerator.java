@@ -101,8 +101,8 @@ public class ProjectOracleGenerator {
         // get basic information of operation.
         String sourcePath = this.project.getSrcPath();
         String projectName = this.project.getProjectName();
-        String className = DatasetUtils.getClassName(operation);
-        String callableName = DatasetUtils.getCallableName(operation);
+        String className = DatasetUtils.getOperationClassName(operation);
+        String callableName = DatasetUtils.getOperationCallableName(operation);
         List<String> parameterTypes = JDoctorUtils.convertJDoctorConditionTypeNames2JavaParserTypeNames(operation.getParameterTypes());
         // get CompilationUnit of operation class.
         Optional<CompilationUnit> cuOptional = DatasetUtils.getClassCompilationUnit(operation, sourcePath);
@@ -131,6 +131,7 @@ public class ProjectOracleGenerator {
         builder.setTokensMethodArguments(DatasetUtils.getTokensMethodArguments(jpClass, jpCallable));
         try {
             builder.setTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(DatasetUtils.getTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(jpClass, jpCallable));
+            builder.setTokensMethodVariablesNonPrivateNonStaticAttributes(DatasetUtils.getTokensMethodVariablesNonPrivateNonStaticAttributes(jpClass, jpCallable));
         } catch (JPClassNotFoundException e) {
             e.printStackTrace();
         }
