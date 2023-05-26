@@ -102,6 +102,7 @@ public class ProjectOracleGenerator {
         // get basic information of operation.
         String sourcePath = this.project.getSrcPath();
         String projectName = this.project.getProjectName();
+        String packageName = DatasetUtils.getOperationPackageName(operation);
         String className = DatasetUtils.getOperationClassName(operation);
         String callableName = DatasetUtils.getOperationCallableName(operation);
         List<String> parameterTypes = JDoctorUtils.convertJDoctorConditionTypeNames2JavaParserTypeNames(operation.getParameterTypes());
@@ -120,7 +121,7 @@ public class ProjectOracleGenerator {
         builder.setConditionInfo(condition);
         builder.setProjectName(projectName);
         builder.setClassSourceCode(jpClass.toString());
-        builder.setPackageName(DatasetUtils.getPackageName(operation));
+        builder.setPackageName(packageName);
         builder.setClassName(className);
         builder.setClassJavadoc(DatasetUtils.getClassJavadoc(jpClass));
         builder.setTokensProjectClasses(this.tokensProjectClasses);

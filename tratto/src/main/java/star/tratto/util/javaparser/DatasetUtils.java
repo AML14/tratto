@@ -35,14 +35,6 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class DatasetUtils {
-    public static String getPackageName(
-            Operation operation
-    ) {
-        List<String> pathList = JDoctorUtils.getPathList(operation.getClassName());
-        List<String> packageList = JDoctorUtils.getPackageList(pathList);
-        return JDoctorUtils.getPackageNameFromPackageList(packageList);
-    }
-
     private static List<Pair<String, String>> getClassNameAndPackage(
             CompilationUnit cu
     ) throws PackageDeclarationNotFoundException {
@@ -527,6 +519,14 @@ public class DatasetUtils {
             ));
         }
         return attributeList;
+    }
+
+    public static String getOperationPackageName(
+            Operation operation
+    ) {
+        List<String> pathList = JDoctorUtils.getPathList(operation.getClassName());
+        List<String> packageList = JDoctorUtils.getPackageList(pathList);
+        return JDoctorUtils.getPackageNameFromPackageList(packageList);
     }
 
     public static String getOperationClassName(
