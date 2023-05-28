@@ -11,6 +11,7 @@ from torch.utils.data import DataLoader
 
 from sklearn.metrics import f1_score, accuracy_score, precision_score, recall_score
 from src.model.OracleClassifier import OracleClassifier
+from src.enums.ClassificationType import ClassificationType
 
 
 class OracleTrainer:
@@ -44,6 +45,7 @@ class OracleTrainer:
     classifier_ids_labels:
         The method compute the list of labels of the classification model, in the form of a list of tuples where the first
         element is an incremental index, while the second element is the name of the class
+    classification_type: Type[ClassificationType]
 
     Attributes
     ----------
@@ -65,7 +67,11 @@ class OracleTrainer:
         The test dataloader which contains the batches of datapoints
         for the testing phase
     classifier_ids_labels:
-        The dictionary of labels of the classification model, where the value is the name of a class, while the key element
+        The dictionary of labels of the classification model, where the value is the name of a target label, while the key element
+        is a numerical identifier representing the index of the one-shot vector representing the target label, with value equals
+        to 1.0.
+    classifier_ids_classes:
+        The dictionary of classes of the classification model, where the value is the name of a class, while the key element
         is a numerical identifier representing the index of the one-shot vector representing the class, with value equals
         to 1.0.
     """
@@ -77,7 +83,9 @@ class OracleTrainer:
             dl_train: Type[DataLoader],
             dl_val: Type[DataLoader],
             dl_test: Type[DataLoader],
-            classifier_ids_labels: Dict[int,str]
+            classifier_ids_labels: Dict[int,str],
+            classifier_ids_classes: Dict[int,str],
+            classification_type: ClassificationType
     ):
         self._model = model
         self._dl_train = dl_train
@@ -86,6 +94,8 @@ class OracleTrainer:
         self._loss_fn = loss_fn
         self._optimizer = optimizer
         self._classifier_ids_labels = classifier_ids_labels
+        self._classifier_ids_classes = classifier_ids_classes
+        self._classification_type = classification_type
 
     def train(
             self,
@@ -143,15 +153,17 @@ class OracleTrainer:
             t_f1 = 0
             all_predictions = []
             all_labels = []
-            t_predictions_per_class = { 'classes': { k: { "correct": 0, "wrong": 0, "predicted": [], "total": 0 } for k in self._classifier_ids_labels.values() }, 'total': 0 }
 
-            start = timeit.default_timer()
+            if self._classification_type == ClassificationType.CATEGORY_PREDICTION:
+                t_predictions_per_class = { 'classes': { k: { "correct": 0, "wrong": 0, "predicted": [], "total": 0 } for k in self._classifier_ids_labels.values() }, 'total': 0 }
+            else:
+                t_predictions_per_class = {'classes': {k: {"correct": 0, "wrong": 0, "predicted": [], "wrong_label": [], "total": 0} for k in self._classifier_ids_labels.values()}, 'total': 0}
 
             # model in training mode
             self._model.train()
             self._optimizer.zero_grad()
 
-            for step, batch in enumerate(self._dl_train):
+            for step, batch in enumerate(self._dl_train,1):
                 print(f"            Processing step {step+1} of {len(self._dl_train)}")
                 steps += 1
 
@@ -160,6 +172,7 @@ class OracleTrainer:
                 src_input = batch[0].to(device)
                 masks_input = batch[1].to(device)
                 tgt_out = batch[2].to(device)
+                tgt_classes = list(map(lambda i: self._classifier_ids_classes[i], batch[3].numpy()))
 
                 print(f"                Model predictions...")
                 # Train the model
@@ -191,8 +204,10 @@ class OracleTrainer:
                         predicted_class_label = self._classifier_ids_labels[predicted_class_id]
                         t_predictions_per_class['classes'][expected_class_label]["wrong"] += 1
                         t_predictions_per_class['classes'][expected_class_label]["predicted"].append(predicted_class_label)
+                        t_predictions_per_class['classes'][expected_class_label]["wrong_label"].append(tgt_classes[idx])
                     else:
                         t_predictions_per_class['classes'][expected_class_label]["correct"] += 1
+
 
                 # Accumulate predictions and labels
                 all_predictions.extend(predicted.detach().cpu().numpy())
@@ -270,7 +285,10 @@ class OracleTrainer:
                     # Clear the predictions and labels lists
                     all_predictions = []
                     all_labels = []
-                    t_predictions_per_class = { 'classes': { k: { "correct": 0, "wrong": 0, "predicted": [], "total": 0 } for k in self._classifier_ids_labels.values() }, 'total': 0 }
+                    if self._classification_type == ClassificationType.CATEGORY_PREDICTION:
+                        t_predictions_per_class = {'classes': {k: {"correct": 0, "wrong": 0, "predicted": [], "total": 0} for k in self._classifier_ids_labels.values()}, 'total': 0}
+                    else:
+                        t_predictions_per_class = {'classes': {k: {"correct": 0, "wrong": 0, "predicted": [], "wrong_label": [], "total": 0} for k in self._classifier_ids_labels.values()}, 'total': 0}
 
         return stats
 
@@ -348,11 +366,21 @@ class OracleTrainer:
             print("            " + f"CLASS (predicted)")
             print("                " + f"Correct: {predictions_stats['correct']} / {predictions_stats['total']}")
             print("                " + f"Wrong: {predictions_stats['wrong']} / {predictions_stats['total']}")
+            if predictions_stats['wrong'] > 0:
+                print("                " + f"Wrong Labels:")
+                wrong_label_counter = Counter(predictions_stats["wrong_label"])
+                for class_label, occurrences in wrong_label_counter.items():
+                    print("                    " + f"{class_label}: {occurrences}")
         print("            " + '-' * 30)
         for class_label, predictions_stats in stats['v_predictions_per_class']['classes'].items():
-            print("            " + f"Class {class_label}")
+            print("            " + f"CLASS {class_label}")
             print("                " + f"Correct: {predictions_stats['correct']} / {predictions_stats['total']}")
             print("                " + f"Wrong: {predictions_stats['wrong']} / {predictions_stats['total']}")
+            if predictions_stats['wrong'] > 0:
+                print("                " + f"Wrong Labels:")
+                wrong_label_counter = Counter(predictions_stats["wrong_label"])
+                for class_label, occurrences in wrong_label_counter.items():
+                    print("                    " + f"{class_label}: {occurrences}")
         print("            " + '-' * 30)
 
     @staticmethod
@@ -395,6 +423,11 @@ class OracleTrainer:
             print("            " + f"CLASS {class_label}")
             print("                " + f"Correct: {predictions_stats['correct']} / {predictions_stats['total']}")
             print("                " + f"Wrong: {predictions_stats['wrong']} / {predictions_stats['total']}")
+            if predictions_stats['wrong'] > 0:
+                print("                " + f"Wrong Labels:")
+                wrong_label_counter = Counter(predictions_stats["wrong_label"])
+                for class_label, occurrences in wrong_label_counter.items():
+                    print("                    " + f"{class_label}: {occurrences}")
         print("            " + '-' * 30)
 
 
@@ -460,20 +493,24 @@ class OracleTrainer:
         # Accumulate predictions and labels
         all_predictions = []
         all_labels = []
-        v_predictions_per_class = { 'classes': { k: { "correct": 0, "wrong": 0, "predicted": [], "total": 0 } for k in self._classifier_ids_labels.values() }, 'total': 0 }
+        if self._classification_type == ClassificationType.CATEGORY_PREDICTION:
+            v_predictions_per_class = {'classes': {k: {"correct": 0, "wrong": 0, "predicted": [], "total": 0} for k in self._classifier_ids_labels.values()}, 'total': 0}
+        else:
+            v_predictions_per_class = {'classes': {k: {"correct": 0, "wrong": 0, "predicted": [], "wrong_label": [], "total": 0} for k in self._classifier_ids_labels.values()}, 'total': 0}
         # The validation phase is performed without accumulating
         # the gradient descent and without updating the weights
         # of the model
 
         print("        Performing validation step...")
         with torch.no_grad():
-            for batch_id, batch in enumerate(self._dl_val):
+            for batch_id, batch in enumerate(self._dl_val,1):
                 print(f"            Processing batch {batch_id} of {len(self._dl_val)}")
                 # Extract the inputs, the attention masks and the
                 # targets from the batch
                 src_input = batch[0].to(device)
                 masks_input = batch[1].to(device)
                 tgt_out = batch[2].to(device)
+                tgt_classes = list(map(lambda i: self._classifier_ids_classes[i], batch[3].numpy()))
                 print(f"                Model predictions...")
                 # Feed the model
                 outputs = self._model(src_input, masks_input)
@@ -500,6 +537,7 @@ class OracleTrainer:
                         predicted_class_label = self._classifier_ids_labels[predicted_class_id]
                         v_predictions_per_class['classes'][expected_class_label]["wrong"] += 1
                         v_predictions_per_class['classes'][expected_class_label]["predicted"].append(predicted_class_label)
+                        v_predictions_per_class['classes'][expected_class_label]["wrong_label"].append(tgt_classes[idx])
                     else:
                         v_predictions_per_class['classes'][expected_class_label]["correct"] += 1
                 # Accumulate predictions and labels
@@ -555,20 +593,24 @@ class OracleTrainer:
         # Accumulate predictions and labels
         all_predictions = []
         all_labels = []
-        test_predictions_per_class = { 'classes': { k: { "correct": 0, "wrong": 0, "predicted": [], "total": 0 } for k in self._classifier_ids_labels.values() }, 'total': 0 }
+        if self._classification_type == ClassificationType.CATEGORY_PREDICTION:
+            test_predictions_per_class = {'classes': {k: {"correct": 0, "wrong": 0, "predicted": [], "total": 0} for k in self._classifier_ids_labels.values()}, 'total': 0}
+        else:
+            test_predictions_per_class = {'classes': {k: {"correct": 0, "wrong": 0, "predicted": [], "wrong_label": [], "total": 0} for k in self._classifier_ids_labels.values()}, 'total': 0}
 
         # The validation phase is performed without accumulating
         # the gradient descent and without updating the weights
         # of the model
         print("        Performing testing evaluation...")
         with torch.no_grad():
-            for batch_id, batch in enumerate(self._dl_test):
+            for batch_id, batch in enumerate(self._dl_test,1):
                 print(f"            Processing batch {batch_id} of {len(self._dl_test)}")
                 # Extract the inputs, the attention masks and the
                 # targets from the batch
                 src_input = batch[0].to(device)
                 masks_input = batch[1].to(device)
                 tgt_out = batch[2].to(device)
+                tgt_classes = list(map(lambda i: self._classifier_ids_classes[i], batch[3].numpy()))
                 print(f"                Model predictions...")
                 # Feed the model
                 outputs = self._model(src_input, masks_input)
@@ -592,6 +634,7 @@ class OracleTrainer:
                         predicted_class_label = self._classifier_ids_labels[predicted_class_id]
                         test_predictions_per_class['classes'][expected_class_label]["wrong"] += 1
                         test_predictions_per_class['classes'][expected_class_label]["predicted"].append(predicted_class_label)
+                        test_predictions_per_class['classes'][expected_class_label]["wrong_label"].append(tgt_classes[idx])
                     else:
                         test_predictions_per_class['classes'][expected_class_label]["correct"] += 1
                 # Accumulate predictions and labels

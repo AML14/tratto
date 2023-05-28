@@ -116,11 +116,13 @@ if __name__ == "__main__":
             HyperParameter.BATCH_SIZE.value,
             HyperParameter.TEST_RATIO.value,
             tokenizer,
-            HyperParameter.NUM_SPLITS.value
+            HyperParameter.NUM_SPLITS.value,
+            classification_type,
+            model_type
         )
         # Pre-processing data
         Printer.print_pre_processing()
-        data_processor.pre_processing(classification_type, model_type)
+        data_processor.pre_processing()
         # Process the data
         data_processor.processing()
 
@@ -180,7 +182,7 @@ if __name__ == "__main__":
         stats = {}
 
         # Stratified cross-validation training
-        for fold in range(HyperParameter.NUM_SPLITS.value):
+        for fold in range(1, HyperParameter.NUM_SPLITS.value + 1):
             print("        " + "-" * 25)
             print(f"        Cross-validation | Fold {fold}")
             print("        " + "-" * 25)
@@ -217,8 +219,8 @@ if __name__ == "__main__":
             )
             # Instantiation of the trainer
             classifier_ids_labels = data_processor.get_ids_labels()
-            oracle_trainer = OracleTrainer(model, loss_fn, optimizer, dl_train, dl_val, dl_test, classifier_ids_labels)
-            stats_test = oracle_trainer.evaluation(device)
+            classifier_ids_classes = data_processor.get_ids_classes()
+            oracle_trainer = OracleTrainer(model, loss_fn, optimizer, dl_train, dl_val, dl_test, classifier_ids_labels, classifier_ids_classes, classification_type)
             try:
                 # Train the model
                 stats[f"fold_{fold}"] = oracle_trainer.train(

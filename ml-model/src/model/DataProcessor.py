@@ -1,25 +1,16 @@
 import os
-import math
-import random
-from typing import Type, Dict, Union
-import sys
+from typing import Type, Dict, Union, Tuple
 
 #sys.path.append(f"{os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..')}")
 
 import pandas as pd
 import numpy as np
 import torch
-from functools import reduce
-from collections import Counter
 from torch.utils.data import TensorDataset, ConcatDataset
-from transformers import AutoTokenizer
 from sklearn.model_selection import train_test_split, StratifiedKFold
 
 from src.enums.ClassificationType import ClassificationType
 from src.enums.DatasetType import DatasetType
-from src.enums.BatchType import BatchType
-from src.enums.FileFormat import FileFormat
-from src.enums.FileName import FileName
 from src.enums.ModelType import ModelType
 
 
@@ -83,7 +74,9 @@ class DataProcessor:
             batch_size: int,
             test_ratio: float,
             tokenizer: any,
-            n_split: int
+            n_split: int,
+            classification_type: ClassificationType,
+            model_type: Type[ModelType]
     ):
         self._d_path = d_path
         self._tokenizer = tokenizer
@@ -96,6 +89,8 @@ class DataProcessor:
         self._src_test = None
         self._tgt_test = None
         self._n_split = n_split
+        self._classification_type = classification_type
+        self._model_type = model_type
         self._processed_dataset = {
             "b_train_tokenized": [],
             "b_val_tokenized": [],
@@ -135,16 +130,43 @@ class DataProcessor:
 
     def get_ids_labels(self):
         """
-        The method computes the dictionary of labels of the classification model, where the value is the name of a class,
+        The method computes the dictionary of labels of the classification model, where the value is the name of a target label,
         while the key element is a numerical identifier representing the index of the one-shot vector representing the class,
         with value equals to 1.0.
 
         Returns
         -------
         The dictionary of labels. The keys are numerical identifiers (int), while the values are strings representing the
-        name of the corresponding class.
+        name of the corresponding target label.
         """
         return { i:k for i,k in enumerate(self._tgt_map.keys()) }
+
+    def get_classes_ids(self):
+        """
+        The method computes the dictionary of classes of the classification model, where the key is the name of a class,
+        while the value element is a numerical identifier representing the codification of a corresponding class.
+
+        Returns
+        -------
+        The dictionary of classes. The keys are strings representing the name of a class (int), while the values are the
+        corresponding numeric codification.
+        """
+        if self._model_type == ModelType.TOKEN_CLASSES:
+            return {k: i for i, k in enumerate(self._df_dataset["tokenClass"].unique())}
+        else:
+            return {k: i for i, k in enumerate(self._df_dataset["token"].unique())}
+
+    def get_ids_classes(self):
+        """
+        The method computes the dictionary of classes of the classification model, a numerical identifier representing the
+        index of the one-shot vector representing the class while the value element is the name of the corresponding target class.
+
+        Returns
+        -------
+        The dictionary of classes. The keys are numeric identifiers (integer) representing the codification value of a class (int),
+        while the values are the name of the corresponding target class.
+        """
+        return { i:k for k,i in self.get_classes_ids().items()}
 
     def get_tgt_classes_size(self):
         """
@@ -274,11 +296,14 @@ class DataProcessor:
             t_mask_batch = t_batch[1]
             # The list of targets of the current batch
             t_tgt_batch = t_batch[2]
+            # The list of target labels of the current batch
+            t_tgt_labels_batch = t_batch[3]
             # Generate a dataset of the batch
             dataset_batch = TensorDataset(
                 t_src_batch,
                 t_mask_batch,
-                t_tgt_batch
+                t_tgt_batch,
+                t_tgt_labels_batch
             )
             # Add the datasets of batches
             t_dataset_list.append(dataset_batch)
@@ -347,15 +372,15 @@ class DataProcessor:
         self._processed_dataset["b_test_tokenized"] = self._tokenize_batches(test_batches)
         
 
-    def pre_processing(self, classification_type: Type[ClassificationType], model_type: Type[ModelType]):
+    def pre_processing(self):
         # drop column id (it is not relevant for training the model)
         self._df_dataset = self._df_dataset.drop(['id'], axis=1)
         # replicate single occurrences
-        if model_type == ModelType.TOKEN_CLASSES:
-            single_occurrence_rows = self._df_dataset[self._df_dataset['tokenClass'].map(self._df_dataset['tokenClass'].value_counts()) <= self._n_split*10]
+        if self._model_type == ModelType.TOKEN_CLASSES:
+            single_occurrence_rows = self._df_dataset[self._df_dataset['tokenClass'].map(self._df_dataset['tokenClass'].value_counts()) <= self._n_split]
         else:
-            single_occurrence_rows = self._df_dataset[self._df_dataset['token'].map(self._df_dataset['token'].value_counts()) <= self._n_split*10]
-        for i in range(self._n_split*5):
+            single_occurrence_rows = self._df_dataset[self._df_dataset['token'].map(self._df_dataset['token'].value_counts()) <= self._n_split]
+        for i in range(self._n_split):
             self._df_dataset = pd.concat([self._df_dataset, single_occurrence_rows], ignore_index=True)
         # map empty cells to empty strings
         self._df_dataset.fillna('', inplace=True)
@@ -380,13 +405,13 @@ class DataProcessor:
         # delete the oracle ids and the tgt labels from the input dataset
         df_src = self._df_dataset.drop(['label','oracleId','projectName','classJavadoc','classSourceCode'], axis=1)
         # if the model predicts classes, remove the label from the input
-        if model_type == ModelType.TOKEN_CLASSES:
+        if self._model_type == ModelType.TOKEN_CLASSES:
             df_src = df_src.drop(['token','tokenInfo'], axis=1)
-            if classification_type == ClassificationType.CATEGORY_PREDICTION:
+            if self._classification_type == ClassificationType.CATEGORY_PREDICTION:
                 df_src = df_src.drop(['tokenClass'], axis=1)
         else:
             df_src = df_src.drop(['tokenClass'], axis=1)
-            if classification_type == ClassificationType.CATEGORY_PREDICTION:
+            if self._classification_type == ClassificationType.CATEGORY_PREDICTION:
                 df_src = df_src.drop(['token'], axis=1)
 
         # The apply function maps each row of the src dataset with multiple columns, to
@@ -426,17 +451,17 @@ class DataProcessor:
         # to the model
         src = df_src_concat.to_numpy().tolist()
         # Get the list of target values from the dataframe
-        if model_type == ModelType.TOKEN_CLASSES:
-            tgt = self._df_dataset["tokenClass"].values if classification_type == ClassificationType.CATEGORY_PREDICTION else self._df_dataset["label"].values
+        if self._model_type == ModelType.TOKEN_CLASSES:
+            tgt = self._df_dataset["tokenClass"].values if self._classification_type == ClassificationType.CATEGORY_PREDICTION else self._df_dataset["label"].values
         else:
-            tgt = self._df_dataset["token"].values if classification_type == ClassificationType.CATEGORY_PREDICTION else self._df_dataset["label"].values
+            tgt = self._df_dataset["token"].values if self._classification_type == ClassificationType.CATEGORY_PREDICTION else self._df_dataset["label"].values
         # Split the dataset into training and test sets with stratified sampling based on target classes
         self._src, self._src_test, self._tgt, self._tgt_test = train_test_split(src, tgt, test_size=self._test_ratio, stratify=tgt)
         # Generate the mapping of the target column unique values to the corresponding one-shot representations
-        if model_type == ModelType.TOKEN_CLASSES:
-            self._tgt_map = self.map_column_values_to_one_shot_vectors("tokenClass" if classification_type == ClassificationType.CATEGORY_PREDICTION else "label")
+        if self._model_type == ModelType.TOKEN_CLASSES:
+            self._tgt_map = self.map_column_values_to_one_shot_vectors("tokenClass" if self._classification_type == ClassificationType.CATEGORY_PREDICTION else "label")
         else:
-            self._tgt_map = self.map_column_values_to_one_shot_vectors("token" if classification_type == ClassificationType.CATEGORY_PREDICTION else "label")
+            self._tgt_map = self.map_column_values_to_one_shot_vectors("token" if self._classification_type == ClassificationType.CATEGORY_PREDICTION else "label")
 
 
     def _generate_batches(self, src_data: list[str], tgt_data: list[list[float]], batch_size: int):
@@ -501,13 +526,16 @@ class DataProcessor:
         df_dataset = pd.concat(dfs)
         return df_dataset
 
-    def _tokenize_batches(self, batches):
+    def _tokenize_batches(
+            self,
+            batches: list[[list[str],list[list[float]]]]
+    ):
         """
         The method tokenizes the input and target datapoints of the list of batches passed to the function
 
         Parameters
         ----------
-        batches: list[list[list[str],list[list[float]]]]
+        batches: list[Tuple[list[str],list[list[float]]]]
             The batches of datapoints and targets. Each element of the list is a batch, in the form of a tuple: the
             first element of the batch contains the inputs, while the second contains the targets within the batch.
 
@@ -566,7 +594,11 @@ class DataProcessor:
             b_targets_one_shot = list(map(lambda t: self._tgt_map[t],b_targets))
             # Transform the targets into a tensor list
             targets_tensor = torch.tensor(b_targets_one_shot)
+            # Keep track of labels
+            targets_labels = b_targets if self._classification_type == ClassificationType.CATEGORY_PREDICTION else list(map(lambda i: i.split(self._tokenizer.cls_token)[-1], b_inputs))
+            classifier_classes_ids = self.get_classes_ids()
+            targets_labels_tensor = torch.tensor(list(map(lambda l: classifier_classes_ids[l], targets_labels)))
             # Append triplet to list of tokenized batches
-            tokenized_batches.append((t_inputs, t_attention_masks, targets_tensor))
+            tokenized_batches.append((t_inputs, t_attention_masks, targets_tensor, targets_labels_tensor))
         # return list of tokenized batches
         return tokenized_batches
