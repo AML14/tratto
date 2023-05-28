@@ -353,6 +353,16 @@ class OracleTrainer:
         for class_label, score in stats['t_recall']:
             print("            " + f"TRAINING RECALL - {class_label}: {score:.2f}")
         print("            " + '-' * 30)
+        for class_label, predictions_stats in stats['t_predictions_per_class']['classes'].items():
+            print("            " + f"CLASS {class_label}")
+            print("                " + f"Correct: {predictions_stats['correct']} / {predictions_stats['total']}")
+            print("                " + f"Wrong: {predictions_stats['wrong']} / {predictions_stats['total']}")
+            if predictions_stats['wrong'] > 0:
+                print("                " + f"Wrong Labels:")
+                wrong_label_counter = Counter(predictions_stats["wrong_label"])
+                for class_label, occurrences in wrong_label_counter.items():
+                    print("                    " + f"{class_label}: {occurrences}")
+        print("            " + '-' * 30)
         print("            " + f"VALIDATION LOSS: {stats['v_loss']:.4f}")
         print("            " + f"VALIDATION ACCURACY: {stats['v_accuracy']:.2f}")
         for class_label, score in stats['v_precision']:
@@ -361,16 +371,6 @@ class OracleTrainer:
             print("            " + f"VALIDATION PRECISION - {class_label}: {score:.2f}")
         for class_label, score in stats['v_precision']:
             print("            " + f"VALIDATION RECALL - {class_label}: {score:.2f}")
-        print("            " + '-' * 30)
-        for class_label, predictions_stats in stats['t_predictions_per_class']['classes'].items():
-            print("            " + f"CLASS (predicted)")
-            print("                " + f"Correct: {predictions_stats['correct']} / {predictions_stats['total']}")
-            print("                " + f"Wrong: {predictions_stats['wrong']} / {predictions_stats['total']}")
-            if predictions_stats['wrong'] > 0:
-                print("                " + f"Wrong Labels:")
-                wrong_label_counter = Counter(predictions_stats["wrong_label"])
-                for class_label, occurrences in wrong_label_counter.items():
-                    print("                    " + f"{class_label}: {occurrences}")
         print("            " + '-' * 30)
         for class_label, predictions_stats in stats['v_predictions_per_class']['classes'].items():
             print("            " + f"CLASS {class_label}")
