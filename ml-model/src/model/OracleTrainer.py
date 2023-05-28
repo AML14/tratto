@@ -125,8 +125,7 @@ class OracleTrainer:
             'v_recall': [],
         }
         steps = 0
-        accumulation_steps = 8
-        time_over = False
+        accumulation_steps = 2
 
         # In each epoch the trainer train the model batch by batch,
         # with all the batch of the training dataset. After a given
