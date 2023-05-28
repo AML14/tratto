@@ -7,7 +7,7 @@ class HyperParameter(Enum):
     # number of sequence in each batch
     BATCH_SIZE = 256
     # learning rate for the gradient descent
-    LR = 0.001
+    LR = 0.0001
     # number of epochs to train the model
     NUM_EPOCHS = 2
     # Specify the number of folds for cross-validation
