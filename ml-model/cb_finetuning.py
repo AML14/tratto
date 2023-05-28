@@ -218,6 +218,7 @@ if __name__ == "__main__":
             # Instantiation of the trainer
             classifier_ids_labels = data_processor.get_ids_labels()
             oracle_trainer = OracleTrainer(model, loss_fn, optimizer, dl_train, dl_val, dl_test, classifier_ids_labels)
+            stats_test = oracle_trainer.evaluation(device)
             try:
                 # Train the model
                 stats[f"fold_{fold}"] = oracle_trainer.train(
