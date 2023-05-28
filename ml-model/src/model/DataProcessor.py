@@ -352,10 +352,10 @@ class DataProcessor:
         self._df_dataset = self._df_dataset.drop(['id'], axis=1)
         # replicate single occurrences
         if model_type == ModelType.TOKEN_CLASSES:
-            single_occurrence_rows = self._df_dataset[self._df_dataset['tokenClass'].map(self._df_dataset['tokenClass'].value_counts()) <= self._n_split]
+            single_occurrence_rows = self._df_dataset[self._df_dataset['tokenClass'].map(self._df_dataset['tokenClass'].value_counts()) <= self._n_split*10]
         else:
-            single_occurrence_rows = self._df_dataset[self._df_dataset['token'].map(self._df_dataset['token'].value_counts()) <= self._n_split]
-        for i in range(self._n_split):
+            single_occurrence_rows = self._df_dataset[self._df_dataset['token'].map(self._df_dataset['token'].value_counts()) <= self._n_split*10]
+        for i in range(self._n_split*5):
             self._df_dataset = pd.concat([self._df_dataset, single_occurrence_rows], ignore_index=True)
         # map empty cells to empty strings
         self._df_dataset.fillna('', inplace=True)
