@@ -1,8 +1,10 @@
 import math
+import os
 import timeit
 import numpy as np
 from typing import Type, Union, Tuple, Dict
 from collections import Counter
+
 
 import torch
 import torch.optim as optim
@@ -10,8 +12,11 @@ from torch.nn import Module
 from torch.utils.data import DataLoader
 
 from sklearn.metrics import f1_score, accuracy_score, precision_score, recall_score
+
+from src.enums.HyperParameter import HyperParameter
 from src.model.OracleClassifier import OracleClassifier
 from src.enums.ClassificationType import ClassificationType
+from src.utils import utils
 
 
 class OracleTrainer:
@@ -46,6 +51,9 @@ class OracleTrainer:
         The method compute the list of labels of the classification model, in the form of a list of tuples where the first
         element is an incremental index, while the second element is the name of the class
     classification_type: Type[ClassificationType]
+        Category prediction or label prediction
+    checkpoint_path: str
+        The path where to save model checkpoints
 
     Attributes
     ----------
@@ -73,7 +81,11 @@ class OracleTrainer:
     classifier_ids_classes:
         The dictionary of classes of the classification model, where the value is the name of a class, while the key element
         is a numerical identifier representing the index of the one-shot vector representing the class, with value equals
-        to 1.0.
+        to 1.0
+    classification_type: Type[ClassificationType]
+        Category prediction or label prediction
+    checkpoint_path: str
+        The path where to save model checkpoints
     """
     def __init__(
             self,
@@ -85,7 +97,8 @@ class OracleTrainer:
             dl_test: Type[DataLoader],
             classifier_ids_labels: Dict[int,str],
             classifier_ids_classes: Dict[int,str],
-            classification_type: ClassificationType
+            classification_type: ClassificationType,
+            checkpoint_path
     ):
         self._model = model
         self._dl_train = dl_train
@@ -96,6 +109,19 @@ class OracleTrainer:
         self._classifier_ids_labels = classifier_ids_labels
         self._classifier_ids_classes = classifier_ids_classes
         self._classification_type = classification_type
+        self._checkpoint_path = checkpoint_path
+
+    def _checkpoint(self, epoch: int, step: int):
+        if not os.path.exists(self._checkpoint_path):
+            os.makedirs(self._checkpoint_path)
+        filename = os.path.join(self._checkpoint_path, f"checkpoint_{str(epoch)}_{str(step)}")
+        torch.save(self._model.state_dict(), f"{filename}.pt")
+
+    def _resume(self, epoch: int, step: int):
+        if not os.path.exists(self._checkpoint_path):
+            os.makedirs(self._checkpoint_path)
+        filename = os.path.join(self._checkpoint_path, str(epoch), str(step))
+        self._model.load_state_dict(torch.load(f"{filename}.pt"))
 
     def train(
             self,
@@ -138,7 +164,7 @@ class OracleTrainer:
             'v_predictions_per_class': []
         }
         steps = 0
-        accumulation_steps = 2
+        accumulation_steps = HyperParameter.ACCUMULATION_STEPS.value
 
         # In each epoch the trainer train the model batch by batch,
         # with all the batch of the training dataset. After a given
@@ -148,9 +174,9 @@ class OracleTrainer:
         # the training, and performs the validation to understand how
         # well the model generalize on the validation data.
         for epoch in range(1, num_epochs + 1):
-            print(f"        Start training - Epoch {epoch} of {num_epochs}")
+            if utils.is_main_process():
+                print(f"        Start training - Epoch {epoch} of {num_epochs}")
             total_loss = 0
-            t_f1 = 0
             all_predictions = []
             all_labels = []
 
@@ -161,7 +187,7 @@ class OracleTrainer:
             self._optimizer.zero_grad()
 
             for step, batch in enumerate(self._dl_train,1):
-                print(f"            Processing step {step+1} of {len(self._dl_train)}")
+                print(f"            Processing step {step} of {len(self._dl_train)}")
                 steps += 1
 
                 # Extract the inputs, the attention masks and the expected
@@ -205,8 +231,6 @@ class OracleTrainer:
                     else:
                         t_predictions_per_class['classes'][expected_class_label]["correct"] += 1
                         t_predictions_per_class['classes'][expected_class_label]["correct_class"].append(tgt_classes[idx])
-
-
 
                 # Accumulate predictions and labels
                 all_predictions.extend(predicted.detach().cpu().numpy())
@@ -278,6 +302,9 @@ class OracleTrainer:
                         }
                     )
 
+                    # Save checkpoints
+                    if utils.is_main_process():
+                        self._checkpoint(epoch, step)
                     # Reset the total loss
                     total_loss = 0
                     interval = timeit.default_timer()
@@ -285,7 +312,6 @@ class OracleTrainer:
                     all_predictions = []
                     all_labels = []
                     t_predictions_per_class = {'classes': {k: {"correct": 0, "wrong": 0, "predicted": [], "wrong_class": [], "correct_class": [], "total": 0} for k in self._classifier_ids_labels.values()}, 'total': 0}
-
         return stats
 
     @staticmethod
@@ -335,59 +361,60 @@ class OracleTrainer:
             v_recall: list[Tuple[str,float]]
                 Recall of the validation phase, for each class of the model
         """
-        print("            " + '-' * 30)
-        print("            " + "STATISTICS")
-        print("            " + '-' * 30)
-        print("            " + f"EPOCH: [{epoch} / {num_epochs}]")
-        print("            " + f"STEP: [{step} / {total_steps}]")
-        print("            " + f"TRAINING LOSS: {stats['t_loss']:.4f}")
-        print("            " + f"TRAINING ACCURACY: {stats['t_accuracy']:.2f}")
-        for class_label, score in stats['t_f1_score']:
-            print("            " + f"TRAINING F1 SCORE - {class_label}: {score:.2f}")
-        for class_label, score in stats['t_precision']:
-            print("            " + f"TRAINING PRECISION - {class_label}: {score:.2f}")
-        for class_label, score in stats['t_recall']:
-            print("            " + f"TRAINING RECALL - {class_label}: {score:.2f}")
-        print("            " + '-' * 30)
-        for class_label, predictions_stats in stats['t_predictions_per_class']['classes'].items():
-            print("            " + f"CLASS {class_label}")
-            print("                " + f"Correct: {predictions_stats['correct']} / {predictions_stats['total']}")
-            if predictions_stats['correct'] > 0:
-                print("                " + f"Correct Classes:")
-                correct_class_counter = Counter(predictions_stats["correct_class"])
-                for class_label, occurrences in correct_class_counter.items():
-                    print("                    " + f"{class_label}: {occurrences}")
-            print("                " + f"Wrong: {predictions_stats['wrong']} / {predictions_stats['total']}")
-            if predictions_stats['wrong'] > 0:
-                print("                " + f"Wrong Classes:")
-                wrong_class_counter = Counter(predictions_stats["wrong_class"])
-                for class_label, occurrences in wrong_class_counter.items():
-                    print("                    " + f"{class_label}: {occurrences}")
-        print("            " + '-' * 30)
-        print("            " + f"VALIDATION LOSS: {stats['v_loss']:.4f}")
-        print("            " + f"VALIDATION ACCURACY: {stats['v_accuracy']:.2f}")
-        for class_label, score in stats['v_precision']:
-            print("            " + f"VALIDATION F1 SCORE - {class_label}: {score:.2f}")
-        for class_label, score in stats['v_precision']:
-            print("            " + f"VALIDATION PRECISION - {class_label}: {score:.2f}")
-        for class_label, score in stats['v_precision']:
-            print("            " + f"VALIDATION RECALL - {class_label}: {score:.2f}")
-        print("            " + '-' * 30)
-        for class_label, predictions_stats in stats['v_predictions_per_class']['classes'].items():
-            print("            " + f"CLASS {class_label}")
-            print("                " + f"Correct: {predictions_stats['correct']} / {predictions_stats['total']}")
-            if predictions_stats['correct'] > 0:
-                print("                " + f"Correct Classes:")
-                correct_class_counter = Counter(predictions_stats["correct_class"])
-                for class_label, occurrences in correct_class_counter.items():
-                    print("                    " + f"{class_label}: {occurrences}")
-            print("                " + f"Wrong: {predictions_stats['wrong']} / {predictions_stats['total']}")
-            if predictions_stats['wrong'] > 0:
-                print("                " + f"Wrong Classes:")
-                wrong_class_counter = Counter(predictions_stats["wrong_class"])
-                for class_label, occurrences in wrong_class_counter.items():
-                    print("                    " + f"{class_label}: {occurrences}")
-        print("            " + '-' * 30)
+        if utils.is_main_process():
+            print("            " + '-' * 30)
+            print("            " + "STATISTICS")
+            print("            " + '-' * 30)
+            print("            " + f"EPOCH: [{epoch} / {num_epochs}]")
+            print("            " + f"STEP: [{step} / {total_steps}]")
+            print("            " + f"TRAINING LOSS: {stats['t_loss']:.4f}")
+            print("            " + f"TRAINING ACCURACY: {stats['t_accuracy']:.2f}")
+            for class_label, score in stats['t_f1_score']:
+                print("            " + f"TRAINING F1 SCORE - {class_label}: {score:.2f}")
+            for class_label, score in stats['t_precision']:
+                print("            " + f"TRAINING PRECISION - {class_label}: {score:.2f}")
+            for class_label, score in stats['t_recall']:
+                print("            " + f"TRAINING RECALL - {class_label}: {score:.2f}")
+            print("            " + '-' * 30)
+            for class_label, predictions_stats in stats['t_predictions_per_class']['classes'].items():
+                print("            " + f"LABEL {class_label}")
+                print("                " + f"Correct: {predictions_stats['correct']} / {predictions_stats['total']}")
+                if predictions_stats['correct'] > 0:
+                    print("                " + f"Correct Classes:")
+                    correct_class_counter = Counter(predictions_stats["correct_class"])
+                    for class_label, occurrences in correct_class_counter.items():
+                        print("                    " + f"{class_label}: {occurrences}")
+                print("                " + f"Wrong: {predictions_stats['wrong']} / {predictions_stats['total']}")
+                if predictions_stats['wrong'] > 0:
+                    print("                " + f"Wrong Classes:")
+                    wrong_class_counter = Counter(predictions_stats["wrong_class"])
+                    for class_label, occurrences in wrong_class_counter.items():
+                        print("                    " + f"{class_label}: {occurrences}")
+            print("            " + '-' * 30)
+            print("            " + f"VALIDATION LOSS: {stats['v_loss']:.4f}")
+            print("            " + f"VALIDATION ACCURACY: {stats['v_accuracy']:.2f}")
+            for class_label, score in stats['v_f1_score']:
+                print("            " + f"VALIDATION F1 SCORE - {class_label}: {score:.2f}")
+            for class_label, score in stats['v_precision']:
+                print("            " + f"VALIDATION PRECISION - {class_label}: {score:.2f}")
+            for class_label, score in stats['v_recall']:
+                print("            " + f"VALIDATION RECALL - {class_label}: {score:.2f}")
+            print("            " + '-' * 30)
+            for class_label, predictions_stats in stats['v_predictions_per_class']['classes'].items():
+                print("            " + f"LABEL {class_label}")
+                print("                " + f"Correct: {predictions_stats['correct']} / {predictions_stats['total']}")
+                if predictions_stats['correct'] > 0:
+                    print("                " + f"Correct Classes:")
+                    correct_class_counter = Counter(predictions_stats["correct_class"])
+                    for class_label, occurrences in correct_class_counter.items():
+                        print("                    " + f"{class_label}: {occurrences}")
+                print("                " + f"Wrong: {predictions_stats['wrong']} / {predictions_stats['total']}")
+                if predictions_stats['wrong'] > 0:
+                    print("                " + f"Wrong Classes:")
+                    wrong_class_counter = Counter(predictions_stats["wrong_class"])
+                    for class_label, occurrences in wrong_class_counter.items():
+                        print("                    " + f"{class_label}: {occurrences}")
+            print("            " + '-' * 30)
 
     @staticmethod
     def print_evaluation_stats(
@@ -411,35 +438,36 @@ class OracleTrainer:
         test_recall: list[Tuple[str,float]]
             Recall of the testing phase, for each class of the model
         """
-        print("            " + '-'*30)
-        print("            " + "TESTING STATISTICS")
-        print("            " + '-'*30)
-        print("            " + f"TESTING ACCURACY: {test_accuracy:.2f}")
-        print("            " + '-'*30)
-        for class_label, score in test_f1_score:
-            print("            " + f"TESTING F1 SCORE - {class_label}: {score:.2f}")
-        print("            " + '-'*30)
-        for class_label, score in test_precision:
-            print("            " + f"TESTING PRECISION - {class_label}: {score:.2f}")
-        print("            " + '-'*30)
-        for class_label, score in test_recall:
-            print("            " + f"TESTING RECALL - {class_label}: {score:.2f}")
-        print("            " + '-'*30)
-        for class_label, predictions_stats in test_predictions_per_class['classes'].items():
-            print("            " + f"CLASS {class_label}")
-            print("                " + f"Correct: {predictions_stats['correct']} / {predictions_stats['total']}")
-            if predictions_stats['correct'] > 0:
-                print("                " + f"Correct Classes:")
-                correct_class_counter = Counter(predictions_stats["correct_class"])
-                for class_label, occurrences in correct_class_counter.items():
-                    print("                    " + f"{class_label}: {occurrences}")
-            print("                " + f"Wrong: {predictions_stats['wrong']} / {predictions_stats['total']}")
-            if predictions_stats['wrong'] > 0:
-                print("                " + f"Wrong Classes:")
-                wrong_class_counter = Counter(predictions_stats["wrong_class"])
-                for class_label, occurrences in wrong_class_counter.items():
-                    print("                    " + f"{class_label}: {occurrences}")
-        print("            " + '-' * 30)
+        if utils.is_main_process():
+            print("            " + '-'*30)
+            print("            " + "TESTING STATISTICS")
+            print("            " + '-'*30)
+            print("            " + f"TESTING ACCURACY: {test_accuracy:.2f}")
+            print("            " + '-'*30)
+            for class_label, score in test_f1_score:
+                print("            " + f"TESTING F1 SCORE - {class_label}: {score:.2f}")
+            print("            " + '-'*30)
+            for class_label, score in test_precision:
+                print("            " + f"TESTING PRECISION - {class_label}: {score:.2f}")
+            print("            " + '-'*30)
+            for class_label, score in test_recall:
+                print("            " + f"TESTING RECALL - {class_label}: {score:.2f}")
+            print("            " + '-'*30)
+            for class_label, predictions_stats in test_predictions_per_class['classes'].items():
+                print("            " + f"LABEL {class_label}")
+                print("                " + f"Correct: {predictions_stats['correct']} / {predictions_stats['total']}")
+                if predictions_stats['correct'] > 0:
+                    print("                " + f"Correct Classes:")
+                    correct_class_counter = Counter(predictions_stats["correct_class"])
+                    for class_label, occurrences in correct_class_counter.items():
+                        print("                    " + f"{class_label}: {occurrences}")
+                print("                " + f"Wrong: {predictions_stats['wrong']} / {predictions_stats['total']}")
+                if predictions_stats['wrong'] > 0:
+                    print("                " + f"Wrong Classes:")
+                    wrong_class_counter = Counter(predictions_stats["wrong_class"])
+                    for class_label, occurrences in wrong_class_counter.items():
+                        print("                    " + f"{class_label}: {occurrences}")
+            print("            " + '-' * 30)
 
 
     @staticmethod
@@ -509,7 +537,8 @@ class OracleTrainer:
         # the gradient descent and without updating the weights
         # of the model
 
-        print("        Performing validation step...")
+        if utils.is_main_process():
+            print("        Performing validation step...")
         with torch.no_grad():
             for batch_id, batch in enumerate(self._dl_val,1):
                 print(f"            Processing batch {batch_id} of {len(self._dl_val)}")
@@ -558,7 +587,8 @@ class OracleTrainer:
         # steps
         predictions_numpy = np.array(all_predictions)
         labels_numpy = np.array(all_labels)
-        print(f"                Computing statistics...")
+        if utils.is_main_process():
+            print(f"                Computing statistics...")
         v_f1 = f1_score(labels_numpy, predictions_numpy, average=None, zero_division=0, labels=list(self._classifier_ids_labels.keys()))
         v_f1 = [[self._classifier_ids_labels[i], score] for i, score in enumerate(v_f1)]
         # Compute accuracy
@@ -607,7 +637,8 @@ class OracleTrainer:
         # The validation phase is performed without accumulating
         # the gradient descent and without updating the weights
         # of the model
-        print("        Performing testing evaluation...")
+        if utils.is_main_process():
+            print("        Performing testing evaluation...")
         with torch.no_grad():
             for batch_id, batch in enumerate(self._dl_test,1):
                 print(f"            Processing batch {batch_id} of {len(self._dl_test)}")
@@ -647,7 +678,8 @@ class OracleTrainer:
                 # Accumulate predictions and labels
                 all_predictions.extend(predicted.detach().cpu().numpy())
                 all_labels.extend(expected_out.detach().cpu().numpy())
-        print(f"                Computing statistics...")
+        if utils.is_main_process():
+            print(f"                Computing statistics...")
         # Compute the f1 score of the model within the accumulation
         # steps
         predictions_numpy = np.array(all_predictions)

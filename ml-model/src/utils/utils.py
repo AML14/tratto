@@ -2,12 +2,14 @@ import sys
 import os
 import csv
 import json
-import torch
 import gc
 from xml.dom import minidom
 import xml.etree.ElementTree as ET
 from xml.etree.ElementTree import Element
 from typing import Type, Union
+
+import torch.distributed as dist
+import torch
 
 from src.enums.DeviceType import DeviceType
 
@@ -164,6 +166,21 @@ def ddp_setup(rank, world_size):
     os.environ['MASTER_ADDR'] = 'localhost'
     os.environ['MASTER_PORT'] = '12357'
     torch.distributed.init_process_group(backend="nccl", rank=rank, world_size=world_size)
+
+def is_dist_avail_and_initialized():
+    if not dist.is_available():
+        return False
+    if not dist.is_initialized():
+        return False
+    return True
+
+def get_rank():
+    if not is_dist_avail_and_initialized():
+        return 0
+    return dist.get_rank()
+
+def is_main_process():
+    return get_rank() == 0
 
 def cleanup():
     # Destroy data distributed parallel instances

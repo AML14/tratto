@@ -339,8 +339,8 @@ class DataProcessor:
         return mapping
 
 
-    def processing(self):
-        """
+    def processing(self, cv: bool = False):
+        """ OUTDATED!!!
         This represents the core method of the class. Firstly, it generates folds of training and validation datasets,
         stratifying the original dataset to ensure the samples are equally distributed in the training and validation
         datasets. The cross-validation helps to manage the imbalanced dataset. Then, the method generates the training
@@ -348,18 +348,29 @@ class DataProcessor:
         datasets of each fold.
         """
         # Create the cross-validation splitter
-        cross_validation = StratifiedKFold(n_splits=self._n_split, shuffle=True, random_state=42)
-        print(f"        Generating {self._n_split} folds for cross-validation.")
-        for fold, (t_fold_indices, v_fold_indices) in enumerate(cross_validation.split(self._src, np.array([np.array(dp) for dp in self._tgt]))):
-            print(f"            Processing fold {fold + 1}.")
-            # Split the dataset into training and validation sets for the current fold
-            t_src_fold_data = [self._src[i] for i in t_fold_indices]
-            t_tgt_fold_data = [self._tgt[i] for i in t_fold_indices]
-            v_src_fold_data = [self._src[i] for i in v_fold_indices]
-            v_tgt_fold_data = [self._tgt[i] for i in v_fold_indices]
+        if cv:
+            cross_validation = StratifiedKFold(n_splits=self._n_split, shuffle=True, random_state=42)
+            print(f"        Generating {self._n_split} folds for cross-validation.")
+            for fold, (t_fold_indices, v_fold_indices) in enumerate(cross_validation.split(self._src, np.array([np.array(dp) for dp in self._tgt]))):
+                print(f"            Processing fold {fold + 1}.")
+                # Split the dataset into training and validation sets for the current fold
+                t_src_fold_data = [self._src[i] for i in t_fold_indices]
+                t_tgt_fold_data = [self._tgt[i] for i in t_fold_indices]
+                v_src_fold_data = [self._src[i] for i in v_fold_indices]
+                v_tgt_fold_data = [self._tgt[i] for i in v_fold_indices]
+                # The training and validation datasets are grouped in batches
+                t_batches = self._generate_batches(t_src_fold_data, t_tgt_fold_data, self._batch_size)
+                v_batches = self._generate_batches(v_src_fold_data, v_tgt_fold_data, self._batch_size)
+                self._processed_dataset["b_train"].append(t_batches)
+                self._processed_dataset["b_val"].append(v_batches)
+                # The batches of datapoints in the training and validation datasets are tokenized
+                self._processed_dataset["b_train_tokenized"].append(self._tokenize_batches(t_batches))
+                self._processed_dataset["b_val_tokenized"].append(self._tokenize_batches(v_batches))
+        else:
+            t_src_data, v_src_data, t_tgt_data, v_tgt_data = train_test_split(self._src, self._tgt, test_size=self._test_ratio, stratify=self._tgt)
             # The training and validation datasets are grouped in batches
-            t_batches = self._generate_batches(t_src_fold_data, t_tgt_fold_data, self._batch_size)
-            v_batches = self._generate_batches(v_src_fold_data, v_tgt_fold_data, self._batch_size)
+            t_batches = self._generate_batches(t_src_data, t_tgt_data, self._batch_size)
+            v_batches = self._generate_batches(v_src_data, v_tgt_data, self._batch_size)
             self._processed_dataset["b_train"].append(t_batches)
             self._processed_dataset["b_val"].append(v_batches)
             # The batches of datapoints in the training and validation datasets are tokenized
@@ -520,7 +531,7 @@ class DataProcessor:
         # datasets path
         oracles_dataset = os.path.join(d_path)
         # collects partial dataframes from oracles
-        for file_name in os.listdir(oracles_dataset):
+        for file_name in os.listdir(oracles_dataset)[:3]:
             df = pd.read_json(os.path.join(oracles_dataset,  file_name))
             dfs.append(df)
         df_dataset = pd.concat(dfs)
@@ -595,7 +606,13 @@ class DataProcessor:
             # Transform the targets into a tensor list
             targets_tensor = torch.tensor(b_targets_one_shot)
             # Keep track of labels
-            targets_labels = b_targets if self._classification_type == ClassificationType.CATEGORY_PREDICTION else list(map(lambda i: i.split(self._tokenizer.cls_token)[-1], b_inputs))
+            if self._classification_type == ClassificationType.CATEGORY_PREDICTION:
+                targets_labels = b_targets
+            else:
+                if self._model_type == ModelType.TOKEN_CLASSES.value:
+                    targets_labels = list(map(lambda i: i.split(self._tokenizer.cls_token)[-1], b_inputs))
+                else:
+                    targets_labels = list(map(lambda i: i.split(self._tokenizer.cls_token)[-2], b_inputs))
             classifier_classes_ids = self.get_classes_ids()
             targets_labels_tensor = torch.tensor(list(map(lambda l: classifier_classes_ids[l], targets_labels)))
             # Append triplet to list of tokenized batches

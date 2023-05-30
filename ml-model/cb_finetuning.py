@@ -43,6 +43,13 @@ if __name__ == "__main__":
             dest="model_type",
             help="Select the model type: TOKEN_CLASSES or TOKEN_VALUES"
         )
+        opt_parser.add_option(
+            "-v", "--cross_validation",
+            action="store_true",
+            dest="cv",
+            default=False,
+            help="Operate cross-validation or not"
+        )
         options, args = opt_parser.parse_args()
         return options
 
@@ -51,6 +58,7 @@ if __name__ == "__main__":
     try:
         model_type = ModelType.TOKEN_CLASSES
         classification_type = ClassificationType.CATEGORY_PREDICTION
+        cv = False
         if options.classification_type is not None:
             try:
                 classification_type = ClassificationType(options.classification_type.upper())
@@ -61,6 +69,9 @@ if __name__ == "__main__":
                 model_type = ModelType(options.model_type.upper())
             except:
                 print(f"Model type {options.model_type} not recognized. Classification type {ModelType.TOKEN_CLASSES} used.")
+        if options.cv is not None:
+            cv = options.cv
+
         Printer.print_welcome(classification_type, model_type)
         Printer.print_load_gpu()
         device = utils.connect_to_device(DeviceType.GPU)
@@ -124,69 +135,17 @@ if __name__ == "__main__":
         Printer.print_pre_processing()
         data_processor.pre_processing()
         # Process the data
-        data_processor.processing()
-
-        # ## Model
-        # The **OracleClassifier** represents our fine-tuned model.
-        #
-        # The architecture of the model is composed of:
-        #
-        # 1. The pre-trained codeBERT Transformer model
-        # 2. A fully-connected layer that takes in input the output from the codebert model
-        #    (which represents our hidden state) and maps this vector to a a vector of two
-        #    elements (representing our 0 and 1 scores)
-        # 3. The softmax activation function that transforms the output vector of the fully-
-        #    connected layer into a vector of n probabilities, given the n classes of the
-        #    classification task (in our case, 2). The softmax activation function is computed
-        #    implicitly, during the training phase, by the loss function (the PyTorch
-        #    **CrossEntropy** class, in our case). Therefore, the softmax is not a visible
-        #    layer of the model.
-        #
-        # We compute the maximum length of the input datapoints, within the whole dataset\n# This let us to guarantee
-        # that the model will process input data of this length\n# The +2 is given by the fact that the model add the
-        # start token and the end token to each input of the model.
-        src = data_processor.get_src()
-        max_input_len = 512  # reduce(lambda max_len, s: len(s) if len(s) > max_len else max_len, src,0) + 2
-        # get the output size of the classification task
-        linear_size = data_processor.get_tgt_classes_size()
-        # Create instance of the model
-        model = OracleClassifier(linear_size, max_input_len)
-        # The model is loaded on the gpu (or cpu, if not available)
-        model.to(device)
-
-        # ## Training
-        #
-        # The **OracleTrainer** class is an helper class that is used to perform the training
-        # and the validation phases of the model. During the training phase, the model uses the
-        # batches of data to compute the loss and update the weights to improve the accuracy of
-        # the predictions. Instead, in the validation phase the trainer use batches of the
-        # validation dataset to evaluate how the model is able to generalize on unseen data.
-        # During the validation phase the weights of the model are not updated.
-        #
-        Printer.print_training_phase()
-        # Adam optimizer with learning rate set with the value of the LR hyperparameter
-        optimizer = optim.Adam(model.parameters(), lr=HyperParameter.LR.value)
-        # Compute weights
-        if classification_type == ClassificationType.CATEGORY_PREDICTION:
-            if model_type == ModelType.TOKEN_CLASSES:
-                label_weights = "tokenClass"
-            else:
-                label_weights = "token"
-        else:
-            label_weights = "label"
-        #class_weights = data_processor.compute_weights(label_weights)
-        # The cross-entropy loss function is commonly used for classification tasks
-        #loss_fn = CrossEntropyLoss(weight=torch.tensor(class_weights).to(device))
-        loss_fn = CrossEntropyLoss()
+        data_processor.processing(False)
 
         # initialize statistics
         stats = {}
 
         # Stratified cross-validation training
         for fold in range(HyperParameter.NUM_SPLITS.value):
-            print("        " + "-" * 25)
-            print(f"        Cross-validation | Fold {fold+1}")
-            print("        " + "-" * 25)
+            if cv:
+                print("        " + "-" * 25)
+                print(f"        Cross-validation | Fold {fold+1}")
+                print("        " + "-" * 25)
             # Get the train, validation, and test sorted datasets
             #Printer.print_dataset_generation()
             train_dataset = data_processor.get_tokenized_dataset(DatasetType.TRAINING, fold)
@@ -218,10 +177,66 @@ if __name__ == "__main__":
                 sampler = SequentialSampler(test_dataset),
                 batch_size = HyperParameter.BATCH_SIZE.value
             )
+
+            # ## Model
+            # The **OracleClassifier** represents our fine-tuned model.
+            #
+            # The architecture of the model is composed of:
+            #
+            # 1. The pre-trained codeBERT Transformer model
+            # 2. A fully-connected layer that takes in input the output from the codebert model
+            #    (which represents our hidden state) and maps this vector to a a vector of two
+            #    elements (representing our 0 and 1 scores)
+            # 3. The softmax activation function that transforms the output vector of the fully-
+            #    connected layer into a vector of n probabilities, given the n classes of the
+            #    classification task (in our case, 2). The softmax activation function is computed
+            #    implicitly, during the training phase, by the loss function (the PyTorch
+            #    **CrossEntropy** class, in our case). Therefore, the softmax is not a visible
+            #    layer of the model.
+            #
+            # We compute the maximum length of the input datapoints, within the whole dataset\n# This let us to guarantee
+            # that the model will process input data of this length\n# The +2 is given by the fact that the model add the
+            # start token and the end token to each input of the model.
+            src = data_processor.get_src()
+            max_input_len = 512  # reduce(lambda max_len, s: len(s) if len(s) > max_len else max_len, src,0) + 2
+            # get the output size of the classification task
+            linear_size = data_processor.get_tgt_classes_size()
+            # Create instance of the model
+            model = OracleClassifier(linear_size, max_input_len)
+            # The model is loaded on the gpu (or cpu, if not available)
+            model.to(device)
+
+            # ## Training
+            #
+            # The **OracleTrainer** class is an helper class that is used to perform the training
+            # and the validation phases of the model. During the training phase, the model uses the
+            # batches of data to compute the loss and update the weights to improve the accuracy of
+            # the predictions. Instead, in the validation phase the trainer use batches of the
+            # validation dataset to evaluate how the model is able to generalize on unseen data.
+            # During the validation phase the weights of the model are not updated.
+            #
+            Printer.print_training_phase()
+            # Adam optimizer with learning rate set with the value of the LR hyperparameter
+            optimizer = optim.AdamW(model.parameters(), lr=HyperParameter.LR.value)
+            # Compute weights
+            if classification_type == ClassificationType.CATEGORY_PREDICTION:
+                if model_type == ModelType.TOKEN_CLASSES:
+                    label_weights = "tokenClass"
+                else:
+                    label_weights = "token"
+            else:
+                label_weights = "label"
+            class_weights = data_processor.compute_weights(label_weights)
+            # The cross-entropy loss function is commonly used for classification tasks
+            loss_fn = CrossEntropyLoss(weight=torch.tensor(class_weights).to(device))
+            # loss_fn = CrossEntropyLoss()
+
             # Instantiation of the trainer
             classifier_ids_labels = data_processor.get_ids_labels()
             classifier_ids_classes = data_processor.get_ids_classes()
-            oracle_trainer = OracleTrainer(model, loss_fn, optimizer, dl_train, dl_val, dl_test, classifier_ids_labels, classifier_ids_classes, classification_type)
+            # Define checkpoint path
+            checkpoint_path = os.path.join(Path.OUTPUT, f"checkpoints_{fold}" if cv else "checkpoints", f"lr_{HyperParameter.LR.value}", f"batch_{HyperParameter.BATCH_SIZE.value}", f"epochs_{HyperParameter.NUM_EPOCHS.value}")
+            oracle_trainer = OracleTrainer(model, loss_fn, optimizer, dl_train, dl_val, dl_test, classifier_ids_labels, classifier_ids_classes, classification_type, checkpoint_path)
             try:
                 # Train the model
                 stats[f"fold_{fold}"] = oracle_trainer.train(
@@ -271,18 +286,11 @@ if __name__ == "__main__":
             Printer.print_save_model()
             torch.save(model, os.path.join(Path.OUTPUT.value, f"tratto_model_fold{fold}.pt"))
             torch.save(model.state_dict(), os.path.join(Path.OUTPUT.value, f"tratto_model_state_dict_fold_{fold}.pt"))
-        # ## Save the statistics and the trained model
-        #
-        # Saves the statistics for future analysis, and the trained model for future use or improvements.
-        # Saving the model we save the values of all the weights. In other words, we create a snapshot of
-        # the state of the model, after the training.
-        torch.save(model, os.path.join(Path.OUTPUT.value, f"tratto_model.pt"))
-        torch.save(model.state_dict(), os.path.join(Path.OUTPUT.value, "tratto_model_state_dict.pt"))
-        # Release memory
-        del model
+            # Release memory
+            del model
+            print("        " + "-" * 18)
+            print("Training completed")
         utils.release_memory()
-        print("        " + "-" * 18)
-        print("Training completed")
     except:
         traceback.print_exc()
         print("Release memory, after unexpected error...")
