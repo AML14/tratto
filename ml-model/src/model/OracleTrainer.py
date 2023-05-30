@@ -266,6 +266,9 @@ class OracleTrainer:
                     # Validation phase
                     mean_v_loss, v_f1, v_accuracy, v_precision, v_recall, v_predictions_per_class = self.validation(device)
 
+                    # save past v_loss
+                    last_v_loss = stats['v_loss'][-1]
+
                     # Update the statistics
                     stats['t_loss'].append(mean_t_loss)
                     stats['v_loss'].append(mean_v_loss)
@@ -312,6 +315,12 @@ class OracleTrainer:
                     all_predictions = []
                     all_labels = []
                     t_predictions_per_class = {'classes': {k: {"correct": 0, "wrong": 0, "predicted": [], "wrong_class": [], "correct_class": [], "total": 0} for k in self._classifier_ids_labels.values()}, 'total': 0}
+
+                    # Stop if the model starts to overfit
+                    if mean_v_loss > stats['v_loss'] + stats['v_loss'] * 0.3:
+                        if utils.is_main_process():
+                            print("Early stopping...")
+                        break
         return stats
 
     @staticmethod
