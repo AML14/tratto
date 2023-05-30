@@ -145,17 +145,18 @@ def main(rank: int, world_size: int, classification_type: ClassificationType, mo
                 label_weights = "token"
         else:
             label_weights = "label"
-        class_weights = data_processor.compute_weights("tokenClass" if classification_type == ClassificationType.CATEGORY_PREDICTION else "label")
+        #class_weights = data_processor.compute_weights("tokenClass" if classification_type == ClassificationType.CATEGORY_PREDICTION else "label")
         # The cross-entropy loss function is commonly used for classification tasks
-        loss_fn = CrossEntropyLoss(weight=torch.tensor(class_weights).to(rank))
+        #loss_fn = CrossEntropyLoss(weight=torch.tensor(class_weights).to(rank))
+        loss_fn = CrossEntropyLoss()
 
         # initialize statistics
         stats = {}
 
         # Stratified cross-validation training
-        for fold in range(1, HyperParameter.NUM_SPLITS.value + 1):
+        for fold in range(1, HyperParameter.NUM_SPLITS.value):
             print("        " + "-" * 25)
-            print(f"        Cross-validation | Fold {fold}")
+            print(f"        Cross-validation | Fold {fold + 1}")
             print("        " + "-" * 25)
             # Get the train, validation, and test sorted datasets
             #Printer.print_dataset_generation()
