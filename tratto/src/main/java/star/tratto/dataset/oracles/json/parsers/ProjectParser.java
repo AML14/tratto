@@ -17,14 +17,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A helper class that deserialize the projects information in JSON format, generating the corresponding Java record
+ * A helper class that deserializes the project's information in JSON format, generating the corresponding Java
  * representations.
  */
 public class ProjectParser {
 
     /**
      * Given the path to the JSON file that lists the Java projects to analyze, the method deserializes the list of
-     * JSON project objects contained in the file and generates a list of corresponding Java project records {@link Project}
+     * JSON project objects contained in the file and generates a list of corresponding Java project records
      * @return a list of Java project records {@link Project}, representing the deserialization of the list of the JSON
      * project objects contained in the JSON file pointed by the string path passed to the function.
      *

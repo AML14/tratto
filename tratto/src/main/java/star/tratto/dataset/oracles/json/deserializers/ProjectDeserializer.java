@@ -14,17 +14,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The class deserialize JSON objects containing information about Java projects, and maps them to {@link Project}
- * records.
+ * This class deserializes JSON objects into {@link Project} objects.
  */
 public class ProjectDeserializer extends JsonDeserializer<Project> {
     /**
      * The method deserializes a JSON project object and generate a corresponding Java Project record {@link Project}.
-     * @param jsonParser the json parser {@link JsonParser} used to deserialize the JSON project object
-     * @param deserializationContext the deserialization context {@link DeserializationContext} requested
+     * @param jsonParser the json parser used to deserialize the JSON project object
+     * @param deserializationContext the deserialization context requested
      *                               to override the method (not used in our case)
      * @return a Java Project record {@link Project}, corresponding to the Java deserialization of a JSON project object
-     * @throws IOException If there is an error in reading the tree of the json Parser {@link JsonParser} object
+     * @throws IOException if there is an error in reading the tree of the json Parser {@link JsonParser} object
      */
     @Override
     public Project deserialize(

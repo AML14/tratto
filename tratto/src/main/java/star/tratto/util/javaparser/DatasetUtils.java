@@ -40,8 +40,7 @@ import java.util.stream.Collectors;
 
 public class DatasetUtils {
     /**
-     * Gets the name and package of all classes in a compilation unit
-     * {@link CompilationUnit}.
+     * Gets the name and package of all classes in a compilation unit.
      *
      * @param cu the compilation unit of a java file
      * @return a list of (className, packageName) pairs

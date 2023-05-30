@@ -22,7 +22,12 @@ import java.util.*;
  */
 public class ProjectOracleGenerator {
     // generator fields.
+    /** Provides unique identifiers of the generated oracle data points. */
     private int idCounter;
+    /**
+     * The last identifier used to generate a data point. The checkpoint is
+     * used to calculate the total number of oracles generated between projects.
+     */
     private int checkpoint;
     // project fields.
     private Project project;
@@ -32,17 +37,7 @@ public class ProjectOracleGenerator {
     private List<Quartet<String, String, String, String>> tokensProjectClassesAttributes;
 
     /**
-     * Create a new instance of ProjectOracleGenerator.
-     * This constructor sets up:
-     * <ul>
-     *     <li>A counter ({@link #idCounter}) used to provide unique
-     *     identifiers of the generated oracle data points.</li>
-     *     <li>A checkpoint that memorizes the last identifier used to
-     *     generate a data point within a given project. The checkpoint is
-     *     used to calculate the total number of oracles generated between
-     *     projects.</li>
-     * </ul>
-     *
+     * Creates a new instance of ProjectOracleGenerator.
      */
     public ProjectOracleGenerator() {
         this.idCounter = 0;
