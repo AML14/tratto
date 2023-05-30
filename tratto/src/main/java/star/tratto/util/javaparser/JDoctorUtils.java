@@ -24,8 +24,8 @@ public class JDoctorUtils {
      * JavaParser is <span>double[]</span>. The method apply these conversions from JDoctor type names to JavaParser type
      * names.
      *
-     * @param jDoctorTypeNames The list of JDoctor type names to convert
-     * @return The list of the corresponding JavaParser type names
+     * @param jDoctorTypeNames the list of JDoctor type names to convert
+     * @return the list of the corresponding JavaParser type names
      */
     public static List<String> convertJDoctorConditionTypeNames2JavaParserTypeNames(
             List<String> jDoctorTypeNames

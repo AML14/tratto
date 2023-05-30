@@ -440,7 +440,7 @@ public class JavaParserUtils {
     }
 
     /**
-     * @return a generic "java.lang.Object" type.
+     * @return a generic "java.lang.Object" type
      */
     public static ResolvedType getGenericType() {
         return javaParser.parse(SYNTHETIC_CLASS_SOURCE).getResult().get()
@@ -509,8 +509,8 @@ public class JavaParserUtils {
      * Gets the signature of a JavaParser resolved field declaration
      * {@link ResolvedFieldDeclaration} and return its string representation.
      *
-     * @param jpField resolved field declaration to generate the signature.
-     * @return a string representation of the signature of the declaration.
+     * @param jpField resolved field declaration to generate the signature
+     * @return a string representation of the signature of the declaration
      */
     public static String getFieldSignature(
             ResolvedFieldDeclaration jpField
@@ -529,7 +529,7 @@ public class JavaParserUtils {
      * @param field the JP field declaration {@link FieldDeclaration}
      * @param variable the JP variable declaration {@link VariableDeclarator}
      * @return a string representation of the signature of the JavaParser
-     * variable declarator {@link VariableDeclarator}.
+     * variable declarator {@link VariableDeclarator}
      */
     public static String getVariableSignature(FieldDeclaration field, VariableDeclarator variable) {
         String signature = "";
@@ -650,8 +650,8 @@ public class JavaParserUtils {
      * Get corresponding JavaParser compilation unit {@link CompilationUnit}
      * from the given file path {@link String}.
      *
-     * @param filePath the absolute path to the file.
-     * @return an optional JavaParser compilation unit {@link CompilationUnit}.
+     * @param filePath the absolute path to the file
+     * @return an optional JavaParser compilation unit {@link CompilationUnit}
      */
     public static Optional<CompilationUnit> getCompilationUnitFromFilePath(String filePath) {
         File file = new File(filePath);

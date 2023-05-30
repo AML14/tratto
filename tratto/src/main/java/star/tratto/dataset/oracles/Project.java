@@ -11,14 +11,14 @@ public class Project {
     private String srcPath;
 
     /**
-     * Constructor: instantiate a new {@link Project} object.
+     * Creates a new {@link Project} object.
      *
-     * @param projectName The name of the Java project.
-     * @param projectPath The path to the Java project root folder.
-     * @param jarPath The path to the folder that contains the jar file of the Java project.
-     * @param jDoctorConditionsPath The path to the folder that contains the JDoctor conditions produced for the
-     *                              Java project.
-     * @param srcPath The path to the folder that contains the source code of the project.
+     * @param projectName the name of the Java project
+     * @param projectPath the path to the Java project root folder
+     * @param jarPath the path to the folder that contains the jar file of the Java project
+     * @param jDoctorConditionsPath the path to the folder that contains the JDoctor conditions produced for the
+     *                              Java project
+     * @param srcPath the path to the folder that contains the source code of the project
      */
     public Project(
             String projectName,

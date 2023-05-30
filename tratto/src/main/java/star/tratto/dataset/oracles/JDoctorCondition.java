@@ -84,7 +84,7 @@ public class JDoctorCondition {
         @JsonProperty("returnName")
         private String returnName;
 
-        /** @return The list of the names of the parameters of the method to which the JDoctor
+        /** @return the list of the names of the parameters of the method to which the JDoctor
             condition refers */
         public List<String> getParameters() {
             return this.parameters;
@@ -119,7 +119,7 @@ public class JDoctorCondition {
             return this.exception;
         }
 
-        /** @return The @throws tag description of the exception, in the corresponding Javadoc comment
+        /** @return the @throws tag description of the exception, in the corresponding Javadoc comment
             of the method to which the JDoctor condition refers */
         public String getDescription() {
             return this.description;
