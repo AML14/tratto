@@ -31,7 +31,7 @@ import static star.tratto.util.StringUtils.fullyQualifiedClassName;
  *
  * When this ContextRestriction is applicable, it is necessary to check for all the three conditions
  * above. Depending on which are true, some tokens or others may be forbidden. Therefore, the
- * <code>restrictedTokens</code> attribute varies everytime this ContextRestriction is enabled.
+ * {@code restrictedTokens} attribute varies everytime this ContextRestriction is enabled.
  */
 public class ForbidEndExpressionRestriction extends MultiTokenRestriction {
 

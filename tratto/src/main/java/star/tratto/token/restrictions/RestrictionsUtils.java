@@ -193,7 +193,7 @@ public class RestrictionsUtils {
      * must have the following format:
      * 1) "(classOrField|this|methodResultID).methodName", or 2) "methodName().methodName"
      * @param partialExpressionTokens
-     * @return true if the partialExpression has the expected format, false otherwise.
+     * @return true if the partialExpression has the expected format, false otherwise
      */
     private static boolean hasExpectedFormat(List<String> partialExpressionTokens) {
         int nTokens = partialExpressionTokens.size();
