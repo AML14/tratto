@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * The record models the features of a JDoctor condition.
+ * JDoctorCondition models a JDoctor condition.
  * The attributes of the class are:
  * <ol>
  *     <li><span>operation</span>: A record object of type {@link Operation}, containing the information about the

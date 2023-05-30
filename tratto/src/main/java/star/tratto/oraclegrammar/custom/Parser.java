@@ -205,8 +205,8 @@ public class Parser {
      * Given a (possibly partial) oracle as a string, parse it and return the last element with modifiers,
      * i.e., VarOrClassWithModifiers, IsolableVarOrClassWithModifiers, or ThisWithMandatoryModifiers.
      * IMPORTANT NOTE: Such element is only returned if it contains a period. For example, given a partial
-     * oracle like "this.field && arg1.method(", this method will return the EObject corresponding to
-     * "arg1.method(". As another example, given the partial oracle "methodResultID.field && this", this
+     * oracle like "{@code this.field && arg1.method(}, this method will return the EObject corresponding to
+     * "{@code arg1.method(}". As another example, given the partial oracle "{@code methodResultID.field && this}", this
      * method will return the EObject corresponding to "methodResultID.field".
      * @return null if no element with modifiers was found
      */
@@ -330,9 +330,9 @@ public class Parser {
      * Given an expression containing the token "jdVar" and an oracle within which the expression is contained,
      * this method returns a String representing an element of the same type as jdVar. For example, given the
      * expression <code>jdVar.field</code> and the oracle
-     * <code>Arrays.stream(arg1).anyMatch(jdVar -> jdVar.field == null);</code>, this method will return the
+     * {@code Arrays.stream(arg1).anyMatch(jdVar -> jdVar.field == null);}, this method will return the
      * String "arg1[0]". As another example, given the expression <code>jdVar</code> and the oracle
-     * <code>methodResultID.stream().allMatch(jdVar -> jdVar.isValid());</code>, this method will return the
+     * {@code methodResultID.stream().allMatch(jdVar -> jdVar.isValid());}, this method will return the
      * String "methodResultID.get(0)". NOTE: if there are multiple matches, this method returns the last
      * occurrence of jdVar.
      *
