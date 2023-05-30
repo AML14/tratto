@@ -116,7 +116,7 @@ public class JavaParserUtils {
      *                        populated, even if it's a partial oracle (e.g., it's the oracle being currently
      *                        generated). Then, the last occurring jdVar clause is looked for and its type is
      *                        resolved, which will be used to resolve the type of the expression.
-     * @return pair of strings, where the first string is the package and the second string is the class.
+     * @return pair of strings, where the first string is the package and the second string is the class
      */
     public static Pair<String, String> getReturnTypeOfExpression(String expression, OracleDatapoint oracleDatapoint) {
         // Handle null
@@ -255,8 +255,8 @@ public class JavaParserUtils {
      * {@code java.util.Comparator<java.util.Map.Entry<K, V>>}
      * For such example, this method would return the following:
      * {@code Comparator<Map.Entry<K, V>>}
-     * @param resolvedType JavaParser ResolvedType (usually obtained when using Java Symbol Solver).
-     * @return string representation of the type without packages.
+     * @param resolvedType JavaParser ResolvedType (usually obtained when using Java Symbol Solver)
+     * @return string representation of the type without packages
      */
     public static String getTypeWithoutPackages(ResolvedType resolvedType) {
         String type = resolvedType.describe();
@@ -290,7 +290,7 @@ public class JavaParserUtils {
      * methods and fields.
      * @param type fully qualified type, e.g., "java.util.List"
      * @throws UnsolvedSymbolException if the type cannot be resolved
-     * @throws UnsupportedOperationException if the type is an array or a primitive type.
+     * @throws UnsupportedOperationException if the type is an array or a primitive type
      */
     static ResolvedReferenceTypeDeclaration getResolvedReferenceTypeDeclaration(String type) throws UnsolvedSymbolException, UnsupportedOperationException {
         return getResolvedType(type).asReferenceType().getTypeDeclaration().get();
@@ -301,7 +301,7 @@ public class JavaParserUtils {
     }
 
     /**
-     * @throws UnsupportedOperationException if the type is an array or a primitive type.
+     * @throws UnsupportedOperationException if the type is an array or a primitive type
      */
     private static ResolvedType getResolvedType(String type) throws UnsupportedOperationException {
         CompilationUnit cu = javaParser.parse(SYNTHETIC_CLASS_SOURCE).getResult().get();
@@ -322,7 +322,7 @@ public class JavaParserUtils {
      * the type is a reference type but cannot be resolved (e.g., a generic type), retrieves methods
      * from java.lang.Object. If the type is an array, retrieves methods from java.lang.Object. If the
      * type is a primitive, throws an IllegalArgumentException.
-     * @throws IllegalArgumentException if the type is not a reference type or an array.
+     * @throws IllegalArgumentException if the type is not a reference type or an array
      */
     public static Set<MethodUsage> getMethodsOfType(String type) throws IllegalArgumentException {
         ResolvedType resolvedType = null;
@@ -350,8 +350,8 @@ public class JavaParserUtils {
     /**
      * @param type1 fully qualified type, e.g., "java.util.List"
      * @param type2 fully qualified type, e.g., "java.lang.Object"
-     * @param oracleDatapoint may be null. If not null, it is used to check if some type is generic
-     * @return true if type1 is an instance of type2, false otherwise.
+     * @param oracleDatapoint may be null. If not null, it is used to check if some type is generic.
+     * @return true if type1 is an instance of type2, false otherwise
      */
     public static boolean isType1InstanceOfType2(String type1, String type2, OracleDatapoint oracleDatapoint) {
         return isType1InstanceOfType2(type1, type2, oracleDatapoint, true);
@@ -470,7 +470,7 @@ public class JavaParserUtils {
      * name, instead of fully qualified types.
      * @param type1 pair with &lt;package, class&gt;, e.g., &lt;"java.util", "List"&gt;
      * @param type2 pair with &lt;package, class&gt;, e.g., &lt;"java.lang", "Object"&gt;
-     * @param oracleDatapoint may be null. If not null, it is used to check if some type is generic
+     * @param oracleDatapoint may be null. If not null, it is used to check if some type is generic.
      * @return true if a variable of type1 can be assigned to a variable of type2, false otherwise
      */
     public static boolean isType1AssignableToType2(Pair<String, String> type1, Pair<String, String> type2, OracleDatapoint oracleDatapoint) {

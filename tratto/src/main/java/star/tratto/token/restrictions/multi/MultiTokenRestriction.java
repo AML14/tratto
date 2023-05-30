@@ -22,7 +22,7 @@ public abstract class MultiTokenRestriction implements ContextRestriction {
 
     /**
      * This method assumes that, according to the grammar, nextLegalTokens are legal after partialExpressionTokens.
-     * @return true if the restricted tokens are forbidden (i.e., the restriction is enabled), false otherwise.
+     * @return true if the restricted tokens are forbidden (i.e., the restriction is enabled), false otherwise
      */
     public abstract Boolean isEnabled(List<String> nextLegalTokens, List<String> partialExpressionTokens, OracleDatapoint oracleDatapoint);
 
