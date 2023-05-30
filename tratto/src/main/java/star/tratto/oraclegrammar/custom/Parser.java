@@ -205,9 +205,9 @@ public class Parser {
      * Given a (possibly partial) oracle as a string, parse it and return the last element with modifiers,
      * i.e., VarOrClassWithModifiers, IsolableVarOrClassWithModifiers, or ThisWithMandatoryModifiers.
      * IMPORTANT NOTE: Such element is only returned if it contains a period. For example, given a partial
-     * oracle like "{@code this.field && arg1.method(}, this method will return the EObject corresponding to
+     * oracle like "{@code this.field && arg1.method(}", this method will return the EObject corresponding to
      * "{@code arg1.method(}". As another example, given the partial oracle "{@code methodResultID.field && this}", this
-     * method will return the EObject corresponding to "methodResultID.field".
+     * method will return the EObject corresponding to "{@code methodResultID.field}".
      * @return null if no element with modifiers was found
      */
     public EObject findLastElementWithModifiers(String oracle) {
