@@ -92,7 +92,9 @@ public class DatasetUtils {
             TypeDeclaration<?> jpClass
     ) {
         Optional<JavadocComment> jpJavadocComment = jpClass.getJavadocComment();
-        if (jpJavadocComment.isEmpty()) return getJavadocByPattern(jpClass);
+        if (jpJavadocComment.isEmpty()) {
+          return getJavadocByPattern(jpClass);
+        }
         return Javadoc.CLASS_PREFIX.getValue() + jpJavadocComment.get().getContent() + Javadoc.CLASS_SUFFIX.getValue();
     }
 
@@ -106,7 +108,9 @@ public class DatasetUtils {
             CallableDeclaration<?> jpCallable
     ) {
         Optional<JavadocComment> jpJavadocComment = jpCallable.getJavadocComment();
-        if (jpJavadocComment.isEmpty()) return getJavadocByPattern(jpCallable);
+        if (jpJavadocComment.isEmpty()) {
+          return getJavadocByPattern(jpCallable);
+        }
         return Javadoc.METHOD_PREFIX.getValue() + jpJavadocComment.get().getContent() + Javadoc.METHOD_SUFFIX;
     }
 
@@ -708,7 +712,9 @@ public class DatasetUtils {
             CallableDeclaration<?> jpCallable,
             TypeDeclaration<?> jpClass
     ) {
-        if (jDoctorParamList.size() != jpParamList.size()) return false;
+        if (jDoctorParamList.size() != jpParamList.size()) {
+          return false;
+        }
         for (int i = 0; i < jDoctorParamList.size(); i++) {
             String jDoctorParam = jDoctorParamList.get(i);
             String jpParam = jpParamList.get(i);
@@ -727,7 +733,9 @@ public class DatasetUtils {
                 (jpParamIsGeneric && (
                         jDoctorParamIsStandard || (jDoctorParamIsStandardArray && jpParamIsArray)
                 ))
-            )) return false;
+            )) {
+              return false;
+            }
         }
         return true;
     }

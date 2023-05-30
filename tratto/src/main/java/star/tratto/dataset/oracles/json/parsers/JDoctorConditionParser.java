@@ -34,7 +34,9 @@ public class JDoctorConditionParser {
         // get all JSON files related to JDoctor conditions.
         File[] jDoctorConditionsFiles = jDoctorConditionsDir.listFiles();
         // convert each JSON file to list of JDoctorConditions.
-        if (jDoctorConditionsFiles == null) return new ArrayList<>();
+        if (jDoctorConditionsFiles == null) {
+          return new ArrayList<>();
+        }
         return Arrays.stream(jDoctorConditionsFiles)
                 .filter(jDoctorConditionsFile -> jDoctorConditionsFile.getName().endsWith(".json"))
                 .map(this::json2java)

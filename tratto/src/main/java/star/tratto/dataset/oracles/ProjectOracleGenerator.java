@@ -110,7 +110,9 @@ public class ProjectOracleGenerator {
         List<String> parameterTypes = JDoctorUtils.convertJDoctorConditionTypeNames2JavaParserTypeNames(operation.getParameterTypes());
         // get CompilationUnit of operation class.
         Optional<CompilationUnit> cuOptional = DatasetUtils.getClassCompilationUnit(operation, sourcePath);
-        if (cuOptional.isEmpty()) return builder.build();
+        if (cuOptional.isEmpty()) {
+          return builder.build();
+        }
         CompilationUnit cu = cuOptional.get();
         // get TypeDeclaration of class in CompilationUnit.
         TypeDeclaration<?> jpClass = DatasetUtils.getTypeDeclaration(cu, className);

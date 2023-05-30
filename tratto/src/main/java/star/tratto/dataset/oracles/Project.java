@@ -1,16 +1,7 @@
 package star.tratto.dataset.oracles;
 
 /**
- * A record that contains all the relevant information related to a Java project.
- * The attributes of the class are:
- * <ol>
- *     <li><span>projectName</span> The name of the Java project.</li>
- *     <li><span>projectPath</span> The path to the Java project root folder.</li>
- *     <li><span>jarPath</span> The path to the folder that contains the jar file of the Java project.</li>
- *     <li><span>jDocConditionsPath</span> The path to the folder that contains the JDoctor conditions produced for the
- *     Java project.</li>
- *     <li><span>srcPath</span> The path to the folder that contains the source code of the project.</li>
- * </ol>
+ * Information about a Java project.
  */
 public class Project {
     private String projectName;
@@ -43,18 +34,23 @@ public class Project {
         this.srcPath = srcPath;
     }
 
+    /** @return the path to the folder that contains the source code of the project */
     public String getJarPath() {
         return jarPath;
     }
+    /** @return the path to the folder that contains the JDoctor conditions */
     public String getjDoctorConditionsPath() {
         return jDoctorConditionsPath;
     }
+    /** @return the name of the Java project */
     public String getProjectName() {
         return projectName;
     }
+    /** @return the path to the Java project root folder */
     public String getProjectPath() {
         return projectPath;
     }
+    /** @return the path to the folder that contains the jar file of the Java project */
     public String getSrcPath() {
         return srcPath;
     }

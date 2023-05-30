@@ -584,7 +584,7 @@ public class Parser {
             // Read the list of non-variable tokens
             List<String> nonVariableTokenList = mapper.readValue(
                     new File(jsonFilePath),
-                    new TypeReference<List<String>>(){}
+                    new TypeReference<List<String>>() {}
             );
             // Iterate over the non-variable tokens
             for (String token : nonVariableTokenList) {

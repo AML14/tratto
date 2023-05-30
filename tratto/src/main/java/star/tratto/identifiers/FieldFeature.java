@@ -30,7 +30,7 @@ public enum FieldFeature {
         // Generate predicates to find the methods that satisfy the given conditions
         List<Predicate<FieldDeclaration>> predicates = new ArrayList<>();
         // Iterate over the list of features to generate the corresponding predicates
-        for(Pair<FieldFeature, Boolean> feature: features) {
+        for (Pair<FieldFeature, Boolean> feature: features) {
             FieldFeature fieldFeature = feature.getValue0();
             Boolean is = feature.getValue1();
             if (fieldFeature.equals(FieldFeature.PUBLIC)) {
@@ -79,7 +79,7 @@ public enum FieldFeature {
         // Generate predicates to find the methods that satisfy the given conditions
         List<Predicate<ResolvedFieldDeclaration>> predicates = new ArrayList<>();
         // Iterate over the list of features to generate the corresponding predicates
-        for(Pair<FieldFeature, Boolean> feature: features) {
+        for (Pair<FieldFeature, Boolean> feature: features) {
             FieldFeature fieldFeature = feature.getValue0();
             Boolean is = feature.getValue1();
             if (fieldFeature.equals(FieldFeature.PUBLIC)) {

@@ -18,13 +18,13 @@ public class FileUtils {
      * parameter is {@code true} the method appends the content to the file (if it already exists), otherwise it create
      * a new file and write the content within it.
      *
-     * @param dirPath The path to the directory where the file must be saved.
-     * @param fileName The name of the file where to write the content.
-     * @param fileFormat The format of the file {@link FileFormat}.
-     * @param content The content to write within the file.
+     * @param dirPath The path to the directory where the file must be saved
+     * @param fileName The name of the file where to write the content
+     * @param fileFormat The format of the file {@link FileFormat}
+     * @param content The content to write within the file
      * @param append A boolean value. If true, the content is appended to the file (if it exists). Otherwise, the
      *               method creates a new file.
-     * @throws IOException If the file cannot be written.
+     * @throws IOException If the file cannot be written
      */
     public static void write(
             String dirPath,
@@ -61,10 +61,10 @@ public class FileUtils {
     /**
      * The method checks if the content passed to the function is already written within a file.
      *
-     * @param dirPath The path to the directory where the file must be saved.
-     * @param fileName The name of the file where to write the content.
-     * @param fileFormat The format of the file {@link FileFormat}.
-     * @param content The content to write within the file.
+     * @param dirPath The path to the directory where the file must be saved
+     * @param fileName The name of the file where to write the content
+     * @param fileFormat The format of the file {@link FileFormat}
+     * @param content The content to write within the file
      * @return A boolean value: {@code true} if the method finds the content within the file, {@code false} otherwise.
      */
     public static boolean isInFile(
@@ -95,12 +95,12 @@ public class FileUtils {
     /**
      * The method creates a file {@link File} within a given directory.
      *
-     * @param dirPath The path to the directory where the file must be saved.
-     * @param fileName The name of the file where to write the content.
+     * @param dirPath The path to the directory where the file must be saved
+     * @param fileName The name of the file where to write the content
      * @param fileFormat The format of the file {@link FileFormat}.
      *
-     * @return The file created {@link File}.
-     * @throws IOException If the file cannot be created.
+     * @return The file created {@link File}
+     * @throws IOException If the file cannot be created
      */
     public static File createFile(String dirPath, String fileName, FileFormat fileFormat) throws IOException {
         String filePath = Paths.get(dirPath, fileName + fileFormat.getValue()).toString();
@@ -126,12 +126,12 @@ public class FileUtils {
     /**
      * The method gets the list of all the files that exist within a given directory.
      *
-     * @param dir The directory from which to extract all the files contained.
-     * @return The list of all the files existing within the given directory.
+     * @param dir The directory from which to extract all the files contained
+     * @return The list of all the files existing within the given directory
      */
     public static List<File> extractJavaFilesFromDirectory(File dir) {
         List<File> javaFileList = new ArrayList<>();
-        for(File file: dir.listFiles()) {
+        for (File file: dir.listFiles()) {
             if (file.isDirectory()) {
                 javaFileList.addAll(extractJavaFilesFromDirectory(file));
             }
@@ -145,9 +145,9 @@ public class FileUtils {
     /**
      * The method builds a complete path to a file.
      *
-     * @param dirPath The path to the directory where the file must be saved.
-     * @param fileName The name of the file where to write the content.
-     * @param fileFormat The format of the file {@link FileFormat}.
+     * @param dirPath The path to the directory where the file must be saved
+     * @param fileName The name of the file where to write the content
+     * @param fileFormat The format of the file {@link FileFormat}
      * @return
      */
     public static String getAbsolutePathToFile(String dirPath, FileName fileName, FileFormat fileFormat) {
@@ -157,7 +157,7 @@ public class FileUtils {
 
     /**
      * The method checks if a file is a Java file.
-     * @param file The file to inspect.
+     * @param file The file to inspect
      * @return A boolean value: {@code true} if the file is a Java file, {@code false} otherwise.
      */
     public static boolean isJavaFile(File file) {
@@ -173,7 +173,7 @@ public class FileUtils {
      * The method reads a list from a JSON file and returns a corresponding Java list.
      * @param filePath The path to the JSON file.
      *
-     * @return The list of Java objects parsed from the JSON list.
+     * @return The list of Java objects parsed from the JSON list
      */
     public static List<?> readJSONList(String filePath) {
         File jsonFile = new File(filePath);
@@ -186,7 +186,7 @@ public class FileUtils {
         try {
             List<?> tokenList = objectMapper.readValue(
                 jsonFile,
-                new TypeReference<List<?>>(){}
+                new TypeReference<List<?>>() {}
             );
             return tokenList;
         } catch (IOException e) {

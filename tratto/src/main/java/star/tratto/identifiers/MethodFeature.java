@@ -31,7 +31,7 @@ public enum MethodFeature {
         // Generate predicates to find the methods that satisfy the given conditions
         List<Predicate<MethodDeclaration>> predicates = new ArrayList<>();
         // Iterate over the list of features to generate the corresponding predicates
-        for(Pair<MethodFeature, Boolean> feature: features) {
+        for (Pair<MethodFeature, Boolean> feature: features) {
             MethodFeature methodFeature = feature.getValue0();
             Boolean is = feature.getValue1();
             if (methodFeature.equals(MethodFeature.PUBLIC)) {
@@ -89,7 +89,7 @@ public enum MethodFeature {
         // Generate predicates to find the methods that satisfy the given conditions
         List<Predicate<MethodUsage>> predicates = new ArrayList<>();
         // Iterate over the list of features to generate the corresponding predicates
-        for(Pair<MethodFeature, Boolean> feature: features) {
+        for (Pair<MethodFeature, Boolean> feature: features) {
             MethodFeature methodFeature = feature.getValue0();
             Boolean is = feature.getValue1();
             if (methodFeature.equals(MethodFeature.PUBLIC)) {

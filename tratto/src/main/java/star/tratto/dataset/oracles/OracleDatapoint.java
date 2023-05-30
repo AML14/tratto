@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * Oracle containing the information as it is extracted from the oracles dataset
+ * Oracle containing the information as it is extracted from the oracles dataset.
  */
 public class OracleDatapoint {
     private Integer id;
@@ -25,16 +25,26 @@ public class OracleDatapoint {
     private String classJavadoc;
     private String classSourceCode;
     private List<String> tokensGeneralGrammar;
-    private List<Pair<String, String>> tokensGeneralValuesGlobalDictionary; // <token, type>
-    private List<Pair<String, String>> tokensProjectClasses; // <token, package>
-    private List<Quartet<String, String, String, String>> tokensProjectClassesNonPrivateStaticNonVoidMethods; // <token, package, class, signature>
-    private List<Quartet<String, String, String, String>> tokensProjectClassesNonPrivateStaticAttributes; // <token, package, class, declaration>
-    private List<Pair<String, String>> tokensMethodJavadocValues; // <token, type>
-    private List<Triplet<String, String, String>> tokensMethodArguments; // <token, package, class>
-    private List<Quartet<String, String, String, String>> tokensMethodVariablesNonPrivateNonStaticNonVoidMethods; // <token, package, class, signature>
-    private List<Quartet<String, String, String, String>> tokensMethodVariablesNonPrivateNonStaticAttributes; // <token, package, class, declaration>
-    private List<Quartet<String, String, String, String>> tokensOracleVariablesNonPrivateNonStaticNonVoidMethods; // <token, package, class, signature>
-    private List<Quartet<String, String, String, String>> tokensOracleVariablesNonPrivateNonStaticAttributes; // <token, package, class, declaration>
+    /** A list of pairs (token, type). */
+    private List<Pair<String, String>> tokensGeneralValuesGlobalDictionary;
+    /** A list of pairs (token, package). */
+    private List<Pair<String, String>> tokensProjectClasses;
+    /** A list of quadruples (token, package, class, signature). */
+    private List<Quartet<String, String, String, String>> tokensProjectClassesNonPrivateStaticNonVoidMethods;
+    /** A list of quadruples (token, package, class, declaration). */
+    private List<Quartet<String, String, String, String>> tokensProjectClassesNonPrivateStaticAttributes;
+    /** A list of pairs (token, type). */
+    private List<Pair<String, String>> tokensMethodJavadocValues;
+    /** A list of triples (token, package, class). */
+    private List<Triplet<String, String, String>> tokensMethodArguments;
+    /** A list of quadruples (token, package, class, signature). */
+    private List<Quartet<String, String, String, String>> tokensMethodVariablesNonPrivateNonStaticNonVoidMethods;
+    /** A list of quadruples (token, package, class, declaration). */
+    private List<Quartet<String, String, String, String>> tokensMethodVariablesNonPrivateNonStaticAttributes;
+    /** A list of quadruples (token, package, class, signature). */
+    private List<Quartet<String, String, String, String>> tokensOracleVariablesNonPrivateNonStaticNonVoidMethods;
+    /** A list of quadruples (token, package, class, declaration). */
+    private List<Quartet<String, String, String, String>> tokensOracleVariablesNonPrivateNonStaticAttributes;
 
     public OracleDatapoint(Map oracleDatapointMap) {
         this.id = (Integer) oracleDatapointMap.get("id");

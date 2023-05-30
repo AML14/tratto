@@ -77,7 +77,7 @@ public class ProjectParser {
      */
     private static List<Project> checkProjectsExist(List<Project> projects) {
         List<Project> existingProjects = new ArrayList<Project>();
-        for(Project project : projects) {
+        for (Project project : projects) {
             File projectDir = new File(project.getProjectPath());
             if (projectDir.exists() && projectDir.isDirectory()) {
                 existingProjects.add(project);
