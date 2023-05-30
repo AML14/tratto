@@ -267,7 +267,7 @@ class OracleTrainer:
                     mean_v_loss, v_f1, v_accuracy, v_precision, v_recall, v_predictions_per_class = self.validation(device)
 
                     # save past v_loss
-                    last_v_loss = stats['v_loss'][-1]
+                    last_v_loss = stats['v_loss'][-1] if len(stats['v_loss']) > 0 else mean_v_loss
 
                     # Update the statistics
                     stats['t_loss'].append(mean_t_loss)
