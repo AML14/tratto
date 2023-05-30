@@ -317,7 +317,7 @@ class OracleTrainer:
                     t_predictions_per_class = {'classes': {k: {"correct": 0, "wrong": 0, "predicted": [], "wrong_class": [], "correct_class": [], "total": 0} for k in self._classifier_ids_labels.values()}, 'total': 0}
 
                     # Stop if the model starts to overfit
-                    if mean_v_loss > stats['v_loss'] + stats['v_loss'] * 0.3:
+                    if mean_v_loss > last_v_loss + last_v_loss * 0.3:
                         if utils.is_main_process():
                             print("Early stopping...")
                         break
