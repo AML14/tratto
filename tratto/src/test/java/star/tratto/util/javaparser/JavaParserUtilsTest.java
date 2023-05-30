@@ -1,4 +1,4 @@
-package star.tratto.util;
+package star.tratto.util.javaparser;
 
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.body.MethodDeclaration;
@@ -11,6 +11,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import star.tratto.dataset.oracles.OracleDatapoint;
 import star.tratto.dataset.oracles.OracleDatapointTest;
+import star.tratto.util.javaparser.JavaParserUtils;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -20,7 +21,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static star.tratto.TestUtilities.readOracleDatapointsFromOraclesDataset;
-import static star.tratto.util.JavaParserUtils.*;
+import static star.tratto.util.javaparser.JavaParserUtils.*;
 
 public class JavaParserUtilsTest {
 
