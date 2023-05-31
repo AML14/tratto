@@ -255,7 +255,7 @@ def main(rank: int, world_size: int, classification_type: ClassificationType, mo
                 with open(
                         os.path.join(
                             Path.OUTPUT.value,
-                            f"{FileName.LOSS_ACCURACY.value}_fold_{fold}.{FileFormat.JSON}"
+                            f"{FileName.LOSS_ACCURACY.value}_fold_{fold}.{FileFormat.JSON.value}"
                         ),
                         "w"
                 ) as loss_file:

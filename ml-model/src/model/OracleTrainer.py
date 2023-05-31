@@ -1,3 +1,4 @@
+import json
 import math
 import os
 import timeit
@@ -13,7 +14,9 @@ from torch.utils.data import DataLoader
 
 from sklearn.metrics import f1_score, accuracy_score, precision_score, recall_score
 
+from src.enums.FileFormat import FileFormat
 from src.enums.HyperParameter import HyperParameter
+from src.enums.Path import Path
 from src.model.OracleClassifier import OracleClassifier
 from src.enums.ClassificationType import ClassificationType
 from src.utils import utils
@@ -321,6 +324,19 @@ class OracleTrainer:
                         if utils.is_main_process():
                             print("Early stopping...")
                         break
+            # Check if the directory exists, to save the statistics of the training
+            if not os.path.exists(Path.OUTPUT.value):
+                # If the path does not exists, create it
+                os.makedirs(Path.OUTPUT.value)
+            # Save the statistics in json format
+            with open(
+                os.path.join(
+                    Path.OUTPUT.value,
+                    f"stats_after_epoch_{epoch}.{FileFormat.JSON.value}"
+                ),
+                "w"
+            ) as stats_file:
+                json.dump(stats, stats_file)
         return stats
 
     @staticmethod

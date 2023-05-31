@@ -265,7 +265,7 @@ if __name__ == "__main__":
             with open(
                 os.path.join(
                     Path.OUTPUT.value,
-                    f"{FileName.LOSS_ACCURACY.value}_fold_{fold}.{FileFormat.JSON}"
+                    f"{FileName.LOSS_ACCURACY.value}_fold_{fold}.{FileFormat.JSON.value}"
                 ),
                 "w"
             ) as loss_file:
