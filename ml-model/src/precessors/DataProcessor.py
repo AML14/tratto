@@ -1,5 +1,5 @@
 import os
-from typing import Type, Dict, Union, Tuple
+from typing import Type, Dict, List, Tuple
 
 #sys.path.append(f"{os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..')}")
 
@@ -30,26 +30,26 @@ class DataProcessor:
 
     Attributes
     ----------
-    src : list[str]
+    src : List[str]
         The list of input datapoints (strings concatenated).
         This source list is used to train and validate the model.
         Initially set to None
-    tgt : list[int]
+    tgt : List[int]
         The list of expected class values (in one-shot vector format) for each datapoint in input to the model.
         This target list is used to train and validate the model.
         Initially set to None
-    tgt_map : Dict[str,list[int]]
+    tgt_map : Dict[str,List[int]]
         The dictionary is composed of all the unique target values, in string format (as key), and the corresponding
         one-shot vector representation (as value)
-    src_test : list[str]
+    src_test : List[str]
         The list of input datapoints (strings concatenated).
         This source list is used to test the model.
         Initially set to None
-    tgt_test : list[int]
+    tgt_test : List[int]
         The list of expected values (in one-shot vector format) for a subset of datapoint in input to the model.
         This target list is used to test the model.
         Initially set to None
-    processed_dataset: Dict[str,list[list[Union[str,int]]]]
+    processed_dataset: Dict[str,List[List[Union[str,int]]]]
         Dictionary of the processed dataset:
             - b_train_tokenized: contains a list (each element representing a fold) of lists of batches for the training
               dataset, after the original dataset has been splitted (according to *training_ratio* value), grouped in
@@ -113,7 +113,7 @@ class DataProcessor:
         
         Returns
         -------
-        weights : list[float]
+        weights : List[float]
             A list containing the values of the weights. The length of the list is equal to the number
             of unique values in the column processed. Each index corresponds to a value
         """
@@ -137,9 +137,28 @@ class DataProcessor:
         Returns
         -------
         The dictionary of labels. The keys are numerical identifiers (int), while the values are strings representing the
-        name of the corresponding target label.
+        name of the corresponding target label. The dictionary is empty if the dataset has not been processed yet.
         """
-        return { i:k for i,k in enumerate(self._tgt_map.keys()) }
+        ids_labels_dict = { i:k for i,k in enumerate(self._tgt_map.keys()) }
+        # If the dictionary is empty prints a warning
+        if not bool(ids_labels_dict):
+            print("The ids-label dictionary is empty. It may be that the dataset has not been processed yet.")
+        return ids_labels_dict
+
+    def get_num_labels(self):
+        """
+        Get the number of unique values of labels
+
+        Returns
+        -------
+        An integer representing the number of unique values of labels (0 if the dataset has not been processed yet).
+        """
+        num_labels = len(self.get_ids_labels())
+        # If the dictionary is empty print a warning
+        if num_labels == 0:
+            print("The number of labels is 0. It may be that the dataset has not been processed yet.")
+        return num_labels
+
 
     def get_classes_ids(self):
         """
@@ -187,7 +206,7 @@ class DataProcessor:
 
         Returns
         -------
-        src : list[str]
+        src : List[str]
             A copy of the list of input datapoints for training and validation
         """
         src = [*self._src]
@@ -199,7 +218,7 @@ class DataProcessor:
 
         Returns
         -------
-        src : list[str]
+        src : List[str]
             A copy of the list of input datapoints for training and validation
         """
         src = [*self._src]
@@ -211,7 +230,7 @@ class DataProcessor:
 
         Returns
         -------
-        src : list[str]
+        src : List[str]
             A copy of the list of input datapoints for testing
         """
         src_test = [*self._src_test]
@@ -223,7 +242,7 @@ class DataProcessor:
 
         Returns
         -------
-        tgt : list[str]
+        tgt : List[str]
             A copy of the list of targets associated to the input datapoints for testing
         """
         tgt_test = [*self._tgt_test]
@@ -324,7 +343,7 @@ class DataProcessor:
         
         Returns
         -------
-        mapping: Dict[obj,list[int]]
+        mapping: Dict[obj,List[int]]
             The dictionary that maps the unique values of the column of the dataset, to the corresponding one-shot
             vectors representations.
         """
@@ -386,13 +405,6 @@ class DataProcessor:
     def pre_processing(self):
         # drop column id (it is not relevant for training the model)
         self._df_dataset = self._df_dataset.drop(['id'], axis=1)
-        # replicate single occurrences
-        if self._model_type == ModelType.TOKEN_CLASSES:
-            single_occurrence_rows = self._df_dataset[self._df_dataset['tokenClass'].map(self._df_dataset['tokenClass'].value_counts()) <= self._n_split*2]
-        else:
-            single_occurrence_rows = self._df_dataset[self._df_dataset['token'].map(self._df_dataset['token'].value_counts()) <= self._n_split*2]
-        for i in range(self._n_split*2):
-            self._df_dataset = pd.concat([self._df_dataset, single_occurrence_rows], ignore_index=True)
         # map empty cells to empty strings
         self._df_dataset.fillna('', inplace=True)
         # specify the type of each column in the dataset
@@ -457,7 +469,7 @@ class DataProcessor:
         #
         # The result of step (3) represents the content of the unique column of the new
         # map row. The process is repeated for each row in the src dataset.
-        df_src_concat = df_src.apply(lambda row: self._tokenizer.cls_token.join(row.values), axis=1)
+        df_src_concat = df_src.apply(lambda row: self._tokenizer.sep_token.join(row.values), axis=1)
         # The pandas dataframe is transformed in a list of strings: each string is a input
         # to the model
         src = df_src_concat.to_numpy().tolist()
@@ -475,7 +487,7 @@ class DataProcessor:
             self._tgt_map = self.map_column_values_to_one_shot_vectors("token" if self._classification_type == ClassificationType.CATEGORY_PREDICTION else "label")
 
 
-    def _generate_batches(self, src_data: list[str], tgt_data: list[list[float]], batch_size: int):
+    def _generate_batches(self, src_data: List[str], tgt_data: List[List[float]], batch_size: int):
         """
             The method splits the datapoints of the dataset passed to the function, and generate a list of batches. Each
             batch will have length equals to {@code batch_size} (the second parameter passed to the function). The last
@@ -493,7 +505,7 @@ class DataProcessor:
 
             Returns
             -------
-            d_batches : list[list[list[str],list[list[float]]]
+            d_batches : List[List[List[str],List[List[float]]]
                 A list of tuples (batches), where the first element of the tuple is the list of string representing
                 the input datapoints within the batch, while the second element of the tuple is the list of vectors
                 representing the corresponding target datapoints (one-shot vectors) of the input within the same batch
@@ -531,7 +543,7 @@ class DataProcessor:
         # datasets path
         oracles_dataset = os.path.join(d_path)
         # collects partial dataframes from oracles
-        for file_name in os.listdir(oracles_dataset):
+        for file_name in os.listdir(oracles_dataset)[:3]:
             df = pd.read_json(os.path.join(oracles_dataset,  file_name))
             dfs.append(df)
         df_dataset = pd.concat(dfs)
@@ -539,20 +551,20 @@ class DataProcessor:
 
     def _tokenize_batches(
             self,
-            batches: list[[list[str],list[list[float]]]]
+            batches: List[Tuple[List[str],List[List[float]]]]
     ):
         """
         The method tokenizes the input and target datapoints of the list of batches passed to the function
 
         Parameters
         ----------
-        batches: list[Tuple[list[str],list[list[float]]]]
+        batches: List[Tuple[List[str],List[List[float]]]]
             The batches of datapoints and targets. Each element of the list is a batch, in the form of a tuple: the
             first element of the batch contains the inputs, while the second contains the targets within the batch.
 
         Returns
         -------
-        tokenized_batches : list[list[list[list[int]],list[list[float]]]
+        tokenized_batches : List[Tuple[List[List[int]],List[List[float]]]
             A list of tuples (batches), where the first element of the tuple is the list of tokenized strings representing
             the input datapoints within the batch, while the second element of the tuple is the list of vectors
             representing the corresponding target datapoints (one-shot vectors) of the input within the same batch
@@ -610,9 +622,9 @@ class DataProcessor:
                 targets_labels = b_targets
             else:
                 if self._model_type == ModelType.TOKEN_CLASSES.value:
-                    targets_labels = list(map(lambda i: i.split(self._tokenizer.cls_token)[-1], b_inputs))
+                    targets_labels = list(map(lambda i: i.split(self._tokenizer.sep_token)[-1], b_inputs))
                 else:
-                    targets_labels = list(map(lambda i: i.split(self._tokenizer.cls_token)[-2], b_inputs))
+                    targets_labels = list(map(lambda i: i.split(self._tokenizer.sep_token)[-2], b_inputs))
             classifier_classes_ids = self.get_classes_ids()
             targets_labels_tensor = torch.tensor(list(map(lambda l: classifier_classes_ids[l], targets_labels)))
             # Append triplet to list of tokenized batches

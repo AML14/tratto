@@ -5,13 +5,13 @@ import os
 import torch
 import json
 import traceback
-import torch.optim as optim
 import torch.multiprocessing as mp
 import optparse
 from torch.utils.data import DataLoader, DistributedSampler
 from torch.nn.parallel import DistributedDataParallel as DDP
 from torch.nn import CrossEntropyLoss
-from transformers import AutoTokenizer
+from transformers import RobertaConfig, RobertaTokenizer, RobertaForSequenceClassification, AdamW, \
+    get_linear_schedule_with_warmup
 
 from src.enums.DatasetType import DatasetType
 from src.enums.FileFormat import FileFormat
@@ -20,8 +20,7 @@ from src.enums.HyperParameter import HyperParameter
 from src.enums.ModelType import ModelType
 from src.enums.Path import Path
 from src.enums.ClassificationType import ClassificationType
-from src.model.DataProcessor import DataProcessor
-from src.model.OracleClassifier import OracleClassifier
+from src.precessors.DataProcessor import DataProcessor
 from src.model.OracleTrainer import OracleTrainer
 from src.model.Printer import Printer
 from src.utils import utils
@@ -34,12 +33,11 @@ def main(rank: int, world_size: int, classification_type: ClassificationType, mo
 
         ## Tokenizer
         #
-        # Loads `codebert-base` from `AutoTokenizer` to concatenate the input columns of
-        # the dataframe with the *tokenizer.cls* separator token and tokenize the whole
-        # input dataset
+        # Loads `roberta-base` pre-trained tokenizer from RobertaTokenizer to concatenate the input columns of
+        # the dataframe with the *tokenizer.cls* separator token and tokenize the whole input dataset
         #
-        # Create instance of pretrained tokenizer
-        tokenizer = AutoTokenizer.from_pretrained("microsoft/codebert-base")
+        # Create instance of pre-trained tokenizer
+        tokenizer = RobertaTokenizer.from_pretrained('roberta-base', do_lower_case=False)
 
         ## DataProcessor
         #
@@ -197,7 +195,9 @@ def main(rank: int, world_size: int, classification_type: ClassificationType, mo
             # get the output size of the classification task
             linear_size = data_processor.get_tgt_classes_size()
             # Create instance of the model
-            model = OracleClassifier(linear_size, max_input_len)
+            config_dict = utils.load_config_file(os.path.join(Path.PRETRAINED.value, f"{FileName.CONFIG.value}.{FileFormat.JSON}"))
+            config = RobertaConfig.from_pretrained("microsoft/codebert-base", num_labels=len(data_processor.get_num_labels()), finetuning_task=config_dict["finetuning_task"])
+            model = RobertaForSequenceClassification.from_pretrained("microsoft/codebert-base", config=config)
             # The model is loaded on the gpu (or cpu, if not available)
             model.to(rank)
             # Wrap the model with DDP
@@ -206,7 +206,14 @@ def main(rank: int, world_size: int, classification_type: ClassificationType, mo
             # find_unused_parameters=True instructs DDP to find unused output of the forward() function of any module in the model
             model = DDP(model, device_ids=[rank])
             # Adam optimizer with learning rate set with the value of the LR hyperparameter
-            optimizer = optim.AdamW(model.parameters(), lr=HyperParameter.LR.value)
+            no_decay = ['bias', 'LayerNorm.weight']
+            optimizer_grouped_parameters = [
+                {'params': [p for n, p in model.named_parameters() if not any(nd in n for nd in no_decay)],
+                 'weight_decay': HyperParameter.WEIGHT_DECAY.value},
+                {'params': [p for n, p in model.named_parameters() if any(nd in n for nd in no_decay)],
+                 'weight_decay': 0.0}
+            ]
+            optimizer = AdamW(optimizer_grouped_parameters, lr=HyperParameter.LR.value, eps=HyperParameter.ADAM_EPSILON.value)
             # Compute weights
             if classification_type == ClassificationType.CATEGORY_PREDICTION:
                 if model_type == ModelType.TOKEN_CLASSES:
@@ -225,6 +232,11 @@ def main(rank: int, world_size: int, classification_type: ClassificationType, mo
             classifier_ids_classes = data_processor.get_ids_classes()
             checkpoint_path = os.path.join(Path.OUTPUT, f"checkpoints_{fold}" if cv else "checkpoints", f"lr_{HyperParameter.LR.value}", f"batch_{HyperParameter.BATCH_SIZE.value}", f"epochs_{HyperParameter.NUM_EPOCHS.value}")
             oracle_trainer = OracleTrainer(model, loss_fn, optimizer, dl_train, dl_val, dl_test, classifier_ids_labels,classifier_ids_classes, classification_type, checkpoint_path)
+
+            training_steps = len(dl_train) // HyperParameter.ACCUMULATION_STEPS.value * HyperParameter.NUM_EPOCHS.value
+
+            scheduler = get_linear_schedule_with_warmup(optimizer, HyperParameter.WARMUP_STEPS.value, HyperParameter.NUM_EPOCHS.value)
+
             # Perform the training
             try:
                 # Train the model

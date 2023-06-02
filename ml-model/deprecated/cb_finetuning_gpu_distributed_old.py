@@ -5,84 +5,41 @@ import os
 import torch
 import json
 import traceback
+import torch.optim as optim
+import torch.multiprocessing as mp
 import optparse
-from torch.utils.data import DataLoader, SequentialSampler
+from torch.utils.data import DataLoader, DistributedSampler
+from torch.nn.parallel import DistributedDataParallel as DDP
 from torch.nn import CrossEntropyLoss
-from transformers import RobertaConfig, RobertaTokenizer, RobertaForSequenceClassification, AdamW, \
-    get_linear_schedule_with_warmup
+from transformers import AutoTokenizer
 
-from src.enums.ClassificationType import ClassificationType
 from src.enums.DatasetType import DatasetType
-from src.enums.DeviceType import DeviceType
 from src.enums.FileFormat import FileFormat
 from src.enums.FileName import FileName
 from src.enums.HyperParameter import HyperParameter
 from src.enums.ModelType import ModelType
 from src.enums.Path import Path
+from src.enums.ClassificationType import ClassificationType
 from src.precessors.DataProcessor import DataProcessor
+from src.model.OracleClassifier import OracleClassifier
 from src.model.OracleTrainer import OracleTrainer
 from src.model.Printer import Printer
 from src.utils import utils
 
-if __name__ == "__main__":
-    def get_options():
-        opt_parser = optparse.OptionParser()
-        opt_parser.add_option(
-            "-c", "--classification_type",
-            action="store",
-            type="string",
-            dest="classification_type",
-            help="Select the classification type: LABEL_PREDICTION or CATEGORY_PREDICTION"
-        )
-        opt_parser.add_option(
-            "-m", "--model_type",
-            action="store",
-            type="string",
-            dest="model_type",
-            help="Select the model type: TOKEN_CLASSES or TOKEN_VALUES"
-        )
-        opt_parser.add_option(
-            "-v", "--cross_validation",
-            action="store_true",
-            dest="cv",
-            default=False,
-            help="Operate cross-validation or not"
-        )
-        options, args = opt_parser.parse_args()
-        return options
-
-    options = get_options()
-
+def main(rank: int, world_size: int, classification_type: ClassificationType, model_type, cv: bool):
     try:
-        model_type = ModelType.TOKEN_CLASSES
-        classification_type = ClassificationType.CATEGORY_PREDICTION
-        cv = False
-        if options.classification_type is not None:
-            try:
-                classification_type = ClassificationType(options.classification_type.upper())
-            except:
-                print(f"Classification type {options.classification_type} not recognized. Classification type {ClassificationType.CATEGORY_PREDICTION} used.")
-        if options.model_type is not None:
-            try:
-                model_type = ModelType(options.model_type.upper())
-            except:
-                print(f"Model type {options.model_type} not recognized. Classification type {ModelType.TOKEN_CLASSES} used.")
-        if options.cv is not None:
-            cv = options.cv
-
-        Printer.print_welcome(classification_type, model_type)
-        Printer.print_load_gpu()
-        device = utils.connect_to_device(DeviceType.GPU)
         d_path = Path.TOKEN_CLASSES_DATASET.value if model_type == ModelType.TOKEN_CLASSES else Path.TOKEN_VALUES_DATASET
-
+        # Setup distributed model with multiple gpus
+        utils.ddp_setup(rank, world_size)
 
         ## Tokenizer
         #
-        # Loads `roberta-base` pre-trained tokenizer from RobertaTokenizer to concatenate the input columns of
-        # the dataframe with the *tokenizer.cls* separator token and tokenize the whole input dataset
+        # Loads `codebert-base` from `AutoTokenizer` to concatenate the input columns of
+        # the dataframe with the *tokenizer.cls* separator token and tokenize the whole
+        # input dataset
         #
-        # Create instance of pre-trained tokenizer
-        tokenizer = RobertaTokenizer.from_pretrained('roberta-base', do_lower_case=False)
+        # Create instance of pretrained tokenizer
+        tokenizer = AutoTokenizer.from_pretrained("microsoft/codebert-base")
 
         ## DataProcessor
         #
@@ -119,6 +76,7 @@ if __name__ == "__main__":
         #
         # Create DataProcessor instance
         Printer.print_load_dataset(d_path)
+
         data_processor = DataProcessor(
             d_path,
             HyperParameter.BATCH_SIZE.value,
@@ -133,15 +91,25 @@ if __name__ == "__main__":
         data_processor.pre_processing()
         # Process the data
         data_processor.processing(False)
+        # ## Training
+        #
+        # The **OracleTrainer** class is an helper class that is used to perform the training
+        # and the validation phases of the model. During the training phase, the model uses the
+        # batches of data to compute the loss and update the weights to improve the accuracy of
+        # the predictions. Instead, in the validation phase the trainer use batches of the
+        # validation dataset to evaluate how the model is able to generalize on unseen data.
+        # During the validation phase the weights of the model are not updated.
+        #
+        Printer.print_training_phase()
 
         # initialize statistics
         stats = {}
 
         # Stratified cross-validation training
         for fold in range(HyperParameter.NUM_SPLITS.value):
-            if cv:
+            if utils.is_main_process():
                 print("        " + "-" * 25)
-                print(f"        Cross-validation | Fold {fold+1}")
+                print(f"        Cross-validation | Fold {fold + 1}")
                 print("        " + "-" * 25)
             # Get the train, validation, and test sorted datasets
             #Printer.print_dataset_generation()
@@ -151,28 +119,58 @@ if __name__ == "__main__":
 
             # DataLoader
             #
-            # DataLoader is a pytorch class that takes care of shuffling/sampling/weighted
+            # DataLoader is a pytorch class that takes care of shuffling/sampling/weigthed
             # sampling, batching, and using multiprocessing to load the data, in an efficient
             # and transparent way.
             # We define a dataloader for both the training and the validation dataset.
             # The dataloader generates the real batches of datapoints that we will use to
             # feed the model.
             #
-            # Create instance of training, validation, and test dataloaders
+            # Create instance of training and validation dataloaders
+            train_sampler = DistributedSampler(
+                train_dataset,
+                num_replicas=world_size,
+                rank=rank,
+                shuffle=False,
+                drop_last=False
+            )
+            val_sampler = DistributedSampler(
+                val_dataset,
+                num_replicas=world_size,
+                rank=rank,
+                shuffle=False,
+                drop_last=False
+            )
+            test_sampler = DistributedSampler(
+                test_dataset,
+                num_replicas=world_size,
+                rank=rank,
+                shuffle=False,
+                drop_last=False
+            )
             dl_train = DataLoader(
                 train_dataset,
-                sampler = SequentialSampler(train_dataset),
-                batch_size = HyperParameter.BATCH_SIZE.value
+                batch_size=HyperParameter.BATCH_SIZE.value,
+                pin_memory=False,
+                drop_last=False,
+                shuffle=False,
+                sampler=train_sampler
             )
             dl_val = DataLoader(
                 val_dataset,
-                sampler = SequentialSampler(val_dataset),
-                batch_size = HyperParameter.BATCH_SIZE.value
+                batch_size=HyperParameter.BATCH_SIZE.value,
+                pin_memory=False,
+                drop_last=False,
+                shuffle=False,
+                sampler=val_sampler
             )
             dl_test = DataLoader(
                 test_dataset,
-                sampler = SequentialSampler(test_dataset),
-                batch_size = HyperParameter.BATCH_SIZE.value
+                batch_size=HyperParameter.BATCH_SIZE.value,
+                pin_memory=False,
+                drop_last=False,
+                shuffle=False,
+                sampler=test_sampler
             )
 
             # ## Model
@@ -199,31 +197,16 @@ if __name__ == "__main__":
             # get the output size of the classification task
             linear_size = data_processor.get_tgt_classes_size()
             # Create instance of the model
-            config_dict = utils.load_config_file(os.path.join(Path.PRETRAINED.value, f"{FileName.CONFIG.value}.{FileFormat.JSON}"))
-            config = RobertaConfig.from_pretrained("microsoft/codebert-base", num_labels=len(data_processor.get_num_labels()), finetuning_task=config_dict["finetuning_task"])
-            model = RobertaForSequenceClassification.from_pretrained("microsoft/codebert-base", config=config)
+            model = OracleClassifier(linear_size, max_input_len)
             # The model is loaded on the gpu (or cpu, if not available)
-            model.to(device)
-
-            # ## Training
-            #
-            # The **OracleTrainer** class is an helper class that is used to perform the training
-            # and the validation phases of the model. During the training phase, the model uses the
-            # batches of data to compute the loss and update the weights to improve the accuracy of
-            # the predictions. Instead, in the validation phase the trainer use batches of the
-            # validation dataset to evaluate how the model is able to generalize on unseen data.
-            # During the validation phase the weights of the model are not updated.
-            #
-            Printer.print_training_phase()
+            model.to(rank)
+            # Wrap the model with DDP
+            # device_ids tell DDP where is your model
+            # output_device tells DDP where to output, in our case, it is rank
+            # find_unused_parameters=True instructs DDP to find unused output of the forward() function of any module in the model
+            model = DDP(model, device_ids=[rank])
             # Adam optimizer with learning rate set with the value of the LR hyperparameter
-            no_decay = ['bias', 'LayerNorm.weight']
-            optimizer_grouped_parameters = [
-                {'params': [p for n, p in model.named_parameters() if not any(nd in n for nd in no_decay)],
-                 'weight_decay': HyperParameter.WEIGHT_DECAY.value},
-                {'params': [p for n, p in model.named_parameters() if any(nd in n for nd in no_decay)],
-                 'weight_decay': 0.0}
-            ]
-            optimizer = AdamW(optimizer_grouped_parameters, lr=HyperParameter.LR.value, eps=HyperParameter.ADAM_EPSILON.value)
+            optimizer = optim.AdamW(model.parameters(), lr=HyperParameter.LR.value)
             # Compute weights
             if classification_type == ClassificationType.CATEGORY_PREDICTION:
                 if model_type == ModelType.TOKEN_CLASSES:
@@ -234,76 +217,123 @@ if __name__ == "__main__":
                 label_weights = "label"
             class_weights = data_processor.compute_weights(label_weights)
             # The cross-entropy loss function is commonly used for classification tasks
-            loss_fn = CrossEntropyLoss(weight=torch.tensor(class_weights).to(device))
+            loss_fn = CrossEntropyLoss(weight=torch.tensor(class_weights).to(rank))
             # loss_fn = CrossEntropyLoss()
 
             # Instantiation of the trainer
             classifier_ids_labels = data_processor.get_ids_labels()
             classifier_ids_classes = data_processor.get_ids_classes()
-            # Define checkpoint path
             checkpoint_path = os.path.join(Path.OUTPUT, f"checkpoints_{fold}" if cv else "checkpoints", f"lr_{HyperParameter.LR.value}", f"batch_{HyperParameter.BATCH_SIZE.value}", f"epochs_{HyperParameter.NUM_EPOCHS.value}")
-            oracle_trainer = OracleTrainer(model, loss_fn, optimizer, dl_train, dl_val, dl_test, classifier_ids_labels, classifier_ids_classes, classification_type, checkpoint_path)
-
-            training_steps = len(dl_train) // HyperParameter.ACCUMULATION_STEPS.value * HyperParameter.NUM_EPOCHS.value
-
-            scheduler = get_linear_schedule_with_warmup(optimizer, HyperParameter.WARMUP_STEPS.value, HyperParameter.NUM_EPOCHS.value)
-
+            oracle_trainer = OracleTrainer(model, loss_fn, optimizer, dl_train, dl_val, dl_test, classifier_ids_labels,classifier_ids_classes, classification_type, checkpoint_path)
+            # Perform the training
             try:
                 # Train the model
                 stats[f"fold_{fold}"] = oracle_trainer.train(
                     HyperParameter.NUM_EPOCHS.value,
                     HyperParameter.NUM_STEPS.value,
-                    device
+                    rank
                 )
             except RuntimeError as e:
                 print("Runtime Exception...")
-                if device.type == "cuda":
-                    # Release memory
-                    del model
-                    utils.release_memory()
+                del model
+                utils.release_memory()
+                utils.cleanup()
                 raise e
-            # Perform testing phase
-            stats_test = oracle_trainer.evaluation(device)
+            # Perform testing phase to measure performances on unseen data
+            stats_test = oracle_trainer.evaluation(rank)
             stats[f"fold_{fold}"] = {
                 **stats[f"fold_{fold}"],
                 **stats_test
             }
             # Check if the directory exists, to save the statistics of the training
-            if not os.path.exists(Path.OUTPUT.value):
-                # If the path does not exists, create it
-                os.makedirs(Path.OUTPUT.value)
-            # Save the statistics in json format
-            with open(
-                os.path.join(
-                    Path.OUTPUT.value,
-                    f"{FileName.LOSS_ACCURACY.value}_fold_{fold}.{FileFormat.JSON.value}"
-                ),
-                "w"
-            ) as loss_file:
-                data = {
-                    **stats[f"fold_{fold}"],
-                    "batch_size": HyperParameter.BATCH_SIZE.value,
-                    "lr": HyperParameter.LR.value,
-                    "num_epochs": HyperParameter.NUM_EPOCHS.value
-                }
-                json.dump(data, loss_file)
-            # Close the file
-            loss_file.close()
-            # ## Save the statistics and the trained model
-            #
-            # Saves the statistics for future analysis, and the trained model for future use or improvements.
-            # Saving the model we save the values of all the weights. In other words, we create a snapshot of
-            # the state of the model, after the training.
-            Printer.print_save_model()
-            torch.save(model, os.path.join(Path.OUTPUT.value, f"tratto_model_fold{fold}.pt"))
-            torch.save(model.state_dict(), os.path.join(Path.OUTPUT.value, f"tratto_model_state_dict_fold_{fold}.pt"))
+            if utils.is_main_process():
+                Printer.print_save_model()
+                if not os.path.exists(Path.OUTPUT.value):
+                    # If the path does not exists, create it
+                    os.makedirs(Path.OUTPUT.value)
+                # Save the statistics in json format
+                with open(
+                        os.path.join(
+                            Path.OUTPUT.value,
+                            f"{FileName.LOSS_ACCURACY.value}_fold_{fold}.{FileFormat.JSON.value}"
+                        ),
+                        "w"
+                ) as loss_file:
+                    data = {
+                        **stats[f"fold_{fold}"],
+                        "batch_size": HyperParameter.BATCH_SIZE.value,
+                        "lr": HyperParameter.LR.value,
+                        "num_epochs": HyperParameter.NUM_EPOCHS.value
+                    }
+                    json.dump(data, loss_file)
+                # Close the file
+                loss_file.close()
+                # ## Save the statistics and the trained model
+                #
+                # Saves the statistics for future analysis, and the trained model for future use or improvements.
+                # Saving the model we save the values of all the weights. In other words, we create a snapshot of
+                # the state of the model, after the training.
+                Printer.print_save_model()
+                torch.save(model, os.path.join(Path.OUTPUT.value, f"tratto_model_fold{fold}.pt"))
+                torch.save(model.module.state_dict(), os.path.join(Path.OUTPUT.value, f"tratto_model_state_dict_fold_{fold}.pt"))
+            # Destroy data distributed parallel instances
+            utils.cleanup()
             # Release memory
             del model
-            print("        " + "-" * 18)
-            print("Training completed")
+            if utils.is_main_process():
+                print("        " + "-" * 18)
+                print("Training completed")
         utils.release_memory()
     except:
         traceback.print_exc()
         print("Release memory, after unexpected error...")
         # Release memory
         utils.release_memory()
+
+
+if __name__ == "__main__":
+    def get_options():
+        opt_parser = optparse.OptionParser()
+        opt_parser.add_option(
+            "-c", "--classification_type",
+            action="store",
+            type="string",
+            dest="classification_type",
+            help="Select the classification type: LABEL_PREDICTION or CATEGORY_PREDICTION"
+        )
+        opt_parser.add_option(
+            "-m", "--model_type",
+            action="store",
+            type="string",
+            dest="model_type",
+            help="Select the model type: TOKEN_CLASSES or TOKEN_VALUES"
+        )
+        opt_parser.add_option(
+            "-v", "--cross_validation",
+            action="store_true",
+            dest="cv",
+            default=False,
+            help="Operate cross-validation or not"
+        )
+        options, args = opt_parser.parse_args()
+        return options
+    options = get_options()
+    world_size = torch.cuda.device_count()
+    classification_type = ClassificationType.CATEGORY_PREDICTION
+    model_type = ModelType.TOKEN_CLASSES
+    classification_type = ClassificationType.CATEGORY_PREDICTION
+    cv = False
+    if options.classification_type is not None:
+        try:
+            classification_type = ClassificationType(options.classification_type.upper())
+        except:
+            print(f"Classification type {options.classification_type} not recognized. Classification type {ClassificationType.CATEGORY_PREDICTION} used.")
+    if options.model_type is not None:
+        try:
+            model_type = ModelType(options.model_type.upper())
+        except:
+            print(f"Model type {options.model_type} not recognized. Classification type {ModelType.TOKEN_CLASS} used.")
+    if options.cv is not None:
+        cv = options.cv
+    Printer.print_welcome(classification_type, model_type)
+    mp.spawn(main, args=([world_size, classification_type, model_type, cv]), nprocs=world_size)

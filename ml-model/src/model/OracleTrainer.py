@@ -3,7 +3,7 @@ import math
 import os
 import timeit
 import numpy as np
-from typing import Type, Union, Tuple, Dict
+from typing import Type, Union, Tuple, Dict, List
 from collections import Counter
 
 
@@ -92,7 +92,7 @@ class OracleTrainer:
     """
     def __init__(
             self,
-            model: Type[OracleClassifier],
+            model,
             loss_fn: Type[Module],
             optimizer: Type[optim.Adam],
             dl_train: Type[DataLoader],
@@ -101,7 +101,9 @@ class OracleTrainer:
             classifier_ids_labels: Dict[int,str],
             classifier_ids_classes: Dict[int,str],
             classification_type: ClassificationType,
-            checkpoint_path
+            checkpoint_path,
+            scheduler,
+            max_grad_norm: float = 1.0
     ):
         self._model = model
         self._dl_train = dl_train
@@ -113,6 +115,9 @@ class OracleTrainer:
         self._classifier_ids_classes = classifier_ids_classes
         self._classification_type = classification_type
         self._checkpoint_path = checkpoint_path
+        self._max_grad_norm = max_grad_norm
+        self._scheduler = scheduler
+
 
     def _checkpoint(self, epoch: int, step: int):
         if not os.path.exists(self._checkpoint_path):
@@ -130,7 +135,10 @@ class OracleTrainer:
             self,
             num_epochs: int,
             num_steps: int,
-            device: Union[int,str]
+            device: Union[int,str],
+            n_gpu: int,
+            accumulation_steps,
+            max_grad_norm: float
     ):
         """
         The method perform the training and validation phases of the model.
@@ -167,7 +175,6 @@ class OracleTrainer:
             'v_predictions_per_class': []
         }
         steps = 0
-        accumulation_steps = HyperParameter.ACCUMULATION_STEPS.value
 
         # In each epoch the trainer train the model batch by batch,
         # with all the batch of the training dataset. After a given
@@ -190,7 +197,8 @@ class OracleTrainer:
             self._optimizer.zero_grad()
 
             for step, batch in enumerate(self._dl_train,1):
-                print(f"            Processing step {step} of {len(self._dl_train)}")
+                if utils.is_main_process():
+                    print(f"            Processing step {step} of {len(self._dl_train)}")
                 steps += 1
 
                 # Extract the inputs, the attention masks and the expected
@@ -200,14 +208,25 @@ class OracleTrainer:
                 tgt_out = batch[2].to(device)
                 tgt_classes = list(map(lambda i: self._classifier_ids_classes[i], batch[3].numpy()))
 
-                print(f"                Model predictions...")
+                if utils.is_main_process():
+                    print(f"                Model predictions...")
                 # Train the model
-                outputs = self._model(src_input, masks_input)
+                outputs = self._model(src_input, masks_input)[0]
 
-                print(f"                Computing loss...")
+                if utils.is_main_process():
+                    print(f"                Computing loss...")
+
                 # Compute the loss
                 loss = self._loss_fn(outputs, tgt_out)
+
+                if n_gpu > 1:
+                    loss = loss.mean()  # mean() to average on multi-gpu parallel training
+                if accumulation_steps > 1:
+                    loss = loss / accumulation_steps
+
                 loss.backward()
+                # Gradient clipping. It is used to mitigate the problem of exploding gradients
+                torch.nn.utils.clip_grad_norm_(self._model.parameters(), max_grad_norm)
 
                 # Exctract the predicted values and the expected output
                 with torch.no_grad():
@@ -244,6 +263,7 @@ class OracleTrainer:
                     # Update the weights of the model
                     self._optimizer.step()
                     self._optimizer.zero_grad()
+                    self._scheduler.step()
                     # Update the total loss
                     total_loss += loss.item()
 
@@ -367,23 +387,23 @@ class OracleTrainer:
                 Average training loss
             v_loss: float
                 Average validation loss
-            t_f1_score: list[Tuple[str,float]]
+            t_f1_score: List[Tuple[str,float]]
                 F1 score of the training phase, for each class of the model
             t_accuracy: float
                 Accuracy of the training phase
-            t_precision: list[Tuple[str,float]]
+            t_precision: List[Tuple[str,float]]
                 Precision of the training phase, for each class of the model
-            t_recall: list[Tuple[str,float]]
+            t_recall: List[Tuple[str,float]]
                 Recall of the training phase, for each class of the model
             v_loss: float
                 Average validation loss
-            v_f1_score: list[Tuple[str,float]]
+            v_f1_score: List[Tuple[str,float]]
                 F1 score of the validation phase, for each class of the model
             v_accuracy: float
                 Accuracy of the validation phase
-            v_precision: list[Tuple[str,float]]
+            v_precision: List[Tuple[str,float]]
                 Precision of the validation phase, for each class of the model
-            v_recall: list[Tuple[str,float]]
+            v_recall: List[Tuple[str,float]]
                 Recall of the validation phase, for each class of the model
         """
         if utils.is_main_process():
@@ -443,10 +463,10 @@ class OracleTrainer:
 
     @staticmethod
     def print_evaluation_stats(
-            test_f1_score: list[Tuple[str,float]],
-            test_accuracy: list[Tuple[str,float]],
-            test_precision: list[Tuple[str,float]],
-            test_recall: list[Tuple[str,float]],
+            test_f1_score: List[Tuple[str,float]],
+            test_accuracy: List[Tuple[str,float]],
+            test_precision: List[Tuple[str,float]],
+            test_recall: List[Tuple[str,float]],
             test_predictions_per_class: Dict[str,Dict]
     ):
         """
@@ -454,13 +474,13 @@ class OracleTrainer:
 
         Parameters
         ----------
-        test_f1_scoret: list[Tuple[str,float]]
+        test_f1_scoret: List[Tuple[str,float]]
             F1 score of the testing phase, for each class of the model
         test_accuracy: float
             Accuracy of the testing phase
-        test_precision: list[Tuple[str,float]]
+        test_precision: List[Tuple[str,float]]
             Precision of the testing phase, for each class of the model
-        test_recall: list[Tuple[str,float]]
+        test_recall: List[Tuple[str,float]]
             Recall of the testing phase, for each class of the model
         """
         if utils.is_main_process():
@@ -575,7 +595,7 @@ class OracleTrainer:
                 tgt_classes = list(map(lambda i: self._classifier_ids_classes[i], batch[3].numpy()))
                 print(f"                Model predictions...")
                 # Feed the model
-                outputs = self._model(src_input, masks_input)
+                outputs = self._model(src_input, masks_input)[0]
                 print(f"                Computing loss...")
                 # Compute the loss
                 loss = self._loss_fn(outputs, tgt_out)
@@ -675,7 +695,7 @@ class OracleTrainer:
                 tgt_classes = list(map(lambda i: self._classifier_ids_classes[i], batch[3].numpy()))
                 print(f"                Model predictions...")
                 # Feed the model
-                outputs = self._model(src_input, masks_input)
+                outputs = self._model(src_input, masks_input)[0]
                 # Exctract the predicted values and the expected output
                 with torch.no_grad():
                     _, predicted = outputs.max(1)

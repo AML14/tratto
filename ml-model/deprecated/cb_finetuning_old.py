@@ -6,10 +6,10 @@ import torch
 import json
 import traceback
 import optparse
+import torch.optim as optim
 from torch.utils.data import DataLoader, SequentialSampler
 from torch.nn import CrossEntropyLoss
-from transformers import RobertaConfig, RobertaTokenizer, RobertaForSequenceClassification, AdamW, \
-    get_linear_schedule_with_warmup
+from transformers import AutoTokenizer
 
 from src.enums.ClassificationType import ClassificationType
 from src.enums.DatasetType import DatasetType
@@ -20,6 +20,7 @@ from src.enums.HyperParameter import HyperParameter
 from src.enums.ModelType import ModelType
 from src.enums.Path import Path
 from src.precessors.DataProcessor import DataProcessor
+from src.model.OracleClassifier import OracleClassifier
 from src.model.OracleTrainer import OracleTrainer
 from src.model.Printer import Printer
 from src.utils import utils
@@ -78,11 +79,12 @@ if __name__ == "__main__":
 
         ## Tokenizer
         #
-        # Loads `roberta-base` pre-trained tokenizer from RobertaTokenizer to concatenate the input columns of
-        # the dataframe with the *tokenizer.cls* separator token and tokenize the whole input dataset
+        # Loads `codebert-base` from `AutoTokenizer` to concatenate the input columns of
+        # the dataframe with the *tokenizer.cls* separator token and tokenize the whole
+        # input dataset
         #
-        # Create instance of pre-trained tokenizer
-        tokenizer = RobertaTokenizer.from_pretrained('roberta-base', do_lower_case=False)
+        # Create instance of pretrained tokenizer
+        tokenizer = AutoTokenizer.from_pretrained("microsoft/codebert-base")
 
         ## DataProcessor
         #
@@ -199,9 +201,7 @@ if __name__ == "__main__":
             # get the output size of the classification task
             linear_size = data_processor.get_tgt_classes_size()
             # Create instance of the model
-            config_dict = utils.load_config_file(os.path.join(Path.PRETRAINED.value, f"{FileName.CONFIG.value}.{FileFormat.JSON}"))
-            config = RobertaConfig.from_pretrained("microsoft/codebert-base", num_labels=len(data_processor.get_num_labels()), finetuning_task=config_dict["finetuning_task"])
-            model = RobertaForSequenceClassification.from_pretrained("microsoft/codebert-base", config=config)
+            model = OracleClassifier(linear_size, max_input_len)
             # The model is loaded on the gpu (or cpu, if not available)
             model.to(device)
 
@@ -216,14 +216,7 @@ if __name__ == "__main__":
             #
             Printer.print_training_phase()
             # Adam optimizer with learning rate set with the value of the LR hyperparameter
-            no_decay = ['bias', 'LayerNorm.weight']
-            optimizer_grouped_parameters = [
-                {'params': [p for n, p in model.named_parameters() if not any(nd in n for nd in no_decay)],
-                 'weight_decay': HyperParameter.WEIGHT_DECAY.value},
-                {'params': [p for n, p in model.named_parameters() if any(nd in n for nd in no_decay)],
-                 'weight_decay': 0.0}
-            ]
-            optimizer = AdamW(optimizer_grouped_parameters, lr=HyperParameter.LR.value, eps=HyperParameter.ADAM_EPSILON.value)
+            optimizer = optim.AdamW(model.parameters(), lr=HyperParameter.LR.value)
             # Compute weights
             if classification_type == ClassificationType.CATEGORY_PREDICTION:
                 if model_type == ModelType.TOKEN_CLASSES:
@@ -243,11 +236,6 @@ if __name__ == "__main__":
             # Define checkpoint path
             checkpoint_path = os.path.join(Path.OUTPUT, f"checkpoints_{fold}" if cv else "checkpoints", f"lr_{HyperParameter.LR.value}", f"batch_{HyperParameter.BATCH_SIZE.value}", f"epochs_{HyperParameter.NUM_EPOCHS.value}")
             oracle_trainer = OracleTrainer(model, loss_fn, optimizer, dl_train, dl_val, dl_test, classifier_ids_labels, classifier_ids_classes, classification_type, checkpoint_path)
-
-            training_steps = len(dl_train) // HyperParameter.ACCUMULATION_STEPS.value * HyperParameter.NUM_EPOCHS.value
-
-            scheduler = get_linear_schedule_with_warmup(optimizer, HyperParameter.WARMUP_STEPS.value, HyperParameter.NUM_EPOCHS.value)
-
             try:
                 # Train the model
                 stats[f"fold_{fold}"] = oracle_trainer.train(

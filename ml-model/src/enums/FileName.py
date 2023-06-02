@@ -8,3 +8,4 @@ class FileName(str, Enum):
     in the project
     """
     LOSS_ACCURACY = f"loss_accuracy_{HyperParameter.BATCH_SIZE.value}_{HyperParameter.LR.value}_{HyperParameter.NUM_EPOCHS.value}"
+    CONFIG = "config"
