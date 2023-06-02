@@ -13,8 +13,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static star.tratto.oraclegrammar.custom.Splitter.split;
 import static star.tratto.token.TokenSuggester.getNextLegalTokensWithContextPlusInfo;
@@ -28,6 +30,7 @@ public class TokensDataset {
     private static final ObjectMapper objectMapper = new ObjectMapper();
     public static String ORACLES_DATASET_FOLDER = "src/main/resources/oracles-dataset/";
     public static String TOKENS_DATASET_FOLDER = "src/main/resources/tokens-dataset/";
+    public static DatasetType DATASET_TYPE = DatasetType.TOKENS;
     private static int tokenIndex = 0;
     private static int fileIndex = 0;
     private static int negativeSamples = 0;
@@ -35,6 +38,8 @@ public class TokensDataset {
     private static final boolean crashOnWrongOracle = false;
 
     public static void main(String[] args) throws IOException {
+        validateArgs(args);
+        logger.info("Dataset type: {}", DATASET_TYPE);
         File tokensDatasetFolder = new File(TOKENS_DATASET_FOLDER);
         FileUtils.deleteDirectory(tokensDatasetFolder);
         tokensDatasetFolder.mkdir();
@@ -87,6 +92,20 @@ public class TokensDataset {
         logger.info("------------------------------------------------------------");
     }
 
+    private static void validateArgs(String[] args) {
+        if (args.length == 0 && DATASET_TYPE == null) {
+            logger.error("DATASET_TYPE not set. Pass one argument, which must be one of TOKENS, TOKEN_CLASSES or TOKEN_VALUES.");
+        } else if (args.length > 1) {
+            logger.error("Wrong number of arguments. Expected 0 or 1, got {}", args.length);
+        } else if (args.length == 1 && !Arrays.stream(DatasetType.values()).map(Enum::name).collect(Collectors.toList()).contains(args[0])) {
+            logger.error("Wrong argument. Expected TOKENS or TOKEN_CLASSES or TOKEN_VALUES, got {}", args[0]);
+        } else {
+            if (args.length == 1) DATASET_TYPE = DatasetType.valueOf(args[0]);
+            return;
+        }
+        System.exit(1);
+    }
+
     /**
      * Transform the contents of an OracleDatapoint (obtained from a row from oracles dataset) into multiple
      * TokenDatapoints (which will be transformed into rows in tokens dataset), in the following way:
@@ -133,24 +152,51 @@ public class TokensDataset {
     private static List<TokenDatapoint> oracleSoFarAndTokenToTokenDatapoints(OracleDatapoint oracleDatapoint, List<String> oracleSoFarTokens, String nextOracleToken) {
         // Compute next legal tokens
         List<Triplet<String, String, List<String>>> nextLegalTokensWithContext = getNextLegalTokensWithContextPlusInfo(oracleSoFarTokens, oracleDatapoint);
-
         List<TokenDatapoint> tokenDatapoints = new ArrayList<>();
 
         // Create a new TokenDatapoint for each next legal token and add it to the list
         boolean nextTokenActuallyLegal = false;
+        String nextOracleTokenClass = null;
+        List<String> addedTokenClasses = new ArrayList<>();
         for (Triplet<String, String, List<String>> legalTokenWithContext : nextLegalTokensWithContext) {
             String legalToken = legalTokenWithContext.getValue0();
             String legalTokenClass = legalTokenWithContext.getValue1();
             List<String> legalTokenInfo = legalTokenWithContext.getValue2();
-            Boolean label = legalToken.equals(nextOracleToken);
-            TokenDatapoint tokenDatapoint = new TokenDatapoint(tokenIndex++, label, oracleDatapoint, compactExpression(oracleSoFarTokens), legalToken, legalTokenClass, legalTokenInfo);
-            tokenDatapoints.add(tokenDatapoint);
+
+            boolean label = legalToken.equals(nextOracleToken);
             if (label) {
                 nextTokenActuallyLegal = true;
+                nextOracleTokenClass = legalTokenClass;
                 positiveSamples++;
-            } else {
-                negativeSamples++;
             }
+
+            // For token-classes dataset, we don't need token and token info, just token class
+            if (DATASET_TYPE.equals(DatasetType.TOKEN_CLASSES)) {
+                legalToken = null;
+                legalTokenInfo = null;
+            }
+
+            // For tokens or token-values dataset, add all tokens. For token-classes dataset, add only one token per class
+            // (except for right class, where one with label=true and one with label=false are added)
+            if (!DATASET_TYPE.equals(DatasetType.TOKEN_CLASSES) || (label || !addedTokenClasses.contains(legalTokenClass))) {
+                TokenDatapoint tokenDatapoint = new TokenDatapoint(tokenIndex++, label, oracleDatapoint, compactExpression(oracleSoFarTokens), legalToken, legalTokenClass, legalTokenInfo);
+                tokenDatapoints.add(tokenDatapoint);
+                addedTokenClasses.add(legalTokenClass);
+                if (!label) {
+                    negativeSamples++;
+                }
+            }
+        }
+
+        // If token-classes or token-values, we need to remove some negative token datapoints and update negativeSamples accordingly
+        if (!DATASET_TYPE.equals(DatasetType.TOKENS)) {
+            int oldSize = tokenDatapoints.size();
+            String finalNextOracleTokenClass = nextOracleTokenClass;
+            tokenDatapoints.removeIf(tdp ->
+                    (DATASET_TYPE.equals(DatasetType.TOKEN_VALUES) && !tdp.getTokenClass().equals(finalNextOracleTokenClass)) ||
+                    (DATASET_TYPE.equals(DatasetType.TOKEN_CLASSES) && !tdp.getLabel() && tdp.getTokenClass().equals(finalNextOracleTokenClass))
+            );
+            negativeSamples -= oldSize - tokenDatapoints.size();
         }
         assertTokenLegal(nextTokenActuallyLegal, nextOracleToken, oracleSoFarTokens);
         return tokenDatapoints;
@@ -171,5 +217,9 @@ public class TokensDataset {
         public MissingTokenException(String message) {
             super(message);
         }
+    }
+
+    public enum DatasetType {
+        TOKENS, TOKEN_CLASSES, TOKEN_VALUES
     }
 }
