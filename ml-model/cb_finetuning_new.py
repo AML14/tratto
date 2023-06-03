@@ -17,6 +17,7 @@ from src.enums.FileFormat import FileFormat
 from src.enums.FileName import FileName
 from src.enums.ModelType import ModelType
 from src.enums.Path import Path
+from src.model.OracleClassifier import OracleClassifier
 from src.model.OracleTrainer import OracleTrainer
 from src.model.Printer import Printer
 from src.parser.ArgumentParser import ArgumentParser
@@ -157,10 +158,15 @@ def main():
             num_labels=data_processor.get_num_labels(),
             finetuning_task=args.task_name
         )
-        model = model_class.from_pretrained(
+        """model = model_class.from_pretrained(
             args.model_name_or_path,
             config=config
-        )
+        )"""
+        max_input_len = 512  # reduce(lambda max_len, s: len(s) if len(s) > max_len else max_len, src,0) + 2
+        # get the output size of the classification task
+        linear_size = data_processor.get_tgt_classes_size()
+
+        model = OracleClassifier(linear_size, max_input_len)
 
         if n_gpu > 1:
             model = torch.nn.DataParallel(model)
