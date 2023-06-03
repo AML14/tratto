@@ -42,6 +42,35 @@ def check_path_exists(path, is_path_file=False):
         os.makedirs(path)
 
 
+def connect_to_device(device_type: Type[DeviceType] = DeviceType.GPU):
+    """
+    The method sets the device where to upload the model and perform the training and validation phases.
+    If available, the GPU is used to improve the performance. Otherwise, the CPU is used.
+
+    Parameters
+    ----------
+    device_type: DeviceType
+        The preferred device type to use to train and validate the model
+
+    Returns
+    -------
+    device: torch.Device
+        the Pytorch device to use to train and validate the model
+    """
+    torch.cuda.empty_cache()
+    if not device_type in [DeviceType.GPU, DeviceType.CPU]:
+        raise Exception(f"Unrecognized device type: {device_type}")
+    if device_type == DeviceType.GPU and torch.cuda.is_available():
+        print(f'        There are {torch.cuda.device_count()} GPU(s) available.')
+        # Set the gpu as device to perform the training
+        device = torch.device("cuda:0")
+        print(f'        We will use the GPU: {torch.cuda.get_device_name(1)}')
+    else:
+        # Set the cpu as device to perform the training
+        device = torch.device("cpu")
+        print('        No GPU available, using the CPU instead.')
+    return device, 1
+
 
 
 def check_cuda_device():
@@ -176,20 +205,23 @@ def load_config_file(file_path: str):
 #############
 
 
-def connect_to_device(
+"""def connect_to_device(
         local_rank: int,
         no_cuda: bool = False
 ):
-    """
-    The method sets the device where to upload the model and perform the training and validation phases.
-    """
+    
+    #The method sets the device where to upload the model and perform the training and validation phases.
+    
     # Setup CUDA, GPU & distributed training
     if local_rank == -1 or no_cuda:
         device = torch.device("cuda" if torch.cuda.is_available() and not no_cuda else "cpu")
         n_gpu = torch.cuda.device_count()
+    elif local_rank == -1 and not no_cuda:
+        device = torch.device("cuda" if torch.cuda.is_available() and not no_cuda else "cpu")
+        n_gpu = 1
     else:  # Initializes the distributed backend which will take care of sychronizing nodes/GPUs
         torch.cuda.set_device(local_rank)
         device = torch.device("cuda", local_rank)
         torch.distributed.init_process_group(backend='nccl')
-        n_gpu = 1
-    return device, n_gpu
+        n_gpu = torch.device.count()
+    return device, n_gpu"""
