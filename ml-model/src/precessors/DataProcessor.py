@@ -425,8 +425,34 @@ class DataProcessor:
             'tokenClass': 'string',
             'tokenInfo': 'string'
         })
+
+        if self._model_type == ModelType.TOKEN_CLASSES:
+            tokenClassesDict = self.get_classes_ids()
+            self._df_dataset["tokenClass"] = self._df_dataset["tokenClass"].apply(lambda x : str(tokenClassesDict[x]))
+            df_eligibleTokenClasses = self._df_dataset.groupby(['oracleId', 'oracleSoFar'])['tokenClass'].unique().to_frame()
+            df_eligibleTokenClasses = df_eligibleTokenClasses.rename(columns={'tokenClass': 'eligibleTokenClasses'})
+            self._df_dataset = pd.merge(self._df_dataset, df_eligibleTokenClasses, on=['oracleId', 'oracleSoFar']).reset_index()
+            new_columns_order = list(self._df_dataset.columns)
+            new_columns_order.insert(new_columns_order.index('oracleSoFar') + 1, new_columns_order.pop(new_columns_order.index('eligibleTokenClasses')))
+            self._df_dataset = self._df_dataset[new_columns_order]
+            self._df_dataset["eligibleTokenClasses"] = self._df_dataset["eligibleTokenClasses"].apply(lambda x: "[" + ",".join(x) + "]")
+            self._df_dataset['tokenClass'] = self._df_dataset['tokenClass'].astype('string')
+            self._df_dataset['eligibleTokenClasses'] = self._df_dataset['eligibleTokenClasses'].astype('string')
+        else:
+            tokenValuesDict = self.get_classes_ids()
+            self._df_dataset["token"] = self._df_dataset["token"].apply(lambda x: str(tokenValuesDict[x]))
+            df_eligibleTokens = self._df_dataset.groupby(['oracleId', 'oracleSoFar'])['token'].unique().to_frame()
+            df_eligibleTokens = df_eligibleTokens.rename(columns={'token': 'eligibleTokens'})
+            self._df_dataset = pd.merge(self._df_dataset, df_eligibleTokens, on=['oracleId', 'oracleSoFar']).reset_index()
+            new_columns_order = list(self._df_dataset.columns)
+            new_columns_order.insert(new_columns_order.index('oracleSoFar') + 1, new_columns_order.pop(new_columns_order.index('eligibleTokens')))
+            self._df_dataset = self._df_dataset[new_columns_order]
+            self._df_dataset["eligibleTokens"] = self._df_dataset["eligibleTokens"].apply(lambda x: "[" + ",".join(x) + "]")
+            self._df_dataset['token'] = self._df_dataset['token'].astype('string')
+            self._df_dataset['eligibleTokens'] = self._df_dataset['eligibleTokens'].astype('string')
+
         # delete the oracle ids and the tgt labels from the input dataset
-        df_src = self._df_dataset.drop(['label','oracleId','projectName','classJavadoc','classSourceCode'], axis=1)
+        df_src = self._df_dataset.drop(['index','label','oracleId','projectName','classJavadoc','classSourceCode'], axis=1)
         # if the model predicts classes, remove the label from the input
         if self._model_type == ModelType.TOKEN_CLASSES:
             df_src = df_src.drop(['token','tokenInfo'], axis=1)
@@ -470,6 +496,7 @@ class DataProcessor:
         # The result of step (3) represents the content of the unique column of the new
         # map row. The process is repeated for each row in the src dataset.
         df_src_concat = df_src.apply(lambda row: self._tokenizer.sep_token.join(row.values), axis=1)
+
         # The pandas dataframe is transformed in a list of strings: each string is a input
         # to the model
         src = df_src_concat.to_numpy().tolist()
