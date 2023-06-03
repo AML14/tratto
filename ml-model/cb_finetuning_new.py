@@ -12,6 +12,7 @@ from transformers import RobertaConfig, RobertaForSequenceClassification, Robert
 
 from src.enums.ClassificationType import ClassificationType
 from src.enums.DatasetType import DatasetType
+from src.enums.DeviceType import DeviceType
 from src.enums.FileFormat import FileFormat
 from src.enums.FileName import FileName
 from src.enums.ModelType import ModelType
@@ -63,7 +64,7 @@ def main():
 
     Printer.print_load_gpu()
     # connect to device
-    device, n_gpu = utils.connect_to_device(local_rank=args.local_rank, no_cuda=args.no_cuda)
+    device, n_gpu = utils.connect_to_device(DeviceType.GPU)
 
     # Set seeds for reproducibility
     set_seed(n_gpu, args.seed)
