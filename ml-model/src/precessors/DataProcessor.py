@@ -427,23 +427,23 @@ class DataProcessor:
         })
 
         if self._model_type == ModelType.TOKEN_CLASSES:
-            tokenClassesDict = self.get_classes_ids()
-            self._df_dataset["tokenClass"] = self._df_dataset["tokenClass"].apply(lambda x : str(tokenClassesDict[x]))
-            self._df_dataset["tokenClassesSoFar"] = self._df_dataset["tokenClassesSoFar"].apply(lambda x: [str(tokenClassesDict[y]) for y in x])
-            df_eligibleTokenClasses = self._df_dataset.groupby(['oracleId', 'oracleSoFar'])['tokenClass'].unique().to_frame()
-            df_eligibleTokenClasses = df_eligibleTokenClasses.rename(columns={'tokenClass': 'eligibleTokenClasses'})
-            self._df_dataset = pd.merge(self._df_dataset, df_eligibleTokenClasses, on=['oracleId', 'oracleSoFar']).reset_index()
-            self._df_dataset["eligibleTokenClasses"] = self._df_dataset["eligibleTokenClasses"].apply(lambda x: "[" + " ".join(x) + "]")
+            #tokenClassesDict = self.get_classes_ids()
+            #self._df_dataset["tokenClass"] = self._df_dataset["tokenClass"].apply(lambda x : str(tokenClassesDict[x]))
+            #self._df_dataset["tokenClassesSoFar"] = self._df_dataset["tokenClassesSoFar"].apply(lambda x: [str(tokenClassesDict[y]) for y in x])
+            #df_eligibleTokenClasses = self._df_dataset.groupby(['oracleId', 'oracleSoFar'])['tokenClass'].unique().to_frame()
+            #df_eligibleTokenClasses = df_eligibleTokenClasses.rename(columns={'tokenClass': 'eligibleTokenClasses'})
+            #self._df_dataset = pd.merge(self._df_dataset, df_eligibleTokenClasses, on=['oracleId', 'oracleSoFar']).reset_index()
+            #self._df_dataset["eligibleTokenClasses"] = self._df_dataset["eligibleTokenClasses"].apply(lambda x: "[" + " ".join(x) + "]")
             self._df_dataset["tokenClassesSoFar"] = self._df_dataset["tokenClassesSoFar"].apply(lambda x: "[" + " ".join(x) + "]")
             self._df_dataset['tokenClass'] = self._df_dataset['tokenClass'].astype('string')
-            self._df_dataset['eligibleTokenClasses'] = self._df_dataset['eligibleTokenClasses'].astype('string')
-            self._df_dataset['tokenClassesSoFar'] = self._df_dataset['eligibleTokenClasses'].astype('string')
+            #self._df_dataset['eligibleTokenClasses'] = self._df_dataset['eligibleTokenClasses'].astype('string')
+            self._df_dataset['tokenClassesSoFar'] = self._df_dataset['tokenClassesSoFar'].astype('string')
             # Define the new order of columns
             new_columns_order = [
                 'token',
                 'tokenInfo',
                 'tokenClass',
-                'eligibleTokenClasses',
+                #'eligibleTokenClasses',
                 'oracleSoFar',
                 'tokenClassesSoFar',
                 'javadocTag',
@@ -610,7 +610,7 @@ class DataProcessor:
         # datasets path
         oracles_dataset = os.path.join(d_path)
         # collects partial dataframes from oracles
-        for file_name in os.listdir(oracles_dataset)[:100]:
+        for file_name in os.listdir(oracles_dataset):
             df = pd.read_json(os.path.join(oracles_dataset,  file_name))
             dfs.append(df)
         df_dataset = pd.concat(dfs)
