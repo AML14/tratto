@@ -163,6 +163,8 @@ def main():
             config=config
         )
 
+        model.to(device)
+
         if n_gpu > 1:
             model = torch.nn.DataParallel(model)
         if args.local_rank != -1:

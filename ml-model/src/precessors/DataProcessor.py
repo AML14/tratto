@@ -429,30 +429,70 @@ class DataProcessor:
         if self._model_type == ModelType.TOKEN_CLASSES:
             tokenClassesDict = self.get_classes_ids()
             self._df_dataset["tokenClass"] = self._df_dataset["tokenClass"].apply(lambda x : str(tokenClassesDict[x]))
+            self._df_dataset["tokenClassesSoFar"] = self._df_dataset["tokenClassesSoFar"].apply(lambda x: [str(tokenClassesDict[y]) for y in x])
             df_eligibleTokenClasses = self._df_dataset.groupby(['oracleId', 'oracleSoFar'])['tokenClass'].unique().to_frame()
             df_eligibleTokenClasses = df_eligibleTokenClasses.rename(columns={'tokenClass': 'eligibleTokenClasses'})
             self._df_dataset = pd.merge(self._df_dataset, df_eligibleTokenClasses, on=['oracleId', 'oracleSoFar']).reset_index()
-            new_columns_order = list(self._df_dataset.columns)
-            new_columns_order.insert(new_columns_order.index('oracleSoFar') + 1, new_columns_order.pop(new_columns_order.index('eligibleTokenClasses')))
-            self._df_dataset = self._df_dataset[new_columns_order]
-            self._df_dataset["eligibleTokenClasses"] = self._df_dataset["eligibleTokenClasses"].apply(lambda x: "[" + ",".join(x) + "]")
+            self._df_dataset["eligibleTokenClasses"] = self._df_dataset["eligibleTokenClasses"].apply(lambda x: "[" + " ".join(x) + "]")
+            self._df_dataset["tokenClassesSoFar"] = self._df_dataset["tokenClassesSoFar"].apply(lambda x: "[" + " ".join(x) + "]")
             self._df_dataset['tokenClass'] = self._df_dataset['tokenClass'].astype('string')
             self._df_dataset['eligibleTokenClasses'] = self._df_dataset['eligibleTokenClasses'].astype('string')
+            self._df_dataset['tokenClassesSoFar'] = self._df_dataset['eligibleTokenClasses'].astype('string')
+            # Define the new order of columns
+            new_columns_order = [
+                'token',
+                'tokenInfo',
+                'tokenClass',
+                'eligibleTokenClasses',
+                'oracleSoFar',
+                'tokenClassesSoFar',
+                'javadocTag',
+                'label',
+                'oracleType',
+                'projectName',
+                'packageName',
+                'className',
+                'oracleId',
+                'methodJavadoc',
+                'methodSourceCode',
+                'classJavadoc',
+                'classSourceCode'
+            ]
+            # Reindex the DataFrame with the new order
+            self._df_dataset = self._df_dataset.reindex(columns=new_columns_order)
         else:
             tokenValuesDict = self.get_classes_ids()
             self._df_dataset["token"] = self._df_dataset["token"].apply(lambda x: str(tokenValuesDict[x]))
             df_eligibleTokens = self._df_dataset.groupby(['oracleId', 'oracleSoFar'])['token'].unique().to_frame()
             df_eligibleTokens = df_eligibleTokens.rename(columns={'token': 'eligibleTokens'})
             self._df_dataset = pd.merge(self._df_dataset, df_eligibleTokens, on=['oracleId', 'oracleSoFar']).reset_index()
-            new_columns_order = list(self._df_dataset.columns)
-            new_columns_order.insert(new_columns_order.index('oracleSoFar') + 1, new_columns_order.pop(new_columns_order.index('eligibleTokens')))
-            self._df_dataset = self._df_dataset[new_columns_order]
             self._df_dataset["eligibleTokens"] = self._df_dataset["eligibleTokens"].apply(lambda x: "[" + ",".join(x) + "]")
             self._df_dataset['token'] = self._df_dataset['token'].astype('string')
             self._df_dataset['eligibleTokens'] = self._df_dataset['eligibleTokens'].astype('string')
+            # Define the new order of columns
+            new_columns_order = [
+                'tokenClass',
+                'token',
+                'tokenInfo',
+                'eligibleTokens',
+                'oracleSoFar',
+                'javadocTag',
+                'label',
+                'oracleType',
+                'projectName',
+                'packageName',
+                'className',
+                'oracleId',
+                'methodJavadoc',
+                'methodSourceCode',
+                'classJavadoc',
+                'classSourceCode'
+            ]
+            # Reindex the DataFrame with the new order
+            self._df_dataset = self._df_dataset.reindex(columns=new_columns_order)
 
         # delete the oracle ids and the tgt labels from the input dataset
-        df_src = self._df_dataset.drop(['index','label','oracleId','projectName','classJavadoc','classSourceCode'], axis=1)
+        df_src = self._df_dataset.drop(['label','oracleId','projectName','classJavadoc','classSourceCode'], axis=1)
         # if the model predicts classes, remove the label from the input
         if self._model_type == ModelType.TOKEN_CLASSES:
             df_src = df_src.drop(['token','tokenInfo'], axis=1)
@@ -570,7 +610,7 @@ class DataProcessor:
         # datasets path
         oracles_dataset = os.path.join(d_path)
         # collects partial dataframes from oracles
-        for file_name in os.listdir(oracles_dataset):
+        for file_name in os.listdir(oracles_dataset)[:100]:
             df = pd.read_json(os.path.join(oracles_dataset,  file_name))
             dfs.append(df)
         df_dataset = pd.concat(dfs)
@@ -648,10 +688,7 @@ class DataProcessor:
             if self._classification_type == ClassificationType.CATEGORY_PREDICTION:
                 targets_labels = b_targets
             else:
-                if self._model_type == ModelType.TOKEN_CLASSES.value:
-                    targets_labels = list(map(lambda i: i.split(self._tokenizer.sep_token)[-1], b_inputs))
-                else:
-                    targets_labels = list(map(lambda i: i.split(self._tokenizer.sep_token)[-2], b_inputs))
+                targets_labels = list(map(lambda i: i.split(self._tokenizer.sep_token)[0], b_inputs))
             classifier_classes_ids = self.get_classes_ids()
             targets_labels_tensor = torch.tensor(list(map(lambda l: classifier_classes_ids[l], targets_labels)))
             # Append triplet to list of tokenized batches
