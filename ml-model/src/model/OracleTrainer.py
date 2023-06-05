@@ -211,7 +211,7 @@ class OracleTrainer:
                 if utils.is_main_process():
                     print(f"                Model predictions...")
                 # Train the model
-                outputs = self._model(src_input, masks_input)
+                outputs = self._model(src_input, masks_input)[0]
 
                 if utils.is_main_process():
                     print(f"                Computing loss...")
@@ -595,7 +595,7 @@ class OracleTrainer:
                 tgt_classes = list(map(lambda i: self._classifier_ids_classes[i], batch[3].numpy()))
                 print(f"                Model predictions...")
                 # Feed the model
-                outputs = self._model(src_input, masks_input)
+                outputs = self._model(src_input, masks_input)[0]
                 print(f"                Computing loss...")
                 # Compute the loss
                 loss = self._loss_fn(outputs, tgt_out)
@@ -695,7 +695,7 @@ class OracleTrainer:
                 tgt_classes = list(map(lambda i: self._classifier_ids_classes[i], batch[3].numpy()))
                 print(f"                Model predictions...")
                 # Feed the model
-                outputs = self._model(src_input, masks_input)
+                outputs = self._model(src_input, masks_input)[0]
                 # Exctract the predicted values and the expected output
                 with torch.no_grad():
                     _, predicted = outputs.max(1)
