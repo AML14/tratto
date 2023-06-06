@@ -78,35 +78,27 @@ macOS and Windows systems.
 
 ## Training
 
-Run the following command to start training the model on a `CPU` or on a single `GPU`
+Run the following command to start training the model for the `token classes` on a `CPU` or on a single `GPU`
     
 ```bash
-python3 cb_finetuning.py [--classification_type [LABEL_PREDICTION | CATEGORY_PREDICTION]] [--model_type [TOKEN_CLASSES | TOKEN_VALUES]]
+python3 train_token_classes.sh
 ```
-* **classification_type** - an optional argument with two possible values: 
-  * `LABEL_PREDICTION` - the model use the label as information in input and the output is a binary classifier (0 or 1).
-  * `CATEGORY_PREDICTION` - the model classify on the different token classes, as in a multi-class classification task.
-  If the parameter is not provided, the `CATEGORY_PREDICTION` classification type is used.
 
-* **model_type** - an optional argument with two possible values:
-  * `TOKEN_CLASSES` - the model is trained in predicting the next token class, given the oracle generated so far.
-  * `TOKEN_VALUES` - the model is trained in predicting the next token, given the oracle generated so far.
-  If the parameter is not provided, the `TOKEN_CLASSES` model type is used.
-
-Run the following command to start training the model on multiple `GPUs`, instead.
-
+Run the following command to start training the model for the `token values` on a `CPU` or on a single `GPU`
+    
 ```bash
-python3 cb_finetuning_gpu_distributed.py [--classification_type [LABEL_PREDICTION | CATEGORY_PREDICTION]] [--model_type [TOKEN_CLASSES | TOKEN_VALUES]]
+python3 train_token_values.sh
 ```
 
 If you want to run the training as a background process:
 
 ```bash
-nohup python3 cb_finetuning.py [--classification_type [LABEL_PREDICTION | CATEGORY_PREDICTION]] [--model_type [TOKEN_CLASSES | TOKEN_VALUES]] > log.out 2>&1 & echo $! > run.pid
-```
-```bash
-nohup python3 cb_finetuning_gpu_distributed.py [--classification_type [LABEL_PREDICTION | CATEGORY_PREDICTION]] [--model_type [TOKEN_CLASSES | TOKEN_VALUES]] > log.out 2>&1 & echo $! > run.pid
+nohup python3 train_token_classes.sh > log_token_classes.out 2>&1 & echo $! > run_token_classes.pid
 ```
 
-The command will run the training in background and will create and save the logs in the `log.out` file and the pid of the process 
-in the `run.pid` file.
+```bash
+nohup python3 train_token_values.sh > log_token_values.out 2>&1 & echo $! > run_token_values.pid
+```
+
+The command will run the training in background and will create and save the logs in the `log_token_classes.out`  (or `log_token_values.out`)
+file and the pid of the process in the `run_token_classes.pid` (or `run_token_values.pid`) file.
