@@ -230,14 +230,11 @@ def main():
         # Perform testing phase
         if args.do_predict:
             stats_test = oracle_trainer.evaluation(device)
-            stats[f"fold_{fold}"] = {
-                **stats[f"fold_{fold}"],
-                **stats_test
-            }
-        # Check if the directory exists, to save the statistics of the training
-        if not os.path.exists(args.output_dir):
-            # If the path does not exist, create it
-            os.makedirs(args.output_dir)
+            # Check if the directory exists, to save the statistics of the training
+            if not os.path.exists(args.output_dir):
+                # If the path does not exist, create it
+                os.makedirs(args.output_dir)
+            utils.export_stats(os.path.join(args.output_dir, "stats_test.json"), stats_test)
         # Release memory
         del model
         print("        " + "-" * 18)
