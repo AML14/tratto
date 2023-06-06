@@ -15,6 +15,6 @@ python run_classifier.py \
 --accumulation_steps 1 \
 --test_ratio 0.1 \
 --validation_ratio 0.1 \
---data_dir ./token-values-dataset \
+--data_dir ./dataset/token-values-dataset \
 --output_dir ./output_token_values \
 --classification_type label_prediction
