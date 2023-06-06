@@ -1,10 +1,20 @@
 from src.pretrained.ModelClasses import ModelClasses
+from argparse import ArgumentParser
+from typing import Type
 
 
 class ArgumentParser:
     @staticmethod
-    def add_arguments(parser):
-        ## Required parameters
+    def add_arguments(parser: Type[ArgumentParser]):
+        """
+        Set up the arguments to parse from the command line.
+
+        Parameters
+        ----------
+        parser: Type[ArgumentParser]
+            The parser that extract the values of the parameters from the command line
+        """
+        # Required parameters
         parser.add_argument(
             "--data_dir",
             default=None,
@@ -19,6 +29,17 @@ class ArgumentParser:
             required=True,
             help="Model type selected in the list: " + ", ".join(ModelClasses.get_available_model_classes()))
         parser.add_argument(
+            "--tokenizer_name",
+            default=None,
+            type=str,
+            help="Pretrained tokenizer name or path if not the same as model_name"
+        )
+        parser.add_argument(
+            "--config_name",
+            default=None,
+            type=str,
+            help="Pretrained config name or path if not the same as model_name")
+        parser.add_argument(
             "--model_name_or_path",
             default=None,
             type=str,
@@ -29,7 +50,7 @@ class ArgumentParser:
             default='tokenClasses',
             type=str,
             required=True,
-            help="The name of the task to train the model: tokenClasses or tokenValues")
+            help="The name of the task to train the model: tokenClasses or tokenValues.")
         parser.add_argument(
             "--output_dir",
             default=None,
@@ -37,27 +58,17 @@ class ArgumentParser:
             required=True,
             help="The output directory where the model predictions and checkpoints will be written.")
 
-        ## Other parameters
+        # Optional parameters
         parser.add_argument(
             "--classification_type",
             default="label_prediction",
             type=str,
-            help="Classification type: CATEGORY_PREDICTION or LABEL_PREDICTION.")
+            help="Classification type: category prediction (category_prediction) or label prediction (label_prediction).")
         parser.add_argument(
             "--tratto_model_type",
             default="token_classes",
             type=str,
-            help="Classification type: TOKEN_CLASSES or TOKEN_VALUES.")
-        parser.add_argument(
-            "--config_name",
-            default="",
-            type=str,
-            help="Pretrained config name or path if not the same as model_name")
-        parser.add_argument(
-            "--tokenizer_name",
-            default="",
-            type=str,
-            help="Pretrained tokenizer name or path if not the same as model_name")
+            help="Classification type: token classes (token_classes) or token values (token_values).")
         parser.add_argument(
             "--max_seq_length",
             default=512,
@@ -86,15 +97,16 @@ class ArgumentParser:
             help="Run evaluation during training at each logging step."
         )
         parser.add_argument(
-            "--cross_validation",
-            action='store_true',
-            help="Perform cross-validation."
+            "--resume_checkpoint_filename",
+            default="",
+            type=str,
+            help="The whole path to the checkpoint to resume."
         )
         parser.add_argument(
             "--folds",
             default=1,
             type=int,
-            help="The number of folds for cross-validation."
+            help="The number of folds for cross-validation (if folds=1 no-cross-validation is performed)."
         )
         parser.add_argument(
             "--batch_size",
@@ -130,7 +142,13 @@ class ArgumentParser:
             "--weight_decay",
             default=0.0,
             type=float,
-            help="Weight deay if we apply some."
+            help="Weight decay, if applied."
+        )
+        parser.add_argument(
+            "--warmup_steps",
+            default=0,
+            type=int,
+            help="Linear warmup over warmup_steps."
         )
         parser.add_argument(
             "--adam_epsilon",
@@ -151,18 +169,6 @@ class ArgumentParser:
             help="Total number of training epochs to perform."
         )
         parser.add_argument(
-            "--max_steps",
-            default=-1,
-            type=int,
-            help="If > 0: set total number of training steps to perform. Override num_epochs."
-        )
-        parser.add_argument(
-            "--warmup_steps",
-            default=0,
-            type=int,
-            help="Linear warmup over warmup_steps."
-        )
-        parser.add_argument(
             "--save_steps",
             type=int,
             default=50,
@@ -181,32 +187,8 @@ class ArgumentParser:
             action='store_true',
             help="Overwrite the content of the output directory")
         parser.add_argument(
-            "--overwrite_cache",
-            action='store_true',
-            help="Overwrite the cached training and evaluation sets"
-        )
-        parser.add_argument(
             "--seed",
             type=int,
             default=42,
             help="random seed for initialization"
         )
-        parser.add_argument(
-            "--fp16",
-            action='store_true',
-           help="Whether to use 16-bit (mixed) precision (through NVIDIA apex) instead of 32-bit"
-        )
-        parser.add_argument(
-            "--fp16_opt_level",
-            type=str,
-            default='O1',
-            help="For fp16: Apex AMP optimization level selected in ['O0', 'O1', 'O2', and 'O3']." \
-                 "See details at https://nvidia.github.io/apex/amp.html"
-        )
-        parser.add_argument(
-            "--local_rank",
-            type=int,
-            default=-1,
-             help="For distributed training: local_rank"
-        )
-        return parser

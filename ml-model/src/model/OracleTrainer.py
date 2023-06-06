@@ -1,87 +1,69 @@
 import json
-import math
 import os
 import timeit
 import numpy as np
 from typing import Type, Union, Tuple, Dict, List
 from collections import Counter
-
-
 import torch
 import torch.optim as optim
+from transformers import PreTrainedModel, AdamW
 from torch.nn import Module
 from torch.utils.data import DataLoader
-
 from sklearn.metrics import f1_score, accuracy_score, precision_score, recall_score
-
-from src.enums.FileFormat import FileFormat
-from src.enums.HyperParameter import HyperParameter
-from src.enums.Path import Path
-from src.model.OracleClassifier import OracleClassifier
-from src.enums.ClassificationType import ClassificationType
-from src.utils import utils
+from src.types.ClassificationType import ClassificationType
+from src.utils import utils, logger
 
 
 class OracleTrainer:
     """
-    The *OracleTrainer* class is an helper class that, given the loss
-    function, the optimizer, the model, and the training and validation
-    datasets perform the training of the model and computes the loss and
-    the f1 score of the training and validation phases, saves the statistics
-    of the training, and have auxiliary methods that let to visualize the
-    trend of the training and the validation, over the epochs.
+    The {@code OracleTrainer} class is a helper class that, given the loss function, the optimizer, the model,
+    and the training and validation datasets perform the training of the model, computes the loss and
+    the f1 score of the training and validation phases and saves the statistics of the training, over the epochs.
 
     Parameters
     ----------
-    model: OracleClassifier
-        The model to train
-    loss_fn:
-        The loss function to compute the loss, during the training and
-        validation phases
+    model: Type[PreTrainedModel]
+    loss_fn: Type[Module]
+        The loss function to compute the loss, during the training and validation phases
     optimizer:
-        The optimizer used to perform the backpropagation and updates
-        the weights of the model
+        The optimizer used to perform the backpropagation and updates the weights of the model
     dl_train: DataLoader
-        The training dataloader which contains the batches of datapoints
-        for the training phase
+        The training dataloader which contains the batches of datapoints for the training phase
     dl_val: DataLoader
-        The validation dataloader which contains the batches of datapoints
-        for the validation phase
+        The validation dataloader which contains the batches of datapoints for the validation phase
     dl_test: DataLoader
-        The test dataloader which contains the batches of datapoints
-        for the testing phase
-    classifier_ids_labels:
-        The method compute the list of labels of the classification model, in the form of a list of tuples where the first
-        element is an incremental index, while the second element is the name of the class
+        The test dataloader which contains the batches of datapoints for the testing phase
+    classifier_ids_labels: Dict[int,str]
+        The dictionary of labels. The keys are numerical identifiers (int), while the values are strings representing
+        the name of the corresponding target label. The dictionary is empty if the dataset has not been processed yet.
     classification_type: Type[ClassificationType]
         Category prediction or label prediction
     checkpoint_path: str
         The path where to save model checkpoints
+    scheduler: Type[torch.optim.lr_scheduler.LambdaLR]
+        Scheduler to update the learning rate
+    max_grad_norm: float
+        Maximum value for gradient normalization
 
     Attributes
     ----------
-    model: OracleClassifier
+    model: Type[PreTrainedModel]
         The model to train
-    loss_fn:
-        The loss function to compute the loss, during the training and
-        validation phases
-    optimizer:
-        The optimizer used to perform the backpropagation and updates
-        the weights of the model
-    dl_train: DataLoader
-        The training dataloader which contains the batches of datapoints
-        for the training phase
-    dl_val: DataLoader
-        The validation dataloader which contains the batches of datapoints
-        for the validation phase
-    dl_test: DataLoader
-        The test dataloader which contains the batches of datapoints
-        for the testing phase
-    classifier_ids_labels:
-        The dictionary of labels of the classification model, where the value is the name of a target label, while the key element
-        is a numerical identifier representing the index of the one-shot vector representing the target label, with value equals
-        to 1.0.
-    classifier_ids_classes:
+    loss_fn: Type[Module]
+        The loss function to compute the loss, during the training and validation phases
+    optimizer: Type[AdamW]
+        The optimizer used to perform the backpropagation and updates the weights of the model
+    dl_train: Type[DataLoader]
+        The training dataloader which contains the batches of datapoints for the training phase
+    dl_val: Type[DataLoader]
+        The validation dataloader which contains the batches of datapoints for the validation phase
+    dl_test: Type[DataLoader]
+        The test dataloader which contains the batches of datapoints for the testing phase
+    classifier_ids_labels: Dict[int,str]
+        The dictionary of labels of the classification model, where the value is the name of a target label, while the
+        key element is a numerical identifier representing the index of the one-shot vector representing the target label,
+        with value equals to 1.0.
+    classifier_ids_classes: Dict[int,str]
         The dictionary of classes of the classification model, where the value is the name of a class, while the key element
         is a numerical identifier representing the index of the one-shot vector representing the class, with value equals
         to 1.0
@@ -89,20 +71,24 @@ class OracleTrainer:
         Category prediction or label prediction
     checkpoint_path: str
         The path where to save model checkpoints
+    scheduler: Type[torch.optim.lr_scheduler.LambdaLR]
+        Scheduler to update the learning rate
+    max_grad_norm: float
+        Maximum value for gradient normalization
     """
     def __init__(
             self,
-            model,
+            model: Type[PreTrainedModel],
             loss_fn: Type[Module],
-            optimizer: Type[optim.Adam],
+            optimizer: Type[AdamW],
             dl_train: Type[DataLoader],
             dl_val: Type[DataLoader],
             dl_test: Type[DataLoader],
             classifier_ids_labels: Dict[int,str],
             classifier_ids_classes: Dict[int,str],
             classification_type: ClassificationType,
-            checkpoint_path,
-            scheduler,
+            checkpoint_path: str,
+            scheduler: Type[torch.optim.lr_scheduler.LambdaLR],
             max_grad_norm: float = 1.0
     ):
         self._model = model
@@ -118,30 +104,33 @@ class OracleTrainer:
         self._max_grad_norm = max_grad_norm
         self._scheduler = scheduler
 
-
-    def _checkpoint(self, epoch: int, step: int):
+    def _save_checkpoint(
+            self,
+            epoch: int,
+            step: int,
+            stats: Dict[str, any]
+    ):
         if not os.path.exists(self._checkpoint_path):
             os.makedirs(self._checkpoint_path)
-        filename = os.path.join(self._checkpoint_path, f"checkpoint_{str(epoch)}_{str(step)}")
-        torch.save(self._model.state_dict(), f"{filename}.pt")
-
-    def _resume(self, epoch: int, step: int):
-        if not os.path.exists(self._checkpoint_path):
-            os.makedirs(self._checkpoint_path)
-        filename = os.path.join(self._checkpoint_path, str(epoch), str(step))
-        self._model.load_state_dict(torch.load(f"{filename}.pt"))
+        filename = os.path.join(self._checkpoint_path, f"checkpoint_{str(epoch)}_{str(step)}.pt")
+        torch.save({
+            **stats,
+            "epoch": epoch,
+            "model_state_dict": self._model.state_dict(),
+            "optimizer_state_dict": self._optimizer.state_dict(),
+            "scheduler_state_dict": self._scheduler.state_dict()
+        }, filename)
 
     def train(
             self,
             num_epochs: int,
             num_steps: int,
             device: Union[int,str],
-            n_gpu: int,
             accumulation_steps,
             max_grad_norm: float
     ):
         """
-        The method perform the training and validation phases of the model.
+        The method performs the training and validation phases of the model.
 
         Parameters
         ----------
@@ -164,7 +153,9 @@ class OracleTrainer:
             't_loss': [],
             'v_loss': [],
             't_f1_score': [],
+            't_f1_score_micro': [],
             'v_f1_score': [],
+            'v_f1_score_micro': [],
             't_accuracy': [],
             'v_accuracy': [],
             't_precision': [],
@@ -174,7 +165,14 @@ class OracleTrainer:
             't_predictions_per_class': [],
             'v_predictions_per_class': []
         }
+
+        # Steps counter
         steps = 0
+
+        # Define early stopping criteria
+        patience = 3  # Number of epochs to wait for improvement
+        best_f1_score_micro = 0
+        counter = 0
 
         # In each epoch the trainer train the model batch by batch,
         # with all the batch of the training dataset. After a given
@@ -184,8 +182,7 @@ class OracleTrainer:
         # the training, and performs the validation to understand how
         # well the model generalize on the validation data.
         for epoch in range(1, num_epochs + 1):
-            if utils.is_main_process():
-                print(f"        Start training - Epoch {epoch} of {num_epochs}")
+            print(f"        Start training - Epoch {epoch} of {num_epochs}")
             total_loss = 0
             all_predictions = []
             all_labels = []
@@ -197,8 +194,7 @@ class OracleTrainer:
             self._optimizer.zero_grad()
 
             for step, batch in enumerate(self._dl_train,1):
-                if utils.is_main_process():
-                    print(f"            Processing step {step} of {len(self._dl_train)}")
+                print(f"            Processing step {step} of {len(self._dl_train)}")
                 steps += 1
 
                 # Extract the inputs, the attention masks and the expected
@@ -208,22 +204,13 @@ class OracleTrainer:
                 tgt_out = batch[2].to(device)
                 tgt_classes = list(map(lambda i: self._classifier_ids_classes[i], batch[3].numpy()))
 
-                if utils.is_main_process():
-                    print(f"                Model predictions...")
                 # Train the model
+                print(f"                Model predictions...")
                 outputs = self._model(src_input, masks_input)[0]
-
-                if utils.is_main_process():
-                    print(f"                Computing loss...")
-
                 # Compute the loss
+                print(f"                Computing loss...")
                 loss = self._loss_fn(outputs, tgt_out)
-
-                if n_gpu > 1:
-                    loss = loss.mean()  # mean() to average on multi-gpu parallel training
-                if accumulation_steps > 1:
-                    loss = loss / accumulation_steps
-
+                loss = loss / accumulation_steps
                 loss.backward()
                 # Gradient clipping. It is used to mitigate the problem of exploding gradients
                 torch.nn.utils.clip_grad_norm_(self._model.parameters(), max_grad_norm)
@@ -277,6 +264,7 @@ class OracleTrainer:
 
                     t_f1 = f1_score(labels_numpy, predictions_numpy, average=None, zero_division=0, labels=list(self._classifier_ids_labels.keys()))
                     t_f1 = [[self._classifier_ids_labels[i], score] for i, score in enumerate(t_f1)]
+                    t_f1_micro = f1_score(labels_numpy, predictions_numpy, average='micro', zero_division=0, labels=list(self._classifier_ids_labels.keys()))
                     # Compute accuracy
                     t_accuracy = accuracy_score(labels_numpy, predictions_numpy)
                     # Compute precision
@@ -287,7 +275,7 @@ class OracleTrainer:
                     t_recall = [[self._classifier_ids_labels[i], score] for i, score in enumerate(t_recall)]
 
                     # Validation phase
-                    mean_v_loss, v_f1, v_accuracy, v_precision, v_recall, v_predictions_per_class = self.validation(device)
+                    mean_v_loss, v_f1, v_f1_micro, v_accuracy, v_precision, v_recall, v_predictions_per_class = self.validation(device)
 
                     # save past v_loss
                     last_v_loss = stats['v_loss'][-1] if len(stats['v_loss']) > 0 else mean_v_loss
@@ -296,7 +284,9 @@ class OracleTrainer:
                     stats['t_loss'].append(mean_t_loss)
                     stats['v_loss'].append(mean_v_loss)
                     stats['t_f1_score'].append(t_f1)
+                    stats['t_f1_score_micro'].append(t_f1_micro)
                     stats['v_f1_score'].append(v_f1)
+                    stats['v_f1_score_micro'].append(v_f1_micro)
                     stats['t_accuracy'].append(t_accuracy)
                     stats['v_accuracy'].append(v_accuracy)
                     stats['t_precision'].append(t_precision)
@@ -307,7 +297,7 @@ class OracleTrainer:
                     stats['v_predictions_per_class'].append(v_predictions_per_class)
 
                     # Print the statistics
-                    self.print_stats(
+                    logger.print_stats(
                         epoch,
                         num_epochs,
                         step + 1,
@@ -316,7 +306,9 @@ class OracleTrainer:
                             't_loss': mean_t_loss,
                             'v_loss': mean_v_loss,
                             't_f1_score': t_f1,
+                            't_f1_score_micro': t_f1_micro,
                             'v_f1_score': v_f1,
+                            'v_f1_score_micro': v_f1_micro,
                             't_accuracy': t_accuracy,
                             'v_accuracy': v_accuracy,
                             't_precision': t_precision,
@@ -328,9 +320,6 @@ class OracleTrainer:
                         }
                     )
 
-                    # Save checkpoints
-                    if utils.is_main_process():
-                        self._checkpoint(epoch, step)
                     # Reset the total loss
                     total_loss = 0
                     interval = timeit.default_timer()
@@ -339,217 +328,18 @@ class OracleTrainer:
                     all_labels = []
                     t_predictions_per_class = {'classes': {k: {"correct": 0, "wrong": 0, "predicted": [], "wrong_class": [], "correct_class": [], "total": 0} for k in self._classifier_ids_labels.values()}, 'total': 0}
 
-                    # Stop if the model starts to overfit
-                    if mean_v_loss > last_v_loss + last_v_loss * 0.3:
-                        if utils.is_main_process():
-                            print("Early stopping...")
-                        break
-            # Check if the directory exists, to save the statistics of the training
-            if not os.path.exists(Path.OUTPUT.value):
-                # If the path does not exists, create it
-                os.makedirs(Path.OUTPUT.value)
-            # Save the statistics in json format
-            with open(
-                os.path.join(
-                    Path.OUTPUT.value,
-                    f"stats_after_epoch_{epoch}.{FileFormat.JSON.value}"
-                ),
-                "w"
-            ) as stats_file:
-                json.dump(stats, stats_file)
+                    # Check if validation loss has improved
+                    if v_f1_micro > best_f1_score_micro:
+                        counter = 0
+                        best_f1_score_micro = v_f1_micro
+                        # Save checkpoints
+                        self._save_checkpoint(epoch, step, stats)
+                    else:
+                        counter += 1
+                        if counter >= patience:
+                            print("                Early stopping triggered. Training stopped.")
+                            break
         return stats
-
-    @staticmethod
-    def print_stats(
-            epoch: int,
-            num_epochs: int,
-            step: int,
-            total_steps: int,
-            stats: dict
-    ):
-        """
-        The method prints the statistics of the training and validation phases
-
-        Parameters
-        ----------
-        epoch: int
-            The current epoch of the training
-        num_epochs: int
-            The total number of epochs
-        step: int
-            The current step of the training phase, in the current epoch
-        total_steps: int
-            The total number of steps within an epoch
-        mean_t_loss: float
-            Average training loss
-        stats: dict
-            t_loss: float
-                Average training loss
-            v_loss: float
-                Average validation loss
-            t_f1_score: List[Tuple[str,float]]
-                F1 score of the training phase, for each class of the model
-            t_accuracy: float
-                Accuracy of the training phase
-            t_precision: List[Tuple[str,float]]
-                Precision of the training phase, for each class of the model
-            t_recall: List[Tuple[str,float]]
-                Recall of the training phase, for each class of the model
-            v_loss: float
-                Average validation loss
-            v_f1_score: List[Tuple[str,float]]
-                F1 score of the validation phase, for each class of the model
-            v_accuracy: float
-                Accuracy of the validation phase
-            v_precision: List[Tuple[str,float]]
-                Precision of the validation phase, for each class of the model
-            v_recall: List[Tuple[str,float]]
-                Recall of the validation phase, for each class of the model
-        """
-        if utils.is_main_process():
-            print("            " + '-' * 30)
-            print("            " + "STATISTICS")
-            print("            " + '-' * 30)
-            print("            " + f"EPOCH: [{epoch} / {num_epochs}]")
-            print("            " + f"STEP: [{step} / {total_steps}]")
-            print("            " + f"TRAINING LOSS: {stats['t_loss']:.4f}")
-            print("            " + f"TRAINING ACCURACY: {stats['t_accuracy']:.2f}")
-            for class_label, score in stats['t_f1_score']:
-                print("            " + f"TRAINING F1 SCORE - {class_label}: {score:.2f}")
-            for class_label, score in stats['t_precision']:
-                print("            " + f"TRAINING PRECISION - {class_label}: {score:.2f}")
-            for class_label, score in stats['t_recall']:
-                print("            " + f"TRAINING RECALL - {class_label}: {score:.2f}")
-            print("            " + '-' * 30)
-            for class_label, predictions_stats in stats['t_predictions_per_class']['classes'].items():
-                print("            " + f"LABEL {class_label}")
-                print("                " + f"Correct: {predictions_stats['correct']} / {predictions_stats['total']}")
-                if predictions_stats['correct'] > 0:
-                    print("                " + f"Correct Classes:")
-                    correct_class_counter = Counter(predictions_stats["correct_class"])
-                    for class_label, occurrences in correct_class_counter.items():
-                        print("                    " + f"{class_label}: {occurrences}")
-                print("                " + f"Wrong: {predictions_stats['wrong']} / {predictions_stats['total']}")
-                if predictions_stats['wrong'] > 0:
-                    print("                " + f"Wrong Classes:")
-                    wrong_class_counter = Counter(predictions_stats["wrong_class"])
-                    for class_label, occurrences in wrong_class_counter.items():
-                        print("                    " + f"{class_label}: {occurrences}")
-            print("            " + '-' * 30)
-            print("            " + f"VALIDATION LOSS: {stats['v_loss']:.4f}")
-            print("            " + f"VALIDATION ACCURACY: {stats['v_accuracy']:.2f}")
-            for class_label, score in stats['v_f1_score']:
-                print("            " + f"VALIDATION F1 SCORE - {class_label}: {score:.2f}")
-            for class_label, score in stats['v_precision']:
-                print("            " + f"VALIDATION PRECISION - {class_label}: {score:.2f}")
-            for class_label, score in stats['v_recall']:
-                print("            " + f"VALIDATION RECALL - {class_label}: {score:.2f}")
-            print("            " + '-' * 30)
-            for class_label, predictions_stats in stats['v_predictions_per_class']['classes'].items():
-                print("            " + f"LABEL {class_label}")
-                print("                " + f"Correct: {predictions_stats['correct']} / {predictions_stats['total']}")
-                if predictions_stats['correct'] > 0:
-                    print("                " + f"Correct Classes:")
-                    correct_class_counter = Counter(predictions_stats["correct_class"])
-                    for class_label, occurrences in correct_class_counter.items():
-                        print("                    " + f"{class_label}: {occurrences}")
-                print("                " + f"Wrong: {predictions_stats['wrong']} / {predictions_stats['total']}")
-                if predictions_stats['wrong'] > 0:
-                    print("                " + f"Wrong Classes:")
-                    wrong_class_counter = Counter(predictions_stats["wrong_class"])
-                    for class_label, occurrences in wrong_class_counter.items():
-                        print("                    " + f"{class_label}: {occurrences}")
-            print("            " + '-' * 30)
-
-    @staticmethod
-    def print_evaluation_stats(
-            test_f1_score: List[Tuple[str,float]],
-            test_accuracy: List[Tuple[str,float]],
-            test_precision: List[Tuple[str,float]],
-            test_recall: List[Tuple[str,float]],
-            test_predictions_per_class: Dict[str,Dict]
-    ):
-        """
-        The method prints the statistics of the testing phases
-
-        Parameters
-        ----------
-        test_f1_scoret: List[Tuple[str,float]]
-            F1 score of the testing phase, for each class of the model
-        test_accuracy: float
-            Accuracy of the testing phase
-        test_precision: List[Tuple[str,float]]
-            Precision of the testing phase, for each class of the model
-        test_recall: List[Tuple[str,float]]
-            Recall of the testing phase, for each class of the model
-        """
-        if utils.is_main_process():
-            print("            " + '-'*30)
-            print("            " + "TESTING STATISTICS")
-            print("            " + '-'*30)
-            print("            " + f"TESTING ACCURACY: {test_accuracy:.2f}")
-            print("            " + '-'*30)
-            for class_label, score in test_f1_score:
-                print("            " + f"TESTING F1 SCORE - {class_label}: {score:.2f}")
-            print("            " + '-'*30)
-            for class_label, score in test_precision:
-                print("            " + f"TESTING PRECISION - {class_label}: {score:.2f}")
-            print("            " + '-'*30)
-            for class_label, score in test_recall:
-                print("            " + f"TESTING RECALL - {class_label}: {score:.2f}")
-            print("            " + '-'*30)
-            for class_label, predictions_stats in test_predictions_per_class['classes'].items():
-                print("            " + f"LABEL {class_label}")
-                print("                " + f"Correct: {predictions_stats['correct']} / {predictions_stats['total']}")
-                if predictions_stats['correct'] > 0:
-                    print("                " + f"Correct Classes:")
-                    correct_class_counter = Counter(predictions_stats["correct_class"])
-                    for class_label, occurrences in correct_class_counter.items():
-                        print("                    " + f"{class_label}: {occurrences}")
-                print("                " + f"Wrong: {predictions_stats['wrong']} / {predictions_stats['total']}")
-                if predictions_stats['wrong'] > 0:
-                    print("                " + f"Wrong Classes:")
-                    wrong_class_counter = Counter(predictions_stats["wrong_class"])
-                    for class_label, occurrences in wrong_class_counter.items():
-                        print("                    " + f"{class_label}: {occurrences}")
-            print("            " + '-' * 30)
-
-
-    @staticmethod
-    def plot_loss_f1_score(
-            steps: int,
-            ax: any,
-            stats: dict
-    ):
-        """
-        The method plots the trend of the loss and f1 score
-
-        Parameters
-        ----------
-        steps: int
-            The number of steps
-        ax: any
-            The axes of the matplotlib figure
-        stats: dict
-            The dictionary of the statistics
-        """
-        for i in range(2):
-            for j in range(2):
-                title = ('Training ' if j == 0 else 'Validation') + ('Loss' if i == 0 else 'F1-score')
-                dict_label = ('t_' if j == 0 else 'v_') + ('loss' if i == 0 else 'f1-score')
-                color = 'blue'
-                ax[i][j].set_title(title, fontsize=30)
-                ax[i][j].set_xlabel("steps", fontsize=30)
-                ax[i][j].set_ylabel("loss", fontsize=30)
-                ax[i][j].plot(range(0, len(stats['t_loss']) * steps, steps), np.array(stats[dict_label])[:], '-', color=color)
-        for i in range(2):
-            title = 'Training and Validation ' + ('Loss' if i == 0 else 'F1-score')
-            dict_label = 'loss' if i == 0 else 'f1-score'
-            ax[2][i].set_title(title, fontsize=30)
-            ax[2][i].set_xlabel("steps", fontsize=30)
-            ax[2][i].set_ylabel("loss", fontsize=30)
-            ax[2][i].plot(range(0, len(stats['t_loss']) * steps, steps), np.array(stats['t_' + dict_label])[:], '-', color='blue')
-            ax[2][i].plot(range(0, len(stats['t_loss']) * steps, steps), np.array(stats['v_' + dict_label])[:], '-', color='orange')
 
     def validation(
             self,
@@ -582,8 +372,7 @@ class OracleTrainer:
         # the gradient descent and without updating the weights
         # of the model
 
-        if utils.is_main_process():
-            print("        Performing validation step...")
+        print("        Performing validation step...")
         with torch.no_grad():
             for batch_id, batch in enumerate(self._dl_val,1):
                 print(f"            Processing batch {batch_id} of {len(self._dl_val)}")
@@ -632,10 +421,10 @@ class OracleTrainer:
         # steps
         predictions_numpy = np.array(all_predictions)
         labels_numpy = np.array(all_labels)
-        if utils.is_main_process():
-            print(f"                Computing statistics...")
+        print(f"                Computing statistics...")
         v_f1 = f1_score(labels_numpy, predictions_numpy, average=None, zero_division=0, labels=list(self._classifier_ids_labels.keys()))
         v_f1 = [[self._classifier_ids_labels[i], score] for i, score in enumerate(v_f1)]
+        v_f1_micro = f1_score(labels_numpy, predictions_numpy, average="micro", zero_division=0,labels=list(self._classifier_ids_labels.keys()))
         # Compute accuracy
         v_accuracy = accuracy_score(labels_numpy, predictions_numpy)
         # Compute precision
@@ -644,7 +433,7 @@ class OracleTrainer:
         # Compute recall
         v_recall = recall_score(labels_numpy, predictions_numpy, average=None, zero_division=0, labels=list(self._classifier_ids_labels.keys()))
         v_recall = [[self._classifier_ids_labels[i], score] for i, score in enumerate(v_recall)]
-        return mean_v_loss, v_f1, v_accuracy, v_precision, v_recall, v_predictions_per_class
+        return mean_v_loss, v_f1, v_f1_micro, v_accuracy, v_precision, v_recall, v_predictions_per_class
 
     def evaluation(
         self,
@@ -682,8 +471,7 @@ class OracleTrainer:
         # The validation phase is performed without accumulating
         # the gradient descent and without updating the weights
         # of the model
-        if utils.is_main_process():
-            print("        Performing testing evaluation...")
+        print("        Performing testing evaluation...")
         with torch.no_grad():
             for batch_id, batch in enumerate(self._dl_test,1):
                 print(f"            Processing batch {batch_id} of {len(self._dl_test)}")
@@ -723,14 +511,14 @@ class OracleTrainer:
                 # Accumulate predictions and labels
                 all_predictions.extend(predicted.detach().cpu().numpy())
                 all_labels.extend(expected_out.detach().cpu().numpy())
-        if utils.is_main_process():
-            print(f"                Computing statistics...")
+        print(f"                Computing statistics...")
         # Compute the f1 score of the model within the accumulation
         # steps
         predictions_numpy = np.array(all_predictions)
         labels_numpy = np.array(all_labels)
         test_f1 = f1_score(labels_numpy, predictions_numpy, average=None, labels=list(self._classifier_ids_labels.keys()), zero_division=0)
         test_f1 = [[self._classifier_ids_labels[i], score] for i, score in enumerate(test_f1)]
+        test_f1_micro = f1_score(labels_numpy, predictions_numpy, average='micro', labels=list(self._classifier_ids_labels.keys()), zero_division=0)
         # Compute accuracy
         test_accuracy = accuracy_score(labels_numpy, predictions_numpy)
         # Compute precision
@@ -740,8 +528,9 @@ class OracleTrainer:
         test_recall = recall_score(labels_numpy, predictions_numpy, average=None, zero_division=0, labels=list(self._classifier_ids_labels.keys()))
         test_recall = [[self._classifier_ids_labels[i], score] for i, score in enumerate(test_recall)]
         # Perform testing to measure performances on unseen data
-        self.print_evaluation_stats(test_f1, test_accuracy, test_precision, test_recall, test_predictions_per_class)
+        logger.print_evaluation_stats(test_f1, test_f1_micro, test_accuracy, test_precision, test_recall, test_predictions_per_class)
         stats["test_f1"] = test_f1
+        stats["test_f1_micro"] = test_f1_micro
         stats["test_accuracy"] = test_accuracy
         stats["test_precision"] = test_precision
         stats["test_recall"] = test_recall

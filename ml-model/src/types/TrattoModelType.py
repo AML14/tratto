@@ -1,5 +1,5 @@
 from enum import Enum
-class ModelType(str, Enum):
+class TrattoModelType(str, Enum):
     """
     Helper enums class: it defines the types of classification model generate
     """
