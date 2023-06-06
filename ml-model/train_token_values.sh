@@ -1,7 +1,7 @@
 python run_classifier.py \
 --do_train \
 --do_eval \
-__do_predict \
+--do_predict \
 --model_type roberta-base \
 --model_name_or_path microsoft/codebert-base \
 --tokenizer_name roberta \
