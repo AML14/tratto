@@ -2,9 +2,9 @@ python run_classifier.py \
 --do_train \
 --do_eval \
 --do_predict \
---model_type roberta-base \
+--model_type roberta \
 --model_name_or_path microsoft/codebert-base \
---tokenizer_name roberta \
+--tokenizer_name roberta-base \
 --tratto_model_type token_values \
 --task_name tokenValues_classifier \
 --max_seq_length 512 \
