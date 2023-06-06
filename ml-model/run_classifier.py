@@ -173,22 +173,22 @@ def main():
             f"batch_{args.batch_size}",
             f"epochs_{args.num_epochs}"
         )
+        oracle_trainer = OracleTrainer(
+            model,
+            loss_fn,
+            optimizer,
+            dl_train,
+            dl_val,
+            dl_test,
+            classifier_ids_labels,
+            classifier_ids_classes,
+            classification_type,
+            checkpoint_path,
+            scheduler
+        )
 
         if args.do_train:
             logger.print_training_phase()
-            oracle_trainer = OracleTrainer(
-                model,
-                loss_fn,
-                optimizer,
-                dl_train,
-                dl_val,
-                dl_test,
-                classifier_ids_labels,
-                classifier_ids_classes,
-                classification_type,
-                checkpoint_path,
-                scheduler
-            )
             try:
                 # Train the model
                 stats[f"fold_{fold}"] = oracle_trainer.train(
@@ -197,6 +197,18 @@ def main():
                     device,
                     args.accumulation_steps,
                     args.max_grad_norm
+                )
+                # Save the model, optimizer, scheduler and statistics
+                logger.print_save_model()
+                utils.export_stats(
+                    os.path.join(args.output_dir,
+                                 f"training_stats_{args.batch_size}_{args.learning_rate}_{args.num_epochs}.json"),
+                    {
+                        **stats[f"fold_{fold}"],
+                        "batch_size": args.batch_size,
+                        "lr": args.learning_rate,
+                        "num_epochs": args.num_epochs
+                    }
                 )
             except RuntimeError as e:
                 print("Runtime Exception...")
@@ -226,17 +238,6 @@ def main():
         if not os.path.exists(args.output_dir):
             # If the path does not exist, create it
             os.makedirs(args.output_dir)
-        # Save the model, optimizer, scheduler and statistics
-        logger.print_save_model()
-        utils.export_stats(
-            os.path.join(args.output_dir, f"training_stats_{args.batch_size}_{args.learning_rate}_{args.num_epochs}.json"),
-            {
-                **stats[f"fold_{fold}"],
-                "batch_size": args.batch_size,
-                "lr": args.learning_rate,
-                "num_epochs": args.num_epochs
-            }
-        )
         # Release memory
         del model
         print("        " + "-" * 18)

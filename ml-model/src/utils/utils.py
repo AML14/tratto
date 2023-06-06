@@ -130,4 +130,4 @@ def release_memory():
     gc.collect()
 
 def resume_checkpoint(checkpoint_filename: str):
-    torch.load(checkpoint_filename)
+    return torch.load(checkpoint_filename)
