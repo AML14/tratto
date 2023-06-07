@@ -264,6 +264,7 @@ def main():
                     model_stats["true_negatives"] += 1
                 else:
                     model_stats["true_positives"] += 1
+        model_stats["ones"].append(ones)
     utils.export_stats("./plume_test_predictions_stats.json", predictions_stats)
     utils.export_stats("./plume_test_model_stats.json", model_stats)
 
