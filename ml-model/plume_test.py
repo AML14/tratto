@@ -54,10 +54,10 @@ def predict(
     all_labels = []
 
     prediction_stats = []
+    id_counter = 0
 
     # The prediction is performed without accumulating the gradient descent and without updating the weights of the model
     with torch.no_grad():
-        id_counter = 0
         for batch_id, batch in enumerate(dl_data,1):
             print(f"Processing batch {batch_id} of {len(dl_data)}")
             # Extract the inputs, the attention masks and the targets from the batch
@@ -83,9 +83,9 @@ def predict(
                     "confidence_score": confidence_scores[idx].detach().cpu().numpy().tolist(),
                     "tokenClass": tgt_classes[idx]
                 }
+                id_counter += 1
                 prediction_stats.append(stats)
-            id_counter += 1
-        return stats
+        return prediction_stats
 
 
 def pre_processing(
@@ -122,7 +122,7 @@ def pre_processing(
     # Create an empty dictionary to store the separate datasets
     datasets = []
     # Iterate through the groups and assign them to separate datasets
-    for oracle_id, oracle_so_far, group_data in df_grouped:
+    for identifier, group_data in df_grouped:
         # Specify the type of each column in the dataset
         group_data["tokenClassesSoFar"] = group_data["tokenClassesSoFar"].apply(lambda x: "[" + " ".join(x) + "]")
         group_data['tokenClass'] = group_data['tokenClass'].astype('string')
@@ -144,7 +144,7 @@ def pre_processing(
         src = df_src_concat.to_numpy().tolist()
         # Get the list of target values from the dataframe
         tgt = group_data["label"].values
-        datasets.append(((oracle_id,oracle_so_far),src, tgt))
+        datasets.append((identifier,src, tgt))
     return datasets, tgt_map, classes_ids
 
 
@@ -154,7 +154,7 @@ def tokenize_datasets(
         tokenizer,
         classes_ids
 ):
-    tokenized_datasets = []
+    t_datasets = []
 
     for identifier, inputs, targets in datasets:
         # Tokenize the inputs datapoints
@@ -176,9 +176,9 @@ def tokenize_datasets(
         targets_classes = list(map(lambda i: i.split(tokenizer.sep_token)[0], inputs))
         targets_classes_tensor = torch.tensor(list(map(lambda l: classes_ids[l], targets_classes)))
         # Generate the tokenized dataset
-        tokenized_dataset = (t_inputs, t_attention_masks, targets_tensor, targets_classes_tensor)
-        tokenized_datasets.append((identifier,tokenized_dataset))
-    return tokenized_datasets
+        t_dataset = (t_inputs, t_attention_masks, targets_tensor, targets_classes_tensor)
+        t_datasets.append((identifier,t_dataset))
+    return t_datasets
 
 
 def main():
@@ -224,16 +224,48 @@ def main():
     t_datasets = tokenize_datasets(datasets, tgt_map, tokenizer, classes_ids)
     print("Start predictions")
     predictions_stats = {}
-    for identifier, t_data in t_datasets:
+
+    model_stats = {
+        "totals": len(t_datasets),
+        "false_positives": 0,
+        "false_negatives": 0,
+        "true_positives": 0,
+        "true_negatives": 0,
+        "confidence_score": 0,
+        "ones": []
+    }
+
+    for idx, t_dataset in enumerate(t_datasets,1):
+        identifier, t_data = t_dataset
+        print(f"Parsing oracle group {idx} of  {len(t_datasets)}")
         t_t_data = TensorDataset(*t_data)
         dl_data= DataLoader(
             t_t_data,
             batch_size=32
         )
-        if not identifier[0] in predictions_stats:
-            predictions_stats[identifier[0]] = {}
-        predictions_stats[identifier[0]][identifier[1]] = predict(device, model, dl_data, classes_ids)
-    utils.export_stats("./plume_test_stats.json", predictions_stats)
+        if not str(identifier[0]) in predictions_stats:
+            predictions_stats[str(identifier[0])] = {}
+        p_stats = predict(device, model, dl_data, classes_ids)
+        predictions_stats[str(identifier[0])][identifier[1] if not identifier[1] == "" else "_"] =
+        ones = 0
+        for p_s in p_stats:
+            if p_s["correct"] == False:
+                if p_s["output"] == 0:
+                    model_stats["false_negatives"] +=1
+                else:
+                    model_stats["false_positives"] += 1
+                    ones += 1
+                    for other_p_s in p_stats:
+                        if not other_p_s["id"] == p_s["id"]:
+                            if other_p_s["correct"] and other_p_s["output"] == 1 and other_p_s["confidence_score"][1] > p_s["confidence_score"][1]:
+                                model_stats["confidence_score"] += 1
+            else:
+                if p_s["output"] == 0:
+                    model_stats["true_negatives"] += 1
+                else:
+                    model_stats["true_positives"] += 1
+    utils.export_stats("./plume_test_predictions_stats.json", predictions_stats)
+    utils.export_stats("./plume_test_model_stats.json", model_stats)
 
 
 
