@@ -260,11 +260,12 @@ def main():
                         if not other_p_s["id"] == p_s["id"]:
                             if other_p_s["correct"] and other_p_s["output"] == 1 and other_p_s["confidence_score"][1] > p_s["confidence_score"][1]:
                                 correct = True
-                                model_stats["confidence_score"] += 1
                                 for other_other_p_s in p_stats:
                                     if (not other_other_p_s["id"] == p_s["id"]) and (not other_other_p_s["id"] == other_p_s["id"]):
                                         if (not other_p_s["correct"]) and other_p_s["output"] == 1 and other_other_p_s["confidence_score"][1] > p_s["confidence_score"][1]:
                                             correct = False
+                                if correct:
+                                    model_stats["confidence_score"] += 1
             else:
                 if p_s["output"] == 0:
                     model_stats["true_negatives"] += 1
