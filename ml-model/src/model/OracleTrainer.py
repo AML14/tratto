@@ -114,7 +114,7 @@ class OracleTrainer:
             os.makedirs(self._checkpoint_path)
         filename = os.path.join(self._checkpoint_path, f"checkpoint_{str(epoch)}_{str(step)}.pt")
         torch.save({
-            **stats,
+            "stats": stats,
             "epoch": epoch,
             "model_state_dict": self._model.state_dict(),
             "optimizer_state_dict": self._optimizer.state_dict(),
@@ -169,11 +169,6 @@ class OracleTrainer:
         # Steps counter
         steps = 0
 
-        # Define early stopping criteria
-        patience = 3  # Number of epochs to wait for improvement
-        best_f1_score_micro = 0
-        counter = 0
-
         # In each epoch the trainer train the model batch by batch,
         # with all the batch of the training dataset. After a given
         # number of *accumulation_steps* the trainer performs the
@@ -186,6 +181,10 @@ class OracleTrainer:
             total_loss = 0
             all_predictions = []
             all_labels = []
+            # Define early stopping criteria
+            patience = 3  # Number of epochs to wait for improvement
+            best_f1_score_micro = 0
+            counter = 0
 
             t_predictions_per_class = {'classes': {k: {"correct": 0, "wrong": 0, "predicted": [], "wrong_class": [], "correct_class": [], "total": 0} for k in self._classifier_ids_labels.values()}, 'total': 0}
 
@@ -336,9 +335,10 @@ class OracleTrainer:
                         self._save_checkpoint(epoch, step, stats)
                     else:
                         counter += 1
-                        if counter >= patience:
+                        if counter >= patience and epoch > 1:
                             print("                Early stopping triggered. Training stopped.")
-                            break
+                            return stats
+
         return stats
 
     def validation(
@@ -452,15 +452,6 @@ class OracleTrainer:
         stats: dict
             The statistics of the testing phase
         """
-        # Dictionary of the statistics
-        stats = {
-            'test_loss': [],
-            'test_f1_score': [],
-            'test_accuracy': [],
-            'test_precision': [],
-            'test_recall': [],
-            'test_predictions_per_class': {}
-        }
         # model in evaluation mode
         self._model.eval()
         # Accumulate predictions and labels
@@ -529,6 +520,7 @@ class OracleTrainer:
         test_recall = [[self._classifier_ids_labels[i], score] for i, score in enumerate(test_recall)]
         # Perform testing to measure performances on unseen data
         logger.print_evaluation_stats(test_f1, test_f1_micro, test_accuracy, test_precision, test_recall, test_predictions_per_class)
+        stats = {}
         stats["test_f1"] = test_f1
         stats["test_f1_micro"] = test_f1_micro
         stats["test_accuracy"] = test_accuracy
