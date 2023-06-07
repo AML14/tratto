@@ -246,7 +246,7 @@ def main():
         if not str(identifier[0]) in predictions_stats:
             predictions_stats[str(identifier[0])] = {}
         p_stats = predict(device, model, dl_data, classes_ids)
-        predictions_stats[str(identifier[0])][identifier[1] if not identifier[1] == "" else "_"] =
+        predictions_stats[str(identifier[0])][identifier[1] if not identifier[1] == "" else "_"] = p_stats
         ones = 0
         for p_s in p_stats:
             if p_s["correct"] == False:
