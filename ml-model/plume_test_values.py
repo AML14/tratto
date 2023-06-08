@@ -97,7 +97,7 @@ def pre_processing(
     # Map empty cells to empty strings
     df_dataset.fillna('', inplace=True)
     # Assign type to each column
-    df_dataset.astype({
+    df_dataset = df_dataset.astype({
         'label': 'str',
         'oracleId': 'int64',
         'oracleType': 'string',
@@ -116,20 +116,16 @@ def pre_processing(
     })
     # Generate the mapping of the target column unique values to the corresponding one-shot representations
     tgt_map = map_column_values_to_one_shot_vectors(df_dataset, "label")
-    classes_ids = {k: i for i, k in enumerate(df_dataset["tokenClass"].unique())}
+    classes_ids = {k: i for i, k in enumerate(df_dataset["token"].unique())}
     # Group the rows by 'oracleId' and 'oracleSoFar'
     df_grouped = df_dataset.groupby(['oracleId', 'oracleSoFar'])
     # Create an empty dictionary to store the separate datasets
     datasets = []
     # Iterate through the groups and assign them to separate datasets
     for identifier, group_data in df_grouped:
-        # Specify the type of each column in the dataset
-        group_data["tokenClassesSoFar"] = group_data["tokenClassesSoFar"].apply(lambda x: "[" + " ".join(x) + "]")
-        group_data['tokenClass'] = group_data['tokenClass'].astype('string')
-        group_data['tokenClassesSoFar'] = group_data['tokenClassesSoFar'].astype('string')
         # Define the new order of columns
         new_columns_order = [
-            'token','tokenInfo','tokenClass','oracleSoFar','tokenClassesSoFar','javadocTag','label','oracleType','projectName',
+            'token','tokenInfo','tokenClass','oracleSoFar','javadocTag','label','oracleType','projectName',
             'packageName','className','oracleId','methodJavadoc','methodSourceCode','classJavadoc','classSourceCode'
         ]
         # Reindex the DataFrame with the new order
@@ -137,8 +133,7 @@ def pre_processing(
         # Delete the tgt labels from the input dataset, and others less relevant columns
         df_src = group_data.drop(['label', 'oracleId', 'projectName', 'classJavadoc', 'classSourceCode'], axis=1)
         # Remove token and tokenInfo
-        df_src = df_src.drop(['token', 'tokenInfo'], axis=1)
-
+        df_src = df_src.drop(['tokenClass'], axis=1)
         df_src_concat = df_src.apply(lambda row: tokenizer.sep_token.join(row.values), axis=1)
         # The pandas dataframe is transformed in a list of strings: each string is an input to the model
         src = df_src_concat.to_numpy().tolist()
@@ -192,7 +187,7 @@ def main():
     # list of partial dataframes
     dfs = []
     # datasets path
-    oracles_dataset = os.path.join(".","dataset","token-classes-dataset")
+    oracles_dataset = os.path.join(".","dataset","token-values-dataset")
     # collects partial dataframes from oracles
     for file_name in os.listdir(oracles_dataset):
         if "plume-lib" in file_name:
@@ -208,12 +203,12 @@ def main():
     model = RobertaForSequenceClassification.from_pretrained('roberta-base',config=config)
     model.to(device)
     checkpoint = torch.load(os.path.join(
-        "output_token_classes_plume",
+        "output_token_values_plume",
         "checkpoints",
         "lr_1e-05",
         "batch_32",
         "epochs_8",
-        "checkpoint_2_1187.pt"
+        "checkpoint_2_824.pt"
     ))
     model.load_state_dict(checkpoint['model_state_dict'])
 
@@ -275,8 +270,8 @@ def main():
                     model_stats["true_positives"] += 1
         if (not ones_true == 1) or ones_false > 0:
             model_stats["ones"].append((str(identifier[0]),str(identifier[1]),ones_true,ones_false,correct_found))
-    utils.export_stats("./plume_test_predictions_stats.json", predictions_stats)
-    utils.export_stats("./plume_test_model_stats.json", model_stats)
+    utils.export_stats("./plume_test_values_predictions_stats.json", predictions_stats)
+    utils.export_stats("./plume_test_values_model_stats.json", model_stats)
 
 
 
