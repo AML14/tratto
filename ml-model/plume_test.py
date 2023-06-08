@@ -208,12 +208,12 @@ def main():
     model = RobertaForSequenceClassification.from_pretrained('roberta-base',config=config)
     model.to(device)
     checkpoint = torch.load(os.path.join(
-        "output_token_classes",
+        "output_token_classes_plume",
         "checkpoints",
         "lr_1e-05",
-        "batch_8",
+        "batch_32",
         "epochs_8",
-        "checkpoint_1_1.pt"
+        "checkpoint_2_1187.pt"
     ))
     model.load_state_dict(checkpoint['model_state_dict'])
 
@@ -247,33 +247,34 @@ def main():
             predictions_stats[str(identifier[0])] = {}
         p_stats = predict(device, model, dl_data, classes_ids)
         predictions_stats[str(identifier[0])][identifier[1] if not identifier[1] == "" else "_"] = p_stats
-        ones = 0
+        ones_false = 0
+        ones_true = 0
+        correct_found = False
+        processed = False
         for p_s in p_stats:
-            if p_s["correct"] == False:
+            if not p_s["correct"]:
                 if p_s["output"] == 0:
-                    model_stats["false_negatives"] +=1
+                    model_stats["false_negatives"] += 1
                 else:
                     model_stats["false_positives"] += 1
-                    ones += 1
-                    correct = False
-                    for other_p_s in p_stats:
-                        if not other_p_s["id"] == p_s["id"]:
-                            if other_p_s["correct"] and other_p_s["output"] == 1 and other_p_s["confidence_score"][1] > p_s["confidence_score"][1]:
-                                correct = True
-                                for other_other_p_s in p_stats:
-                                    if (not other_other_p_s["id"] == p_s["id"]) and (not other_other_p_s["id"] == other_p_s["id"]):
-                                        if (not other_p_s["correct"]) and other_p_s["output"] == 1 and other_other_p_s["confidence_score"][1] > p_s["confidence_score"][1]:
-                                            correct = False
-                                if correct:
-                                    model_stats["confidence_score"] += 1
+                    ones_false += 1
+                    if not processed:
+                        processed = True
+                        highest_confidence_score = p_s
+                        for other_p_s in p_stats:
+                            if other_p_s["output"] == 1 and other_p_s["confidence_score"][1] > highest_confidence_score["confidence_score"][1]:
+                                highest_confidence_score = other_p_s
+                        if highest_confidence_score["correct"]:
+                            correct_found = True
+                            model_stats["confidence_score"] += 1
             else:
                 if p_s["output"] == 0:
                     model_stats["true_negatives"] += 1
                 else:
-                    ones += 1
+                    ones_true += 1
                     model_stats["true_positives"] += 1
-        if not ones == 1:
-            model_stats["ones"].append((str(identifier[0]),str(identifier[1]),ones,correct))
+        if (not ones_true == 1) or ones_false > 0:
+            model_stats["ones"].append((str(identifier[0]),str(identifier[1]),ones_true,ones_false,correct_found))
     utils.export_stats("./plume_test_predictions_stats.json", predictions_stats)
     utils.export_stats("./plume_test_model_stats.json", model_stats)
 
