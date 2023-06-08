@@ -1,0 +1,147 @@
+[
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.ArrayStack",
+      "name": "org.apache.commons.collections4.ArrayStack",
+      "parameterTypes": [
+        "int"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "initialSize"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.IllegalArgumentException",
+        "description": "@throws java.lang.IllegalArgumentException the specified initial size is negative.",
+        "guard": {
+          "condition": "initialSize<0",
+          "description": "the specified initial size is negative."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.ArrayStack",
+      "name": "empty",
+      "parameterTypes": []
+    },
+    "identifiers": {
+      "parameters": [],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID == true",
+          "description": "true if the stack is currently empty."
+        },
+        "description": "true if the stack is currently empty.",
+        "guard": {
+          "condition": "receiverObjectID.isEmpty()",
+          "description": "true if the stack is currently empty."
+        }
+      },
+      {
+        "property": {
+          "condition": "methodResultID == false",
+          "description": "true if the stack is currently empty."
+        },
+        "description": "true if the stack is currently empty.",
+        "guard": {
+          "condition": "(receiverObjectID.isEmpty())==false",
+          "description": "true if the stack is currently empty."
+        }
+      }
+    ],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.ArrayStack",
+      "name": "peek",
+      "parameterTypes": []
+    },
+    "identifiers": {
+      "parameters": [],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.util.EmptyStackException",
+        "description": "@throws java.util.EmptyStackException the stack is empty.",
+        "guard": {
+          "condition": "receiverObjectID.isEmpty()",
+          "description": "the stack is empty."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.ArrayStack",
+      "name": "pop",
+      "parameterTypes": []
+    },
+    "identifiers": {
+      "parameters": [],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.util.EmptyStackException",
+        "description": "@throws java.util.EmptyStackException the stack is empty.",
+        "guard": {
+          "condition": "receiverObjectID.isEmpty()",
+          "description": "the stack is empty."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.ArrayStack",
+      "name": "push",
+      "parameterTypes": [
+        "java.lang.Object"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "item"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID.equals(item)",
+          "description": "the item just pushed."
+        },
+        "description": "the item just pushed.",
+        "guard": {
+          "condition": "true",
+          "description": "the item just pushed."
+        }
+      }
+    ],
+    "pre": []
+  }
+]

@@ -1,0 +1,66 @@
+[
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.functors.ChainedClosure",
+      "name": "chainedClosure",
+      "parameterTypes": [
+        "[Lorg.apache.commons.collections4.Closure;"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "closures"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the closures array is null.",
+        "guard": {
+          "condition": "closures==null",
+          "description": "the closures array is null."
+        }
+      },
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException any closure in the array is null.",
+        "guard": {
+          "condition": "java.util.Arrays.stream(closures).anyMatch(e -> e==null)",
+          "description": "any closure in the array is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.functors.ChainedClosure",
+      "name": "chainedClosure",
+      "parameterTypes": [
+        "java.util.Collection"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "closures"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the closures collection is null.",
+        "guard": {
+          "condition": "closures==null",
+          "description": "the closures collection is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  }
+]

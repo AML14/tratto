@@ -1,0 +1,109 @@
+[
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.functors.AnyPredicate",
+      "name": "org.apache.commons.collections4.functors.AnyPredicate",
+      "parameterTypes": [
+        "[Lorg.apache.commons.collections4.Predicate;"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "predicates"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param predicates the predicates to check not cloned. predicates is not null.",
+        "guard": {
+          "condition": "(predicates==null) == false",
+          "description": "the predicates to check not cloned. predicates is not null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.functors.AnyPredicate",
+      "name": "anyPredicate",
+      "parameterTypes": [
+        "[Lorg.apache.commons.collections4.Predicate;"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "predicates"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the predicates array is null.",
+        "guard": {
+          "condition": "predicates==null",
+          "description": "the predicates array is null."
+        }
+      },
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException any predicate in the array is null.",
+        "guard": {
+          "condition": "java.util.Arrays.stream(predicates).anyMatch(e -> e==null)",
+          "description": "any predicate in the array is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param predicates the predicates to check cloned. predicates is not null.",
+        "guard": {
+          "condition": "(predicates==null) == false",
+          "description": "the predicates to check cloned. predicates is not null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.functors.AnyPredicate",
+      "name": "anyPredicate",
+      "parameterTypes": [
+        "java.util.Collection"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "predicates"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the predicates array is null.",
+        "guard": {
+          "condition": "predicates==null",
+          "description": "the predicates array is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param predicates the predicates to check cloned. predicates is not null.",
+        "guard": {
+          "condition": "(predicates==null) == false",
+          "description": "the predicates to check cloned. predicates is not null."
+        }
+      }
+    ]
+  }
+]
