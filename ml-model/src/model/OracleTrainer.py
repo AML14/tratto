@@ -182,7 +182,7 @@ class OracleTrainer:
             all_predictions = []
             all_labels = []
             # Define early stopping criteria
-            patience = 3  # Number of epochs to wait for improvement
+            patience = 5  # Number of epochs to wait for improvement
             best_f1_score_micro = 0
             counter = 0
 
@@ -328,15 +328,17 @@ class OracleTrainer:
                     t_predictions_per_class = {'classes': {k: {"correct": 0, "wrong": 0, "predicted": [], "wrong_class": [], "correct_class": [], "total": 0} for k in self._classifier_ids_labels.values()}, 'total': 0}
 
                     # Check if validation loss has improved
-                    if v_f1_micro > best_f1_score_micro:
+                    if v_f1_micro >= best_f1_score_micro:
                         counter = 0
                         best_f1_score_micro = v_f1_micro
                         # Save checkpoints
                         self._save_checkpoint(epoch, step, stats)
                     else:
                         counter += 1
-                        if counter >= patience and epoch > 1:
+                        if counter > patience and epoch > 1:
                             print("                Early stopping triggered. Training stopped.")
+                            # Save checkpoints
+                            self._save_checkpoint(epoch, step, stats)
                             return stats
 
         return stats
