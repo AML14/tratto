@@ -29,7 +29,7 @@
       {
         "description": "@param comparators the comparators to use. comparators is not null or empty or containing nulls.",
         "guard": {
-          "condition": "(comparators==null) == false || comparators.length==0",
+          "condition": "(comparators==null) == false && comparators.length > 0 && Arrays.stream(comparators).noneMatch(jdVar -> jdVar == null)",
           "description": "the comparators to use. comparators is not null or empty or containing nulls."
         }
       }
