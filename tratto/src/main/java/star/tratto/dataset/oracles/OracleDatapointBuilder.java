@@ -80,7 +80,7 @@ public class OracleDatapointBuilder {
         String oracle = String.format("%s ? %s : ", mainGuard.getCondition(), mainProperty.getCondition());
         // add to oracle.
         if (conditionList.size() == 2) {
-            PostCondition secondCondition = conditionList.get(0);
+            PostCondition secondCondition = conditionList.get(1);
             String secondTag = secondCondition.getDescription();
             assert mainTag.equals(secondTag);
             Property secondProperty = secondCondition.getProperty();
