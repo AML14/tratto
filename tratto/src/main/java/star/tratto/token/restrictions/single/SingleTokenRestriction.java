@@ -47,7 +47,7 @@ public abstract class SingleTokenRestriction implements ContextRestriction {
      * IMPORTANT: This method assumes that nextLegalToken is legal after partialExpressionTokens according to the
      * grammar and after having applied all {@link star.tratto.token.restrictions.multi.MultiTokenRestriction}s. In
      * other words,
-     * @return true if the restricted token is forbidden (i.e., the restriction is enabled), false otherwise.
+     * @return true if the restricted token is forbidden (i.e., the restriction is enabled), false otherwise
      */
     public abstract Boolean isEnabled(String nextLegalToken, List<String> partialExpressionTokens, OracleDatapoint oracleDatapoint);
 

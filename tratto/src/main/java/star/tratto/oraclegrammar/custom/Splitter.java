@@ -28,7 +28,7 @@ public class Splitter {
      * fragment, each token as a String. This method is primarily used to split an Oracle
      * object into a list of tokens, but it can also be used to split a partial TrattoGrammar
      * expression into the list of tokens that compose it.
-     * @param dslFragment The Object to split into tokens. Must be an instance of EObject,
+     * @param dslFragment the Object to split into tokens. Must be an instance of EObject,
      *                    String, or List. If it's a List, it may contain EObjects, Strings,
      *                    or other Lists.
      */

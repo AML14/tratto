@@ -13,7 +13,7 @@ import static star.tratto.oraclegrammar.custom.Splitter.split;
 import static star.tratto.util.StringUtils.compactExpression;
 
 /**
- * NonEqIneqOperator tokens ("<", ">", "<=", ">=") are forbidden if previous element's return type is not number-like
+ * NonEqIneqOperator tokens ("{@code <}", "{@code >}", "{@code <=}", "{@code >=}") are forbidden if previous element's return type is not number-like
  * (int, long, float, double, and corresponding wrappers).
  * This ContextRestriction cannot be evaluated before {@link LastMethodNameRestriction}, otherwise an
  * exception will be thrown.
