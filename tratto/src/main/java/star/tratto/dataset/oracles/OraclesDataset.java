@@ -15,7 +15,7 @@ public class OraclesDataset {
 
     public static void main(String[] args) {
         // Specify the path to JSON file with the list of the input projects and
-        // the information, to initialize each of them
+        // the information, to initialize each of them.
         String projectsPath = FileUtils.getAbsolutePathToFile(Path.REPOS.getValue(), FileName.INPUT_PROJECTS, FileFormat.JSON);
         List<Project> projects = ProjectParser.initialize(projectsPath);
         JDoctorConditionParser jDoctorConditionParser = new JDoctorConditionParser();

@@ -20,7 +20,7 @@ import static star.tratto.util.StringUtils.fullyQualifiedClassName;
 
 /**
  * This ContextRestriction works differently from the rest. It is applicable whenever a LogicalOperator
- * (&& or ||) is a possible next legal token. Placing such token would mean that the former Clause (i.e.,
+ * ({@code &&} or {@code ||}) is a possible next legal token. Placing such token would mean that the former Clause (i.e.,
  * (expression) is finished. Finishing a Clause has several implications:
  *
  * <ul>
@@ -31,7 +31,7 @@ import static star.tratto.util.StringUtils.fullyQualifiedClassName;
  *
  * When this ContextRestriction is applicable, it is necessary to check for all the three conditions
  * above. Depending on which are true, some tokens or others may be forbidden. Therefore, the
- * <code>restrictedTokens</code> attribute varies everytime this ContextRestriction is enabled.
+ * {@code restrictedTokens} attribute varies everytime this ContextRestriction is enabled.
  */
 public class ForbidEndExpressionRestriction extends MultiTokenRestriction {
 

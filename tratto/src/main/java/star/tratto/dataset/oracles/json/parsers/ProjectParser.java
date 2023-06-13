@@ -17,18 +17,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A helper class that deserialize the projects information in JSON format, generating the corresponding Java record
+ * A helper class that deserializes the project's information in JSON format, generating the corresponding Java
  * representations.
  */
 public class ProjectParser {
 
     /**
      * Given the path to the JSON file that lists the Java projects to analyze, the method deserializes the list of
-     * JSON project objects contained in the file and generates a list of corresponding Java project records {@link Project}
-     * @return A list of Java project records {@link Project}, representing the deserialization of the list of the JSON
+     * JSON project objects contained in the file and generates a list of corresponding Java project records
+     * @return a list of Java project records {@link Project}, representing the deserialization of the list of the JSON
      * project objects contained in the JSON file pointed by the string path passed to the function.
      *
-     * @throws IOException If the JSON file cannot be read.
+     * @throws IOException If the JSON file cannot be read
      */
     public static List<Project> initialize(String jsonFilePath) {
         // Instantiate an *ObjectMapper* to parse a JSON file
@@ -71,13 +71,13 @@ public class ProjectParser {
     /**
      * The method checks that each Java project record in the list passed to function points to a real Java project
      * saved within the current Java program.
-     * @param projects The list of Java project records to check.
-     * @return A list containing the only Java project records that point to real Java project saved within the current
-     * Java program.
+     * @param projects the list of Java project records to check
+     * @return a list containing the only Java project records that point to real Java project saved within the current
+     * Java program
      */
     private static List<Project> checkProjectsExist(List<Project> projects) {
         List<Project> existingProjects = new ArrayList<Project>();
-        for(Project project : projects) {
+        for (Project project : projects) {
             File projectDir = new File(project.getProjectPath());
             if (projectDir.exists() && projectDir.isDirectory()) {
                 existingProjects.add(project);
