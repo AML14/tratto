@@ -8,7 +8,7 @@ python run_classifier_decoder.py \
 --tratto_model_type token_classes \
 --task_name tokenClasses_classifier \
 --max_seq_length 512 \
---batch_size 32 \
+--batch_size 16 \
 --learning_rate 1e-5 \
 --num_epochs 8 \
 --save_steps 200 \
