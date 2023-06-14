@@ -1,11 +1,9 @@
 import argparse
-import json
 import os
 
 import torch
 import random
 import numpy as np
-from torch.nn import CrossEntropyLoss
 from torch.utils.data import DataLoader, RandomSampler
 from transformers import AdamW, get_linear_schedule_with_warmup
 

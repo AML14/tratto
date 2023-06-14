@@ -78,10 +78,16 @@ macOS and Windows systems.
 
 ## Training
 
-Run the following command to start training the model for the `token classes` on a `CPU` or on a single `GPU`
+Run the following command to start training the model as an `encoder` for the `token classes` on a `CPU` or on a single `GPU`
     
 ```bash
 python3 train_token_classes.sh
+```
+
+Run the following command to start training the model as a `decoder` for the `token classes` on a `CPU` or on a single `GPU`
+    
+```bash
+python3 train_token_classes_decoder.sh
 ```
 
 Run the following command to start training the model for the `token values` on a `CPU` or on a single `GPU`
@@ -94,6 +100,10 @@ If you want to run the training as a background process:
 
 ```bash
 nohup python3 train_token_classes.sh > log_token_classes.out 2>&1 & echo $! > run_token_classes.pid
+```
+
+```bash
+nohup python3 train_token_classes_decoder.sh > log_token_classes_decoder.out 2>&1 & echo $! > run_token_classes_decoder.pid
 ```
 
 ```bash
