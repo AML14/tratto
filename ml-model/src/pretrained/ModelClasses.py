@@ -1,4 +1,5 @@
 from transformers import RobertaConfig, RobertaTokenizer, RobertaForSequenceClassification, T5ForConditionalGeneration, T5Config
+from transformers import AutoConfig, AutoTokenizer, AutoModelForSequenceClassification
 
 
 class ModelClasses:

@@ -3,6 +3,8 @@ from typing import Type, Dict, List, Tuple
 import pandas as pd
 import numpy as np
 import torch
+import random
+import math
 from torch.utils.data import TensorDataset
 from sklearn.model_selection import train_test_split, StratifiedKFold
 from transformers import PreTrainedTokenizer
@@ -11,7 +13,7 @@ from src.types.DatasetType import DatasetType
 from src.types.TrattoModelType import TrattoModelType
 
 
-class DataProcessor:
+class DataProcessorDecoder:
     """
     The *DataProcessor* class takes care of pre-processing the raw datasets to create
     the final tokenized datasets.
@@ -75,6 +77,7 @@ class DataProcessor:
               original dataset has been splitted (according to *validation_ratio* value), and tokenized.
             - test: contains a list representing the dataset for the testing phase, after it has been tokenized.
     """
+
     def __init__(
             self,
             d_path: str,
@@ -90,7 +93,6 @@ class DataProcessor:
         self._df_dataset = self._load_dataset(d_path)
         self._src = None
         self._tgt = None
-        self._tgt_map = {}
         self._src_test = None
         self._tgt_test = None
         self._folds = folds
@@ -118,7 +120,7 @@ class DataProcessor:
         ----------
         column_name: str
             The name of the column of the dataset to process
-        
+
         Returns
         -------
         weights : List[float]
@@ -147,7 +149,7 @@ class DataProcessor:
         The dictionary of labels. The keys are numerical identifiers (int), while the values are strings representing the
         name of the corresponding target label. The dictionary is empty if the dataset has not been processed yet.
         """
-        ids_labels_dict = { i:k for i,k in enumerate(self._tgt_map.keys()) }
+        ids_labels_dict = {i: k for i, k in enumerate(self._tgt_map.keys())}
         # If the dictionary is empty prints a warning
         if not bool(ids_labels_dict):
             print("The ids-label dictionary is empty. It may be that the dataset has not been processed yet.")
@@ -166,7 +168,6 @@ class DataProcessor:
         if num_labels == 0:
             print("The number of labels is 0. It may be that the dataset has not been processed yet.")
         return num_labels
-
 
     def get_classes_ids(self):
         """
@@ -194,7 +195,7 @@ class DataProcessor:
         The dictionary of classes. The keys are numeric identifiers (integer) representing the codification value of a
         class (int), while the values are the name of the corresponding target class.
         """
-        return { i:k for k,i in self.get_classes_ids().items()}
+        return {i: k for k, i in self.get_classes_ids().items()}
 
     def get_tgt_classes_size(self):
         """
@@ -208,55 +209,6 @@ class DataProcessor:
         if classes_size == 0:
             print("[Warn] - classes size is 0")
         return classes_size
-
-    def get_src(self):
-        """
-        The method returns a copy of the list of input datapoints used for training and validation.
-
-        Returns
-        -------
-        src : List[str]
-            A copy of the list of input datapoints used for training and validation.
-        """
-        src = [*self._src]
-        return src
-
-    def get_tgt(self):
-        """
-        The method returns a copy of the list of targets associated to the input datapoints used for training and
-        validation.
-
-        Returns
-        -------
-        src : List[str]
-            A copy of the list of input datapoints for training and validation.
-        """
-        src = [*self._src]
-        return src
-
-    def get_src_test(self):
-        """
-        The method returns a copy of the list of input datapoints used for testing.
-
-        Returns
-        -------
-        src : List[str]
-            A copy of the list of input datapoints for testing.
-        """
-        src_test = [*self._src_test]
-        return src_test
-
-    def get_tgt_test(self):
-        """
-        The method returns a copy of the list of the targets associated to the input datapoints used for testing.
-
-        Returns
-        -------
-        tgt : List[str]
-            A copy of the list of targets associated to the input datapoints for testing.
-        """
-        tgt_test = [*self._tgt_test]
-        return tgt_test
 
     def get_tokenized_dataset(
             self,
@@ -307,7 +259,7 @@ class DataProcessor:
         t_t_dataset = TensorDataset(*t_dataset)
         # Return the dataset
         return t_t_dataset
-        
+
     def map_column_values_to_one_shot_vectors(
             self,
             column_name: str
@@ -320,7 +272,7 @@ class DataProcessor:
         ----------
         column_name: str
             The name of the column of the dataset from which to map the values into the one-shot vector representations
-        
+
         Returns
         -------
         mapping: Dict[Union[str,int],List[int]]
@@ -339,41 +291,42 @@ class DataProcessor:
         # Return the dictionary
         return mapping
 
-
     def processing(self):
-        """ 
-        The method processes the original datasets to generate the training, validation, and test datasets to train and 
-        test the model. If the attribute {@code self.folds} is greater than 1, the datasets are generated to perform 
-        cross-validation (A number of sets equal to {@code self.folds} are generated). Otherwise, a single set of datasets 
+        """
+        The method processes the original datasets to generate the training, validation, and test datasets to train and
+        test the model. If the attribute {@code self.folds} is greater than 1, the datasets are generated to perform
+        cross-validation (A number of sets equal to {@code self.folds} are generated). Otherwise, a single set of datasets
         is generated.
-        
+
         """
         # Create the cross-validation splitter, if the attribute folds is greater than 1
         if self._folds > 1:
             cross_validation = StratifiedKFold(n_splits=self._n_split, shuffle=True, random_state=42)
             print(f"        Generating {self._n_split} folds for cross-validation.")
-            for fold, (t_fold_indices, v_fold_indices) in enumerate(cross_validation.split(self._src, np.array([np.array(dp) for dp in self._tgt]))):
+            for fold, (t_fold_indices, v_fold_indices) in enumerate(
+                    cross_validation.split(self._src, np.array([np.array(dp) for dp in self._tgt]))):
                 print(f"            Processing fold {fold + 1}.")
                 # Split the dataset into training and validation source and target sets for the current fold
                 t_src_fold_data = [self._src[i] for i in t_fold_indices]
                 t_tgt_fold_data = [self._tgt[i] for i in t_fold_indices]
                 v_src_fold_data = [self._src[i] for i in v_fold_indices]
                 v_tgt_fold_data = [self._tgt[i] for i in v_fold_indices]
-                t_fold_dataset  = (t_src_fold_data, t_tgt_fold_data)
-                v_fold_dataset  = (v_src_fold_data, v_tgt_fold_data)
+                t_fold_dataset = (t_src_fold_data, t_tgt_fold_data)
+                v_fold_dataset = (v_src_fold_data, v_tgt_fold_data)
                 # Tokenize training and validation datasets of the current fold
                 t_t_fold_dataset = self._tokenize_dataset(t_fold_dataset)
                 t_v_fold_dataset = self._tokenize_dataset(v_fold_dataset)
                 # Append datasets of the current fold to the corresponding training and validation processes datasets
                 self._processed_dataset["train"].append(t_fold_dataset)
                 self._processed_dataset["val"].append(v_fold_dataset)
-                # Append tokenized datasets of the current fold to the corresponding training and validation processes 
+                # Append tokenized datasets of the current fold to the corresponding training and validation processes
                 # tokenized datasets
                 self._processed_dataset["t_train"].append(t_t_fold_dataset)
                 self._processed_dataset["t_val"].append(t_v_fold_dataset)
         else:
             # Split the original dataset in training and test sets
-            t_src_data, v_src_data, t_tgt_data, v_tgt_data = train_test_split(self._src, self._tgt, test_size=self._test_ratio, stratify=self._tgt)
+            t_src_data, v_src_data, t_tgt_data, v_tgt_data = train_test_split(self._src, self._tgt,
+                                                                              test_size=self._test_ratio)  # , stratify=self._tgt)
             # Generate training and validation sets
             t_dataset = (t_src_data, t_tgt_data)
             v_dataset = (v_src_data, v_tgt_data)
@@ -383,7 +336,7 @@ class DataProcessor:
             # Append datasets of the current fold to the corresponding training and validation processes datasets
             self._processed_dataset["train"].append(t_dataset)
             self._processed_dataset["val"].append(v_dataset)
-            # Append tokenized datasets of the current fold to the corresponding training and validation processes 
+            # Append tokenized datasets of the current fold to the corresponding training and validation processes
             # tokenized datasets
             self._processed_dataset["t_train"].append(t_t_dataset)
             self._processed_dataset["t_val"].append(t_v_dataset)
@@ -393,7 +346,6 @@ class DataProcessor:
         self._processed_dataset["test"] = (self._src_test, self._tgt_test)
         # Assign the tokenized test dataset to the processed tokenized datasets
         self._processed_dataset["t_test"] = self._tokenize_dataset(test_dataset)
-        
 
     def pre_processing(self):
         """
@@ -421,16 +373,16 @@ class DataProcessor:
             'tokenClass': 'string',
             'tokenInfo': 'string'
         })
+
+        # Remove 85% of empty oracles to balance the dataset
+        df_filtered = self._df_dataset[(self._df_dataset['tokenClass'] == 'Semicolon') & (self._df_dataset['oracleSoFar'] == '') & (self._df_dataset['label'] == True)]
+        filtered_oracle_ids = df_filtered["oracleId"].unique().tolist()
+        random_filtered_oracle_ids = random.sample(filtered_oracle_ids, math.floor(len(filtered_oracle_ids) * 0.85))  # Adjust the random_state as desired
+        self._df_dataset = self._df_dataset[~((self._df_dataset['oracleId'].isin(random_filtered_oracle_ids)))]
+
         # Pre-process the dataset, according to the Tratto model considered (tokenClasses or tokenValues).
         if self._tratto_model_type == TrattoModelType.TOKEN_CLASSES:
-            #tokenClassesDict = self.get_classes_ids()
             self._df_dataset["tokenClassesSoFar"] = self._df_dataset["tokenClassesSoFar"].apply(lambda x: "[" + " ".join(x) + "]")
-            #self._df_dataset["tokenClass"] = self._df_dataset["tokenClass"].apply(lambda x: str(tokenClassesDict[x]))
-            df_eligibleTokenClasses = self._df_dataset.groupby(['oracleId', 'oracleSoFar'])['tokenClass'].unique().to_frame()
-            df_eligibleTokenClasses = df_eligibleTokenClasses.rename(columns={'tokenClass': 'eligibleTokenClasses'})
-            self._df_dataset = pd.merge(self._df_dataset, df_eligibleTokenClasses,on=['oracleId', 'oracleSoFar']).reset_index()
-            self._df_dataset["eligibleTokenClasses"] = self._df_dataset["eligibleTokenClasses"].apply(lambda x: "[" + ",".join(x) + "]")
-            self._df_dataset['eligibleTokenClasses'] = self._df_dataset['eligibleTokenClasses'].astype('string')
             self._df_dataset['tokenClass'] = self._df_dataset['tokenClass'].astype('string')
             self._df_dataset['tokenClassesSoFar'] = self._df_dataset['tokenClassesSoFar'].astype('string')
             # Define the new order of columns
@@ -480,11 +432,11 @@ class DataProcessor:
             self._df_dataset = self._df_dataset[self._df_dataset['label'] == 'True']
 
         # Delete the tgt labels from the input dataset, and others less relevant columns
-        df_src = self._df_dataset.drop(['label','oracleId','projectName','classJavadoc','classSourceCode'], axis=1)
+        df_src = self._df_dataset.drop(['label', 'oracleId', 'projectName', 'classJavadoc', 'classSourceCode'], axis=1)
         # If the model predicts token classes, remove the token values and the token info from the input, else remove
         # the token classes from the input
         if self._tratto_model_type == TrattoModelType.TOKEN_CLASSES:
-            df_src = df_src.drop(['token','tokenInfo'], axis=1)
+            df_src = df_src.drop(['token', 'tokenInfo'], axis=1)
             if self._classification_type == ClassificationType.CATEGORY_PREDICTION:
                 df_src = df_src.drop(['tokenClass'], axis=1)
         else:
@@ -530,16 +482,23 @@ class DataProcessor:
         src = df_src_concat.to_numpy().tolist()
         # Get the list of target values from the dataframe
         if self._tratto_model_type == TrattoModelType.TOKEN_CLASSES:
-            tgt = self._df_dataset["tokenClass"].values if self._classification_type == ClassificationType.CATEGORY_PREDICTION else self._df_dataset["label"].values
+            tgt = self._df_dataset[
+                "tokenClass"].values if self._classification_type == ClassificationType.CATEGORY_PREDICTION else \
+            self._df_dataset["label"].values
         else:
-            tgt = self._df_dataset["token"].values if self._classification_type == ClassificationType.CATEGORY_PREDICTION else self._df_dataset["label"].values
+            tgt = self._df_dataset[
+                "token"].values if self._classification_type == ClassificationType.CATEGORY_PREDICTION else \
+            self._df_dataset["label"].values
         # Split the dataset into training and test sets with stratified sampling (given imbalanced dataset), based on target classes
-        self._src, self._src_test, self._tgt, self._tgt_test = train_test_split(src, tgt, test_size=self._test_ratio, stratify=tgt)
+        self._src, self._src_test, self._tgt, self._tgt_test = train_test_split(src, tgt,
+                                                                                test_size=self._test_ratio)  # stratify=tgt)
         # Generate the mapping of the target column unique values to the corresponding one-shot representations
         if self._tratto_model_type == TrattoModelType.TOKEN_CLASSES:
-            self._tgt_map = self.map_column_values_to_one_shot_vectors("tokenClass" if self._classification_type == ClassificationType.CATEGORY_PREDICTION else "label")
+            self._tgt_map = self.map_column_values_to_one_shot_vectors(
+                "tokenClass" if self._classification_type == ClassificationType.CATEGORY_PREDICTION else "label")
         else:
-            self._tgt_map = self.map_column_values_to_one_shot_vectors("token" if self._classification_type == ClassificationType.CATEGORY_PREDICTION else "label")
+            self._tgt_map = self.map_column_values_to_one_shot_vectors(
+                "token" if self._classification_type == ClassificationType.CATEGORY_PREDICTION else "label")
 
     def _load_dataset(
             self,
@@ -566,15 +525,15 @@ class DataProcessor:
         # datasets path
         oracles_dataset = os.path.join(d_path)
         # collects partial dataframes from oracles
-        for file_name in os.listdir(oracles_dataset)[:100]:
-            df = pd.read_json(os.path.join(oracles_dataset,  file_name))
+        for file_name in os.listdir(oracles_dataset):
+            df = pd.read_json(os.path.join(oracles_dataset, file_name))
             dfs.append(df)
         df_dataset = pd.concat(dfs)
         return df_dataset
 
     def _tokenize_dataset(
             self,
-            datapoints: Tuple[List[str],List[List[float]]]
+            datapoints: Tuple[List[str], List[List[float]]]
     ):
         """
         The method tokenizes the input and target datapoints passed to the function
@@ -586,16 +545,16 @@ class DataProcessor:
 
         Returns
         -------
-        tokenized_batches : Tuple[List[int],List[float],List[float],List[Union[str,float]]]
-            A tuple of 4 lists, where the first list represents the tokenized strings of the input datapoints of the dataset,
-            the second list is the tensor of the corresponding attention-masks, the third element is the
-            tensor of the corresponding targets, and the fourth element is the tensor of the target labels.
+        tokenized_batches : Tuple[List[int],List[float],List[float]]]
+            A tuple of 3 lists, where the first list represents the tokenized strings of the input datapoints of the
+            dataset, the second list is the tensor of the corresponding attention-masks, the third element is the tensor
+            of the corresponding targets.
         """
         # Extracts the inputs datapoints from the dataset
         inputs = datapoints[0]
         # Extracts the corresponding targets datapoints from the dataset
         targets = datapoints[1]
-        # Tokenize the inputs datapoints
+        # Tokenize the input and the target datapoints
         # The method generate a dictionary with two keys:
         #
         #   t_src_dict = {
@@ -608,12 +567,21 @@ class DataProcessor:
         # masks* is the corresponding mask vector to distinguish the real tokens
         # from the padding tokens. In the example, t_i_x_y is the y tokenized word
         # of the input datapoint x, and m_x_y is a boolean value that states if
-        # the token y is a real word or a padding token
+        # the token y is a real word or a padding token.
         #
-        t_src_dict = self._tokenizer(
-          inputs,
-          padding='max_length',
-          truncation=True
+        t_src_dict = self._tokenizer.batch_encode_plus(
+            inputs,
+            max_length=512,
+            truncation=True,
+            pad_to_max_length=True,
+            return_tensors="pt"
+        )
+        t_tgt_dict = self._tokenizer.batch_encode_plus(
+            targets,
+            max_length=8,
+            truncation=True,
+            pad_to_max_length=True,
+            return_tensors="pt"
         )
         # Transform the list into a tensor stack
         #
@@ -626,21 +594,10 @@ class DataProcessor:
         #   ])
         #
         # this is the structure accepted by the DataLoader, to process the dataset
-        # Transform the list into a tensor stack
         t_inputs = torch.stack([torch.tensor(ids) for ids in t_src_dict['input_ids']])
-        t_attention_masks = torch.stack([torch.tensor(mask) for mask in t_src_dict['attention_mask']])
-        # Map targets value into one-shot vectors
-        targets_one_shot = list(map(lambda t: self._tgt_map[t], targets))
-        # Transform the targets into a tensor list
-        targets_tensor = torch.tensor(targets_one_shot)
-        # Keep track of labels
-        if self._classification_type == ClassificationType.CATEGORY_PREDICTION:
-            targets_labels = targets
-        else:
-            targets_labels = list(map(lambda i: i.split(self._tokenizer.sep_token)[0], inputs))
-        classifier_classes_ids = self.get_classes_ids()
-        targets_labels_tensor = torch.tensor(list(map(lambda l: classifier_classes_ids[l], targets_labels)))
+        t_inputs_attention_masks = torch.stack([torch.tensor(mask) for mask in t_src_dict['attention_mask']])
+        t_targets = torch.stack([torch.tensor(ids) for ids in t_tgt_dict['input_ids']])
         # Generate the tokenized dataset
-        tokenized_dataset = (t_inputs, t_attention_masks, targets_tensor, targets_labels_tensor)
+        tokenized_dataset = (t_inputs, t_inputs_attention_masks, t_targets)
         # Return the tokenized dataset
         return tokenized_dataset

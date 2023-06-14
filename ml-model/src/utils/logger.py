@@ -113,21 +113,22 @@ def print_stats(
     for class_label, score in stats['t_recall']:
         print("            " + f"TRAINING RECALL - {class_label}: {score:.2f}")
     print("            " + '-' * 30)
-    for class_label, predictions_stats in stats['t_predictions_per_class']['classes'].items():
-        print("            " + f"LABEL {class_label}")
-        print("                " + f"Correct: {predictions_stats['correct']} / {predictions_stats['total']}")
-        if predictions_stats['correct'] > 0:
-            print("                " + f"Correct Classes:")
-            correct_class_counter = Counter(predictions_stats["correct_class"])
-            for class_label, occurrences in correct_class_counter.items():
-                print("                    " + f"{class_label}: {occurrences}")
-        print("                " + f"Wrong: {predictions_stats['wrong']} / {predictions_stats['total']}")
-        if predictions_stats['wrong'] > 0:
-            print("                " + f"Wrong Classes:")
-            wrong_class_counter = Counter(predictions_stats["wrong_class"])
-            for class_label, occurrences in wrong_class_counter.items():
-                print("                    " + f"{class_label}: {occurrences}")
-    print("            " + '-' * 30)
+    if 't_predictions_per_class' in stats:
+        for class_label, predictions_stats in stats['t_predictions_per_class']['classes'].items():
+            print("            " + f"LABEL {class_label}")
+            print("                " + f"Correct: {predictions_stats['correct']} / {predictions_stats['total']}")
+            if predictions_stats['correct'] > 0:
+                print("                " + f"Correct Classes:")
+                correct_class_counter = Counter(predictions_stats["correct_class"])
+                for class_label, occurrences in correct_class_counter.items():
+                    print("                    " + f"{class_label}: {occurrences}")
+            print("                " + f"Wrong: {predictions_stats['wrong']} / {predictions_stats['total']}")
+            if predictions_stats['wrong'] > 0:
+                print("                " + f"Wrong Classes:")
+                wrong_class_counter = Counter(predictions_stats["wrong_class"])
+                for class_label, occurrences in wrong_class_counter.items():
+                    print("                    " + f"{class_label}: {occurrences}")
+        print("            " + '-' * 30)
     print("            " + f"VALIDATION LOSS: {stats['v_loss']:.4f}")
     print("            " + f"VALIDATION ACCURACY: {stats['v_accuracy']:.2f}")
     print("            " + f"VALIDATION F1-SCORE MICRO: {stats['v_f1_score_micro']:.2f}")
@@ -138,21 +139,22 @@ def print_stats(
     for class_label, score in stats['v_recall']:
         print("            " + f"VALIDATION RECALL - {class_label}: {score:.2f}")
     print("            " + '-' * 30)
-    for class_label, predictions_stats in stats['v_predictions_per_class']['classes'].items():
-        print("            " + f"LABEL {class_label}")
-        print("                " + f"Correct: {predictions_stats['correct']} / {predictions_stats['total']}")
-        if predictions_stats['correct'] > 0:
-            print("                " + f"Correct Classes:")
-            correct_class_counter = Counter(predictions_stats["correct_class"])
-            for class_label, occurrences in correct_class_counter.items():
-                print("                    " + f"{class_label}: {occurrences}")
-        print("                " + f"Wrong: {predictions_stats['wrong']} / {predictions_stats['total']}")
-        if predictions_stats['wrong'] > 0:
-            print("                " + f"Wrong Classes:")
-            wrong_class_counter = Counter(predictions_stats["wrong_class"])
-            for class_label, occurrences in wrong_class_counter.items():
-                print("                    " + f"{class_label}: {occurrences}")
-    print("            " + '-' * 30)
+    if 'v_predictions_per_class'in stats:
+        for class_label, predictions_stats in stats['v_predictions_per_class']['classes'].items():
+            print("            " + f"LABEL {class_label}")
+            print("                " + f"Correct: {predictions_stats['correct']} / {predictions_stats['total']}")
+            if predictions_stats['correct'] > 0:
+                print("                " + f"Correct Classes:")
+                correct_class_counter = Counter(predictions_stats["correct_class"])
+                for class_label, occurrences in correct_class_counter.items():
+                    print("                    " + f"{class_label}: {occurrences}")
+            print("                " + f"Wrong: {predictions_stats['wrong']} / {predictions_stats['total']}")
+            if predictions_stats['wrong'] > 0:
+                print("                " + f"Wrong Classes:")
+                wrong_class_counter = Counter(predictions_stats["wrong_class"])
+                for class_label, occurrences in wrong_class_counter.items():
+                    print("                    " + f"{class_label}: {occurrences}")
+        print("            " + '-' * 30)
 
 
 def print_evaluation_stats(
@@ -161,7 +163,7 @@ def print_evaluation_stats(
         test_accuracy: List[Tuple[str,float]],
         test_precision: List[Tuple[str,float]],
         test_recall: List[Tuple[str,float]],
-        test_predictions_per_class: Dict[str,Dict]
+        test_predictions_per_class: Dict[str,Dict] = {}
 ):
     """
     The method prints the statistics of the testing phases
@@ -193,18 +195,19 @@ def print_evaluation_stats(
     for class_label, score in test_recall:
         print("            " + f"TESTING RECALL - {class_label}: {score:.2f}")
     print("            " + '-'*30)
-    for class_label, predictions_stats in test_predictions_per_class['classes'].items():
-        print("            " + f"LABEL {class_label}")
-        print("                " + f"Correct: {predictions_stats['correct']} / {predictions_stats['total']}")
-        if predictions_stats['correct'] > 0:
-            print("                " + f"Correct Classes:")
-            correct_class_counter = Counter(predictions_stats["correct_class"])
-            for class_label, occurrences in correct_class_counter.items():
-                print("                    " + f"{class_label}: {occurrences}")
-        print("                " + f"Wrong: {predictions_stats['wrong']} / {predictions_stats['total']}")
-        if predictions_stats['wrong'] > 0:
-            print("                " + f"Wrong Classes:")
-            wrong_class_counter = Counter(predictions_stats["wrong_class"])
-            for class_label, occurrences in wrong_class_counter.items():
-                print("                    " + f"{class_label}: {occurrences}")
-    print("            " + '-' * 30)
+    if bool(test_predictions_per_class):
+        for class_label, predictions_stats in test_predictions_per_class['classes'].items():
+            print("            " + f"LABEL {class_label}")
+            print("                " + f"Correct: {predictions_stats['correct']} / {predictions_stats['total']}")
+            if predictions_stats['correct'] > 0:
+                print("                " + f"Correct Classes:")
+                correct_class_counter = Counter(predictions_stats["correct_class"])
+                for class_label, occurrences in correct_class_counter.items():
+                    print("                    " + f"{class_label}: {occurrences}")
+            print("                " + f"Wrong: {predictions_stats['wrong']} / {predictions_stats['total']}")
+            if predictions_stats['wrong'] > 0:
+                print("                " + f"Wrong Classes:")
+                wrong_class_counter = Counter(predictions_stats["wrong_class"])
+                for class_label, occurrences in wrong_class_counter.items():
+                    print("                    " + f"{class_label}: {occurrences}")
+        print("            " + '-' * 30)
