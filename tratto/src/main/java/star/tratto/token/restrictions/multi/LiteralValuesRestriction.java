@@ -27,7 +27,7 @@ import static star.tratto.util.StringUtils.compactExpression;
  * type-compatible at that position (i.e., either with the preceding expression if it's a comparison,
  * or if it's a method argument).
  * <br>
- * The <code>restrictedTokens</code> attribute varies everytime this ContextRestriction is enabled.
+ * The {@code restrictedTokens} attribute varies everytime this ContextRestriction is enabled.
  * <br>
  * TODO: Restrict numeric values according to the type (e.g., 128 cannot be assigned to a byte).
  */

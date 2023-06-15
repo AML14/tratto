@@ -38,13 +38,13 @@ public class TokenSuggester {
      * will not suggest the token "true" as the first token if the oracle being generated is a precondition (this
      * type of behavior is controlled by ContextRestrictionTypes).
      *
-     * @param partialExpressionTokens List of tokens of the partial TrattoGrammar expression, e.g., ["(", "this"]
+     * @param partialExpressionTokens list of tokens of the partial TrattoGrammar expression, e.g., ["(", "this"]
      * @param oracleDatapoint         OracleDatapoint containing all required contextual information, including the oracle
      *                                type (e.g., PRE) and contextual tokens available (e.g., class names and method
-     *                                arguments).
-     * @return List of triplets containing tokens, their classes (for vars, as dictated by
+     *                                arguments)
+     * @return list of triplets containing tokens, their classes (for vars, as dictated by
      * {@link TokenEnricher}) and their additional info, i.e., [package.of.class; Class;
-     * method signature or attribute declaration, if applicable].
+     * method signature or attribute declaration, if applicable]
      */
     public static List<Triplet<String, String, List<String>>> getNextLegalTokensWithContextPlusInfo(List<String> partialExpressionTokens, OracleDatapoint oracleDatapoint) {
         List<Triplet<String, String, List<String>>> nextLegalTokensWithContextPlusInfo = new ArrayList<>();
@@ -108,7 +108,7 @@ public class TokenSuggester {
     }
 
     /**
-     * @param nextLegalTokensWithoutMultiTokenRestrictions This list of tokens MUST NOT contain tokens that are restricted
+     * @param nextLegalTokensWithoutMultiTokenRestrictions this list of tokens MUST NOT contain tokens that are restricted
      *                                                     by MultiTokenRestrictions. If so, the behavior of this method
      *                                                     is undefined and the program may crash. Therefore, before calling
      *                                                     this method, this argument must be set with the result of
@@ -121,8 +121,8 @@ public class TokenSuggester {
 
     /**
      * Suggest legal tokens according to the TrattoGrammar grammar, after a given partial expression.
-     * @param partialExpressionTokens List of tokens of partial TrattoGrammar expression, e.g., ["(", "this"]
-     * @return List of legal tokens.
+     * @param partialExpressionTokens list of tokens of partial TrattoGrammar expression, e.g., ["(", "this"]
+     * @return list of legal tokens
      */
     static List<String> getNextLegalTokensAccordingToGrammar(List<String> partialExpressionTokens) {
         List<String> nextLegalTokens = new ArrayList<>();
@@ -146,7 +146,7 @@ public class TokenSuggester {
      * If you do this, the method will return true, although it should return false. This is because this method
      * assumes that the token passed is, in principle, legal, but its legality must be checked against
      * ContextRestrictions.
-     * @param token Must be legal for the given partialExpression.
+     * @param token must be legal for the given partialExpression
      * @param partialExpressionTokens
      * @param oracleDatapoint
      * @return
@@ -211,9 +211,9 @@ public class TokenSuggester {
     }
 
     /**
-     * @param partialExpressionTokens Tokens of partial TrattoGrammar expression to parse
-     * @param errorColumns List of lists of error columns for the partial expression +1 and +2 tokens
-     * @param errorColumnsIndex Index of the list of error columns to update
+     * @param partialExpressionTokens tokens of partial TrattoGrammar expression to parse
+     * @param errorColumns list of lists of error columns for the partial expression +1 and +2 tokens
+     * @param errorColumnsIndex index of the list of error columns to update
      */
     private static void updateErrorColumns(List<String> partialExpressionTokens, List<List<Integer>> errorColumns, int errorColumnsIndex) {
         parser.parseOracle(String.join(" ", partialExpressionTokens));

@@ -144,10 +144,10 @@ public class TokensDataset {
 
     /**
      * Transform an oracleSoFar + nextOracleToken referring to an OracleDatapoint into multiple TokenDatapoints.
-     * @param oracleDatapoint OracleDatapoint from which the oracleSoFar and nextOracleToken come from.
-     * @param oracleSoFarTokens Tokens of partial TrattoGrammar expression for which next legal tokens will be
+     * @param oracleDatapoint OracleDatapoint from which the oracleSoFar and nextOracleToken come from
+     * @param oracleSoFarTokens tokens of partial TrattoGrammar expression for which next legal tokens will be
      *                          computed. For each next legal token, a TokenDatapoint will be created.
-     * @param nextOracleToken Actual token that goes next after oracleSoFar. This is needed to know the
+     * @param nextOracleToken actual token that goes next after oracleSoFar. This is needed to know the
      *                        label of each TokenDatapoint created (true if nextOracleToken is the token of that
      *                        TokenDatapoint, false otherwise).
      */
