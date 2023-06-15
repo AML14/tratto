@@ -23,6 +23,7 @@ public class TokenDatapoint {
     private String classJavadoc;
     private String classSourceCode;
     private String oracleSoFar;
+    private List<String> tokenClassesSoFar;
     private String token;
     private String tokenClass;
     private List<String> tokenInfo;
@@ -41,6 +42,7 @@ public class TokenDatapoint {
         this.classJavadoc = oracleDatapoint.getClassJavadoc();
         this.classSourceCode = oracleDatapoint.getClassSourceCode();
         this.oracleSoFar = oracleSoFar;
+        this.tokenClassesSoFar = null;
         this.token = token;
         this.tokenClass = tokenClass;
         this.tokenInfo = tokenInfo;
@@ -148,6 +150,14 @@ public class TokenDatapoint {
 
     public void setOracleSoFar(String oracleSoFar) {
         this.oracleSoFar = oracleSoFar;
+    }
+
+    public List<String> getTokenClassesSoFar() {
+        return tokenClassesSoFar;
+    }
+
+    public void setTokenClassesSoFar(List<String> tokenClassesSoFar) {
+        this.tokenClassesSoFar = tokenClassesSoFar;
     }
 
     public String getToken() {

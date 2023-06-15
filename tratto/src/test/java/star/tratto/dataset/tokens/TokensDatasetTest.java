@@ -10,6 +10,7 @@ public class TokensDatasetTest {
     public void tokensDatasetTest() throws IOException {
         TokensDataset.ORACLES_DATASET_FOLDER = "src/test/resources/oracles-dataset/";
         TokensDataset.TOKENS_DATASET_FOLDER = "src/test/resources/tokens-dataset/";
+        TokensDataset.DATASET_TYPE = TokensDataset.DatasetType.TOKENS;
         TokensDataset.main(new String[] {});
 
         /*

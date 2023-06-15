@@ -26,7 +26,7 @@ import static star.tratto.util.StringUtils.fullyQualifiedClassName;
  * ClassName, ClassField, MethodName, SpecificVarOrClass (see {@link Tokens}).
  * <br>
  * The list of legal tokens is augmented by taking into account the oracle generated
- * so far (e.g., if an attribute or method should next, after a period) and the
+ * so far (e.g., if an attribute or method should go next, after a period) and the
  * oracle datapoint (e.g., retrieving the specific attributes and methods available
  * at that point in the oracle).
  */
@@ -194,6 +194,14 @@ public class TokenEnricher {
         List<String> lastElementWithModifierTokens = split(parser.findLastElementWithModifiers(String.join(" ", partialExpressionTokens)));
         String precedingExpr = compactExpression(lastElementWithModifierTokens.subList(0, lastElementWithModifierTokens.size()-1));
         Pair<String, String> precedingExprReturnType = getReturnTypeOfExpression(precedingExpr, oracleDatapoint);
+
+        // Special case: if preceding token is not "this", "methodResultID" or a method argument, and last two columns (oracle variables) are empty, need to populate them
+        List<String> methodVariables = new ArrayList<>(List.of("this", "methodResultID"));
+        methodVariables.addAll(oracleDatapoint.getTokensMethodArguments().stream().map(Triplet::getValue0).collect(Collectors.toList()));
+        if (!methodVariables.contains(precedingExpr) &&
+                oracleDatapoint.getTokensOracleVariablesNonPrivateNonStaticAttributes().isEmpty() && oracleDatapoint.getTokensOracleVariablesNonPrivateNonStaticAttributes().isEmpty()) {
+            // TODO: Use token collector to populate oracle variables
+        }
 
         // Get non-static attributes of class, including those whose this class is instance of
         enrichedTokensPlusInfo.addAll(oracleDatapoint.getTokensMethodVariablesNonPrivateNonStaticAttributes() // Attributes applicable to this, methodResultID and method arguments
