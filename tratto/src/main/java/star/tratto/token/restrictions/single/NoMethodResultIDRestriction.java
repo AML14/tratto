@@ -27,7 +27,6 @@ public class NoMethodResultIDRestriction extends SingleTokenRestriction {
 
     private static NoMethodResultIDRestriction instance;
     private final Map<OracleType, StandardSingleTokenRestriction> oracleSpecificRestrictions;
-    private final JavaParser javaParser = JavaParserUtils.getJavaParser();
 
     private NoMethodResultIDRestriction() {
         this.restrictedToken = "methodResultID";

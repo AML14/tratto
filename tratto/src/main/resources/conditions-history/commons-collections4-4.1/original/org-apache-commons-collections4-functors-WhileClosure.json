@@ -1,0 +1,101 @@
+[
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.functors.WhileClosure",
+      "name": "org.apache.commons.collections4.functors.WhileClosure",
+      "parameterTypes": [
+        "org.apache.commons.collections4.Predicate",
+        "org.apache.commons.collections4.Closure",
+        "boolean"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "predicate",
+        "closure",
+        "doLoop"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param predicate the predicate used to evaluate when the loop terminates. predicate is not null.",
+        "guard": {
+          "condition": "(predicate==null) == false",
+          "description": "the predicate used to evaluate when the loop terminates. predicate is not null."
+        }
+      },
+      {
+        "description": "@param closure the closure the execute. closure is not null.",
+        "guard": {
+          "condition": "(closure==null) == false",
+          "description": "the closure the execute. closure is not null."
+        }
+      },
+      {
+        "description": "@param doLoop doLoop is true. true to act as a do-while loop always executing the closure once.",
+        "guard": {
+          "condition": "doLoop==true",
+          "description": "doLoop is true. true to act as a do-while loop always executing the closure once."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.functors.WhileClosure",
+      "name": "whileClosure",
+      "parameterTypes": [
+        "org.apache.commons.collections4.Predicate",
+        "org.apache.commons.collections4.Closure",
+        "boolean"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "predicate",
+        "closure",
+        "doLoop"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the predicate or closure is null.",
+        "guard": {
+          "condition": "predicate==null || closure==null",
+          "description": "the predicate or closure is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param predicate the predicate used to evaluate when the loop terminates. predicate is not null.",
+        "guard": {
+          "condition": "(predicate==null) == false",
+          "description": "the predicate used to evaluate when the loop terminates. predicate is not null."
+        }
+      },
+      {
+        "description": "@param closure the closure the execute. closure is not null.",
+        "guard": {
+          "condition": "(closure==null) == false",
+          "description": "the closure the execute. closure is not null."
+        }
+      },
+      {
+        "description": "@param doLoop doLoop is true. true to act as a do-while loop always executing the closure once.",
+        "guard": {
+          "condition": "doLoop==true",
+          "description": "doLoop is true. true to act as a do-while loop always executing the closure once."
+        }
+      }
+    ]
+  }
+]

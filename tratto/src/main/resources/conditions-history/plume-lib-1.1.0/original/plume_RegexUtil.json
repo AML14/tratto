@@ -1,0 +1,44 @@
+[
+  {
+    "operation": {
+      "classname": "plume.RegexUtil",
+      "name": "asRegex",
+      "parameterTypes": [
+        "java.lang.String",
+        "int"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "s",
+        "groups"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.Error",
+        "description": "@throws java.lang.Error argument is not a regex.",
+        "guard": {
+          "condition": "(plume.RegexUtil.isRegex(s,groups)) == false",
+          "description": "argument is not a regex."
+        }
+      }
+    ],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID.equals(s)",
+          "description": "its argument."
+        },
+        "description": "its argument.",
+        "guard": {
+          "condition": "true",
+          "description": "its argument."
+        }
+      }
+    ],
+    "pre": []
+  }
+]

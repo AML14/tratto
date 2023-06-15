@@ -1,0 +1,81 @@
+[
+  {
+    "operation": {
+      "classname": "com.google.common.collect.MinMaxPriorityQueue",
+      "name": "add",
+      "parameterTypes": [
+        "java.lang.Object"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "element"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID==true",
+          "description": "true always."
+        },
+        "description": "true always.",
+        "guard": {
+          "condition": "true",
+          "description": "true always."
+        }
+      }
+    ],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "com.google.common.collect.MinMaxPriorityQueue",
+      "name": "removeFirst",
+      "parameterTypes": []
+    },
+    "identifiers": {
+      "parameters": [],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.util.NoSuchElementException",
+        "description": "@throws java.util.NoSuchElementException the queue is empty.",
+        "guard": {
+          "condition": "receiverObjectID.isEmpty()",
+          "description": "the queue is empty."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "com.google.common.collect.MinMaxPriorityQueue",
+      "name": "removeLast",
+      "parameterTypes": []
+    },
+    "identifiers": {
+      "parameters": [],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.util.NoSuchElementException",
+        "description": "@throws java.util.NoSuchElementException the queue is empty.",
+        "guard": {
+          "condition": "receiverObjectID.isEmpty()",
+          "description": "the queue is empty."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  }
+]

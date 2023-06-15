@@ -52,7 +52,7 @@ public class JavaParserUtils {
     /**
      * Given a syntactically valid Java expression, evaluates its return type, including package and class.
      * If the expression is not syntactically valid, the method will throw an exception.
-     * @param expression The expression to evaluate, e.g., "methodResultID.negate().value(null).getField()".
+     * @param expression the expression to evaluate, e.g., "methodResultID.negate().value(null).getField()".
      *                   Must conform to TrattoGrammar.
      * @param oracleDatapoint OracleDatapoint containing additional necessary information for resolving types,
      *                        e.g., class and method names and sources. NOTE: To handle Java expressions
@@ -60,7 +60,7 @@ public class JavaParserUtils {
      *                        populated, even if it's a partial oracle (e.g., it's the oracle being currently
      *                        generated). Then, the last occurring jdVar clause is looked for and its type is
      *                        resolved, which will be used to resolve the type of the expression.
-     * @return Pair of strings, where the first string is the package and the second string is the class.
+     * @return pair of strings, where the first string is the package and the second string is the class
      */
     public static Pair<String, String> getReturnTypeOfExpression(String expression, OracleDatapoint oracleDatapoint) {
         // Handle null
@@ -168,7 +168,7 @@ public class JavaParserUtils {
     }
 
     /**
-     * Note: if the class is something like "List&lt;String&gt;", this method will return "List" as the class name.
+     * Note: if the class is something like "{@code List<String>}", this method will return "List" as the class name.
      */
     public static Pair<String, String> getTypeFromResolvedType(ResolvedType resolvedType) {
         if (resolvedType.isReferenceType()) {
@@ -196,11 +196,11 @@ public class JavaParserUtils {
      * A resolved type may be void, primitive, an array of primitives or a reference type (including
      * package and class). It the type is a reference type, this method returns the fully qualified
      * type without packages. A fully qualified type may contain more than one package, for example:
-     * <code>java.util.Comparator&lt;java.util.Map.Entry&lt;K, V&gt;&gt;</code>
+     * {@code java.util.Comparator<java.util.Map.Entry<K, V>>}
      * For such example, this method would return the following:
-     * <code>Comparator&lt;Map.Entry&lt;K, V&gt;&gt;</code>
-     * @param resolvedType JavaParser ResolvedType (usually obtained when using Java Symbol Solver).
-     * @return String representation of the type without packages.
+     * {@code Comparator<Map.Entry<K, V>>}
+     * @param resolvedType JavaParser ResolvedType (usually obtained when using Java Symbol Solver)
+     * @return string representation of the type without packages
      */
     public static String getTypeWithoutPackages(ResolvedType resolvedType) {
         String type = resolvedType.describe();
@@ -232,9 +232,9 @@ public class JavaParserUtils {
      * Given a fully qualified class name, returns the corresponding ResolvedReferenceTypeDeclaration.
      * This is useful to perform other operations on top of the returned object, such as getting all
      * methods and fields.
-     * @param type Fully qualified type, e.g., "java.util.List"
+     * @param type fully qualified type, e.g., "java.util.List"
      * @throws UnsolvedSymbolException if the type cannot be resolved
-     * @throws UnsupportedOperationException if the type is an array or a primitive type.
+     * @throws UnsupportedOperationException if the type is an array or a primitive type
      */
     static ResolvedReferenceTypeDeclaration getResolvedReferenceTypeDeclaration(String type) throws UnsolvedSymbolException, UnsupportedOperationException {
         return getResolvedType(type).asReferenceType().getTypeDeclaration().get();
@@ -245,7 +245,7 @@ public class JavaParserUtils {
     }
 
     /**
-     * @throws UnsupportedOperationException if the type is an array or a primitive type.
+     * @throws UnsupportedOperationException if the type is an array or a primitive type
      */
     private static ResolvedType getResolvedType(String type) throws UnsupportedOperationException {
         CompilationUnit cu = javaParser.parse(SYNTHETIC_CLASS_SOURCE).getResult().get();
@@ -266,7 +266,7 @@ public class JavaParserUtils {
      * the type is a reference type but cannot be resolved (e.g., a generic type), retrieves methods
      * from java.lang.Object. If the type is an array, retrieves methods from java.lang.Object. If the
      * type is a primitive, throws an IllegalArgumentException.
-     * @throws IllegalArgumentException if the type is not a reference type or an array.
+     * @throws IllegalArgumentException if the type is not a reference type or an array
      */
     public static Set<MethodUsage> getMethodsOfType(String type) throws IllegalArgumentException {
         ResolvedType resolvedType = null;
@@ -292,10 +292,10 @@ public class JavaParserUtils {
     }
 
     /**
-     * @param type1 Fully qualified type, e.g., "java.util.List"
-     * @param type2 Fully qualified type, e.g., "java.lang.Object"
-     * @param oracleDatapoint May be null. If not null, it is used to check if some type is generic
-     * @return true if type1 is an instance of type2, false otherwise.
+     * @param type1 fully qualified type, e.g., "java.util.List"
+     * @param type2 fully qualified type, e.g., "java.lang.Object"
+     * @param oracleDatapoint may be null. If not null, it is used to check if some type is generic.
+     * @return true if type1 is an instance of type2, false otherwise
      */
     public static boolean isType1InstanceOfType2(String type1, String type2, OracleDatapoint oracleDatapoint) {
         return isType1InstanceOfType2(type1, type2, oracleDatapoint, true);
@@ -306,10 +306,10 @@ public class JavaParserUtils {
      * true if type1 and type2 can be compared using the instanceof operator. To better understand this
      * difference, consider the following use cases:
      * <ul>
-     *     <li><code>isType1InstanceOfType2("String", "Object", null)</code> returns <code>true</code></li>
-     *     <li><code>isType1InstanceOfType2("Object", "String", null)</code> returns <code>false</code></li>
-     *     <li><code>canType1BeInstanceOfType2("String", "Object", null)</code> returns <code>true</code></li>
-     *     <li><code>canType1BeInstanceOfType2("Object", "String", null)</code> returns <code>true</code></li>
+     *     <li>{@code isType1InstanceOfType2("String", "Object", null)} returns {@code true}</li>
+     *     <li>{@code isType1InstanceOfType2("Object", "String", null)} returns {@code false}</li>
+     *     <li>{@code canType1BeInstanceOfType2("String", "Object", null)} returns {@code true}</li>
+     *     <li>{@code canType1BeInstanceOfType2("Object", "String", null)} returns {@code true}</li>
      * </ul>
      * In other words, this method returns true if the expression "var1 instanceof type2" would compile,
      * where var1 is a variable of type1.
@@ -332,7 +332,7 @@ public class JavaParserUtils {
     /**
      * Auxiliary method used both by {@link #isType1InstanceOfType2(String, String, OracleDatapoint)}
      * and {@link #canType1BeInstanceOfType2}.
-     * @param checkEquality If true, returns true if type1 is equal to type2. If false, this check is
+     * @param checkEquality if true, returns true if type1 is equal to type2. If false, this check is
      *                      not performed at all. Must be true if checking if type1 IS instanceof type2.
      *                      Must be false if checking if type1 CAN BE instanceof type2. This is because
      *                      type1 and type2 may be generics or unresolvable classes, and in those cases
@@ -398,10 +398,10 @@ public class JavaParserUtils {
      * primitive types and primitive wrapper types. For instance, a boolean is assignable to a Boolean,
      * but not the other way around. Note that this method takes as input pairs of package and class
      * name, instead of fully qualified types.
-     * @param type1 Pair with &lt;package, class&gt;, e.g., "&lt;java.util, List&gt;"
-     * @param type2 Pair with &lt;package, class&gt;, e.g., "&lt;java.lang, Object&gt;"
-     * @param oracleDatapoint May be null. If not null, it is used to check if some type is generic
-     * @return true if a variable of type1 can be assigned to a variable of type2, false otherwise.
+     * @param type1 pair with &lt;package, class&gt;, e.g., &lt;"java.util", "List"&gt;
+     * @param type2 pair with &lt;package, class&gt;, e.g., &lt;"java.lang", "Object"&gt;
+     * @param oracleDatapoint may be null. If not null, it is used to check if some type is generic.
+     * @return true if a variable of type1 can be assigned to a variable of type2, false otherwise
      */
     public static boolean isType1AssignableToType2(Pair<String, String> type1, Pair<String, String> type2, OracleDatapoint oracleDatapoint) {
         // Cases to consider:
@@ -418,7 +418,7 @@ public class JavaParserUtils {
                 isType1InstanceOfType2(fullyQualifiedClassName(type1), fullyQualifiedClassName(type2), oracleDatapoint);
     }
 
-    public static TypeDeclaration<? extends TypeDeclaration<?>> getClassOrInterface(CompilationUnit cu, String name) {
+    public static TypeDeclaration<?> getClassOrInterface(CompilationUnit cu, String name) {
         try {
             return cu.getLocalDeclarationFromClassname(name).get(0);
         } catch (NoSuchElementException|IndexOutOfBoundsException ignored) {}
@@ -455,7 +455,7 @@ public class JavaParserUtils {
      * has the following limitations:
      * <ul>
      *     <li>We lose modifiers and annotations before parameters, e.g., the "final" and "@NotNull" in
-     *     the signature <code>"... addAll(@NotNull final T[] elements)"</code></li>
+     *     the signature {@code "... addAll(@NotNull final T[] elements)"}</li>
      *     <li>We lose parameter names, which are replaced by "arg0", "arg1", etc.</li>
      * </ul>
      */

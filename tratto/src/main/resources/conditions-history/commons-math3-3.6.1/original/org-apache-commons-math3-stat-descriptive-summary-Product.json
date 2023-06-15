@@ -1,0 +1,141 @@
+[
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.stat.descriptive.summary.Product",
+      "name": "org.apache.commons.math3.stat.descriptive.summary.Product",
+      "parameterTypes": [
+        "org.apache.commons.math3.stat.descriptive.summary.Product"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "original"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NullArgumentException",
+        "description": "@throws org.apache.commons.math3.exception.NullArgumentException original is null.",
+        "guard": {
+          "condition": "original==null",
+          "description": "original is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.stat.descriptive.summary.Product",
+      "name": "evaluate",
+      "parameterTypes": [
+        "[D",
+        "int",
+        "int"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "values",
+        "begin",
+        "length"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.MathIllegalArgumentException",
+        "description": "@throws org.apache.commons.math3.exception.MathIllegalArgumentException the array is null or the array index parameters are not valid.",
+        "guard": {
+          "condition": "values==null",
+          "description": "the array is null or the array index parameters are not valid."
+        }
+      }
+    ],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID==1",
+          "description": "methodResultID is 1 if length = 0."
+        },
+        "description": "methodResultID is 1 if length = 0.",
+        "guard": {
+          "condition": "length==0",
+          "description": "methodResultID is 1 if length = 0."
+        }
+      }
+    ],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.stat.descriptive.summary.Product",
+      "name": "evaluate",
+      "parameterTypes": [
+        "[D",
+        "[D",
+        "int",
+        "int"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "values",
+        "weights",
+        "begin",
+        "length"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID==1",
+          "description": "methodResultID is 1 if length = 0."
+        },
+        "description": "methodResultID is 1 if length = 0.",
+        "guard": {
+          "condition": "length==0",
+          "description": "methodResultID is 1 if length = 0."
+        }
+      }
+    ],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.stat.descriptive.summary.Product",
+      "name": "copy",
+      "parameterTypes": [
+        "org.apache.commons.math3.stat.descriptive.summary.Product",
+        "org.apache.commons.math3.stat.descriptive.summary.Product"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "source",
+        "dest"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NullArgumentException",
+        "description": "@throws org.apache.commons.math3.exception.NullArgumentException either source or dest is null.",
+        "guard": {
+          "condition": "source==null || dest==null",
+          "description": "either source or dest is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  }
+]

@@ -1,0 +1,418 @@
+[
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.linear.RealMatrix",
+      "name": "createMatrix",
+      "parameterTypes": [
+        "int",
+        "int"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "rowDimension",
+        "columnDimension"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NotStrictlyPositiveException",
+        "description": "@throws org.apache.commons.math3.exception.NotStrictlyPositiveException row or column dimension is not positive.",
+        "guard": {
+          "condition": "(rowDimension>0) == false",
+          "description": "row or column dimension is not positive."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.linear.RealMatrix",
+      "name": "power",
+      "parameterTypes": [
+        "int"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "p"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NotPositiveException",
+        "description": "@throws org.apache.commons.math3.exception.NotPositiveException p < 0.",
+        "guard": {
+          "condition": "p<0",
+          "description": "p < 0."
+        }
+      },
+      {
+        "exception": "org.apache.commons.math3.linear.NonSquareMatrixException",
+        "description": "@throws org.apache.commons.math3.linear.NonSquareMatrixException the matrix is not square.",
+        "guard": {
+          "condition": "(receiverObjectID.isSquare()) == false",
+          "description": "the matrix is not square."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.linear.RealMatrix",
+      "name": "getSubMatrix",
+      "parameterTypes": [
+        "int",
+        "int",
+        "int",
+        "int"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "startRow",
+        "endRow",
+        "startColumn",
+        "endColumn"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NumberIsTooSmallException",
+        "description": "@throws org.apache.commons.math3.exception.NumberIsTooSmallException endRow < startRow or endColumn < startColumn.",
+        "guard": {
+          "condition": "endRow<startRow || endColumn<startColumn",
+          "description": "endRow < startRow or endColumn < startColumn."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.linear.RealMatrix",
+      "name": "copySubMatrix",
+      "parameterTypes": [
+        "int",
+        "int",
+        "int",
+        "int",
+        "[[D"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "startRow",
+        "endRow",
+        "startColumn",
+        "endColumn",
+        "destination"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NumberIsTooSmallException",
+        "description": "@throws org.apache.commons.math3.exception.NumberIsTooSmallException endRow < startRow or endColumn < startColumn.",
+        "guard": {
+          "condition": "endRow<startRow || endColumn<startColumn",
+          "description": "endRow < startRow or endColumn < startColumn."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.linear.RealMatrix",
+      "name": "setSubMatrix",
+      "parameterTypes": [
+        "[[D",
+        "int",
+        "int"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "subMatrix",
+        "row",
+        "column"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NoDataException",
+        "description": "@throws org.apache.commons.math3.exception.NoDataException subMatrix is empty.",
+        "guard": {
+          "condition": "subMatrix.length==0",
+          "description": "subMatrix is empty."
+        }
+      },
+      {
+        "exception": "org.apache.commons.math3.exception.NullArgumentException",
+        "description": "@throws org.apache.commons.math3.exception.NullArgumentException subMatrix is null.",
+        "guard": {
+          "condition": "subMatrix==null",
+          "description": "subMatrix is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.linear.RealMatrix",
+      "name": "getTrace",
+      "parameterTypes": []
+    },
+    "identifiers": {
+      "parameters": [],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.linear.NonSquareMatrixException",
+        "description": "@throws org.apache.commons.math3.linear.NonSquareMatrixException the matrix is not square.",
+        "guard": {
+          "condition": "(receiverObjectID.isSquare()) == false",
+          "description": "the matrix is not square."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.linear.RealMatrix",
+      "name": "walkInRowOrder",
+      "parameterTypes": [
+        "org.apache.commons.math3.linear.RealMatrixChangingVisitor",
+        "int",
+        "int",
+        "int",
+        "int"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "visitor",
+        "startRow",
+        "endRow",
+        "startColumn",
+        "endColumn"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NumberIsTooSmallException",
+        "description": "@throws org.apache.commons.math3.exception.NumberIsTooSmallException endRow < startRow or endColumn < startColumn.",
+        "guard": {
+          "condition": "endRow<startRow || endColumn<startColumn",
+          "description": "endRow < startRow or endColumn < startColumn."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.linear.RealMatrix",
+      "name": "walkInRowOrder",
+      "parameterTypes": [
+        "org.apache.commons.math3.linear.RealMatrixPreservingVisitor",
+        "int",
+        "int",
+        "int",
+        "int"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "visitor",
+        "startRow",
+        "endRow",
+        "startColumn",
+        "endColumn"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NumberIsTooSmallException",
+        "description": "@throws org.apache.commons.math3.exception.NumberIsTooSmallException endRow < startRow or endColumn < startColumn.",
+        "guard": {
+          "condition": "endRow<startRow || endColumn<startColumn",
+          "description": "endRow < startRow or endColumn < startColumn."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.linear.RealMatrix",
+      "name": "walkInColumnOrder",
+      "parameterTypes": [
+        "org.apache.commons.math3.linear.RealMatrixChangingVisitor",
+        "int",
+        "int",
+        "int",
+        "int"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "visitor",
+        "startRow",
+        "endRow",
+        "startColumn",
+        "endColumn"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NumberIsTooSmallException",
+        "description": "@throws org.apache.commons.math3.exception.NumberIsTooSmallException endRow < startRow or endColumn < startColumn.",
+        "guard": {
+          "condition": "endRow<startRow || endColumn<startColumn",
+          "description": "endRow < startRow or endColumn < startColumn."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.linear.RealMatrix",
+      "name": "walkInColumnOrder",
+      "parameterTypes": [
+        "org.apache.commons.math3.linear.RealMatrixPreservingVisitor",
+        "int",
+        "int",
+        "int",
+        "int"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "visitor",
+        "startRow",
+        "endRow",
+        "startColumn",
+        "endColumn"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NumberIsTooSmallException",
+        "description": "@throws org.apache.commons.math3.exception.NumberIsTooSmallException endRow < startRow or endColumn < startColumn.",
+        "guard": {
+          "condition": "endRow<startRow || endColumn<startColumn",
+          "description": "endRow < startRow or endColumn < startColumn."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.linear.RealMatrix",
+      "name": "walkInOptimizedOrder",
+      "parameterTypes": [
+        "org.apache.commons.math3.linear.RealMatrixChangingVisitor",
+        "int",
+        "int",
+        "int",
+        "int"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "visitor",
+        "startRow",
+        "endRow",
+        "startColumn",
+        "endColumn"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NumberIsTooSmallException",
+        "description": "@throws org.apache.commons.math3.exception.NumberIsTooSmallException endRow < startRow or endColumn < startColumn.",
+        "guard": {
+          "condition": "endRow<startRow || endColumn<startColumn",
+          "description": "endRow < startRow or endColumn < startColumn."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.linear.RealMatrix",
+      "name": "walkInOptimizedOrder",
+      "parameterTypes": [
+        "org.apache.commons.math3.linear.RealMatrixPreservingVisitor",
+        "int",
+        "int",
+        "int",
+        "int"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "visitor",
+        "startRow",
+        "endRow",
+        "startColumn",
+        "endColumn"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NumberIsTooSmallException",
+        "description": "@throws org.apache.commons.math3.exception.NumberIsTooSmallException endRow < startRow or endColumn < startColumn.",
+        "guard": {
+          "condition": "endRow<startRow || endColumn<startColumn",
+          "description": "endRow < startRow or endColumn < startColumn."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  }
+]

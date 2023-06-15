@@ -1,6 +1,6 @@
 ## Tool name: TRATTO
 
-This is a completely new project which comprises multiple sub-projects, and we are not building anything on top of Toradocu, so it may be a good idea to give the project a new name. A possible name could be _TRATTO – **TRA**nsformer-based **T**oken-by-**T**oken **O**racle generation_ (an Italian word which means “line” or “way”). I think it's important to emphasize the fact that the approach generates oracles token by token, because: 1) it's one the main distinctive features, and 2) this allows the approach to generate variations of the oracles very easily, by replacing a token at any position with the 2nd ranked token and continuing the oracle generation process from there.
+TRATTO stands for "**TRA**nsformer-based **T**oken-by-**T**oken **O**racle generation" and is an Italian word that means “line” or “way”. I think it's important to emphasize the fact that the approach generates oracles token by token, because: 1) it's one the main distinctive features, and 2) this allows the approach to generate variations of the oracles very easily, by replacing a token at any position with the 2nd ranked token and continuing the oracle generation process from there.
 
 ## Directory structure
 
