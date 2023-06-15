@@ -35,6 +35,7 @@ public class TokensDataset {
     private static int fileIndex = 0;
     private static int negativeSamples = 0;
     private static int positiveSamples = 0;
+    private static List<String> currentTokenClassesSoFar;
     private static final boolean crashOnWrongOracle = false;
 
     public static void main(String[] args) throws IOException {
@@ -123,6 +124,7 @@ public class TokensDataset {
         Oracle oracle = parser.getOracle(stringOracle);
         List<String> oracleTokens = split(oracle);
         List<String> oracleSoFarTokens = new ArrayList<>();
+        currentTokenClassesSoFar = new ArrayList<>();
 
         // TokenDatapoints for when oracleSoFarTokens = []:
         List<TokenDatapoint> tokenDatapoints = oracleSoFarAndTokenToTokenDatapoints(oracleDatapoint, oracleSoFarTokens, oracleTokens.get(0));
@@ -198,6 +200,14 @@ public class TokensDataset {
             );
             negativeSamples -= oldSize - tokenDatapoints.size();
         }
+
+        // If token-classes, update tokenClassesSoFar for all tokenDatapoints and update currentTokenClassesSoFar for next iteration
+        if (DATASET_TYPE.equals(DatasetType.TOKEN_CLASSES)) {
+            List<String> tokenClassesSoFar = new ArrayList<>(currentTokenClassesSoFar);
+            tokenDatapoints.forEach(tdp -> tdp.setTokenClassesSoFar(new ArrayList<>(tokenClassesSoFar)));
+            currentTokenClassesSoFar.add(nextOracleTokenClass);
+        }
+
         assertTokenLegal(nextTokenActuallyLegal, nextOracleToken, oracleSoFarTokens);
         return tokenDatapoints;
     }
