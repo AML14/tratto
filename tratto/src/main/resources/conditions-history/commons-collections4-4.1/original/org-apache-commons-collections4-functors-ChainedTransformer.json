@@ -1,0 +1,97 @@
+[
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.functors.ChainedTransformer",
+      "name": "chainedTransformer",
+      "parameterTypes": [
+        "[Lorg.apache.commons.collections4.Transformer;"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "transformers"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the transformers array is null.",
+        "guard": {
+          "condition": "transformers==null",
+          "description": "the transformers array is null."
+        }
+      },
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException any transformer in the array is null.",
+        "guard": {
+          "condition": "java.util.Arrays.stream(transformers).anyMatch(e -> e==null)",
+          "description": "any transformer in the array is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.functors.ChainedTransformer",
+      "name": "chainedTransformer",
+      "parameterTypes": [
+        "java.util.Collection"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "transformers"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the transformers collection is null.",
+        "guard": {
+          "condition": "transformers==null",
+          "description": "the transformers collection is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.functors.ChainedTransformer",
+      "name": "transform",
+      "parameterTypes": [
+        "java.lang.Object"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "object"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID.equals(receiverObjectID)",
+          "description": "the transformed result."
+        },
+        "description": "the transformed result.",
+        "guard": {
+          "condition": "true",
+          "description": "the transformed result."
+        }
+      }
+    ],
+    "pre": []
+  }
+]

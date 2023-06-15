@@ -1,0 +1,98 @@
+[
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.analysis.integration.SimpsonIntegrator",
+      "name": "org.apache.commons.math3.analysis.integration.SimpsonIntegrator",
+      "parameterTypes": [
+        "double",
+        "double",
+        "int",
+        "int"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "relativeAccuracy",
+        "absoluteAccuracy",
+        "minimalIterationCount",
+        "maximalIterationCount"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NotStrictlyPositiveException",
+        "description": "@throws org.apache.commons.math3.exception.NotStrictlyPositiveException minimal number of iterations is not strictly positive.",
+        "guard": {
+          "condition": "(minimalIterationCount>0) == false",
+          "description": "minimal number of iterations is not strictly positive."
+        }
+      },
+      {
+        "exception": "org.apache.commons.math3.exception.NumberIsTooLargeException",
+        "description": "@throws org.apache.commons.math3.exception.NumberIsTooLargeException maximal number of iterations is greater than SIMPSON_MAX_ITERATIONS_COUNT.",
+        "guard": {
+          "condition": "minimalIterationCount>receiverObjectID.SIMPSON_MAX_ITERATIONS_COUNT",
+          "description": "maximal number of iterations is greater than SIMPSON_MAX_ITERATIONS_COUNT."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param maximalIterationCount maximum number of iterations (. maximalIterationCount is less than or equal to SIMPSON_MAX_ITERATIONS_COUNT).",
+        "guard": {
+          "condition": "maximalIterationCount<=receiverObjectID.SIMPSON_MAX_ITERATIONS_COUNT",
+          "description": "maximum number of iterations (. maximalIterationCount is less than or equal to SIMPSON_MAX_ITERATIONS_COUNT)."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.analysis.integration.SimpsonIntegrator",
+      "name": "org.apache.commons.math3.analysis.integration.SimpsonIntegrator",
+      "parameterTypes": [
+        "int",
+        "int"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "minimalIterationCount",
+        "maximalIterationCount"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NotStrictlyPositiveException",
+        "description": "@throws org.apache.commons.math3.exception.NotStrictlyPositiveException minimal number of iterations is not strictly positive.",
+        "guard": {
+          "condition": "(minimalIterationCount>0) == false",
+          "description": "minimal number of iterations is not strictly positive."
+        }
+      },
+      {
+        "exception": "org.apache.commons.math3.exception.NumberIsTooLargeException",
+        "description": "@throws org.apache.commons.math3.exception.NumberIsTooLargeException maximal number of iterations is greater than SIMPSON_MAX_ITERATIONS_COUNT.",
+        "guard": {
+          "condition": "minimalIterationCount>receiverObjectID.SIMPSON_MAX_ITERATIONS_COUNT",
+          "description": "maximal number of iterations is greater than SIMPSON_MAX_ITERATIONS_COUNT."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param maximalIterationCount maximum number of iterations (. maximalIterationCount is less than or equal to SIMPSON_MAX_ITERATIONS_COUNT).",
+        "guard": {
+          "condition": "maximalIterationCount<=receiverObjectID.SIMPSON_MAX_ITERATIONS_COUNT",
+          "description": "maximum number of iterations (. maximalIterationCount is less than or equal to SIMPSON_MAX_ITERATIONS_COUNT)."
+        }
+      }
+    ]
+  }
+]

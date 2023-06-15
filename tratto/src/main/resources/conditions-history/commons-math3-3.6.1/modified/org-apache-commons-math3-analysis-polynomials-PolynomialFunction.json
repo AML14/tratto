@@ -1,0 +1,160 @@
+[
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.analysis.polynomials.PolynomialFunction",
+      "name": "org.apache.commons.math3.analysis.polynomials.PolynomialFunction",
+      "parameterTypes": [
+        "[D"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "c"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NullArgumentException",
+        "description": "@throws org.apache.commons.math3.exception.NullArgumentException c is null.",
+        "guard": {
+          "condition": "c==null",
+          "description": "c is null."
+        }
+      },
+      {
+        "exception": "org.apache.commons.math3.exception.NoDataException",
+        "description": "@throws org.apache.commons.math3.exception.NoDataException c is empty.",
+        "guard": {
+          "condition": "c.length==0",
+          "description": "c is empty."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.analysis.polynomials.PolynomialFunction",
+      "name": "evaluate",
+      "parameterTypes": [
+        "[D",
+        "double"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "coefficients",
+        "argument"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NoDataException",
+        "description": "@throws org.apache.commons.math3.exception.NoDataException coefficients is empty.",
+        "guard": {
+          "condition": "coefficients.length==0",
+          "description": "coefficients is empty."
+        }
+      },
+      {
+        "exception": "org.apache.commons.math3.exception.NullArgumentException",
+        "description": "@throws org.apache.commons.math3.exception.NullArgumentException coefficients is null.",
+        "guard": {
+          "condition": "coefficients==null",
+          "description": "coefficients is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.analysis.polynomials.PolynomialFunction",
+      "name": "value",
+      "parameterTypes": [
+        "org.apache.commons.math3.analysis.differentiation.DerivativeStructure"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "t"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NoDataException",
+        "description": "@throws org.apache.commons.math3.exception.NoDataException coefficients is empty.",
+        "guard": {
+          "condition": "receiverObjectID.getCoefficients().length==0",
+          "description": "coefficients is empty."
+        }
+      },
+      {
+        "exception": "org.apache.commons.math3.exception.NullArgumentException",
+        "description": "@throws org.apache.commons.math3.exception.NullArgumentException coefficients is null.",
+        "guard": {
+          "condition": "receiverObjectID.getCoefficients()==null",
+          "description": "coefficients is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.analysis.polynomials.PolynomialFunction",
+      "name": "differentiate",
+      "parameterTypes": [
+        "[D"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "coefficients"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NoDataException",
+        "description": "@throws org.apache.commons.math3.exception.NoDataException coefficients is empty.",
+        "guard": {
+          "condition": "coefficients.length==0",
+          "description": "coefficients is empty."
+        }
+      },
+      {
+        "exception": "org.apache.commons.math3.exception.NullArgumentException",
+        "description": "@throws org.apache.commons.math3.exception.NullArgumentException coefficients is null.",
+        "guard": {
+          "condition": "coefficients==null",
+          "description": "coefficients is null."
+        }
+      }
+    ],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID==null",
+          "description": "methodResultID is null if coefficients has length 1."
+        },
+        "description": "methodResultID is null if coefficients has length 1.",
+        "guard": {
+          "condition": "coefficients.length==1",
+          "description": "methodResultID is null if coefficients has length 1."
+        }
+      }
+    ],
+    "pre": []
+  }
+]

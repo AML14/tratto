@@ -1,0 +1,70 @@
+[
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.SetValuedMap",
+      "name": "get",
+      "parameterTypes": [
+        "java.lang.Object"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "key"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the key is null and null keys are invalid.",
+        "guard": {
+          "condition": "key==null",
+          "description": "the key is null and null keys are invalid."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.SetValuedMap",
+      "name": "remove",
+      "parameterTypes": [
+        "java.lang.Object"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "key"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the key is null and null keys are invalid.",
+        "guard": {
+          "condition": "key==null",
+          "description": "the key is null and null keys are invalid."
+        }
+      }
+    ],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID==null",
+          "description": "the Set of values removed, implementations should return null for no mapping found, but may return an empty collection."
+        },
+        "description": "the Set of values removed, implementations should return null for no mapping found, but may return an empty collection.",
+        "guard": {
+          "condition": "true",
+          "description": "the Set of values removed, implementations should return null for no mapping found, but may return an empty collection."
+        }
+      }
+    ],
+    "pre": []
+  }
+]
