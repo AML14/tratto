@@ -3,7 +3,7 @@ package star.tratto.token;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
-import star.tratto.dataset.oracles.OracleDatapoint;
+import star.tratto.data.OracleDatapoint;
 import star.tratto.oracle.OracleType;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.token.restrictions.multi.MultiTokenRestriction;

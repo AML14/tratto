@@ -4,7 +4,7 @@ import org.javatuples.Triplet;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import star.tratto.dataset.oracles.OracleDatapoint;
+import star.tratto.data.OracleDatapoint;
 import star.tratto.oraclegrammar.custom.Parser;
 
 import java.util.List;

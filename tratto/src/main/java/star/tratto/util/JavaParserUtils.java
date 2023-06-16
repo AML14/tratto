@@ -16,7 +16,7 @@ import com.github.javaparser.symbolsolver.utils.SymbolSolverCollectionStrategy;
 import org.javatuples.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import star.tratto.dataset.oracles.OracleDatapoint;
+import star.tratto.data.OracleDatapoint;
 import star.tratto.oraclegrammar.custom.Parser;
 
 import java.nio.file.Paths;
@@ -40,7 +40,7 @@ public class JavaParserUtils {
 
     public static JavaParser getJavaParser() {
         if (javaParser == null) {
-            String root = "src/main/resources/projects-sources";
+            String root = "src/main/resources/projects-packaged";
             SymbolSolverCollectionStrategy strategy = new SymbolSolverCollectionStrategy();
             strategy.collect(Paths.get(root));
             javaParser = new JavaParser();

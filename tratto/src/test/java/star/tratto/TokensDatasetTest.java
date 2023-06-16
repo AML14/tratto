@@ -1,6 +1,7 @@
-package star.tratto.dataset.tokens;
+package star.tratto;
 
 import org.junit.jupiter.api.Test;
+import star.tratto.TokensDataset;
 
 import java.io.IOException;
 

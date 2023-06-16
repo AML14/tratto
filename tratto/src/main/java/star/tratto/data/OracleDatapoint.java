@@ -1,4 +1,4 @@
-package star.tratto.dataset.oracles;
+package star.tratto.data;
 
 import org.javatuples.Pair;
 import org.javatuples.Quartet;

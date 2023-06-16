@@ -4,7 +4,7 @@ import com.github.javaparser.resolution.MethodUsage;
 import org.eclipse.emf.ecore.EObject;
 import org.javatuples.Pair;
 import org.javatuples.Quartet;
-import star.tratto.dataset.oracles.OracleDatapoint;
+import star.tratto.data.OracleDatapoint;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.oraclegrammar.trattoGrammar.MethodCall;
 import star.tratto.token.Tokens;

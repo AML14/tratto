@@ -1,11 +1,12 @@
-package star.tratto.dataset.tokens;
+package star.tratto;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.FileUtils;
 import org.javatuples.Triplet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import star.tratto.dataset.oracles.OracleDatapoint;
+import star.tratto.data.OracleDatapoint;
+import star.tratto.data.TokenDatapoint;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.oraclegrammar.trattoGrammar.Oracle;
 

@@ -2,7 +2,7 @@ package star.tratto.token;
 
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
-import star.tratto.dataset.oracles.OracleDatapoint;
+import star.tratto.data.OracleDatapoint;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.oraclegrammar.trattoGrammar.CanEvaluateToPrimitive;
 import star.tratto.util.JavaTypes;
