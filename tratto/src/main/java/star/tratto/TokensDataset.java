@@ -5,6 +5,7 @@ import org.apache.commons.io.FileUtils;
 import org.javatuples.Triplet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import star.tratto.data.TokenDPType;
 import star.tratto.data.OracleDatapoint;
 import star.tratto.data.TokenDatapoint;
 import star.tratto.oraclegrammar.custom.Parser;
@@ -31,7 +32,7 @@ public class TokensDataset {
     private static final ObjectMapper objectMapper = new ObjectMapper();
     public static String ORACLES_DATASET_FOLDER = "src/main/resources/oracles-dataset/";
     public static String TOKENS_DATASET_FOLDER = "src/main/resources/tokens-dataset/";
-    public static DatasetType DATASET_TYPE = DatasetType.TOKENS;
+    public static TokenDPType DATASET_TYPE = TokenDPType.TOKEN;
     private static int tokenIndex = 0;
     private static int fileIndex = 0;
     private static int negativeSamples = 0;
@@ -99,10 +100,10 @@ public class TokensDataset {
             logger.error("DATASET_TYPE not set. Pass one argument, which must be one of TOKENS, TOKEN_CLASSES or TOKEN_VALUES.");
         } else if (args.length > 1) {
             logger.error("Wrong number of arguments. Expected 0 or 1, got {}", args.length);
-        } else if (args.length == 1 && !Arrays.stream(DatasetType.values()).map(Enum::name).collect(Collectors.toList()).contains(args[0])) {
+        } else if (args.length == 1 && !Arrays.stream(TokenDPType.values()).map(Enum::name).collect(Collectors.toList()).contains(args[0])) {
             logger.error("Wrong argument. Expected TOKENS or TOKEN_CLASSES or TOKEN_VALUES, got {}", args[0]);
         } else {
-            if (args.length == 1) DATASET_TYPE = DatasetType.valueOf(args[0]);
+            if (args.length == 1) DATASET_TYPE = TokenDPType.valueOf(args[0]);
             return;
         }
         System.exit(1);
@@ -174,14 +175,14 @@ public class TokensDataset {
             }
 
             // For token-classes dataset, we don't need token and token info, just token class
-            if (DATASET_TYPE.equals(DatasetType.TOKEN_CLASSES)) {
+            if (DATASET_TYPE.equals(TokenDPType.TOKEN_CLASS)) {
                 legalToken = null;
                 legalTokenInfo = null;
             }
 
             // For tokens or token-values dataset, add all tokens. For token-classes dataset, add only one token per class
             // (except for right class, where one with label=true and one with label=false are added)
-            if (!DATASET_TYPE.equals(DatasetType.TOKEN_CLASSES) || (label || !addedTokenClasses.contains(legalTokenClass))) {
+            if (!DATASET_TYPE.equals(TokenDPType.TOKEN_CLASS) || (label || !addedTokenClasses.contains(legalTokenClass))) {
                 TokenDatapoint tokenDatapoint = new TokenDatapoint(tokenIndex++, label, oracleDatapoint, compactExpression(oracleSoFarTokens), legalToken, legalTokenClass, legalTokenInfo);
                 tokenDatapoints.add(tokenDatapoint);
                 addedTokenClasses.add(legalTokenClass);
@@ -192,18 +193,18 @@ public class TokensDataset {
         }
 
         // If token-classes or token-values, we need to remove some negative token datapoints and update negativeSamples accordingly
-        if (!DATASET_TYPE.equals(DatasetType.TOKENS)) {
+        if (!DATASET_TYPE.equals(TokenDPType.TOKEN)) {
             int oldSize = tokenDatapoints.size();
             String finalNextOracleTokenClass = nextOracleTokenClass;
             tokenDatapoints.removeIf(tdp ->
-                    (DATASET_TYPE.equals(DatasetType.TOKEN_VALUES) && !tdp.getTokenClass().equals(finalNextOracleTokenClass)) ||
-                    (DATASET_TYPE.equals(DatasetType.TOKEN_CLASSES) && !tdp.getLabel() && tdp.getTokenClass().equals(finalNextOracleTokenClass))
+                    (DATASET_TYPE.equals(TokenDPType.TOKEN_VALUE) && !tdp.getTokenClass().equals(finalNextOracleTokenClass)) ||
+                    (DATASET_TYPE.equals(TokenDPType.TOKEN_CLASS) && !tdp.getLabel() && tdp.getTokenClass().equals(finalNextOracleTokenClass))
             );
             negativeSamples -= oldSize - tokenDatapoints.size();
         }
 
         // If token-classes, update tokenClassesSoFar for all tokenDatapoints and update currentTokenClassesSoFar for next iteration
-        if (DATASET_TYPE.equals(DatasetType.TOKEN_CLASSES)) {
+        if (DATASET_TYPE.equals(TokenDPType.TOKEN_CLASS)) {
             List<String> tokenClassesSoFar = new ArrayList<>(currentTokenClassesSoFar);
             tokenDatapoints.forEach(tdp -> tdp.setTokenClassesSoFar(new ArrayList<>(tokenClassesSoFar)));
             currentTokenClassesSoFar.add(nextOracleTokenClass);
@@ -228,9 +229,5 @@ public class TokensDataset {
         public MissingTokenException(String message) {
             super(message);
         }
-    }
-
-    public enum DatasetType {
-        TOKENS, TOKEN_CLASSES, TOKEN_VALUES
     }
 }

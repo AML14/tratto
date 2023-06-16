@@ -2,7 +2,7 @@ package star.tratto.token.restrictions.single;
 
 import com.github.javaparser.ast.body.MethodDeclaration;
 import star.tratto.data.OracleDatapoint;
-import star.tratto.oracle.OracleType;
+import star.tratto.data.OracleType;
 
 import java.util.HashMap;
 import java.util.List;

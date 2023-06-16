@@ -10,7 +10,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.MockedStatic;
 import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleDatapointTest;
-import star.tratto.oracle.OracleType;
+import star.tratto.data.OracleType;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.oraclegrammar.trattoGrammar.Oracle;
 import star.tratto.token.restrictions.multi.*;

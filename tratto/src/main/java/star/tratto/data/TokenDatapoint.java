@@ -1,8 +1,5 @@
 package star.tratto.data;
 
-import star.tratto.data.OracleDatapoint;
-import star.tratto.oracle.OracleType;
-
 import java.util.List;
 
 /**
