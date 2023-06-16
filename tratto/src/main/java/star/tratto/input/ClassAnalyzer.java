@@ -4,7 +4,7 @@ import com.github.javaparser.ast.body.CallableDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.javadoc.Javadoc;
 import com.github.javaparser.javadoc.JavadocBlockTag;
-import star.tratto.dataset.oracles.OracleDatapoint;
+import star.tratto.data.OracleDatapoint;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,9 +17,6 @@ import java.util.Optional;
  * postcondition or exceptional behavior will be generated, respectively. For those methods
  * without any of these tags (or without Javadoc at all), at least one oracle of each type will
  * be generated.
- *
- * TODO: Support option to provide project-specific columns of OracleDatapoints from a static file,
- *  without having to process the whole project each time that oracles are generated for a class.
  */
 public class ClassAnalyzer {
 
@@ -99,16 +96,33 @@ public class ClassAnalyzer {
 
     public List<OracleDatapoint> getOracleDatapointsFromJavadoc(Javadoc javadoc) {
         List<OracleDatapoint> oracleDatapoints = new ArrayList<>();
+        boolean hasParamTag = false;
+        boolean hasReturnTag = false;
+        boolean hasThrowsOrExceptionTag = false;
 
         List<JavadocBlockTag> javadocTags = javadoc.getBlockTags();
         for (JavadocBlockTag javadocTag : javadocTags) {
             if (javadocTag.getType().equals(JavadocBlockTag.Type.PARAM)) {
                 // TODO: Generate precondition
+                hasParamTag = true;
             } else if (javadocTag.getType().equals(JavadocBlockTag.Type.RETURN)) {
                 // TODO: Generate postcondition
+                hasReturnTag = true;
             } else if (javadocTag.getType().equals(JavadocBlockTag.Type.THROWS) || javadocTag.getType().equals(JavadocBlockTag.Type.EXCEPTION)) {
                 // TODO: Generate exceptional behavior
+                hasThrowsOrExceptionTag = true;
             }
+        }
+
+        // If there's some missing tag, generate OracleDatapoint without associated tag
+        if (!hasParamTag) {
+            // TODO: Generate precondition
+        }
+        if (!hasReturnTag) {
+            // TODO: Generate postcondition
+        }
+        if (!hasThrowsOrExceptionTag) {
+            // TODO: Generate exceptional behavior
         }
 
         return oracleDatapoints;

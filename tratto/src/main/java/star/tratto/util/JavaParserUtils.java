@@ -435,6 +435,10 @@ public class JavaParserUtils {
         }
     }
 
+    public static TypeDeclaration<?> getClassOrInterface(String classSourceCode, String name) {
+        return getClassOrInterface(javaParser.parse(classSourceCode).getResult().get(), name);
+    }
+
     public static String getMethodSignature(MethodDeclaration methodDeclaration) {
         String method = methodDeclaration.toString();
         if (methodDeclaration.getBody().isPresent()) { // Remove body
