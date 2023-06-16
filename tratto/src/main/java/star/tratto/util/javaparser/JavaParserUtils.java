@@ -488,7 +488,7 @@ public class JavaParserUtils {
                 isType1InstanceOfType2(fullyQualifiedClassName(type1), fullyQualifiedClassName(type2), oracleDatapoint);
     }
 
-    public static TypeDeclaration<? extends TypeDeclaration<?>> getClassOrInterface(CompilationUnit cu, String name) {
+    public static TypeDeclaration<?> getClassOrInterface(CompilationUnit cu, String name) {
         try {
             return cu.getLocalDeclarationFromClassname(name).get(0);
         } catch (NoSuchElementException|IndexOutOfBoundsException ignored) {}

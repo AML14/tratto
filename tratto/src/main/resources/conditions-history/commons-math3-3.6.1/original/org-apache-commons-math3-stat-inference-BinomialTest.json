@@ -1,0 +1,104 @@
+[
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.stat.inference.BinomialTest",
+      "name": "binomialTest",
+      "parameterTypes": [
+        "int",
+        "int",
+        "double",
+        "org.apache.commons.math3.stat.inference.AlternativeHypothesis",
+        "double"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "numberOfTrials",
+        "numberOfSuccesses",
+        "probability",
+        "alternativeHypothesis",
+        "alpha"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NotPositiveException",
+        "description": "@throws org.apache.commons.math3.exception.NotPositiveException numberOfTrials or numberOfSuccesses is negative.",
+        "guard": {
+          "condition": "numberOfTrials<0 || numberOfSuccesses<0",
+          "description": "numberOfTrials or numberOfSuccesses is negative."
+        }
+      },
+      {
+        "exception": "org.apache.commons.math3.exception.OutOfRangeException",
+        "description": "@throws org.apache.commons.math3.exception.OutOfRangeException probability is not between 0 and 1.",
+        "guard": {
+          "condition": "(probability==0) == false",
+          "description": "probability is not between 0 and 1."
+        }
+      },
+      {
+        "exception": "org.apache.commons.math3.exception.MathIllegalArgumentException",
+        "description": "@throws org.apache.commons.math3.exception.MathIllegalArgumentException numberOfTrials < numberOfSuccesses or if alternateHypothesis is null.",
+        "guard": {
+          "condition": "numberOfTrials<numberOfSuccesses || alternativeHypothesis==null",
+          "description": "numberOfTrials < numberOfSuccesses or if alternateHypothesis is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.stat.inference.BinomialTest",
+      "name": "binomialTest",
+      "parameterTypes": [
+        "int",
+        "int",
+        "double",
+        "org.apache.commons.math3.stat.inference.AlternativeHypothesis"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "numberOfTrials",
+        "numberOfSuccesses",
+        "probability",
+        "alternativeHypothesis"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NotPositiveException",
+        "description": "@throws org.apache.commons.math3.exception.NotPositiveException numberOfTrials or numberOfSuccesses is negative.",
+        "guard": {
+          "condition": "numberOfTrials<0 || numberOfSuccesses<0",
+          "description": "numberOfTrials or numberOfSuccesses is negative."
+        }
+      },
+      {
+        "exception": "org.apache.commons.math3.exception.OutOfRangeException",
+        "description": "@throws org.apache.commons.math3.exception.OutOfRangeException probability is not between 0 and 1.",
+        "guard": {
+          "condition": "(probability==0) == false",
+          "description": "probability is not between 0 and 1."
+        }
+      },
+      {
+        "exception": "org.apache.commons.math3.exception.MathIllegalArgumentException",
+        "description": "@throws org.apache.commons.math3.exception.MathIllegalArgumentException numberOfTrials < numberOfSuccesses or if alternateHypothesis is null.",
+        "guard": {
+          "condition": "numberOfTrials<numberOfSuccesses || alternativeHypothesis==null",
+          "description": "numberOfTrials < numberOfSuccesses or if alternateHypothesis is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  }
+]
