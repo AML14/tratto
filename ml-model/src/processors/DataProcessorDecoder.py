@@ -155,7 +155,10 @@ class DataProcessorDecoder:
         The dictionary of labels. The keys are numerical identifiers (int), while the values are strings representing the
         name of the corresponding target label. The dictionary is empty if the dataset has not been processed yet.
         """
-        tgt_column_name = "tokenClass" if self._classification_type == ClassificationType.CATEGORY_PREDICTION else "label"
+        if self._classification_type == ClassificationType.CATEGORY_PREDICTION:
+            tgt_column_name = "tokenClass" if self._tratto_model_type == TrattoModelType.TOKEN_CLASSES else "token"
+        else:
+            tgt_column_name = "label"
         unique_values = np.unique(self._df_dataset[tgt_column_name])
         ids_labels_dict = {i: k for i, k in enumerate(unique_values)}
         # If the dictionary is empty prints a warning
