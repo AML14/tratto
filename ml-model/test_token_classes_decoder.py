@@ -4,9 +4,9 @@ import torch
 import numpy as np
 import pandas as pd
 from torch.utils.data import DataLoader, TensorDataset
-from transformers import RobertaTokenizer, T5ForConditionalGeneration, T5Config
 from src.types.DeviceType import DeviceType
 from src.utils import utils
+from src.pretrained.ModelClasses import ModelClasses
 
 
 def predict(
@@ -119,7 +119,7 @@ def pre_processing(
         group_data = group_data.drop(['label', 'oracleId', 'projectName', 'classJavadoc', 'classSourceCode'], axis=1)
         group_data = group_data.drop(['token', 'tokenInfo'], axis=1)
         # Get the list of target values from the dataframe
-        tgt = group_data["tokenClass"].values
+        tgt = group_data["tokenClass"].values.tolist()
         group_data = group_data.drop(['tokenClass'], axis=1)
         df_src_concat = group_data.apply(lambda row: tokenizer.sep_token.join(row.values), axis=1)
         # The pandas dataframe is transformed in a list of strings: each string is an input to the model
@@ -161,34 +161,46 @@ def tokenize_datasets(
 
 
 def main(
-        checkpoint_path: str
+        project_name: str,
+        checkpoint_path: str,
+        input_path: str,
+        output_path: str
 ):
     """
-    The main method instantiate the model and execute the training and testing phases.
+    The main method load the checkpoint and perform the analysis of the performance of the model on a given
+    unseen project.
     """
+
     # Connect to device
     print("Connect to device")
     device = utils.connect_to_device(DeviceType.GPU)
 
     # list of partial dataframes
     dfs = []
-    # datasets path
-    oracles_dataset = os.path.join(".","dataset","token-classes-dataset")
     # collects partial dataframes from oracles
-    for file_name in os.listdir(oracles_dataset):
-        if "gs-core" in file_name:
+    for file_name in os.listdir(input_path):
+        if project_name in file_name:
             print(file_name)
-            df = pd.read_json(os.path.join(oracles_dataset, file_name))
+            df = pd.read_json(os.path.join(input_path, file_name))
             dfs.append(df)
     df_dataset = pd.concat(dfs)
 
     print("Setup model")
+    # Get configuration class, model class, and tokenizer class from the corresponding model type
+    config_class, model_class, tokenizer_class = ModelClasses.getModelClass(args.model_type)
     # Setup tokenizer
-    tokenizer = RobertaTokenizer.from_pretrained('Salesforce/codet5-base')
+    tokenizer = tokenizer_class.from_pretrained(args.tokenizer_name)
+
     # Setup model
-    config = T5Config.from_pretrained('Salesforce/codet5-base')
-    model = T5ForConditionalGeneration.from_pretrained('Salesforce/codet5-base', config=config)
+    config = config_class.from_pretrained(
+        args.config_name if args.config_name else args.model_name_or_path,
+    )
+    model = model_class.from_pretrained(
+        args.model_name_or_path,
+        config=config
+    )
     model.to(device)
+    # Load checkpoint
     checkpoint = torch.load(checkpoint_path)
     model.load_state_dict(checkpoint['model_state_dict'])
 
@@ -203,10 +215,7 @@ def main(
     model_stats = {
         "totals": len(t_datasets),
         "false_positives": 0,
-        "false_negatives": 0,
         "true_positives": 0,
-        "true_negatives": 0,
-        "confidence_score": 0,
         "ones": []
     }
 
@@ -224,18 +233,22 @@ def main(
         predictions_stats[str(identifier[0])][identifier[1] if not identifier[1] == "" else "_"] = p_stats
         ones_false = 0
         ones_true = 0
-        correct_found = False
         for p_s in p_stats:
             if not p_s["correct"] == 'True':
                     model_stats["false_positives"] += 1
+                    ones_false +=1
             else:
                 ones_true += 1
                 model_stats["true_positives"] += 1
         if (not ones_true == 1) or ones_false > 0:
-            model_stats["ones"].append((str(identifier[0]),str(identifier[1]),ones_true,ones_false,correct_found))
-    utils.export_stats("./gs_core_test_classes_predictions_stats_decoder_category.json", predictions_stats)
-    utils.export_stats("./gs_core_test_classes_model_stats_decoder_category.json", model_stats)
+            model_stats["ones"].append((str(identifier[0]),str(identifier[1]),ones_true,ones_false, ones_true > 0))
+    # Save statistics
+    if not os.path.exists(output_path):
+        os.makedirs(output_path)
+    utils.export_stats(os.path.join(output_path, project_name, "predictions_stats.json"), predictions_stats)
+    utils.export_stats(os.path.join(output_path, project_name, "model_stats.json"), model_stats)
     del model
+    utils.release_memory()
 
 
 
@@ -243,11 +256,79 @@ if __name__ == "__main__":
     # Parse arguments
     parser = argparse.ArgumentParser()
     parser.add_argument(
+        "--project_name",
+        default=None,
+        type=str,
+        required=True,
+        help="The name of the project to test, among ['gs-core','plume-lib','jgrapht','commons-math','commons-collections','guava-19']."
+    )
+    parser.add_argument(
         "--checkpoint_path",
         default=None,
         type=str,
         required=True,
-        help="The directory of the dataset."
+        help="The path to the checkpoint to load."
     )
+    parser.add_argument(
+        "--input_path",
+        default=None,
+        type=str,
+        required=True,
+        help="The path to the dataset."
+    )
+    parser.add_argument(
+        "--output_path",
+        default=None,
+        type=str,
+        required=True,
+        help="The path where to save the statistics."
+    )
+    parser.add_argument(
+        "--model_type",
+        default=None,
+        type=str,
+        required=True,
+        help="Model type selected in the list: " + ", ".join(ModelClasses.get_available_model_classes()))
+    parser.add_argument(
+        "--tokenizer_name",
+        default=None,
+        type=str,
+        help="Pretrained tokenizer name or path if not the same as model_name"
+    )
+    parser.add_argument(
+        "--config_name",
+        default=None,
+        type=str,
+        help="Pretrained config name or path if not the same as model_name")
+    parser.add_argument(
+        "--model_name_or_path",
+        default=None,
+        type=str,
+        required=True,
+        help="Path to pre-trained model or shortcut name.")
+    parser.add_argument(
+        "--tratto_model_type",
+        default="token_classes",
+        type=str,
+        help="Classification type: token classes (token_classes) or token values (token_values).")
     args = parser.parse_args()
-    main(args.checkpoint_path)
+
+    # Check if the project name exists
+    if not args.project_name in ['gs-core', 'plume-lib', 'jgrapht', 'commons-math', 'commons-collections', 'guava-19']:
+        raise ValueError(
+            "Project not found. Please provide a project name, among the options: " \
+            "['gs-core','plume-lib','jgrapht','commons-math','commons-collections','guava-19']"
+        )
+    # Check if the input path exists
+    if not os.path.exists(args.input_path):
+        raise ValueError("The input path argument contains a value that does not point to an existing folder.")
+    # Check if the checkpoint path exists
+    if not os.path.exists(args.checkpoint_path):
+        raise ValueError("The checkpoint path argument contains a value that does not point to an existing checkpoint.")
+
+    main(
+        args.project_name,
+        args.checkpoint_path,
+        args.input_path,
+        args.output_path
+    )

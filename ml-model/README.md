@@ -81,33 +81,33 @@ macOS and Windows systems.
 Run the following command to start training the model as an `encoder` for the `token classes` on a `CPU` or on a single `GPU`
     
 ```bash
-python3 train_token_classes.sh
+./train_token_classes.sh
 ```
 
 Run the following command to start training the model as a `decoder` for the `token classes` on a `CPU` or on a single `GPU`
     
 ```bash
-python3 train_token_classes_decoder.sh
+./train_token_classes_decoder.sh
 ```
 
 Run the following command to start training the model for the `token values` on a `CPU` or on a single `GPU`
     
 ```bash
-python3 train_token_values.sh
+./train_token_values.sh
 ```
 
 If you want to run the training as a background process:
 
 ```bash
-nohup python3 train_token_classes.sh > log_token_classes.out 2>&1 & echo $! > run_token_classes.pid
+nohup ./train_token_classes.sh > log_token_classes.out 2>&1 & echo $! > run_token_classes.pid
 ```
 
 ```bash
-nohup python3 train_token_classes_decoder.sh > log_token_classes_decoder.out 2>&1 & echo $! > run_token_classes_decoder.pid
+nohup ./train_token_classes_decoder.sh > log_token_classes_decoder.out 2>&1 & echo $! > run_token_classes_decoder.pid
 ```
 
 ```bash
-nohup python3 train_token_values.sh > log_token_values.out 2>&1 & echo $! > run_token_values.pid
+nohup ./train_token_values.sh > log_token_values.out 2>&1 & echo $! > run_token_values.pid
 ```
 
 The command will run the training in background and will create and save the logs in the `log_token_classes.out`  (or `log_token_values.out`)

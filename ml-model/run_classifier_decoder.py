@@ -43,7 +43,7 @@ def main():
     """
     # Parse arguments
     parser = argparse.ArgumentParser()
-    ArgumentParser.add_arguments(parser)
+    ArgumentParser.add_training_arguments(parser)
     args = parser.parse_args()
 
     # Set TRATTO model and classification types

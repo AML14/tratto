@@ -1,96 +1,73 @@
-import os
-
+import argparse
 import torch
-from flask import Flask, jsonify, request
-from transformers import RobertaForSequenceClassification, RobertaTokenizer, RobertaConfig
-
-import predictor
-import json
-
+from transformers import PreTrainedModel
+from typing import Type
+from src.pretrained.ModelClasses import ModelClasses
+from src.server.Server import Server
+from src.parser.ArgumentParser import ArgumentParser
 from src.types.DeviceType import DeviceType
 from src.utils import utils
 
-app = Flask(__name__)
 
-def resume_checkpoint(pt_model, checkpoint_path):
+def resume_checkpoint(
+        pt_model: Type[PreTrainedModel],
+        checkpoint_path: str
+):
     checkpoint = torch.load(checkpoint_path)
     return pt_model.load_state_dict(checkpoint['model_state_dict'])
 
-def model_setup(checkpoint_classes_path, checkout_values_path, mode):
-    print("Setup model")
-    return {
-        "mode": mode,
-        "model_classes": resume_checkpoint(
-            RobertaForSequenceClassification.from_pretrained(
-                'roberta-base',
-                config=RobertaConfig.from_pretrained('roberta-base')
-            ),
-            checkpoint_classes=torch.load(checkpoint_classes_path)
-        ),
-        "model_values": resume_checkpoint(
-            RobertaForSequenceClassification.from_pretrained(
-                'roberta-base',
-                config=RobertaConfig.from_pretrained('roberta-base')
-            ),
-            checkpoint_classes=torch.load(checkout_values_path)
-        ),
-        "tokenizer": RobertaTokenizer.from_pretrained('roberta-base')
-    }
 
-default_checkpoint_classes_path = os.path.join("output_token_classes_plume","checkpoints","lr_1e-05","batch_32","epochs_8","checkpoint_1_2.pt")
-default_checkpoint_values_path = os.path.join("output_token_classes_plume","checkpoints","lr_1e-05","batch_32","epochs_8","checkpoint_1_2.pt")
-
-# Connect to device
-print("Connect to device")
-device = utils.connect_to_device(DeviceType.GPU)
-
-models = model_setup(
-    default_checkpoint_classes_path,
-    default_checkpoint_values_path,
-    "production"
-)
-
-@app.route('/api/test', methods=['GET'])
-def test():
-    global models
-    checkpoint_classes_path = request.args.get('checkpoint_classes_path')
-    checkpoint_values_path = request.args.get('checkpoint_values_path')
-    if checkpoint_classes_path and checkpoint_values_path:
-        model_setup(
-            checkpoint_classes_path,
-            checkpoint_values_path,
-            "test"
-        )
-        return jsonify({"task": "completed"})
-    else:
-        return 'Missing data parameter', 400  # Return an error if the 'data' parameter is missing
-
-@app.route('/api/next_token', methods=['GET'])
-def oracle():
-    global models
-    filename = request.args.get('filename')
-    checkpoint_classes_path = request.args.get('checkpoint_classes') if 'checkpoint_classes' in request.args else None
-    checkpoint_values_path = request.args.get('checkpoint_values') if 'checkpoint_values' in request.args else None
-    reset = request.args.get('reset') if 'reset' in request.args else False
-
-    if reset or models["mode"] == "test":
-        models = model_setup(
-            checkpoint_classes_path if checkpoint_classes_path else default_checkpoint_classes_path,
-            checkpoint_values_path if checkpoint_values_path else default_checkpoint_values_path,
-            "production"
-        )
-
-    if filename:
-        token = predictor.nextToken(
-            device,
-            filename,
-            models["model_classes"],
-            models["model_values"]
-        )
-    else:
-        return 'Missing filename parameter', 400  # Return an error if the 'data' parameter is missing
-    return jsonify({'token': token})
+def setup_model(
+        device: str,
+        model_type: str,
+        tokenizer_name: str,
+        model_name_or_path: str,
+        checkpoint_path: str,
+        config_name: str = None
+):
+    config_class, model_class, tokenizer_class = ModelClasses.getModelClass(model_type)
+    # Setup tokenizer
+    tokenizer = tokenizer_class.from_pretrained(tokenizer_name)
+    # Setup model
+    config = config_class.from_pretrained(config_name if config_name else model_name_or_path)
+    pt_model = model_class.from_pretrained(args.model_name_or_path, config=config)
+    pt_model.to(device)
+    model = resume_checkpoint(pt_model, checkpoint_path)
+    return model, tokenizer
 
 
 if __name__ == '__main__':
-    app.run()
+    # Parse arguments
+    parser = argparse.ArgumentParser()
+    ArgumentParser.add_training_arguments(parser)
+    args = parser.parse_args()
+    # Connect to device
+    device = utils.connect_to_device(DeviceType.GPU)
+    # Setup tokenClasses model
+    model_token_classes, tokenizer_token_classes = setup_model(
+        device,
+        args.model_type_token_classes,
+        args.tokenizer_name_token_classes,
+        args.model_name_or_path_token_classes,
+        args.checkpoint_path_token_classes,
+        args.config_name_token_classes
+    )
+    # Setup tokenValues model
+    model_token_values, tokenizer_token_values = setup_model(
+        device,
+        args.model_type_token_values,
+        args.tokenizer_name_token_values,
+        args.model_name_or_path_token_values,
+        args.checkpoint_path_token_values,
+        args.config_name_token_values
+    )
+    # Instantiate server
+    server = Server(
+        device,
+        model_token_classes,
+        model_token_values,
+        tokenizer_token_classes,
+        tokenizer_token_values
+    )
+    # Run server
+    server.run()

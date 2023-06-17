@@ -122,8 +122,8 @@ class DataProcessor:
         Returns
         -------
         weights : List[float]
-            A list containing the values of the weights. The length of the list is equal to the number
-            of unique values in the column processed. Each index corresponds to a value
+            A list containing the values of the weights for each different value within the column of the dataset.
+            The length of the list is equal to the number of unique values in the column processed.
         """
         # Get the list of unique labels and the count the occurrences of each class
         unique_classes, class_counts = np.unique(self._df_dataset[column_name], return_counts=True)
@@ -627,8 +627,8 @@ class DataProcessor:
         #
         # this is the structure accepted by the DataLoader, to process the dataset
         # Transform the list into a tensor stack
-        t_inputs = torch.stack([torch.tensor(ids) for ids in t_src_dict['input_ids']])
-        t_attention_masks = torch.stack([torch.tensor(mask) for mask in t_src_dict['attention_mask']])
+        t_inputs = torch.stack([ids.clone().detach() for ids in t_src_dict['input_ids']])
+        t_attention_masks = torch.stack([mask.clone().detach() for mask in t_src_dict['attention_mask']])
         # Map targets value into one-shot vectors
         targets_one_shot = list(map(lambda t: self._tgt_map[t], targets))
         # Transform the targets into a tensor list

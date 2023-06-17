@@ -5,7 +5,76 @@ from typing import Type
 
 class ArgumentParser:
     @staticmethod
-    def add_arguments(parser: Type[ArgumentParser]):
+    def add_server_arguments(parser: Type[ArgumentParser]):
+        parser.add_argument(
+            "--checkpoint_path_token_classes",
+            default=None,
+            type=str,
+            required=True,
+            help="The path to the checkpoint of the tokenClasses model to load."
+        )
+        parser.add_argument(
+            "--checkpoint_path_token_values",
+            default=None,
+            type=str,
+            required=True,
+            help="The path to the checkpoint of the tokenValues model to load."
+        )
+        parser.add_argument(
+            "--model_type_token_classes",
+            default=None,
+            type=str,
+            required=True,
+            help="TokenClasses model type for the selected in the list: " + ", ".join(ModelClasses.get_available_model_classes())
+        )
+        parser.add_argument(
+            "--model_type_token_values",
+            default=None,
+            type=str,
+            required=True,
+            help="TokenValues model type for the selected in the list: " + ", ".join(ModelClasses.get_available_model_classes())
+        )
+        parser.add_argument(
+            "--tokenizer_name_token_classes",
+            default=None,
+            type=str,
+            help="Pretrained tokenizer name or path if not the same as model_name for the tokenClasses model."
+        )
+        parser.add_argument(
+            "--tokenizer_name_token_values",
+            default=None,
+            type=str,
+            help="Pretrained tokenizer name or path if not the same as model_name for the tokenValues model."
+        )
+        parser.add_argument(
+            "--model_name_or_path_token_classes",
+            default=None,
+            type=str,
+            required=True,
+            help="Path to pre-trained model or shortcut name for the tokenClasses model."
+        )
+        parser.add_argument(
+            "--model_name_or_path_token_values",
+            default=None,
+            type=str,
+            required=True,
+            help="Path to pre-trained model or shortcut name for the tokenValues model."
+        )
+        parser.add_argument(
+            "--config_name_token_classes",
+            default=None,
+            type=str,
+            help="Pretrained config name or path if not the same as model_name for the tokenClasses model."
+        )
+        parser.add_argument(
+            "--config_name_token_values",
+            default=None,
+            type=str,
+            help="Pretrained config name or path if not the same as model_name for the tokenValues model."
+        )
+
+    @staticmethod
+    def add_training_arguments(parser: Type[ArgumentParser]):
         """
         Set up the arguments to parse from the command line.
 
