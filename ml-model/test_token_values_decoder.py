@@ -102,14 +102,10 @@ def pre_processing(
     if classification_type == ClassificationType.CATEGORY_PREDICTION:
         df_dataset = df_dataset[df_dataset['label']=='True']
     # Map tokenClassesSoFar into string
-    df_dataset["tokenClassesSoFar"] = df_dataset["tokenClassesSoFar"].apply(lambda x: "[" + " ".join(x) + "]")
-    df_dataset['tokenClass'] = df_dataset['tokenClass'].astype('string')
-    df_dataset['tokenClassesSoFar'] = df_dataset['tokenClassesSoFar'].astype('string')
     # Define the new order of columns
     new_columns_order = [
-        'token', 'tokenInfo', 'tokenClass', 'oracleSoFar', 'tokenClassesSoFar', 'javadocTag', 'oracleType',
-        'packageName', 'className', 'methodJavadoc', 'methodSourceCode', 'classJavadoc', 'classSourceCode',
-        'projectName', 'oracleId', 'label'
+        'tokenClass', 'token', 'tokenInfo', 'oracleSoFar', 'javadocTag', 'oracleType', 'packageName', 'className',
+        'methodJavadoc', 'methodSourceCode', 'classJavadoc', 'classSourceCode', 'projectName', 'oracleId', 'label'
     ]
     # Reindex the DataFrame with the new order
     df_dataset = df_dataset.reindex(columns=new_columns_order)
@@ -121,13 +117,13 @@ def pre_processing(
     for identifier, group_data in df_grouped:
         # Delete the tgt labels from the input dataset, and others less relevant columns
         group_data = group_data.drop(['oracleId', 'projectName', 'classJavadoc', 'classSourceCode'], axis=1)
-        group_data = group_data.drop(['token', 'tokenInfo'], axis=1)
+        group_data = group_data.drop(['tokenClass'], axis=1)
         # Get the list of target values from the dataframe
         if classification_type == ClassificationType.CATEGORY_PREDICTION:
-            tgt = group_data["tokenClass"].values.tolist()
+            tgt = group_data["token"].values.tolist()
             group_data = group_data.drop(['tokenClass'], axis=1)
         else:
-            tgt = group_data['label'].values.tolist()
+            tgt = group_data["label"].values.tolist()
             group_data = group_data.drop(['label'], axis=1)
         df_src_concat = group_data.apply(lambda row: tokenizer.sep_token.join(row.values), axis=1)
         # The pandas dataframe is transformed in a list of strings: each string is an input to the model
@@ -168,12 +164,7 @@ def tokenize_datasets(
     return t_datasets
 
 
-def main(
-        project_name: str,
-        checkpoint_path: str,
-        input_path: str,
-        output_path: str
-):
+def main(args):
     """
     The main method load the checkpoint and perform the analysis of the performance of the model on a given
     unseen project.
@@ -186,10 +177,10 @@ def main(
     # list of partial dataframes
     dfs = []
     # collects partial dataframes from oracles
-    for file_name in os.listdir(input_path):
-        if project_name in file_name:
+    for file_name in os.listdir(args.input_path):
+        if args.project_name in file_name:
             print(file_name)
-            df = pd.read_json(os.path.join(input_path, file_name))
+            df = pd.read_json(os.path.join(args.input_path, file_name))
             dfs.append(df)
     df_dataset = pd.concat(dfs)
 
@@ -209,7 +200,7 @@ def main(
     )
     model.to(device)
     # Load checkpoint
-    checkpoint = torch.load(checkpoint_path)
+    checkpoint = torch.load(args.checkpoint_path)
     model.load_state_dict(checkpoint['model_state_dict'])
 
     print("Pre-processing dataset")
@@ -251,10 +242,10 @@ def main(
         if (not ones_true == 1) or ones_false > 0:
             model_stats["ones"].append((str(identifier[0]),str(identifier[1]),ones_true,ones_false, ones_true > 0))
     # Save statistics
-    if not os.path.exists(output_path):
-        os.makedirs(output_path)
-    utils.export_stats(os.path.join(output_path, project_name, "predictions_stats.json"), predictions_stats)
-    utils.export_stats(os.path.join(output_path, project_name, "model_stats.json"), model_stats)
+    if not os.path.exists(args.output_path):
+        os.makedirs(args.output_path)
+    utils.export_stats(os.path.join(args.output_path, args.project_name, "predictions_stats.json"), predictions_stats)
+    utils.export_stats(os.path.join(args.output_path, args.project_name, "model_stats.json"), model_stats)
     del model
     utils.release_memory()
 
@@ -296,7 +287,8 @@ if __name__ == "__main__":
         default=None,
         type=str,
         required=True,
-        help="Model type selected in the list: " + ", ".join(ModelClasses.get_available_model_classes()))
+        help="Model type selected in the list: " + ", ".join(ModelClasses.get_available_model_classes())
+    )
     parser.add_argument(
         "--tokenizer_name",
         default=None,
@@ -307,14 +299,14 @@ if __name__ == "__main__":
         "--config_name",
         default=None,
         type=str,
-        help="Pretrained config name or path if not the same as model_name")
+        help="Pretrained config name or path if not the same as model_name"
+    )
     parser.add_argument(
         "--model_name_or_path",
         default=None,
         type=str,
         required=True,
-        help="Path to pre-trained model or shortcut name."
-    )
+        help="Path to pre-trained model or shortcut name.")
     parser.add_argument(
         "--classification_type",
         default="label_prediction",
@@ -336,9 +328,4 @@ if __name__ == "__main__":
     if not os.path.exists(args.checkpoint_path):
         raise ValueError("The checkpoint path argument contains a value that does not point to an existing checkpoint.")
 
-    main(
-        args.project_name,
-        args.checkpoint_path,
-        args.input_path,
-        args.output_path
-    )
+    main(args)

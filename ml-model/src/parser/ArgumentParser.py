@@ -137,7 +137,7 @@ class ArgumentParser:
             "--tratto_model_type",
             default="token_classes",
             type=str,
-            help="Classification type: token classes (token_classes) or token values (token_values).")
+            help="Tratto model type: token classes (token_classes) or token values (token_values).")
         parser.add_argument(
             "--max_seq_length",
             default=512,
