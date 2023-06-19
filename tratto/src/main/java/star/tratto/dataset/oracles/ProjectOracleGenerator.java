@@ -6,12 +6,15 @@ import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.resolution.UnsolvedSymbolException;
 import org.javatuples.Pair;
 import org.javatuples.Quartet;
+import org.javatuples.Triplet;
 import star.tratto.data.OracleDatapoint;
+import star.tratto.data.OracleType;
 import star.tratto.dataset.oracles.JDoctorCondition.Operation;
 import star.tratto.dataset.oracles.JDoctorCondition.PreCondition;
 import star.tratto.dataset.oracles.JDoctorCondition.PostCondition;
 import star.tratto.dataset.oracles.JDoctorCondition.ThrowsCondition;
 import star.tratto.exceptions.JPClassNotFoundException;
+import star.tratto.oraclegrammar.trattoGrammar.Oracle;
 import star.tratto.util.javaparser.DatasetUtils;
 import star.tratto.util.javaparser.JDoctorUtils;
 
@@ -36,6 +39,7 @@ public class ProjectOracleGenerator {
     private List<Pair<String, String>> tokensProjectClasses;
     private List<Quartet<String, String, String, String>> tokensProjectClassesMethods;
     private List<Quartet<String, String, String, String>> tokensProjectClassesAttributes;
+    private List<Pair<TypeDeclaration<?>, List<Pair<CallableDeclaration<?>, List<Triplet<OracleType, String, String>>>>>> tokensProjectClassesTags;
 
     /**
      * Creates a new instance of ProjectOracleGenerator.
@@ -61,6 +65,13 @@ public class ProjectOracleGenerator {
         this.tokensProjectClasses = DatasetUtils.getTokensProjectClasses(this.project.getSrcPath());
         this.tokensProjectClassesMethods = DatasetUtils.getTokensProjectClassesNonPrivateStaticNonVoidMethods(this.project.getSrcPath());
         this.tokensProjectClassesAttributes = DatasetUtils.getTokensProjectClassesNonPrivateStaticAttributes(this.project.getSrcPath());
+        this.tokensProjectClassesTags = DatasetUtils.getTokensProjectClassesTags(this.project.getSrcPath());
+    }
+
+    private void removeProjectClassesTag(
+
+    ) {
+
     }
 
     /**
@@ -89,11 +100,21 @@ public class ProjectOracleGenerator {
             if (postConditions.size() > 0) {
                 oracleDPs.add(getNextDatapoint(operation, postConditions));
             }
+
         }
         System.out.printf("Processed %s conditions.%n", this.idCounter - this.checkpoint);
         this.checkpoint = this.idCounter;
         return oracleDPs;
     }
+
+    private OracleDatapoint getEmptyDatapoint(
+
+    ) {
+        OracleDatapointBuilder builder = new OracleDatapointBuilder();
+        // get basic information of tag.
+        return builder.build();
+    }
+
 
     private OracleDatapoint getNextDatapoint(Operation operation, Object condition) {
         OracleDatapointBuilder builder = new OracleDatapointBuilder();

@@ -4,10 +4,10 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.*;
-import com.github.javaparser.ast.comments.JavadocComment;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.type.Type;
+import com.github.javaparser.javadoc.JavadocBlockTag;
 import com.github.javaparser.resolution.MethodUsage;
 import com.github.javaparser.resolution.UnsolvedSymbolException;
 import com.github.javaparser.resolution.declarations.ResolvedFieldDeclaration;
@@ -16,6 +16,7 @@ import com.github.javaparser.resolution.types.ResolvedType;
 import org.javatuples.Pair;
 import org.javatuples.Quartet;
 import org.javatuples.Triplet;
+import star.tratto.data.OracleType;
 import star.tratto.dataset.oracles.JDoctorCondition.*;
 import star.tratto.exceptions.JPClassNotFoundException;
 import star.tratto.exceptions.PackageDeclarationNotFoundException;
@@ -90,11 +91,7 @@ public class DatasetUtils {
     public static String getClassJavadoc(
             TypeDeclaration<?> jpClass
     ) {
-        Optional<JavadocComment> jpJavadocComment = jpClass.getJavadocComment();
-        if (jpJavadocComment.isEmpty()) {
-          return getJavadocByPattern(jpClass);
-        }
-        return Javadoc.CLASS_PREFIX.getValue() + jpJavadocComment.get().getContent() + Javadoc.CLASS_SUFFIX.getValue();
+        return jpClass.getJavadocComment().map(javadocComment -> Javadoc.CLASS_PREFIX.getValue() + javadocComment.getContent() + Javadoc.CLASS_SUFFIX.getValue()).orElseGet(() -> getJavadocByPattern(jpClass));
     }
 
     /**
@@ -106,11 +103,7 @@ public class DatasetUtils {
     public static String getCallableJavadoc(
             CallableDeclaration<?> jpCallable
     ) {
-        Optional<JavadocComment> jpJavadocComment = jpCallable.getJavadocComment();
-        if (jpJavadocComment.isEmpty()) {
-          return getJavadocByPattern(jpCallable);
-        }
-        return Javadoc.METHOD_PREFIX.getValue() + jpJavadocComment.get().getContent() + Javadoc.METHOD_SUFFIX;
+        return jpCallable.getJavadocComment().map(javadocComment -> Javadoc.METHOD_PREFIX.getValue() + javadocComment.getContent() + Javadoc.METHOD_SUFFIX).orElseGet(() -> getJavadocByPattern(jpCallable));
     }
 
     private static List<Pair<String, String>> findAllNumericValuesInJavadoc(
@@ -302,6 +295,45 @@ public class DatasetUtils {
         return attributeList;
     }
 
+    private static List<Pair<TypeDeclaration<?>, List<Pair<CallableDeclaration<?>, List<Triplet<OracleType, String, String>>>>>> getCuTags(
+            CompilationUnit cu
+    ) throws PackageDeclarationNotFoundException {
+        List<Pair<TypeDeclaration<?>, List<Pair<CallableDeclaration<?>, List<Triplet<OracleType, String, String>>>>>> cuTags = new ArrayList<>();
+        // iterate through each class.
+        List<TypeDeclaration<?>> jpClasses = cu.getTypes();
+        for (TypeDeclaration<?> jpClass : jpClasses) {
+            List<Pair<CallableDeclaration<?>, List<Triplet<OracleType, String, String>>>> classTags = new ArrayList<>();
+            // iterate through each method.
+            List<CallableDeclaration<?>> jpCallables = new ArrayList<>();
+            jpCallables.addAll(jpClass.getMethods());
+            jpCallables.addAll(jpClass.getConstructors());
+            for (CallableDeclaration<?> jpCallable : jpCallables) {
+                List<Triplet<OracleType, String, String>> callableTags = new ArrayList<>();
+                // iterate through each JavaDoc tag.
+                Optional<com.github.javaparser.javadoc.Javadoc> optionalJavadoc = jpCallable.getJavadoc();
+                if (optionalJavadoc.isPresent()) {
+                    List<JavadocBlockTag> blockTags = optionalJavadoc.get().getBlockTags();
+                    for (JavadocBlockTag blockTag : blockTags) {
+                        // get info for each JavaDoc tag.
+                        String name = blockTag.getName().orElse("");
+                        String content = blockTag.getContent().toText();
+                        String tagName = blockTag.getTagName();
+                        switch (tagName) {
+                            case "param" -> callableTags.add(new Triplet<>(OracleType.PRE, name, content));
+                            case "return" -> callableTags.add(new Triplet<>(OracleType.NORMAL_POST, name, content));
+                            case "throws", "exception" -> callableTags.add(new Triplet<>(OracleType.EXCEPT_POST, name, content));
+                        }
+                    }
+                }
+                // add tags for CallableDeclaration.
+                classTags.add(new Pair<>(jpCallable, callableTags));
+            }
+            // add tags for TypeDeclaration.
+            cuTags.add(new Pair<>(jpClass, classTags));
+        }
+        return cuTags;
+    }
+
     private static List<File> getValidJavaFiles(String sourcePath) {
         // get all java files from source.
         File sourceDir = new File(sourcePath);
@@ -384,6 +416,26 @@ public class DatasetUtils {
             }
         }
         return attributeList;
+    }
+
+    public static List<Pair<TypeDeclaration<?>, List<Pair<CallableDeclaration<?>, List<Triplet<OracleType, String, String>>>>>> getTokensProjectClassesTags(
+            String sourcePath
+    ) {
+        List<Pair<TypeDeclaration<?>, List<Pair<CallableDeclaration<?>, List<Triplet<OracleType, String, String>>>>>> tagList = new ArrayList<>();
+        List<File> javaFiles = getValidJavaFiles(sourcePath);
+        // iterate through each file and add JavaDoc tags.
+        for (File javaFile : javaFiles) {
+            String filePath = javaFile.getAbsolutePath();
+            Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnitFromFilePath(filePath);
+            if (cu.isPresent()) {
+                try {
+                    tagList.addAll(getCuTags(cu.get()));
+                } catch (PackageDeclarationNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return tagList;
     }
 
     private static List<Quartet<String, String, String, String>> convertMethodUsageToQuartet(
