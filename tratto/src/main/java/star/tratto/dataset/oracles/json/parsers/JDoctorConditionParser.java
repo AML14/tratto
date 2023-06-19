@@ -41,7 +41,7 @@ public class JDoctorConditionParser {
                 .filter(jDoctorConditionsFile -> jDoctorConditionsFile.getName().endsWith(".json"))
                 .map(this::json2java)
                 .flatMap(Collection::stream)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**

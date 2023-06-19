@@ -17,7 +17,7 @@ public class LastClassWithoutInstanceofRestriction extends MultiTokenRestriction
     private static LastClassWithoutInstanceofRestriction instance;
 
     private LastClassWithoutInstanceofRestriction() {
-        this.restrictedTokens = Tokens.TOKENS.stream().filter(token -> !token.equals(".")).collect(Collectors.toList());
+        this.restrictedTokens = Tokens.TOKENS.stream().filter(token -> !token.equals(".")).toList();
         this.nonRestrictedTokens = List.of(".");
     }
 

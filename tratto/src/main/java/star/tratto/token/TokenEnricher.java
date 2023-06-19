@@ -77,7 +77,7 @@ public class TokenEnricher {
                 .stream()
                 .filter(ma -> ma.getValue2().contains("[]"))
                 .map(triplet -> Triplet.with(triplet.getValue0(), "MethodArgument", List.of(triplet.getValue1(), triplet.getValue2())))
-                .collect(Collectors.toList())
+                .toList()
         );
 
         return enrichedTokensPlusInfo;
@@ -113,7 +113,7 @@ public class TokenEnricher {
                 .stream()
                 .filter(pair -> canType1BeInstanceOfType2(fullyQualifiedClassName(exprReturnType.getValue0(), exprReturnType.getValue1()), fullyQualifiedClassName(pair.getValue1(), pair.getValue0()), oracleDatapoint))
                 .map(pair -> Triplet.with(pair.getValue0(), "Class", List.of(pair.getValue1(), pair.getValue0())))
-                .collect(Collectors.toList())
+                .toList()
         );
 
         // Add default Java classes
@@ -121,7 +121,7 @@ public class TokenEnricher {
                 .stream()
                 .filter(pair -> canType1BeInstanceOfType2(fullyQualifiedClassName(exprReturnType.getValue0(), exprReturnType.getValue1()), fullyQualifiedClassName(pair.getValue0(), pair.getValue1()), oracleDatapoint))
                 .map(pair -> Triplet.with(pair.getValue1(), "Class", List.of(pair.getValue0(), pair.getValue1())))
-                .collect(Collectors.toList())
+                .toList()
         );
 
         return enrichedTokensPlusInfo;
@@ -141,7 +141,7 @@ public class TokenEnricher {
         if (nTokens >= 2) {
             lastToken = partialExpressionTokens.get(nTokens - 1);
             previousToken = partialExpressionTokens.get(nTokens - 2);
-            if (!".".equals(lastToken) || !oracleDatapoint.getTokensProjectClasses().stream().map(Pair::getValue0).collect(Collectors.toList()).contains(previousToken)) {
+            if (!".".equals(lastToken) || !oracleDatapoint.getTokensProjectClasses().stream().map(Pair::getValue0).toList().contains(previousToken)) {
                 return enrichedTokensPlusInfo;
             }
         } else {
@@ -154,7 +154,7 @@ public class TokenEnricher {
                 .stream()
                 .filter(quartet -> quartet.getValue2().equals(previousToken))
                 .map(quartet -> Triplet.with(quartet.getValue0(), "ClassField", List.of(quartet.getValue1(), quartet.getValue2(), quartet.getValue3())))
-                .collect(Collectors.toList())
+                .toList()
         );
 
         // Get static methods of class
@@ -162,7 +162,7 @@ public class TokenEnricher {
                 .stream()
                 .filter(quartet -> quartet.getValue2().equals(previousToken))
                 .map(quartet -> Triplet.with(quartet.getValue0(), "MethodName", List.of(quartet.getValue1(), quartet.getValue2(), quartet.getValue3())))
-                .collect(Collectors.toList())
+                .toList()
         );
 
         return enrichedTokensPlusInfo;
@@ -182,7 +182,7 @@ public class TokenEnricher {
         if (nTokens >= 2) {
             lastToken = partialExpressionTokens.get(nTokens - 1);
             previousToken = partialExpressionTokens.get(nTokens - 2);
-            if (!".".equals(lastToken) || oracleDatapoint.getTokensProjectClasses().stream().map(Pair::getValue0).collect(Collectors.toList()).contains(previousToken)) {
+            if (!".".equals(lastToken) || oracleDatapoint.getTokensProjectClasses().stream().map(Pair::getValue0).toList().contains(previousToken)) {
                 return enrichedTokensPlusInfo;
             }
         } else {
@@ -197,7 +197,7 @@ public class TokenEnricher {
 
         // Special case: if preceding token is not "this", "methodResultID" or a method argument, and last two columns (oracle variables) are empty, need to populate them
         List<String> methodVariables = new ArrayList<>(List.of("this", "methodResultID"));
-        methodVariables.addAll(oracleDatapoint.getTokensMethodArguments().stream().map(Triplet::getValue0).collect(Collectors.toList()));
+        methodVariables.addAll(oracleDatapoint.getTokensMethodArguments().stream().map(Triplet::getValue0).toList());
         if (!methodVariables.contains(precedingExpr) &&
                 oracleDatapoint.getTokensOracleVariablesNonPrivateNonStaticAttributes().isEmpty() && oracleDatapoint.getTokensOracleVariablesNonPrivateNonStaticAttributes().isEmpty()) {
             // TODO: Use token collector to populate oracle variables
@@ -208,26 +208,26 @@ public class TokenEnricher {
                 .stream()
                 .filter(quartet -> isType1InstanceOfType2(fullyQualifiedClassName(precedingExprReturnType.getValue0(), precedingExprReturnType.getValue1()), fullyQualifiedClassName(quartet.getValue1(), quartet.getValue2()), oracleDatapoint))
                 .map(quartet -> Triplet.with(quartet.getValue0(), "ClassField", List.of(quartet.getValue1(), quartet.getValue2(), quartet.getValue3())))
-                .collect(Collectors.toList()));
+                .toList());
         enrichedTokensPlusInfo.addAll(oracleDatapoint.getTokensOracleVariablesNonPrivateNonStaticAttributes() // Attributes applicable to elements of the oracle
                 .stream()
                 .filter(quartet -> isType1InstanceOfType2(fullyQualifiedClassName(precedingExprReturnType.getValue0(), precedingExprReturnType.getValue1()), fullyQualifiedClassName(quartet.getValue1(), quartet.getValue2()), oracleDatapoint))
                 .map(quartet -> Triplet.with(quartet.getValue0(), "ClassField", List.of(quartet.getValue1(), quartet.getValue2(), quartet.getValue3())))
-                .collect(Collectors.toList()));
+                .toList());
 
         // Get non-static methods of class, including those whose this class is instance of
         enrichedTokensPlusInfo.addAll(oracleDatapoint.getTokensMethodVariablesNonPrivateNonStaticNonVoidMethods() // Methods applicable to this, methodResultID and method arguments
                 .stream()
                 .filter(quartet -> isType1InstanceOfType2(fullyQualifiedClassName(precedingExprReturnType.getValue0(), precedingExprReturnType.getValue1()), fullyQualifiedClassName(quartet.getValue1(), quartet.getValue2()), oracleDatapoint))
                 .map(quartet -> Triplet.with(quartet.getValue0(), "MethodName", List.of(quartet.getValue1(), quartet.getValue2(), quartet.getValue3())))
-                .collect(Collectors.toList()));
+                .toList());
         enrichedTokensPlusInfo.addAll(oracleDatapoint.getTokensOracleVariablesNonPrivateNonStaticNonVoidMethods() // Methods applicable to elements of the oracle
                 .stream()
                 .filter(quartet -> isType1InstanceOfType2(fullyQualifiedClassName(precedingExprReturnType.getValue0(), precedingExprReturnType.getValue1()), fullyQualifiedClassName(quartet.getValue1(), quartet.getValue2()), oracleDatapoint))
                 .map(quartet -> Triplet.with(quartet.getValue0(), "MethodName", List.of(quartet.getValue1(), quartet.getValue2(), quartet.getValue3())))
-                .collect(Collectors.toList()));
+                .toList());
 
-        return enrichedTokensPlusInfo.stream().distinct().collect(Collectors.toList()); // Possible duplicates among "variables" and "oracle" columns
+        return enrichedTokensPlusInfo.stream().distinct().toList(); // Possible duplicates among "variables" and "oracle" columns
     }
 
     static Collection<Triplet<String, String, List<String>>> getMethodArgumentsAndClassNames(List<String> partialExpressionTokens, OracleDatapoint oracleDatapoint) {
@@ -243,14 +243,14 @@ public class TokenEnricher {
         enrichedTokensPlusInfo.addAll(oracleDatapoint.getTokensMethodArguments()
                 .stream()
                 .map(triplet -> Triplet.with(triplet.getValue0(), "MethodArgument", List.of(triplet.getValue1(), triplet.getValue2())))
-                .collect(Collectors.toList())
+                .toList()
         );
 
         // Get class names
         enrichedTokensPlusInfo.addAll(oracleDatapoint.getTokensProjectClasses()
                 .stream()
                 .map(pair -> Triplet.with(pair.getValue0(), "Class", List.of(pair.getValue1(), pair.getValue0())))
-                .collect(Collectors.toList())
+                .toList()
         );
 
         return enrichedTokensPlusInfo;

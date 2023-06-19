@@ -41,7 +41,7 @@ public abstract class MultiTokenRestriction implements ContextRestriction {
      * restrictedTokens must be set before calling this method.
      */
     protected void setNonRestrictedTokens() {
-        this.nonRestrictedTokens = Tokens.TOKENS.stream().filter(token -> !this.restrictedTokens.contains(token)).collect(Collectors.toList());
+        this.nonRestrictedTokens = Tokens.TOKENS.stream().filter(token -> !this.restrictedTokens.contains(token)).toList();
     }
 
     public List<String> getRestrictedTokens() {

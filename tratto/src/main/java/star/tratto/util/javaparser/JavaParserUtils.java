@@ -629,7 +629,7 @@ public class JavaParserUtils {
                     jpClass.asClassOrInterfaceDeclaration().getTypeParameters()
                             .stream()
                             .map(NodeWithSimpleName::getNameAsString)
-                            .collect(Collectors.toList())
+                            .toList()
             );
         }
         return jpClassGenericTypes.contains(jpTypeName.replaceAll("\\[\\]", ""));

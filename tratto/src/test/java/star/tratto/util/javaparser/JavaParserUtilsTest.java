@@ -337,7 +337,7 @@ public class JavaParserUtilsTest {
         MethodUsage methodUsage = new ArrayList<>(getResolvedReferenceTypeDeclaration(packageClass).getAllMethods()
                 .stream()
                 .sorted(Comparator.comparing(MethodUsage::toString))
-                .collect(Collectors.toList()))
+                .toList())
                 .stream()
                 .filter(method -> method.getName().equals(methodName))
                 .findFirst().get();

@@ -314,7 +314,7 @@ public class DatasetUtils {
         List<String> ignoreFileList = FileUtils.readJSONList(ignoreFilePath)
                 .stream()
                 .map(e -> (String) e)
-                .collect(Collectors.toList());
+                .toList();
         // filter files.
         List<File> validFiles = new ArrayList<>();
         for (File file : allFiles) {
@@ -438,11 +438,11 @@ public class DatasetUtils {
                             .stream()
                             .map(o -> (String) o)
                             .collect(Collectors.toList()))
-                    .collect(Collectors.toList());
+                    .toList();
             methodList.addAll(arrayMethods
                     .stream()
                     .map(m -> new Quartet<>(m.get(0), "", jpType.describe(), m.get(1)))
-                    .collect(Collectors.toList()));
+                    .toList());
         }
         return methodList;
     }
@@ -599,7 +599,7 @@ public class DatasetUtils {
         List<LinkedList<String>> oracleSubexpressions = Parser.getInstance().getAllMethodsAndAttributes(oracle)
                 .stream()
                 .map(e -> new LinkedList<>(Splitter.split(e)))
-                .collect(Collectors.toList());
+                .toList();
         for (LinkedList<String> oracleSubexpression : oracleSubexpressions) {
             String subexpression = String.join("", oracleSubexpression).replaceAll("receiverObjectID", "this");
             try {
@@ -644,7 +644,7 @@ public class DatasetUtils {
         List<LinkedList<String>> oracleSubexpressions = Parser.getInstance().getAllMethodsAndAttributes(oracle)
                 .stream()
                 .map(e -> new LinkedList<>(Splitter.split(e)))
-                .collect(Collectors.toList());
+                .toList();
         for (LinkedList<String> oracleSubexpression : oracleSubexpressions) {
             String subexpression = String.join("", oracleSubexpression).replaceAll("receiverObjectID", "this");
             try {

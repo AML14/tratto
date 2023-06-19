@@ -37,7 +37,7 @@ public class NoArraysRestriction extends SingleTokenRestriction {
         MethodDeclaration methodDeclaration = getMethodDeclaration(oracleDatapoint.getMethodSourceCode());
         boolean methodResultIDIsArray = methodDeclaration != null && !methodDeclaration.getType().isVoidType() &&
                 getReturnTypeOfExpression("methodResultID", oracleDatapoint).getValue1().contains("[]");
-        List<String> methodArgumentsClasses = oracleDatapoint.getTokensMethodArguments().stream().map(Triplet::getValue2).collect(Collectors.toList());
+        List<String> methodArgumentsClasses = oracleDatapoint.getTokensMethodArguments().stream().map(Triplet::getValue2).toList();
 
         return !methodResultIDIsArray && methodArgumentsClasses.stream().noneMatch(c -> c.contains("[]"));
     }

@@ -84,12 +84,12 @@ public class RestrictionsUtils {
             List<Pair<String, String>> matchingClasses = oracleDatapoint.getTokensProjectClasses()
                     .stream()
                     .filter(c -> c.getValue0().equals(precedingExpr))
-                    .collect(Collectors.toList());
+                    .toList();
             matchingClasses.forEach(c -> matchingMethods.addAll(
                     getMethodsOfType(fullyQualifiedClassName(c.getValue1(), c.getValue0()))
                             .stream()
                             .filter(m -> m.getName().equals(methodName) && isStaticNonVoidNonPrivateMethod(m))
-                            .collect(Collectors.toList())
+                            .toList()
             ));
         } else {
             Pair<String, String> precedingExprReturnType = getReturnTypeOfExpression(precedingExpr, oracleDatapoint);
@@ -97,7 +97,7 @@ public class RestrictionsUtils {
                     getMethodsOfType(fullyQualifiedClassName(precedingExprReturnType))
                             .stream()
                             .filter(m -> m.getName().equals(methodName) && isNonStaticNonVoidNonPrivateMethod(m))
-                            .collect(Collectors.toList())
+                            .toList()
             );
         }
 
@@ -144,34 +144,34 @@ public class RestrictionsUtils {
                     .stream()
                     .filter(quartet -> quartet.getValue2().equals(precedingExpr))
                     .map(Quartet::getValue0)
-                    .collect(Collectors.toList()));
+                    .toList());
             compatibleAttributeNames.addAll(oracleDatapoint.getTokensProjectClassesNonPrivateStaticAttributes() // Static attributes from all classes
                     .stream()
                     .filter(quartet -> quartet.getValue2().equals(precedingExpr))
                     .map(Quartet::getValue0)
-                    .collect(Collectors.toList()));
+                    .toList());
         } else {
             Pair<String, String> precedingExprReturnType = getReturnTypeOfExpression(precedingExpr, oracleDatapoint);
             compatibleMethodNames.addAll(oracleDatapoint.getTokensMethodVariablesNonPrivateNonStaticNonVoidMethods() // Methods applicable to this, methodResultID and method arguments
                     .stream()
                     .filter(quartet -> isType1InstanceOfType2(fullyQualifiedClassName(precedingExprReturnType.getValue0(), precedingExprReturnType.getValue1()), fullyQualifiedClassName(quartet.getValue1(), quartet.getValue2()), oracleDatapoint))
                     .map(Quartet::getValue0)
-                    .collect(Collectors.toList()));
+                    .toList());
             compatibleMethodNames.addAll(oracleDatapoint.getTokensOracleVariablesNonPrivateNonStaticNonVoidMethods() // Methods applicable to elements of the oracle
                     .stream()
                     .filter(quartet -> isType1InstanceOfType2(fullyQualifiedClassName(precedingExprReturnType.getValue0(), precedingExprReturnType.getValue1()), fullyQualifiedClassName(quartet.getValue1(), quartet.getValue2()), oracleDatapoint))
                     .map(Quartet::getValue0)
-                    .collect(Collectors.toList()));
+                    .toList());
             compatibleAttributeNames.addAll(oracleDatapoint.getTokensMethodVariablesNonPrivateNonStaticAttributes() // Attributes applicable to this, methodResultID and method arguments
                     .stream()
                     .filter(quartet -> isType1InstanceOfType2(fullyQualifiedClassName(precedingExprReturnType.getValue0(), precedingExprReturnType.getValue1()), fullyQualifiedClassName(quartet.getValue1(), quartet.getValue2()), oracleDatapoint))
                     .map(Quartet::getValue0)
-                    .collect(Collectors.toList()));
+                    .toList());
             compatibleAttributeNames.addAll(oracleDatapoint.getTokensOracleVariablesNonPrivateNonStaticAttributes() // Attributes applicable to elements of the oracle
                     .stream()
                     .filter(quartet -> isType1InstanceOfType2(fullyQualifiedClassName(precedingExprReturnType.getValue0(), precedingExprReturnType.getValue1()), fullyQualifiedClassName(quartet.getValue1(), quartet.getValue2()), oracleDatapoint))
                     .map(Quartet::getValue0)
-                    .collect(Collectors.toList()));
+                    .toList());
         }
 
         if (compatibleMethodNames.contains(possibleMethodName) && compatibleAttributeNames.contains(possibleMethodName)) {

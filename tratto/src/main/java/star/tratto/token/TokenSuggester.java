@@ -56,19 +56,19 @@ public class TokenSuggester {
                     nextLegalTokensWithContextPlusInfo.addAll(getStringTokens(oracleDatapoint)
                             .stream()
                             .map(stringToken -> new Triplet<>(stringToken, "S_STRING", List.<String>of()))
-                            .collect(Collectors.toList()));
+                            .toList());
                     break;
                 case "1":
                     nextLegalTokensWithContextPlusInfo.addAll(getIntTokens(oracleDatapoint)
                             .stream()
                             .map(stringToken -> new Triplet<>(stringToken, "S_INT", List.<String>of()))
-                            .collect(Collectors.toList()));
+                            .toList());
                     break;
                 case "1.0":
                     nextLegalTokensWithContextPlusInfo.addAll(getDoubleTokens(oracleDatapoint)
                             .stream()
                             .map(stringToken -> new Triplet<>(stringToken, "DOUBLE", List.<String>of()))
-                            .collect(Collectors.toList()));
+                            .toList());
                     break;
                 case "someVarOrClassOrFieldOrMethod":
                     nextLegalTokensWithContextPlusInfo.addAll(getEnrichedTokensPlusInfo(partialExpressionTokens, oracleDatapoint));
@@ -136,7 +136,7 @@ public class TokenSuggester {
             }
         }
 
-        return nextLegalTokens.stream().distinct().collect(Collectors.toList());
+        return nextLegalTokens.stream().distinct().toList();
     }
 
     /**
@@ -217,7 +217,7 @@ public class TokenSuggester {
      */
     private static void updateErrorColumns(List<String> partialExpressionTokens, List<List<Integer>> errorColumns, int errorColumnsIndex) {
         parser.parseOracle(String.join(" ", partialExpressionTokens));
-        errorColumns.set(errorColumnsIndex, parser.getResource().getErrors().stream().map(Resource.Diagnostic::getColumn).collect(Collectors.toList()));
+        errorColumns.set(errorColumnsIndex, parser.getResource().getErrors().stream().map(Resource.Diagnostic::getColumn).toList());
     }
 
     /**
@@ -235,7 +235,7 @@ public class TokenSuggester {
             // check if all tokens are legal. If so, return the class
             List<String> orderedTokenClasses = tokenClasses.stream()
                     .sorted(Comparator.comparingInt(tokenClass -> RULES_TOKENS.get(tokenClass).size()).reversed())
-                    .collect(Collectors.toList());
+                    .toList();
             for (String tokenClass : orderedTokenClasses) {
                 if (new HashSet<>(getNextLegalTokensAccordingToGrammar(partialExpressionTokens)).containsAll(RULES_TOKENS.get(tokenClass))) {
                     return tokenClass;
@@ -248,14 +248,14 @@ public class TokenSuggester {
     }
 
     private static List<String> getAdditionalInfoOfMethodResultID(OracleDatapoint oracleDatapoint) {
-        return getReturnTypeOfExpression("methodResultID", oracleDatapoint).toList().stream().map(Object::toString).collect(Collectors.toList());
+        return getReturnTypeOfExpression("methodResultID", oracleDatapoint).toList().stream().map(Object::toString).toList();
     }
 
     private static List<String> getStringTokens(OracleDatapoint oracleDatapoint) {
         List<String> stringTokens =  oracleDatapoint.getTokensMethodJavadocValues()
                 .stream()
                 .filter(value -> value.getValue1().equals("String"))
-                .map(Pair::getValue0).collect(Collectors.toList());
+                .map(Pair::getValue0).toList();
         stringTokens.addAll(GLOBAL_DICTIONARY.get("String"));
         return stringTokens;
     }
@@ -264,7 +264,7 @@ public class TokenSuggester {
         List<String> intTokens = oracleDatapoint.getTokensMethodJavadocValues()
                 .stream()
                 .filter(value -> value.getValue1().equals("int"))
-                .map(Pair::getValue0).collect(Collectors.toList());
+                .map(Pair::getValue0).toList();
         intTokens.addAll(GLOBAL_DICTIONARY.get("int"));
         return intTokens;
     }
@@ -273,7 +273,7 @@ public class TokenSuggester {
         List<String> doubleTokens = oracleDatapoint.getTokensMethodJavadocValues()
                 .stream()
                 .filter(value -> value.getValue1().equals("double") || value.getValue1().equals("int"))
-                .map(Pair::getValue0).collect(Collectors.toList());
+                .map(Pair::getValue0).toList();
         doubleTokens.addAll(GLOBAL_DICTIONARY.get("double"));
         doubleTokens.addAll(GLOBAL_DICTIONARY.get("int"));
         return doubleTokens;

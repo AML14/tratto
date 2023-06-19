@@ -35,7 +35,7 @@ public class OracleDatapointBuilder {
         List<String> tokenGrammar = FileUtils.readJSONList(tokensGrammarPath)
                 .stream()
                 .map(e -> (String) e)
-                .collect(Collectors.toList());
+                .toList();
         this.setTokensGeneralGrammar(tokenGrammar);
     }
 
@@ -50,11 +50,11 @@ public class OracleDatapointBuilder {
                 .map(e -> ((List<?>) e)
                         .stream()
                         .map(o -> (String) o)
-                        .collect(Collectors.toList()))
-                .collect(Collectors.toList())
+                        .toList())
+                .toList()
                 .stream()
                 .map(tokenList -> new Pair<>(tokenList.get(0), tokenList.get(1)))
-                .collect(Collectors.toList());
+                .toList();
         this.setTokensGeneralValuesGlobalDictionary(tokenGeneralValues);
     }
 
@@ -105,7 +105,7 @@ public class OracleDatapointBuilder {
             List<PostCondition> conditionList = ((List<?>) condition)
                     .stream()
                     .map(e -> (PostCondition) e)
-                    .collect(Collectors.toList());
+                    .toList();
             if (conditionList.size() > 0) {
                 this.setPostConditionInfo(conditionList);
             }

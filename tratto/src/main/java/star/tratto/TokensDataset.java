@@ -86,7 +86,7 @@ public class TokensDataset {
             logger.error("DATASET_TYPE not set. Pass one argument, which must be one of TOKENS, TOKEN_CLASSES or TOKEN_VALUES.");
         } else if (args.length > 1) {
             logger.error("Wrong number of arguments. Expected 0 or 1, got {}", args.length);
-        } else if (args.length == 1 && !Arrays.stream(TokenDPType.values()).map(Enum::name).collect(Collectors.toList()).contains(args[0])) {
+        } else if (args.length == 1 && !Arrays.stream(TokenDPType.values()).map(Enum::name).toList().contains(args[0])) {
             logger.error("Wrong argument. Expected TOKENS or TOKEN_CLASSES or TOKEN_VALUES, got {}", args[0]);
         } else {
             if (args.length == 1) DATASET_TYPE = TokenDPType.valueOf(args[0]);

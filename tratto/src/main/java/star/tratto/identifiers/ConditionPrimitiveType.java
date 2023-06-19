@@ -102,7 +102,7 @@ public enum ConditionPrimitiveType {
                 .stream(ConditionPrimitiveType.values())
                 .filter(c -> c.name().startsWith("CONDITION"))
                 .map(c -> c.getValue())
-                .collect(Collectors.toList());
+                .toList();
         return conditionList;
     }
 
@@ -111,7 +111,7 @@ public enum ConditionPrimitiveType {
                 .stream(ConditionPrimitiveType.values())
                 .filter(c -> c.name().startsWith("JP"))
                 .map(c -> c.getValue())
-                .collect(Collectors.toList());
+                .toList();
         return jpList;
     }
 

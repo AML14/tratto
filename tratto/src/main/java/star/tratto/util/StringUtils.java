@@ -64,7 +64,7 @@ public class StringUtils {
         if (tokens == null) {
             return indexesOfTokensInOracle;
         } else if (tokens.isEmpty()) {
-            return IntStream.rangeClosed(0, oracleTokens.size() - 1).boxed().collect(Collectors.toList());
+            return IntStream.rangeClosed(0, oracleTokens.size() - 1).boxed().toList();
         }
 
         for (int i = 0; i < oracleTokens.size(); i++) {

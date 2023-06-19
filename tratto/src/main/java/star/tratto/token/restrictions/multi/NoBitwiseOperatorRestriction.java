@@ -27,7 +27,7 @@ public class NoBitwiseOperatorRestriction extends MultiTokenRestriction {
         this.restrictedTokens = Stream.concat(
                 Tokens.RULES_TOKENS.get("BitwiseLogicalOperator").stream(),
                 Tokens.RULES_TOKENS.get("BitwiseShiftOperator").stream()
-        ).collect(Collectors.toList());
+        ).toList();
         setNonRestrictedTokens();
     }
 

@@ -22,7 +22,7 @@ public class JavaTypes {
             Pair.with("", "short"),
             Pair.with("", "char")
     );
-    public static final List<String> PRIMITIVE_TYPES = PRIMITIVES.stream().map(Pair::getValue1).collect(Collectors.toList());
+    public static final List<String> PRIMITIVE_TYPES = PRIMITIVES.stream().map(Pair::getValue1).toList();
 
     public static final List<Pair<String, String>> PRIMITIVE_WRAPPERS = List.of(
             Pair.with("java.lang", "Boolean"),
@@ -34,7 +34,7 @@ public class JavaTypes {
             Pair.with("java.lang", "Short"),
             Pair.with("java.lang", "Character")
     );
-    public static final List<String> PRIMITIVE_WRAPPER_TYPES = PRIMITIVES.stream().map(Pair::getValue1).collect(Collectors.toList());
+    public static final List<String> PRIMITIVE_WRAPPER_TYPES = PRIMITIVES.stream().map(Pair::getValue1).toList();
 
     public static final Map<Pair<String, String>, Pair<String, String>> PRIMITIVES_TO_WRAPPERS = IntStream.range(0, PRIMITIVES.size())
             .boxed()
@@ -56,7 +56,7 @@ public class JavaTypes {
             Pair.with("java.lang", "Short"),
             Pair.with("java.lang", "Character")
     );
-    public static final List<String> INTEGRAL_TYPES = INTEGRALS.stream().map(Pair::getValue1).collect(Collectors.toList());
+    public static final List<String> INTEGRAL_TYPES = INTEGRALS.stream().map(Pair::getValue1).toList();
 
     public static final List<Pair<String, String>> NUMBERS = List.of(
             Pair.with("", "int"),
@@ -74,13 +74,13 @@ public class JavaTypes {
             Pair.with("java.lang", "Short"),
             Pair.with("java.lang", "Character")
     );
-    public static final List<String> NUMBER_TYPES = NUMBERS.stream().map(Pair::getValue1).collect(Collectors.toList());
+    public static final List<String> NUMBER_TYPES = NUMBERS.stream().map(Pair::getValue1).toList();
 
     public static final List<Pair<String, String>> BOOLEANS = List.of(
             Pair.with("", "boolean"),
             Pair.with("java.lang", "Boolean")
     );
-    public static final List<String> BOOLEAN_TYPES = BOOLEANS.stream().map(Pair::getValue1).collect(Collectors.toList());
+    public static final List<String> BOOLEAN_TYPES = BOOLEANS.stream().map(Pair::getValue1).toList();
 
     /**
      * Typical classes against which one may want to check if a variable is an instance of.
@@ -96,7 +96,7 @@ public class JavaTypes {
             Pair.with("java.util", "Map"),
             Pair.with("java.util", "Set")
     );
-    public static final List<String> TYPICAL_TYPES = TYPICAL.stream().map(Pair::getValue1).collect(Collectors.toList());
+    public static final List<String> TYPICAL_TYPES = TYPICAL.stream().map(Pair::getValue1).toList();
 
     public static boolean isNumeric1AssignableToNumeric2(Pair<String, String> numeric1, Pair<String, String> numeric2) {
         if (!JavaTypes.NUMBERS.contains(numeric1) || !JavaTypes.NUMBERS.contains(numeric2)) {

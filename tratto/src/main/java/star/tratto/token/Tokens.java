@@ -200,7 +200,7 @@ public class Tokens {
             .stream()
             .flatMap(List::stream)
             .distinct()
-            .collect(Collectors.toList());
+            .toList();
 
     /**
      * Map containing TrattoGrammar tokens as keys and the rules they belong to as values.
@@ -228,7 +228,7 @@ public class Tokens {
             .values()
             .stream()
             .flatMap(List::stream)
-            .collect(Collectors.toList());
+            .toList();
     private static final Set<String> duplicateTokens = new HashSet<>();
 
     /**
