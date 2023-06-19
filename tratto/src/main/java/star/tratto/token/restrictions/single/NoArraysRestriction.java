@@ -2,7 +2,7 @@ package star.tratto.token.restrictions.single;
 
 import com.github.javaparser.ast.body.MethodDeclaration;
 import org.javatuples.Triplet;
-import star.tratto.dataset.oracles.OracleDatapoint;
+import star.tratto.data.OracleDatapoint;
 
 import java.util.List;
 import java.util.stream.Collectors;

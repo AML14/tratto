@@ -1,10 +1,8 @@
 package star.tratto.token.restrictions.single;
 
-import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.body.MethodDeclaration;
-import star.tratto.dataset.oracles.OracleDatapoint;
-import star.tratto.oracle.OracleType;
-import star.tratto.util.javaparser.JavaParserUtils;
+import star.tratto.data.OracleDatapoint;
+import star.tratto.data.OracleType;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,9 +17,9 @@ import static star.tratto.util.StringUtils.compactExpression;
  * scenarios, two applicable to all oracles, and one applicable depending on the oracle type. The three
  * scenarios are as follows:
  * 1) Forbid "methodResultID" if method under test is void.
- * 2) Forbid "methodResultID" after "Arrays.stream(" if it is not an array.
- * 3) Preconditions cannot mention methodResultID, normal postconditions cannot mention methodResultID
- * in the guard, and exceptional postconditions cannot mention methodResultID:
+ * 2) Forbid "methodResultID" after "Arrays.stream()" if it is not an array.
+ * 3) Preconditions cannot mention methodResultID, normal post-conditions cannot mention methodResultID
+ * in the guard, and exceptional post-conditions cannot mention methodResultID:
  */
 public class NoMethodResultIDRestriction extends SingleTokenRestriction {
 

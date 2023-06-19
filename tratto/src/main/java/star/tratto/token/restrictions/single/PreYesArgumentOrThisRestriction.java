@@ -1,8 +1,8 @@
 package star.tratto.token.restrictions.single;
 
 import org.javatuples.Triplet;
-import star.tratto.dataset.oracles.OracleDatapoint;
-import star.tratto.oracle.OracleType;
+import star.tratto.data.OracleDatapoint;
+import star.tratto.data.OracleType;
 
 import java.util.List;
 import java.util.stream.Collectors;

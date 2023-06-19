@@ -1,10 +1,8 @@
 package star.tratto.token.restrictions.single;
 
-import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.body.MethodDeclaration;
-import star.tratto.dataset.oracles.OracleDatapoint;
-import star.tratto.util.javaparser.JavaParserUtils;
+import star.tratto.data.OracleDatapoint;
 
 import java.util.List;
 
