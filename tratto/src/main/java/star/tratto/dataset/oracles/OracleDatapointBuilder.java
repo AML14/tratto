@@ -3,10 +3,11 @@ package star.tratto.dataset.oracles;
 import org.javatuples.Pair;
 import org.javatuples.Quartet;
 import org.javatuples.Triplet;
+import star.tratto.data.OracleDatapoint;
+import star.tratto.data.OracleType;
 import star.tratto.dataset.oracles.JDoctorCondition.*;
 import star.tratto.identifiers.path.Path;
 import star.tratto.identifiers.file.*;
-import star.tratto.oracle.OracleType;
 import star.tratto.util.FileUtils;
 
 import java.util.List;

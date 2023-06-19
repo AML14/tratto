@@ -1,4 +1,4 @@
-package star.tratto.oracle;
+package star.tratto.data;
 
 public enum OracleType {
     PRE,

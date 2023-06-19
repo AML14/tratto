@@ -18,7 +18,7 @@ import org.javatuples.Pair;
 import org.javatuples.Triplet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import star.tratto.dataset.oracles.OracleDatapoint;
+import star.tratto.data.OracleDatapoint;
 import star.tratto.exceptions.JPClassNotFoundException;
 import star.tratto.exceptions.PackageDeclarationNotFoundException;
 import star.tratto.exceptions.ResolvedTypeNotFound;
@@ -51,7 +51,7 @@ public class JavaParserUtils {
 
     public static JavaParser getJavaParser() {
         if (javaParser == null) {
-            String root = "src/main/resources/projects-sources";
+            String root = "src/main/resources/projects-packaged";
             SymbolSolverCollectionStrategy strategy = new SymbolSolverCollectionStrategy();
             strategy.collect(Paths.get(root));
             javaParser = new JavaParser();
@@ -540,6 +540,10 @@ public class JavaParserUtils {
         signature += String.format("%s", variable.getNameAsString());
         signature += variable.getInitializer().isPresent() ? String.format(" = %s;", variable.getInitializer().get()) : ";";
         return signature;
+    }
+
+    public static TypeDeclaration<?> getClassOrInterface(String classSourceCode, String name) {
+        return getClassOrInterface(javaParser.parse(classSourceCode).getResult().get(), name);
     }
 
     public static String getMethodSignature(MethodDeclaration methodDeclaration) {

@@ -1,5 +1,9 @@
-package star.tratto.dataset.oracles;
+package star.tratto;
 
+import star.tratto.data.OracleDatapoint;
+import star.tratto.dataset.oracles.JDoctorCondition;
+import star.tratto.dataset.oracles.Project;
+import star.tratto.dataset.oracles.ProjectOracleGenerator;
 import star.tratto.dataset.oracles.json.parsers.JDoctorConditionParser;
 import star.tratto.dataset.oracles.json.parsers.ProjectParser;
 import star.tratto.identifiers.file.FileFormat;

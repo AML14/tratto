@@ -1,9 +1,8 @@
-package star.tratto.dataset.oracles;
+package star.tratto.data;
 
 import org.javatuples.Pair;
 import org.javatuples.Quartet;
 import org.javatuples.Triplet;
-import star.tratto.oracle.OracleType;
 
 import java.util.List;
 import java.util.Map;
