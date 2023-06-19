@@ -10,7 +10,6 @@ import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * A helper class that deserializes the JDoctor conditions in JSON format,
@@ -51,7 +50,7 @@ public class JDoctorConditionParser {
      * @param jDoctorConditionsFile a file {@link File} that points to the
      *                              JSON file that contains the list of
      *                              JDoctor conditions
-     * @return an array of {@link JDoctorCondition} representing the original
+     * @return a list of {@link JDoctorCondition} representing the original
      * JDoctor conditions in the JSON format, of the file passed to the
      * function
      */
