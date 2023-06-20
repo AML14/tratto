@@ -16,10 +16,13 @@ import star.tratto.dataset.oracles.JDoctorCondition.PostCondition;
 import star.tratto.dataset.oracles.JDoctorCondition.ThrowsCondition;
 import star.tratto.exceptions.JPClassNotFoundException;
 import star.tratto.oraclegrammar.trattoGrammar.Oracle;
+import star.tratto.util.StringUtils;
 import star.tratto.util.javaparser.DatasetUtils;
 import star.tratto.util.javaparser.JDoctorUtils;
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * ProjectOracleGenerator generates all oracle data points of a project using
@@ -84,38 +87,112 @@ public class ProjectOracleGenerator {
             // Add all ThrowsCondition oracles to dataset.
             List<ThrowsCondition> throwsConditions = jDoctorCondition.getThrowsConditions();
             for (ThrowsCondition condition : throwsConditions) {
-                oracleDPs.add(getNextDatapoint(operation, condition));
-                removeProjectClassesTag(operation, OracleType.EXCEPT_POST);
+                OracleDatapoint nextDatapoint = getNextDatapoint(operation, condition);
+                oracleDPs.add(nextDatapoint);
+//                removeProjectClassesTag(operation, OracleType.EXCEPT_POST, nextDatapoint.getJavadocTag());
             }
             // Add all PreCondition oracles to dataset.
             List<PreCondition> preConditions = jDoctorCondition.getPreCondition();
             for (PreCondition condition : preConditions) {
-                oracleDPs.add(getNextDatapoint(operation, condition));
-                removeProjectClassesTag(operation, OracleType.PRE);
+                OracleDatapoint nextDatapoint = getNextDatapoint(operation, condition);
+                oracleDPs.add(nextDatapoint);
+//                removeProjectClassesTag(operation, OracleType.PRE, nextDatapoint.getJavadocTag());
             }
             // Add all PostCondition oracles to dataset.
             List<PostCondition> postConditions = jDoctorCondition.getPostConditions();
             if (postConditions.size() > 0) {
-                oracleDPs.add(getNextDatapoint(operation, postConditions));
-                removeProjectClassesTag(operation, OracleType.NORMAL_POST);
+                OracleDatapoint nextDatapoint = getNextDatapoint(operation, postConditions);
+                oracleDPs.add(nextDatapoint);
+//                removeProjectClassesTag(operation, OracleType.NORMAL_POST, nextDatapoint.getJavadocTag());
             }
         }
+        System.out.printf("Processed %s non-empty oracles.%n", this.idCounter - this.checkpoint);
         // Generate an OracleDatapoint for each remaining JavaDoc tag.
-
+        System.out.println("\n\n\n\n");
+        for (Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String> jpTag : this.tokensProjectClassesTags) {
+            System.out.println("name: " + jpTag.getValue3());
+            System.out.println("content: " + jpTag.getValue4());
+            // oracleDPs.add(getEmptyDatapoint(jpTag));
+        }
         System.out.printf("Processed %s conditions.%n", this.idCounter - this.checkpoint);
         this.checkpoint = this.idCounter;
         return oracleDPs;
     }
 
-    private void removeProjectClassesTag(Operation operation, OracleType oracleType) {
+    private boolean matchesProjectClassesTag(
+            Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String> tagInfo,
+            TypeDeclaration<?> targetClass,
+            CallableDeclaration<?> targetCallable,
+            OracleType targetOracleType,
+            String targetTag
+    ) {
+        // if TypeDeclaration, CallableDeclaration, or OracleType do not match, return false.
+        if (!tagInfo.getValue0().equals(targetClass)) return false;
+        if (!tagInfo.getValue1().equals(targetCallable)) return false;
+        if (!tagInfo.getValue2().equals(targetOracleType)) return false;
+        // check if tags match.
+        Pattern pattern = Pattern.compile(String.format("@(param|return|throws)\\s+(.*\\.)*%s\\b", tagInfo.getValue3()));
+        Matcher matcher = pattern.matcher(targetTag);
+        // analyze similarity of tags.
+        String simpleTargetTag = targetTag.replaceAll(String.format("@(param|return|throws)\\s+(.*\\.)*%s\\b", tagInfo.getValue3()),"").replaceAll("<[^>]*>|@code|@link|\\{|\\}|\\n|\\r|\\t", " ");
+        String simpleActualTag = tagInfo.getValue4().replaceAll("<[^>]*>|@code|@link|\\{|\\}|\\n|\\r|\\t", " ");
+        double semanticSimilarity = StringUtils.semanticSimilarity(simpleTargetTag, simpleActualTag);
 
+//        if ((matcher.find()) || (!(targetTag.contains())))
+//
+//        if ((matcher.find() || (!(javadocTag.contains("@param") || javadocTag.contains("@throws")) && tagPair.getValue0().length() == 0)) && StringUtils.semanticSimilarity(javadocTag.replaceAll(String.format("@(param|return|throws)\\s+(.*\\.)*%s\\b", tagPair.getValue0()),"").replaceAll("<[^>]*>|@code|@link|\\{|\\}|\\n|\\r|\\t", " "), tagPair.getValue1().replaceAll("<[^>]*>|@code|@link|\\{|\\}|\\n|\\r|\\t", " ")) > 0.75) {
+//            if (!found) {
+//                found = true;
+//                content_csv += "found|";
+//                resolvedTagsList.add(tagPair);
+//            } else {
+//                if (StringUtils.semanticSimilarity(javadocTag.replaceAll(String.format("@(param|return|throws)\\s+(.*\\.)*%s\\b", tagPair.getValue0()),"").replaceAll("<[^>]*>|@code|@link|\\{|\\}|\\n|\\r|\\t", " "), tagPair.getValue1().replaceAll("<[^>]*>|@code|@link|\\{|\\}|\\n|\\r|\\t", " ")) > StringUtils.semanticSimilarity(javadocTag.replaceAll(String.format("@(param|return|throws)\\s+(.*\\.)*%s\\b", tagPair.getValue0()),"").replaceAll("<[^>]*>|@code|@link|\\{|\\}|\\n|\\r|\\t", " "), resolvedTagsList.get(0).getValue1().replaceAll("<[^>]*>|@code|@link|\\{|\\}|\\n|\\r|\\t", " "))) {
+//                    unresolvedTagsList.add(resolvedTagsList.get(0));
+//                    resolvedTagsList.remove(0);
+//                    resolvedTagsList.add(tagPair);
+//                } else {
+//                    unresolvedTagsList.add(tagPair);
+//                }
+//            }
+//        }
+        return true;
+    }
+
+    private void removeProjectClassesTag(
+            Operation operation,
+            OracleType oracleType,
+            String javaDocTag
+    ) {
+        String sourcePath = this.project.getSrcPath();
+        String className = DatasetUtils.getOperationClassName(operation);
+        String callableName = DatasetUtils.getOperationCallableName(operation);
+        List<String> parameterTypes = JDoctorUtils.convertJDoctorConditionTypeNames2JavaParserTypeNames(operation.getParameterTypes());
+        // get CompilationUnit of operation class.
+        Optional<CompilationUnit> cuOptional = DatasetUtils.getClassCompilationUnit(operation, sourcePath);
+        assert cuOptional.isPresent();
+        CompilationUnit cu = cuOptional.get();
+        // get TypeDeclaration of class in CompilationUnit.
+        TypeDeclaration<?> jpClass = DatasetUtils.getTypeDeclaration(cu, className);
+        assert jpClass != null;
+        // get CallableDeclaration of method in TypeDeclaration.
+        CallableDeclaration<?> jpCallable = DatasetUtils.getCallableDeclaration(jpClass, callableName, parameterTypes);
+        assert jpCallable != null;
+        this.tokensProjectClassesTags = this.tokensProjectClassesTags
+                .stream()
+                .filter(tagInfo -> !matchesProjectClassesTag(
+                        tagInfo,
+                        jpClass,
+                        jpCallable,
+                        oracleType,
+                        javaDocTag
+                ))
+                .toList();
     }
 
     private OracleDatapoint getEmptyDatapoint(
-
+            Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String> jpTag
     ) {
         OracleDatapointBuilder builder = new OracleDatapointBuilder();
-        // get basic information of tag.
         return builder.build();
     }
 
@@ -189,6 +266,7 @@ public class ProjectOracleGenerator {
             e.printStackTrace();
         }
         // return new datapoint.
+        System.out.println(builder.copy().getJavadocTag());
         builder.setId(this.idCounter);
         this.idCounter++;
         return builder.build();

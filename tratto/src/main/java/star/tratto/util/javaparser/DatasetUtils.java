@@ -36,7 +36,6 @@ import static star.tratto.util.javaparser.JavaParserUtils.*;
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.concurrent.Callable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
