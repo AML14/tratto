@@ -70,7 +70,6 @@ public class ProjectOracleGenerator {
         this.tokensProjectClassesMethods = DatasetUtils.getTokensProjectClassesNonPrivateStaticNonVoidMethods(this.project.getSrcPath());
         this.tokensProjectClassesAttributes = DatasetUtils.getTokensProjectClassesNonPrivateStaticAttributes(this.project.getSrcPath());
         this.tokensProjectClassesTags = DatasetUtils.getTokensProjectClassesTags(this.project.getSrcPath());
-        System.out.println(this.tokensProjectClassesTags.size());
     }
 
     /**
@@ -89,73 +88,67 @@ public class ProjectOracleGenerator {
             for (ThrowsCondition condition : throwsConditions) {
                 OracleDatapoint nextDatapoint = getNextDatapoint(operation, condition);
                 oracleDPs.add(nextDatapoint);
-//                removeProjectClassesTag(operation, OracleType.EXCEPT_POST, nextDatapoint.getJavadocTag());
+                removeProjectClassesTag(operation, OracleType.EXCEPT_POST, nextDatapoint.getJavadocTag());
             }
             // Add all PreCondition oracles to dataset.
             List<PreCondition> preConditions = jDoctorCondition.getPreCondition();
             for (PreCondition condition : preConditions) {
                 OracleDatapoint nextDatapoint = getNextDatapoint(operation, condition);
                 oracleDPs.add(nextDatapoint);
-//                removeProjectClassesTag(operation, OracleType.PRE, nextDatapoint.getJavadocTag());
+                removeProjectClassesTag(operation, OracleType.PRE, nextDatapoint.getJavadocTag());
             }
             // Add all PostCondition oracles to dataset.
             List<PostCondition> postConditions = jDoctorCondition.getPostConditions();
             if (postConditions.size() > 0) {
                 OracleDatapoint nextDatapoint = getNextDatapoint(operation, postConditions);
                 oracleDPs.add(nextDatapoint);
-//                removeProjectClassesTag(operation, OracleType.NORMAL_POST, nextDatapoint.getJavadocTag());
+                removeProjectClassesTag(operation, OracleType.NORMAL_POST, nextDatapoint.getJavadocTag());
             }
         }
         System.out.printf("Processed %s non-empty oracles.%n", this.idCounter - this.checkpoint);
         // Generate an OracleDatapoint for each remaining JavaDoc tag.
-        System.out.println("\n\n\n\n");
         for (Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String> jpTag : this.tokensProjectClassesTags) {
-            System.out.println("name: " + jpTag.getValue3());
-            System.out.println("content: " + jpTag.getValue4());
-            // oracleDPs.add(getEmptyDatapoint(jpTag));
+
         }
         System.out.printf("Processed %s conditions.%n", this.idCounter - this.checkpoint);
         this.checkpoint = this.idCounter;
         return oracleDPs;
     }
 
-    private boolean matchesProjectClassesTag(
-            Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String> tagInfo,
+    private Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String> findMaximumSimilarityTag(
+            List<Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> tagList,
             TypeDeclaration<?> targetClass,
             CallableDeclaration<?> targetCallable,
             OracleType targetOracleType,
             String targetTag
     ) {
-        // if TypeDeclaration, CallableDeclaration, or OracleType do not match, return false.
-        if (!tagInfo.getValue0().equals(targetClass)) return false;
-        if (!tagInfo.getValue1().equals(targetCallable)) return false;
-        if (!tagInfo.getValue2().equals(targetOracleType)) return false;
-        // check if tags match.
-        Pattern pattern = Pattern.compile(String.format("@(param|return|throws)\\s+(.*\\.)*%s\\b", tagInfo.getValue3()));
-        Matcher matcher = pattern.matcher(targetTag);
-        // analyze similarity of tags.
-        String simpleTargetTag = targetTag.replaceAll(String.format("@(param|return|throws)\\s+(.*\\.)*%s\\b", tagInfo.getValue3()),"").replaceAll("<[^>]*>|@code|@link|\\{|\\}|\\n|\\r|\\t", " ");
-        String simpleActualTag = tagInfo.getValue4().replaceAll("<[^>]*>|@code|@link|\\{|\\}|\\n|\\r|\\t", " ");
-        double semanticSimilarity = StringUtils.semanticSimilarity(simpleTargetTag, simpleActualTag);
-
-//        if ((matcher.find()) || (!(targetTag.contains())))
-//
-//        if ((matcher.find() || (!(javadocTag.contains("@param") || javadocTag.contains("@throws")) && tagPair.getValue0().length() == 0)) && StringUtils.semanticSimilarity(javadocTag.replaceAll(String.format("@(param|return|throws)\\s+(.*\\.)*%s\\b", tagPair.getValue0()),"").replaceAll("<[^>]*>|@code|@link|\\{|\\}|\\n|\\r|\\t", " "), tagPair.getValue1().replaceAll("<[^>]*>|@code|@link|\\{|\\}|\\n|\\r|\\t", " ")) > 0.75) {
-//            if (!found) {
-//                found = true;
-//                content_csv += "found|";
-//                resolvedTagsList.add(tagPair);
-//            } else {
-//                if (StringUtils.semanticSimilarity(javadocTag.replaceAll(String.format("@(param|return|throws)\\s+(.*\\.)*%s\\b", tagPair.getValue0()),"").replaceAll("<[^>]*>|@code|@link|\\{|\\}|\\n|\\r|\\t", " "), tagPair.getValue1().replaceAll("<[^>]*>|@code|@link|\\{|\\}|\\n|\\r|\\t", " ")) > StringUtils.semanticSimilarity(javadocTag.replaceAll(String.format("@(param|return|throws)\\s+(.*\\.)*%s\\b", tagPair.getValue0()),"").replaceAll("<[^>]*>|@code|@link|\\{|\\}|\\n|\\r|\\t", " "), resolvedTagsList.get(0).getValue1().replaceAll("<[^>]*>|@code|@link|\\{|\\}|\\n|\\r|\\t", " "))) {
-//                    unresolvedTagsList.add(resolvedTagsList.get(0));
-//                    resolvedTagsList.remove(0);
-//                    resolvedTagsList.add(tagPair);
-//                } else {
-//                    unresolvedTagsList.add(tagPair);
-//                }
-//            }
-//        }
-        return true;
+        // filter tags by TypeDeclaration, CallableDeclaration, OracleType, and Pattern matching.
+        List<Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> filteredTags = tagList
+                .stream()
+                .filter(tagInfo -> {
+                    if (!tagInfo.getValue0().equals(targetClass) ||
+                        !tagInfo.getValue1().equals(targetCallable) ||
+                        !tagInfo.getValue2().equals(targetOracleType)) return false;
+                    boolean tagHasNoName = !targetTag.contains("@param") && !targetTag.contains("@throws") && tagInfo.getValue3().length() == 0;
+                    Pattern pattern = Pattern.compile(String.format("@(param|return|throws)\\s+(.*\\.)*%s\\b", tagInfo.getValue3()));
+                    Matcher matcher = pattern.matcher(targetTag);
+                    return matcher.find() || tagHasNoName;
+                })
+                .toList();
+        // find index of most semantically similar tag (cosine similarity).
+        Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String> mostSimilarTag = null;
+        double maxSimilarity = -1.0;
+        for (Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String> tag : filteredTags) {
+            String simpleTargetTag = targetTag.replaceAll(String.format("@(param|return|throws)\\s+(.*\\.)*%s\\b", tag.getValue3()),"").replaceAll("<[^>]*>|@code|@link|\\{|\\}|\\n|\\r|\\t", " ");
+            String simpleActualTag = tag.getValue4().replaceAll("<[^>]*>|@code|@link|\\{|\\}|\\n|\\r|\\t", " ");
+            double currentSimilarity = StringUtils.semanticSimilarity(simpleTargetTag, simpleActualTag);
+            if (currentSimilarity > maxSimilarity) {
+                maxSimilarity = currentSimilarity;
+                mostSimilarTag = tag;
+            }
+        }
+        assert mostSimilarTag != null;
+        return mostSimilarTag;
     }
 
     private void removeProjectClassesTag(
@@ -177,16 +170,14 @@ public class ProjectOracleGenerator {
         // get CallableDeclaration of method in TypeDeclaration.
         CallableDeclaration<?> jpCallable = DatasetUtils.getCallableDeclaration(jpClass, callableName, parameterTypes);
         assert jpCallable != null;
-        this.tokensProjectClassesTags = this.tokensProjectClassesTags
-                .stream()
-                .filter(tagInfo -> !matchesProjectClassesTag(
-                        tagInfo,
-                        jpClass,
-                        jpCallable,
-                        oracleType,
-                        javaDocTag
-                ))
-                .toList();
+        // remove tag with maximum similarity.
+        this.tokensProjectClassesTags.remove(findMaximumSimilarityTag(
+                this.tokensProjectClassesTags,
+                jpClass,
+                jpCallable,
+                oracleType,
+                javaDocTag
+        ));
     }
 
     private OracleDatapoint getEmptyDatapoint(
@@ -266,7 +257,6 @@ public class ProjectOracleGenerator {
             e.printStackTrace();
         }
         // return new datapoint.
-        System.out.println(builder.copy().getJavadocTag());
         builder.setId(this.idCounter);
         this.idCounter++;
         return builder.build();
