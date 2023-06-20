@@ -15,6 +15,7 @@ import com.github.javaparser.resolution.declarations.ResolvedReferenceTypeDeclar
 import com.github.javaparser.resolution.types.ResolvedType;
 import org.javatuples.Pair;
 import org.javatuples.Quartet;
+import org.javatuples.Quintet;
 import org.javatuples.Triplet;
 import star.tratto.data.OracleType;
 import star.tratto.dataset.oracles.JDoctorCondition.*;
@@ -35,6 +36,7 @@ import static star.tratto.util.javaparser.JavaParserUtils.*;
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.concurrent.Callable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -295,20 +297,18 @@ public class DatasetUtils {
         return attributeList;
     }
 
-    private static List<Pair<TypeDeclaration<?>, List<Pair<CallableDeclaration<?>, List<Triplet<OracleType, String, String>>>>>> getCuTags(
+    private static List<Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> getCuTags(
             CompilationUnit cu
     ) throws PackageDeclarationNotFoundException {
-        List<Pair<TypeDeclaration<?>, List<Pair<CallableDeclaration<?>, List<Triplet<OracleType, String, String>>>>>> cuTags = new ArrayList<>();
+        List<Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> tagList = new ArrayList<>();
         // iterate through each class.
         List<TypeDeclaration<?>> jpClasses = cu.getTypes();
         for (TypeDeclaration<?> jpClass : jpClasses) {
-            List<Pair<CallableDeclaration<?>, List<Triplet<OracleType, String, String>>>> classTags = new ArrayList<>();
             // iterate through each method.
             List<CallableDeclaration<?>> jpCallables = new ArrayList<>();
             jpCallables.addAll(jpClass.getMethods());
             jpCallables.addAll(jpClass.getConstructors());
             for (CallableDeclaration<?> jpCallable : jpCallables) {
-                List<Triplet<OracleType, String, String>> callableTags = new ArrayList<>();
                 // iterate through each JavaDoc tag.
                 Optional<com.github.javaparser.javadoc.Javadoc> optionalJavadoc = jpCallable.getJavadoc();
                 if (optionalJavadoc.isPresent()) {
@@ -317,21 +317,26 @@ public class DatasetUtils {
                         // get info for each JavaDoc tag.
                         String name = blockTag.getName().orElse("");
                         String content = blockTag.getContent().toText();
-                        String tagName = blockTag.getTagName();
-                        switch (tagName) {
-                            case "param" -> callableTags.add(new Triplet<>(OracleType.PRE, name, content));
-                            case "return" -> callableTags.add(new Triplet<>(OracleType.NORMAL_POST, name, content));
-                            case "throws", "exception" -> callableTags.add(new Triplet<>(OracleType.EXCEPT_POST, name, content));
-                        }
+                        OracleType oracleType = switch (blockTag.getTagName()) {
+                            case "param" -> OracleType.PRE;
+                            case "return" -> OracleType.NORMAL_POST;
+                            case "throws", "exception" -> OracleType.EXCEPT_POST;
+                            default -> null;
+                        };
+                        if (oracleType == null) continue;
+                        // add new tag.
+                        tagList.add(new Quintet<>(
+                                jpClass,
+                                jpCallable,
+                                oracleType,
+                                name,
+                                content
+                        ));
                     }
                 }
-                // add tags for CallableDeclaration.
-                classTags.add(new Pair<>(jpCallable, callableTags));
             }
-            // add tags for TypeDeclaration.
-            cuTags.add(new Pair<>(jpClass, classTags));
         }
-        return cuTags;
+        return tagList;
     }
 
     private static List<File> getValidJavaFiles(String sourcePath) {
@@ -418,10 +423,10 @@ public class DatasetUtils {
         return attributeList;
     }
 
-    public static List<Pair<TypeDeclaration<?>, List<Pair<CallableDeclaration<?>, List<Triplet<OracleType, String, String>>>>>> getTokensProjectClassesTags(
+    public static List<Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> getTokensProjectClassesTags(
             String sourcePath
     ) {
-        List<Pair<TypeDeclaration<?>, List<Pair<CallableDeclaration<?>, List<Triplet<OracleType, String, String>>>>>> tagList = new ArrayList<>();
+        List<Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> tagList = new ArrayList<>();
         List<File> javaFiles = getValidJavaFiles(sourcePath);
         // iterate through each file and add JavaDoc tags.
         for (File javaFile : javaFiles) {
