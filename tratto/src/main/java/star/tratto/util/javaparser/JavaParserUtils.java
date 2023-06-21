@@ -22,6 +22,7 @@ import star.tratto.data.OracleDatapoint;
 import star.tratto.exceptions.JPClassNotFoundException;
 import star.tratto.exceptions.PackageDeclarationNotFoundException;
 import star.tratto.exceptions.ResolvedTypeNotFound;
+import star.tratto.identifiers.JPCallableType;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.util.JavaTypes;
 
@@ -540,6 +541,35 @@ public class JavaParserUtils {
         signature += String.format("%s", variable.getNameAsString());
         signature += variable.getInitializer().isPresent() ? String.format(" = %s;", variable.getInitializer().get()) : ";";
         return signature;
+    }
+
+    /**
+     * Generates the signature of a JavaParser callable declaration
+     * {@link CallableDeclaration}, and returns its string representation.
+     *
+     * @param jpCallable The JavaParser callable declaration.
+     * @param jpCallableType Type of declaration (e.g. method or constructor).
+     * @return A string representation of the signature.
+     */
+    public static String getCallableSignature(
+            CallableDeclaration<?> jpCallable,
+            JPCallableType jpCallableType
+    ) {
+        String methodSignature = jpCallable.toString();
+        Optional<BlockStmt> methodBody = jpCallableType.equals(JPCallableType.METHOD) ?
+                ((MethodDeclaration) jpCallable).getBody() :
+                Optional.ofNullable(((ConstructorDeclaration) jpCallable).getBody());
+        if (methodBody.isPresent()) {
+            methodSignature = methodSignature.replace(methodBody.get().toString(), "");
+        }
+        for (Node comment: jpCallable.getAllContainedComments()) {
+            methodSignature = methodSignature.replace(comment.toString(), "");
+        }
+        if (jpCallable.getComment().isPresent()) {
+            methodSignature = methodSignature.replaceAll("[\\s\\S]*\n", "");
+        }
+        methodSignature = methodSignature.replaceAll("/\\*\\*([\\s\\S]*?)\\*/(\\n|\\r|\\t)*", "");
+        return methodSignature.trim().replaceAll(";$", "");
     }
 
     public static TypeDeclaration<?> getClassOrInterface(String classSourceCode, String name) {

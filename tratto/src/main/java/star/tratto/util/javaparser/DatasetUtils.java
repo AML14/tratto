@@ -232,7 +232,7 @@ public class DatasetUtils {
             CallableDeclaration<?> jpCallable
     ) {
         JPCallableType jpCallableType = jpCallable.isConstructorDeclaration() ? JPCallableType.CONSTRUCTOR : JPCallableType.METHOD;
-        String jpSignature = jpCallable.getSignature().asString().trim();
+        String jpSignature = JavaParserUtils.getCallableSignature(jpCallable, jpCallableType);
         Optional<BlockStmt> jpBody = (jpCallableType == JPCallableType.CONSTRUCTOR) ?
                 Optional.ofNullable(((ConstructorDeclaration) jpCallable).getBody()) :
                 ((MethodDeclaration) jpCallable).getBody();
