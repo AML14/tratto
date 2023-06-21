@@ -108,7 +108,7 @@ public class ProjectOracleGenerator {
         System.out.printf("Processed %s non-empty oracles.%n", this.idCounter - this.checkpoint);
         // Generate an OracleDatapoint for each remaining JavaDoc tag.
         for (Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String> jpTag : this.tokensProjectClassesTags) {
-
+            oracleDPs.add(getEmptyDatapoint(jpTag));
         }
         System.out.printf("Processed %s conditions.%n", this.idCounter - this.checkpoint);
         this.checkpoint = this.idCounter;
@@ -184,9 +184,58 @@ public class ProjectOracleGenerator {
             Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String> jpTag
     ) {
         OracleDatapointBuilder builder = new OracleDatapointBuilder();
+        // get basic information of jpTag.
+        TypeDeclaration<?> jpClass = jpTag.getValue0();
+        CallableDeclaration<?> jpCallable = jpTag.getValue1();
+        OracleType oracleType = jpTag.getValue2();
+        String tagName = jpTag.getValue3();
+        String tagContent = jpTag.getValue4();
+        // get artificial condition information.
+        String tagType = switch (oracleType) {
+            case PRE -> "@param ";
+            case NORMAL_POST -> "";
+            case EXCEPT_POST -> "@throws ";
+        };
+        builder.setOracleType(oracleType);
+        builder.setJavadocTag(String.format("%s%s %s", tagType, tagName, tagContent));
+        builder.setOracle(";");
+        // set project-level information.
+        builder.setProjectName(this.project.getProjectName());
+        builder.setClassSourceCode(jpClass.toString());
+        builder.setPackageName(jpClass.resolve().getPackageName());
+        builder.setClassName(jpClass.getNameAsString());
+        builder.setClassJavadoc(DatasetUtils.getClassJavadoc(jpClass));
+        builder.setTokensProjectClasses(this.tokensProjectClasses);
+        builder.setTokensProjectClassesNonPrivateStaticNonVoidMethods(this.tokensProjectClassesMethods);
+        builder.setTokensProjectClassesNonPrivateStaticAttributes(this.tokensProjectClassesAttributes);
+        builder.setMethodSourceCode(DatasetUtils.getCallableSourceCode(jpCallable));
+        builder.setMethodJavadoc(DatasetUtils.getCallableJavadoc(jpCallable));
+        builder.setTokensMethodJavadocValues(DatasetUtils.getValuesFromJavadoc(builder.copy().getMethodJavadoc()));
+        builder.setTokensMethodArguments(DatasetUtils.getTokensMethodArguments(jpClass, jpCallable));
+        // get method variables (no oracle variables).
+        try {
+            builder.setTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(
+                    DatasetUtils.getTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(
+                            jpClass,
+                            jpCallable
+                    )
+            );
+            builder.setTokensMethodVariablesNonPrivateNonStaticAttributes(
+                    DatasetUtils.getTokensMethodVariablesNonPrivateNonStaticAttributes(
+                            jpClass,
+                            jpCallable
+                    )
+            );
+            builder.setTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(new ArrayList<>());
+            builder.setTokensOracleVariablesNonPrivateNonStaticAttributes(new ArrayList<>());
+        } catch (JPClassNotFoundException | UnsolvedSymbolException e) {
+            e.printStackTrace();
+        }
+        // return new datapoint.
+        builder.setId(this.idCounter);
+        this.idCounter++;
         return builder.build();
     }
-
 
     private OracleDatapoint getNextDatapoint(Operation operation, Object condition) {
         OracleDatapointBuilder builder = new OracleDatapointBuilder();

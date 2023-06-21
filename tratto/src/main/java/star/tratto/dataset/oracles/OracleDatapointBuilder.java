@@ -11,7 +11,6 @@ import star.tratto.identifiers.file.*;
 import star.tratto.util.FileUtils;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class OracleDatapointBuilder {
     private OracleDatapoint datapoint;
