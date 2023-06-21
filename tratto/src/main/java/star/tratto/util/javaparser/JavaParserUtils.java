@@ -635,6 +635,13 @@ public class JavaParserUtils {
         return jpClassGenericTypes.contains(jpTypeName.replaceAll("\\[\\]", ""));
     }
 
+    /**
+     * Get all methods available to a given class (including superclasses).
+     *
+     * @param jpClass object class.
+     * @return list of MethodUsage objects.
+     * @throws JPClassNotFoundException if jpClass is not resolvable.
+     */
     public static List<MethodUsage> getAllAvailableMethodUsages(
             TypeDeclaration<?> jpClass
     ) throws JPClassNotFoundException {
