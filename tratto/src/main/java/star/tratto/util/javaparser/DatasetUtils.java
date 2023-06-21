@@ -104,7 +104,7 @@ public class DatasetUtils {
     public static String getCallableJavadoc(
             CallableDeclaration<?> jpCallable
     ) {
-        return jpCallable.getJavadocComment().map(javadocComment -> Javadoc.METHOD_PREFIX.getValue() + javadocComment.getContent() + Javadoc.METHOD_SUFFIX).orElseGet(() -> getJavadocByPattern(jpCallable));
+        return jpCallable.getJavadocComment().map(javadocComment -> Javadoc.METHOD_PREFIX.getValue() + javadocComment.getContent() + Javadoc.METHOD_SUFFIX.getValue()).orElseGet(() -> getJavadocByPattern(jpCallable));
     }
 
     private static List<Pair<String, String>> findAllNumericValuesInJavadoc(
