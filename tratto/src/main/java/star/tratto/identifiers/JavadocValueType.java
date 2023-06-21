@@ -2,7 +2,7 @@ package star.tratto.identifiers;
 
 public enum JavadocValueType {
     INTEGER("int"),
-    REAL("float"),
+    REAL("double"),
     STRING("String");
 
     private final String type;

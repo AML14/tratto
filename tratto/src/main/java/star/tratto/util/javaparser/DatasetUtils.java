@@ -107,20 +107,18 @@ public class DatasetUtils {
         return jpCallable.getJavadocComment().map(javadocComment -> Javadoc.METHOD_PREFIX.getValue() + javadocComment.getContent() + Javadoc.METHOD_SUFFIX.getValue()).orElseGet(() -> getJavadocByPattern(jpCallable));
     }
 
-    private static List<Pair<String, String>> findAllNumericValuesInJavadoc(
-            String jpJavadoc
+    public static List<Pair<String, String>> findAllNumericValuesInJavadoc(
+            String javadocComment
     ) {
-        // Define regex that matches integer and decimal values with a string.
+        // Defines regex to match integers and floats within a string.
         Pattern pattern = Pattern.compile("-?\\d+(\\.\\d+)?");
-        // Instantiate matcher.
-        Matcher matcher = pattern.matcher(jpJavadoc);
-        // Define pairs of numeric values [numericType, numericValue].
+        Matcher matcher = pattern.matcher(javadocComment);
+        // Get list of (numericType, numericValue) pairs.
         List<Pair<String, String>> numericValues = new ArrayList<>();
-        // Collect all numbers.
         while (matcher.find()) {
             String match = matcher.group();
             if (match.contains(".")) {
-                // decimal value.
+                // float value.
                 try {
                     double realValue = Double.parseDouble(match);
                     numericValues.add(new Pair<>(Double.toString(realValue), JavadocValueType.REAL.getValue()));
@@ -139,22 +137,23 @@ public class DatasetUtils {
                 }
             }
         }
+        // Return the list of the collected integer values
         return numericValues;
     }
 
     private static List<Pair<String, String>> findAllStringValuesInJavadoc(
             String jpJavadoc
     ) {
-        // Define regex that matches a string value within a string.
-        Pattern pattern = Pattern.compile("\"([^\"]*)\"");
+        // Defines regex to match values within a string.
+        Pattern pattern = Pattern.compile("\\\"(.*?)\\\"|\\\'(.*?)\\\'");
         Matcher matcher = pattern.matcher(jpJavadoc);
-        // Define pairs of string values [stringValue, "String"]
+        // Get list of (stringValue, "String") pairs.
         List<Pair<String, String>> stringValues = new ArrayList<>();
-        // Collect all strings.
         while (matcher.find()) {
-            String match = matcher.group(1);
+            String match = String.format("\"%s\"",!(matcher.group(1) == null) ? matcher.group(1) : matcher.group(2));
             stringValues.add(new Pair<>(match, "String"));
         }
+        // Return the list of the collected string values
         return stringValues;
     }
 
