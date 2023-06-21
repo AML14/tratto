@@ -172,24 +172,54 @@ public class DatasetUtils {
             Parameter jpParameter
     ) {
         Type jpParameterType = jpParameter.getType();
-        if (jpParameterType.resolve().isTypeVariable()) {
-            // generic type.
-            return Optional.of(((ClassOrInterfaceType) jpParameterType).getNameAsString());
-        } else if (jpParameterType.resolve().isPrimitive()) {
-            // primitive type.
-            return Optional.of(jpParameterType.asPrimitiveType().toString());
-        } else if (jpParameterType.resolve().isArray()) {
-            // array type.
-            return Optional.of(JavaParserUtils.getTypeWithoutPackages(jpParameterType.resolve()));
-        } else if (jpParameterType.resolve().isReferenceType()) {
-            String typeName = JDoctorUtils.getJPTypeName(jpClass, jpCallable, jpParameter);
-            if (isGenericType(typeName, jpCallable, jpClass)) {
-                return Optional.of(typeName);
+        try {
+            if (jpParameterType.resolve().isTypeVariable()) {
+                // generic type.
+                String className = ((ClassOrInterfaceType) jpParameterType).getNameAsString();
+                if (JDoctorUtils.hasJPTypeEllipsis(jpParameter.toString())) {
+                    className += "[]";
+                }
+                return Optional.of(className);
+            } else if (jpParameterType.resolve().isPrimitive()) {
+                // primitive type.
+                String className = jpParameterType.asPrimitiveType().toString();
+                if (JDoctorUtils.hasJPTypeEllipsis(jpParameter.toString())) {
+                    className += "[]";
+                }
+                return Optional.of(className);
+            } else if (jpParameterType.resolve().isArray()) {
+                // array type.
+                String qualifiedName = jpParameterType.resolve().asArrayType().describe();
+                return Optional.of(getTypeWithoutPackages(qualifiedName));
+            } else if (jpParameterType.resolve().isReferenceType()) {
+                String jpTypeName = JDoctorUtils.getJPTypeName(jpClass, jpCallable, jpParameter);
+                if (isGenericType(jpTypeName, jpCallable, jpClass)) {
+                    String className = jpTypeName;
+                    if (JDoctorUtils.hasJPTypeEllipsis(jpParameter.toString())) {
+                        className += "[]";
+                    }
+                    return Optional.of(className);
+                } else {
+                    String qualifiedName = jpParameterType.resolve().asReferenceType().getQualifiedName();
+                    String className = getTypeWithoutPackages(qualifiedName);
+                    if (JDoctorUtils.hasJPTypeEllipsis(jpParameter.toString())) {
+                        className += "[]";
+                    }
+                    return Optional.of(className);
+                }
             } else {
-                return Optional.of(getTypeWithoutPackages(jpParameterType.resolve()));
+                assert false;
+                String errMsg = String.format("Unexpected type when evaluating %s parameter type.", jpParameterType);
+                System.err.println(errMsg);
             }
-        } else {
-            System.err.printf("Unexpected type %s in generating argument triplet.%n", jpParameterType);
+        } catch (UnsolvedSymbolException e) {
+            String errMsg = String.format("UnsolvedSymbolException when evaluating %s parameter type.", jpParameterType);
+            System.err.println(errMsg);
+            String className = ((ClassOrInterfaceType) jpParameterType).getNameAsString();
+            if (JDoctorUtils.hasJPTypeEllipsis(jpParameter.toString())) {
+                className += "[]";
+            }
+            return Optional.of(className);
         }
         return Optional.empty();
     }
@@ -204,23 +234,32 @@ public class DatasetUtils {
             Type jpParameterType = jpParameter.getType();
             Optional<String> jpParameterClassName = getClassNameFromCallableDeclaration(jpClass, jpCallable, jpParameter);
             if (jpParameterClassName.isPresent()) {
-                if (jpParameterType.resolve().isReferenceType()) {
-                    //
-                    String typeName = JDoctorUtils.getJPTypeName(jpClass, jpCallable, jpParameter);
-                    if (isGenericType(typeName, jpCallable, jpClass)) {
-                        argumentList.add(new Triplet<>(jpParameter.getNameAsString(), "", typeName));
-                    } else {
-                        String className = JavaParserUtils.getTypeWithoutPackages(jpParameterType.resolve());
-                        String parameterPackageName = jpParameterType.resolve().asReferenceType().getQualifiedName()
-                                .replace(String.format(".%s", className), "");
-                        argumentList.add(new Triplet<>(
-                                jpParameter.getNameAsString(),
-                                parameterPackageName,
-                                className
-                        ));
+                try {
+                    if (
+                            jpParameterType.resolve().isTypeVariable() ||
+                            jpParameterType.resolve().isPrimitive() ||
+                            jpParameterType.resolve().isArray()
+                    ) {
+                        argumentList.add(new Triplet<>(jpParameter.getNameAsString(), "", jpParameterClassName.get()));
+                    } else if (jpParameterType.resolve().isReferenceType()) {
+                        String typeName = JDoctorUtils.getJPTypeName(jpClass, jpCallable, jpParameter);
+                        if (isGenericType(typeName, jpCallable, jpClass)) {
+                            argumentList.add(new Triplet<>(jpParameter.getNameAsString(), "", typeName));
+                        } else {
+                            String fullyQualifiedName = jpParameterType.resolve().asReferenceType().getQualifiedName();
+                            String className = getTypeWithoutPackages(fullyQualifiedName);
+                            String parameterPackageName = fullyQualifiedName
+                                    .replace(String.format(".%s", className), "");
+                            argumentList.add(new Triplet<>(
+                                    jpParameter.getNameAsString(),
+                                    parameterPackageName,
+                                    jpParameterClassName.get()
+                            ));
+                        }
                     }
-                } else {
-                    argumentList.add(new Triplet<>(jpParameter.getNameAsString(), "", jpParameterClassName.get()));
+                } catch (UnsolvedSymbolException e) {
+                    String errMsg = String.format("Unable to generate triplet for argument %s.", jpParameterType);
+                    System.err.println(errMsg);
                 }
             }
         }
