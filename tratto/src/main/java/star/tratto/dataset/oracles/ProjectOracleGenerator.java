@@ -7,7 +7,6 @@ import com.github.javaparser.resolution.UnsolvedSymbolException;
 import org.javatuples.Pair;
 import org.javatuples.Quartet;
 import org.javatuples.Quintet;
-import org.javatuples.Triplet;
 import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleType;
 import star.tratto.dataset.oracles.JDoctorCondition.Operation;
@@ -15,7 +14,6 @@ import star.tratto.dataset.oracles.JDoctorCondition.PreCondition;
 import star.tratto.dataset.oracles.JDoctorCondition.PostCondition;
 import star.tratto.dataset.oracles.JDoctorCondition.ThrowsCondition;
 import star.tratto.exceptions.JPClassNotFoundException;
-import star.tratto.oraclegrammar.trattoGrammar.Oracle;
 import star.tratto.util.StringUtils;
 import star.tratto.util.javaparser.DatasetUtils;
 import star.tratto.util.javaparser.JDoctorUtils;
@@ -30,14 +28,11 @@ import java.util.regex.Pattern;
  */
 public class ProjectOracleGenerator {
     // generator fields.
-    /** Provides unique identifiers of the generated oracle data points. */
+    // Provides unique identifiers of the generated OracleDatapoint's.
     private int idCounter;
-    /**
-     * The last identifier used to generate a data point. The checkpoint is
-     * used to calculate the total number of oracles generated between projects.
-     */
+    // Used to calculate the number of oracles generated between projects.
     private int checkpoint;
-    // project fields.
+    // project-level fields.
     private Project project;
     private List<JDoctorCondition> jDoctorConditions;
     private List<Pair<String, String>> tokensProjectClasses;
@@ -79,6 +74,7 @@ public class ProjectOracleGenerator {
      * for the loader project, from the JDoctor conditions
      */
     public List<OracleDatapoint> generate() {
+        System.out.printf("Identified %s total JavaDoc tags.%n", this.tokensProjectClassesTags.size());
         List<OracleDatapoint> oracleDPs = new ArrayList<>();
         // Generate an OracleDatapoint for each JDoctor condition.
         for (JDoctorCondition jDoctorCondition : this.jDoctorConditions) {
@@ -107,14 +103,30 @@ public class ProjectOracleGenerator {
         }
         System.out.printf("Processed %s non-empty oracles.%n", this.idCounter - this.checkpoint);
         // Generate an OracleDatapoint for each remaining JavaDoc tag.
+        int numNonEmptyOracles = oracleDPs.size();
         for (Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String> jpTag : this.tokensProjectClassesTags) {
             oracleDPs.add(getEmptyDatapoint(jpTag));
         }
-        System.out.printf("Processed %s conditions.%n", this.idCounter - this.checkpoint);
+        System.out.printf("Processed %s empty oracles.%n", this.idCounter - numNonEmptyOracles);
+        System.out.printf("Processed %s total conditions.%n", this.idCounter - this.checkpoint);
         this.checkpoint = this.idCounter;
         return oracleDPs;
     }
 
+    /**
+     * Finds the most similar source code tag to a target JDoctor tag. JDoctor
+     * simplifies JavaDoc tags from source code, such that we rely on cosine
+     * similarity to identify the source code tag that is most similar to the
+     * given JDoctor tag. Only considers tags for a specific target method in
+     * a specific target class.
+     *
+     * @param tagList list of source code tags.
+     * @param targetClass target class.
+     * @param targetCallable target method/constructor.
+     * @param targetOracleType target oracle type (e.g. pre-condition).
+     * @param targetTag target JDoctor tag.
+     * @return source code tag with the greatest similarity to targetTag.
+     */
     private Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String> findMaximumSimilarityTag(
             List<Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> tagList,
             TypeDeclaration<?> targetClass,
@@ -151,6 +163,14 @@ public class ProjectOracleGenerator {
         return mostSimilarTag;
     }
 
+    /**
+     * Removes the JavaDoc tag of a given JDoctor condition from the list
+     * of total project JavaDoc tags.
+     *
+     * @param operation the operation of the JDoctor condition.
+     * @param oracleType the type of oracle (e.g. PRE/NORMAL_POST/EXCEPT_POST).
+     * @param javaDocTag the (JDoctor simplified) JavaDoc tag to be removed.
+     */
     private void removeProjectClassesTag(
             Operation operation,
             OracleType oracleType,
@@ -180,6 +200,9 @@ public class ProjectOracleGenerator {
         ));
     }
 
+    /**
+     * Generates an "empty" OracleDatapoint from a given source code tag.
+     */
     private OracleDatapoint getEmptyDatapoint(
             Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String> jpTag
     ) {
@@ -226,6 +249,7 @@ public class ProjectOracleGenerator {
                             jpCallable
                     )
             );
+            // populate oracle variables with empty lists.
             builder.setTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(new ArrayList<>());
             builder.setTokensOracleVariablesNonPrivateNonStaticAttributes(new ArrayList<>());
         } catch (JPClassNotFoundException | UnsolvedSymbolException e) {
@@ -237,6 +261,9 @@ public class ProjectOracleGenerator {
         return builder.build();
     }
 
+    /**
+     * Generates an OracleDatapoint from a given JDoctor operation.
+     */
     private OracleDatapoint getNextDatapoint(Operation operation, Object condition) {
         OracleDatapointBuilder builder = new OracleDatapointBuilder();
         // get basic information of operation.
