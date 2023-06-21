@@ -9,6 +9,7 @@ import java.io.*;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class FileUtils {
@@ -37,7 +38,7 @@ public class FileUtils {
         File file = createFile(dirPath, fileName, fileFormat);
         // depending on the file format, save the content, accordingly
         switch (fileFormat) {
-            case TXT:
+            case TXT -> {
                 // Convert content to string
                 String fileContent = (String) content;
                 // Create a FileWriter object with append flag set to true
@@ -46,50 +47,16 @@ public class FileUtils {
                 writer.write(fileContent + "\n");
                 // Close the FileWriter object
                 writer.close();
-                break;
-            case JSON:
+            }
+            case JSON -> {
                 ObjectMapper objectMapper = new ObjectMapper();
                 objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, content);
-                break;
-            default:
+            }
+            default -> {
                 String errMsg = String.format("File format %s not yet supported to save the content of a file.", fileFormat.getValue());
                 System.err.println(errMsg);
-                break;
-        }
-    }
-
-    /**
-     * The method checks if the content passed to the function is already written within a file.
-     *
-     * @param dirPath the path to the directory where the file must be saved
-     * @param fileName the name of the file where to write the content
-     * @param fileFormat the format of the file {@link FileFormat}
-     * @param content the content to write within the file
-     * @return a boolean value: {@code true} if the method finds the content within the file, {@code false} otherwise.
-     */
-    public static boolean isInFile(
-            String dirPath,
-            String fileName,
-            FileFormat fileFormat,
-            String content
-    ) {
-        String filePath = Paths.get(dirPath, fileName + fileFormat.getValue()).toString();
-        File file = new File(filePath);
-        boolean found = false;
-        if (file.exists()) {
-            try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-                String line;
-                while ((line = br.readLine()) != null) {
-                    if (line.contains(content)) {
-                        found = true;
-                        break;
-                    }
-                }
-            } catch (IOException e) {
-                System.err.println("Error reading file: " + e.getMessage());
             }
         }
-        return found;
     }
 
     /**
@@ -131,7 +98,7 @@ public class FileUtils {
      */
     public static List<File> extractJavaFilesFromDirectory(File dir) {
         List<File> javaFileList = new ArrayList<>();
-        for (File file: dir.listFiles()) {
+        for (File file: Objects.requireNonNull(dir.listFiles())) {
             if (file.isDirectory()) {
                 javaFileList.addAll(extractJavaFilesFromDirectory(file));
             }
@@ -148,11 +115,10 @@ public class FileUtils {
      * @param dirPath the path to the directory where the file must be saved
      * @param fileName the name of the file where to write the content
      * @param fileFormat the format of the file {@link FileFormat}
-     * @return
+     * @return the complete path to a file.
      */
     public static String getAbsolutePathToFile(String dirPath, FileName fileName, FileFormat fileFormat) {
-        String filePath = Paths.get(dirPath, fileName.getValue()).toString() + fileFormat.getValue();
-        return filePath;
+        return Paths.get(dirPath, fileName.getValue()).toString() + fileFormat.getValue();
     }
 
     /**
@@ -162,11 +128,8 @@ public class FileUtils {
      */
     public static boolean isJavaFile(File file) {
         String fileName = file.getName();
-        if (fileName.endsWith(".java")) {
-            // The file doesn't have an extension
-            return true;
-        }
-        return false;
+        // The file doesn't have an extension
+        return fileName.endsWith(".java");
     }
 
     /**
@@ -188,7 +151,6 @@ public class FileUtils {
                 jsonFile,
                 new TypeReference<List<?>>() {}
             );
-            return tokenList;
         } catch (IOException e) {
             String errMsg = String.format("Unexpected error in processing the JSON file %s.", filePath);
             System.err.println(errMsg);
