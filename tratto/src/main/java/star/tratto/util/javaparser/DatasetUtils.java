@@ -42,6 +42,17 @@ import java.util.stream.Collectors;
 
 public class DatasetUtils {
     /**
+     * The method removes all the duplicates from a list.
+     * @param list The list from which remove the duplicates.
+     * @return A new list that does not contain the duplicates of the list passed to the function.
+     * @param <T> The generic type of the list.
+     */
+    private static <T> List<T> removeDuplicates(List<T> list) {
+        Set<T> set = new LinkedHashSet<>(list);
+        return new ArrayList<>(set);
+    }
+
+    /**
      * Gets the name and package of all classes in a compilation unit.
      *
      * @param cu the compilation unit of a java file
@@ -489,9 +500,9 @@ public class DatasetUtils {
                         jpMethod.getName(),
                         jpMethod.declaringType().getClassName(),
                         jpMethod.declaringType().getPackageName(),
-                        jpMethod.getSignature()
+                        getMethodSignature(jpMethod)
                 ))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private static List<Quartet<String, String, String, String>> getMethodsFromType(
@@ -634,7 +645,7 @@ public class DatasetUtils {
                     ((MethodDeclaration) jpCallable).getType().resolve()
             ));
         }
-        return methodList;
+        return removeDuplicates(methodList);
     }
 
     /**
@@ -669,7 +680,7 @@ public class DatasetUtils {
                     ((MethodDeclaration) jpCallable).getType().resolve()
             ));
         }
-        return attributeList;
+        return removeDuplicates(attributeList);
     }
 
     /**
@@ -714,7 +725,7 @@ public class DatasetUtils {
                 methodList.addAll(convertMethodUsageToQuartet(jpReturnTypeMethods));
             }
         }
-        return methodList;
+        return removeDuplicates(methodList);
     }
 
     /**
@@ -754,7 +765,7 @@ public class DatasetUtils {
                 attributeList.addAll(getFieldsFromType(jpType));
             }
         }
-        return attributeList;
+        return removeDuplicates(attributeList);
     }
 
     /**

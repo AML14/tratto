@@ -105,7 +105,8 @@ public class ProjectOracleGenerator {
         // Generate an OracleDatapoint for each remaining JavaDoc tag.
         int numNonEmptyOracles = oracleDPs.size();
         for (Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String> jpTag : this.tokensProjectClassesTags) {
-            oracleDPs.add(getEmptyDatapoint(jpTag));
+            break;
+//            oracleDPs.add(getEmptyDatapoint(jpTag));
         }
         System.out.printf("Processed %s empty oracles.%n", this.idCounter - numNonEmptyOracles);
         System.out.printf("Processed %s total conditions.%n", this.idCounter - this.checkpoint);
@@ -332,6 +333,7 @@ public class ProjectOracleGenerator {
         } catch (JPClassNotFoundException | UnsolvedSymbolException e) {
             e.printStackTrace();
         }
+//        System.out.println(builder.copy().getTokensMethodVariablesNonPrivateNonStaticNonVoidMethods());
         // return new datapoint.
         builder.setId(this.idCounter);
         this.idCounter++;
