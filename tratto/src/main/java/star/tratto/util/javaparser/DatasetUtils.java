@@ -745,6 +745,14 @@ public class DatasetUtils {
                     ((MethodDeclaration) jpCallable).getType().resolve()
             ));
         }
+        // add Object methods.
+        methodList.addAll(convertMethodUsageToQuartet(
+                JavaParserUtils.getGenericType().asReferenceType().getAllMethods()
+                        .stream()
+                        .map(MethodUsage::new)
+                        .filter(JavaParserUtils::isNonStaticNonVoidNonPrivateMethod)
+                        .toList()
+        ));
         return removeDuplicates(methodList);
     }
 
@@ -825,6 +833,14 @@ public class DatasetUtils {
                 methodList.addAll(convertMethodUsageToQuartet(jpReturnTypeMethods));
             }
         }
+        // add Object methods.
+        methodList.addAll(convertMethodUsageToQuartet(
+                JavaParserUtils.getGenericType().asReferenceType().getAllMethods()
+                        .stream()
+                        .map(MethodUsage::new)
+                        .filter(JavaParserUtils::isNonStaticNonVoidNonPrivateMethod)
+                        .toList()
+        ));
         return removeDuplicates(methodList);
     }
 
