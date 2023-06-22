@@ -500,7 +500,7 @@ public class DatasetUtils {
                         jpMethod.getName(),
                         jpMethod.declaringType().getClassName(),
                         jpMethod.declaringType().getPackageName(),
-                        JavaParserUtils.getMethodSignature(jpMethod.getDeclaration())
+                        JavaParserUtils.getMethodSignature(jpMethod)
                 ))
                 .toList();
     }

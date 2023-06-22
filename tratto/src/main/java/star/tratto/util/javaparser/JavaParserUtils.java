@@ -15,6 +15,7 @@ import com.github.javaparser.resolution.declarations.ResolvedReferenceTypeDeclar
 import com.github.javaparser.resolution.declarations.ResolvedTypeParameterDeclaration;
 import com.github.javaparser.resolution.types.ResolvedType;
 import com.github.javaparser.symbolsolver.utils.SymbolSolverCollectionStrategy;
+import org.eclipse.xtend.lib.macro.declaration.ResolvedMethod;
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
 import org.slf4j.Logger;
@@ -577,73 +578,103 @@ public class JavaParserUtils {
         return getClassOrInterface(javaParser.parse(classSourceCode).getResult().get(), name);
     }
 
+    /**
+     * Unfortunately, the MethodUsage class does not provide a function to obtain the method signature
+     * as it was written, so the best that we can do is to reconstruct it to a certain extent. This
+     * has the following limitations:
+     * <ul>
+     *     <li>We lose modifiers and annotations before parameters, e.g., the "final" and "@NotNull" in
+     *     the signature {@code "... addAll(@NotNull final T[] elements)"}</li>
+     *     <li>We lose parameter names, which are replaced by "arg0", "arg1", etc.</li>
+     * </ul>
+     */
     public static String getMethodSignature(
-            ResolvedMethodDeclaration jpMethod
+            MethodUsage methodUsage
     ) {
-        // remove JavaDoc and comments from method string.
-        String methodWithoutComments = jpMethod.toString().replaceAll("\\/\\*\\*([\\s\\S]*?)\\*\\/|\\/\\/.*?[\n|\r]|\\/\\*([\\s\\S]*?)\\*\\/","");
-        if (methodWithoutComments.contains("public") || methodWithoutComments.contains("protected") || methodWithoutComments.contains("private")) {
-            if (jpMethod.toString().startsWith("JavaParserMethodDeclaration")) {
+        ResolvedMethodDeclaration methodDeclaration = methodUsage.getDeclaration();
+        // remove JavaDoc and other comments from method.
+        String methodWithoutComments = methodDeclaration.toString().replaceAll("\\/\\*\\*([\\s\\S]*?)\\*\\/|\\/\\/.*?[\n|\r]|\\/\\*([\\s\\S]*?)\\*\\/","");
+        boolean hasAccessSpecifier = methodWithoutComments.contains("public") ||
+                methodWithoutComments.contains("protected") ||
+                methodWithoutComments.contains("private");
+        if (hasAccessSpecifier) {
+            // the method has an access specifier.
+            if (methodDeclaration.toString().startsWith("JavaParserMethodDeclaration")) {
                 // local method (uses JavaParserMethodDeclaration).
                 Pattern pattern = Pattern.compile("^JavaParserMethodDeclaration\\{wrappedNode\\=[.|\\S|\\s]*((public|private|protected)([^{;]*)?)[;|{]");
                 Matcher matcher = pattern.matcher(methodWithoutComments);
                 if (!matcher.find()) {
-                    throw new IllegalStateException("Could not parse method signature: " + jpMethod);
+                    throw new IllegalStateException("Could not parse method signature: " + methodDeclaration);
                 }
-                // Regex only matches method modifiers in group 1.
+                // get matched signature and trim.
                 String methodSignature = matcher.group(1);
                 return methodSignature.trim();
             } else {
-                // inherited method (uses ReflectionMethodDeclaration).
+                // inherited method (uses ReflectionMethodDeclaration.
                 Matcher matcher = METHOD_SIGNATURE.matcher(methodWithoutComments);
                 if (!matcher.find()) {
-                    throw new IllegalStateException("Could not parse method signature: " + jpMethod.toString());
+                    throw new IllegalStateException("Could not parse method signature: " + methodDeclaration);
                 }
                 String methodModifiers = methodWithoutComments.startsWith("ReflectionMethodDeclaration") ? matcher.group(1) : matcher.group(2);
-                // Take into account the case in which the method declaration refers to a method without an access specifier
-                if (methodModifiers == null) {
-                    assert methodWithoutComments.startsWith("ReflectionMethodDeclaration");
-                    methodModifiers = "";
-                }
-                List<String> methodTypeParameters = new ArrayList<>();
-                for (int i=0; i < jpMethod.getTypeParameters().size(); i++) {
-                    methodTypeParameters.add(jpMethod.getTypeParameters().get(i).getName());
-                }
-                String methodReturnType = getTypeWithoutPackages(jpMethod.getReturnType());
-                String methodName = jpMethod.getName();
-                List<String> methodParameters = new ArrayList<>();
-                for (int i = 0; i < jpMethod.getNumberOfParams(); i++) {
-                    methodParameters.add(getTypeWithoutPackages(jpMethod.getParam(i).getType()) + " arg" + i);
-                }
-                List<String> methodExceptions = new ArrayList<>();
-                for (ResolvedType exceptionType : jpMethod.getSpecifiedExceptions()) {
-                    methodExceptions.add(getTypeWithoutPackages(exceptionType));
-                }
-                return (methodModifiers + (methodTypeParameters.isEmpty() ? "" : "<" + String.join(", ", methodTypeParameters) + ">") +
-                        " " + methodReturnType + " " + methodName + "(" + String.join(", ", methodParameters) + ")" +
-                        (methodExceptions.isEmpty() ? "" : " throws " + String.join(", ", methodExceptions)))
+                // get method signature information.
+                List<String> typeParameterList = getMethodUsageTypeParameters(methodUsage);
+                List<String> parameterList = getMethodUsageParameters(methodUsage);
+                List<String> exceptionList = getMethodUsageExceptions(methodUsage);
+                // construct signature.
+                return (methodModifiers + (typeParameterList.isEmpty() ? "" : "<" + String.join(", ", typeParameterList) + ">") +
+                        " " + getTypeWithoutPackages(methodDeclaration.getReturnType()) +
+                        " " + methodDeclaration.getName() +
+                        "(" + String.join(", ", parameterList) + ")" +
+                        (exceptionList.isEmpty() ? "" : " throws " + String.join(", ", exceptionList)))
                         .replaceAll(" +", " ").trim();
             }
         } else {
-            String methodReturnType = getTypeWithoutPackages(jpMethod.getReturnType());
-            String methodName = jpMethod.getName();
-            List<String> methodTypeParameters = new ArrayList<>();
-            for (int i=0; i < jpMethod.getTypeParameters().size(); i++) {
-                methodTypeParameters.add(jpMethod.getTypeParameters().get(i).getName());
-            }
-            List<String> methodParameters = new ArrayList<>();
-            for (int i = 0; i < jpMethod.getNumberOfParams(); i++) {
-                methodParameters.add(getTypeWithoutPackages(jpMethod.getParam(i).getType()) + " arg" + i);
-            }
-            List<String> methodExceptions = new ArrayList<>();
-            for (ResolvedType exceptionType : jpMethod.getSpecifiedExceptions()) {
-                methodExceptions.add(getTypeWithoutPackages(exceptionType));
-            }
-            return ((methodTypeParameters.isEmpty() ? "" : "<" + String.join(", ", methodTypeParameters) + ">") +
-                    " " + methodReturnType + " " + methodName + "(" + String.join(", ", methodParameters) + ")" +
-                    (methodExceptions.isEmpty() ? "" : " throws " + String.join(", ", methodExceptions)))
+            // the method does not have an access specifier.
+            // get method signature information.
+            List<String> typeParameterList = getMethodUsageTypeParameters(methodUsage);
+            List<String> parameterList = getMethodUsageParameters(methodUsage);
+            List<String> exceptionList = getMethodUsageExceptions(methodUsage);
+            // construct signature.
+            return ((typeParameterList.isEmpty() ? "" : "<" + String.join(", ", typeParameterList) + ">") +
+                    " " + getTypeWithoutPackages(methodDeclaration.getReturnType()) +
+                    " " + methodDeclaration.getName() +
+                    "(" + String.join(", ", parameterList) + ")" +
+                    (exceptionList.isEmpty() ? "" : " throws " + String.join(", ", exceptionList)))
                     .replaceAll(" +", " ").trim();
         }
+    }
+
+    /**
+     * Get all generic types of a given method.
+     */
+    public static List<String> getMethodUsageTypeParameters(MethodUsage methodUsage) {
+        return methodUsage.getDeclaration().getTypeParameters()
+                .stream()
+                .map(ResolvedTypeParameterDeclaration::getName)
+                .toList();
+    }
+
+    /**
+     * Get all parameters in the method arguments.
+     */
+    public static List<String> getMethodUsageParameters(MethodUsage methodUsage) {
+        ResolvedMethodDeclaration methodDeclaration = methodUsage.getDeclaration();
+        // iterate through each parameter in the method declaration.
+        List<String> methodParameters = new ArrayList<>();
+        for (int i = 0; i < methodDeclaration.getNumberOfParams(); i++) {
+            methodParameters.add(getTypeWithoutPackages(methodDeclaration.getParam(i).getType()) + " arg" + i);
+        }
+        return methodParameters;
+    }
+
+    /**
+     * Get all exceptions that can be thrown by a given method.
+     */
+    public static List<String> getMethodUsageExceptions(MethodUsage methodUsage) {
+        return methodUsage.getDeclaration().getSpecifiedExceptions()
+                .stream()
+                .map(JavaParserUtils::getTypeWithoutPackages)
+                .toList();
     }
 
     public static String getMethodSignature(MethodDeclaration methodDeclaration) {
@@ -658,49 +689,6 @@ public class JavaParserUtils {
             method = method.replaceAll("[\\s\\S]*\n", "");
         }
         return method.trim().replaceAll(";$", "");
-    }
-
-    /**
-     * Unfortunately, the MethodUsage class does not provide a function to obtain the method signature
-     * as it was written, so the best that we can do is to reconstruct it to a certain extent. This
-     * has the following limitations:
-     * <ul>
-     *     <li>We lose modifiers and annotations before parameters, e.g., the "final" and "@NotNull" in
-     *     the signature {@code "... addAll(@NotNull final T[] elements)"}</li>
-     *     <li>We lose parameter names, which are replaced by "arg0", "arg1", etc.</li>
-     * </ul>
-     */
-    public static String getMethodSignature(MethodUsage methodUsage) {
-        String methodDeclaration = methodUsage.getDeclaration().toString();
-        Matcher matcher = METHOD_SIGNATURE.matcher(methodDeclaration);
-        if (!matcher.find()) {
-            throw new IllegalStateException("Could not parse method signature: " + methodDeclaration);
-        }
-        String methodModifiers = methodDeclaration.startsWith("ReflectionMethodDeclaration") ? matcher.group(1) : matcher.group(2);
-        // Take into account the case in which the method declaration refers to a method without an access specifier
-        if (methodModifiers == null) {
-            assert methodDeclaration.startsWith("ReflectionMethodDeclaration");
-            methodModifiers = "";
-        }
-        List<String> methodTypeParameters = new ArrayList<>();
-        for (int i = 0; i < methodUsage.getDeclaration().getTypeParameters().size(); i++) {
-            methodTypeParameters.add(methodUsage.getDeclaration().getTypeParameters().get(i).getName());
-        }
-        String methodReturnType = getTypeWithoutPackages(methodUsage.returnType());
-        String methodName = methodUsage.getName();
-        List<String> methodParameters = new ArrayList<>();
-        for (int i = 0; i < methodUsage.getNoParams(); i++) {
-            methodParameters.add(getTypeWithoutPackages(methodUsage.getParamType(i)) + " arg" + i);
-        }
-        List<String> methodExceptions = new ArrayList<>();
-        for (ResolvedType exceptionType : methodUsage.exceptionTypes()) {
-            methodExceptions.add(getTypeWithoutPackages(exceptionType));
-        }
-
-        return (methodModifiers + " " + (methodTypeParameters.isEmpty() ? "" : "<" + String.join(", ", methodTypeParameters) + ">") +
-                " " + methodReturnType + " " + methodName + "(" + String.join(", ", methodParameters) + ")" +
-                (methodExceptions.isEmpty() ? "" : " throws " + String.join(", ", methodExceptions)))
-                .replaceAll(" +", " ").trim();
     }
 
     public static PackageDeclaration getPackageDeclarationFromCompilationUnit(
