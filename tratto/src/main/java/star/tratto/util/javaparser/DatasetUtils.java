@@ -118,7 +118,7 @@ public class DatasetUtils {
         return jpCallable.getJavadocComment().map(javadocComment -> Javadoc.METHOD_PREFIX.getValue() + javadocComment.getContent() + Javadoc.METHOD_SUFFIX.getValue()).orElseGet(() -> getJavadocByPattern(jpCallable));
     }
 
-    public static List<Pair<String, String>> findAllNumericValuesInJavadoc(
+    private static List<Pair<String, String>> findAllNumericValuesInJavadoc(
             String javadocComment
     ) {
         // Defines regex to match integers and floats within a string.
@@ -168,6 +168,16 @@ public class DatasetUtils {
         return stringValues;
     }
 
+    /**
+     * Retrieves all numerical or string values from a given JavaDoc comment
+     * via pattern matching.
+     *
+     * @param jpJavadoc the JavaDoc comment.
+     * @return a list of values describing each numerical and string value.
+     * Each entry has the form:
+     *  [value, valueType]
+     * For example: [["name", String], [64, int]]
+     */
     public static List<Pair<String, String>> getValuesFromJavadoc(
             String jpJavadoc
     ) {
@@ -177,24 +187,35 @@ public class DatasetUtils {
         return pairList;
     }
 
+    /**
+     * Gets the name of a given parameter type. Handles generics, primitives,
+     * arrays, and base reference types.
+     *
+     * @param jpClass the class declaring the method.
+     * @param jpCallable the method containing the type.
+     * @param jpParameter the given type.
+     * @return the type name of the given parameter.
+     */
     private static Optional<String> getClassNameFromCallableDeclaration(
             TypeDeclaration<?> jpClass,
             CallableDeclaration<?> jpCallable,
             Parameter jpParameter
     ) {
         Type jpParameterType = jpParameter.getType();
+        // Ellipsis in parameter type name indicate an array (e.g. int[]).
+        boolean hasEllipsis = JDoctorUtils.hasJPTypeEllipsis(jpParameter.toString());
         try {
             if (jpParameterType.resolve().isTypeVariable()) {
                 // generic type.
                 String className = ((ClassOrInterfaceType) jpParameterType).getNameAsString();
-                if (JDoctorUtils.hasJPTypeEllipsis(jpParameter.toString())) {
+                if (hasEllipsis) {
                     className += "[]";
                 }
                 return Optional.of(className);
             } else if (jpParameterType.resolve().isPrimitive()) {
                 // primitive type.
                 String className = jpParameterType.asPrimitiveType().toString();
-                if (JDoctorUtils.hasJPTypeEllipsis(jpParameter.toString())) {
+                if (hasEllipsis) {
                     className += "[]";
                 }
                 return Optional.of(className);
@@ -203,17 +224,18 @@ public class DatasetUtils {
                 String qualifiedName = jpParameterType.resolve().asArrayType().describe();
                 return Optional.of(getTypeWithoutPackages(qualifiedName));
             } else if (jpParameterType.resolve().isReferenceType()) {
+                // base reference type.
                 String jpTypeName = JDoctorUtils.getJPTypeName(jpClass, jpCallable, jpParameter);
                 if (isGenericType(jpTypeName, jpCallable, jpClass)) {
                     String className = jpTypeName;
-                    if (JDoctorUtils.hasJPTypeEllipsis(jpParameter.toString())) {
+                    if (hasEllipsis) {
                         className += "[]";
                     }
                     return Optional.of(className);
                 } else {
                     String qualifiedName = jpParameterType.resolve().asReferenceType().getQualifiedName();
                     String className = getTypeWithoutPackages(qualifiedName);
-                    if (JDoctorUtils.hasJPTypeEllipsis(jpParameter.toString())) {
+                    if (hasEllipsis) {
                         className += "[]";
                     }
                     return Optional.of(className);
@@ -227,7 +249,7 @@ public class DatasetUtils {
             String errMsg = String.format("UnsolvedSymbolException when evaluating %s parameter type.", jpParameterType);
             System.err.println(errMsg);
             String className = ((ClassOrInterfaceType) jpParameterType).getNameAsString();
-            if (JDoctorUtils.hasJPTypeEllipsis(jpParameter.toString())) {
+            if (hasEllipsis) {
                 className += "[]";
             }
             return Optional.of(className);
@@ -235,12 +257,24 @@ public class DatasetUtils {
         return Optional.empty();
     }
 
+    /**
+     * Collects information about each argument of a given method.
+     *
+     * @param jpClass the class in which the method is declared.
+     * @param jpCallable the method being analyzed.
+     * @return a list of information about each argument. Each entry has the
+     * form:
+     *  [parameterName, packageName, parameterTypeName]
+     * where "packageName" refers to the package of the parameter type (empty
+     * if the parameter is not a reference type).
+     */
     public static List<Triplet<String, String, String>> getTokensMethodArguments(
             TypeDeclaration<?> jpClass,
             CallableDeclaration<?> jpCallable
     ) {
         List<Triplet<String, String, String>> argumentList = new ArrayList<>();
         List<Parameter> jpParameters = jpCallable.getParameters();
+        // iterate through each parameter in the method arguments.
         for (Parameter jpParameter : jpParameters) {
             Type jpParameterType = jpParameter.getType();
             Optional<String> jpParameterClassName = getClassNameFromCallableDeclaration(jpClass, jpCallable, jpParameter);
@@ -251,12 +285,15 @@ public class DatasetUtils {
                             jpParameterType.resolve().isPrimitive() ||
                             jpParameterType.resolve().isArray()
                     ) {
+                        // if not a reference type, ignore package name (e.g. primitives do not have packages).
                         argumentList.add(new Triplet<>(jpParameter.getNameAsString(), "", jpParameterClassName.get()));
                     } else if (jpParameterType.resolve().isReferenceType()) {
                         String typeName = JDoctorUtils.getJPTypeName(jpClass, jpCallable, jpParameter);
                         if (isGenericType(typeName, jpCallable, jpClass)) {
+                            // if reference object is a generic type, ignore package name.
                             argumentList.add(new Triplet<>(jpParameter.getNameAsString(), "", typeName));
                         } else {
+                            // otherwise, retrieve necessary package information.
                             String fullyQualifiedName = jpParameterType.resolve().asReferenceType().getQualifiedName();
                             String className = getTypeWithoutPackages(fullyQualifiedName);
                             String parameterPackageName = fullyQualifiedName
@@ -277,6 +314,12 @@ public class DatasetUtils {
         return argumentList;
     }
 
+    /**
+     * Gets the source code of the CallableDeclaration.
+     *
+     * @param jpCallable a method or constructor.
+     * @return a string representation of the callable source code.
+     */
     public static String getCallableSourceCode(
             CallableDeclaration<?> jpCallable
     ) {
@@ -288,6 +331,9 @@ public class DatasetUtils {
         return jpSignature + (jpBody.isEmpty() ? ";" : jpBody.get().toString());
     }
 
+    /**
+     * Gets all non-private, non-static, non-void methods in a given compilation unit.
+     */
     private static List<Quartet<String, String, String, String>> getNonPrivateStaticNonVoidMethods(
             CompilationUnit cu
     ) throws PackageDeclarationNotFoundException {
@@ -314,6 +360,9 @@ public class DatasetUtils {
         return methodList;
     }
 
+    /**
+     * Gets all non-private, non-static attributes in a given compilation unit.
+     */
     private static List<Quartet<String, String, String, String>> getNonPrivateStaticAttributes(
             CompilationUnit cu
     ) throws PackageDeclarationNotFoundException {
@@ -345,6 +394,9 @@ public class DatasetUtils {
         return attributeList;
     }
 
+    /**
+     * Gets all JavaDoc tags in a given compilation unit.
+     */
     private static List<Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> getCuTags(
             CompilationUnit cu
     ) throws PackageDeclarationNotFoundException {
@@ -387,6 +439,13 @@ public class DatasetUtils {
         return tagList;
     }
 
+    /**
+     * Finds all ".java" files in a given directory. Files are filtered based
+     * on an ad-hoc list of files to ignore.
+     *
+     * @param sourcePath the path to the project root directory.
+     * @return a list of all valid files {@link File}.
+     */
     private static List<File> getValidJavaFiles(String sourcePath) {
         // get all java files from source.
         File sourceDir = new File(sourcePath);
@@ -401,16 +460,21 @@ public class DatasetUtils {
                 .map(e -> (String) e)
                 .toList();
         // filter files.
-        List<File> validFiles = new ArrayList<>();
-        for (File file : allFiles) {
-            String filename = file.getName().replace(FileFormat.JAVA.getValue(), "");
-            if (!ignoreFileList.contains(filename)) {
-                validFiles.add(file);
-            }
-        }
-        return validFiles;
+        return allFiles
+                .stream()
+                .filter(file -> {
+                    String filename = file.getName().replace(FileFormat.JAVA.getValue(), "");
+                    return !ignoreFileList.contains(filename);
+                })
+                .toList();
     }
 
+    /**
+     * Gets all classes in a project from a given source path.
+     *
+     * @param sourcePath the path of the project root directory.
+     * @return a list of information describing each method.
+     */
     public static List<Pair<String, String>> getTokensProjectClasses(
             String sourcePath
     ) {
@@ -431,6 +495,12 @@ public class DatasetUtils {
         return projectClasses;
     }
 
+    /**
+     * Finds all methods in a project from a given source path.
+     *
+     * @param sourcePath the path of the project root directory.
+     * @return a list of information describing each method.
+     */
     public static List<Quartet<String, String, String, String>> getTokensProjectClassesNonPrivateStaticNonVoidMethods(
             String sourcePath
     ) {
@@ -451,6 +521,12 @@ public class DatasetUtils {
         return projectMethods;
     }
 
+    /**
+     * Finds all attributes in a project from a given source path.
+     *
+     * @param sourcePath the path of the project root directory.
+     * @return a list of information describing each attribute.
+     */
     public static List<Quartet<String, String, String, String>> getTokensProjectClassesNonPrivateStaticAttributes(
             String sourcePath
     ) {
@@ -471,6 +547,12 @@ public class DatasetUtils {
         return attributeList;
     }
 
+    /**
+     * Finds all JavaDoc tags of a project from a given source path.
+     *
+     * @param sourcePath the path to the project root directory.
+     * @return a list of information describing each JavaDoc tag.
+     */
     public static List<Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> getTokensProjectClassesTags(
             String sourcePath
     ) {
@@ -491,6 +573,15 @@ public class DatasetUtils {
         return tagList;
     }
 
+    /**
+     * Converts a list of method usages {@link MethodUsage} to a quartet
+     * of strings where each entry has the form:
+     *  [methodName, className, packageName, methodSignature]
+     * where class name refers to the class in which the method is declared.
+     * "methodSignature" includes access specifiers, non-access modifiers,
+     * generic type parameters, return type, method signature, parameters,
+     * and exceptions.
+     */
     private static List<Quartet<String, String, String, String>> convertMethodUsageToQuartet(
             List<MethodUsage> jpMethods
     ) {
@@ -505,34 +596,25 @@ public class DatasetUtils {
                 .toList();
     }
 
+    /**
+     * Gets a list of information for all methods visible to a given type.
+     * Handles three cases: simple base type, generic type, and array type.
+     *
+     * @param jpClass the class containing the method.
+     * @param jpCallable the method containing the type parameter.
+     * @param jpType the given type.
+     * @return a list of information for all methods accessible to the
+     * given type. Each entry has the form:
+     *  [methodName, className, packageName, methodSignature]
+     */
     private static List<Quartet<String, String, String, String>> getMethodsFromType(
             TypeDeclaration<?> jpClass,
             CallableDeclaration<?> jpCallable,
             ResolvedType jpType
     ) {
         List<Quartet<String, String, String, String>> methodList = new ArrayList<>();
-        // handle base type.
-        if (jpType.isReferenceType()) {
-            Optional<ResolvedReferenceTypeDeclaration> jpTypeDeclaration = jpType.asReferenceType().getTypeDeclaration();
-            if (jpTypeDeclaration.isPresent()) {
-                List<MethodUsage> allMethods = jpTypeDeclaration.get().getAllMethods()
-                        .stream()
-                        .filter(JavaParserUtils::isNonStaticNonVoidNonPrivateMethod)
-                        .collect(Collectors.toList());
-                methodList.addAll(convertMethodUsageToQuartet(allMethods));
-            }
-        }
-        // handle generic type.
-        if (JavaParserUtils.isGenericType(jpType.describe(), jpCallable, jpClass)) {
-            List<MethodUsage> genericMethods = JavaParserUtils.getGenericType().asReferenceType().getAllMethods()
-                    .stream()
-                    .map(MethodUsage::new)
-                    .filter(JavaParserUtils::isNonStaticNonVoidNonPrivateMethod)
-                    .collect(Collectors.toList());
-            methodList.addAll(convertMethodUsageToQuartet(genericMethods));
-        }
-        // handle array type.
         if (jpType.isArray()) {
+            // handle array type.
             String arraysMethodJsonPath = Paths.get(
                     Path.REPOS.getValue(),
                     FileName.ARRAY_METHODS.getValue() + FileFormat.JSON.getValue()
@@ -548,6 +630,24 @@ public class DatasetUtils {
                     .stream()
                     .map(m -> new Quartet<>(m.get(0), "", jpType.describe(), m.get(1)))
                     .toList());
+        } else if (JavaParserUtils.isGenericType(jpType.describe(), jpCallable, jpClass)) {
+            // handle generic type.
+            List<MethodUsage> genericMethods = JavaParserUtils.getGenericType().asReferenceType().getAllMethods()
+                    .stream()
+                    .map(MethodUsage::new)
+                    .filter(JavaParserUtils::isNonStaticNonVoidNonPrivateMethod)
+                    .collect(Collectors.toList());
+            methodList.addAll(convertMethodUsageToQuartet(genericMethods));
+        } else if (jpType.isReferenceType()) {
+            // handle base type.
+            Optional<ResolvedReferenceTypeDeclaration> jpTypeDeclaration = jpType.asReferenceType().getTypeDeclaration();
+            if (jpTypeDeclaration.isPresent()) {
+                List<MethodUsage> allMethods = jpTypeDeclaration.get().getAllMethods()
+                        .stream()
+                        .filter(JavaParserUtils::isNonStaticNonVoidNonPrivateMethod)
+                        .collect(Collectors.toList());
+                methodList.addAll(convertMethodUsageToQuartet(allMethods));
+            }
         }
         return methodList;
     }
