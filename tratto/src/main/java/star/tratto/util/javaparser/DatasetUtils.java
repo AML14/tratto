@@ -500,7 +500,7 @@ public class DatasetUtils {
                         jpMethod.getName(),
                         jpMethod.declaringType().getClassName(),
                         jpMethod.declaringType().getPackageName(),
-                        getMethodSignature(jpMethod)
+                        JavaParserUtils.getMethodSignature(jpMethod.getDeclaration())
                 ))
                 .toList();
     }
@@ -571,7 +571,7 @@ public class DatasetUtils {
                         jpField.getName(),
                         JavaParserUtils.getFieldSignature(jpField)
                 ))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**

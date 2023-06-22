@@ -105,8 +105,7 @@ public class ProjectOracleGenerator {
         // Generate an OracleDatapoint for each remaining JavaDoc tag.
         int numNonEmptyOracles = oracleDPs.size();
         for (Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String> jpTag : this.tokensProjectClassesTags) {
-            break;
-//            oracleDPs.add(getEmptyDatapoint(jpTag));
+            oracleDPs.add(getEmptyDatapoint(jpTag));
         }
         System.out.printf("Processed %s empty oracles.%n", this.idCounter - numNonEmptyOracles);
         System.out.printf("Processed %s total conditions.%n", this.idCounter - this.checkpoint);
