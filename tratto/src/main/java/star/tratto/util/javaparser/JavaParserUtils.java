@@ -7,6 +7,7 @@ import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.type.TypeParameter;
+import com.github.javaparser.ast.type.VoidType;
 import com.github.javaparser.resolution.MethodUsage;
 import com.github.javaparser.resolution.UnsolvedSymbolException;
 import com.github.javaparser.resolution.declarations.ResolvedFieldDeclaration;
@@ -805,8 +806,8 @@ public class JavaParserUtils {
     }
 
     private static boolean isNonVoidNonPrivateMethod(MethodUsage methodUsage) {
-        boolean isVoid = getTypeWithoutPackages(methodUsage.returnType()).equals("void");
-        boolean isPrivate = methodUsage.getDeclaration().toString().matches(".*(method=private |method=.* private ).*");
+        boolean isVoid = methodUsage.getDeclaration().getReturnType().isVoid();
+        boolean isPrivate = methodUsage.getDeclaration().accessSpecifier().equals(AccessSpecifier.PRIVATE);
         return !isVoid && !isPrivate;
     }
 
