@@ -6,6 +6,7 @@ import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.*;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
+import com.github.javaparser.ast.type.ReferenceType;
 import com.github.javaparser.ast.type.Type;
 import com.github.javaparser.javadoc.JavadocBlockTag;
 import com.github.javaparser.resolution.MethodUsage;
@@ -226,7 +227,7 @@ public class DatasetUtils {
             } else if (jpParameterType.resolve().isReferenceType()) {
                 // base reference type.
                 String jpTypeName = JDoctorUtils.getJPTypeName(jpClass, jpCallable, jpParameter);
-                if (isGenericType(jpTypeName, jpCallable, jpClass)) {
+                if (JavaParserUtils.isGenericType(jpParameterType.resolve())) {
                     String className = jpTypeName;
                     if (hasEllipsis) {
                         className += "[]";
@@ -289,7 +290,7 @@ public class DatasetUtils {
                         argumentList.add(new Triplet<>(jpParameter.getNameAsString(), "", jpParameterClassName.get()));
                     } else if (jpParameterType.resolve().isReferenceType()) {
                         String typeName = JDoctorUtils.getJPTypeName(jpClass, jpCallable, jpParameter);
-                        if (isGenericType(typeName, jpCallable, jpClass)) {
+                        if (JavaParserUtils.isGenericType(jpParameterType.resolve())) {
                             // if reference object is a generic type, ignore package name.
                             argumentList.add(new Triplet<>(jpParameter.getNameAsString(), "", typeName));
                         } else {
@@ -600,16 +601,12 @@ public class DatasetUtils {
      * Gets a list of information for all methods visible to a given type.
      * Handles three cases: simple base type, generic type, and array type.
      *
-     * @param jpClass the class containing the method.
-     * @param jpCallable the method containing the type parameter.
      * @param jpType the given type.
      * @return a list of information for all methods accessible to the
      * given type. Each entry has the form:
      *  [methodName, className, packageName, methodSignature]
      */
-    private static List<Quartet<String, String, String, String>> getMethodsFromType(
-            TypeDeclaration<?> jpClass,
-            CallableDeclaration<?> jpCallable,
+    public static List<Quartet<String, String, String, String>> getMethodsFromType(
             ResolvedType jpType
     ) {
         List<Quartet<String, String, String, String>> methodList = new ArrayList<>();
@@ -630,7 +627,7 @@ public class DatasetUtils {
                     .stream()
                     .map(m -> new Quartet<>(m.get(0), "", jpType.describe(), m.get(1)))
                     .toList());
-        } else if (JavaParserUtils.isGenericType(jpType.describe(), jpCallable, jpClass)) {
+        } else if (JavaParserUtils.isGenericType(jpType)) {
             // handle generic type.
             List<MethodUsage> genericMethods = JavaParserUtils.getGenericType().asReferenceType().getAllMethods()
                     .stream()
@@ -680,7 +677,7 @@ public class DatasetUtils {
      * @param jpType a resolved JavaParser type {@link ResolvedType}
      * @return a list of non-private, non-static attributes
      */
-    private static List<Quartet<String, String, String, String>> getFieldsFromType(
+    public static List<Quartet<String, String, String, String>> getFieldsFromType(
             ResolvedType jpType
     ) {
         List<Quartet<String, String, String, String>> fieldList = new ArrayList<>();
@@ -731,19 +728,11 @@ public class DatasetUtils {
         List<Quartet<String, String, String, String>> methodList = new ArrayList<>(convertMethodUsageToQuartet(allReceiverMethods));
         // add all methods of parameters.
         for (Parameter jpParam : jpCallable.getParameters()) {
-            methodList.addAll(getMethodsFromType(
-                    jpClass,
-                    jpCallable,
-                    jpParam.getType().resolve()
-            ));
+            methodList.addAll(getMethodsFromType(jpParam.getType().resolve()));
         }
         // add all methods of return type.
         if (jpCallable instanceof MethodDeclaration) {
-            methodList.addAll(getMethodsFromType(
-                    jpClass,
-                    jpCallable,
-                    ((MethodDeclaration) jpCallable).getType().resolve()
-            ));
+            methodList.addAll(getMethodsFromType(((MethodDeclaration) jpCallable).getType().resolve()));
         }
         // add Object methods.
         methodList.addAll(convertMethodUsageToQuartet(
@@ -822,7 +811,7 @@ public class DatasetUtils {
                         methodArgs,
                         subexpression
                 );
-                methodList.addAll(getMethodsFromType(jpClass, jpCallable, jpType));
+                methodList.addAll(getMethodsFromType(jpType));
             } catch (UnsolvedSymbolException | ResolvedTypeNotFound e) {
                 ResolvedType fieldType = JavaParserUtils.getGenericType();
                 // Get all methods from Object

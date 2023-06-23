@@ -13,6 +13,7 @@ import com.github.javaparser.resolution.declarations.ResolvedFieldDeclaration;
 import com.github.javaparser.resolution.declarations.ResolvedMethodDeclaration;
 import com.github.javaparser.resolution.declarations.ResolvedReferenceTypeDeclaration;
 import com.github.javaparser.resolution.declarations.ResolvedTypeParameterDeclaration;
+import com.github.javaparser.resolution.types.ResolvedArrayType;
 import com.github.javaparser.resolution.types.ResolvedType;
 import com.github.javaparser.symbolsolver.utils.SymbolSolverCollectionStrategy;
 import org.eclipse.xtend.lib.macro.declaration.ResolvedMethod;
@@ -703,6 +704,36 @@ public class JavaParserUtils {
         return jpPackage.get();
     }
 
+    /**
+     * Returns the component type of a resolved type {@link ResolvedType}.
+     * Recursively strips all array variables. For example:
+     *  Object[][] ==> Object
+     */
+    public static ResolvedType removeArray(ResolvedType resolvedType) {
+        if (resolvedType.isArray()) {
+            return removeArray(resolvedType.asArrayType().getComponentType());
+        }
+        return resolvedType;
+    }
+
+    /**
+     * Returns true iff a given type is generic. Ignores any wrapped arrays.
+     * For example:
+     *  CampusMap => false
+     *  E => true
+     *  E[] => true
+     */
+    public static boolean isGenericType(
+            ResolvedType resolvedType
+    ) {
+        ResolvedType componentType = removeArray(resolvedType);
+        return componentType.isTypeVariable();
+    }
+
+    /**
+     * Returns true iff a given type is generic. Ignores any wrapped arrays.
+     * Uses the type name, corresponding method, and declaring class.
+     */
     public static boolean isGenericType(
             String jpTypeName,
             CallableDeclaration<?> jpCallable,
