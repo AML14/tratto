@@ -6,7 +6,6 @@ import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.*;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
-import com.github.javaparser.ast.type.ReferenceType;
 import com.github.javaparser.ast.type.Type;
 import com.github.javaparser.javadoc.JavadocBlockTag;
 import com.github.javaparser.resolution.MethodUsage;
@@ -48,7 +47,7 @@ public class DatasetUtils {
      * @return A new list that does not contain the duplicates of the list passed to the function.
      * @param <T> The generic type of the list.
      */
-    private static <T> List<T> removeDuplicates(List<T> list) {
+    public static <T> List<T> removeDuplicates(List<T> list) {
         Set<T> set = new LinkedHashSet<>(list);
         return new ArrayList<>(set);
     }
@@ -179,7 +178,7 @@ public class DatasetUtils {
      *  [value, valueType]
      * For example: [["name", String], [64, int]]
      */
-    public static List<Pair<String, String>> getValuesFromJavadoc(
+    public static List<Pair<String, String>> getJavadocValues(
             String jpJavadoc
     ) {
         List<Pair<String, String>> pairList = new ArrayList<>();
@@ -476,7 +475,7 @@ public class DatasetUtils {
      * @param sourcePath the path of the project root directory.
      * @return a list of information describing each method.
      */
-    public static List<Pair<String, String>> getTokensProjectClasses(
+    public static List<Pair<String, String>> getProjectClassesTokens(
             String sourcePath
     ) {
         List<Pair<String, String>> projectClasses = new ArrayList<>();
@@ -502,7 +501,7 @@ public class DatasetUtils {
      * @param sourcePath the path of the project root directory.
      * @return a list of information describing each method.
      */
-    public static List<Quartet<String, String, String, String>> getTokensProjectClassesNonPrivateStaticNonVoidMethods(
+    public static List<Quartet<String, String, String, String>> getProjectNonPrivateStaticNonVoidMethodsTokens(
             String sourcePath
     ) {
         List<Quartet<String, String, String, String>> projectMethods = new ArrayList<>();
@@ -528,7 +527,7 @@ public class DatasetUtils {
      * @param sourcePath the path of the project root directory.
      * @return a list of information describing each attribute.
      */
-    public static List<Quartet<String, String, String, String>> getTokensProjectClassesNonPrivateStaticAttributes(
+    public static List<Quartet<String, String, String, String>> getProjectNonPrivateStaticAttributesTokens(
             String sourcePath
     ) {
         List<Quartet<String, String, String, String>> attributeList = new ArrayList<>();
@@ -554,7 +553,7 @@ public class DatasetUtils {
      * @param sourcePath the path to the project root directory.
      * @return a list of information describing each JavaDoc tag.
      */
-    public static List<Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> getTokensProjectClassesTags(
+    public static List<Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> getProjectTagsTokens(
             String sourcePath
     ) {
         List<Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> tagList = new ArrayList<>();
@@ -577,7 +576,7 @@ public class DatasetUtils {
     /**
      * Converts a list of method usages {@link MethodUsage} to a quartet
      * of strings where each entry has the form:
-     *  [methodName, className, packageName, methodSignature]
+     *  [methodName, packageName, className, methodSignature]
      * where class name refers to the class in which the method is declared.
      * "methodSignature" includes access specifiers, non-access modifiers,
      * generic type parameters, return type, method signature, parameters,
@@ -590,8 +589,8 @@ public class DatasetUtils {
                 .stream()
                 .map(jpMethod -> new Quartet<>(
                         jpMethod.getName(),
-                        jpMethod.declaringType().getClassName(),
                         jpMethod.declaringType().getPackageName(),
+                        jpMethod.declaringType().getClassName(),
                         JavaParserUtils.getMethodSignature(jpMethod)
                 ))
                 .toList();
@@ -724,7 +723,10 @@ public class DatasetUtils {
             CallableDeclaration<?> jpCallable
     ) throws JPClassNotFoundException {
         // add all methods of the base class (receiverObjectID -> this).
-        List<MethodUsage> allReceiverMethods = JavaParserUtils.getAllAvailableMethodUsages(jpClass);
+        List<MethodUsage> allReceiverMethods = JavaParserUtils.getAllAvailableMethodUsages(jpClass)
+                .stream()
+                .filter(JavaParserUtils::isNonStaticNonVoidNonPrivateMethod)
+                .toList();
         List<Quartet<String, String, String, String>> methodList = new ArrayList<>(convertMethodUsageToQuartet(allReceiverMethods));
         // add all methods of parameters.
         for (Parameter jpParam : jpCallable.getParameters()) {

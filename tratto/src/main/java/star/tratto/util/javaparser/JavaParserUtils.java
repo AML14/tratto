@@ -16,6 +16,7 @@ import com.github.javaparser.resolution.declarations.ResolvedReferenceTypeDeclar
 import com.github.javaparser.resolution.declarations.ResolvedTypeParameterDeclaration;
 import com.github.javaparser.resolution.types.ResolvedArrayType;
 import com.github.javaparser.resolution.types.ResolvedType;
+import com.github.javaparser.symbolsolver.javaparsermodel.declarations.JavaParserMethodDeclaration;
 import com.github.javaparser.symbolsolver.utils.SymbolSolverCollectionStrategy;
 import org.eclipse.xtend.lib.macro.declaration.ResolvedMethod;
 import org.javatuples.Pair;
@@ -589,61 +590,39 @@ public class JavaParserUtils {
      *     the signature {@code "... addAll(@NotNull final T[] elements)"}</li>
      *     <li>We lose parameter names, which are replaced by "arg0", "arg1", etc.</li>
      * </ul>
+     * We consider three types of ResolvedMethodDeclaration's: JavaParserMethodDeclaration,
+     * ReflectionMethodDeclaration, and JavassistMethodDeclaration.
      */
     public static String getMethodSignature(
             MethodUsage methodUsage
     ) {
         ResolvedMethodDeclaration methodDeclaration = methodUsage.getDeclaration();
-        // remove JavaDoc and other comments from method.
-        String methodWithoutComments = methodDeclaration.toString().replaceAll("\\/\\*\\*([\\s\\S]*?)\\*\\/|\\/\\/.*?[\n|\r]|\\/\\*([\\s\\S]*?)\\*\\/","");
-        boolean hasAccessSpecifier = methodWithoutComments.contains("public") ||
-                methodWithoutComments.contains("protected") ||
-                methodWithoutComments.contains("private");
-        if (hasAccessSpecifier) {
-            // the method has an access specifier.
-            if (methodDeclaration.toString().startsWith("JavaParserMethodDeclaration")) {
-                // local method (uses JavaParserMethodDeclaration).
-                Pattern pattern = Pattern.compile("^JavaParserMethodDeclaration\\{wrappedNode\\=[.|\\S|\\s]*((public|private|protected)([^{;]*)?)[;|{]");
-                Matcher matcher = pattern.matcher(methodWithoutComments);
-                if (!matcher.find()) {
-                    throw new IllegalStateException("Could not parse method signature: " + methodDeclaration);
-                }
-                // get matched signature and trim.
-                String methodSignature = matcher.group(1);
-                return methodSignature.trim();
-            } else {
-                // inherited method (uses ReflectionMethodDeclaration.
-                Matcher matcher = METHOD_SIGNATURE.matcher(methodWithoutComments);
-                if (!matcher.find()) {
-                    throw new IllegalStateException("Could not parse method signature: " + methodDeclaration);
-                }
-                String methodModifiers = methodWithoutComments.startsWith("ReflectionMethodDeclaration") ? matcher.group(1) : matcher.group(2);
-                // get method signature information.
-                List<String> typeParameterList = getMethodUsageTypeParameters(methodUsage);
-                List<String> parameterList = getMethodUsageParameters(methodUsage);
-                List<String> exceptionList = getMethodUsageExceptions(methodUsage);
-                // construct signature.
-                return (methodModifiers + (typeParameterList.isEmpty() ? "" : "<" + String.join(", ", typeParameterList) + ">") +
-                        " " + getTypeWithoutPackages(methodDeclaration.getReturnType()) +
-                        " " + methodDeclaration.getName() +
-                        "(" + String.join(", ", parameterList) + ")" +
-                        (exceptionList.isEmpty() ? "" : " throws " + String.join(", ", exceptionList)))
-                        .replaceAll(" +", " ").trim();
-            }
-        } else {
-            // the method does not have an access specifier.
-            // get method signature information.
-            List<String> typeParameterList = getMethodUsageTypeParameters(methodUsage);
-            List<String> parameterList = getMethodUsageParameters(methodUsage);
-            List<String> exceptionList = getMethodUsageExceptions(methodUsage);
-            // construct signature.
-            return ((typeParameterList.isEmpty() ? "" : "<" + String.join(", ", typeParameterList) + ">") +
-                    " " + getTypeWithoutPackages(methodDeclaration.getReturnType()) +
-                    " " + methodDeclaration.getName() +
-                    "(" + String.join(", ", parameterList) + ")" +
-                    (exceptionList.isEmpty() ? "" : " throws " + String.join(", ", exceptionList)))
-                    .replaceAll(" +", " ").trim();
+        // Consider JavaParserMethodDeclaration.
+        if (methodDeclaration.toString().startsWith("JavaParserMethodDeclaration")) {
+            JavaParserMethodDeclaration jpMethodDeclaration = (JavaParserMethodDeclaration) methodDeclaration;
+            MethodDeclaration jpMethod = jpMethodDeclaration.getWrappedNode();
+            return getMethodSignature(jpMethod);
         }
+        // Consider ReflectionMethodDeclaration or JavassistMethodDeclaration
+        Matcher matcher = METHOD_SIGNATURE.matcher(methodDeclaration.toString());
+        if (!matcher.find()) {
+            throw new IllegalStateException("Could not parse method signature: " + methodDeclaration);
+        }
+        String methodModifiers = methodDeclaration.toString().startsWith("ReflectionMethodDeclaration") ? matcher.group(1) : matcher.group(2);
+        // Take into account the case in which the method declaration refers to a method without an access specifier.
+        if (methodModifiers == null) {
+            assert methodDeclaration.toString().startsWith("ReflectionMethodDeclaration");
+            methodModifiers = "";
+        }
+        List<String> typeParameterList = getMethodUsageTypeParameters(methodUsage);
+        List<String> parameterList = getMethodUsageParameters(methodUsage);
+        List<String> exceptionList = getMethodUsageExceptions(methodUsage);
+        return (methodModifiers + " " + (typeParameterList.isEmpty() ? "" : "<" + String.join(", ", typeParameterList) + ">") +
+                " " + getTypeWithoutPackages(methodDeclaration.getReturnType()) +
+                " " + methodDeclaration.getName() +
+                "(" + String.join(", ", parameterList) + ")" +
+                (exceptionList.isEmpty() ? "" : " throws " + String.join(", ", exceptionList)))
+                .replaceAll(" +", " ").trim();
     }
 
     /**
