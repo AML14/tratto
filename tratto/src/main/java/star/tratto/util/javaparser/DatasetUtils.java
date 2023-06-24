@@ -765,7 +765,8 @@ public class DatasetUtils {
         List<ResolvedFieldDeclaration> jpReceiverFields = jpClass.getFields()
                 .stream()
                 .map(FieldDeclaration::resolve)
-                .collect(Collectors.toList());
+                .filter(JavaParserUtils::isNonPrivateNonStaticAttribute)
+                .toList();
         List<Quartet<String, String, String, String>> attributeList = new ArrayList<>(convertFieldDeclarationToQuartet(jpReceiverFields));
         // add all fields of parameters.
         for (Parameter jpParam : jpCallable.getParameters()) {
