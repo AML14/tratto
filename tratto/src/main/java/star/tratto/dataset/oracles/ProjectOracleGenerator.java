@@ -35,10 +35,10 @@ public class ProjectOracleGenerator {
     // project-level fields.
     private Project project;
     private List<JDoctorCondition> jDoctorConditions;
-    private List<Pair<String, String>> tokensProjectClasses;
-    private List<Quartet<String, String, String, String>> tokensProjectClassesMethods;
-    private List<Quartet<String, String, String, String>> tokensProjectClassesAttributes;
-    private List<Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> tokensProjectClassesTags;
+    private List<Pair<String, String>> projectClassesTokens;
+    private List<Quartet<String, String, String, String>> projectMethodsTokens;
+    private List<Quartet<String, String, String, String>> projectAttributesTokens;
+    private List<Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> projectTagsTokens;
 
     /**
      * Creates a new instance of ProjectOracleGenerator.
@@ -61,10 +61,10 @@ public class ProjectOracleGenerator {
     ) {
         this.project = project;
         this.jDoctorConditions = jDoctorConditions;
-        this.tokensProjectClasses = DatasetUtils.getTokensProjectClasses(this.project.getSrcPath());
-        this.tokensProjectClassesMethods = DatasetUtils.getTokensProjectClassesNonPrivateStaticNonVoidMethods(this.project.getSrcPath());
-        this.tokensProjectClassesAttributes = DatasetUtils.getTokensProjectClassesNonPrivateStaticAttributes(this.project.getSrcPath());
-        this.tokensProjectClassesTags = DatasetUtils.getTokensProjectClassesTags(this.project.getSrcPath());
+        this.projectClassesTokens = DatasetUtils.getProjectClassesTokens(this.project.getSrcPath());
+        this.projectMethodsTokens = DatasetUtils.getProjectNonPrivateStaticNonVoidMethodsTokens(this.project.getSrcPath());
+        this.projectAttributesTokens = DatasetUtils.getProjectNonPrivateStaticAttributesTokens(this.project.getSrcPath());
+        this.projectTagsTokens = DatasetUtils.getProjectTagsTokens(this.project.getSrcPath());
     }
 
     /**
@@ -74,7 +74,7 @@ public class ProjectOracleGenerator {
      * for the loader project, from the JDoctor conditions
      */
     public List<OracleDatapoint> generate() {
-        System.out.printf("Identified %s total JavaDoc tags.%n", this.tokensProjectClassesTags.size());
+        System.out.printf("Identified %s total JavaDoc tags.%n", this.projectTagsTokens.size());
         List<OracleDatapoint> oracleDPs = new ArrayList<>();
         // Generate an OracleDatapoint for each JDoctor condition.
         for (JDoctorCondition jDoctorCondition : this.jDoctorConditions) {
@@ -104,7 +104,7 @@ public class ProjectOracleGenerator {
         System.out.printf("Processed %s non-empty oracles.%n", this.idCounter - this.checkpoint);
         // Generate an OracleDatapoint for each remaining JavaDoc tag.
         int numNonEmptyOracles = oracleDPs.size();
-        for (Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String> jpTag : this.tokensProjectClassesTags) {
+        for (Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String> jpTag : this.projectTagsTokens) {
             oracleDPs.add(getEmptyDatapoint(jpTag));
         }
         System.out.printf("Processed %s empty oracles.%n", this.idCounter - numNonEmptyOracles);
@@ -191,8 +191,8 @@ public class ProjectOracleGenerator {
         CallableDeclaration<?> jpCallable = DatasetUtils.getCallableDeclaration(jpClass, callableName, parameterTypes);
         assert jpCallable != null;
         // remove tag with maximum similarity.
-        this.tokensProjectClassesTags.remove(findMaximumSimilarityTag(
-                this.tokensProjectClassesTags,
+        this.projectTagsTokens.remove(findMaximumSimilarityTag(
+                this.projectTagsTokens,
                 jpClass,
                 jpCallable,
                 oracleType,
@@ -228,12 +228,12 @@ public class ProjectOracleGenerator {
         builder.setPackageName(jpClass.resolve().getPackageName());
         builder.setClassName(jpClass.getNameAsString());
         builder.setClassJavadoc(DatasetUtils.getClassJavadoc(jpClass));
-        builder.setTokensProjectClasses(this.tokensProjectClasses);
-        builder.setTokensProjectClassesNonPrivateStaticNonVoidMethods(this.tokensProjectClassesMethods);
-        builder.setTokensProjectClassesNonPrivateStaticAttributes(this.tokensProjectClassesAttributes);
+        builder.setTokensProjectClasses(this.projectClassesTokens);
+        builder.setTokensProjectClassesNonPrivateStaticNonVoidMethods(this.projectMethodsTokens);
+        builder.setTokensProjectClassesNonPrivateStaticAttributes(this.projectAttributesTokens);
         builder.setMethodSourceCode(DatasetUtils.getCallableSourceCode(jpCallable));
         builder.setMethodJavadoc(DatasetUtils.getCallableJavadoc(jpCallable));
-        builder.setTokensMethodJavadocValues(DatasetUtils.getValuesFromJavadoc(builder.copy().getMethodJavadoc()));
+        builder.setTokensMethodJavadocValues(DatasetUtils.getJavadocValues(builder.copy().getMethodJavadoc()));
         builder.setTokensMethodArguments(DatasetUtils.getTokensMethodArguments(jpClass, jpCallable));
         // get method variable tokens (no oracle variable tokens).
         try {
@@ -292,12 +292,12 @@ public class ProjectOracleGenerator {
         builder.setPackageName(packageName);
         builder.setClassName(className);
         builder.setClassJavadoc(DatasetUtils.getClassJavadoc(jpClass));
-        builder.setTokensProjectClasses(this.tokensProjectClasses);
-        builder.setTokensProjectClassesNonPrivateStaticNonVoidMethods(this.tokensProjectClassesMethods);
-        builder.setTokensProjectClassesNonPrivateStaticAttributes(this.tokensProjectClassesAttributes);
+        builder.setTokensProjectClasses(this.projectClassesTokens);
+        builder.setTokensProjectClassesNonPrivateStaticNonVoidMethods(this.projectMethodsTokens);
+        builder.setTokensProjectClassesNonPrivateStaticAttributes(this.projectAttributesTokens);
         builder.setMethodSourceCode(DatasetUtils.getCallableSourceCode(jpCallable));
         builder.setMethodJavadoc(DatasetUtils.getCallableJavadoc(jpCallable));
-        builder.setTokensMethodJavadocValues(DatasetUtils.getValuesFromJavadoc(builder.copy().getMethodJavadoc()));
+        builder.setTokensMethodJavadocValues(DatasetUtils.getJavadocValues(builder.copy().getMethodJavadoc()));
         builder.setTokensMethodArguments(DatasetUtils.getTokensMethodArguments(jpClass, jpCallable));
         // get method variable and oracle variable tokens.
         try {
