@@ -15,7 +15,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public class JDoctorUtils {
     /**
@@ -33,7 +32,7 @@ public class JDoctorUtils {
         return jDoctorTypeNames
                 .stream()
                 .map(JDoctorUtils::convertConditionParameterType)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public static String convertConditionToArrayType(String arrayType) {

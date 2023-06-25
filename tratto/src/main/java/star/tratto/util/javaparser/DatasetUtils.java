@@ -38,7 +38,6 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public class DatasetUtils {
     /**
@@ -620,7 +619,7 @@ public class DatasetUtils {
                     .map(e -> ((List<?>) e)
                             .stream()
                             .map(o -> (String) o)
-                            .collect(Collectors.toList()))
+                            .toList())
                     .toList();
             methodList.addAll(arrayMethods
                     .stream()
@@ -632,7 +631,7 @@ public class DatasetUtils {
                     .stream()
                     .map(MethodUsage::new)
                     .filter(JavaParserUtils::isNonStaticNonVoidNonPrivateMethod)
-                    .collect(Collectors.toList());
+                    .toList();
             methodList.addAll(convertMethodUsageToQuartet(genericMethods));
         } else if (jpType.isReferenceType()) {
             // handle base type.
@@ -641,7 +640,7 @@ public class DatasetUtils {
                 List<MethodUsage> allMethods = jpTypeDeclaration.get().getAllMethods()
                         .stream()
                         .filter(JavaParserUtils::isNonStaticNonVoidNonPrivateMethod)
-                        .collect(Collectors.toList());
+                        .toList();
                 methodList.addAll(convertMethodUsageToQuartet(allMethods));
             }
         }
@@ -662,9 +661,9 @@ public class DatasetUtils {
         return new ArrayList<>(jpFields)
                 .stream()
                 .map(jpField -> new Quartet<>(
-                        jpField.declaringType().getClassName(),
-                        jpField.declaringType().getPackageName(),
                         jpField.getName(),
+                        jpField.declaringType().getPackageName(),
+                        jpField.declaringType().getClassName(),
                         JavaParserUtils.getFieldSignature(jpField)
                 ))
                 .toList();
@@ -690,9 +689,11 @@ public class DatasetUtils {
                 if (jpNode.isPresent() && jpNode.get() instanceof TypeDeclaration<?>) {
                     List<ResolvedFieldDeclaration> jpFields = ((TypeDeclaration<?>) jpNode.get()).getFields()
                             .stream()
-                            .map(FieldDeclaration::resolve)
+                            .flatMap(fieldDeclaration -> fieldDeclaration.getVariables()
+                                    .stream()
+                                    .map(variableDeclarator -> variableDeclarator.resolve().asField()))
                             .filter(JavaParserUtils::isNonPrivateNonStaticAttribute)
-                            .collect(Collectors.toList());
+                            .toList();
                     return convertFieldDeclarationToQuartet(jpFields);
                 }
                 return convertFieldDeclarationToQuartet(jpTypeDeclaration.get().getAllFields());
@@ -704,6 +705,13 @@ public class DatasetUtils {
                         "ArrayType, TypeVariable, and VoidType not yet supported%n", jpType
                 );
             }
+        } else if (jpType.isArray()) {
+            fieldList.add(new Quartet<>(
+                    "length",
+                    "",
+                    "",
+                    "public final int length;"
+            ));
         }
         return fieldList;
     }
@@ -764,7 +772,9 @@ public class DatasetUtils {
         // add all fields of the base class (receiverObjectID -> this).
         List<ResolvedFieldDeclaration> jpReceiverFields = jpClass.getFields()
                 .stream()
-                .map(FieldDeclaration::resolve)
+                .flatMap(fieldDeclaration -> fieldDeclaration.getVariables()
+                        .stream()
+                        .map(variableDeclarator -> variableDeclarator.resolve().asField()))
                 .filter(JavaParserUtils::isNonPrivateNonStaticAttribute)
                 .toList();
         List<Quartet<String, String, String, String>> attributeList = new ArrayList<>(convertFieldDeclarationToQuartet(jpReceiverFields));
@@ -821,7 +831,7 @@ public class DatasetUtils {
                 List<MethodUsage> jpReturnTypeMethods = fieldType.asReferenceType().getAllMethods()
                         .stream()
                         .map(MethodUsage::new)
-                        .collect(Collectors.toList());
+                        .toList();
                 methodList.addAll(convertMethodUsageToQuartet(jpReturnTypeMethods));
             }
         }
@@ -979,7 +989,7 @@ public class DatasetUtils {
                     List<String> currentParamList = currentCallable.getParameters()
                             .stream()
                             .map(p -> JDoctorUtils.getJPTypeName(jpClass, currentCallable, p))
-                            .collect(Collectors.toList());
+                            .toList();
                     // if parameters are equal, then return the current function.
                     if (jpParamListEqualsJDoctorParamList(
                             targetParamList,

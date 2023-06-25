@@ -182,22 +182,22 @@ public class ProjectOracleGenerator {
         List<String> parameterTypes = JDoctorUtils.convertJDoctorConditionTypeNames2JavaParserTypeNames(operation.getParameterTypes());
         // get CompilationUnit of operation class.
         Optional<CompilationUnit> cuOptional = DatasetUtils.getClassCompilationUnit(operation, sourcePath);
-        assert cuOptional.isPresent();
-        CompilationUnit cu = cuOptional.get();
-        // get TypeDeclaration of class in CompilationUnit.
-        TypeDeclaration<?> jpClass = DatasetUtils.getTypeDeclaration(cu, className);
-        assert jpClass != null;
-        // get CallableDeclaration of method in TypeDeclaration.
-        CallableDeclaration<?> jpCallable = DatasetUtils.getCallableDeclaration(jpClass, callableName, parameterTypes);
-        assert jpCallable != null;
-        // remove tag with maximum similarity.
-        this.projectTagsTokens.remove(findMaximumSimilarityTag(
-                this.projectTagsTokens,
-                jpClass,
-                jpCallable,
-                oracleType,
-                javaDocTag
-        ));
+        if (cuOptional.isPresent()) {
+            // get TypeDeclaration of class in CompilationUnit.
+            TypeDeclaration<?> jpClass = DatasetUtils.getTypeDeclaration(cuOptional.get(), className);
+            assert jpClass != null;
+            // get CallableDeclaration of method in TypeDeclaration.
+            CallableDeclaration<?> jpCallable = DatasetUtils.getCallableDeclaration(jpClass, callableName, parameterTypes);
+            assert jpCallable != null;
+            // remove tag with maximum similarity.
+            this.projectTagsTokens.remove(findMaximumSimilarityTag(
+                    this.projectTagsTokens,
+                    jpClass,
+                    jpCallable,
+                    oracleType,
+                    javaDocTag
+            ));
+        }
     }
 
     /**
