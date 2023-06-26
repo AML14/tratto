@@ -7,18 +7,16 @@ import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.type.TypeParameter;
-import com.github.javaparser.ast.type.VoidType;
 import com.github.javaparser.resolution.MethodUsage;
 import com.github.javaparser.resolution.UnsolvedSymbolException;
 import com.github.javaparser.resolution.declarations.ResolvedFieldDeclaration;
 import com.github.javaparser.resolution.declarations.ResolvedMethodDeclaration;
 import com.github.javaparser.resolution.declarations.ResolvedReferenceTypeDeclaration;
 import com.github.javaparser.resolution.declarations.ResolvedTypeParameterDeclaration;
-import com.github.javaparser.resolution.types.ResolvedArrayType;
 import com.github.javaparser.resolution.types.ResolvedType;
+import com.github.javaparser.symbolsolver.javaparsermodel.declarations.JavaParserFieldDeclaration;
 import com.github.javaparser.symbolsolver.javaparsermodel.declarations.JavaParserMethodDeclaration;
 import com.github.javaparser.symbolsolver.utils.SymbolSolverCollectionStrategy;
-import org.eclipse.xtend.lib.macro.declaration.ResolvedMethod;
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
 import org.slf4j.Logger;
@@ -41,6 +39,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static star.tratto.util.JavaTypes.isNumeric1AssignableToNumeric2;
 import static star.tratto.util.StringUtils.fullyQualifiedClassName;
@@ -512,23 +511,6 @@ public class JavaParserUtils {
     }
 
     /**
-     * Gets the signature of a JavaParser resolved field declaration
-     * {@link ResolvedFieldDeclaration} and return its string representation.
-     *
-     * @param jpField resolved field declaration to generate the signature
-     * @return a string representation of the signature of the declaration
-     */
-    public static String getFieldSignature(
-            ResolvedFieldDeclaration jpField
-    ) {
-        String signature = "";
-        signature += jpField.accessSpecifier().asString();
-        signature += jpField.isStatic() ? " static " : "";
-        signature += jpField.getName();
-        return signature;
-    }
-
-    /**
      * Gets the signature of a JavaParser variable declarator
      * {@link VariableDeclarator}, and return its string representation.
      *
@@ -545,7 +527,26 @@ public class JavaParserUtils {
         signature += String.format("%s ", variable.getTypeAsString());
         signature += String.format("%s", variable.getNameAsString());
         signature += variable.getInitializer().isPresent() ? String.format(" = %s;", variable.getInitializer().get()) : ";";
-        return signature;
+        return signature.trim();
+    }
+
+    /**
+     * Gets the signature of a JavaParser resolved field declaration
+     * {@link ResolvedFieldDeclaration} and return its string representation.
+     *
+     * @param resolvedField resolved field declaration to generate the signature
+     * @return a string representation of the signature of the declaration
+     */
+    public static String getFieldSignature(
+            ResolvedFieldDeclaration resolvedField
+    ) {
+        String signature = "";
+        signature += resolvedField.accessSpecifier().asString();
+        signature += resolvedField.isStatic() ? " static " : "";
+        signature += getTypeWithoutPackages(resolvedField.getType().describe()) + " ";
+        signature += resolvedField.getName();
+        signature += ";";
+        return signature.trim();
     }
 
     /**
@@ -749,6 +750,28 @@ public class JavaParserUtils {
     ) throws JPClassNotFoundException {
         try {
             return new ArrayList<>(jpClass.resolve().getAllMethods());
+        } catch (UnsolvedSymbolException | IllegalArgumentException e) {
+            String errMsg = String.format(
+                    "Impossible to get all the methods of class %s.",
+                    jpClass.getNameAsString()
+            );
+            System.err.printf(errMsg);
+            throw new JPClassNotFoundException(errMsg);
+        }
+    }
+
+    /**
+     * Get all fields available to a given class (including superclasses).
+     *
+     * @param jpClass object class.
+     * @return list of ResolvedFieldDeclaration objects.
+     * @throws JPClassNotFoundException if jpClass is not resolvable.
+     */
+    public static List<ResolvedFieldDeclaration> getAllAvailableResolvedFields(
+            TypeDeclaration<?> jpClass
+    ) throws JPClassNotFoundException {
+        try {
+            return jpClass.resolve().getAllFields();
         } catch (UnsolvedSymbolException | IllegalArgumentException e) {
             String errMsg = String.format(
                     "Impossible to get all the methods of class %s.",
