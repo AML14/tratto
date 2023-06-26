@@ -221,65 +221,51 @@ public class DatasetUtils {
      * @param jpParameter the given type.
      * @return the type name of the given parameter.
      */
-    private static Optional<String> getClassNameFromCallableDeclaration(
+    private static Optional<String> getParameterClassName(
             TypeDeclaration<?> jpClass,
             CallableDeclaration<?> jpCallable,
             Parameter jpParameter
     ) {
         Type jpParameterType = jpParameter.getType();
-        // Ellipsis in parameter type name indicate an array (e.g. int[]).
         boolean hasEllipsis = JDoctorUtils.hasJPTypeEllipsis(jpParameter.toString());
         try {
-            if (jpParameterType.resolve().isTypeVariable()) {
-                // generic type.
-                String className = ((ClassOrInterfaceType) jpParameterType).getNameAsString();
-                if (hasEllipsis) {
-                    className += "[]";
-                }
-                return Optional.of(className);
-            } else if (jpParameterType.resolve().isPrimitive()) {
-                // primitive type.
-                String className = jpParameterType.asPrimitiveType().toString();
-                if (hasEllipsis) {
-                    className += "[]";
-                }
-                return Optional.of(className);
-            } else if (jpParameterType.resolve().isArray()) {
-                // array type.
-                String qualifiedName = jpParameterType.resolve().asArrayType().describe();
-                return Optional.of(getTypeWithoutPackages(qualifiedName));
-            } else if (jpParameterType.resolve().isReferenceType()) {
-                // base reference type.
-                String jpTypeName = JDoctorUtils.getJPTypeName(jpClass, jpCallable, jpParameter);
-                if (JavaParserUtils.isGenericType(jpParameterType.resolve())) {
-                    String className = jpTypeName;
-                    if (hasEllipsis) {
-                        className += "[]";
-                    }
-                    return Optional.of(className);
+            ResolvedType jpResolvedParameterType = jpParameterType.resolve();
+            String className = "";
+            // get base type.
+            if (jpResolvedParameterType.isTypeVariable()) {
+                className = jpParameterType.asClassOrInterfaceType().getNameAsString();
+            } else if (jpResolvedParameterType.isPrimitive()) {
+                className = jpParameterType.asPrimitiveType().asString();
+            } else if (jpResolvedParameterType.isReferenceType()) {
+                // if object is generic, use generic name.
+                if (JavaParserUtils.isGenericType(jpResolvedParameterType)) {
+                    className = JDoctorUtils.getJPTypeName(jpClass, jpCallable, jpParameter);
                 } else {
-                    String qualifiedName = jpParameterType.resolve().asReferenceType().getQualifiedName();
-                    String className = getTypeWithoutPackages(qualifiedName);
-                    if (hasEllipsis) {
-                        className += "[]";
-                    }
-                    return Optional.of(className);
+                    className = JavaParserUtils.getTypeWithoutPackages(jpResolvedParameterType.asReferenceType().getQualifiedName());
                 }
+            } else if (jpResolvedParameterType.isArray()) {
+                // special case, return early if type is an array.
+                return Optional.of(JavaParserUtils.getTypeWithoutPackages(jpResolvedParameterType.asArrayType().describe()));
             } else {
                 assert false;
                 String errMsg = String.format("Unexpected type when evaluating %s parameter type.", jpParameterType);
                 System.err.println(errMsg);
             }
+            // check if type is an array.
+            if (hasEllipsis) {
+                className += "[]";
+            }
+            // return class name.
+            return Optional.of(className);
         } catch (UnsolvedSymbolException e) {
             String errMsg = String.format("UnsolvedSymbolException when evaluating %s parameter type.", jpParameterType);
             System.err.println(errMsg);
-            String className = ((ClassOrInterfaceType) jpParameterType).getNameAsString();
+            String className = jpParameterType.asClassOrInterfaceType().getNameAsString();
             if (hasEllipsis) {
                 className += "[]";
             }
             return Optional.of(className);
         }
-        return Optional.empty();
     }
 
     /**
@@ -302,7 +288,7 @@ public class DatasetUtils {
         // iterate through each parameter in the method arguments.
         for (Parameter jpParameter : jpParameters) {
             Type jpParameterType = jpParameter.getType();
-            Optional<String> jpParameterClassName = getClassNameFromCallableDeclaration(jpClass, jpCallable, jpParameter);
+            Optional<String> jpParameterClassName = getParameterClassName(jpClass, jpCallable, jpParameter);
             if (jpParameterClassName.isPresent()) {
                 try {
                     if (
