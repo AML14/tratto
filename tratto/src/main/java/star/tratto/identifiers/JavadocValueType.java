@@ -2,12 +2,12 @@ package star.tratto.identifiers;
 
 public enum JavadocValueType {
     INTEGER("int"),
-    REAL("double"),
+    DOUBLE("double"),
     STRING("String");
 
     private final String type;
 
-    private JavadocValueType(String type) {
+    JavadocValueType(String type) {
         this.type = type;
     }
 

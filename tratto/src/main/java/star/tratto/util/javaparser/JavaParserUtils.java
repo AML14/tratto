@@ -672,6 +672,9 @@ public class JavaParserUtils {
         return method.trim().replaceAll(";$", "");
     }
 
+    /**
+     * Gets the package name
+     */
     public static PackageDeclaration getPackageDeclarationFromCompilationUnit(
             CompilationUnit cu
     ) throws PackageDeclarationNotFoundException {

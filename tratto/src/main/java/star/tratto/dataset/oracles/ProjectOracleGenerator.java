@@ -107,7 +107,7 @@ public class ProjectOracleGenerator {
         for (Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String> jpTag : this.projectTagsTokens) {
             oracleDPs.add(getEmptyDatapoint(jpTag));
         }
-        System.out.printf("Processed %s empty oracles.%n", this.idCounter - numNonEmptyOracles);
+        System.out.printf("Processed %s empty oracles.%n", this.projectTagsTokens.size());
         System.out.printf("Processed %s total conditions.%n", this.idCounter - this.checkpoint);
         this.checkpoint = this.idCounter;
         return oracleDPs;
@@ -181,7 +181,7 @@ public class ProjectOracleGenerator {
         String callableName = DatasetUtils.getOperationCallableName(operation);
         List<String> parameterTypes = JDoctorUtils.convertJDoctorConditionTypeNames2JavaParserTypeNames(operation.getParameterTypes());
         // get CompilationUnit of operation class.
-        Optional<CompilationUnit> cuOptional = DatasetUtils.getClassCompilationUnit(operation, sourcePath);
+        Optional<CompilationUnit> cuOptional = DatasetUtils.getOperationCompilationUnit(operation, sourcePath);
         if (cuOptional.isPresent()) {
             // get TypeDeclaration of class in CompilationUnit.
             TypeDeclaration<?> jpClass = DatasetUtils.getTypeDeclaration(cuOptional.get(), className);
@@ -274,7 +274,7 @@ public class ProjectOracleGenerator {
         String callableName = DatasetUtils.getOperationCallableName(operation);
         List<String> parameterTypes = JDoctorUtils.convertJDoctorConditionTypeNames2JavaParserTypeNames(operation.getParameterTypes());
         // get CompilationUnit of operation class.
-        Optional<CompilationUnit> cuOptional = DatasetUtils.getClassCompilationUnit(operation, sourcePath);
+        Optional<CompilationUnit> cuOptional = DatasetUtils.getOperationCompilationUnit(operation, sourcePath);
         if (cuOptional.isEmpty()) {
           return builder.build();
         }

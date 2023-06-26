@@ -27,7 +27,7 @@ public class OraclesDataset {
         ProjectOracleGenerator oracleDPGenerator = new ProjectOracleGenerator();
 
         for (Project project : projects) {
-            System.out.println("Collecting data from: " + project.getProjectName());
+            System.out.println("\nCollecting data from: " + project.getProjectName());
             // get JDoctor conditions and load project to generator.
             List<JDoctorCondition> jDoctorConditions = jDoctorConditionParser.parseJDoctorConditions(project);
             oracleDPGenerator.loadProject(project, jDoctorConditions);

@@ -2,8 +2,8 @@ package star.tratto.util.javaparser;
 
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Node;
-import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.*;
+import com.github.javaparser.ast.comments.JavadocComment;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.type.Type;
@@ -42,6 +42,7 @@ import java.util.regex.Pattern;
 public class DatasetUtils {
     /**
      * The method removes all the duplicates from a list.
+     *
      * @param list The list from which remove the duplicates.
      * @return A new list that does not contain the duplicates of the list passed to the function.
      * @param <T> The generic type of the list.
@@ -52,22 +53,22 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets the name and package of all classes in a compilation unit.
+     * Gets a list of each class name and corresponding package name of all
+     * classes in a compilation unit.
      *
-     * @param cu the compilation unit of a java file
-     * @return a list of (className, packageName) pairs
+     * @param cu the compilation unit of a java file.
+     * @return a list of (className, packageName) pairs.
      * @throws PackageDeclarationNotFoundException if the package cannot be
-     * retrieved
+     * retrieved.
      */
     private static List<Pair<String, String>> getClassNameAndPackage(
             CompilationUnit cu
     ) throws PackageDeclarationNotFoundException {
         List<Pair<String, String>> classList = new ArrayList<>();
-        // get package name.
+        // get package name of given file.
         String packageName = JavaParserUtils.getPackageDeclarationFromCompilationUnit(cu).getNameAsString();
         // get all classes in compilation unit.
         List<TypeDeclaration<?>> jpClasses = cu.getTypes();
-        // iterate over all classes.
         for (TypeDeclaration<?> jpClass : jpClasses) {
             classList.add(new Pair<>(jpClass.getNameAsString(), packageName));
         }
@@ -75,17 +76,16 @@ public class DatasetUtils {
     }
 
     /**
-     * If a JavaDoc is not immediately recoverable, we attempt to find the
-     * JavaDoc using pattern matching.
+     * Gets the JavaDoc comment of a body declaration using regex patterns.
+     * Use ONLY IF JavaDoc comment is not recoverable from jpNode.
      *
-     * @param jpNode a member in a java class
-     * @return the matched JavaDoc comment (empty string if not found)
+     * @param jpNode a member in a java class {@link BodyDeclaration}.
+     * @return the matched JavaDoc comment (empty string if not found).
      */
     private static String getJavadocByPattern(BodyDeclaration<?> jpNode) {
         String input = jpNode.toString();
         Pattern pattern = Pattern.compile("/\\*\\*(.*?)\\*/", Pattern.DOTALL);
         Matcher matcher = pattern.matcher(input);
-        // if pattern is found, extract information.
         if (matcher.find()) {
             String content = matcher.group(1);
             return Javadoc.METHOD_PREFIX.getValue() + content + Javadoc.METHOD_SUFFIX.getValue();
@@ -94,50 +94,68 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets the Javadoc comment of the TypeDeclaration.
+     * Gets the Javadoc comment of the class {@link TypeDeclaration}.
      *
-     * @param jpClass a JavaParser class
-     * @return a string {@link String} representing the Javadoc comment
+     * @param jpClass a JavaParser class {@link TypeDeclaration}.
+     * @return a string representation of the Javadoc comment.
      */
     public static String getClassJavadoc(
             TypeDeclaration<?> jpClass
     ) {
-        return jpClass.getJavadocComment().map(javadocComment -> Javadoc.CLASS_PREFIX.getValue() + javadocComment.getContent() + Javadoc.CLASS_SUFFIX.getValue()).orElseGet(() -> getJavadocByPattern(jpClass));
+        Optional<JavadocComment> optionalJavadocComment = jpClass.getJavadocComment();
+        if (optionalJavadocComment.isEmpty()) {
+            return getJavadocByPattern(jpClass);
+        }
+        return Javadoc.CLASS_PREFIX.getValue() + optionalJavadocComment.get().getContent() + Javadoc.CLASS_SUFFIX.getValue();
     }
 
     /**
-     * Gets the Javadoc comment of the BodyDeclaration.
+     * Gets the Javadoc comment of the function {@link CallableDeclaration}.
      *
-     * @param jpCallable a JavaParser function
-     * @return a string {@link String} representing the Javadoc comment
+     * @param jpCallable a JavaParser function {@link CallableDeclaration}.
+     * @return a string representation the Javadoc comment.
      */
     public static String getCallableJavadoc(
             CallableDeclaration<?> jpCallable
     ) {
-        return jpCallable.getJavadocComment().map(javadocComment -> Javadoc.METHOD_PREFIX.getValue() + javadocComment.getContent() + Javadoc.METHOD_SUFFIX.getValue()).orElseGet(() -> getJavadocByPattern(jpCallable));
+        Optional<JavadocComment> optionalJavadocComment = jpCallable.getJavadocComment();
+        if (optionalJavadocComment.isEmpty()) {
+            return getJavadocByPattern(jpCallable);
+        }
+        return Javadoc.METHOD_PREFIX.getValue() + optionalJavadocComment.get().getContent() + Javadoc.METHOD_SUFFIX.getValue();
     }
 
+    /**
+     * Gets all numeric values in a JavaDoc comment represented as a pair of
+     * strings.
+     *
+     * @param javadocComment The string representation of a JavaDoc comment.
+     * @return A list of pairs of strings representing all numeric values
+     * in the JavaDoc comment. The first element is the numeric value, and the
+     * second element is the type of numeric value {@link JavadocValueType}
+     * (integer or double).
+     */
     private static List<Pair<String, String>> findAllNumericValuesInJavadoc(
             String javadocComment
     ) {
-        // Defines regex to match integers and floats within a string.
+        // Defines regex to find integers and doubles within a string.
         Pattern pattern = Pattern.compile("-?\\d+(\\.\\d+)?");
         Matcher matcher = pattern.matcher(javadocComment);
-        // Get list of (numericType, numericValue) pairs.
+        // Iterate through all occurrences.
         List<Pair<String, String>> numericValues = new ArrayList<>();
         while (matcher.find()) {
             String match = matcher.group();
             if (match.contains(".")) {
-                // float value.
+                // double (decimal).
                 try {
                     double realValue = Double.parseDouble(match);
-                    numericValues.add(new Pair<>(Double.toString(realValue), JavadocValueType.REAL.getValue()));
+                    numericValues.add(new Pair<>(Double.toString(realValue), JavadocValueType.DOUBLE.getValue()));
                 } catch (Exception e) {
-                    String errMsg = String.format("Number exceed maximum real value: %s", match);
+                    String errMsg = String.format("Number exceed maximum float value: %s", match);
                     System.err.println(errMsg);
                 }
             } else {
-                // integer value.
+                // integer (no decimal).
                 try {
                     long longIntValue = Long.parseLong(match);
                     numericValues.add(new Pair<>(Long.toString(longIntValue), JavadocValueType.INTEGER.getValue()));
@@ -147,29 +165,37 @@ public class DatasetUtils {
                 }
             }
         }
-        // Return the list of the collected integer values
         return numericValues;
     }
 
+    /**
+     * Gets all string values in a JavaDoc comment represented as a pair of
+     * strings. This may seem redundant, but is done to match the
+     * representation of numeric values.
+     *
+     * @param jpJavadoc The string representation of a JavaDoc comment.
+     * @return A list of pairs of strings representing the string values in
+     * the JavaDoc comment. The first element is the numeric value, and the
+     * second element is the type of value (always "String").
+     */
     private static List<Pair<String, String>> findAllStringValuesInJavadoc(
             String jpJavadoc
     ) {
         // Defines regex to match values within a string.
         Pattern pattern = Pattern.compile("\\\"(.*?)\\\"|\\\'(.*?)\\\'");
         Matcher matcher = pattern.matcher(jpJavadoc);
-        // Get list of (stringValue, "String") pairs.
+        // Iterate through all occurrences.
         List<Pair<String, String>> stringValues = new ArrayList<>();
         while (matcher.find()) {
             String match = String.format("\"%s\"",!(matcher.group(1) == null) ? matcher.group(1) : matcher.group(2));
             stringValues.add(new Pair<>(match, "String"));
         }
-        // Return the list of the collected string values
         return stringValues;
     }
 
     /**
-     * Retrieves all numerical or string values from a given JavaDoc comment
-     * via pattern matching.
+     * Gets all numerical or string values from a given JavaDoc comment via
+     * pattern matching.
      *
      * @param jpJavadoc the JavaDoc comment.
      * @return a list of values describing each numerical and string value.
@@ -887,46 +913,15 @@ public class DatasetUtils {
     }
 
     /**
-     * Get the package name of an operation.
-     */
-    public static String getOperationPackageName(
-            Operation operation
-    ) {
-        List<String> pathList = JDoctorUtils.getPathList(operation.getClassName());
-        List<String> packageList = JDoctorUtils.getPackageList(pathList);
-        return JDoctorUtils.getPackageNameFromPackageList(packageList);
-    }
-
-    /**
-     * Get the class name of an operation.
-     */
-    public static String getOperationClassName(
-            Operation operation
-    ) {
-        List<String> pathList = JDoctorUtils.getPathList(operation.getClassName());
-        return JDoctorUtils.getClassNameFromPathList(pathList);
-    }
-
-    /**
-     * Get the method/constructor name of an operation.
-     */
-    public static String getOperationCallableName(
-            Operation operation
-    ) {
-        List<String> pathList = JDoctorUtils.getPathList(operation.getName());
-        return JDoctorUtils.getClassNameFromPathList(pathList);
-    }
-
-    /**
      * Evaluates whether a list of JDoctor parameters and a list of JavaParser
      * parameters are equal. Primarily handles issues regarding different
      * representations of generic types between lists.
      *
-     * @param jDoctorParamList list of JDoctor parameters
-     * @param jpParamList list of JavaParser parameters
-     * @param jpCallable CallableDeclaration corresponding to jpParamList
-     * @param jpClass TypeDeclaration corresponding to jpCallable
-     * @return true iff the two lists represent the same parameters
+     * @param jDoctorParamList list of JDoctor parameters.
+     * @param jpParamList list of JavaParser parameters.
+     * @param jpCallable method corresponding to jpParamList.
+     * @param jpClass the declaring class of jpCallable.
+     * @return true iff the two lists represent the same parameters.
      */
     private static boolean jpParamListEqualsJDoctorParamList(
             List<String> jDoctorParamList,
@@ -934,41 +929,37 @@ public class DatasetUtils {
             CallableDeclaration<?> jpCallable,
             TypeDeclaration<?> jpClass
     ) {
-        if (jDoctorParamList.size() != jpParamList.size()) {
-          return false;
-        }
+        if (jDoctorParamList.size() != jpParamList.size()) return false;
         for (int i = 0; i < jDoctorParamList.size(); i++) {
             String jDoctorParam = jDoctorParamList.get(i);
             String jpParam = jpParamList.get(i);
             // if parameters are identical, then continue.
             if (jDoctorParam.equals(jpParam)) continue;
             // otherwise, check if parameters are generics.
-            boolean jDoctorParamIsStandard = JDoctorUtils.isGenericCondition(jDoctorParam);
-            boolean jDoctorParamIsStandardArray = JDoctorUtils.isGenericConditionArray(jDoctorParam);
-            boolean jpParamIsStandard = JDoctorUtils.isGenericCondition(jpParam);
+            boolean jDoctorParamIsStandard = JDoctorUtils.isStandardType(jDoctorParam);
+            boolean jDoctorParamIsStandardArray = JDoctorUtils.isStandardTypeArray(jDoctorParam);
+            boolean jpParamIsStandard = JDoctorUtils.isStandardType(jpParam);
             boolean jpParamIsArray = jpParam.endsWith("[]");
             boolean jpParamIsGeneric = JavaParserUtils.isGenericType(jpParam, jpCallable, jpClass);
-            // case 1: both conditions represent generic objects (e.g. Object, Comparable).
-            // case 2: both conditions represent generic object arrays (e.g. Object[], Comparable[]).
+            // case 1: both conditions represent standard objects (e.g. Object, Comparable).
+            // case 2: both conditions represent generic/standard object arrays (e.g. Object[], Comparable[]).
+            // if neither case 1 nor case 2 holds, return false.
             if (!(
                 (jDoctorParamIsStandard && jpParamIsStandard) ||
-                (jpParamIsGeneric && (
-                        jDoctorParamIsStandard || (jDoctorParamIsStandardArray && jpParamIsArray)
-                ))
-            )) {
-              return false;
-            }
+                (jpParamIsGeneric && (jDoctorParamIsStandard || (jDoctorParamIsStandardArray && jpParamIsArray)))
+            )) return false;
         }
         return true;
     }
 
     /**
-     * Gets the CallableDeclaration from a given TypeDeclaration with a
-     * specified name and parameters.
+     * Gets the method/constructor {@link CallableDeclaration} from a given
+     * class {@link TypeDeclaration} given a specific name and a list of
+     * parameters.
      *
-     * @param jpClass the TypeDeclaration containing the method
-     * @param targetName the name of the desired method
-     * @param targetParamList the parameters of the desired method
+     * @param jpClass the declaring class {@link TypeDeclaration}.
+     * @param targetName the name of the method {@link CallableDeclaration}.
+     * @param targetParamList the parameters of the desired method.
      * @return the corresponding method (if it exists). Returns null if no
      * such method exists.
      */
@@ -977,13 +968,12 @@ public class DatasetUtils {
             String targetName,
             List<String> targetParamList
     ) {
-        // iterate through each BodyDeclaration in the class.
+        // iterate through each body declaration in the class.
         for (BodyDeclaration<?> member : jpClass.getMembers()) {
-            // check if member is a function.
+            // check if member is a function (method or constructor).
             if (member.isCallableDeclaration()) {
-                // get function representation of member.
                 CallableDeclaration<?> currentCallable = member.asCallableDeclaration();
-                // check if function name is equal to callableName.
+                // check if the function name is equal to the target name.
                 if (currentCallable.getNameAsString().equals(targetName)) {
                     // get parameters of function.
                     List<String> currentParamList = currentCallable.getParameters()
@@ -1007,24 +997,26 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets the TypeDeclaration of a class from the given CompilationUnit.
+     * Gets the type declaration {@link TypeDeclaration} of a class from the
+     * given compilation unit {@link CompilationUnit}.
      *
-     * @param cu the compilation unit of a file
-     * @param className the name of the desired class
-     * @return returns the TypeDeclaration corresponding to ``className`` in
-     * ``cu`` (if it exists). Returns null if no such class exists.
+     * @param cu the compilation unit of a file.
+     * @param className the name of the desired class.
+     * @return returns the type declaration corresponding to the given class
+     * name in a compilation unit (if it exists). Returns null if no such
+     * class exists.
      */
     public static TypeDeclaration<?> getTypeDeclaration(
             CompilationUnit cu,
             String className
     ) {
         // get all classes in the compilation unit.
-        NodeList<TypeDeclaration<?>> typeList = cu.getTypes();
+        List<TypeDeclaration<?>> typeList = cu.getTypes();
         // throw error if no classes are found.
         if (typeList == null) {
             return null;
         }
-        // iterate through classes to find corresponding class.
+        // iterate through classes to find the corresponding class.
         for (TypeDeclaration<?> jpClass : typeList) {
             if (jpClass.getNameAsString().equals(className)) {
                 return jpClass;
@@ -1034,16 +1026,47 @@ public class DatasetUtils {
     }
 
     /**
+     * Gets the package name of an operation.
+     */
+    public static String getOperationPackageName(
+            Operation operation
+    ) {
+        List<String> pathList = JDoctorUtils.getPathList(operation.getClassName());
+        List<String> packageList = JDoctorUtils.getPackageList(pathList);
+        return JDoctorUtils.getPackageNameFromPackageList(packageList);
+    }
+
+    /**
+     * Gets the class name of an operation.
+     */
+    public static String getOperationClassName(
+            Operation operation
+    ) {
+        List<String> pathList = JDoctorUtils.getPathList(operation.getClassName());
+        return JDoctorUtils.getClassNameFromPathList(pathList);
+    }
+
+    /**
+     * Gets the method/constructor name of an operation.
+     */
+    public static String getOperationCallableName(
+            Operation operation
+    ) {
+        List<String> pathList = JDoctorUtils.getPathList(operation.getName());
+        return JDoctorUtils.getClassNameFromPathList(pathList);
+    }
+
+    /**
      * Gets the JavaParser compilation unit {@link CompilationUnit}
      * corresponding to the class of the JDoctor condition.
      *
-     * @param operation a JDoctor operation object of a JDoctor condition
-     * @param sourcePath the source path of the relevant project
+     * @param operation a JDoctor operation object of a JDoctor condition.
+     * @param sourcePath the source path of the relevant project.
      * @return an optional JavaParser compilation unit {@link CompilationUnit}
      * corresponding to the class of the JDoctor condition, if it is found.
      * Otherwise, the method returns an empty optional.
      */
-    public static Optional<CompilationUnit> getClassCompilationUnit(
+    public static Optional<CompilationUnit> getOperationCompilationUnit(
             Operation operation,
             String sourcePath
     ) {

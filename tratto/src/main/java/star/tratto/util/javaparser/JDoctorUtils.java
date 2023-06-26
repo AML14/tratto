@@ -1,7 +1,5 @@
 package star.tratto.util.javaparser;
 
-import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
-import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import star.tratto.identifiers.ConditionPrimitiveType;
 import star.tratto.identifiers.JPType;
 
@@ -175,11 +173,11 @@ public class JDoctorUtils {
         return jpTypeName;
     }
 
-    public static boolean isGenericCondition(String conditionType) {
+    public static boolean isStandardType(String conditionType) {
         return conditionType.equals("Object") || conditionType.equals("Comparable");
     }
 
-    public static boolean isGenericConditionArray(String conditionType) {
+    public static boolean isStandardTypeArray(String conditionType) {
         return conditionType.equals("Object[]") || conditionType.equals("Comparable[]");
     }
 
