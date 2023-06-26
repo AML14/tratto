@@ -5,7 +5,6 @@ import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.*;
 import com.github.javaparser.ast.comments.JavadocComment;
 import com.github.javaparser.ast.stmt.BlockStmt;
-import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.type.Type;
 import com.github.javaparser.javadoc.JavadocBlockTag;
 import com.github.javaparser.resolution.MethodUsage;
@@ -13,6 +12,7 @@ import com.github.javaparser.resolution.UnsolvedSymbolException;
 import com.github.javaparser.resolution.declarations.ResolvedFieldDeclaration;
 import com.github.javaparser.resolution.declarations.ResolvedReferenceTypeDeclaration;
 import com.github.javaparser.resolution.types.ResolvedType;
+import com.github.javaparser.symbolsolver.javaparsermodel.declarations.JavaParserFieldDeclaration;
 import org.javatuples.Pair;
 import org.javatuples.Quartet;
 import org.javatuples.Quintet;
@@ -306,7 +306,7 @@ public class DatasetUtils {
                         } else {
                             // otherwise, retrieve necessary package information.
                             String fullyQualifiedName = jpParameterType.resolve().asReferenceType().getQualifiedName();
-                            String className = getTypeWithoutPackages(fullyQualifiedName);
+                            String className = JavaParserUtils.getTypeWithoutPackages(fullyQualifiedName);
                             String parameterPackageName = fullyQualifiedName
                                     .replace(String.format(".%s", className), "");
                             argumentList.add(new Triplet<>(
@@ -664,21 +664,34 @@ public class DatasetUtils {
      * {@link ResolvedFieldDeclaration} into a quartet of the form:
      *      "fieldName, packageOfField, classOfField, fieldSignature"
      *
-     * @param jpFields a list of fields {@link ResolvedFieldDeclaration}
+     * @param resolvedFields a list of fields {@link ResolvedFieldDeclaration}
      * @return the list of quartets of fields
      */
     private static List<Quartet<String, String, String, String>> convertFieldDeclarationToQuartet(
-            List<ResolvedFieldDeclaration> jpFields
+            List<ResolvedFieldDeclaration> resolvedFields
     ) {
-        return new ArrayList<>(jpFields)
-                .stream()
-                .map(jpField -> new Quartet<>(
-                        jpField.getName(),
-                        jpField.declaringType().getPackageName(),
-                        jpField.declaringType().getClassName(),
-                        JavaParserUtils.getFieldSignature(jpField)
-                ))
-                .toList();
+        List<Quartet<String, String, String, String>> quartetList = new ArrayList<>();
+        for (ResolvedFieldDeclaration resolvedField : resolvedFields) {
+            if (resolvedField instanceof JavaParserFieldDeclaration) {
+                FieldDeclaration jpField = ((JavaParserFieldDeclaration) resolvedField).getWrappedNode();
+                for (VariableDeclarator jpVariable : jpField.getVariables()) {
+                    quartetList.add(new Quartet<>(
+                            jpVariable.getNameAsString(),
+                            resolvedField.declaringType().getPackageName(),
+                            resolvedField.declaringType().getClassName(),
+                            JavaParserUtils.getVariableSignature(jpField, jpVariable)
+                    ));
+                }
+            } else {
+                quartetList.add(new Quartet<>(
+                        resolvedField.getName(),
+                        resolvedField.declaringType().getPackageName(),
+                        resolvedField.declaringType().getClassName(),
+                        JavaParserUtils.getFieldSignature(resolvedField)
+                ));
+            }
+        }
+        return quartetList;
     }
 
     /**
@@ -721,7 +734,7 @@ public class DatasetUtils {
             fieldList.add(new Quartet<>(
                     "length",
                     "",
-                    "",
+                    jpType.describe(),
                     "public final int length;"
             ));
         }
@@ -780,13 +793,10 @@ public class DatasetUtils {
     public static List<Quartet<String, String, String, String>> getTokensMethodVariablesNonPrivateNonStaticAttributes(
             TypeDeclaration<?> jpClass,
             CallableDeclaration<?> jpCallable
-    ) {
+    ) throws JPClassNotFoundException {
         // add all fields of the base class (receiverObjectID -> this).
-        List<ResolvedFieldDeclaration> jpReceiverFields = jpClass.getFields()
+        List<ResolvedFieldDeclaration> jpReceiverFields = JavaParserUtils.getAllAvailableResolvedFields(jpClass)
                 .stream()
-                .flatMap(fieldDeclaration -> fieldDeclaration.getVariables()
-                        .stream()
-                        .map(variableDeclarator -> variableDeclarator.resolve().asField()))
                 .filter(JavaParserUtils::isNonPrivateNonStaticAttribute)
                 .toList();
         List<Quartet<String, String, String, String>> attributeList = new ArrayList<>(convertFieldDeclarationToQuartet(jpReceiverFields));
@@ -1012,6 +1022,25 @@ public class DatasetUtils {
     }
 
     /**
+     * Gets the compilation unit {@link CompilationUnit} corresponding to the
+     * class of a JDoctor condition.
+     *
+     * @param operation an operation representation of a JDoctor condition.
+     * @param sourcePath the source path of the relevant project.
+     * @return an optional JavaParser compilation unit {@link CompilationUnit}
+     * corresponding to the class of the JDoctor condition, if it is found.
+     * Otherwise, the method returns an empty optional.
+     */
+    public static Optional<CompilationUnit> getOperationCompilationUnit(
+            Operation operation,
+            String sourcePath
+    ) {
+        List<String> pathList = Arrays.asList(operation.getClassName().split("\\."));
+        String classPath = Paths.get(sourcePath, pathList.toArray(String[]::new)) + FileFormat.JAVA.getValue();
+        return JavaParserUtils.getCompilationUnitFromFilePath(classPath);
+    }
+
+    /**
      * Gets the package name of an operation.
      */
     public static String getOperationPackageName(
@@ -1040,24 +1069,5 @@ public class DatasetUtils {
     ) {
         List<String> pathList = JDoctorUtils.getPathList(operation.getName());
         return JDoctorUtils.getClassNameFromPathList(pathList);
-    }
-
-    /**
-     * Gets the JavaParser compilation unit {@link CompilationUnit}
-     * corresponding to the class of the JDoctor condition.
-     *
-     * @param operation a JDoctor operation object of a JDoctor condition.
-     * @param sourcePath the source path of the relevant project.
-     * @return an optional JavaParser compilation unit {@link CompilationUnit}
-     * corresponding to the class of the JDoctor condition, if it is found.
-     * Otherwise, the method returns an empty optional.
-     */
-    public static Optional<CompilationUnit> getOperationCompilationUnit(
-            Operation operation,
-            String sourcePath
-    ) {
-        List<String> pathList = Arrays.asList(operation.getClassName().split("\\."));
-        String classPath = Paths.get(sourcePath, pathList.toArray(String[]::new)) + FileFormat.JAVA.getValue();
-        return JavaParserUtils.getCompilationUnitFromFilePath(classPath);
     }
 }
