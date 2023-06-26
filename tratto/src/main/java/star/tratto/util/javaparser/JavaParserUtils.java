@@ -776,7 +776,9 @@ public class JavaParserUtils {
     }
 
     public static boolean isNonPrivateNonStaticAttribute(ResolvedFieldDeclaration fieldDeclaration) {
-        return !fieldDeclaration.isStatic() && !(fieldDeclaration.accessSpecifier() == AccessSpecifier.PRIVATE);
+        boolean isPrivate = fieldDeclaration.accessSpecifier().equals(AccessSpecifier.PRIVATE);
+        boolean isStatic = fieldDeclaration.isStatic();
+        return !isPrivate && !isStatic;
     }
 
     public static boolean isStaticNonVoidNonPrivateMethod(MethodUsage methodUsage) {

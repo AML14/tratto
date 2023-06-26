@@ -452,7 +452,7 @@ public class DatasetUtils {
 
     /**
      * Finds all ".java" files in a given directory. Files are filtered based
-     * on an ad-hoc list of files to ignore.
+     * on a list of files to ignore (see dataset/repos/ignoreFile.json).
      *
      * @param sourcePath the path to the project root directory.
      * @return a list of all valid files {@link File}.
@@ -684,8 +684,8 @@ public class DatasetUtils {
     /**
      * Gets all non-private, non-static attributes visible to a given type.
      *
-     * @param jpType a resolved JavaParser type {@link ResolvedType}
-     * @return a list of non-private, non-static attributes
+     * @param jpType a resolved JavaParser type {@link ResolvedType}.
+     * @return a list of non-private, non-static attributes.
      */
     public static List<Quartet<String, String, String, String>> getFieldsFromType(
             ResolvedType jpType
