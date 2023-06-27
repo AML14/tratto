@@ -902,9 +902,38 @@ public class DatasetUtils {
     }
 
     /**
+     * Returns true iff a given JDoctor parameter and JavaParser parameter
+     * are equivalent. Handles four cases:
+     *  (1) jDoctorParam and jpParam are equal.
+     *  (2) Both jDoctorParam and jpParam represent standard objects
+     *      (e.g. Object, Comparable).
+     *  (3) jpParam is a generic (not an array) and jDoctorParam is a
+     *      standard object.
+     *  (4) jpParam is a generic (array) and jDoctorParam is an array
+     *      of standard objects.
+     * Returns true if any of the above conditions hold.
+     */
+    private static boolean jpParamEqualsJDoctorParam(
+            String jDoctorParam,
+            String jpParam,
+            CallableDeclaration<?> jpCallable,
+            TypeDeclaration<?> jpClass
+    ) {
+        if (jDoctorParam.equals(jpParam)) return true;
+        boolean jDoctorParamIsStandard = JDoctorUtils.isStandardType(jDoctorParam);
+        boolean jDoctorParamIsStandardArray = JDoctorUtils.isStandardTypeArray(jDoctorParam);
+        boolean jpParamIsStandard = JDoctorUtils.isStandardType(jpParam);
+        boolean jpParamIsArray = jpParam.endsWith("[]");
+        boolean jpParamIsGeneric = JavaParserUtils.isGenericType(jpParam, jpCallable, jpClass);
+        return (jDoctorParamIsStandard && jpParamIsStandard) ||
+                ((jpParamIsGeneric && !jpParamIsArray) && jDoctorParamIsStandard) ||
+                ((jpParamIsGeneric && jpParamIsArray) && jDoctorParamIsStandardArray);
+    }
+
+    /**
      * Evaluates whether a list of JDoctor parameters and a list of JavaParser
      * parameters are equal. Primarily handles issues regarding different
-     * representations of generic types between lists.
+     * representations of generic types between JDoctor and JavaParser.
      *
      * @param jDoctorParamList list of JDoctor parameters.
      * @param jpParamList list of JavaParser parameters.
@@ -922,21 +951,7 @@ public class DatasetUtils {
         for (int i = 0; i < jDoctorParamList.size(); i++) {
             String jDoctorParam = jDoctorParamList.get(i);
             String jpParam = jpParamList.get(i);
-            // if parameters are identical, then continue.
-            if (jDoctorParam.equals(jpParam)) continue;
-            // otherwise, check if parameters are generics.
-            boolean jDoctorParamIsStandard = JDoctorUtils.isStandardType(jDoctorParam);
-            boolean jDoctorParamIsStandardArray = JDoctorUtils.isStandardTypeArray(jDoctorParam);
-            boolean jpParamIsStandard = JDoctorUtils.isStandardType(jpParam);
-            boolean jpParamIsArray = jpParam.endsWith("[]");
-            boolean jpParamIsGeneric = JavaParserUtils.isGenericType(jpParam, jpCallable, jpClass);
-            // case 1: both conditions represent standard objects (e.g. Object, Comparable).
-            // case 2: both conditions represent generic/standard object arrays (e.g. Object[], Comparable[]).
-            // if neither case 1 nor case 2 holds, return false.
-            if (!(
-                (jDoctorParamIsStandard && jpParamIsStandard) ||
-                (jpParamIsGeneric && (jDoctorParamIsStandard || (jDoctorParamIsStandardArray && jpParamIsArray)))
-            )) return false;
+            if (!jpParamEqualsJDoctorParam(jDoctorParam, jpParam, jpCallable, jpClass)) return false;
         }
         return true;
     }
@@ -949,6 +964,7 @@ public class DatasetUtils {
      * @param jpClass the declaring class {@link TypeDeclaration}.
      * @param targetName the name of the method {@link CallableDeclaration}.
      * @param targetParamList the parameters of the desired method.
+     *                        Parameter type names follow JDoctor format.
      * @return the corresponding method (if it exists). Returns null if no
      * such method exists.
      */
@@ -957,19 +973,18 @@ public class DatasetUtils {
             String targetName,
             List<String> targetParamList
     ) {
-        // iterate through each body declaration in the class.
+        // iterate through each member in the class.
         for (BodyDeclaration<?> member : jpClass.getMembers()) {
             // check if member is a function (method or constructor).
             if (member.isCallableDeclaration()) {
                 CallableDeclaration<?> currentCallable = member.asCallableDeclaration();
-                // check if the function name is equal to the target name.
+                // check if the function names are equal.
                 if (currentCallable.getNameAsString().equals(targetName)) {
-                    // get parameters of function.
+                    // check if parameters are equal.
                     List<String> currentParamList = currentCallable.getParameters()
                             .stream()
                             .map(p -> JDoctorUtils.getJPTypeName(jpClass, currentCallable, p))
                             .toList();
-                    // if parameters are equal, then return the current function.
                     if (jpParamListEqualsJDoctorParamList(
                             targetParamList,
                             currentParamList,
@@ -986,7 +1001,7 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets the type declaration {@link TypeDeclaration} of a class from the
+     * Gets the type declaration {@link TypeDeclaration} of a class from a
      * given compilation unit {@link CompilationUnit}.
      *
      * @param cu the compilation unit of a file.
