@@ -37,6 +37,10 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * This class provides core utilities for the generation of the oracles
+ * dataset and conversion of JavaParser objects into interpretable inputs.
+ */
 public class DatasetUtils {
     /**
      * The method removes all the duplicates from a list.

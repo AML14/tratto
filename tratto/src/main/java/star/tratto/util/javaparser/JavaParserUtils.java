@@ -63,6 +63,17 @@ public class JavaParserUtils {
         return javaParser;
     }
 
+    /**
+     * Gets the type of a given expression. For example:
+     *  "jpClass.getMethods().get(0)" => MethodDeclaration
+     *
+     * @param jpClass the declaring class {@link TypeDeclaration}.
+     * @param jpCallable a method {@link CallableDeclaration}.
+     * @param methodArgs the arguments of the method.
+     * @param expression a java expression (e.g. "jpClass.getMethods()").
+     * @return the type of the expression {@link ResolvedType}.
+     * @throws ResolvedTypeNotFound if the type is not found.
+     */
     public static ResolvedType getResolvedTypeOfExpression(
             TypeDeclaration<?> jpClass,
             CallableDeclaration<?> jpCallable,
@@ -443,7 +454,7 @@ public class JavaParserUtils {
     }
 
     /**
-     * @return a generic "java.lang.Object" type
+     * @return a generic "java.lang.Object" type {@link ResolvedType}.
      */
     public static ResolvedType getGenericType() {
         return javaParser.parse(SYNTHETIC_CLASS_SOURCE).getResult().get()
