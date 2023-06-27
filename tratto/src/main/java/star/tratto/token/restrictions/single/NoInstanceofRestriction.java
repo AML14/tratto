@@ -9,7 +9,7 @@ import star.tratto.util.JavaTypes;
 import java.util.List;
 
 import static star.tratto.oraclegrammar.custom.Splitter.split;
-import static star.tratto.util.JavaParserUtils.getReturnTypeOfExpression;
+import static star.tratto.util.javaparser.JavaParserUtils.getReturnTypeOfExpression;
 import static star.tratto.util.StringUtils.compactExpression;
 
 /**

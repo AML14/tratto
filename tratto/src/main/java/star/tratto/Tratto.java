@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static star.tratto.data.OracleDP2TokenDPs.oracleSoFarAndTokenToTokenDatapoints;
-import static star.tratto.util.JavaParserUtils.getClassOrInterface;
+import static star.tratto.util.javaparser.JavaParserUtils.getClassOrInterface;
 import static star.tratto.util.StringUtils.compactExpression;
 
 public class Tratto {
