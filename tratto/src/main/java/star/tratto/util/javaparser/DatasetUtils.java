@@ -697,46 +697,43 @@ public class DatasetUtils {
     /**
      * Gets all non-private, non-static attributes visible to a given type.
      *
-     * @param jpType a resolved JavaParser type {@link ResolvedType}.
+     * @param jpResolvedType a resolved JavaParser type {@link ResolvedType}.
      * @return a list of non-private, non-static attributes.
      */
     public static List<Quartet<String, String, String, String>> getFieldsFromType(
-            ResolvedType jpType
+            ResolvedType jpResolvedType
     ) {
         List<Quartet<String, String, String, String>> fieldList = new ArrayList<>();
-        // check that type is not primitive.
-        if (jpType.isReferenceType()) {
-            Optional<ResolvedReferenceTypeDeclaration> jpTypeDeclaration = jpType.asReferenceType().getTypeDeclaration();
-            // get reference declaration of type.
-            if (jpTypeDeclaration.isPresent()) {
-                Optional<Node> jpNode = jpTypeDeclaration.get().toAst();
-                // check if node is found and is a class.
-                if (jpNode.isPresent() && jpNode.get() instanceof TypeDeclaration<?>) {
-                    List<ResolvedFieldDeclaration> jpFields = ((TypeDeclaration<?>) jpNode.get()).getFields()
-                            .stream()
-                            .flatMap(fieldDeclaration -> fieldDeclaration.getVariables()
-                                    .stream()
-                                    .map(variableDeclarator -> variableDeclarator.resolve().asField()))
-                            .filter(JavaParserUtils::isNonPrivateNonStaticAttribute)
-                            .toList();
-                    return convertFieldDeclarationToQuartet(jpFields);
-                }
-                return convertFieldDeclarationToQuartet(jpTypeDeclaration.get().getAllFields());
-            } else if (!(
-                    jpType.isPrimitive() || jpType.isVoid() || jpType.isTypeVariable() || jpType.isArray()
-            )) {
-                System.err.printf(
-                        "Return type %s different from ReferenceType, PrimitiveType, " +
-                        "ArrayType, TypeVariable, and VoidType not yet supported%n", jpType
-                );
-            }
-        } else if (jpType.isArray()) {
+        if (jpResolvedType.isArray()) {
+            // add array field (length).
             fieldList.add(new Quartet<>(
                     "length",
                     "",
-                    jpType.describe(),
+                    jpResolvedType.describe(),
                     "public final int length;"
             ));
+        } else if (jpResolvedType.isReferenceType()) {
+            // add all fields accessible to the class.
+            Optional<ResolvedReferenceTypeDeclaration> jpTypeDeclaration = jpResolvedType.asReferenceType().getTypeDeclaration();
+            if (jpTypeDeclaration.isPresent()) {
+                List<ResolvedFieldDeclaration> jpResolvedFields = jpTypeDeclaration.get().getAllFields()
+                        .stream()
+                        .filter(JavaParserUtils::isNonPrivateNonStaticAttribute)
+                        .toList();
+                fieldList.addAll(convertFieldDeclarationToQuartet(jpResolvedFields));
+            } else {
+                // unable to recover type declaration.
+                System.err.printf(
+                        "Unable to analyze the resolved type %s: " +
+                        "resolved type declaration not found.", jpResolvedType
+                );
+            }
+        } else if (!(jpResolvedType.isPrimitive() || jpResolvedType.isVoid() || jpResolvedType.isTypeVariable())) {
+            // unknown type.
+            System.err.printf(
+                    "Return type %s different from ReferenceType, PrimitiveType, " +
+                    "ArrayType, TypeVariable, and VoidType not yet supported%n", jpResolvedType
+            );
         }
         return fieldList;
     }
@@ -802,15 +799,11 @@ public class DatasetUtils {
         List<Quartet<String, String, String, String>> attributeList = new ArrayList<>(convertFieldDeclarationToQuartet(jpReceiverFields));
         // add all fields of parameters.
         for (Parameter jpParam : jpCallable.getParameters()) {
-            attributeList.addAll(getFieldsFromType(
-                    jpParam.getType().resolve()
-            ));
+            attributeList.addAll(getFieldsFromType(jpParam.getType().resolve()));
         }
         // add all fields of return type.
         if (jpCallable instanceof MethodDeclaration) {
-            attributeList.addAll(getFieldsFromType(
-                    ((MethodDeclaration) jpCallable).getType().resolve()
-            ));
+            attributeList.addAll(getFieldsFromType(((MethodDeclaration) jpCallable).getType().resolve()));
         }
         return removeDuplicates(attributeList);
     }
