@@ -10,6 +10,7 @@ import star.tratto.identifiers.path.Path;
 import star.tratto.identifiers.file.*;
 import star.tratto.util.FileUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class OracleDatapointBuilder {
@@ -21,8 +22,14 @@ public class OracleDatapointBuilder {
 
     public void reset() {
         this.datapoint = new OracleDatapoint();
+        // set default oracle datapoint values.
         this.setDefaultGrammarTokens();
         this.setDefaultGeneralValues();
+        // set non-null values for fields which may throw errors when retrieving information.
+        this.setTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(new ArrayList<>());
+        this.setTokensMethodVariablesNonPrivateNonStaticAttributes(new ArrayList<>());
+        this.setTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(new ArrayList<>());
+        this.setTokensOracleVariablesNonPrivateNonStaticAttributes(new ArrayList<>());
     }
 
     private void setDefaultGrammarTokens() {
