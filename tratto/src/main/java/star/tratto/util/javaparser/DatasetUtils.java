@@ -887,31 +887,18 @@ public class DatasetUtils {
         for (LinkedList<String> oracleSubexpression : oracleSubexpressions) {
             String subexpression = String.join("", oracleSubexpression).replaceAll("receiverObjectID", "this");
             try {
-                ResolvedType jpType = JavaParserUtils.getResolvedTypeOfExpression(
+                ResolvedType resolvedType = JavaParserUtils.getResolvedTypeOfExpression(
                         jpClass,
                         jpCallable,
                         methodArgs,
                         subexpression
                 );
-                methodList.addAll(getMethodsFromType(jpType));
+                methodList.addAll(getMethodsFromType(resolvedType));
             } catch (UnsolvedSymbolException | ResolvedTypeNotFound e) {
-                ResolvedType fieldType = JavaParserUtils.getGenericType();
-                // Get all methods from Object
-                List<MethodUsage> jpReturnTypeMethods = fieldType.asReferenceType().getAllMethods()
-                        .stream()
-                        .map(MethodUsage::new)
-                        .toList();
-                methodList.addAll(convertMethodUsageToQuartet(jpReturnTypeMethods));
+                ResolvedType genericType = JavaParserUtils.getGenericType();
+                methodList.addAll(getMethodsFromType(genericType));
             }
         }
-        // add Object methods.
-        methodList.addAll(convertMethodUsageToQuartet(
-                JavaParserUtils.getGenericType().asReferenceType().getAllMethods()
-                        .stream()
-                        .map(MethodUsage::new)
-                        .filter(JavaParserUtils::isNonPrivateNonStaticNonVoidMethod)
-                        .toList()
-        ));
         return removeDuplicates(methodList);
     }
 
@@ -942,16 +929,16 @@ public class DatasetUtils {
         for (LinkedList<String> oracleSubexpression : oracleSubexpressions) {
             String subexpression = String.join("", oracleSubexpression).replaceAll("receiverObjectID", "this");
             try {
-                ResolvedType jpType = JavaParserUtils.getResolvedTypeOfExpression(
+                ResolvedType resolvedType = JavaParserUtils.getResolvedTypeOfExpression(
                         jpClass,
                         jpCallable,
                         methodArgs,
                         subexpression
                 );
-                attributeList.addAll(getFieldsFromType(jpType));
+                attributeList.addAll(getFieldsFromType(resolvedType));
             } catch (UnsolvedSymbolException | ResolvedTypeNotFound e) {
-                ResolvedType jpType = JavaParserUtils.getGenericType();
-                attributeList.addAll(getFieldsFromType(jpType));
+                ResolvedType genericType = JavaParserUtils.getGenericType();
+                attributeList.addAll(getFieldsFromType(genericType));
             }
         }
         return removeDuplicates(attributeList);
