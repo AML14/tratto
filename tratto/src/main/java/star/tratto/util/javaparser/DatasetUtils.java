@@ -206,15 +206,15 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets the name of a given parameter type. Handles generics, primitives,
-     * arrays, and base reference types.
+     * Gets the class name of a given parameter type. Handles generics,
+     * primitives, arrays, and reference types.
      *
      * @param jpClass the class declaring the method.
      * @param jpCallable the method containing the type.
      * @param jpParameter the given type.
      * @return the type name of the given parameter.
      */
-    private static Optional<String> getParameterClassName(
+    private static Optional<String> getParameterTypeName(
             TypeDeclaration<?> jpClass,
             CallableDeclaration<?> jpCallable,
             Parameter jpParameter
@@ -237,9 +237,10 @@ public class DatasetUtils {
                     className = JavaParserUtils.getTypeWithoutPackages(jpResolvedParameterType.asReferenceType().getQualifiedName());
                 }
             } else if (jpResolvedParameterType.isArray()) {
-                // special case, return early if type is an array.
+                // special case: return early if type is an array to avoid redundant brackets.
                 return Optional.of(JavaParserUtils.getTypeWithoutPackages(jpResolvedParameterType.asArrayType().describe()));
             } else {
+                // unknown type.
                 assert false;
                 String errMsg = String.format("Unexpected type when evaluating %s parameter type.", jpParameterType);
                 System.err.println(errMsg);
@@ -281,7 +282,7 @@ public class DatasetUtils {
         // iterate through each parameter in the method arguments.
         for (Parameter jpParameter : jpParameters) {
             Type jpParameterType = jpParameter.getType();
-            Optional<String> jpParameterClassName = getParameterClassName(jpClass, jpCallable, jpParameter);
+            Optional<String> jpParameterClassName = getParameterTypeName(jpClass, jpCallable, jpParameter);
             if (jpParameterClassName.isPresent()) {
                 try {
                     if (
@@ -344,9 +345,8 @@ public class DatasetUtils {
         List<Quartet<String, String, String, String>> methodList = new ArrayList<>();
         // get package name.
         String packageName = JavaParserUtils.getPackageDeclarationFromCompilationUnit(cu).getNameAsString();
-        // get all classes in compilation unit.
+        // iterate over each class in the compilation unit.
         List<TypeDeclaration<?>> jpClasses = cu.getTypes();
-        // iterate over all classes.
         for (TypeDeclaration<?> jpClass : jpClasses) {
             String className = jpClass.getNameAsString();
             List<MethodDeclaration> jpMethods = jpClass.findAll(MethodDeclaration.class);
@@ -379,7 +379,7 @@ public class DatasetUtils {
         for (TypeDeclaration<?> jpClass : jpClasses) {
             String className = jpClass.getNameAsString();
             List<FieldDeclaration> jpFields = jpClass.findAll(FieldDeclaration.class);
-            // iterate over all field declarations in a clas.
+            // add all non-private, static attributes.
             for (FieldDeclaration jpField : jpFields) {
                 // check if field declaration is non-private and static.
                 if (!jpField.isPrivate() && jpField.isStatic()) {
@@ -635,7 +635,7 @@ public class DatasetUtils {
             List<MethodUsage> genericMethods = JavaParserUtils.getGenericType().asReferenceType().getAllMethods()
                     .stream()
                     .map(MethodUsage::new)
-                    .filter(JavaParserUtils::isNonStaticNonVoidNonPrivateMethod)
+                    .filter(JavaParserUtils::isNonPrivateNonStaticNonVoidMethod)
                     .toList();
             methodList.addAll(convertMethodUsageToQuartet(genericMethods));
         } else if (jpType.isReferenceType()) {
@@ -644,7 +644,7 @@ public class DatasetUtils {
             if (jpTypeDeclaration.isPresent()) {
                 List<MethodUsage> allMethods = jpTypeDeclaration.get().getAllMethods()
                         .stream()
-                        .filter(JavaParserUtils::isNonStaticNonVoidNonPrivateMethod)
+                        .filter(JavaParserUtils::isNonPrivateNonStaticNonVoidMethod)
                         .toList();
                 methodList.addAll(convertMethodUsageToQuartet(allMethods));
             }
@@ -748,7 +748,7 @@ public class DatasetUtils {
         // add all methods of the base class (receiverObjectID -> this).
         List<MethodUsage> allReceiverMethods = JavaParserUtils.getAllAvailableMethodUsages(jpClass)
                 .stream()
-                .filter(JavaParserUtils::isNonStaticNonVoidNonPrivateMethod)
+                .filter(JavaParserUtils::isNonPrivateNonStaticNonVoidMethod)
                 .toList();
         List<Quartet<String, String, String, String>> methodList = new ArrayList<>(convertMethodUsageToQuartet(allReceiverMethods));
         // add all methods of parameters.
@@ -764,7 +764,7 @@ public class DatasetUtils {
                 JavaParserUtils.getGenericType().asReferenceType().getAllMethods()
                         .stream()
                         .map(MethodUsage::new)
-                        .filter(JavaParserUtils::isNonStaticNonVoidNonPrivateMethod)
+                        .filter(JavaParserUtils::isNonPrivateNonStaticNonVoidMethod)
                         .toList()
         ));
         return removeDuplicates(methodList);
@@ -848,7 +848,7 @@ public class DatasetUtils {
                 JavaParserUtils.getGenericType().asReferenceType().getAllMethods()
                         .stream()
                         .map(MethodUsage::new)
-                        .filter(JavaParserUtils::isNonStaticNonVoidNonPrivateMethod)
+                        .filter(JavaParserUtils::isNonPrivateNonStaticNonVoidMethod)
                         .toList()
         ));
         return removeDuplicates(methodList);
