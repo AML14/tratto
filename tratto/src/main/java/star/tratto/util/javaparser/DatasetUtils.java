@@ -649,16 +649,16 @@ public class DatasetUtils {
      * visible to a given type. Handles three cases: base type (e.g. class),
      * generic type, and array type.
      *
-     * @param jpType the given type {@link ResolvedType}.
+     * @param jpResolvedType the given type {@link ResolvedType}.
      * @return a list of information about each method. Each entry has the
      * form:
      *  [methodName, packageName, className, methodSignature]
      */
     public static List<Quartet<String, String, String, String>> getMethodsFromType(
-            ResolvedType jpType
+            ResolvedType jpResolvedType
     ) {
         List<Quartet<String, String, String, String>> methodList = new ArrayList<>();
-        if (jpType.isArray()) {
+        if (jpResolvedType.isArray()) {
             // array type (see dataset/repose/arrayMethods.json).
             String arraysMethodJsonPath = Paths.get(
                     Path.REPOS.getValue(),
@@ -673,9 +673,9 @@ public class DatasetUtils {
                     .toList();
             methodList.addAll(arrayMethods
                     .stream()
-                    .map(m -> new Quartet<>(m.get(0), "", jpType.describe(), m.get(1)))
+                    .map(m -> new Quartet<>(m.get(0), "", jpResolvedType.describe(), m.get(1)))
                     .toList());
-        } else if (JavaParserUtils.isGenericType(jpType)) {
+        } else if (JavaParserUtils.isGenericType(jpResolvedType)) {
             // generic type.
             List<MethodUsage> genericMethods = JavaParserUtils.getGenericType().asReferenceType().getAllMethods()
                     .stream()
@@ -683,9 +683,9 @@ public class DatasetUtils {
                     .filter(JavaParserUtils::isNonPrivateNonStaticNonVoidMethod)
                     .toList();
             methodList.addAll(convertMethodUsageToQuartet(genericMethods));
-        } else if (jpType.isReferenceType()) {
+        } else if (jpResolvedType.isReferenceType()) {
             // base type.
-            List<MethodUsage> allMethods = jpType.asReferenceType().getAllMethods()
+            List<MethodUsage> allMethods = jpResolvedType.asReferenceType().getAllMethods()
                     .stream()
                     .map(MethodUsage::new)
                     .filter(JavaParserUtils::isNonPrivateNonStaticNonVoidMethod)
@@ -693,6 +693,24 @@ public class DatasetUtils {
             methodList.addAll(convertMethodUsageToQuartet(allMethods));
         }
         return methodList;
+    }
+
+    /**
+     * Wrapper method which first attempts to resolve a given type. Returns
+     * an empty list if an error occurs. See public "getMethodsFromType()"
+     * method above for further detail.
+     */
+    private static List<Quartet<String, String, String, String>> getMethodsFromType(
+            Type jpType
+    ) {
+        try {
+            ResolvedType jpResolvedType = jpType.resolve();
+            return getMethodsFromType(jpResolvedType);
+        } catch (UnsolvedSymbolException e) {
+            String errMsg = String.format("Unable to generate method quartet list from type %s", jpType);
+            System.err.println(errMsg);
+            return new ArrayList<>();
+        }
     }
 
     /**
@@ -779,6 +797,24 @@ public class DatasetUtils {
     }
 
     /**
+     * Wrapper method which first attempts to resolve a given type. Returns
+     * an empty list if an error occurs. See public "getFieldsFromType()"
+     * method above for further detail.
+     */
+    private static List<Quartet<String, String, String, String>> getFieldsFromType(
+            Type jpType
+    ) {
+        try {
+            ResolvedType jpResolvedType = jpType.resolve();
+            return getFieldsFromType(jpResolvedType);
+        } catch (UnsolvedSymbolException e) {
+            String errMsg = String.format("Unable to generate attribute quartet list from type %s", jpType);
+            System.err.println(errMsg);
+            return new ArrayList<>();
+        }
+    }
+
+    /**
      * Collects information for all non-private, non-static, non-void methods
      * for a given method variable. Includes methods visible to:
      *  (1) the base class (this).
@@ -805,11 +841,11 @@ public class DatasetUtils {
         List<Quartet<String, String, String, String>> methodList = new ArrayList<>(convertMethodUsageToQuartet(allReceiverMethods));
         // add all methods of parameters.
         for (Parameter jpParam : jpCallable.getParameters()) {
-            methodList.addAll(getMethodsFromType(jpParam.getType().resolve()));
+            methodList.addAll(getMethodsFromType(jpParam.getType()));
         }
         // add all methods of return type.
         if (jpCallable instanceof MethodDeclaration) {
-            methodList.addAll(getMethodsFromType(((MethodDeclaration) jpCallable).getType().resolve()));
+            methodList.addAll(getMethodsFromType(((MethodDeclaration) jpCallable).getType()));
         }
         // add Object methods.
         methodList.addAll(convertMethodUsageToQuartet(
@@ -842,18 +878,18 @@ public class DatasetUtils {
             CallableDeclaration<?> jpCallable
     ) throws JPClassNotFoundException {
         // add all fields of the base class (receiverObjectID -> this).
-        List<ResolvedFieldDeclaration> jpReceiverFields = JavaParserUtils.getAllAvailableResolvedFields(jpClass)
+        List<ResolvedFieldDeclaration> allReceiverFields = JavaParserUtils.getAllAvailableResolvedFields(jpClass)
                 .stream()
                 .filter(JavaParserUtils::isNonPrivateNonStaticAttribute)
                 .toList();
-        List<Quartet<String, String, String, String>> attributeList = new ArrayList<>(convertFieldDeclarationToQuartet(jpReceiverFields));
+        List<Quartet<String, String, String, String>> attributeList = new ArrayList<>(convertFieldDeclarationToQuartet(allReceiverFields));
         // add all fields of parameters.
         for (Parameter jpParam : jpCallable.getParameters()) {
-            attributeList.addAll(getFieldsFromType(jpParam.getType().resolve()));
+            attributeList.addAll(getFieldsFromType(jpParam.getType()));
         }
         // add all fields of return type.
         if (jpCallable instanceof MethodDeclaration) {
-            attributeList.addAll(getFieldsFromType(((MethodDeclaration) jpCallable).getType().resolve()));
+            attributeList.addAll(getFieldsFromType(((MethodDeclaration) jpCallable).getType()));
         }
         return removeDuplicates(attributeList);
     }

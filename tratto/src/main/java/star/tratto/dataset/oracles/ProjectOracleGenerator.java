@@ -74,7 +74,6 @@ public class ProjectOracleGenerator {
      * @return a list of data points {@link OracleDatapoint}.
      */
     public List<OracleDatapoint> generate() {
-        System.out.printf("Identified %s total JavaDoc tags.%n", this.projectTagsTokens.size());
         List<OracleDatapoint> oracleDPs = new ArrayList<>();
         // Generate an OracleDatapoint for each JDoctor condition.
         for (JDoctorCondition jDoctorCondition : this.jDoctorConditions) {
@@ -83,30 +82,35 @@ public class ProjectOracleGenerator {
             List<ThrowsCondition> throwsConditions = jDoctorCondition.getThrowsConditions();
             for (ThrowsCondition condition : throwsConditions) {
                 OracleDatapoint nextDatapoint = getNextDatapoint(operation, condition);
-                oracleDPs.add(nextDatapoint);
-                removeProjectClassesTag(operation, OracleType.EXCEPT_POST, nextDatapoint.getJavadocTag());
+                if (nextDatapoint != null) oracleDPs.add(nextDatapoint);
+                removeProjectClassesTag(operation, OracleType.EXCEPT_POST, condition.getDescription());
             }
             // Add all PreCondition oracles to dataset.
             List<PreCondition> preConditions = jDoctorCondition.getPreCondition();
             for (PreCondition condition : preConditions) {
                 OracleDatapoint nextDatapoint = getNextDatapoint(operation, condition);
-                oracleDPs.add(nextDatapoint);
-                removeProjectClassesTag(operation, OracleType.PRE, nextDatapoint.getJavadocTag());
+                if (nextDatapoint != null) oracleDPs.add(nextDatapoint);
+                removeProjectClassesTag(operation, OracleType.PRE, condition.getDescription());
             }
             // Add all PostCondition oracles to dataset.
             List<PostCondition> postConditions = jDoctorCondition.getPostConditions();
             if (postConditions.size() > 0) {
                 OracleDatapoint nextDatapoint = getNextDatapoint(operation, postConditions);
-                oracleDPs.add(nextDatapoint);
-                removeProjectClassesTag(operation, OracleType.NORMAL_POST, nextDatapoint.getJavadocTag());
+                if (nextDatapoint != null) oracleDPs.add(nextDatapoint);
+                removeProjectClassesTag(operation, OracleType.NORMAL_POST, postConditions.get(0).getDescription());
             }
         }
-        System.out.printf("Processed %s non-empty oracles.%n", this.idCounter - this.checkpoint);
+        int numNonEmptyOracles = oracleDPs.size();
         // Generate an OracleDatapoint for each remaining JavaDoc tag.
         for (Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String> jpTag : this.projectTagsTokens) {
-            oracleDPs.add(getEmptyDatapoint(jpTag));
+            OracleDatapoint nextDatapoint = getEmptyDatapoint(jpTag);
+            if (nextDatapoint != null) oracleDPs.add(nextDatapoint);
         }
-        System.out.printf("Processed %s empty oracles.%n", this.projectTagsTokens.size());
+        int numEmptyOracles = oracleDPs.size() - numNonEmptyOracles;
+        // log information.
+        System.out.printf("Identified %s total JavaDoc tags.%n", this.projectTagsTokens.size());
+        System.out.printf("Processed %s non-empty oracles.%n", numNonEmptyOracles);
+        System.out.printf("Processed %s empty oracles.%n", numEmptyOracles);
         System.out.printf("Processed %s total conditions.%n", this.idCounter - this.checkpoint);
         this.checkpoint = this.idCounter;
         return oracleDPs;
@@ -204,7 +208,8 @@ public class ProjectOracleGenerator {
      * @param jpTag a quintet of tag information, including the declaring
      *              class, method, type of tag, tag name, and tag content.
      * @return a fully populated OracleDatapoint. The "oracle" field is set
-     * to a semicolon (";").
+     * to a semicolon (";"). Returns null if an error occurs during
+     * information collection.
      */
     private OracleDatapoint getEmptyDatapoint(
             Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String> jpTag
@@ -254,6 +259,7 @@ public class ProjectOracleGenerator {
             );
         } catch (JPClassNotFoundException | UnsolvedSymbolException e) {
             e.printStackTrace();
+            return null;
         }
         // return new datapoint.
         builder.setId(this.idCounter);
@@ -268,7 +274,8 @@ public class ProjectOracleGenerator {
      * @param operation a JDoctor operation.
      * @param condition a JDoctor condition (e.g. ThrowsCondition,
      *                  PreCondition, or a list of PostCondition's).
-     * @return a fully populated OracleDatapoint.
+     * @return a fully populated OracleDatapoint. Returns null if error
+     * occurs during information collection.
      */
     private OracleDatapoint getNextDatapoint(Operation operation, Object condition) {
         OracleDatapointBuilder builder = new OracleDatapointBuilder();
@@ -282,7 +289,7 @@ public class ProjectOracleGenerator {
         // get CompilationUnit of operation class.
         Optional<CompilationUnit> cuOptional = DatasetUtils.getOperationCompilationUnit(operation, sourcePath);
         if (cuOptional.isEmpty()) {
-          return builder.build();
+          return null;
         }
         CompilationUnit cu = cuOptional.get();
         // get TypeDeclaration of class in CompilationUnit.
@@ -337,6 +344,7 @@ public class ProjectOracleGenerator {
             );
         } catch (JPClassNotFoundException | UnsolvedSymbolException e) {
             e.printStackTrace();
+            return null;
         }
         // return new datapoint.
         builder.setId(this.idCounter);
