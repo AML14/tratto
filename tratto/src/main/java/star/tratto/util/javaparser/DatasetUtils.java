@@ -1,7 +1,6 @@
 package star.tratto.util.javaparser;
 
 import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.*;
 import com.github.javaparser.ast.comments.JavadocComment;
 import com.github.javaparser.ast.stmt.BlockStmt;
@@ -24,14 +23,11 @@ import star.tratto.exceptions.PackageDeclarationNotFoundException;
 import star.tratto.exceptions.ResolvedTypeNotFound;
 import star.tratto.identifiers.JPCallableType;
 import star.tratto.identifiers.Javadoc;
-import star.tratto.identifiers.JavadocValueType;
 import star.tratto.identifiers.file.*;
 import star.tratto.identifiers.path.Path;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.oraclegrammar.custom.Splitter;
 import star.tratto.util.FileUtils;
-
-import static star.tratto.util.javaparser.JavaParserUtils.*;
 
 import java.io.File;
 import java.nio.file.Paths;
@@ -44,7 +40,7 @@ public class DatasetUtils {
      * The method removes all the duplicates from a list.
      *
      * @param list The list from which remove the duplicates.
-     * @return A new list that does not contain the duplicates of the list passed to the function.
+     * @return A new list that does not contain any duplicates elements.
      * @param <T> The generic type of the list.
      */
     public static <T> List<T> removeDuplicates(List<T> list) {
@@ -53,7 +49,7 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets a list of each class name and corresponding package name of all
+     * Gets a list of each class name, and corresponding package, name for all
      * classes in a compilation unit.
      *
      * @param cu the compilation unit of a java file.
@@ -65,9 +61,8 @@ public class DatasetUtils {
             CompilationUnit cu
     ) throws PackageDeclarationNotFoundException {
         List<Pair<String, String>> classList = new ArrayList<>();
-        // get package name of given file.
         String packageName = JavaParserUtils.getPackageDeclarationFromCompilationUnit(cu).getNameAsString();
-        // get all classes in compilation unit.
+        // iterate through each class in the compilation unit.
         List<TypeDeclaration<?>> jpClasses = cu.getTypes();
         for (TypeDeclaration<?> jpClass : jpClasses) {
             classList.add(new Pair<>(jpClass.getNameAsString(), packageName));
@@ -77,24 +72,29 @@ public class DatasetUtils {
 
     /**
      * Gets the JavaDoc comment of a body declaration using regex patterns.
-     * Use ONLY IF JavaDoc comment is not recoverable from jpNode.
+     * Use ONLY IF JavaDoc comment is not recoverable using JavaParser API.
      *
-     * @param jpNode a member in a java class {@link BodyDeclaration}.
+     * @param jpBody a member in a java class {@link BodyDeclaration}.
      * @return the matched JavaDoc comment (empty string if not found).
      */
-    private static String getJavadocByPattern(BodyDeclaration<?> jpNode) {
-        String input = jpNode.toString();
+    private static String getJavadocByPattern(BodyDeclaration<?> jpBody) {
+        String input = jpBody.toString();
         Pattern pattern = Pattern.compile("/\\*\\*(.*?)\\*/", Pattern.DOTALL);
         Matcher matcher = pattern.matcher(input);
         if (matcher.find()) {
             String content = matcher.group(1);
-            return Javadoc.METHOD_PREFIX.getValue() + content + Javadoc.METHOD_SUFFIX.getValue();
+            // change prefix/suffix depending on the type of the member.
+            if (jpBody instanceof TypeDeclaration<?>) {
+                return Javadoc.CLASS_PREFIX.getValue() + content + Javadoc.CLASS_SUFFIX.getValue();
+            } else {
+                return Javadoc.METHOD_PREFIX.getValue() + content + Javadoc.METHOD_SUFFIX.getValue();
+            }
         }
         return "";
     }
 
     /**
-     * Gets the Javadoc comment of the class {@link TypeDeclaration}.
+     * Gets the Javadoc comment of a class {@link TypeDeclaration}.
      *
      * @param jpClass a JavaParser class {@link TypeDeclaration}.
      * @return a string representation of the Javadoc comment.
@@ -103,14 +103,12 @@ public class DatasetUtils {
             TypeDeclaration<?> jpClass
     ) {
         Optional<JavadocComment> optionalJavadocComment = jpClass.getJavadocComment();
-        if (optionalJavadocComment.isEmpty()) {
-            return getJavadocByPattern(jpClass);
-        }
+        if (optionalJavadocComment.isEmpty()) return getJavadocByPattern(jpClass);
         return Javadoc.CLASS_PREFIX.getValue() + optionalJavadocComment.get().getContent() + Javadoc.CLASS_SUFFIX.getValue();
     }
 
     /**
-     * Gets the Javadoc comment of the function {@link CallableDeclaration}.
+     * Gets the Javadoc comment of a function {@link CallableDeclaration}.
      *
      * @param jpCallable a JavaParser function {@link CallableDeclaration}.
      * @return a string representation the Javadoc comment.
@@ -119,9 +117,7 @@ public class DatasetUtils {
             CallableDeclaration<?> jpCallable
     ) {
         Optional<JavadocComment> optionalJavadocComment = jpCallable.getJavadocComment();
-        if (optionalJavadocComment.isEmpty()) {
-            return getJavadocByPattern(jpCallable);
-        }
+        if (optionalJavadocComment.isEmpty()) return getJavadocByPattern(jpCallable);
         return Javadoc.METHOD_PREFIX.getValue() + optionalJavadocComment.get().getContent() + Javadoc.METHOD_SUFFIX.getValue();
     }
 
@@ -132,8 +128,7 @@ public class DatasetUtils {
      * @param javadocComment The string representation of a JavaDoc comment.
      * @return A list of pairs of strings representing all numeric values
      * in the JavaDoc comment. The first element is the numeric value, and the
-     * second element is the type of numeric value {@link JavadocValueType}
-     * (integer or double).
+     * second element is the type of numeric value ("int" or "double").
      */
     private static List<Pair<String, String>> findAllNumericValuesInJavadoc(
             String javadocComment
@@ -149,19 +144,17 @@ public class DatasetUtils {
                 // double (decimal).
                 try {
                     double realValue = Double.parseDouble(match);
-                    numericValues.add(new Pair<>(Double.toString(realValue), JavadocValueType.DOUBLE.getValue()));
+                    numericValues.add(new Pair<>(Double.toString(realValue), "double"));
                 } catch (Exception e) {
-                    String errMsg = String.format("Number exceed maximum float value: %s", match);
-                    System.err.println(errMsg);
+                    System.err.printf("Number exceed maximum float value: %s%n", match);
                 }
             } else {
                 // integer (no decimal).
                 try {
                     long longIntValue = Long.parseLong(match);
-                    numericValues.add(new Pair<>(Long.toString(longIntValue), JavadocValueType.INTEGER.getValue()));
+                    numericValues.add(new Pair<>(Long.toString(longIntValue), "int"));
                 } catch (NumberFormatException e) {
-                    String errMsg = String.format("Number exceed maximum integer value: %s", match);
-                    System.err.println(errMsg);
+                    System.err.printf("Number exceed maximum integer value: %s", match);
                 }
             }
         }
@@ -170,12 +163,12 @@ public class DatasetUtils {
 
     /**
      * Gets all string values in a JavaDoc comment represented as a pair of
-     * strings. This may seem redundant, but is done to match the
-     * representation of numeric values.
+     * strings. The second value may seem redundant, but is added for
+     * consistency with the numeric JavaDoc values.
      *
      * @param jpJavadoc The string representation of a JavaDoc comment.
      * @return A list of pairs of strings representing the string values in
-     * the JavaDoc comment. The first element is the numeric value, and the
+     * the JavaDoc comment. The first element is the string value, and the
      * second element is the type of value (always "String").
      */
     private static List<Pair<String, String>> findAllStringValuesInJavadoc(
@@ -194,14 +187,14 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets all numerical or string values from a given JavaDoc comment via
+     * Gets all numerical and string values from a given JavaDoc comment via
      * pattern matching.
      *
      * @param jpJavadoc the JavaDoc comment.
      * @return a list of values describing each numerical and string value.
      * Each entry has the form:
      *  [value, valueType]
-     * For example: [["name", String], [64, int]]
+     * For example: [["name", "String"], ["64", "int"]]
      */
     public static List<Pair<String, String>> getJavadocValues(
             String jpJavadoc
