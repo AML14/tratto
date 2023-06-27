@@ -1,10 +1,12 @@
 package star.tratto.util.javaparser;
 
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.body.*;
 import com.github.javaparser.ast.comments.JavadocComment;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.type.Type;
+import com.github.javaparser.javadoc.Javadoc;
 import com.github.javaparser.javadoc.JavadocBlockTag;
 import com.github.javaparser.resolution.MethodUsage;
 import com.github.javaparser.resolution.UnsolvedSymbolException;
@@ -22,7 +24,7 @@ import star.tratto.exceptions.JPClassNotFoundException;
 import star.tratto.exceptions.PackageDeclarationNotFoundException;
 import star.tratto.exceptions.ResolvedTypeNotFound;
 import star.tratto.identifiers.JPCallableType;
-import star.tratto.identifiers.Javadoc;
+import star.tratto.identifiers.JavadocFormat;
 import star.tratto.identifiers.file.*;
 import star.tratto.identifiers.path.Path;
 import star.tratto.oraclegrammar.custom.Parser;
@@ -85,9 +87,9 @@ public class DatasetUtils {
             String content = matcher.group(1);
             // change prefix/suffix depending on the type of the member.
             if (jpBody instanceof TypeDeclaration<?>) {
-                return Javadoc.CLASS_PREFIX.getValue() + content + Javadoc.CLASS_SUFFIX.getValue();
+                return JavadocFormat.CLASS_PREFIX.getValue() + content + JavadocFormat.CLASS_SUFFIX.getValue();
             } else {
-                return Javadoc.METHOD_PREFIX.getValue() + content + Javadoc.METHOD_SUFFIX.getValue();
+                return JavadocFormat.METHOD_PREFIX.getValue() + content + JavadocFormat.METHOD_SUFFIX.getValue();
             }
         }
         return "";
@@ -104,7 +106,7 @@ public class DatasetUtils {
     ) {
         Optional<JavadocComment> optionalJavadocComment = jpClass.getJavadocComment();
         if (optionalJavadocComment.isEmpty()) return getJavadocByPattern(jpClass);
-        return Javadoc.CLASS_PREFIX.getValue() + optionalJavadocComment.get().getContent() + Javadoc.CLASS_SUFFIX.getValue();
+        return JavadocFormat.CLASS_PREFIX.getValue() + optionalJavadocComment.get().getContent() + JavadocFormat.CLASS_SUFFIX.getValue();
     }
 
     /**
@@ -118,7 +120,7 @@ public class DatasetUtils {
     ) {
         Optional<JavadocComment> optionalJavadocComment = jpCallable.getJavadocComment();
         if (optionalJavadocComment.isEmpty()) return getJavadocByPattern(jpCallable);
-        return Javadoc.METHOD_PREFIX.getValue() + optionalJavadocComment.get().getContent() + Javadoc.METHOD_SUFFIX.getValue();
+        return JavadocFormat.METHOD_PREFIX.getValue() + optionalJavadocComment.get().getContent() + JavadocFormat.METHOD_SUFFIX.getValue();
     }
 
     /**
@@ -265,8 +267,8 @@ public class DatasetUtils {
     /**
      * Collects information about each argument of a given method.
      *
-     * @param jpClass the class in which the method is declared.
-     * @param jpCallable the method being analyzed.
+     * @param jpClass the declaring class {@link CallableDeclaration}.
+     * @param jpCallable a method {@link TypeDeclaration}.
      * @return a list of information about each argument. Each entry has the
      * form:
      *  [parameterName, packageName, parameterTypeName]
@@ -320,10 +322,10 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets the source code of the CallableDeclaration.
+     * Gets the source code of a given function {@link CallableDeclaration}.
      *
      * @param jpCallable a method or constructor.
-     * @return a string representation of the callable source code.
+     * @return a string representation of the source code.
      */
     public static String getCallableSourceCode(
             CallableDeclaration<?> jpCallable
@@ -337,7 +339,15 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets all non-private, non-static, non-void methods in a given compilation unit.
+     * Collects information about all non-private, static, non-void methods
+     * of a given compilation unit.
+     *
+     * @param cu a compilation unit {@link CompilationUnit} of a java file.
+     * @return a list of information about each method. Each entry has the
+     * form:
+     *  [methodName, packageName, className, methodSignature]
+     * @throws PackageDeclarationNotFoundException if the package
+     * {@link PackageDeclaration} of the compilation unit is not found.
      */
     private static List<Quartet<String, String, String, String>> getNonPrivateStaticNonVoidMethods(
             CompilationUnit cu
@@ -365,7 +375,15 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets all non-private, non-static attributes in a given compilation unit.
+     * Collects information about all non-private, static attributes of a
+     * given compilation unit.
+     *
+     * @param cu a compilation unit {@link CompilationUnit} of a java file.
+     * @return a list of information about each attribute. Each entry has the
+     * form:
+     *  [variableName, packageName, className, variableSignature]
+     * @throws PackageDeclarationNotFoundException if the package
+     * {@link PackageDeclaration} of the compilation unit is not found.
      */
     private static List<Quartet<String, String, String, String>> getNonPrivateStaticAttributes(
             CompilationUnit cu
@@ -399,7 +417,17 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets all JavaDoc tags in a given compilation unit.
+     * Collects information about all JavaDoc tags in a given compilation
+     * unit.
+     *
+     * @param cu a compilation unit {@link CompilationUnit} of a java file.
+     * @return a list of information about each tag. Each entry has the form:
+     *  [typeDeclaration, callableDeclaration, oracleType, name, content]
+     * where a JavaDoc tag is interpreted as:
+     *  "@tag name content"
+     * and the value of "@tag" determines "oracleType".
+     * @throws PackageDeclarationNotFoundException if the package
+     * {@link PackageDeclaration} of the compilation unit is not found.
      */
     private static List<Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> getCuTags(
             CompilationUnit cu
@@ -408,13 +436,13 @@ public class DatasetUtils {
         // iterate through each class.
         List<TypeDeclaration<?>> jpClasses = cu.getTypes();
         for (TypeDeclaration<?> jpClass : jpClasses) {
-            // iterate through each method.
+            // iterate through each function.
             List<CallableDeclaration<?>> jpCallables = new ArrayList<>();
             jpCallables.addAll(jpClass.getMethods());
             jpCallables.addAll(jpClass.getConstructors());
             for (CallableDeclaration<?> jpCallable : jpCallables) {
                 // iterate through each JavaDoc tag.
-                Optional<com.github.javaparser.javadoc.Javadoc> optionalJavadoc = jpCallable.getJavadoc();
+                Optional<Javadoc> optionalJavadoc = jpCallable.getJavadoc();
                 if (optionalJavadoc.isPresent()) {
                     List<JavadocBlockTag> blockTags = optionalJavadoc.get().getBlockTags();
                     for (JavadocBlockTag blockTag : blockTags) {
@@ -444,14 +472,14 @@ public class DatasetUtils {
     }
 
     /**
-     * Finds all ".java" files in a given directory. Files are filtered based
-     * on a list of files to ignore (see dataset/repos/ignoreFile.json).
+     * Finds all ".java" files in a given directory. Files are filtered by an
+     * ad-hoc list of files to ignore (see dataset/repos/ignoreFile.json).
      *
      * @param sourcePath the path to the project root directory.
      * @return a list of all valid files {@link File}.
      */
     private static List<File> getValidJavaFiles(String sourcePath) {
-        // get all java files from source.
+        // get list of all java files.
         File sourceDir = new File(sourcePath);
         List<File> allFiles = FileUtils.extractJavaFilesFromDirectory(sourceDir);
         // get list of files to ignore.
@@ -474,10 +502,11 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets all classes in a project from a given source path.
+     * Collects information about all classes in a project from a given
+     * source path.
      *
-     * @param sourcePath the path of the project root directory.
-     * @return a list of information describing each method.
+     * @param sourcePath the project root directory.
+     * @return a list of (className, packageName) pairs.
      */
     public static List<Pair<String, String>> getProjectClassesTokens(
             String sourcePath
@@ -500,10 +529,13 @@ public class DatasetUtils {
     }
 
     /**
-     * Finds all methods in a project from a given source path.
+     * Collects information about all non-private, static, non-void methods
+     * in a project from a given source path.
      *
-     * @param sourcePath the path of the project root directory.
-     * @return a list of information describing each method.
+     * @param sourcePath the project root directory.
+     * @return a list of information about each method. Each entry has the
+     * form:
+     *  [methodName, packageName, className, methodSignature]
      */
     public static List<Quartet<String, String, String, String>> getProjectNonPrivateStaticNonVoidMethodsTokens(
             String sourcePath
@@ -526,10 +558,13 @@ public class DatasetUtils {
     }
 
     /**
-     * Finds all attributes in a project from a given source path.
+     * Collects information about all non-private, static attributes
+     * in a project from a given source path.
      *
-     * @param sourcePath the path of the project root directory.
-     * @return a list of information describing each attribute.
+     * @param sourcePath the project root directory.
+     * @return a list of information about each attribute. Each entry has the
+     * form:
+     *  [variableName, packageName, className, variableSignature]
      */
     public static List<Quartet<String, String, String, String>> getProjectNonPrivateStaticAttributesTokens(
             String sourcePath
@@ -552,10 +587,15 @@ public class DatasetUtils {
     }
 
     /**
-     * Finds all JavaDoc tags of a project from a given source path.
+     * Collects information about all JavaDoc tags in a project from a
+     * given source path.
      *
-     * @param sourcePath the path to the project root directory.
-     * @return a list of information describing each JavaDoc tag.
+     * @param sourcePath the project root directory.
+     * @return a list of information about each tag. Each entry has the form:
+     *  [typeDeclaration, callableDeclaration, oracleType, name, content]
+     * where a JavaDoc tag is interpreted as:
+     *  "@tag name content"
+     * and the value of "@tag" determines "oracleType".
      */
     public static List<Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> getProjectTagsTokens(
             String sourcePath
@@ -578,13 +618,13 @@ public class DatasetUtils {
     }
 
     /**
-     * Converts a list of method usages {@link MethodUsage} to a quartet
-     * of strings where each entry has the form:
+     * Converts a list of methods {@link MethodUsage} to a list of string
+     * quartets where each entry has the form:
      *  [methodName, packageName, className, methodSignature]
-     * where class name refers to the class in which the method is declared.
+     * where "className" refers to the class in which the method is declared.
      * "methodSignature" includes access specifiers, non-access modifiers,
      * generic type parameters, return type, method signature, parameters,
-     * and exceptions.
+     * and exceptions (unless otherwise un-recoverable).
      */
     private static List<Quartet<String, String, String, String>> convertMethodUsageToQuartet(
             List<MethodUsage> jpMethods
@@ -601,20 +641,21 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets a list of information for all methods visible to a given type.
-     * Handles three cases: simple base type, generic type, and array type.
+     * Collects information for all non-private, non-static, non-void methods
+     * visible to a given type. Handles three cases: base type (e.g. class),
+     * generic type, and array type.
      *
-     * @param jpType the given type.
-     * @return a list of information for all methods accessible to the
-     * given type. Each entry has the form:
-     *  [methodName, className, packageName, methodSignature]
+     * @param jpType the given type {@link ResolvedType}.
+     * @return a list of information about each method. Each entry has the
+     * form:
+     *  [methodName, packageName, className, methodSignature]
      */
     public static List<Quartet<String, String, String, String>> getMethodsFromType(
             ResolvedType jpType
     ) {
         List<Quartet<String, String, String, String>> methodList = new ArrayList<>();
         if (jpType.isArray()) {
-            // handle array type.
+            // array type (see dataset/repose/arrayMethods.json).
             String arraysMethodJsonPath = Paths.get(
                     Path.REPOS.getValue(),
                     FileName.ARRAY_METHODS.getValue() + FileFormat.JSON.getValue()
@@ -631,7 +672,7 @@ public class DatasetUtils {
                     .map(m -> new Quartet<>(m.get(0), "", jpType.describe(), m.get(1)))
                     .toList());
         } else if (JavaParserUtils.isGenericType(jpType)) {
-            // handle generic type.
+            // generic type.
             List<MethodUsage> genericMethods = JavaParserUtils.getGenericType().asReferenceType().getAllMethods()
                     .stream()
                     .map(MethodUsage::new)
@@ -639,7 +680,7 @@ public class DatasetUtils {
                     .toList();
             methodList.addAll(convertMethodUsageToQuartet(genericMethods));
         } else if (jpType.isReferenceType()) {
-            // handle base type.
+            // base type.
             Optional<ResolvedReferenceTypeDeclaration> jpTypeDeclaration = jpType.asReferenceType().getTypeDeclaration();
             if (jpTypeDeclaration.isPresent()) {
                 List<MethodUsage> allMethods = jpTypeDeclaration.get().getAllMethods()
@@ -653,12 +694,11 @@ public class DatasetUtils {
     }
 
     /**
-     * Converts a list of resolved field declarations
-     * {@link ResolvedFieldDeclaration} into a quartet of the form:
-     *      "fieldName, packageOfField, classOfField, fieldSignature"
-     *
-     * @param resolvedFields a list of fields {@link ResolvedFieldDeclaration}
-     * @return the list of quartets of fields
+     * Converts a list of fields {@link ResolvedFieldDeclaration} to a list
+     * of string quartets where each entry has the form:
+     *  [fieldName, packageName, className, fieldSignature]
+     * where "className" refers to the name of the field type. If possible,
+     * declarations with multiple fields are split into individual quartets.
      */
     private static List<Quartet<String, String, String, String>> convertFieldDeclarationToQuartet(
             List<ResolvedFieldDeclaration> resolvedFields
@@ -688,10 +728,15 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets all non-private, non-static attributes visible to a given type.
+     * Collects information for all non-private, non-static attributes visible
+     * to a given type.
      *
-     * @param jpResolvedType a resolved JavaParser type {@link ResolvedType}.
-     * @return a list of non-private, non-static attributes.
+     * @param jpResolvedType the given type {@link ResolvedType}.
+     * @return a list of information about each attribute. Each entry has the
+     * form:
+     *  [fieldName, packageName, className, fieldSignature]
+     * where "className" refers to the name of the field type. If possible,
+     * declarations with multiple fields are split into individual quartets.
      */
     public static List<Quartet<String, String, String, String>> getFieldsFromType(
             ResolvedType jpResolvedType
@@ -732,14 +777,19 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets all non-private, non-static, non-void functions visible to the
-     * class of a given function, the arguments of the function, and the
-     * function return type.
+     * Collects information for all non-private, non-static, non-void methods
+     * for a given method variable. Includes methods visible to:
+     *  (1) the base class (this).
+     *  (2) the arguments of the method.
+     *  (3) the class of the method return type.
      *
-     * @param jpClass the class where the function is defined
-     * @param jpCallable the function under analysis
-     * @return a list of quartets of strings representing the non-private,
-     * non-static, non-void methods
+     * @param jpClass the declaring class {@link TypeDeclaration}.
+     * @param jpCallable a function {@link CallableDeclaration}.
+     * @return a list of information about each method. Each entry has the
+     * form:
+     *  [methodName, packageName, className, methodSignature]
+     * @throws JPClassNotFoundException if the declaring class is not
+     * resolvable.
      */
     public static List<Quartet<String, String, String, String>> getTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(
             TypeDeclaration<?> jpClass,
@@ -771,14 +821,19 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets all non-private, non-static attributes visible to the class of a
-     * given function, the arguments of the function, and the function return
-     * type.
+     * Collects information for all non-private, non-static attributes
+     * for a given method variable. Includes attributes visible to:
+     *  (1) the base class (this).
+     *  (2) the arguments of the method.
+     *  (3) the class of the method return type.
      *
-     * @param jpClass the class where the function is defined
-     * @param jpCallable the function under analysis
-     * @return a list of quartets of strings representing the non-private,
-     * non-static attributes
+     * @param jpClass the declaring class {@link TypeDeclaration}.
+     * @param jpCallable a function {@link CallableDeclaration}.
+     * @return a list of information about each attribute. Each entry has the
+     * form:
+     *  [fieldName, packageName, className, fieldSignature]
+     * @throws JPClassNotFoundException if the declaring class is not
+     * resolvable.
      */
     public static List<Quartet<String, String, String, String>> getTokensMethodVariablesNonPrivateNonStaticAttributes(
             TypeDeclaration<?> jpClass,
@@ -802,15 +857,17 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets all non-private, non-static, non-void methods visible to the
-     * return types of each sub-expression in an oracle.
+     * Collects information for all non-private, non-static, non-void methods
+     * for a given oracle. Includes methods visible to each sub-expression
+     * within an oracle.
      *
-     * @param jpClass the class where the function is defined
-     * @param jpCallable the function under analysis
-     * @param methodArgs the arguments of the function under analysis
-     * @param oracle the oracle defined on the function
-     * @return a list of quartets of strings representing the non-private,
-     * non-static, non-void methods
+     * @param jpClass the declaring class {@link TypeDeclaration}.
+     * @param jpCallable a function {@link CallableDeclaration}.
+     * @param methodArgs the arguments of the function.
+     * @param oracle an oracle corresponding to the function.
+     * @return a list of information about each method. Each entry has the
+     * form:
+     *  [methodName, packageName, className, methodSignature]
      */
     public static List<Quartet<String, String, String, String>> getTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(
             TypeDeclaration<?> jpClass,
@@ -855,15 +912,17 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets all non-private, non-static attributes visible to the return types
-     * of each sub-expression in an oracle.
+     * Collects information for all non-private, non-static attributes for a
+     * given oracle. Includes attributes visible to each sub-expression within
+     * an oracle.
      *
-     * @param jpClass the class where the function is defined
-     * @param jpCallable the function under analysis
-     * @param methodArgs the arguments of the function under analysis
-     * @param oracle the oracle defined on the function
-     * @return a list of quartets of strings representing the non-private
-     * non-static attributes
+     * @param jpClass the declaring class {@link TypeDeclaration}.
+     * @param jpCallable a function {@link CallableDeclaration}.
+     * @param methodArgs the arguments of the function.
+     * @param oracle an oracle corresponding to the function.
+     * @return a list of information about each attribute. Each entry has the
+     * form:
+     *  [fieldName, packageName, className, fieldSignature]
      */
     public static List<Quartet<String, String, String, String>> getTokensOracleVariablesNonPrivateNonStaticAttributes(
             TypeDeclaration<?> jpClass,

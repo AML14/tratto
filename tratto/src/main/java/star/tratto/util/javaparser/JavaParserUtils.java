@@ -808,10 +808,6 @@ public class JavaParserUtils {
         return !methodUsage.getDeclaration().isStatic() && isNonPrivateNonVoidMethod(methodUsage);
     }
 
-    public static boolean isNonPrivateNonStaticNonVoidMethod(MethodDeclaration methodDeclaration) {
-        return !methodDeclaration.isPrivate() && !methodDeclaration.isStatic() && !methodDeclaration.getType().isVoidType();
-    }
-
     private static boolean isNonPrivateNonVoidMethod(MethodUsage methodUsage) {
         boolean isVoid = methodUsage.getDeclaration().getReturnType().isVoid();
         boolean isPrivate = methodUsage.getDeclaration().accessSpecifier().equals(AccessSpecifier.PRIVATE);

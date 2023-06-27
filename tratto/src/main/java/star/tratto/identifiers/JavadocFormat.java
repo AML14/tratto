@@ -1,6 +1,6 @@
 package star.tratto.identifiers;
 
-public enum Javadoc {
+public enum JavadocFormat {
     CLASS_PREFIX("/**"),
     CLASS_SUFFIX("*/"),
     METHOD_PREFIX("\t/**"),
@@ -8,7 +8,7 @@ public enum Javadoc {
 
     private final String value;
 
-    private Javadoc(String value) {
+    JavadocFormat(String value) {
         this.value = value;
     }
 
