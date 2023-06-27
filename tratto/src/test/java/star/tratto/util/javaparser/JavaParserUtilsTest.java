@@ -370,7 +370,7 @@ public class JavaParserUtilsTest {
                 .stream()
                 .filter(method -> method.getName().equals(methodName))
                 .findFirst().get();
-        assertEquals(expected, isNonStaticNonVoidNonPrivateMethod(methodUsage));
+        assertEquals(expected, isNonPrivateNonStaticNonVoidMethod(methodUsage));
     }
 
     private static Stream<Arguments> isNonStaticNonVoidNonPrivateMethodParameterizedTestData() {

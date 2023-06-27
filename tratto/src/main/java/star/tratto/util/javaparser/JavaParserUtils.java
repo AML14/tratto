@@ -14,7 +14,6 @@ import com.github.javaparser.resolution.declarations.ResolvedMethodDeclaration;
 import com.github.javaparser.resolution.declarations.ResolvedReferenceTypeDeclaration;
 import com.github.javaparser.resolution.declarations.ResolvedTypeParameterDeclaration;
 import com.github.javaparser.resolution.types.ResolvedType;
-import com.github.javaparser.symbolsolver.javaparsermodel.declarations.JavaParserFieldDeclaration;
 import com.github.javaparser.symbolsolver.javaparsermodel.declarations.JavaParserMethodDeclaration;
 import com.github.javaparser.symbolsolver.utils.SymbolSolverCollectionStrategy;
 import org.javatuples.Pair;
@@ -39,7 +38,6 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static star.tratto.util.JavaTypes.isNumeric1AssignableToNumeric2;
 import static star.tratto.util.StringUtils.fullyQualifiedClassName;
@@ -804,15 +802,15 @@ public class JavaParserUtils {
         return !isPrivate && !isStatic;
     }
 
-    public static boolean isStaticNonVoidNonPrivateMethod(MethodUsage methodUsage) {
-        return methodUsage.getDeclaration().isStatic() && isNonVoidNonPrivateMethod(methodUsage);
+    public static boolean isStaticNonPrivateNonVoidMethod(MethodUsage methodUsage) {
+        return methodUsage.getDeclaration().isStatic() && isNonPrivateNonVoidMethod(methodUsage);
     }
 
-    public static boolean isNonStaticNonVoidNonPrivateMethod(MethodUsage methodUsage) {
-        return !methodUsage.getDeclaration().isStatic() && isNonVoidNonPrivateMethod(methodUsage);
+    public static boolean isNonPrivateNonStaticNonVoidMethod(MethodUsage methodUsage) {
+        return !methodUsage.getDeclaration().isStatic() && isNonPrivateNonVoidMethod(methodUsage);
     }
 
-    private static boolean isNonVoidNonPrivateMethod(MethodUsage methodUsage) {
+    private static boolean isNonPrivateNonVoidMethod(MethodUsage methodUsage) {
         boolean isVoid = methodUsage.getDeclaration().getReturnType().isVoid();
         boolean isPrivate = methodUsage.getDeclaration().accessSpecifier().equals(AccessSpecifier.PRIVATE);
         return !isVoid && !isPrivate;

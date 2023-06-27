@@ -11,7 +11,6 @@ import star.tratto.token.Tokens;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static star.tratto.oraclegrammar.custom.Parser.*;
 import static star.tratto.oraclegrammar.custom.Splitter.split;
@@ -88,7 +87,7 @@ public class RestrictionsUtils {
             matchingClasses.forEach(c -> matchingMethods.addAll(
                     getMethodsOfType(fullyQualifiedClassName(c.getValue1(), c.getValue0()))
                             .stream()
-                            .filter(m -> m.getName().equals(methodName) && isStaticNonVoidNonPrivateMethod(m))
+                            .filter(m -> m.getName().equals(methodName) && isStaticNonPrivateNonVoidMethod(m))
                             .toList()
             ));
         } else {
@@ -96,7 +95,7 @@ public class RestrictionsUtils {
             matchingMethods.addAll(
                     getMethodsOfType(fullyQualifiedClassName(precedingExprReturnType))
                             .stream()
-                            .filter(m -> m.getName().equals(methodName) && isNonStaticNonVoidNonPrivateMethod(m))
+                            .filter(m -> m.getName().equals(methodName) && isNonPrivateNonStaticNonVoidMethod(m))
                             .toList()
             );
         }
