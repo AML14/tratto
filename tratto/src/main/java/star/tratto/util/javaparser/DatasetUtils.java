@@ -685,14 +685,12 @@ public class DatasetUtils {
             methodList.addAll(convertMethodUsageToQuartet(genericMethods));
         } else if (jpType.isReferenceType()) {
             // base type.
-            Optional<ResolvedReferenceTypeDeclaration> jpTypeDeclaration = jpType.asReferenceType().getTypeDeclaration();
-            if (jpTypeDeclaration.isPresent()) {
-                List<MethodUsage> allMethods = jpTypeDeclaration.get().getAllMethods()
-                        .stream()
-                        .filter(JavaParserUtils::isNonPrivateNonStaticNonVoidMethod)
-                        .toList();
-                methodList.addAll(convertMethodUsageToQuartet(allMethods));
-            }
+            List<MethodUsage> allMethods = jpType.asReferenceType().getAllMethods()
+                    .stream()
+                    .map(MethodUsage::new)
+                    .filter(JavaParserUtils::isNonPrivateNonStaticNonVoidMethod)
+                    .toList();
+            methodList.addAll(convertMethodUsageToQuartet(allMethods));
         }
         return methodList;
     }
@@ -756,9 +754,9 @@ public class DatasetUtils {
             ));
         } else if (jpResolvedType.isReferenceType()) {
             // add all fields accessible to the class.
-            Optional<ResolvedReferenceTypeDeclaration> jpTypeDeclaration = jpResolvedType.asReferenceType().getTypeDeclaration();
-            if (jpTypeDeclaration.isPresent()) {
-                List<ResolvedFieldDeclaration> jpResolvedFields = jpTypeDeclaration.get().getAllFields()
+            Optional<ResolvedReferenceTypeDeclaration> jpResolvedDeclaration = jpResolvedType.asReferenceType().getTypeDeclaration();
+            if (jpResolvedDeclaration.isPresent()) {
+                List<ResolvedFieldDeclaration> jpResolvedFields = jpResolvedDeclaration.get().getAllFields()
                         .stream()
                         .filter(JavaParserUtils::isNonPrivateNonStaticAttribute)
                         .toList();
@@ -880,11 +878,11 @@ public class DatasetUtils {
             String oracle
     ) {
         List<Quartet<String, String, String, String>> methodList = new ArrayList<>();
-        List<LinkedList<String>> oracleSubexpressions = Parser.getInstance().getAllMethodsAndAttributes(oracle)
+        List<LinkedList<String>> oracleSubExpressions = Parser.getInstance().getAllMethodsAndAttributes(oracle)
                 .stream()
                 .map(e -> new LinkedList<>(Splitter.split(e)))
                 .toList();
-        for (LinkedList<String> oracleSubexpression : oracleSubexpressions) {
+        for (LinkedList<String> oracleSubexpression : oracleSubExpressions) {
             String subexpression = String.join("", oracleSubexpression).replaceAll("receiverObjectID", "this");
             try {
                 ResolvedType resolvedType = JavaParserUtils.getResolvedTypeOfExpression(
