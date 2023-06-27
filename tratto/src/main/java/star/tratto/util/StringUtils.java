@@ -106,8 +106,13 @@ public class StringUtils {
     }
 
     /**
-     * Computes the semantic similarity of two strings by the cosine similarity
-     * of word frequencies in the input.
+     * Computes the semantic similarity of two strings by the cosine
+     * similarity of word frequencies in the input.
+     *
+     * @param s1 a string {@link String}.
+     * @param s2 a string {@link String}.
+     * @return the cosine similarity of the two strings represented by a
+     * double between 0.0 and 1.0.
      */
     public static double semanticSimilarity(String s1, String s2) {
         s1 = s1.replaceAll("[^a-zA-Z ]", "").toLowerCase();
@@ -122,7 +127,7 @@ public class StringUtils {
     /**
      * Converts a string into a list of lemmas using the CoreNLP library.
      */
-    public static List<String> lemmatize(StanfordCoreNLP pipeline, String documentText) {
+    private static List<String> lemmatize(StanfordCoreNLP pipeline, String documentText) {
         List<String> lemmas = new ArrayList<>();
         Annotation document = new Annotation(documentText);
         pipeline.annotate(document);
@@ -135,9 +140,13 @@ public class StringUtils {
     }
 
     /**
-     * Computes the cosine similarity of a list of two words.
+     * Computes the cosine similarity of two lists of words.
+     *
+     * @param list1 list of strings.
+     * @param list2 list of strings.
+     * @return the cosine similarity (double between 0 and 1).
      */
-    public static double cosineSimilarity(List<String> list1, List<String> list2) {
+    private static double cosineSimilarity(List<String> list1, List<String> list2) {
         Map<String, Integer> map1 = wordFrequencies(list1);
         Map<String, Integer> map2 = wordFrequencies(list2);
         Set<String> intersection = new HashSet<>(map1.keySet());
@@ -149,9 +158,13 @@ public class StringUtils {
     }
 
     /**
-     * Computes the frequency of each word in a list.
+     * Computes the frequency of each string in a list of strings.
+     *
+     * @param words a list of strings.
+     * @return a map of word frequencies, where the keys are strings and the
+     * values are the number of occurrences.
      */
-    public static Map<String, Integer> wordFrequencies(List<String> words) {
+    private static Map<String, Integer> wordFrequencies(List<String> words) {
         Map<String, Integer> frequencies = new HashMap<>();
         for (String word : words) {
             frequencies.put(word, frequencies.getOrDefault(word, 0) + 1);
@@ -161,8 +174,13 @@ public class StringUtils {
 
     /**
      * Converts a map of word frequencies to a vector.
+     *
+     * @param map a map of word frequencies.
+     * @param words the set of all possible words.
+     * @return a vector representation of the word frequencies
+     * {@link RealVector}.
      */
-    public static RealVector toRealVector(Map<String, Integer> map, Set<String> words) {
+    private static RealVector toRealVector(Map<String, Integer> map, Set<String> words) {
         double[] vector = new double[words.size()];
         int i = 0;
         for (String word : words) {
