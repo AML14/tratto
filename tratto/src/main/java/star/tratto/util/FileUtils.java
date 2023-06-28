@@ -14,6 +14,9 @@ import java.util.List;
 import java.util.Objects;
 
 
+/**
+ * This class manages file I/O utilities.
+ */
 public class FileUtils {
     public static void appendToFile(
             String dirPath,
