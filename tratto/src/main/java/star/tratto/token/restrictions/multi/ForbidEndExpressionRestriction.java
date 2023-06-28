@@ -14,7 +14,7 @@ import java.util.List;
 
 import static star.tratto.oraclegrammar.custom.Parser.*;
 import static star.tratto.oraclegrammar.custom.Splitter.split;
-import static star.tratto.util.javaparser.JavaParserUtils.*;
+import static star.tratto.util.JavaParserUtils.*;
 import static star.tratto.util.StringUtils.compactExpression;
 import static star.tratto.util.StringUtils.fullyQualifiedClassName;
 

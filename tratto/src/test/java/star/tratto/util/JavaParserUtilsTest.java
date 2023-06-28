@@ -11,7 +11,6 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleDatapointTest;
-import star.tratto.util.javaparser.JavaParserUtils;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -21,7 +20,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static star.tratto.TestUtilities.readOracleDatapointsFromOraclesDataset;
-import static star.tratto.util.javaparser.JavaParserUtils.*;
+import static star.tratto.util.JavaParserUtils.*;
 
 public class JavaParserUtilsTest {
 
@@ -362,8 +361,8 @@ public class JavaParserUtilsTest {
     }
 
     @ParameterizedTest(name = "{0}")
-    @MethodSource("isNonPrivateNonStaticNonVoidMethodParameterizedTestData")
-    public void isNonPrivateNonStaticNonVoidMethodTest(String testName, String packageClass, String methodName, boolean expected) {
+    @MethodSource("isNonStaticNonVoidNonPrivateMethodParameterizedTestData")
+    public void isNonStaticNonVoidNonPrivateMethodTest(String testName, String packageClass, String methodName, boolean expected) {
         MethodUsage methodUsage = new ArrayList<>(getResolvedReferenceTypeDeclaration(packageClass).getAllMethods()
                 .stream()
                 .sorted(Comparator.comparing(MethodUsage::toString))
@@ -371,10 +370,10 @@ public class JavaParserUtilsTest {
                 .stream()
                 .filter(method -> method.getName().equals(methodName))
                 .findFirst().get();
-        assertEquals(expected, isNonPrivateNonStaticNonVoidMethod(methodUsage));
+        assertEquals(expected, isNonStaticNonVoidNonPrivateMethod(methodUsage));
     }
 
-    private static Stream<Arguments> isNonPrivateNonStaticNonVoidMethodParameterizedTestData() {
+    private static Stream<Arguments> isNonStaticNonVoidNonPrivateMethodParameterizedTestData() {
         return Stream.of(
                 Arguments.of("test1", "java.lang.Object", "equals", true), // "public boolean equals(Object arg0)"),
                 Arguments.of("test2", "java.lang.Object", "getClass", true), // "public final native Class<? extends Object> getClass()"),

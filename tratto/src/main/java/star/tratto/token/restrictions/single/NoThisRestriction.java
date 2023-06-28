@@ -6,7 +6,7 @@ import star.tratto.data.OracleDatapoint;
 
 import java.util.List;
 
-import static star.tratto.util.javaparser.JavaParserUtils.getMethodDeclaration;
+import static star.tratto.util.JavaParserUtils.getMethodDeclaration;
 
 /**
  * "this" is forbidden if the method under test is static.

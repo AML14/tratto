@@ -8,8 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static star.tratto.util.javaparser.JavaParserUtils.getMethodDeclaration;
-import static star.tratto.util.javaparser.JavaParserUtils.getReturnTypeOfExpression;
+import static star.tratto.util.JavaParserUtils.getMethodDeclaration;
+import static star.tratto.util.JavaParserUtils.getReturnTypeOfExpression;
 import static star.tratto.util.StringUtils.compactExpression;
 
 /**
