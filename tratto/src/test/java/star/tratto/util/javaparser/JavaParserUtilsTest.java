@@ -1,4 +1,4 @@
-package star.tratto.util;
+package star.tratto.util.javaparser;
 
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.body.MethodDeclaration;
