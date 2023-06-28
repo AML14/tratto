@@ -70,6 +70,7 @@ public class ProjectOracleGenerator {
      * @return a list of data points {@link OracleDatapoint}.
      */
     public List<OracleDatapoint> generate() {
+        System.out.printf("Identified %s total JavaDoc tags.%n", this.projectTagsTokens.size());
         List<OracleDatapoint> oracleDPs = new ArrayList<>();
         // Generate an OracleDatapoint for each JDoctor condition.
         for (JDoctorCondition jDoctorCondition : this.jDoctorConditions) {
@@ -104,7 +105,6 @@ public class ProjectOracleGenerator {
         }
         int numEmptyOracles = oracleDPs.size() - numNonEmptyOracles;
         // log information.
-        System.out.printf("Identified %s total JavaDoc tags.%n", this.projectTagsTokens.size());
         System.out.printf("Processed %s non-empty oracles.%n", numNonEmptyOracles);
         System.out.printf("Processed %s empty oracles.%n", numEmptyOracles);
         System.out.printf("Processed %s total conditions.%n", this.idCounter - this.checkpoint);
