@@ -1,4 +1,4 @@
-package star.tratto.util;
+package star.tratto.util.javaparser;
 
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import star.tratto.data.OracleDatapoint;
 import star.tratto.oraclegrammar.custom.Parser;
+import star.tratto.util.JavaTypes;
 
 import java.nio.file.Paths;
 import java.util.*;
@@ -236,7 +237,7 @@ public class JavaParserUtils {
      * @throws UnsolvedSymbolException if the type cannot be resolved
      * @throws UnsupportedOperationException if the type is an array or a primitive type
      */
-    static ResolvedReferenceTypeDeclaration getResolvedReferenceTypeDeclaration(String type) throws UnsolvedSymbolException, UnsupportedOperationException {
+    public static ResolvedReferenceTypeDeclaration getResolvedReferenceTypeDeclaration(String type) throws UnsolvedSymbolException, UnsupportedOperationException {
         return getResolvedType(type).asReferenceType().getTypeDeclaration().get();
     }
 
@@ -496,15 +497,15 @@ public class JavaParserUtils {
                 .replaceAll(" +", " ").trim();
     }
 
-    public static boolean isStaticNonVoidNonPrivateMethod(MethodUsage methodUsage) {
-        return methodUsage.getDeclaration().isStatic() && isNonVoidNonPrivateMethod(methodUsage);
+    public static boolean isStaticNonPrivateNonVoidMethod(MethodUsage methodUsage) {
+        return methodUsage.getDeclaration().isStatic() && isNonPrivateNonVoidMethod(methodUsage);
     }
 
-    public static boolean isNonStaticNonVoidNonPrivateMethod(MethodUsage methodUsage) {
-        return !methodUsage.getDeclaration().isStatic() && isNonVoidNonPrivateMethod(methodUsage);
+    public static boolean isNonPrivateNonStaticNonVoidMethod(MethodUsage methodUsage) {
+        return !methodUsage.getDeclaration().isStatic() && isNonPrivateNonVoidMethod(methodUsage);
     }
 
-    private static boolean isNonVoidNonPrivateMethod(MethodUsage methodUsage) {
+    private static boolean isNonPrivateNonVoidMethod(MethodUsage methodUsage) {
         boolean isVoid = getTypeWithoutPackages(methodUsage.returnType()).equals("void");
         boolean isPrivate = methodUsage.getDeclaration().toString().matches(".*(method=private |method=.* private ).*");
         return !isVoid && !isPrivate;

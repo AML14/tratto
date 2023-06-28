@@ -11,6 +11,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleDatapointTest;
+import star.tratto.util.javaparser.JavaParserUtils;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -20,7 +21,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static star.tratto.TestUtilities.readOracleDatapointsFromOraclesDataset;
-import static star.tratto.util.JavaParserUtils.*;
+import static star.tratto.util.javaparser.JavaParserUtils.*;
 
 public class JavaParserUtilsTest {
 
@@ -370,7 +371,7 @@ public class JavaParserUtilsTest {
                 .stream()
                 .filter(method -> method.getName().equals(methodName))
                 .findFirst().get();
-        assertEquals(expected, isNonStaticNonVoidNonPrivateMethod(methodUsage));
+        assertEquals(expected, isNonPrivateNonStaticNonVoidMethod(methodUsage));
     }
 
     private static Stream<Arguments> isNonStaticNonVoidNonPrivateMethodParameterizedTestData() {
