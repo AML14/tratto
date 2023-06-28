@@ -1,4 +1,4 @@
-package star.tratto.util;
+package star.tratto.util.javaparser;
 
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
@@ -22,10 +22,6 @@ import star.tratto.exceptions.JPClassNotFoundException;
 import star.tratto.exceptions.PackageDeclarationNotFoundException;
 import star.tratto.exceptions.ResolvedTypeNotFound;
 import star.tratto.identifiers.JPCallableType;
-import star.tratto.identifiers.file.FileFormat;
-import star.tratto.identifiers.file.FileName;
-import star.tratto.identifiers.path.Path;
-import star.tratto.util.javaparser.JavaParserUtils;
 
 import java.nio.file.Paths;
 import java.util.*;
