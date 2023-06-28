@@ -306,7 +306,7 @@ public class JavaParserUtils {
      * @throws UnsolvedSymbolException if the type cannot be resolved
      * @throws UnsupportedOperationException if the type is an array or a primitive type
      */
-    static ResolvedReferenceTypeDeclaration getResolvedReferenceTypeDeclaration(String type) throws UnsolvedSymbolException, UnsupportedOperationException {
+    public static ResolvedReferenceTypeDeclaration getResolvedReferenceTypeDeclaration(String type) throws UnsolvedSymbolException, UnsupportedOperationException {
         return getResolvedType(type).asReferenceType().getTypeDeclaration().get();
     }
 
@@ -591,6 +591,53 @@ public class JavaParserUtils {
         return getClassOrInterface(javaParser.parse(classSourceCode).getResult().get(), name);
     }
 
+    public static String getMethodSignature(MethodDeclaration methodDeclaration) {
+        String method = methodDeclaration.toString();
+        if (methodDeclaration.getBody().isPresent()) { // Remove body
+            method = method.replace(methodDeclaration.getBody().get().toString(), "");
+        }
+        for (Node comment: methodDeclaration.getAllContainedComments()) { // Remove comments within method signature
+            method = method.replace(comment.toString(), "");
+        }
+        if (methodDeclaration.getComment().isPresent()) { // At this point, last line is method signature. Remove everything before that
+            method = method.replaceAll("[\\s\\S]*\n", "");
+        }
+        return method.trim().replaceAll(";$", "");
+    }
+
+    /**
+     * Get all generic types of a given method.
+     */
+    private static List<String> getMethodUsageTypeParameters(MethodUsage methodUsage) {
+        return methodUsage.getDeclaration().getTypeParameters()
+                .stream()
+                .map(ResolvedTypeParameterDeclaration::getName)
+                .toList();
+    }
+
+    /**
+     * Get all parameters in the method arguments.
+     */
+    private static List<String> getMethodUsageParameters(MethodUsage methodUsage) {
+        ResolvedMethodDeclaration methodDeclaration = methodUsage.getDeclaration();
+        // iterate through each parameter in the method declaration.
+        List<String> methodParameters = new ArrayList<>();
+        for (int i = 0; i < methodDeclaration.getNumberOfParams(); i++) {
+            methodParameters.add(getTypeWithoutPackages(methodDeclaration.getParam(i).getType()) + " arg" + i);
+        }
+        return methodParameters;
+    }
+
+    /**
+     * Get all exceptions that can be thrown by a given method.
+     */
+    private static List<String> getMethodUsageExceptions(MethodUsage methodUsage) {
+        return methodUsage.getDeclaration().getSpecifiedExceptions()
+                .stream()
+                .map(JavaParserUtils::getTypeWithoutPackages)
+                .toList();
+    }
+
     /**
      * Unfortunately, the MethodUsage class does not provide a function to obtain the method signature
      * as it was written, so the best that we can do is to reconstruct it to a certain extent. This
@@ -636,54 +683,12 @@ public class JavaParserUtils {
     }
 
     /**
-     * Get all generic types of a given method.
-     */
-    public static List<String> getMethodUsageTypeParameters(MethodUsage methodUsage) {
-        return methodUsage.getDeclaration().getTypeParameters()
-                .stream()
-                .map(ResolvedTypeParameterDeclaration::getName)
-                .toList();
-    }
-
-    /**
-     * Get all parameters in the method arguments.
-     */
-    public static List<String> getMethodUsageParameters(MethodUsage methodUsage) {
-        ResolvedMethodDeclaration methodDeclaration = methodUsage.getDeclaration();
-        // iterate through each parameter in the method declaration.
-        List<String> methodParameters = new ArrayList<>();
-        for (int i = 0; i < methodDeclaration.getNumberOfParams(); i++) {
-            methodParameters.add(getTypeWithoutPackages(methodDeclaration.getParam(i).getType()) + " arg" + i);
-        }
-        return methodParameters;
-    }
-
-    /**
-     * Get all exceptions that can be thrown by a given method.
-     */
-    public static List<String> getMethodUsageExceptions(MethodUsage methodUsage) {
-        return methodUsage.getDeclaration().getSpecifiedExceptions()
-                .stream()
-                .map(JavaParserUtils::getTypeWithoutPackages)
-                .toList();
-    }
-
-    public static String getMethodSignature(MethodDeclaration methodDeclaration) {
-        String method = methodDeclaration.toString();
-        if (methodDeclaration.getBody().isPresent()) { // Remove body
-            method = method.replace(methodDeclaration.getBody().get().toString(), "");
-        }
-        for (Node comment: methodDeclaration.getAllContainedComments()) { // Remove comments within method signature
-            method = method.replace(comment.toString(), "");
-        }
-        if (methodDeclaration.getComment().isPresent()) { // At this point, last line is method signature. Remove everything before that
-            method = method.replaceAll("[\\s\\S]*\n", "");
-        }
-        return method.trim().replaceAll(";$", "");
-    }
-
-    /**
-     * Gets the package name
+     * Gets the package of a given compilation unit.
+     *
+     * @param cu a compilation unit {@link CompilationUnit}.
+     * @return the package of the compilation unit {@link PackageDeclaration}.
+     * @throws PackageDeclarationNotFoundException if the package declaration
+     * cannot be found.
      */
     public static PackageDeclaration getPackageDeclarationFromCompilationUnit(
             CompilationUnit cu
@@ -698,9 +703,12 @@ public class JavaParserUtils {
     }
 
     /**
-     * Returns the component type of a resolved type {@link ResolvedType}.
+     * Returns the base element type of a resolved type {@link ResolvedType}.
      * Recursively strips all array variables. For example:
-     *  Object[][] ==> Object
+     *  Object[][] => Object
+     *
+     * @param resolvedType a type {@link ResolvedType}.
+     * @return the base component type.
      */
     public static ResolvedType removeArray(ResolvedType resolvedType) {
         if (resolvedType.isArray()) {
@@ -710,11 +718,8 @@ public class JavaParserUtils {
     }
 
     /**
-     * Returns true iff a given type is generic. Ignores any wrapped arrays.
-     * For example:
-     *  CampusMap => false
-     *  E => true
-     *  E[] => true
+     * @param resolvedType a JavaParser resolved type {@link ResolvedType}.
+     * @return true iff a given type is generic. Ignores any wrapped arrays.
      */
     public static boolean isGenericType(
             ResolvedType resolvedType
@@ -724,8 +729,12 @@ public class JavaParserUtils {
     }
 
     /**
-     * Returns true iff a given type is generic. Ignores any wrapped arrays.
-     * Uses the type name, corresponding method, and declaring class.
+     * Returns true iff a given type name represents a generic type.
+     *
+     * @param jpTypeName the name of a type.
+     * @param jpCallable a method {@link CallableDeclaration}.
+     * @param jpClass the declaring class {@link TypeDeclaration}.
+     * @return true iff a given type is generic. Ignores any wrapped arrays.
      */
     public static boolean isGenericType(
             String jpTypeName,
@@ -807,6 +816,10 @@ public class JavaParserUtils {
         }
     }
 
+    private static boolean isNonPrivateNonVoidMethod(MethodUsage methodUsage) {
+        return !methodUsage.getDeclaration().getReturnType().isVoid() && !methodUsage.getDeclaration().accessSpecifier().equals(AccessSpecifier.PRIVATE);
+    }
+
     public static boolean isNonPrivateNonStaticAttribute(ResolvedFieldDeclaration fieldDeclaration) {
         return !fieldDeclaration.accessSpecifier().equals(AccessSpecifier.PRIVATE) && !fieldDeclaration.isStatic();
     }
@@ -817,12 +830,6 @@ public class JavaParserUtils {
 
     public static boolean isNonPrivateNonStaticNonVoidMethod(MethodUsage methodUsage) {
         return !methodUsage.getDeclaration().isStatic() && isNonPrivateNonVoidMethod(methodUsage);
-    }
-
-    private static boolean isNonPrivateNonVoidMethod(MethodUsage methodUsage) {
-        boolean isVoid = methodUsage.getDeclaration().getReturnType().isVoid();
-        boolean isPrivate = methodUsage.getDeclaration().accessSpecifier().equals(AccessSpecifier.PRIVATE);
-        return !isVoid && !isPrivate;
     }
 
     /**
