@@ -1,11 +1,10 @@
-package star.tratto.dataset.oracles;
+package star.tratto.data.oracles;
 
 import org.javatuples.Pair;
 import org.javatuples.Quartet;
 import org.javatuples.Triplet;
 import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleType;
-import star.tratto.dataset.oracles.JDoctorCondition.*;
 import star.tratto.identifiers.path.Path;
 import star.tratto.identifiers.file.*;
 import star.tratto.util.FileUtils;
@@ -64,33 +63,33 @@ public class OracleDatapointBuilder {
         this.setTokensGeneralValuesGlobalDictionary(tokenGeneralValues);
     }
 
-    private void setThrowsConditionInfo(ThrowsCondition condition) {
+    private void setThrowsConditionInfo(JDoctorCondition.ThrowsCondition condition) {
         this.setOracleType(OracleType.EXCEPT_POST);
         this.setJavadocTag(condition.getDescription());
         this.setOracle(String.format("%s;", condition.getGuard().getCondition()).replaceAll("receiverObjectID", "this"));
     }
 
-    private void setPreConditionInfo(PreCondition condition) {
+    private void setPreConditionInfo(JDoctorCondition.PreCondition condition) {
         this.setOracleType(OracleType.PRE);
         this.setJavadocTag(condition.getDescription());
         this.setOracle(String.format("%s;", condition.getGuard().getCondition()).replaceAll("receiverObjectID", "this"));
     }
 
-    private void setPostConditionInfo(List<PostCondition> conditionList) {
+    private void setPostConditionInfo(List<JDoctorCondition.PostCondition> conditionList) {
         assert conditionList.size() <= 2;
         // get base information from first post-condition.
-        PostCondition mainCondition = conditionList.get(0);
+        JDoctorCondition.PostCondition mainCondition = conditionList.get(0);
         String mainTag = mainCondition.getDescription();
-        Guard mainGuard = mainCondition.getGuard();
-        Property mainProperty = mainCondition.getProperty();
+        JDoctorCondition.Guard mainGuard = mainCondition.getGuard();
+        JDoctorCondition.Property mainProperty = mainCondition.getProperty();
         // start building oracle.
         String oracle = String.format("%s ? %s : ", mainGuard.getCondition(), mainProperty.getCondition());
         // add to oracle.
         if (conditionList.size() == 2) {
-            PostCondition secondCondition = conditionList.get(1);
+            JDoctorCondition.PostCondition secondCondition = conditionList.get(1);
             String secondTag = secondCondition.getDescription();
             assert mainTag.equals(secondTag);
-            Property secondProperty = secondCondition.getProperty();
+            JDoctorCondition.Property secondProperty = secondCondition.getProperty();
             oracle += String.format("%s;", secondProperty.getCondition());
         } else {
             oracle += "true;";
@@ -103,14 +102,14 @@ public class OracleDatapointBuilder {
     }
 
     public void setConditionInfo(Object condition) {
-        if (condition instanceof ThrowsCondition) {
-            this.setThrowsConditionInfo((ThrowsCondition) condition);
-        } else if (condition instanceof PreCondition) {
-            this.setPreConditionInfo((PreCondition) condition);
+        if (condition instanceof JDoctorCondition.ThrowsCondition) {
+            this.setThrowsConditionInfo((JDoctorCondition.ThrowsCondition) condition);
+        } else if (condition instanceof JDoctorCondition.PreCondition) {
+            this.setPreConditionInfo((JDoctorCondition.PreCondition) condition);
         } else if (condition instanceof List<?>) {
-            List<PostCondition> conditionList = ((List<?>) condition)
+            List<JDoctorCondition.PostCondition> conditionList = ((List<?>) condition)
                     .stream()
-                    .map(e -> (PostCondition) e)
+                    .map(e -> (JDoctorCondition.PostCondition) e)
                     .toList();
             if (conditionList.size() > 0) {
                 this.setPostConditionInfo(conditionList);

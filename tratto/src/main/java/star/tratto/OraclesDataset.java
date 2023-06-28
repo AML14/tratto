@@ -1,11 +1,11 @@
 package star.tratto;
 
 import star.tratto.data.OracleDatapoint;
-import star.tratto.dataset.oracles.JDoctorCondition;
-import star.tratto.dataset.oracles.Project;
-import star.tratto.dataset.oracles.ProjectOracleGenerator;
-import star.tratto.dataset.oracles.json.parsers.JDoctorConditionParser;
-import star.tratto.dataset.oracles.json.parsers.ProjectParser;
+import star.tratto.data.oracles.JDoctorCondition;
+import star.tratto.data.oracles.Project;
+import star.tratto.data.oracles.ProjectOracleGenerator;
+import star.tratto.data.oracles.json.parsers.JDoctorConditionParser;
+import star.tratto.data.oracles.json.parsers.ProjectParser;
 import star.tratto.identifiers.file.FileFormat;
 import star.tratto.identifiers.file.FileName;
 import star.tratto.identifiers.path.Path;

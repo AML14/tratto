@@ -1,10 +1,12 @@
 package star.tratto.dataset.oracles.json.parsers;
 
+import star.tratto.data.oracles.json.parsers.JDoctorConditionParser;
+import star.tratto.data.oracles.json.parsers.ProjectParser;
 import star.tratto.identifiers.file.FileName;
 import star.tratto.identifiers.file.FileFormat;
 import star.tratto.identifiers.path.Path;
-import star.tratto.dataset.oracles.JDoctorCondition;
-import star.tratto.dataset.oracles.Project;
+import star.tratto.data.oracles.JDoctorCondition;
+import star.tratto.data.oracles.Project;
 import star.tratto.util.FileUtils;
 import org.junit.jupiter.api.Test;
 

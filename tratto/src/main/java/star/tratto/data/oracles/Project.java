@@ -1,4 +1,4 @@
-package star.tratto.dataset.oracles;
+package star.tratto.data.oracles;
 
 /**
  * Information about a Java project.

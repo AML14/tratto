@@ -19,7 +19,7 @@ import org.javatuples.Quartet;
 import org.javatuples.Quintet;
 import org.javatuples.Triplet;
 import star.tratto.data.OracleType;
-import star.tratto.dataset.oracles.JDoctorCondition.*;
+import star.tratto.data.oracles.JDoctorCondition.*;
 import star.tratto.exceptions.JPClassNotFoundException;
 import star.tratto.exceptions.PackageDeclarationNotFoundException;
 import star.tratto.exceptions.ResolvedTypeNotFound;

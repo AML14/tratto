@@ -1,4 +1,4 @@
-package star.tratto.dataset.oracles;
+package star.tratto.data.oracles;
 
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.CallableDeclaration;
@@ -9,10 +9,6 @@ import org.javatuples.Quartet;
 import org.javatuples.Quintet;
 import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleType;
-import star.tratto.dataset.oracles.JDoctorCondition.Operation;
-import star.tratto.dataset.oracles.JDoctorCondition.PreCondition;
-import star.tratto.dataset.oracles.JDoctorCondition.PostCondition;
-import star.tratto.dataset.oracles.JDoctorCondition.ThrowsCondition;
 import star.tratto.exceptions.JPClassNotFoundException;
 import star.tratto.util.StringUtils;
 import star.tratto.util.javaparser.DatasetUtils;
@@ -77,23 +73,23 @@ public class ProjectOracleGenerator {
         List<OracleDatapoint> oracleDPs = new ArrayList<>();
         // Generate an OracleDatapoint for each JDoctor condition.
         for (JDoctorCondition jDoctorCondition : this.jDoctorConditions) {
-            Operation operation = jDoctorCondition.getOperation();
+            JDoctorCondition.Operation operation = jDoctorCondition.getOperation();
             // Add all ThrowsCondition oracles to dataset.
-            List<ThrowsCondition> throwsConditions = jDoctorCondition.getThrowsConditions();
-            for (ThrowsCondition condition : throwsConditions) {
+            List<JDoctorCondition.ThrowsCondition> throwsConditions = jDoctorCondition.getThrowsConditions();
+            for (JDoctorCondition.ThrowsCondition condition : throwsConditions) {
                 OracleDatapoint nextDatapoint = getNextDatapoint(operation, condition);
                 if (nextDatapoint != null) oracleDPs.add(nextDatapoint);
                 removeProjectClassesTag(operation, OracleType.EXCEPT_POST, condition.getDescription());
             }
             // Add all PreCondition oracles to dataset.
-            List<PreCondition> preConditions = jDoctorCondition.getPreCondition();
-            for (PreCondition condition : preConditions) {
+            List<JDoctorCondition.PreCondition> preConditions = jDoctorCondition.getPreCondition();
+            for (JDoctorCondition.PreCondition condition : preConditions) {
                 OracleDatapoint nextDatapoint = getNextDatapoint(operation, condition);
                 if (nextDatapoint != null) oracleDPs.add(nextDatapoint);
                 removeProjectClassesTag(operation, OracleType.PRE, condition.getDescription());
             }
             // Add all PostCondition oracles to dataset.
-            List<PostCondition> postConditions = jDoctorCondition.getPostConditions();
+            List<JDoctorCondition.PostCondition> postConditions = jDoctorCondition.getPostConditions();
             if (postConditions.size() > 0) {
                 OracleDatapoint nextDatapoint = getNextDatapoint(operation, postConditions);
                 if (nextDatapoint != null) oracleDPs.add(nextDatapoint);
@@ -175,7 +171,7 @@ public class ProjectOracleGenerator {
      * @param javaDocTag the (JDoctor simplified) JavaDoc tag to be removed.
      */
     private void removeProjectClassesTag(
-            Operation operation,
+            JDoctorCondition.Operation operation,
             OracleType oracleType,
             String javaDocTag
     ) {
@@ -277,7 +273,7 @@ public class ProjectOracleGenerator {
      * @return a fully populated OracleDatapoint. Returns null if error
      * occurs during information collection.
      */
-    private OracleDatapoint getNextDatapoint(Operation operation, Object condition) {
+    private OracleDatapoint getNextDatapoint(JDoctorCondition.Operation operation, Object condition) {
         OracleDatapointBuilder builder = new OracleDatapointBuilder();
         // get basic information of operation.
         String sourcePath = this.project.getSrcPath();

@@ -1,11 +1,11 @@
-package star.tratto.dataset.oracles.json.deserializers;
+package star.tratto.data.oracles.json.deserializers;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import star.tratto.dataset.oracles.Project;
+import star.tratto.data.oracles.Project;
 import star.tratto.identifiers.path.Path;
 
 import java.io.IOException;

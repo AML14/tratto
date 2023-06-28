@@ -1,8 +1,8 @@
-package star.tratto.dataset.oracles.json.parsers;
+package star.tratto.data.oracles.json.parsers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import star.tratto.dataset.oracles.JDoctorCondition;
-import star.tratto.dataset.oracles.Project;
+import star.tratto.data.oracles.JDoctorCondition;
+import star.tratto.data.oracles.Project;
 
 import java.io.File;
 import java.io.IOException;
