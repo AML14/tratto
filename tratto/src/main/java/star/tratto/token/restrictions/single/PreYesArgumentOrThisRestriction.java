@@ -33,7 +33,7 @@ public class PreYesArgumentOrThisRestriction extends SingleTokenRestriction {
             return false;
         }
 
-        List<String> disablerTokens = oracleDatapoint.getTokensMethodArguments().stream().map(Triplet::getValue0).toList();
+        List<String> disablerTokens = oracleDatapoint.getTokensMethodArguments().stream().map(Triplet::getValue0).collect(Collectors.toList());
         disablerTokens.add("this");
 
         // This ContextRestriction can be treated as a standard ContextRestriction by including the method argument and "this" as disabler tokens

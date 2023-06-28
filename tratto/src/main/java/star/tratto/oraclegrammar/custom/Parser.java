@@ -175,7 +175,7 @@ public class Parser {
         return (Oracle) allOraclesContents.get(0).eContents()
                 .stream()
                 .filter(eObject -> eObject instanceof Oracle)
-                .toList()
+                .collect(Collectors.toList())
                 .get(0);
     }
 
@@ -216,7 +216,7 @@ public class Parser {
         List<EObject> varOrClassModifiers = allOracleContents.stream().filter(eo -> eo instanceof VarOrClassModifier && (
                 (((VarOrClassModifier) eo).getClassFieldWithPeriod() != null && ((VarOrClassModifier) eo).getClassFieldWithPeriod().getPeriod() != null) ||
                 (((VarOrClassModifier) eo).getMethodCallWithPeriod() != null && ((VarOrClassModifier) eo).getMethodCallWithPeriod().getPeriod() != null)
-        )).toList();
+        )).collect(Collectors.toList());
         if (varOrClassModifiers.isEmpty()) {
             return null;
         }
@@ -237,7 +237,7 @@ public class Parser {
                     eo -> eo instanceof VarOrClassModifier &&
                     (((VarOrClassModifier) eo).getMethodCallWithPeriod() != null && ((VarOrClassModifier) eo).getMethodCallWithPeriod().getPeriod() != null) &&
                     (((VarOrClassModifier) eo).getMethodCallWithPeriod().getMethodCall().getClosingParenthesis() == null))
-                .toList();
+                .collect(Collectors.toList());
         if (methodModifiers.isEmpty()) {
             return null;
         }
@@ -260,7 +260,7 @@ public class Parser {
                         ((ClauseWithVars) eo).getFirstInstanceOfOperator() != null ||
                         ((ClauseWithVars) eo).getSecondInstanceOfOperator() != null)
                 ).map(eo -> ((ClauseWithVars) eo).getFirstInstanceOfOperator() != null ? "this" : ((ClauseWithVars) eo).getCanEvaluateToPrimitive())
-                .toList();
+                .collect(Collectors.toList());
         if (elementsPrecedingInstanceOf.isEmpty()) {
             return null;
         }
@@ -275,7 +275,7 @@ public class Parser {
         List<CanEvaluateToPrimitive> elementsPrecedingNonEqIneqOp = getAllCanEvalToPrimInEObject(oracle, ClauseWithVars.class)
                 .stream()
                 .filter(eo -> ((ClauseWithVars) eo.eContainer()).getNonEqIneqOperator() != null)
-                .toList();
+                .collect(Collectors.toList());
         if (elementsPrecedingNonEqIneqOp.isEmpty()) {
             return null;
         }
@@ -309,7 +309,7 @@ public class Parser {
                 .stream()
                 .filter(eo -> eo instanceof CanEvaluateToPrimitive && eObjectClass.isInstance(eo.eContainer()))
                 .map(eo -> (CanEvaluateToPrimitive) eo)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     /**
@@ -320,7 +320,7 @@ public class Parser {
                 .stream()
                 .filter(eo -> eo instanceof ClauseWithVars)
                 .map(eo -> (ClauseWithVars) eo)
-                .toList();
+                .collect(Collectors.toList());
         if (allClausesWithVars.isEmpty()) {
             return null;
         }
@@ -362,7 +362,7 @@ public class Parser {
                         && ((ClauseTrue)eo).getArrayStreamClauseContinuation() != null
                         && (jdVarExpression == null || compactExpression(split(eo)).contains(compactExpression(jdVarExpression))))
                 .map(eo -> (ClauseTrue) eo)
-                .toList();
+                .collect(Collectors.toList());
 
         if (clauseTruesWithJdVars.isEmpty()) {
             return null;
@@ -407,7 +407,7 @@ public class Parser {
                 .stream()
                 .filter(eo -> eo instanceof VarOrClassModifier)
                 .map(eo -> (VarOrClassModifier) eo)
-                .toList();
+                .collect(Collectors.toList());
 
         // For each VarOrClassModifier, get its parent and keep only the modifiers up to the current one
         for (VarOrClassModifier varOrClassModifier : varOrClassModifiers) {
@@ -539,7 +539,7 @@ public class Parser {
                 .stream()
                 .map(VarOrClassModifier::getMethodCallWithPeriod)
                 .filter(Objects::nonNull)
-                .toList();
+                .collect(Collectors.toList());
         if (methodModifiers.isEmpty()) {
             return null;
         }

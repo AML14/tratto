@@ -12,6 +12,6 @@ public class PathTest {
         assertEquals(userDir + "/src/main/java/data/collection/javaparser", Path.JAVA_PARSER.getValue());
         assertEquals(userDir + "/target/output", Path.OUTPUT.getValue());
         assertEquals(userDir + "/src/main/resources", Path.RESOURCES.getValue());
-        assertEquals(userDir + "/src/main/repos", Path.REPOS.getValue());
+        assertEquals(userDir + "/src/main/java/star/tratto/data/repos", Path.REPOS.getValue());
     }
 }

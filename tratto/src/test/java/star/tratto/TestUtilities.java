@@ -43,7 +43,7 @@ public class TestUtilities {
             oracleDatapoints = ((List<Map>)objectMapper.readValue(new File(ORACLES_DATASET_PATH), List.class))
                     .stream()
                     .map(OracleDatapoint::new)
-                    .toList();
+                    .collect(Collectors.toList());
         } catch (IOException e) {
             logger.error("Error reading the oracles dataset file");
             throw new RuntimeException(e);

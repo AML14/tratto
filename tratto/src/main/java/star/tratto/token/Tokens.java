@@ -200,7 +200,7 @@ public class Tokens {
             .stream()
             .flatMap(List::stream)
             .distinct()
-            .toList();
+            .collect(Collectors.toList());
 
     /**
      * Map containing TrattoGrammar tokens as keys and the rules they belong to as values.
