@@ -1,21 +1,30 @@
 package star.tratto.util.javaparser;
 
 import com.github.javaparser.JavaParser;
-import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.PackageDeclaration;
+import com.github.javaparser.ast.body.*;
 import com.github.javaparser.resolution.MethodUsage;
 import com.github.javaparser.resolution.UnsolvedSymbolException;
+import com.github.javaparser.resolution.declarations.ResolvedDeclaration;
+import com.github.javaparser.resolution.types.ResolvedArrayType;
+import com.github.javaparser.resolution.types.ResolvedPrimitiveType;
+import com.github.javaparser.resolution.types.ResolvedType;
 import org.javatuples.Pair;
+import org.javatuples.Triplet;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleDatapointTest;
-import star.tratto.util.javaparser.JavaParserUtils;
+import star.tratto.exceptions.JPClassNotFoundException;
+import star.tratto.exceptions.PackageDeclarationNotFoundException;
+import star.tratto.exceptions.ResolvedTypeNotFound;
+import star.tratto.identifiers.JPCallableType;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.nio.file.Paths;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -27,6 +36,39 @@ public class JavaParserUtilsTest {
 
     private static final List<OracleDatapoint> oracleDatapoints = readOracleDatapointsFromOraclesDataset();
     private static final JavaParser javaParser = JavaParserUtils.getJavaParser();
+
+    @Test
+    public void getResolvedTypeOfExpressionPrimitiveTest() {
+        OracleDatapoint oracleDatapoint = oracleDatapoints.get(0);
+        TypeDeclaration<?> jpClass = getClassOrInterface(oracleDatapoint.getClassSourceCode(), oracleDatapoint.getClassName());
+        CallableDeclaration<?> jpCallable = getMethodDeclaration(oracleDatapoint.getMethodSourceCode());
+        List<Triplet<String, String, String>> methodArgs = oracleDatapoint.getTokensMethodArguments();
+        String subExpression = oracleDatapoint.getOracle().substring(0, 20);
+        try {
+            ResolvedType resolvedType = getResolvedTypeOfExpression(jpClass, jpCallable, methodArgs, subExpression);
+            String typeName = resolvedType.describe();
+            assertEquals("boolean", typeName);
+        } catch (ResolvedTypeNotFound e) {
+            fail();
+        }
+    }
+
+    @Test
+    public void getResolvedTypeOfExpressionPrimitiveObject() {
+        OracleDatapoint oracleDatapoint = oracleDatapoints.get(1);
+        TypeDeclaration<?> jpClass = getClassOrInterface(oracleDatapoint.getClassSourceCode(), oracleDatapoint.getClassName());
+        CallableDeclaration<?> jpCallable = getMethodDeclaration(oracleDatapoint.getMethodSourceCode());
+        List<Triplet<String, String, String>> methodArgs = oracleDatapoint.getTokensMethodArguments();
+        String subExpression = oracleDatapoint.getOracle().substring(0, 4);
+        try {
+            ResolvedType resolvedType = getResolvedTypeOfExpression(jpClass, jpCallable, methodArgs, subExpression);
+            String typeName = resolvedType.describe();
+            assertEquals("org.apache.commons.math3.analysis.polynomials.PolynomialFunction", typeName);
+        } catch (ResolvedTypeNotFound e) {
+            fail();
+        }
+    }
+
 
     // TODO: Once the oracles dataset is ready, test this method with all oracles, which should evaluate to boolean
     @Test
@@ -249,6 +291,12 @@ public class JavaParserUtilsTest {
     }
 
     @Test
+    public void getGenericTypeTest() {
+        ResolvedType genericType = getGenericType();
+        assertEquals("java.lang.Object", genericType.describe());
+    }
+
+    @Test
     public void getMethodsOfTypeTest() {
         assertTrue(getMethodsOfType("org.apache.commons.math3.analysis.polynomials.PolynomialFunction").stream().map(MethodUsage::getName).collect(Collectors.toList()).contains("polynomialDerivative"));
         assertTrue(getMethodsOfType("unknown.pack.age.AndClass").stream().map(MethodUsage::getName).collect(Collectors.toList()).contains("equals"));
@@ -256,6 +304,36 @@ public class JavaParserUtilsTest {
         assertThrows(IllegalArgumentException.class, () -> getMethodsOfType("long"));
         assertTrue(getMethodsOfType("long[]").stream().map(MethodUsage::getName).collect(Collectors.toList()).contains("clone"));
         assertTrue(getMethodsOfType("java.lang.Long[]").stream().map(MethodUsage::getName).collect(Collectors.toList()).contains("clone"));
+    }
+
+    @Test
+    public void getVariableSignatureTest() {
+        OracleDatapoint oracleDatapoint = oracleDatapoints.get(1);
+        TypeDeclaration<?> jpClass = getClassOrInterface(oracleDatapoint.getClassSourceCode(), oracleDatapoint.getClassName());
+        FieldDeclaration jpField = jpClass.getFields().get(0);
+        VariableDeclarator jpVariable = jpField.getVariable(0);
+        String variableSignature = getVariableSignature(jpField, jpVariable);
+        assertEquals("private static final long serialVersionUID = -7726511984200295583L;", variableSignature);
+    }
+
+    @Test
+    public void getFieldSignatureTest() {
+        OracleDatapoint oracleDatapoint = oracleDatapoints.get(1);
+        TypeDeclaration<?> jpClass = getClassOrInterface(oracleDatapoint.getClassSourceCode(), oracleDatapoint.getClassName());
+        FieldDeclaration jpField = jpClass.getFields().get(0);
+        String fieldSignature = getFieldSignature(jpField.resolve());
+        // not able to retrieve "final" keyword and assignment value from ResolvedFieldDeclaration.
+        assertEquals("private static long serialVersionUID;", fieldSignature);
+    }
+
+    @Test
+    public void getCallableSignatureTest() {
+        OracleDatapoint oracleDatapoint = oracleDatapoints.get(1);
+        CallableDeclaration<?> jpCallable = getMethodDeclaration(oracleDatapoint.getMethodSourceCode());
+        assertNotNull(jpCallable);
+        String actualSignature = getCallableSignature(jpCallable, JPCallableType.METHOD);
+        String expectedSignature = "public DerivativeStructure value(final DerivativeStructure t) throws NullArgumentException, NoDataException";
+        assertEquals(expectedSignature, actualSignature);
     }
 
     @ParameterizedTest(name = "{0}")
@@ -359,6 +437,100 @@ public class JavaParserUtilsTest {
                 Arguments.of("test10", "java.lang.Class", "getInterfaces", "private Class<? extends Object>[] getInterfaces(boolean arg0)"),
                 Arguments.of("test10", "java.lang.String", "value", "byte[] value()")
         );
+    }
+
+    @Test
+    public void getPackageDeclarationFromCompilationUnitTest() {
+        OracleDatapoint oracleDatapoint = oracleDatapoints.get(1);
+        CompilationUnit cu = javaParser.parse(oracleDatapoint.getClassSourceCode()).getResult().get();
+        try {
+            PackageDeclaration packageDeclaration = getPackageDeclarationFromCompilationUnit(cu);
+            assertEquals("org.apache.commons.math3.analysis.polynomials", packageDeclaration.getNameAsString());
+        } catch (PackageDeclarationNotFoundException e) {
+            fail();
+        }
+    }
+
+    @Test
+    public void removeArrayTest() {
+        ResolvedType intType = ResolvedPrimitiveType.byName("int");
+        ResolvedType arrayType = new ResolvedArrayType(intType);
+        assertEquals(intType.toString(), removeArray(arrayType).toString());
+    }
+
+    @Test
+    public void isGenericTest() {
+        OracleDatapoint oracleDatapoint = oracleDatapoints.get(0);
+        TypeDeclaration<?> jpClass = getClassOrInterface(oracleDatapoint.getClassSourceCode(), oracleDatapoint.getClassName());
+        CallableDeclaration<?> jpCallable = getMethodDeclaration(oracleDatapoint.getMethodSourceCode());
+        String typeName = "T";
+        assertNotNull(jpCallable);
+        assertTrue(isGenericType(typeName, jpCallable, jpClass));
+    }
+
+    @Test
+    public void getAllAvailableMethodUsagesTest() {
+        OracleDatapoint oracleDatapoint = oracleDatapoints.get(1);
+        TypeDeclaration<?> jpClass = getClassOrInterface(oracleDatapoint.getClassSourceCode(), oracleDatapoint.getClassName());
+        try {
+            List<String> availableMethodList = getAllAvailableMethodUsages(jpClass)
+                    .stream()
+                    .map(MethodUsage::getName)
+                    .collect(Collectors.toList());
+            availableMethodList = new ArrayList<>(new LinkedHashSet<>(availableMethodList)).stream().sorted().collect(Collectors.toList());
+            String expected = "[add, clone, degree, " +
+                    "derivative, differentiate, equals, " +
+                    "evaluate, finalize, getClass, " +
+                    "getCoefficients, hashCode, multiply, " +
+                    "negate, notify, notifyAll, " +
+                    "polynomialDerivative, subtract, toString, " +
+                    "value, wait]";
+            String actual = availableMethodList.toString();
+            assertEquals(expected, actual);
+        } catch (JPClassNotFoundException e) {
+            fail();
+        }
+    }
+
+    @Test
+    public void getAllAvailableResolvedFieldsTest() {
+        OracleDatapoint oracleDatapoint = oracleDatapoints.get(1);
+        TypeDeclaration<?> jpClass = getClassOrInterface(oracleDatapoint.getClassSourceCode(), oracleDatapoint.getClassName());
+        try {
+            List<String> availableFieldsList = getAllAvailableResolvedFields(jpClass)
+                    .stream()
+                    .map(ResolvedDeclaration::getName)
+                    .collect(Collectors.toList());
+            availableFieldsList = new ArrayList<>(new LinkedHashSet<>(availableFieldsList)).stream().sorted().collect(Collectors.toList());
+            String expected = "[coefficients, serialVersionUID]";
+            String actual = availableFieldsList.toString();
+            assertEquals(expected, actual);
+        } catch (JPClassNotFoundException e) {
+            fail();
+        }
+    }
+
+    @Test
+    public void getCompilationUnitFromFilePathTest() {
+        String projectsPath = Paths.get("src", "main", "java", "star", "tratto", "data", "OracleType.java").toString();
+        Optional<CompilationUnit> optionalCu = getCompilationUnitFromFilePath(projectsPath);
+        assertTrue(optionalCu.isPresent());
+        CompilationUnit cu = optionalCu.get();
+        try {
+            PackageDeclaration packageDeclaration = getPackageDeclarationFromCompilationUnit(cu);
+            String packageName = packageDeclaration.getNameAsString();
+            assertEquals("star.tratto.data", packageName);
+        } catch (PackageDeclarationNotFoundException e) {
+            fail();
+        }
+    }
+
+    @Test
+    public void isNonPrivateNonStaticAttributeTest() {
+        OracleDatapoint oracleDatapoint = oracleDatapoints.get(1);
+        TypeDeclaration<?> jpClass = getClassOrInterface(oracleDatapoint.getClassSourceCode(), oracleDatapoint.getClassName());
+        FieldDeclaration jpField = jpClass.getFields().get(0);
+        assertFalse(isNonPrivateNonStaticAttribute(jpField.resolve()));
     }
 
     @ParameterizedTest(name = "{0}")
