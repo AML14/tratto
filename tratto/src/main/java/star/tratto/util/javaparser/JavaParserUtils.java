@@ -532,7 +532,7 @@ public class JavaParserUtils {
         String signature = "";
         signature += field.getAccessSpecifier().asString();
         signature += field.isStatic() ? " static " : " ";
-        signature += field.isFinal() ? " final " : "";
+        signature += field.isFinal() ? "final " : "";
         signature += String.format("%s ", variable.getTypeAsString());
         signature += String.format("%s", variable.getNameAsString());
         signature += variable.getInitializer().isPresent() ? String.format(" = %s;", variable.getInitializer().get()) : ";";
