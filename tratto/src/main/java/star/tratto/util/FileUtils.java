@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import star.tratto.TokensDataset;
 import star.tratto.exceptions.FileNotCreatedException;
 import star.tratto.exceptions.FolderCreationFailedException;
 import star.tratto.identifiers.file.FileFormat;
