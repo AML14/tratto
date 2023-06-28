@@ -8,6 +8,7 @@ import org.apache.commons.math3.linear.RealVector;
 import org.javatuples.Pair;
 
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class StringUtils {
@@ -79,7 +80,7 @@ public class StringUtils {
         if (tokens == null) {
             return indexesOfTokensInOracle;
         } else if (tokens.isEmpty()) {
-            return IntStream.rangeClosed(0, oracleTokens.size() - 1).boxed().toList();
+            return IntStream.rangeClosed(0, oracleTokens.size() - 1).boxed().collect(Collectors.toList());
         }
 
         for (int i = 0; i < oracleTokens.size(); i++) {
