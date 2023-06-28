@@ -2,6 +2,9 @@ package star.tratto.util;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import star.tratto.TokensDataset;
 import star.tratto.exceptions.FileNotCreatedException;
 import star.tratto.exceptions.FolderCreationFailedException;
 import star.tratto.identifiers.file.FileFormat;
@@ -18,6 +21,8 @@ import java.util.Objects;
  * This class manages file I/O utilities.
  */
 public class FileUtils {
+    private static final Logger logger = LoggerFactory.getLogger(FileUtils.class);
+
     public static void appendToFile(
             String dirPath,
             String fileName,
@@ -46,7 +51,7 @@ public class FileUtils {
                 }
                 default -> {
                     String errMsg = String.format("File format %s not yet supported to save the content of a file.", fileFormat.getValue());
-                    System.err.println(errMsg);
+                    logger.error(errMsg);
                 }
             }
         } catch (IOException | FolderCreationFailedException | FileNotCreatedException e) {
@@ -74,7 +79,7 @@ public class FileUtils {
                     }
                 }
             } catch (IOException e) {
-                System.err.println("Error reading file: " + e.getMessage());
+                logger.error("Error reading file: " + e.getMessage());
             }
         }
         if (!found) {
@@ -107,7 +112,7 @@ public class FileUtils {
             boolean success = dir.mkdirs();
             if (!success) {
                 String errMsg = String.format("Unable to create folder %s", dirPath);
-                System.err.println(errMsg);
+                logger.error(errMsg);
                 throw new FolderCreationFailedException();
             }
         }
@@ -116,7 +121,7 @@ public class FileUtils {
             boolean fileCreated = file.createNewFile();
             if (!fileCreated) {
                 String errMsg = String.format("Unable to create file %s to path %s.", fileName, dirPath);
-                System.err.println(errMsg);
+                logger.error(errMsg);
                 throw new FileNotCreatedException();
             }
         }
@@ -175,7 +180,7 @@ public class FileUtils {
         File jsonFile = new File(filePath);
         if (!jsonFile.exists()) {
             String errMsg = String.format("JSON file %s not found.", filePath);
-            System.err.println(errMsg);
+            logger.error(errMsg);
             return new ArrayList<>();
         }
         ObjectMapper objectMapper = new ObjectMapper();
@@ -187,7 +192,7 @@ public class FileUtils {
             );
         } catch (IOException e) {
             String errMsg = String.format("Unexpected error in processing the JSON file %s.", filePath);
-            System.err.println(errMsg);
+            logger.error(errMsg);
             e.printStackTrace();
         }
         return new ArrayList<>();
