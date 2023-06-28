@@ -14,6 +14,11 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * This class manages the differences between JDoctor and JavaParser
+ * representations of variables, as well as other utilities for both type
+ * representations.
+ */
 public class JDoctorUtils {
     /**
      * The method converts the list of JDoctor type names {@code jDoctorTypeNames} into a list of JavaParser type names.
