@@ -48,15 +48,14 @@ macOS and Windows systems.
 
 ### Create and activate _conda_ environment
 
-4. Create a new conda environment for the **TRATTO** project
+4. Create a new conda environment named "_tratto_" for the **TRATTO** project
    ```bash
-    conda create --name [name_of_the_environment]
+    conda create --name tratto
     ```
-   * **name_of_the_environment** - the name of the environment (for example _tratto_)
 
 5. Activate the conda environment
     ```bash
-    conda activate [name_of_the_environment]
+    conda activate tratto
     ```
 
 6. Install [_pip_](https://pip.pypa.io/en/stable/) if not already installed within _conda_
@@ -68,7 +67,7 @@ macOS and Windows systems.
   
 7. Move to the `ml-model` folder of the `tratto` project
     ```bash
-    cd [path_to_the_ml-model_folder]
+    cd [path_to_the_tratto_folder]/ml-model
     ```
     
 8. Install all the required dependencies
