@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ConditionPrimitiveTypeTest {
     @Test
-    public void testGetValue() {
+    public void getValueTest() {
         assertEquals("Z", ConditionPrimitiveType.CONDITION_BOOLEAN.getValue());
         assertEquals("B", ConditionPrimitiveType.CONDITION_BYTE.getValue());
         assertEquals("C", ConditionPrimitiveType.CONDITION_CHAR.getValue());
@@ -30,7 +30,7 @@ public class ConditionPrimitiveTypeTest {
     }
 
     @Test
-    public void testCondition2JP() {
+    public void condition2JPTest() {
         assertEquals("boolean", ConditionPrimitiveType.condition2jp(ConditionPrimitiveType.CONDITION_BOOLEAN).getValue());
         assertEquals("byte", ConditionPrimitiveType.condition2jp(ConditionPrimitiveType.CONDITION_BYTE).getValue());
         assertEquals("char", ConditionPrimitiveType.condition2jp(ConditionPrimitiveType.CONDITION_CHAR).getValue());
@@ -42,7 +42,7 @@ public class ConditionPrimitiveTypeTest {
     }
 
     @Test
-    public void testCondition2JPUnknown() {
+    public void condition2JPUnknownTest() {
         IllegalArgumentException thrown = assertThrows(
                 IllegalArgumentException.class,
                 () -> ConditionPrimitiveType.condition2jp(ConditionPrimitiveType.JP_BYTE)
@@ -51,7 +51,7 @@ public class ConditionPrimitiveTypeTest {
     }
 
     @Test
-    public void testConvertValue() {
+    public void convertValueTest() {
         assertEquals(ConditionPrimitiveType.CONDITION_BOOLEAN, ConditionPrimitiveType.convertValue("Z"));
         assertEquals(ConditionPrimitiveType.CONDITION_BYTE, ConditionPrimitiveType.convertValue("B"));
         assertEquals(ConditionPrimitiveType.CONDITION_CHAR, ConditionPrimitiveType.convertValue("C"));
@@ -71,7 +71,7 @@ public class ConditionPrimitiveTypeTest {
     }
 
     @Test
-    public void testGetJPValues() {
+    public void getJPValuesTest() {
         List<String> expected = new ArrayList<>();
         expected.add("boolean");
         expected.add("byte");
@@ -85,7 +85,7 @@ public class ConditionPrimitiveTypeTest {
     }
 
     @Test
-    public void testGetConditionValues() {
+    public void getConditionValuesTest() {
         List<String> expected = new ArrayList<>();
         expected.add("Z");
         expected.add("B");
@@ -99,12 +99,12 @@ public class ConditionPrimitiveTypeTest {
     }
 
     @Test
-    public void testGetConditionRegex() {
+    public void getConditionRegExTest() {
         assertEquals("[ZBCDFIJS]", ConditionPrimitiveType.getConditionRegexValues());
     }
 
     @Test
-    public void testJP2Condition() {
+    public void jp2ConditionTest() {
         assertEquals("Z", ConditionPrimitiveType.jp2condition(ConditionPrimitiveType.JP_BOOLEAN).getValue());
         assertEquals("B", ConditionPrimitiveType.jp2condition(ConditionPrimitiveType.JP_BYTE).getValue());
         assertEquals("C", ConditionPrimitiveType.jp2condition(ConditionPrimitiveType.JP_CHAR).getValue());
@@ -116,7 +116,7 @@ public class ConditionPrimitiveTypeTest {
     }
 
     @Test
-    public void testJP2ConditionUnknown() {
+    public void jp2ConditionUnknownTest() {
         IllegalArgumentException thrown = assertThrows(
                 IllegalArgumentException.class,
                 () -> ConditionPrimitiveType.jp2condition(ConditionPrimitiveType.CONDITION_BYTE)

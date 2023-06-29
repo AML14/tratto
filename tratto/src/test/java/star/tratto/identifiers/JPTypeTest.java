@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class JPTypeTest {
     @Test
-    public void testGetValue() {
+    public void getValueTest() {
         assertEquals("ARRAY_TYPE", JPType.ARRAY_TYPE.getValue());
         assertEquals("CLASS_OR_INTERFACE_TYPE", JPType.CLASS_OR_INTERFACE_TYPE.getValue());
         assertEquals("INTERSECTION_TYPE", JPType.INTERSECTION_TYPE.getValue());
@@ -22,7 +22,7 @@ public class JPTypeTest {
     }
 
     @Test
-    public void testGetJPTypeDeclaration() {
+    public void getJPTypeDeclarationTest() {
         assertEquals("CLASS_OR_INTERFACE_TYPE", JPType.getJPTypeDeclaration(new ClassOrInterfaceType()).getValue());
         assertEquals("PRIMITIVE_TYPE", JPType.getJPTypeDeclaration(new PrimitiveType()).getValue());
         assertEquals("TYPE_PARAMETER", JPType.getJPTypeDeclaration(new TypeParameter()).getValue());

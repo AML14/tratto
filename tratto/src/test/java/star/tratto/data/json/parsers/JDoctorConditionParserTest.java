@@ -1,4 +1,4 @@
-package star.tratto.dataset.oracles.json.parsers;
+package star.tratto.data.json.parsers;
 
 import star.tratto.data.oracles.json.parsers.JDoctorConditionParser;
 import star.tratto.data.oracles.json.parsers.ProjectParser;
@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class JDoctorConditionParserTest {
     @Test
-    public void testParseJDocConditions() {
+    public void parseJDocConditionsTest() {
         // get actual conditions from
         List<Project> projects = ProjectParser.initialize(FileUtils.getAbsolutePathToFile(
                 Path.REPOS.getValue(),
