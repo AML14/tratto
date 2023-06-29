@@ -45,7 +45,7 @@ import java.util.regex.Pattern;
  * dataset and conversion of JavaParser objects into interpretable inputs.
  */
 public class DatasetUtils {
-    private static final Logger logger = LoggerFactory.getLogger(JavaParserUtils.class);
+    private static final Logger logger = LoggerFactory.getLogger(DatasetUtils.class);
 
     /**
      * The method removes all the duplicates from a list.
