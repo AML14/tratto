@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * This class manages the differences between JDoctor and JavaParser
@@ -35,7 +36,7 @@ public class JDoctorUtils {
         return jDoctorTypeNames
                 .stream()
                 .map(JDoctorUtils::convertConditionParameterType)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     public static String convertConditionToArrayType(String arrayType) {

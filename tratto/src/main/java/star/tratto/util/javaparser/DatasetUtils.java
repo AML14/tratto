@@ -18,6 +18,8 @@ import org.javatuples.Pair;
 import org.javatuples.Quartet;
 import org.javatuples.Quintet;
 import org.javatuples.Triplet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleType;
 import star.tratto.data.oracles.JDoctorCondition.*;
@@ -26,7 +28,8 @@ import star.tratto.exceptions.PackageDeclarationNotFoundException;
 import star.tratto.exceptions.ResolvedTypeNotFound;
 import star.tratto.identifiers.JPCallableType;
 import star.tratto.identifiers.JavadocFormat;
-import star.tratto.identifiers.file.*;
+import star.tratto.identifiers.file.FileFormat;
+import star.tratto.identifiers.file.FileName;
 import star.tratto.identifiers.path.Path;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.oraclegrammar.custom.Splitter;
@@ -44,6 +47,8 @@ import java.util.stream.Collectors;
  * dataset and conversion of JavaParser objects into interpretable inputs.
  */
 public class DatasetUtils {
+    private static final Logger logger = LoggerFactory.getLogger(JavaParserUtils.class);
+
     /**
      * The method removes all the duplicates from a list.
      *
@@ -251,7 +256,7 @@ public class DatasetUtils {
                 // unknown type.
                 assert false;
                 String errMsg = String.format("Unexpected type when evaluating %s parameter type.", jpParameterType);
-                System.err.println(errMsg);
+                logger.error(errMsg);
             }
             // check if type is an array.
             if (hasEllipsis) {
@@ -261,7 +266,7 @@ public class DatasetUtils {
             return Optional.of(className);
         } catch (UnsolvedSymbolException e) {
             String errMsg = String.format("UnsolvedSymbolException when evaluating %s parameter type.", jpParameterType);
-            System.err.println(errMsg);
+            logger.error(errMsg);
             String className = jpParameterType.asClassOrInterfaceType().getNameAsString();
             if (hasEllipsis) {
                 className += "[]";
@@ -320,7 +325,7 @@ public class DatasetUtils {
                     }
                 } catch (UnsolvedSymbolException e) {
                     String errMsg = String.format("Unable to generate triplet for argument %s.", jpParameterType);
-                    System.err.println(errMsg);
+                    logger.error(errMsg);
                 }
             }
         }
@@ -710,7 +715,7 @@ public class DatasetUtils {
             return getMethodsFromType(jpResolvedType);
         } catch (UnsolvedSymbolException e) {
             String errMsg = String.format("Unable to generate method quartet list from type %s", jpType);
-            System.err.println(errMsg);
+            logger.error(errMsg);
             return new ArrayList<>();
         }
     }
@@ -811,7 +816,7 @@ public class DatasetUtils {
             return getFieldsFromType(jpResolvedType);
         } catch (UnsolvedSymbolException e) {
             String errMsg = String.format("Unable to generate attribute quartet list from type %s", jpType);
-            System.err.println(errMsg);
+            logger.error(errMsg);
             return new ArrayList<>();
         }
     }

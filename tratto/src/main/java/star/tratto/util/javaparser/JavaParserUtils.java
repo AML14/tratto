@@ -519,6 +519,10 @@ public class JavaParserUtils {
         }
     }
 
+    public static TypeDeclaration<?> getClassOrInterface(String classSourceCode, String name) {
+        return getClassOrInterface(javaParser.parse(classSourceCode).getResult().get(), name);
+    }
+
     /**
      * Gets the signature of a JavaParser variable declarator
      * {@link VariableDeclarator}, and return its string representation.
@@ -532,7 +536,7 @@ public class JavaParserUtils {
         String signature = "";
         signature += field.getAccessSpecifier().asString();
         signature += field.isStatic() ? " static " : " ";
-        signature += field.isFinal() ? " final " : "";
+        signature += field.isFinal() ? "final " : "";
         signature += String.format("%s ", variable.getTypeAsString());
         signature += String.format("%s", variable.getNameAsString());
         signature += variable.getInitializer().isPresent() ? String.format(" = %s;", variable.getInitializer().get()) : ";";
@@ -585,10 +589,6 @@ public class JavaParserUtils {
         }
         methodSignature = methodSignature.replaceAll("/\\*\\*([\\s\\S]*?)\\*/(\\n|\\r|\\t)*", "");
         return methodSignature.trim().replaceAll(";$", "");
-    }
-
-    public static TypeDeclaration<?> getClassOrInterface(String classSourceCode, String name) {
-        return getClassOrInterface(javaParser.parse(classSourceCode).getResult().get(), name);
     }
 
     public static String getMethodSignature(MethodDeclaration methodDeclaration) {
