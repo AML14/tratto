@@ -11,6 +11,7 @@ import star.tratto.util.FileUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class OracleDatapointBuilder {
     private OracleDatapoint datapoint;
@@ -19,6 +20,10 @@ public class OracleDatapointBuilder {
         this.reset();
     }
 
+    /**
+     * Resets all fields in the current datapoint {@link OracleDatapoint}.
+     * Sets default values.
+     */
     public void reset() {
         this.datapoint = new OracleDatapoint();
         // set default oracle datapoint values.
@@ -31,6 +36,9 @@ public class OracleDatapointBuilder {
         this.setTokensOracleVariablesNonPrivateNonStaticAttributes(new ArrayList<>());
     }
 
+    /**
+     * Sets default general tokens for symbolic grammar.
+     */
     private void setDefaultGrammarTokens() {
         String tokensGrammarPath = FileUtils.getAbsolutePathToFile(
                 Path.REPOS.getValue(),
@@ -40,10 +48,13 @@ public class OracleDatapointBuilder {
         List<String> tokenGrammar = FileUtils.readJSONList(tokensGrammarPath)
                 .stream()
                 .map(e -> (String) e)
-                .toList();
+                .collect(Collectors.toList());
         this.setTokensGeneralGrammar(tokenGrammar);
     }
 
+    /**
+     * Sets default global values for tokens.
+     */
     private void setDefaultGeneralValues() {
         String tokenGeneralValuesPath = FileUtils.getAbsolutePathToFile(
                 Path.REPOS.getValue(),
@@ -55,11 +66,11 @@ public class OracleDatapointBuilder {
                 .map(e -> ((List<?>) e)
                         .stream()
                         .map(o -> (String) o)
-                        .toList())
-                .toList()
+                        .collect(Collectors.toList()))
+                .collect(Collectors.toList())
                 .stream()
                 .map(tokenList -> new Pair<>(tokenList.get(0), tokenList.get(1)))
-                .toList();
+                .collect(Collectors.toList());
         this.setTokensGeneralValuesGlobalDictionary(tokenGeneralValues);
     }
 
@@ -101,6 +112,13 @@ public class OracleDatapointBuilder {
         this.setOracle(oracle);
     }
 
+    /**
+     * Gets all information from a JDoctor condition (e.g. ThrowsCondition,
+     * PreCondition, or a list of PostCondition's). Sets the oracle type,
+     * JavaDoc tag, and oracle.
+     *
+     * @param condition a JDoctor condition.
+     */
     public void setConditionInfo(Object condition) {
         if (condition instanceof JDoctorCondition.ThrowsCondition) {
             this.setThrowsConditionInfo((JDoctorCondition.ThrowsCondition) condition);
@@ -110,7 +128,7 @@ public class OracleDatapointBuilder {
             List<JDoctorCondition.PostCondition> conditionList = ((List<?>) condition)
                     .stream()
                     .map(e -> (JDoctorCondition.PostCondition) e)
-                    .toList();
+                    .collect(Collectors.toList());
             if (conditionList.size() > 0) {
                 this.setPostConditionInfo(conditionList);
             }
@@ -206,7 +224,30 @@ public class OracleDatapointBuilder {
     }
 
     public OracleDatapoint copy() {
-        return this.datapoint;
+        return new OracleDatapoint(
+                this.datapoint.getId(),
+                this.datapoint.getOracle(),
+                this.datapoint.getOracleType(),
+                this.datapoint.getProjectName(),
+                this.datapoint.getPackageName(),
+                this.datapoint.getClassName(),
+                this.datapoint.getJavadocTag(),
+                this.datapoint.getMethodJavadoc(),
+                this.datapoint.getMethodSourceCode(),
+                this.datapoint.getClassJavadoc(),
+                this.datapoint.getClassSourceCode(),
+                this.datapoint.getTokensGeneralGrammar(),
+                this.datapoint.getTokensGeneralValuesGlobalDictionary(),
+                this.datapoint.getTokensProjectClasses(),
+                this.datapoint.getTokensProjectClassesNonPrivateStaticNonVoidMethods(),
+                this.datapoint.getTokensProjectClassesNonPrivateStaticAttributes(),
+                this.datapoint.getTokensMethodJavadocValues(),
+                this.datapoint.getTokensMethodArguments(),
+                this.datapoint.getTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(),
+                this.datapoint.getTokensMethodVariablesNonPrivateNonStaticAttributes(),
+                this.datapoint.getTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(),
+                this.datapoint.getTokensOracleVariablesNonPrivateNonStaticAttributes()
+        );
     }
 
     public OracleDatapoint build() {

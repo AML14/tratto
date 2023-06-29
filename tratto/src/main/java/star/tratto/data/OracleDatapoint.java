@@ -70,6 +70,54 @@ public class OracleDatapoint {
         this.tokensOracleVariablesNonPrivateNonStaticAttributes = ((List<List<String>>) oracleDatapointMap.get("tokensOracleVariablesNonPrivateNonStaticAttributes")).stream().map(Quartet::fromCollection).toList();
     }
 
+    public OracleDatapoint(
+            Integer id,
+            String oracle,
+            OracleType oracleType,
+            String projectName,
+            String packageName,
+            String className,
+            String javadocTag,
+            String methodJavadoc,
+            String methodSourceCode,
+            String classJavadoc,
+            String classSourceCode,
+            List<String> tokensGeneralGrammar,
+            List<Pair<String, String>> tokensGeneralValuesGlobalDictionary,
+            List<Pair<String, String>> tokensProjectClasses,
+            List<Quartet<String, String, String, String>> tokensProjectClassesNonPrivateStaticNonVoidMethods,
+            List<Quartet<String, String, String, String>> tokensProjectClassesNonPrivateStaticAttributes,
+            List<Pair<String, String>> tokensMethodJavadocValues,
+            List<Triplet<String, String, String>> tokensMethodArguments,
+            List<Quartet<String, String, String, String>> tokensMethodVariablesNonPrivateNonStaticNonVoidMethods,
+            List<Quartet<String, String, String, String>> tokensMethodVariablesNonPrivateNonStaticAttributes,
+            List<Quartet<String, String, String, String>> tokensOracleVariablesNonPrivateNonStaticNonVoidMethods,
+            List<Quartet<String, String, String, String>> tokensOracleVariablesNonPrivateNonStaticAttributes
+    ) {
+        this.id = id;
+        this.oracle = oracle;
+        this.oracleType = oracleType;
+        this.projectName = projectName;
+        this.packageName = packageName;
+        this.className = className;
+        this.javadocTag = javadocTag;
+        this.methodJavadoc = methodJavadoc;
+        this.methodSourceCode = methodSourceCode;
+        this.classJavadoc = classJavadoc;
+        this.classSourceCode = classSourceCode;
+        this.tokensGeneralGrammar = tokensGeneralGrammar;
+        this.tokensGeneralValuesGlobalDictionary = tokensGeneralValuesGlobalDictionary;
+        this.tokensProjectClasses = tokensProjectClasses;
+        this.tokensProjectClassesNonPrivateStaticNonVoidMethods = tokensProjectClassesNonPrivateStaticNonVoidMethods;
+        this.tokensProjectClassesNonPrivateStaticAttributes = tokensProjectClassesNonPrivateStaticAttributes;
+        this.tokensMethodJavadocValues = tokensMethodJavadocValues;
+        this.tokensMethodArguments = tokensMethodArguments;
+        this.tokensMethodVariablesNonPrivateNonStaticNonVoidMethods = tokensMethodVariablesNonPrivateNonStaticNonVoidMethods;
+        this.tokensMethodVariablesNonPrivateNonStaticAttributes = tokensMethodVariablesNonPrivateNonStaticAttributes;
+        this.tokensOracleVariablesNonPrivateNonStaticNonVoidMethods = tokensOracleVariablesNonPrivateNonStaticNonVoidMethods;
+        this.tokensOracleVariablesNonPrivateNonStaticAttributes = tokensOracleVariablesNonPrivateNonStaticAttributes;
+    }
+
     public OracleDatapoint() {
     }
 
