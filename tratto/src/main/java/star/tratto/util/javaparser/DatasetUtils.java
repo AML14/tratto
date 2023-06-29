@@ -18,6 +18,7 @@ import org.javatuples.Pair;
 import org.javatuples.Quartet;
 import org.javatuples.Quintet;
 import org.javatuples.Triplet;
+import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleType;
 import star.tratto.data.oracles.JDoctorCondition.*;
 import star.tratto.exceptions.JPClassNotFoundException;
@@ -36,6 +37,7 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * This class provides core utilities for the generation of the oracles
@@ -1154,5 +1156,37 @@ public class DatasetUtils {
     ) {
         List<String> pathList = JDoctorUtils.getPathList(operation.getName());
         return JDoctorUtils.getClassNameFromPathList(pathList);
+    }
+
+    /**
+     * Randomly samples oracle data points {@link OracleDatapoint}. Filters
+     * empty or non-empty oracles.
+     *
+     * @param oracleDPs list of oracle data points {@link OracleDatapoint}.
+     * @param isEmpty if the samples data points represent empty oracles.
+     * @param numSamples the number of data points to samples.
+     * @return a random sample of oracle data points.
+     */
+    public static List<OracleDatapoint> randomSample(List<OracleDatapoint> oracleDPs, boolean isEmpty, int numSamples) {
+        // filter empty vs non-empty oracles.
+        List<OracleDatapoint> filterDPs;
+        if (isEmpty) {
+            filterDPs = oracleDPs
+                    .stream()
+                    .filter(dp -> dp.getOracle().equals(";"))
+                    .collect(Collectors.toList());
+        } else {
+            filterDPs = oracleDPs
+                    .stream()
+                    .filter(dp -> !dp.getOracle().equals(";"))
+                    .collect(Collectors.toList());
+        }
+        // randomly sample oracles.
+        Collections.shuffle(filterDPs);
+        List<OracleDatapoint> sample = new ArrayList<>();
+        for (int i = 0; i < numSamples; i++) {
+            sample.add(filterDPs.get(i));
+        }
+        return sample;
     }
 }

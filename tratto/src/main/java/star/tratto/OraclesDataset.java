@@ -10,6 +10,7 @@ import star.tratto.identifiers.file.FileFormat;
 import star.tratto.identifiers.file.FileName;
 import star.tratto.identifiers.path.Path;
 import star.tratto.util.FileUtils;
+import star.tratto.util.javaparser.DatasetUtils;
 
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import java.util.List;
 
 public class OraclesDataset {
     public static final int chunkSize = 100;
+    public static final boolean sampleEmptyOracles = true;
 
     public static void main(String[] args) {
         // Specify the path to JSON file with the list of the input projects and
@@ -34,6 +36,15 @@ public class OraclesDataset {
             // get oracle data points.
             List<OracleDatapoint> oracleDPList = oracleDPGenerator.generate();
             List<String> oraclesString = oracleDPList.stream().map(OracleDatapoint::getOracle).toList();
+            // randomly sample empty oracles.
+            if (sampleEmptyOracles) {
+                int numSamples = 10;
+                List<OracleDatapoint> emptySample = DatasetUtils.randomSample(oracleDPList, true, numSamples);
+                System.out.printf("Randomly sampling %d empty oracles:%n", numSamples);
+                for (OracleDatapoint sample : emptySample) {
+                    System.out.println(sample.getJavadocTag());
+                }
+            }
             // save oracles.
             String oracleStringFileName = String.format(
                     "oracle_list_%s", project.getProjectName()
