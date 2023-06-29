@@ -4,11 +4,11 @@ package star.tratto.data.oracles;
  * Information about a Java project.
  */
 public class Project {
-    private String projectName;
-    private String projectPath;
-    private String jarPath;
-    private String jDoctorConditionsPath;
-    private String srcPath;
+    private final String projectName;
+    private final String projectPath;
+    private final String jarPath;
+    private final String jDoctorConditionsPath;
+    private final String srcPath;
 
     /**
      * Creates a new {@link Project} object.

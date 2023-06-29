@@ -27,8 +27,6 @@ public class ProjectParser {
      * JSON project objects contained in the file and generates a list of corresponding Java project records
      * @return a list of Java project records {@link Project}, representing the deserialization of the list of the JSON
      * project objects contained in the JSON file pointed by the string path passed to the function.
-     *
-     * @throws IOException If the JSON file cannot be read
      */
     public static List<Project> initialize(String jsonFilePath) {
         // Instantiate an *ObjectMapper* to parse a JSON file
@@ -55,12 +53,10 @@ public class ProjectParser {
         try {
             List<Project> projectList = objectMapper.readValue(
                     new File(jsonFilePath),
-                    new TypeReference<List<Project>>() {
-                    }
+                    new TypeReference<>() {}
             );
             // Filter the projects that effectively exists in the resources
-            List<Project> existingProjects = checkProjectsExist(projectList);
-            return existingProjects;
+            return checkProjectsExist(projectList);
         } catch (IOException e) {
             System.err.println("Unexpected error in processing the JSON file of the input projects.");
             e.printStackTrace();
@@ -76,7 +72,7 @@ public class ProjectParser {
      * Java program
      */
     private static List<Project> checkProjectsExist(List<Project> projects) {
-        List<Project> existingProjects = new ArrayList<Project>();
+        List<Project> existingProjects = new ArrayList<>();
         for (Project project : projects) {
             File projectDir = new File(project.getProjectPath());
             if (projectDir.exists() && projectDir.isDirectory()) {

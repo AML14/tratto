@@ -18,7 +18,7 @@ import java.util.List;
 
 public class OraclesDataset {
     public static final int chunkSize = 100;
-    public static final boolean sampleEmptyOracles = true;
+    public static final boolean sampleEmptyOracles = false;
 
     public static void main(String[] args) {
         // Specify the path to JSON file with the list of the input projects and
@@ -42,7 +42,7 @@ public class OraclesDataset {
                 List<OracleDatapoint> emptySample = DatasetUtils.randomSample(oracleDPList, true, numSamples);
                 System.out.printf("Randomly sampling %d empty oracles:%n", numSamples);
                 for (OracleDatapoint sample : emptySample) {
-                    System.out.println(sample.getJavadocTag());
+                    System.out.println("JavaDoc tag: " + sample.getJavadocTag() + " \toracle: " + sample.getOracle());
                 }
             }
             // save oracles.
@@ -74,6 +74,7 @@ public class OraclesDataset {
                         chunk
                 );
             }
+            break;
         }
     }
 
