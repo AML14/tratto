@@ -5,7 +5,7 @@ import java.nio.file.Paths;
 public enum Path {
     JAVA_PARSER(Paths.get("src", "main", "java", "data", "collection", "javaparser").toString()),
     OUTPUT(Paths.get("target", "output").toString()),
-    RESOURCES(Paths.get("src", "main", "resources").toString()),
+    RESOURCES(Paths.get("src", "main", "resources", "projects-source").toString()),
     REPOS(Paths.get("src", "main", "java", "star", "tratto", "data", "repos").toString());
 
     private final String path;
