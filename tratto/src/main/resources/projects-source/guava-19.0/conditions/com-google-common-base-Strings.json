@@ -1,0 +1,167 @@
+[
+  {
+    "operation": {
+      "classname": "com.google.common.base.Strings",
+      "name": "nullToEmpty",
+      "parameterTypes": [
+        "java.lang.String"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "string"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID.equals(string)",
+          "description": "string itself if string is !=null, \"\" if string is null."
+        },
+        "description": "string itself if string is !=null, \"\" if string is null.",
+        "guard": {
+          "condition": "string!=null",
+          "description": "string itself if string is !=null, \"\" if string is null."
+        }
+      },
+      {
+        "property": {
+          "condition": "methodResultID.equals(\"\")",
+          "description": "string itself if string is !=null, \"\" if string is null."
+        },
+        "description": "string itself if string is !=null, \"\" if string is null.",
+        "guard": {
+          "condition": "(string!=null)==false",
+          "description": "string itself if string is !=null, \"\" if string is null."
+        }
+      }
+    ],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "com.google.common.base.Strings",
+      "name": "emptyToNull",
+      "parameterTypes": [
+        "java.lang.String"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "string"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [
+      {
+        "property": {
+          "condition": "(methodResultID.equals(string)||methodResultID==null)",
+          "description": "string itself if string is not empty; null if string is empty or null."
+        },
+        "description": "string itself if string is not empty; null if string is empty or null.",
+        "guard": {
+          "condition": "(((string==null)==false) && (string.isEmpty())) == false",
+          "description": "string itself if string is not empty; null if string is empty or null."
+        }
+      }
+    ],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "com.google.common.base.Strings",
+      "name": "isNullOrEmpty",
+      "parameterTypes": [
+        "java.lang.String"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "string"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID == true",
+          "description": "true if the string is null"
+        },
+        "description": "true if the string is null",
+        "guard": {
+          "condition": "string==null",
+          "description": "true if the string is null"
+        }
+      },
+      {
+        "property": {
+          "condition": "methodResultID == false",
+          "description": "true if the string is null"
+        },
+        "description": "true if the string is null",
+        "guard": {
+          "condition": "(string==null)==false",
+          "description": "true if the string is null"
+        }
+      }
+    ],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "com.google.common.base.Strings",
+      "name": "repeat",
+      "parameterTypes": [
+        "java.lang.String",
+        "int"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "string",
+        "count"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.IllegalArgumentException",
+        "description": "@throws java.lang.IllegalArgumentException count is negative.",
+        "guard": {
+          "condition": "count<0",
+          "description": "count is negative."
+        }
+      }
+    ],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID.equals(string)",
+          "description": "a string containing string repeated count times (the empty string if count is zero)."
+        },
+        "description": "a string containing string repeated count times (the empty string if count is zero).",
+        "guard": {
+          "condition": "count==0",
+          "description": "a string containing string repeated count times (the empty string if count is zero)."
+        }
+      }
+    ],
+    "pre": [
+      {
+        "description": "@param string string is !=null. !=null string.",
+        "guard": {
+          "condition": "string!=null",
+          "description": "string is !=null. !=null string."
+        }
+      }
+    ]
+  }
+]
