@@ -11,6 +11,7 @@ import org.javatuples.Quartet;
 import org.javatuples.Triplet;
 import org.junit.jupiter.api.Test;
 import star.tratto.data.OracleDatapoint;
+import star.tratto.exceptions.JPClassNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -136,6 +137,118 @@ public class DatasetUtilsTest {
         List<Quartet<String, String, String, String>> expected = new ArrayList<>();
         List<Quartet<String, String, String, String>> actual = getFieldsFromType(jpParam.getType().resolve());
         assertEquals(expected, actual);
+    }
+
+    @Test
+    public void getTokensMethodVariablesNonPrivateNonStaticNonVoidMethodsTest() {
+        OracleDatapoint oracleDatapoint = oracleDatapoints.get(1);
+        TypeDeclaration<?> jpClass = getClassOrInterface(oracleDatapoint.getClassSourceCode(), oracleDatapoint.getClassName());
+        String methodName = "value";
+        List<String> methodArgs = List.of("DerivativeStructure");
+        CallableDeclaration<?> jpCallable = getCallableDeclaration(jpClass, methodName, methodArgs);
+        assertNotNull(jpCallable);
+        try {
+            List<Quartet<String, String, String, String>> actualList = getTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(
+                    jpClass,
+                    jpCallable
+            );
+            List<String> possiblePackageNames = List.of(
+                    "org.apache.commons.math3.analysis.differentiation",
+                    "org.apache.commons.math3.analysis.polynomials",
+                    "org.apache.commons.math3.analysis",
+                    "org.apache.commons.math3",
+                    "java.io",
+                    "java.lang"
+            );
+            List<String> possibleClassNames = List.of(
+                    "PolynomialFunction",
+                    "UnivariateDifferentiableFunction",
+                    "UnivariateFunction",
+                    "DifferentiableUnivariateFunction",
+                    "DerivativeStructure",
+                    "RealFieldElement",
+                    "FieldElement",
+                    "Object"
+            );
+            for (Quartet<String, String, String, String> method : actualList) {
+                // assert package name and class name are within valid possibilities.
+                assertTrue(possiblePackageNames.contains(method.getValue1()));
+                assertTrue(possibleClassNames.contains(method.getValue2()));
+                // assert methods are not private and not static.
+                assertFalse(method.getValue3().contains("private"));
+                assertFalse(method.getValue3().contains("static"));
+            }
+        } catch (JPClassNotFoundException e) {
+            fail();
+        }
+    }
+
+    @Test
+    public void getTokensMethodVariablesNonPrivateNonStaticAttributesTest() {
+        OracleDatapoint oracleDatapoint = oracleDatapoints.get(1);
+        TypeDeclaration<?> jpClass = getClassOrInterface(oracleDatapoint.getClassSourceCode(), oracleDatapoint.getClassName());
+        String methodName = "value";
+        List<String> methodArgs = List.of("DerivativeStructure");
+        CallableDeclaration<?> jpCallable = getCallableDeclaration(jpClass, methodName, methodArgs);
+        assertNotNull(jpCallable);
+        try {
+            List<Quartet<String, String, String, String>> actualList = DatasetUtils.getTokensMethodVariablesNonPrivateNonStaticAttributes(
+                    jpClass,
+                    jpCallable
+            );
+            assertEquals(new ArrayList<>(), actualList);
+        } catch (JPClassNotFoundException e) {
+            fail();
+        }
+    }
+
+    @Test
+    public void getTokensOracleVariablesNonPrivateNonStaticNonVoidMethodsTest() {
+        OracleDatapoint oracleDatapoint = oracleDatapoints.get(1);
+        TypeDeclaration<?> jpClass = getClassOrInterface(oracleDatapoint.getClassSourceCode(), oracleDatapoint.getClassName());
+        String methodName = "value";
+        List<String> methodArgs = List.of("DerivativeStructure");
+        CallableDeclaration<?> jpCallable = getCallableDeclaration(jpClass, methodName, methodArgs);
+        assertNotNull(jpCallable);
+        List<Quartet<String, String, String, String>> actualList = DatasetUtils.getTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(
+                jpClass,
+                jpCallable,
+                oracleDatapoint.getTokensMethodArguments(),
+                oracleDatapoint.getOracle()
+        );
+        List<String> possiblePackageNames = List.of(
+                "java.lang",
+                ""
+        );
+        List<String> possibleClassNames = List.of(
+                "Object",
+                "double[]"
+        );
+        for (Quartet<String, String, String, String> method : actualList) {
+            // assert package name and class name are within valid possibilities.
+            assertTrue(possiblePackageNames.contains(method.getValue1()));
+            assertTrue(possibleClassNames.contains(method.getValue2()));
+            // assert methods are not private and not static.
+            assertFalse(method.getValue3().contains("private"));
+            assertFalse(method.getValue3().contains("static"));
+        }
+    }
+
+    @Test
+    public void getTokensOracleVariablesNonPrivateNonStaticAttributesTest() {
+        OracleDatapoint oracleDatapoint = oracleDatapoints.get(1);
+        TypeDeclaration<?> jpClass = getClassOrInterface(oracleDatapoint.getClassSourceCode(), oracleDatapoint.getClassName());
+        String methodName = "value";
+        List<String> methodArgs = List.of("DerivativeStructure");
+        CallableDeclaration<?> jpCallable = getCallableDeclaration(jpClass, methodName, methodArgs);
+        assertNotNull(jpCallable);
+        List<Quartet<String, String, String, String>> actualList = DatasetUtils.getTokensOracleVariablesNonPrivateNonStaticAttributes(
+                jpClass,
+                jpCallable,
+                oracleDatapoint.getTokensMethodArguments(),
+                oracleDatapoint.getOracle()
+        );
+        assertEquals(List.of(new Quartet<>("length", "", "double[]", "public final int length;")), actualList);
     }
 
     @Test
