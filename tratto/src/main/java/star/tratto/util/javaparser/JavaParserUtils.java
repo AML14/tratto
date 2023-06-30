@@ -547,15 +547,38 @@ public class JavaParserUtils {
      * Gets the signature of a JavaParser resolved field declaration
      * {@link ResolvedFieldDeclaration} and return its string representation.
      *
-     * @param resolvedField resolved field declaration to generate the signature
-     * @return a string representation of the signature of the declaration
+     * @param resolvedField resolved field declaration.
+     * @return a string representation of the signature of the declaration.
      */
     public static String getFieldSignature(
             ResolvedFieldDeclaration resolvedField
     ) {
+        boolean hasAccessSpecifier = !resolvedField.accessSpecifier().asString().equals("");
+        boolean isStatic = resolvedField.isStatic();
         String signature = "";
-        signature += resolvedField.accessSpecifier().asString();
-        signature += resolvedField.isStatic() ? " static " : "";
+        signature += hasAccessSpecifier ? resolvedField.accessSpecifier().asString() + " " : "";
+        signature += isStatic ? "static" + " " : "";
+        signature += getTypeWithoutPackages(resolvedField.getType().describe()) + " ";
+        signature += resolvedField.getName();
+        signature += ";";
+        return signature.trim();
+    }
+
+    /**
+     * Gets the signature of a JavaParser resolved field declaration
+     * {@link ResolvedFieldDeclaration} and return its string representation.
+     * Uses a given modifier value to determine the modifiers.
+     *
+     * @param resolvedField resolved field declaration.
+     * @param modifier an integer representing the field modifiers.
+     * @return a string representation of the signature of the declaration.
+     */
+    public static String getFieldSignature(
+            ResolvedFieldDeclaration resolvedField,
+            int modifier
+    ) {
+        String signature = "";
+        signature += (modifier == 0) ? "" : (java.lang.reflect.Modifier.toString(modifier) + " ");
         signature += getTypeWithoutPackages(resolvedField.getType().describe()) + " ";
         signature += resolvedField.getName();
         signature += ";";

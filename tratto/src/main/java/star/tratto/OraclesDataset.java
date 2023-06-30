@@ -74,7 +74,6 @@ public class OraclesDataset {
                         chunk
                 );
             }
-            break;
         }
     }
 

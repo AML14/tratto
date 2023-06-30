@@ -14,6 +14,7 @@ import com.github.javaparser.resolution.declarations.ResolvedFieldDeclaration;
 import com.github.javaparser.resolution.declarations.ResolvedReferenceTypeDeclaration;
 import com.github.javaparser.resolution.types.ResolvedType;
 import com.github.javaparser.symbolsolver.javaparsermodel.declarations.JavaParserFieldDeclaration;
+import com.github.javaparser.symbolsolver.reflectionmodel.ReflectionFieldDeclaration;
 import org.javatuples.Pair;
 import org.javatuples.Quartet;
 import org.javatuples.Quintet;
@@ -36,6 +37,7 @@ import star.tratto.oraclegrammar.custom.Splitter;
 import star.tratto.util.FileUtils;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -721,6 +723,52 @@ public class DatasetUtils {
     }
 
     /**
+     * Uses methods and fields of JavaParserFieldDeclaration to get a more
+     * detailed field signature (includes all modifiers and value).
+     */
+    private static List<Quartet<String, String, String, String>> convertJavaParserFieldDeclarationToQuartet(
+            JavaParserFieldDeclaration resolvedField
+    ) {
+        List<Quartet<String, String, String, String>> attributeList = new ArrayList<>();
+        FieldDeclaration jpField = resolvedField.getWrappedNode();
+        for (VariableDeclarator jpVariable : jpField.getVariables()) {
+            attributeList.add(new Quartet<>(
+                    jpVariable.getNameAsString(),
+                    resolvedField.declaringType().getPackageName(),
+                    resolvedField.declaringType().getClassName(),
+                    JavaParserUtils.getVariableSignature(jpField, jpVariable)
+            ));
+        }
+        return attributeList;
+    }
+
+    /**
+     * Uses methods and fields of ReflectionFieldDeclaration to get a more
+     * detailed field signature (includes all modifiers).
+     */
+    private static List<Quartet<String, String, String, String>> convertReflectionFieldDeclarationToQuartet(
+            ReflectionFieldDeclaration resolvedField
+    ) {
+        List<Quartet<String, String, String, String>> attributeList = new ArrayList<>();
+        String signature;
+        try {
+            Field f = resolvedField.getClass().getDeclaredField("field");
+            f.setAccessible(true);
+            Field field = (Field) f.get(resolvedField);
+            signature = JavaParserUtils.getFieldSignature(resolvedField, field.getModifiers());
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            signature = JavaParserUtils.getFieldSignature(resolvedField);
+        }
+        attributeList.add(new Quartet<>(
+                resolvedField.getName(),
+                resolvedField.declaringType().getPackageName(),
+                resolvedField.declaringType().getClassName(),
+                signature
+        ));
+        return attributeList;
+    }
+
+    /**
      * Converts a list of fields {@link ResolvedFieldDeclaration} to a list
      * of string quartets where each entry has the form:
      *  [fieldName, packageName, className, fieldSignature]
@@ -730,20 +778,17 @@ public class DatasetUtils {
     private static List<Quartet<String, String, String, String>> convertFieldDeclarationToQuartet(
             List<ResolvedFieldDeclaration> resolvedFields
     ) {
-        List<Quartet<String, String, String, String>> quartetList = new ArrayList<>();
+        List<Quartet<String, String, String, String>> fieldList = new ArrayList<>();
         for (ResolvedFieldDeclaration resolvedField : resolvedFields) {
             if (resolvedField instanceof JavaParserFieldDeclaration) {
-                FieldDeclaration jpField = ((JavaParserFieldDeclaration) resolvedField).getWrappedNode();
-                for (VariableDeclarator jpVariable : jpField.getVariables()) {
-                    quartetList.add(new Quartet<>(
-                            jpVariable.getNameAsString(),
-                            resolvedField.declaringType().getPackageName(),
-                            resolvedField.declaringType().getClassName(),
-                            JavaParserUtils.getVariableSignature(jpField, jpVariable)
-                    ));
-                }
+                // use JavaParserFieldDeclaration to get a more detailed signature.
+                fieldList.addAll(convertJavaParserFieldDeclarationToQuartet((JavaParserFieldDeclaration) resolvedField));
+            } else if (resolvedField instanceof ReflectionFieldDeclaration) {
+                // use ReflectionFieldDeclaration to get a more detailed signature.
+                fieldList.addAll(convertReflectionFieldDeclarationToQuartet((ReflectionFieldDeclaration) resolvedField));
             } else {
-                quartetList.add(new Quartet<>(
+                // use default ResolvedFieldDeclaration.
+                fieldList.add(new Quartet<>(
                         resolvedField.getName(),
                         resolvedField.declaringType().getPackageName(),
                         resolvedField.declaringType().getClassName(),
@@ -751,7 +796,7 @@ public class DatasetUtils {
                 ));
             }
         }
-        return quartetList;
+        return fieldList;
     }
 
     /**
