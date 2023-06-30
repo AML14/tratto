@@ -974,6 +974,9 @@ public class DatasetUtils {
                         methodArgs,
                         subexpression
                 );
+                if (!resolvedType.isPrimitive()) {
+                    methodList.addAll(getMethodsFromType(JavaParserUtils.getGenericType()));
+                }
                 methodList.addAll(getMethodsFromType(resolvedType));
             } catch (UnsolvedSymbolException | ResolvedTypeNotFound e) {
                 ResolvedType genericType = JavaParserUtils.getGenericType();
