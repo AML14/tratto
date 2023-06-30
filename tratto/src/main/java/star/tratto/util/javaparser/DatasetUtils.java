@@ -161,7 +161,7 @@ public class DatasetUtils {
                     double realValue = Double.parseDouble(match);
                     numericValues.add(new Pair<>(Double.toString(realValue), "double"));
                 } catch (Exception e) {
-                    System.err.printf("Number exceed maximum float value: %s%n", match);
+                    logger.error(String.format("Number exceed maximum float value: %s%n", match));
                 }
             } else {
                 // integer (no decimal).
@@ -169,7 +169,7 @@ public class DatasetUtils {
                     long longIntValue = Long.parseLong(match);
                     numericValues.add(new Pair<>(Long.toString(longIntValue), "int"));
                 } catch (NumberFormatException e) {
-                    System.err.printf("Number exceed maximum integer value: %s", match);
+                    logger.error(String.format("Number exceed maximum integer value: %s", match));
                 }
             }
         }
@@ -257,8 +257,7 @@ public class DatasetUtils {
             } else {
                 // unknown type.
                 assert false;
-                String errMsg = String.format("Unexpected type when evaluating %s parameter type.", jpParameterType);
-                logger.error(errMsg);
+                logger.error(String.format("Unexpected type when evaluating %s parameter type.", jpParameterType));
             }
             // check if type is an array.
             if (hasEllipsis) {
@@ -267,8 +266,7 @@ public class DatasetUtils {
             // return class name.
             return Optional.of(className);
         } catch (UnsolvedSymbolException e) {
-            String errMsg = String.format("UnsolvedSymbolException when evaluating %s parameter type.", jpParameterType);
-            logger.error(errMsg);
+            logger.error(String.format("UnsolvedSymbolException when evaluating %s parameter type.", jpParameterType));
             String className = jpParameterType.asClassOrInterfaceType().getNameAsString();
             if (hasEllipsis) {
                 className += "[]";
@@ -326,8 +324,7 @@ public class DatasetUtils {
                         }
                     }
                 } catch (UnsolvedSymbolException e) {
-                    String errMsg = String.format("Unable to generate triplet for argument %s.", jpParameterType);
-                    logger.error(errMsg);
+                    logger.error(String.format("Unable to generate triplet for argument %s.", jpParameterType));
                 }
             }
         }
@@ -716,8 +713,7 @@ public class DatasetUtils {
             ResolvedType jpResolvedType = jpType.resolve();
             return getMethodsFromType(jpResolvedType);
         } catch (UnsolvedSymbolException e) {
-            String errMsg = String.format("Unable to generate method quartet list from type %s", jpType);
-            logger.error(errMsg);
+            logger.error(String.format("Unable to generate method quartet list from type %s", jpType));
             return new ArrayList<>();
         }
     }
@@ -833,17 +829,17 @@ public class DatasetUtils {
                 fieldList.addAll(convertFieldDeclarationToQuartet(jpResolvedFields));
             } else {
                 // unable to recover type declaration.
-                System.err.printf(
+                logger.error(String.format(
                         "Unable to analyze the resolved type %s: " +
                         "resolved type declaration not found.", jpResolvedType
-                );
+                ));
             }
         } else if (!(jpResolvedType.isPrimitive() || jpResolvedType.isVoid() || jpResolvedType.isTypeVariable())) {
             // unknown type.
-            System.err.printf(
+            logger.error(String.format(
                     "Return type %s different from ReferenceType, PrimitiveType, " +
                     "ArrayType, TypeVariable, and VoidType not yet supported%n", jpResolvedType
-            );
+            ));
         }
         return fieldList;
     }
@@ -860,8 +856,7 @@ public class DatasetUtils {
             ResolvedType jpResolvedType = jpType.resolve();
             return getFieldsFromType(jpResolvedType);
         } catch (UnsolvedSymbolException e) {
-            String errMsg = String.format("Unable to generate attribute quartet list from type %s", jpType);
-            logger.error(errMsg);
+            logger.error(String.format("Unable to generate attribute quartet list from type %s", jpType));
             return new ArrayList<>();
         }
     }
