@@ -89,8 +89,6 @@ public class DatasetUtilsTest {
         assertNotNull(jpCallable);
         String expected = oracleDatapoint.getMethodSourceCode().replaceAll("\\s+", "");
         String actual = getCallableSourceCode(jpCallable).replaceAll("\\s+", "");
-//        System.out.println("original: " + oracleDatapoint.getMethodSourceCode());
-//        System.out.println("refactor: " + getCallableSourceCode(jpCallable));
         assertEquals(expected, actual);
     }
 
@@ -103,8 +101,27 @@ public class DatasetUtilsTest {
         CallableDeclaration<?> jpCallable = getCallableDeclaration(jpClass, methodName, methodArgs);
         assertNotNull(jpCallable);
         Parameter jpParam = jpCallable.getParameters().get(0);
-//        System.out.println(oracleDatapoint.getTokensMethodVariablesNonPrivateNonStaticNonVoidMethods());
-//        System.out.println(removeDuplicates(getMethodsFromType(jpParam.getType().resolve())));
+        assertEquals(jpParam.getType().asString(), "DerivativeStructure");
+        List<Quartet<String, String, String, String>> actualList = getMethodsFromType(jpParam.getType().resolve());
+        List<String> possiblePackageNames = List.of(
+                "org.apache.commons.math3.analysis.differentiation",
+                "java.lang",
+                "org.apache.commons.math3"
+        );
+        List<String> possibleClassNames = List.of(
+                "DerivativeStructure",
+                "Object",
+                "RealFieldElement",
+                "FieldElement"
+        );
+        for (Quartet<String, String, String, String> method : actualList) {
+            // assert package name and class name are within valid possibilities.
+            assertTrue(possiblePackageNames.contains(method.getValue1()));
+            assertTrue(possibleClassNames.contains(method.getValue2()));
+            // assert methods are not private and not static.
+            assertFalse(method.getValue3().contains("private"));
+            assertFalse(method.getValue3().contains("static"));
+        }
     }
 
     @Test
