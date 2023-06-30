@@ -576,31 +576,6 @@ public class Parser {
         }
     }
 
-    public static String removeNonVariableTokens(String oracle) {
-        // Define the path to the json file with the list of non-variable tokens
-        String jsonFilePath = FileUtils.getAbsolutePathToFile(Path.REPOS.getValue(), FileName.NON_VARIABLE_TOKENS, FileFormat.JSON);
-        // Instantiate an object mapper to read the json file
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            // Read the list of non-variable tokens
-            List<String> nonVariableTokenList = mapper.readValue(
-                    new File(jsonFilePath),
-                    new TypeReference<List<String>>() {}
-            );
-            // Iterate over the non-variable tokens
-            for (String token : nonVariableTokenList) {
-                // Replace the non-variable tokens with blank spaces
-                oracle = oracle.replaceAll(token, " ");
-            }
-            return oracle;
-        } catch (IOException e) {
-            // Manage exception if the file is not found
-            System.err.println("Unexpected error in processing the JSON file of the non variable tokens.");
-            e.printStackTrace();
-        }
-        return oracle;
-    }
-
     public static String removeParenthesisContentFromOracle(String oracle) {
         return oracle.replaceAll("(?:\\(|\\[).*?(?:\\)|\\])", "");
     }

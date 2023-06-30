@@ -796,7 +796,7 @@ public class JavaParserUtils {
                     "Impossible to get all the methods of class %s.",
                     jpClass.getNameAsString()
             );
-            System.err.printf(errMsg);
+            logger.error(errMsg);
             throw new JPClassNotFoundException(errMsg);
         }
     }
@@ -818,7 +818,7 @@ public class JavaParserUtils {
                     "Impossible to get all the methods of class %s.",
                     jpClass.getNameAsString()
             );
-            System.err.printf(errMsg);
+            logger.error(errMsg);
             throw new JPClassNotFoundException(errMsg);
         }
     }
