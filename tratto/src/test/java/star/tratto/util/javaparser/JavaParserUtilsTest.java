@@ -299,6 +299,10 @@ public class JavaParserUtilsTest {
     @Test
     public void getMethodsOfTypeTest() {
         assertTrue(getMethodsOfType("org.apache.commons.math3.analysis.polynomials.PolynomialFunction").stream().map(MethodUsage::getName).collect(Collectors.toList()).contains("polynomialDerivative"));
+        assertTrue(getMethodsOfType("org.apache.commons.math3.linear.RealMatrix").stream().map(MethodUsage::getName).collect(Collectors.toList()).contains("equals"));
+        assertTrue(getMethodsOfType("org.apache.commons.math3.linear.AbstractRealMatrix").stream().map(MethodUsage::getName).collect(Collectors.toList()).contains("equals"));
+        assertTrue(getMethodsOfType("java.util.List").stream().map(MethodUsage::getName).collect(Collectors.toList()).contains("wait"));
+        assertTrue(getMethodsOfType("java.util.ArrayList").stream().map(MethodUsage::getName).collect(Collectors.toList()).contains("wait"));
         assertTrue(getMethodsOfType("unknown.pack.age.AndClass").stream().map(MethodUsage::getName).collect(Collectors.toList()).contains("equals"));
         assertTrue(getMethodsOfType("T").stream().map(MethodUsage::getName).collect(Collectors.toList()).contains("equals"));
         assertThrows(IllegalArgumentException.class, () -> getMethodsOfType("long"));
