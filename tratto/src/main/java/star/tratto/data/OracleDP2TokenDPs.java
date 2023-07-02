@@ -16,7 +16,7 @@ import static star.tratto.util.StringUtils.compactExpression;
  * when generating the datasets or when generating oracles.
  * <br>
  * When generating the datasets, this class also keeps track of the number of positive and negative
- * samples generated. In addition, it has a configuration parameter ({@code crashOnWrongOracle}) to
+ * samples generated. In addition, it has a configuration parameter ({@code CRASH_WRONG_ORACLE}) to
  * decide whether to crash when an oracle is not valid (i.e., when it cannot be reconstructed token
  * by token according to the grammar and the context restrictions).
  */
@@ -24,10 +24,10 @@ public class OracleDP2TokenDPs {
 
     private static final Parser parser = Parser.getInstance();
     private static List<String> currentTokenClassesSoFar;
-    private static final boolean crashOnWrongOracle = false; // TODO: make it configurable
     private static int tokenIndex = 0;
-    public static int negativeSamples = 0;
-    public static int positiveSamples = 0;
+    private static int negativeSamples = 0;
+    private static int positiveSamples = 0;
+    public static boolean CRASH_WRONG_ORACLE = false; // TODO: make it configurable
 
     /**
      * Transform the contents of an OracleDatapoint (obtained from a row from oracles dataset) into multiple
@@ -130,7 +130,7 @@ public class OracleDP2TokenDPs {
     private static void assertTokenLegal(boolean nextTokenActuallyLegal, String token, List<String> oracleSoFarTokens) {
         if (!nextTokenActuallyLegal && !token.equals("")) { // If token is "", this is oracle-generation time, so the next token is not known a priori.
             String message = "Token '" + token + "' is not legal after partial oracle '" + compactExpression(oracleSoFarTokens) + "'";
-            if (crashOnWrongOracle) {
+            if (CRASH_WRONG_ORACLE) {
                 throw new RuntimeException(message);
             } else {
                 throw new MissingTokenException(message);
@@ -141,5 +141,13 @@ public class OracleDP2TokenDPs {
     public static void resetSampleIndexes() {
         negativeSamples = 0;
         positiveSamples = 0;
+    }
+
+    public static int getNegativeSamples() {
+        return negativeSamples;
+    }
+
+    public static int getPositiveSamples() {
+        return positiveSamples;
     }
 }
