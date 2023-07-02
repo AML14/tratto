@@ -340,12 +340,16 @@ public class JavaParserUtils {
      */
     public static Set<MethodUsage> getMethodsOfType(String type) throws IllegalArgumentException {
         ResolvedType resolvedType = null;
+        ResolvedReferenceTypeDeclaration resolvedReferenceTypeDeclaration = null;
         Set<MethodUsage> methods = new HashSet<>();
         boolean useObjectMethods = true;
         try {
             resolvedType = getResolvedType(type);
-            methods.addAll(getResolvedReferenceTypeDeclaration(resolvedType).getAllMethods());
-            useObjectMethods = false;
+            resolvedReferenceTypeDeclaration = getResolvedReferenceTypeDeclaration(resolvedType);
+            methods.addAll(resolvedReferenceTypeDeclaration.getAllMethods());
+            if (!resolvedReferenceTypeDeclaration.isInterface()) { // Interfaces do not always inherit from Object
+                useObjectMethods = false;
+            }
         } catch (UnsupportedOperationException e) {
             if (!resolvedType.isArray()) {
                 throw new IllegalArgumentException("Trying to retrieve available methods from a type that is not " +
@@ -355,7 +359,12 @@ public class JavaParserUtils {
             logger.warn("Unresolvable type: {}", type);
         } finally {
             if (useObjectMethods) {
-                methods.addAll(getResolvedReferenceTypeDeclaration("java.lang.Object").getAllMethods());
+                Set<MethodUsage> objectMethods = getResolvedReferenceTypeDeclaration("java.lang.Object").getAllMethods();
+                objectMethods.forEach(om -> {
+                    if (methods.stream().noneMatch(m -> m.getName().equals(om.getName()) && m.getParamTypes().equals(om.getParamTypes()))) {
+                        methods.add(om);
+                    }
+                });
             }
         }
         return methods;
