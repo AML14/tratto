@@ -11,9 +11,11 @@ pool:
 
 steps:
 - task: ShellScript@2
+  displayName: "Install TrattoGrammar dependency"
   inputs:
     scriptPath: 'tratto/scripts/install_dependencies.sh'
 - task: Maven@3
+  displayName: "Build and run tests"
   inputs:
     mavenPomFile: 'tratto/pom.xml'
     mavenOptions: '-Xmx3072m'
@@ -23,3 +25,8 @@ steps:
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'package'
+- task: PublishCodeCoverageResults@1
+  displayName: "Publish code coverage"
+  inputs:
+    summaryFileLocation: $(System.DefaultWorkingDirectory)/target/site/jacoco/jacoco.xml
+    pathToSources: $(System.DefaultWorkingDirectory)/src/main/java/
