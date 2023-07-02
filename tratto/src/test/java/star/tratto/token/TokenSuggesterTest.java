@@ -8,6 +8,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.MockedStatic;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleDatapointTest;
 import star.tratto.data.OracleType;
@@ -38,9 +40,10 @@ import static star.tratto.token.TokenSuggester.*;
  */
 public class TokenSuggesterTest {
 
+     private static final Logger logger = LoggerFactory.getLogger(TokenSuggesterTest.class);
+
     private static final Parser parser = Parser.getInstance();
     private static final List<OracleDatapoint> oracleDatapoints = readOracleDatapointsFromOraclesDataset();
-
 
     @Test
     public void isTokenLegalBasedOnContextRestrictionsNonConflictiveTokenTest() {
@@ -972,21 +975,21 @@ public class TokenSuggesterTest {
     }
 
     /**
-     * This test is to check that, for all TrattoGrammar expressions contained in
-     * the resources files, the TokenSuggester always returns as next legal tokens
-     * the tokens that actually go next in the partial TrattoGrammar expression.
-     * For instance, given the expression "occurrences<0;", this test checks that
-     * after the partialExpression "", the token "someVarOrClassOrFieldOrMethod"
-     * is returned, after "occurrences", the token "<" is returned, after
-     * "occurrences<", the token "0" is returned, and after "occurrences<0", the
-     * token ";" is returned.
+     * This function allows to check that, for a list of  TrattoGrammar expressions,
+     * the TokenSuggester always returns as next legal tokens the tokens that actually
+     * go next in the partial TrattoGrammar expression. For instance, given the
+     * expression "occurrences<0;", this test checks that after the partialExpression
+     * "", the token "someVarOrClassOrFieldOrMethod" is returned, after "occurrences",
+     * the token "<" is returned, after "occurrences<", the token "0" is returned,
+     * and after "occurrences<0", the token ";" is returned.
      */
-    public void getNextLegalTokensAuxTest(List<String> stringOracles) {
+    public static void getNextLegalTokensAuxTest(List<String> stringOracles) {
         // Instantiate Parser
         Parser parser = Parser.getInstance();
 
         // For each oracle, parse and split
         for (String stringOracle : stringOracles) {
+            logger.info("Processing oracle: {}", stringOracle);
             Oracle oracle = parser.getPartialOracle(stringOracle);
             List<String> oracleTokens = split(oracle);
             List<String> oracleSoFarTokens = new ArrayList<>();
@@ -1000,12 +1003,6 @@ public class TokenSuggesterTest {
         }
     }
     @Test
-    @Disabled("Test too slow. Run once in a while to check that getNextLegalTokens method works for ALL oracles in the resources folder.")
-    public void getNextLegalTokensTest() {
-        List<String> stringOracles = readOraclesFromExternalFiles();
-        getNextLegalTokensAuxTest(stringOracles);
-    }
-    @Test
     public void getNextLegalTokensOneSelectedOracleTest() {
         List<String> stringOracles = readOraclesFromExternalFiles();
         int last = stringOracles.size()-1;
@@ -1015,7 +1012,7 @@ public class TokenSuggesterTest {
     /**
      * Auxiliary method to handle tokens that refer to strings, numbers or variable names
      */
-    private String getToken(String token) {
+    private static String getToken(String token) {
         if (Tokens.TOKENS.contains(token)) {
             return token;
         }
