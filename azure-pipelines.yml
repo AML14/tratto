@@ -4,10 +4,7 @@ pool:
 jobs:
 - job: unit_tests
   steps:
-  - task: ShellScript@2
-    displayName: "Install TrattoGrammar dependency"
-    inputs:
-      scriptPath: 'tratto/scripts/install_dependencies.sh'
+  - template: azure-pipelines-templates/install_dependency.yml
   - task: Maven@3
     displayName: "Build and run tests"
     inputs:
@@ -19,15 +16,12 @@ jobs:
       publishJUnitResults: true
       testResultsFiles: '**/surefire-reports/TEST-*.xml'
       goals: 'package'
-  - task: PublishCodeCoverageResults@1
-    displayName: "Publish code coverage"
-    inputs:
-      summaryFileLocation: $(System.DefaultWorkingDirectory)/tratto/target/site/jacoco/jacoco.xml
-      pathToSources: $(System.DefaultWorkingDirectory)/tratto/src/main/java/
+  - template: azure-pipelines-templates/publish-coverage.yml
 - job: tokensuggester_e2e_tests
   dependsOn:
   - unit_tests
   steps:
+  - template: azure-pipelines-templates/install_dependency.yml
   - task: Maven@3
     displayName: "Run TokenSuggester E2E tests"
     inputs:
@@ -39,15 +33,12 @@ jobs:
       publishJUnitResults: true
       testResultsFiles: '**/surefire-reports/TEST-*.xml'
       goals: 'test'
-  - task: PublishCodeCoverageResults@1
-    displayName: "Publish code coverage"
-    inputs:
-      summaryFileLocation: $(System.DefaultWorkingDirectory)/tratto/target/site/jacoco/jacoco.xml
-      pathToSources: $(System.DefaultWorkingDirectory)/tratto/src/main/java/
+  - template: azure-pipelines-templates/publish-coverage.yml
 - job: datasets_e2e_tests
   dependsOn:
   - unit_tests
   steps:
+  - template: azure-pipelines-templates/install_dependency.yml
   - task: Maven@3
     displayName: "Run datasets E2E tests"
     inputs:
@@ -59,8 +50,4 @@ jobs:
       publishJUnitResults: true
       testResultsFiles: '**/surefire-reports/TEST-*.xml'
       goals: 'test'
-  - task: PublishCodeCoverageResults@1
-    displayName: "Publish code coverage"
-    inputs:
-      summaryFileLocation: $(System.DefaultWorkingDirectory)/tratto/target/site/jacoco/jacoco.xml
-      pathToSources: $(System.DefaultWorkingDirectory)/tratto/src/main/java/
+  - template: azure-pipelines-templates/publish-coverage.yml
