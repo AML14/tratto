@@ -10,6 +10,7 @@ import star.tratto.identifiers.file.FileFormat;
 import star.tratto.identifiers.file.FileName;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -195,5 +196,14 @@ public class FileUtils {
             e.printStackTrace();
         }
         return new ArrayList<>();
+    }
+
+    public static String readFile(String filePath) {
+        try {
+            return Files.readString(Paths.get(filePath));
+        } catch (IOException e) {
+            logger.error("Error reading file: " + e.getMessage());
+            return "";
+        }
     }
 }

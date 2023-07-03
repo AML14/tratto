@@ -38,6 +38,16 @@ public class JavaParserUtilsTest {
     private static final JavaParser javaParser = JavaParserUtils.getJavaParser();
 
     @Test
+    public void updateAndResetJavaParserTest() {
+        String qualifiedClass = "plume.Digest";
+        assertEquals("Digest", JavaParserUtils.getTypeWithoutPackages(qualifiedClass));
+        JavaParserUtils.updateSymbolSolver("src/test/resources/projects-source");
+        assertThrows(UnsolvedSymbolException.class, () -> JavaParserUtils.getTypeWithoutPackages(qualifiedClass));
+        JavaParserUtils.resetSymbolSolver();
+        assertEquals("Digest", JavaParserUtils.getTypeWithoutPackages(qualifiedClass));
+    }
+
+    @Test
     public void getResolvedTypeOfExpressionPrimitiveTest() {
         OracleDatapoint oracleDatapoint = oracleDatapoints.get(0);
         TypeDeclaration<?> jpClass = getClassOrInterface(oracleDatapoint.getClassSourceCode(), oracleDatapoint.getClassName());

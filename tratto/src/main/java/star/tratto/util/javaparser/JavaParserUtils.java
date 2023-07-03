@@ -46,6 +46,7 @@ public class JavaParserUtils {
     private static final Logger logger = LoggerFactory.getLogger(JavaParserUtils.class);
     private static JavaParser javaParser = getJavaParser();
     private static final Parser parser = Parser.getInstance();
+    private static final String ROOT = "src/main/resources/projects-packaged";
     private static final String SYNTHETIC_CLASS_NAME = "Tratto__AuxiliaryClass";
     private static final String SYNTHETIC_CLASS_SOURCE = "public class " + SYNTHETIC_CLASS_NAME + " {}";
     private static final String SYNTHETIC_METHOD_NAME = "__tratto__auxiliaryMethod";
@@ -54,13 +55,24 @@ public class JavaParserUtils {
 
     public static JavaParser getJavaParser() {
         if (javaParser == null) {
-            String root = "src/main/resources/projects-packaged";
             SymbolSolverCollectionStrategy strategy = new SymbolSolverCollectionStrategy();
-            strategy.collect(Paths.get(root));
+            strategy.collect(Paths.get(ROOT));
             javaParser = new JavaParser();
             javaParser.getParserConfiguration().setSymbolResolver(strategy.getParserConfiguration().getSymbolResolver().get());
         }
         return javaParser;
+    }
+
+    public static void updateSymbolSolver(String root) {
+        SymbolSolverCollectionStrategy strategy = new SymbolSolverCollectionStrategy();
+        strategy.collect(Paths.get(root));
+        javaParser.getParserConfiguration().setSymbolResolver(strategy.getParserConfiguration().getSymbolResolver().get());
+    }
+
+    public static void resetSymbolSolver() {
+        SymbolSolverCollectionStrategy strategy = new SymbolSolverCollectionStrategy();
+        strategy.collect(Paths.get(ROOT));
+        javaParser.getParserConfiguration().setSymbolResolver(strategy.getParserConfiguration().getSymbolResolver().get());
     }
 
     /**
