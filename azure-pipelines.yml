@@ -1,5 +1,5 @@
 jobs:
-- job: Unit tests
+- job: unit_tests
   pool:
     vmImage: ubuntu-latest
   steps:
@@ -23,7 +23,7 @@ jobs:
     inputs:
       summaryFileLocation: $(System.DefaultWorkingDirectory)/tratto/target/site/jacoco/jacoco.xml
       pathToSources: $(System.DefaultWorkingDirectory)/tratto/src/main/java/
-- job: TokenSuggester E2E tests
+- job: tokensuggester_e2e_tests
   pool:
     vmImage: ubuntu-latest
   steps:
@@ -47,7 +47,7 @@ jobs:
     inputs:
       summaryFileLocation: $(System.DefaultWorkingDirectory)/tratto/target/site/jacoco/jacoco.xml
       pathToSources: $(System.DefaultWorkingDirectory)/tratto/src/main/java/
-- job: Datasets E2E tests
+- job: datasets_e2e_tests
   pool:
     vmImage: ubuntu-latest
   steps:
