@@ -1,6 +1,9 @@
 package star.tratto;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.javaparser.JavaParser;
+import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.body.TypeDeclaration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import star.tratto.data.OracleDatapoint;
@@ -28,6 +31,7 @@ public class Tratto {
     private static final Logger logger = LoggerFactory.getLogger(Tratto.class);
 
     private static final ClassAnalyzer classAnalyzer = ClassAnalyzer.getInstance();
+    private static final JavaParser javaParser = JavaParserUtils.getJavaParser();
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private static final String ML_MODEL_API_URL = "TODO";
     public static String CLASS_PATH = "src/main/resources/classes-under-test/BagUtils.java";
@@ -55,14 +59,15 @@ public class Tratto {
         // Configure JavaParser to resolve symbols from project under test
         JavaParserUtils.updateSymbolSolver(PROJECT_JAR_PATH);
 
-        // Set up base OracleDatapoint within ClassAnalyzer based on project and class under test
-        classAnalyzer.setProjectPath(PROJECT_SOURCE_PATH);
-        classAnalyzer.setClassPath(CLASS_PATH);
-
+        // Set up OracleDatapointBuilder within ClassAnalyzer based on project and class under test
         String className = getClassNameFromPath(CLASS_PATH);
         String classSourceCode = readFile(CLASS_PATH);
+        CompilationUnit classCu = javaParser.parse(classSourceCode).getResult().get();
+        TypeDeclaration<?> classTd = getClassOrInterface(classCu, className);
+        classAnalyzer.setProjectPath(PROJECT_SOURCE_PATH);
+        classAnalyzer.setClassFeatures(className, classSourceCode, classCu, classTd);
 
-        List<OracleDatapoint> oracleDatapoints = classAnalyzer.getOracleDatapointsFromClass(getClassOrInterface(classSourceCode, className));
+        List<OracleDatapoint> oracleDatapoints = classAnalyzer.getOracleDatapointsFromClass();
         for (OracleDatapoint oracleDatapoint : oracleDatapoints) { // Update each OracleDatapoint until the oracle is complete (ends with ';')
             List<String> oracleSoFarTokens = new ArrayList<>();
             while (!oracleDatapoint.getOracle().endsWith(";")) {

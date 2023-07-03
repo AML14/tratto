@@ -1,10 +1,16 @@
 package star.tratto.input;
 
+import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.CallableDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.javadoc.Javadoc;
 import com.github.javaparser.javadoc.JavadocBlockTag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import star.tratto.data.OracleDatapoint;
+import star.tratto.data.oracles.OracleDatapointBuilder;
+import star.tratto.exceptions.JPClassNotFoundException;
+import star.tratto.util.javaparser.DatasetUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,13 +26,21 @@ import java.util.Optional;
  */
 public class ClassAnalyzer {
 
+    private static final Logger logger = LoggerFactory.getLogger(ClassAnalyzer.class);
+
     private static ClassAnalyzer instance;
     private String projectPath;
-    private String classPath;
-    private OracleDatapoint baseOracleDatapoint;
+    private String className;
+    private String classSourceCode;
+    private CompilationUnit classCu;
+    private TypeDeclaration<?> classTd;
+    private OracleDatapointBuilder oracleDPBuilder;
 
     private ClassAnalyzer() {
-        // TODO: Initialize baseOracleDatapoint
+        oracleDPBuilder = new OracleDatapointBuilder();
+        oracleDPBuilder.setId(0);
+        oracleDPBuilder.setOracle("");
+        oracleDPBuilder.setProjectName("");
     }
 
     public static ClassAnalyzer getInstance() {
@@ -36,42 +50,58 @@ public class ClassAnalyzer {
         return instance;
     }
 
-    public String getProjectPath() {
-        return projectPath;
-    }
-
     public void setProjectPath(String projectPath) {
         if (projectPath != null && !projectPath.equals(this.projectPath)) {
             this.projectPath = projectPath;
-            updateBaseOracleDatapointWithNewProject();
+            updateOracleDPBuilderWithNewProject();
         }
     }
 
-    public String getClassPath() {
-        return classPath;
-    }
-
-    public void setClassPath(String classPath) {
-        if (classPath != null && !classPath.equals(this.classPath)) {
-            this.classPath = classPath;
-            updateBaseOracleDatapointWithNewClass();
+    public void setClassFeatures(String className, String classSourceCode, CompilationUnit classCu, TypeDeclaration<?> classTd) {
+        if (classSourceCode != null && !classSourceCode.equals(this.classSourceCode)) {
+            this.className = className;
+            this.classSourceCode = classSourceCode;
+            this.classCu = classCu;
+            this.classTd = classTd;
+            updateOracleDPBuilderWithNewClassFeatures();
         }
     }
 
-    private void updateBaseOracleDatapointWithNewProject() {
-        // TODO
+    private void updateOracleDPBuilderWithNewProject() {
+        oracleDPBuilder.setTokensProjectClasses(DatasetUtils.getProjectClassesTokens(projectPath));
+        oracleDPBuilder.setTokensProjectClassesNonPrivateStaticNonVoidMethods(DatasetUtils.getProjectNonPrivateStaticNonVoidMethodsTokens(projectPath));
+        oracleDPBuilder.setTokensProjectClassesNonPrivateStaticAttributes(DatasetUtils.getProjectNonPrivateStaticAttributesTokens(projectPath));
     }
 
-    private void updateBaseOracleDatapointWithNewClass() {
-        // TODO
+    private void updateOracleDPBuilderWithNewClassFeatures() {
+        oracleDPBuilder.setClassName(className);
+        oracleDPBuilder.setClassSourceCode(classSourceCode);
+        oracleDPBuilder.setClassJavadoc(DatasetUtils.getClassJavadoc(classTd));
+        oracleDPBuilder.setPackageName(DatasetUtils.getClassPackage(classCu));
     }
 
-    public List<OracleDatapoint> getOracleDatapointsFromClass(TypeDeclaration<?> clazz) {
+    private void updateOracleDPBuilderWithNewMethodFeatures(CallableDeclaration<?> methodOrConstructor) {
+        oracleDPBuilder.setMethodSourceCode(DatasetUtils.getCallableSourceCode(methodOrConstructor));
+        oracleDPBuilder.setMethodJavadoc(DatasetUtils.getCallableJavadoc(methodOrConstructor));
+        oracleDPBuilder.setTokensMethodArguments(DatasetUtils.getTokensMethodArguments(classTd, methodOrConstructor));
+        try {
+            oracleDPBuilder.setTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(DatasetUtils.getTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(classTd, methodOrConstructor));
+            oracleDPBuilder.setTokensMethodVariablesNonPrivateNonStaticAttributes(DatasetUtils.getTokensMethodVariablesNonPrivateNonStaticAttributes(classTd, methodOrConstructor));
+        } catch (JPClassNotFoundException e) {
+            logger.warn("Class {} not found while trying to get variable tokens from method {}", className, methodOrConstructor.getNameAsString());
+        }
+    }
+
+    /**
+     * Generates oracle datapoints based on currently set class features. You need
+     * to call {@link ClassAnalyzer#setClassFeatures} before this method.
+     */
+    public List<OracleDatapoint> getOracleDatapointsFromClass() {
         List<OracleDatapoint> oracleDatapoints = new ArrayList<>();
         List<CallableDeclaration<?>> methodsAndConstructors = new ArrayList<>();
 
-        methodsAndConstructors.addAll(clazz.getMethods());
-        methodsAndConstructors.addAll(clazz.getConstructors());
+        methodsAndConstructors.addAll(classTd.getMethods());
+        methodsAndConstructors.addAll(classTd.getConstructors());
 
         for (CallableDeclaration<?> methodOrConstructor : methodsAndConstructors) {
             oracleDatapoints.addAll(getOracleDatapointsFromMethod(methodOrConstructor));
@@ -85,7 +115,7 @@ public class ClassAnalyzer {
 
         Optional<Javadoc> optionalJavadoc = methodOrConstructor.getJavadoc();
         if (optionalJavadoc.isPresent()) {
-            return getOracleDatapointsFromJavadoc(optionalJavadoc.get());
+            return getOracleDatapointsFromJavadoc(methodOrConstructor);
         }
 
         // If no Javadoc is present, we generate one OracleDatapoint for each type, with empty javadocTag and methodJavadoc
@@ -94,13 +124,16 @@ public class ClassAnalyzer {
         return oracleDatapoints;
     }
 
-    public List<OracleDatapoint> getOracleDatapointsFromJavadoc(Javadoc javadoc) {
+    /**
+     * This method assumes that the passed method or constructor has a Javadoc.
+     */
+    public List<OracleDatapoint> getOracleDatapointsFromJavadoc(CallableDeclaration<?> methodOrConstructor) {
         List<OracleDatapoint> oracleDatapoints = new ArrayList<>();
         boolean hasParamTag = false;
         boolean hasReturnTag = false;
         boolean hasThrowsOrExceptionTag = false;
 
-        List<JavadocBlockTag> javadocTags = javadoc.getBlockTags();
+        List<JavadocBlockTag> javadocTags = methodOrConstructor.getJavadoc().get().getBlockTags(); // TODO: Test with multiple example Javadocs
         for (JavadocBlockTag javadocTag : javadocTags) {
             if (javadocTag.getType().equals(JavadocBlockTag.Type.PARAM)) {
                 // TODO: Generate precondition

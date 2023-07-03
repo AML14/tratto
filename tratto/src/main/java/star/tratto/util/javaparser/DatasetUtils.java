@@ -122,6 +122,16 @@ public class DatasetUtils {
         return JavadocFormat.CLASS_PREFIX.getValue() + optionalJavadocComment.get().getContent() + JavadocFormat.CLASS_SUFFIX.getValue();
     }
 
+    public static String getClassPackage(
+            CompilationUnit cu
+    ) {
+        try {
+            return JavaParserUtils.getPackageDeclarationFromCompilationUnit(cu).getNameAsString();
+        } catch (PackageDeclarationNotFoundException e) {
+            return "";
+        }
+    }
+
     /**
      * Gets the Javadoc comment of a function {@link CallableDeclaration}.
      *
