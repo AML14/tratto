@@ -3,5 +3,6 @@ steps:
   displayName: 'Download previous coverage'
   inputs:
     buildType: 'current'
-    artifactName: 'tratto/target'
+    artifactName: 'coverageResults'
     targetPath: '$(Pipeline.Workspace)/s'
+- script: mv coverageResults/* tratto/target/; rm -rf coverageResults
