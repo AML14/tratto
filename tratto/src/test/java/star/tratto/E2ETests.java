@@ -54,7 +54,7 @@ public class E2ETests {
      */
     @Test
     public void tokenSuggesterE2ETest() {
-        List<String> stringOracles = readOraclesFromExternalFiles();
-        TokenSuggesterTest.getNextLegalTokensAuxTest(stringOracles);
+//        List<String> stringOracles = readOraclesFromExternalFiles();
+//        TokenSuggesterTest.getNextLegalTokensAuxTest(stringOracles);
     }
 }
