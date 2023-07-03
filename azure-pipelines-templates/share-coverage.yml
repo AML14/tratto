@@ -1,8 +1,8 @@
 steps:
-- script: find "$(pwd)" -type f 
+- script: find "$(pwd)/.." -type f 
   displayName: 'Check'
 - task: CopyFiles@2
-  displayName: 'Copy coverage'
+  displayName: 'Save coverage'
   inputs:
     contents: 'tratto/target/**'
     targetFolder: '$(Build.ArtifactStagingDirectory)'
