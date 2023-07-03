@@ -1,10 +1,13 @@
 package star.tratto.input;
 
+import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.CallableDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.javadoc.Javadoc;
 import com.github.javaparser.javadoc.JavadocBlockTag;
 import star.tratto.data.OracleDatapoint;
+import star.tratto.data.oracles.OracleDatapointBuilder;
+import star.tratto.util.javaparser.DatasetUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,10 +26,17 @@ public class ClassAnalyzer {
     private static ClassAnalyzer instance;
     private String projectPath;
     private String classPath;
+    private String className;
     private OracleDatapoint baseOracleDatapoint;
+    private CompilationUnit cu;
+    private OracleDatapointBuilder oracleDatapointBuilder = new OracleDatapointBuilder();
+    // TODO: Do as in loadProject: have several private fields where to store info about project and class (and even method maybe)
+
+    // TODO: Use getEmptyDatapoint from ProjectOracleGenerator to create baseOracleDatapoints
 
     private ClassAnalyzer() {
         // TODO: Initialize baseOracleDatapoint
+
     }
 
     public static ClassAnalyzer getInstance() {
@@ -60,10 +70,16 @@ public class ClassAnalyzer {
 
     private void updateBaseOracleDatapointWithNewProject() {
         // TODO
+        oracleDatapointBuilder.setTokensProjectClasses(DatasetUtils.getProjectClassesTokens(projectPath));
+        oracleDatapointBuilder.setTokensProjectClassesNonPrivateStaticNonVoidMethods(DatasetUtils.getProjectNonPrivateStaticNonVoidMethodsTokens(projectPath));
+        oracleDatapointBuilder.setTokensProjectClassesNonPrivateStaticAttributes(DatasetUtils.getProjectNonPrivateStaticAttributesTokens(projectPath));
     }
 
     private void updateBaseOracleDatapointWithNewClass() {
         // TODO
+        TypeDeclaration<?> typeDeclaration = DatasetUtils.getTypeDeclaration(cu, className);
+        oracleDatapointBuilder.setClassJavadoc(DatasetUtils.getClassJavadoc(typeDeclaration));
+        oracleDatapointBuilder.setClassSourceCode(typeDeclaration.toString());
     }
 
     public List<OracleDatapoint> getOracleDatapointsFromClass(TypeDeclaration<?> clazz) {
@@ -85,7 +101,7 @@ public class ClassAnalyzer {
 
         Optional<Javadoc> optionalJavadoc = methodOrConstructor.getJavadoc();
         if (optionalJavadoc.isPresent()) {
-            return getOracleDatapointsFromJavadoc(optionalJavadoc.get());
+            return getOracleDatapointsFromJavadoc(methodOrConstructor);
         }
 
         // If no Javadoc is present, we generate one OracleDatapoint for each type, with empty javadocTag and methodJavadoc
@@ -94,16 +110,19 @@ public class ClassAnalyzer {
         return oracleDatapoints;
     }
 
-    public List<OracleDatapoint> getOracleDatapointsFromJavadoc(Javadoc javadoc) {
+    public List<OracleDatapoint> getOracleDatapointsFromJavadoc(CallableDeclaration<?> methodOrConstructor) {
         List<OracleDatapoint> oracleDatapoints = new ArrayList<>();
         boolean hasParamTag = false;
         boolean hasReturnTag = false;
         boolean hasThrowsOrExceptionTag = false;
+        Javadoc javadoc = methodOrConstructor.getJavadoc().get();
 
         List<JavadocBlockTag> javadocTags = javadoc.getBlockTags();
         for (JavadocBlockTag javadocTag : javadocTags) {
             if (javadocTag.getType().equals(JavadocBlockTag.Type.PARAM)) {
                 // TODO: Generate precondition
+                // TODO: Continue populating OracleDatapointBuilder
+                oracleDatapointBuilder.
                 hasParamTag = true;
             } else if (javadocTag.getType().equals(JavadocBlockTag.Type.RETURN)) {
                 // TODO: Generate postcondition
@@ -117,6 +136,7 @@ public class ClassAnalyzer {
         // If there's some missing tag, generate OracleDatapoint without associated tag
         if (!hasParamTag) {
             // TODO: Generate precondition
+            // TODO: Use getEmptyOracle
         }
         if (!hasReturnTag) {
             // TODO: Generate postcondition
