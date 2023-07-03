@@ -6,7 +6,7 @@ jobs:
   steps:
   - template: azure-pipelines-templates/install-dependency.yml
   - task: Maven@3
-    displayName: "Build and run tests"
+    displayName: 'Build and run tests'
     inputs:
       mavenPomFile: 'tratto/pom.xml'
       mavenOptions: '-Xmx3072m'
@@ -24,7 +24,7 @@ jobs:
   - template: azure-pipelines-templates/install-dependency.yml
   - template: azure-pipelines-templates/download-coverage.yml
   - task: Maven@3
-    displayName: "Run TokenSuggester E2E tests"
+    displayName: 'Run TokenSuggester E2E tests'
     inputs:
       mavenPomFile: 'tratto/pom.xml'
       mavenOptions: '-Dtest=star.tratto.E2ETests#tokenSuggesterE2ETest'
@@ -35,14 +35,14 @@ jobs:
       testResultsFiles: '**/surefire-reports/TEST-*.xml'
       goals: 'test'
   - template: azure-pipelines-templates/share-coverage.yml
-  - template: azure-pipelines-templates/download-coverage.yml
 - job: datasets_e2e_tests
   dependsOn:
   - unit_tests
   steps:
   - template: azure-pipelines-templates/install-dependency.yml
+  - template: azure-pipelines-templates/download-coverage.yml
   - task: Maven@3
-    displayName: "Run datasets E2E tests"
+    displayName: 'Run datasets E2E tests'
     inputs:
       mavenPomFile: 'tratto/pom.xml'
       mavenOptions: '-Dtest=star.tratto.E2ETests#datasetsE2ETest'
@@ -53,3 +53,14 @@ jobs:
       testResultsFiles: '**/surefire-reports/TEST-*.xml'
       goals: 'test'
   - template: azure-pipelines-templates/share-coverage.yml
+- job: publish_coverage
+  dependsOn:
+  - unit_tests
+  - tokensuggester_e2e_tests
+  - datasets_e2e_tests
+  steps:
+  - task: PublishCodeCoverageResults@1
+    displayName: 'Publish coverage'
+    inputs:
+      summaryFileLocation: '$(System.DefaultWorkingDirectory)/tratto/target/site/jacoco/jacoco.xml'
+      pathToSources: '$(System.DefaultWorkingDirectory)/tratto/src/main/java/'

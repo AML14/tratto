@@ -1,14 +1,9 @@
 steps:
-- task: PublishCodeCoverageResults@1
-  displayName: "Publish coverage"
-  inputs:
-    summaryFileLocation: $(System.DefaultWorkingDirectory)/tratto/target/site/jacoco/jacoco.xml
-    pathToSources: $(System.DefaultWorkingDirectory)/tratto/src/main/java/
 - task: CopyFiles@2
   displayName: 'Copy coverage'
   inputs:
     contents: 'tratto/target/**'
     targetFolder: '$(Build.ArtifactStagingDirectory)'
-- publish: '$(Build.ArtifactStagingDirectory)/tratto/target'
+- publish: '$(Build.ArtifactStagingDirectory)/tratto/target
   displayName: 'Save coverage for later'
-  artifact: coverageResults
+  artifact: 'tratto/target'
