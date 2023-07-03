@@ -13,7 +13,6 @@ import java.util.List;
 
 import static star.tratto.TestUtilities.readOraclesFromExternalFiles;
 
-@Disabled
 public class E2ETests {
 
     /**
