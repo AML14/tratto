@@ -8,7 +8,7 @@ jobs:
     displayName: 'Build and run tests'
     inputs:
       mavenPomFile: 'tratto/pom.xml'
-      mavenOptions: '-Xmx3072m'
+      mavenOptions: '-Xmx3072m -Dtest=star.tratto.util.JavaTypesTest'
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: '1.17'
       jdkArchitectureOption: 'x64'
@@ -26,7 +26,7 @@ jobs:
   - download: current
     displayName: 'Load previous coverage'
     artifact: coverageResults1
-  - script: mkdir -p tratto/target/site; mv ../coverageResults1/tratto/target/site/* tratto/target/site/
+  - script: mkdir -p tratto/target/site; mv ../coverageResults1/* tratto/target/site/
     displayName: 'Relocate previous coverage'
   - task: Maven@3
     displayName: 'Run TokenSuggester E2E tests'
@@ -50,7 +50,7 @@ jobs:
   - download: current
     displayName: 'Load previous coverage'
     artifact: coverageResults2
-  - script: mkdir -p tratto/target/site; mv ../coverageResults2/tratto/target/site/* tratto/target/site/
+  - script: mkdir -p tratto/target/site; mv ../coverageResults2/* tratto/target/site/
     displayName: 'Relocate previous coverage'
   - task: Maven@3
     displayName: 'Run datasets E2E tests'
