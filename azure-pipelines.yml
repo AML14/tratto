@@ -16,12 +16,13 @@ jobs:
       publishJUnitResults: true
       testResultsFiles: '**/surefire-reports/TEST-*.xml'
       goals: 'package'
-  - template: azure-pipelines-templates/publish-coverage.yml
+  - template: azure-pipelines-templates/share-coverage.yml
 - job: tokensuggester_e2e_tests
   dependsOn:
   - unit_tests
   steps:
   - template: azure-pipelines-templates/install-dependency.yml
+  - template: azure-pipelines-templates/download-coverage.yml
   - task: Maven@3
     displayName: "Run TokenSuggester E2E tests"
     inputs:
@@ -33,7 +34,8 @@ jobs:
       publishJUnitResults: true
       testResultsFiles: '**/surefire-reports/TEST-*.xml'
       goals: 'test'
-  - template: azure-pipelines-templates/publish-coverage.yml
+  - template: azure-pipelines-templates/share-coverage.yml
+  - template: azure-pipelines-templates/download-coverage.yml
 - job: datasets_e2e_tests
   dependsOn:
   - unit_tests
@@ -50,4 +52,4 @@ jobs:
       publishJUnitResults: true
       testResultsFiles: '**/surefire-reports/TEST-*.xml'
       goals: 'test'
-  - template: azure-pipelines-templates/publish-coverage.yml
+  - template: azure-pipelines-templates/share-coverage.yml
