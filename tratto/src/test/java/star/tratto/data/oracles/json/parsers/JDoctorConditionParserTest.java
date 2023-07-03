@@ -1,19 +1,18 @@
-package star.tratto.data.json.parsers;
+package star.tratto.data.oracles.json.parsers;
 
-import star.tratto.data.oracles.json.parsers.JDoctorConditionParser;
-import star.tratto.data.oracles.json.parsers.ProjectParser;
-import star.tratto.identifiers.file.FileName;
-import star.tratto.identifiers.file.FileFormat;
-import star.tratto.identifiers.path.Path;
+import org.junit.jupiter.api.Test;
 import star.tratto.data.oracles.JDoctorCondition;
 import star.tratto.data.oracles.Project;
+import star.tratto.identifiers.file.FileFormat;
+import star.tratto.identifiers.file.FileName;
+import star.tratto.identifiers.path.Path;
 import star.tratto.util.FileUtils;
-import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class JDoctorConditionParserTest {
     @Test
