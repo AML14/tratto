@@ -1,8 +1,11 @@
 steps:
+- script: find "$(pwd)" -type f 
+  displayName: 'Check'
 - task: DownloadPipelineArtifact@2
   displayName: 'Download previous coverage'
   inputs:
     buildType: 'current'
     artifactName: 'coverageResults'
     targetPath: '$(Pipeline.Workspace)/s'
-- script: mv coverageResults/* tratto/target/; rm -rf coverageResults
+# - script: mv coverageResults/* tratto/target/; rm -rf coverageResults
+#   displayName: 'Relocate coverage'
