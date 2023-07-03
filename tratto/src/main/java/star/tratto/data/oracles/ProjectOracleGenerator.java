@@ -210,7 +210,6 @@ public class ProjectOracleGenerator {
     private OracleDatapoint getEmptyDatapoint(
             Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String> jpTag
     ) {
-        // TODO: Use this method to populate empty oracles.
         OracleDatapointBuilder builder = new OracleDatapointBuilder();
         // get basic information of jpTag.
         TypeDeclaration<?> jpClass = jpTag.getValue0();

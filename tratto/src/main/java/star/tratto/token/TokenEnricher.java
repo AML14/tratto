@@ -201,7 +201,6 @@ public class TokenEnricher {
         if (!methodVariables.contains(precedingExpr) &&
                 oracleDatapoint.getTokensOracleVariablesNonPrivateNonStaticAttributes().isEmpty() && oracleDatapoint.getTokensOracleVariablesNonPrivateNonStaticAttributes().isEmpty()) {
             // TODO: Use token collector to populate oracle variables
-            // TODO: Get resolvedType from Pair (using JavaParserUtils) and call getMethodsFromType and getFieldsFromType in DatasetUtils
         }
 
         // Get non-static attributes of class, including those whose this class is instance of
