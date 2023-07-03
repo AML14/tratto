@@ -112,3 +112,5 @@ nohup ./train_token_values.sh > log_token_values.out 2>&1 & echo $! > run_token_
 
 The command will run the training in background and will create and save the logs in the `log_token_classes.out`  (or `log_token_values.out`)
 file and the pid of the process in the `run_token_classes.pid` (or `run_token_values.pid`) file.
+
+nohup ./train_token_class_decoder.sh > log_token_classes_decoder_renamed_5.out 2>&1 & echo $! > run_token_classes_decoder_renamed_5.pid

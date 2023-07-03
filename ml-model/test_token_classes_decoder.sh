@@ -6,4 +6,4 @@ python3 test_token_classes_decoder.py \
 --input_path dataset/token-classes-dataset \
 --output_path test_token_classes_decoder \
 --project_name gs_core \
---classification_type category_prediction
+--classification_type CATEGORY_PREDICTION

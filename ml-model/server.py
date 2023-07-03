@@ -1,4 +1,6 @@
 import argparse
+import os
+
 import torch
 from transformers import PreTrainedModel
 from typing import Type
@@ -28,9 +30,18 @@ def setup_model(
     config_class, model_class, tokenizer_class = ModelClasses.getModelClass(model_type)
     # Setup tokenizer
     tokenizer = tokenizer_class.from_pretrained(tokenizer_name)
+    # Add tokens to tokenizer vocabulary
+    tokenizer.add_tokens([
+        'multiple', 'single', 'variable', 'punctuation', 'value', 'arrays', 'operator', 'Class', 'Name', 'Semicolon',
+        'Method', 'Argument', 'Open', 'Parenthesis', 'This', 'True', 'Arraysclass', 'Logical', 'Equals', 'Not',
+        'Period', 'Instanceof', 'Null', 'Integer', 'Close', 'Greater', 'Less', 'Result', 'Float', 'Bit', 'Negate',
+        'False', 'Colon', 'Question', 'Arithmetical', 'Field', 'Logic', 'Shift', 'Boolean', 'Streammethod',
+        'Matchmethodvariable', 'Matchmethod', 'Rightarrow', 'String', 'Comma', 'Modifier'
+    ])
     # Setup model
     config = config_class.from_pretrained(config_name if config_name else model_name_or_path)
     pt_model = model_class.from_pretrained(args.model_name_or_path, config=config)
+    pt_model.resize_token_embeddings(len(tokenizer))
     pt_model.to(device)
     model = resume_checkpoint(pt_model, checkpoint_path)
     return model, tokenizer

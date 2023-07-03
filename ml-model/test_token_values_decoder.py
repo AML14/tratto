@@ -116,12 +116,11 @@ def pre_processing(
     # Iterate through the groups and assign them to separate datasets
     for identifier, group_data in df_grouped:
         # Delete the tgt labels from the input dataset, and others less relevant columns
-        group_data = group_data.drop(['oracleId', 'projectName', 'classJavadoc', 'classSourceCode'], axis=1)
-        group_data = group_data.drop(['tokenClass'], axis=1)
+        group_data = group_data.drop(['tokenClass','oracleId', 'projectName', 'classJavadoc', 'classSourceCode'], axis=1)
         # Get the list of target values from the dataframe
         if classification_type == ClassificationType.CATEGORY_PREDICTION:
             tgt = group_data["token"].values.tolist()
-            group_data = group_data.drop(['tokenClass'], axis=1)
+            group_data = group_data.drop(['token'], axis=1)
         else:
             tgt = group_data["label"].values.tolist()
             group_data = group_data.drop(['label'], axis=1)
@@ -143,14 +142,14 @@ def tokenize_datasets(
         t_src_dict = tokenizer.batch_encode_plus(
             inputs,
             max_length=512,
-            pad_to_max_length=True,
+            padding=True,
             truncation=True,
             return_tensors="pt"
         )
         t_tgt_dict = tokenizer.batch_encode_plus(
             targets,
             max_length=8,
-            pad_to_max_length=True,
+            padding=True,
             truncation=True,
             return_tensors="pt"
         )

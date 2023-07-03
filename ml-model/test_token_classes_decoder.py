@@ -147,14 +147,14 @@ def tokenize_datasets(
         t_src_dict = tokenizer.batch_encode_plus(
             inputs,
             max_length=512,
-            pad_to_max_length=True,
+            padding=True,
             truncation=True,
             return_tensors="pt"
         )
         t_tgt_dict = tokenizer.batch_encode_plus(
             targets,
             max_length=8,
-            pad_to_max_length=True,
+            padding=True,
             truncation=True,
             return_tensors="pt"
         )

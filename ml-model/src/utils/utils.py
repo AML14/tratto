@@ -97,7 +97,7 @@ def export_stats(file_path: str, content: dict, mode: str = "w"):
     return
 
 
-def import_dataset(file_path: str):
+def import_json(file_path: str):
     """
     The method imports the dataset to use to train and validate the model.
     The methods accept only the format .json
@@ -115,9 +115,6 @@ def import_dataset(file_path: str):
         The file opened
     input_obj:
         The content of the file:
-            - A csv reader in the case of a .csv file
-            - A dict in the case of a .json file
-            - A str in the case of an .xml file
     """
     with open(file_path) as input_file:
         input_obj = json.load(input_file)
