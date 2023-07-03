@@ -15,7 +15,7 @@ jobs:
       publishJUnitResults: true
       testResultsFiles: '**/surefire-reports/TEST-*.xml'
       goals: 'package'
-  - publish: $(System.DefaultWorkingDirectory)/tratto/target/site
+  - publish: $(System.DefaultWorkingDirectory)/tratto/target
     displayName: 'Save coverage'
     artifact: coverageResults1
 - job: tokensuggester_e2e_tests
@@ -26,7 +26,12 @@ jobs:
   - download: current
     displayName: 'Load previous coverage'
     artifact: coverageResults1
-  - script: mkdir -p tratto/target/site; mv ../coverageResults1/* tratto/target/site/
+  - script: |
+      mkdir -p tratto/target/site
+      mkdir tratto/target/surefire-reports
+      mv ../coverageResults1/site/* tratto/target/site/
+      mv ../coverageResults1/surefire-reports/* tratto/target/surefire-reports/
+      mv ../coverageResults1/jacoco.exec tratto/target/jacoco.exec
     displayName: 'Relocate previous coverage'
   - task: Maven@3
     displayName: 'Run TokenSuggester E2E tests'
@@ -50,7 +55,12 @@ jobs:
   - download: current
     displayName: 'Load previous coverage'
     artifact: coverageResults2
-  - script: mkdir -p tratto/target/site; mv ../coverageResults2/* tratto/target/site/
+  - script: |
+      mkdir -p tratto/target/site
+      mkdir tratto/target/surefire-reports
+      mv ../coverageResults2/site/* tratto/target/site/
+      mv ../coverageResults2/surefire-reports/* tratto/target/surefire-reports/
+      mv ../coverageResults2/jacoco.exec tratto/target/jacoco.exec
     displayName: 'Relocate previous coverage'
   - task: Maven@3
     displayName: 'Run datasets E2E tests'
