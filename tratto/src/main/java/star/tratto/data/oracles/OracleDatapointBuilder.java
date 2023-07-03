@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 
 public class OracleDatapointBuilder {
     private OracleDatapoint datapoint;
+    private static final List<String> featureLevels = List.of("default", "project", "class", "method");
 
     public OracleDatapointBuilder() {
         this.reset();
@@ -250,8 +251,58 @@ public class OracleDatapointBuilder {
         );
     }
 
+    /**
+     * Returns a new datapoint, but carries over specific columns from
+     * current datapoint based on the given `level`. This avoids re-running
+     * code between each generated oracle. The columns kept for each level are:
+     * - "default": tokensGeneralGrammar, tokensGeneralValuesGlobalDictionary.
+     * - "project": tokensProjectClasses,
+     *      tokensProjectClassesNonPrivateStaticNonVoidMethods,
+     *      tokensProjectClassesNonPrivateStaticAttributes.
+     * - "class": className, classSourceCode, classJavadoc, packageName.
+     * - "method": methodSourceCode, methodJavadoc, tokensMethodArguments,
+     *      tokensMethodVariablesNonPrivateNonStaticNonVoidMethods,
+     *      tokensMethodVariablesNonPrivateNonStaticAttributes.
+     * The ordering is hierarchical, such that each level keeps columns from
+     * the previous level (e.g. "project" also keeps "default" features).
+     *
+     * @param level the depth of the reset. Must be one of: "default",
+     *              "project", "class", or "method".
+     * @return a new datapoint {@link OracleDatapoint}.
+     */
+    public OracleDatapoint build(String level) {
+        OracleDatapoint oracleDP = this.copy();
+        this.reset();
+        // copy fields based on `level`.
+        assert featureLevels.contains(level) : String.format("Given level must be one of: %s.%n", featureLevels);
+        switch (level) {
+            case "method":
+                this.setMethodSourceCode(oracleDP.getMethodSourceCode());
+                this.setMethodJavadoc(oracleDP.getMethodJavadoc());
+                this.setTokensMethodArguments(oracleDP.getTokensMethodArguments());
+                this.setTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(oracleDP.getTokensMethodVariablesNonPrivateNonStaticNonVoidMethods());
+                this.setTokensMethodVariablesNonPrivateNonStaticAttributes(oracleDP.getTokensMethodVariablesNonPrivateNonStaticAttributes());
+            case "class":
+                this.setClassName(oracleDP.getClassName());
+                this.setClassSourceCode(oracleDP.getClassSourceCode());
+                this.setClassJavadoc(oracleDP.getClassJavadoc());
+                this.setPackageName(oracleDP.getPackageName());
+            case "project":
+                this.setTokensProjectClasses(oracleDP.getTokensProjectClasses());
+                this.setTokensProjectClassesNonPrivateStaticNonVoidMethods(oracleDP.getTokensProjectClassesNonPrivateStaticNonVoidMethods());
+                this.setTokensProjectClassesNonPrivateStaticAttributes(oracleDP.getTokensProjectClassesNonPrivateStaticAttributes());
+                this.setProjectName(oracleDP.getProjectName());
+            case "default":
+                break;
+        }
+        return oracleDP;
+    }
+
+    /**
+     * @return a new datapoint {@link OracleDatapoint}. Resets builder.
+     */
     public OracleDatapoint build() {
-        OracleDatapoint oracleDP = this.datapoint;
+        OracleDatapoint oracleDP = this.copy();
         this.reset();
         return oracleDP;
     }
