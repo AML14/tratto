@@ -1,8 +1,6 @@
 steps:
-- task: CopyFiles@2
-  displayName: 'Copy previous coverage'
-  inputs:
-    contents: '$(Build.ArtifactStagingDirectory)/tratto/target/**'
-    targetFolder: '.'
+- download: 'current'
+  displayName: 'Download coverage 1'
+  artifact: 'coverageResults1'
 - script: find "$(pwd)/.." -type f 
   displayName: 'Check'

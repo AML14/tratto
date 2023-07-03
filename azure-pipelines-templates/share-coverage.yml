@@ -1,8 +1,7 @@
 steps:
-- task: CopyFiles@2
-  displayName: 'Save coverage'
+- task: PublishPipelineArtifact@1
   inputs:
-    contents: 'tratto/target/**'
-    targetFolder: '$(Build.ArtifactStagingDirectory)'
+    targetPath: '$(System.DefaultWorkingDirectory)/tratto/target'
+    artifactName: 'coverageResults1'
 - script: find "$(pwd)/.." -type f 
   displayName: 'Check'
