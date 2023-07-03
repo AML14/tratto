@@ -4,7 +4,7 @@ pool:
 jobs:
 - job: unit_tests
   steps:
-  - template: azure-pipelines-templates/install_dependency.yml
+  - template: azure-pipelines-templates/install-dependency.yml
   - task: Maven@3
     displayName: "Build and run tests"
     inputs:
@@ -21,7 +21,7 @@ jobs:
   dependsOn:
   - unit_tests
   steps:
-  - template: azure-pipelines-templates/install_dependency.yml
+  - template: azure-pipelines-templates/install-dependency.yml
   - task: Maven@3
     displayName: "Run TokenSuggester E2E tests"
     inputs:
@@ -38,7 +38,7 @@ jobs:
   dependsOn:
   - unit_tests
   steps:
-  - template: azure-pipelines-templates/install_dependency.yml
+  - template: azure-pipelines-templates/install-dependency.yml
   - task: Maven@3
     displayName: "Run datasets E2E tests"
     inputs:
