@@ -75,9 +75,9 @@ public class TokensDataset {
 
         logger.info("------------------------------------------------------------");
         logger.info("Finished generating tokens dataset.");
-        logger.info("Total samples: {}", OracleDP2TokenDPs.positiveSamples + OracleDP2TokenDPs.negativeSamples);
-        logger.info("Total positive samples: {}", OracleDP2TokenDPs.positiveSamples);
-        logger.info("Total negative samples: {}", OracleDP2TokenDPs.negativeSamples);
+        logger.info("Total samples: {}", OracleDP2TokenDPs.getPositiveSamples() + OracleDP2TokenDPs.getNegativeSamples());
+        logger.info("Total positive samples: {}", OracleDP2TokenDPs.getPositiveSamples());
+        logger.info("Total negative samples: {}", OracleDP2TokenDPs.getNegativeSamples());
         logger.info("------------------------------------------------------------");
     }
 
