@@ -1,0 +1,50 @@
+[
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.stat.interval.BinomialConfidenceInterval",
+      "name": "createInterval",
+      "parameterTypes": [
+        "int",
+        "int",
+        "double"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "numberOfTrials",
+        "numberOfSuccesses",
+        "confidenceLevel"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NotStrictlyPositiveException",
+        "description": "@throws org.apache.commons.math3.exception.NotStrictlyPositiveException numberOfTrials <= 0.",
+        "guard": {
+          "condition": "numberOfTrials<=0",
+          "description": "numberOfTrials <= 0."
+        }
+      },
+      {
+        "exception": "org.apache.commons.math3.exception.NotPositiveException",
+        "description": "@throws org.apache.commons.math3.exception.NotPositiveException numberOfSuccesses < 0.",
+        "guard": {
+          "condition": "numberOfSuccesses<0",
+          "description": "numberOfSuccesses < 0."
+        }
+      },
+      {
+        "exception": "org.apache.commons.math3.exception.NumberIsTooLargeException",
+        "description": "@throws org.apache.commons.math3.exception.NumberIsTooLargeException numberOfSuccesses > numberOfTrials.",
+        "guard": {
+          "condition": "numberOfSuccesses>numberOfTrials",
+          "description": "numberOfSuccesses > numberOfTrials."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  }
+]
