@@ -81,4 +81,4 @@ if __name__ == '__main__':
         tokenizer_token_values
     )
     # Run server
-    server.run()
+    server.run(args.port)

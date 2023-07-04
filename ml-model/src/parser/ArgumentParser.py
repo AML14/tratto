@@ -85,6 +85,13 @@ class ArgumentParser:
         """
         # Required parameters
         parser.add_argument(
+            "--port",
+            default=5000,
+            type=str,
+            required=True,
+            help="The server port."
+        )
+        parser.add_argument(
             "--data_dir",
             default=None,
             type=str,

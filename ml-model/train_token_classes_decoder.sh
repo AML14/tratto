@@ -1,4 +1,4 @@
-python run_classifier_decoder.py \
+python scripts/test/run_classifier_decoder.py \
 --do_train \
 --do_eval \
 --do_predict \

@@ -1,4 +1,5 @@
-python3 server.py \
+python3 scripts/server/server.py \
+--port 5000 \
 --model_type_token_classes codet5+ \
 --model_type_token_values codet5+ \
 --tokenizer_name_token_classes Salesforce/codet5p-220m \
