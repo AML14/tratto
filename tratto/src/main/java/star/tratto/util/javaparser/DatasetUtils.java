@@ -15,10 +15,7 @@ import com.github.javaparser.resolution.declarations.ResolvedReferenceTypeDeclar
 import com.github.javaparser.resolution.types.ResolvedType;
 import com.github.javaparser.symbolsolver.javaparsermodel.declarations.JavaParserFieldDeclaration;
 import com.github.javaparser.symbolsolver.reflectionmodel.ReflectionFieldDeclaration;
-import org.javatuples.Pair;
-import org.javatuples.Quartet;
-import org.javatuples.Quintet;
-import org.javatuples.Triplet;
+import org.javatuples.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import star.tratto.data.OracleDatapoint;
@@ -304,19 +301,19 @@ public class DatasetUtils {
                             jpParameterType.resolve().isArray()
                     ) {
                         // if not a reference type, ignore package name (e.g. primitives do not have packages).
-                        argumentList.add(new Triplet<>(jpParameter.getNameAsString(), "", jpParameterClassName.get()));
+                        argumentList.add(Triplet.with(jpParameter.getNameAsString(), "", jpParameterClassName.get()));
                     } else if (jpParameterType.resolve().isReferenceType()) {
                         String typeName = JDoctorUtils.getJPTypeName(jpClass, jpCallable, jpParameter);
                         if (JavaParserUtils.isGenericType(jpParameterType.resolve())) {
                             // if reference object is a generic type, ignore package name.
-                            argumentList.add(new Triplet<>(jpParameter.getNameAsString(), "", typeName));
+                            argumentList.add(Triplet.with(jpParameter.getNameAsString(), "", typeName));
                         } else {
                             // otherwise, retrieve necessary package information.
                             String fullyQualifiedName = jpParameterType.resolve().asReferenceType().getQualifiedName();
                             String className = JavaParserUtils.getTypeWithoutPackages(fullyQualifiedName);
                             String parameterPackageName = fullyQualifiedName
                                     .replace(String.format(".%s", className), "");
-                            argumentList.add(new Triplet<>(
+                            argumentList.add(Triplet.with(
                                     jpParameter.getNameAsString(),
                                     parameterPackageName,
                                     jpParameterClassName.get()
@@ -372,7 +369,7 @@ public class DatasetUtils {
             List<MethodDeclaration> jpMethods = jpClass.findAll(MethodDeclaration.class);
             for (MethodDeclaration jpMethod : jpMethods) {
                 if (!jpMethod.isPrivate() && jpMethod.isStatic() && !jpMethod.getType().isVoidType()) {
-                    methodList.add(new Quartet<>(
+                    methodList.add(Quartet.with(
                             jpMethod.getNameAsString(),
                             packageName,
                             className,
@@ -413,7 +410,7 @@ public class DatasetUtils {
                 if (!jpField.isPrivate() && jpField.isStatic()) {
                     // add each variable in declaration.
                     for (VariableDeclarator jpVariable : jpField.getVariables()) {
-                        attributeList.add(new Quartet<>(
+                        attributeList.add(Quartet.with(
                                 jpVariable.getNameAsString(),
                                 packageName,
                                 className,
@@ -641,7 +638,7 @@ public class DatasetUtils {
     ) {
         return new ArrayList<>(jpMethods)
                 .stream()
-                .map(jpMethod -> new Quartet<>(
+                .map(jpMethod -> Quartet.with(
                         jpMethod.getName(),
                         jpMethod.declaringType().getPackageName(),
                         jpMethod.declaringType().getClassName(),
@@ -679,7 +676,7 @@ public class DatasetUtils {
                     .toList();
             methodList.addAll(arrayMethods
                     .stream()
-                    .map(m -> new Quartet<>(m.get(0), "", jpResolvedType.describe(), m.get(1)))
+                    .map(m -> Quartet.with(m.get(0), "", jpResolvedType.describe(), m.get(1)))
                     .toList());
         } else if (JavaParserUtils.isGenericType(jpResolvedType)) {
             // generic type.
@@ -728,7 +725,7 @@ public class DatasetUtils {
         List<Quartet<String, String, String, String>> attributeList = new ArrayList<>();
         FieldDeclaration jpField = resolvedField.getWrappedNode();
         for (VariableDeclarator jpVariable : jpField.getVariables()) {
-            attributeList.add(new Quartet<>(
+            attributeList.add(Quartet.with(
                     jpVariable.getNameAsString(),
                     resolvedField.declaringType().getPackageName(),
                     resolvedField.declaringType().getClassName(),
@@ -755,7 +752,7 @@ public class DatasetUtils {
         } catch (NoSuchFieldException | IllegalAccessException e) {
             signature = JavaParserUtils.getFieldSignature(resolvedField);
         }
-        attributeList.add(new Quartet<>(
+        attributeList.add(Quartet.with(
                 resolvedField.getName(),
                 resolvedField.declaringType().getPackageName(),
                 resolvedField.declaringType().getClassName(),
@@ -784,7 +781,7 @@ public class DatasetUtils {
                 fieldList.addAll(convertReflectionFieldDeclarationToQuartet((ReflectionFieldDeclaration) resolvedField));
             } else {
                 // use default ResolvedFieldDeclaration.
-                fieldList.add(new Quartet<>(
+                fieldList.add(Quartet.with(
                         resolvedField.getName(),
                         resolvedField.declaringType().getPackageName(),
                         resolvedField.declaringType().getClassName(),
@@ -812,7 +809,7 @@ public class DatasetUtils {
         List<Quartet<String, String, String, String>> fieldList = new ArrayList<>();
         if (jpResolvedType.isArray()) {
             // add array field (length).
-            fieldList.add(new Quartet<>(
+            fieldList.add(Quartet.with(
                     "length",
                     "",
                     jpResolvedType.describe(),

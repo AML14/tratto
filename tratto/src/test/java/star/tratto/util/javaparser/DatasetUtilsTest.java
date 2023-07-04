@@ -248,7 +248,7 @@ public class DatasetUtilsTest {
                 oracleDatapoint.getTokensMethodArguments(),
                 oracleDatapoint.getOracle()
         );
-        assertEquals(List.of(new Quartet<>("length", "", "double[]", "public final int length;")), actualList);
+        assertEquals(List.of(Quartet.with("length", "", "double[]", "public final int length;")), actualList);
     }
 
     @Test
