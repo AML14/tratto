@@ -329,7 +329,7 @@ public class JavaParserUtils {
     /**
      * @throws UnsupportedOperationException if the type is an array or a primitive type
      */
-    private static ResolvedType getResolvedType(String type) throws UnsupportedOperationException {
+    public static ResolvedType getResolvedType(String type) throws UnsupportedOperationException {
         CompilationUnit cu = javaParser.parse(SYNTHETIC_CLASS_SOURCE).getResult().get();
         BlockStmt syntheticMethodBody = getClassOrInterface(cu, SYNTHETIC_CLASS_NAME).addMethod(SYNTHETIC_METHOD_NAME).getBody().get();
         syntheticMethodBody.addStatement(type + " type1Var;");

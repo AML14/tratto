@@ -8,6 +8,7 @@ import com.github.javaparser.javadoc.JavadocBlockTag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import star.tratto.data.OracleDatapoint;
+import star.tratto.data.OracleType;
 import star.tratto.data.oracles.OracleDatapointBuilder;
 import star.tratto.exceptions.JPClassNotFoundException;
 import star.tratto.util.javaparser.DatasetUtils;
@@ -34,7 +35,7 @@ public class ClassAnalyzer {
     private String classSourceCode;
     private CompilationUnit classCu;
     private TypeDeclaration<?> classTd;
-    private OracleDatapointBuilder oracleDPBuilder;
+    private final OracleDatapointBuilder oracleDPBuilder;
 
     private ClassAnalyzer() {
         oracleDPBuilder = new OracleDatapointBuilder();
@@ -94,7 +95,7 @@ public class ClassAnalyzer {
 
     /**
      * Generates oracle datapoints based on currently set class features. You need
-     * to call {@link ClassAnalyzer#setClassFeatures} before this method.
+     * to call {@link #setClassFeatures} before this method.
      */
     public List<OracleDatapoint> getOracleDatapointsFromClass() {
         List<OracleDatapoint> oracleDatapoints = new ArrayList<>();
@@ -111,6 +112,9 @@ public class ClassAnalyzer {
     }
 
     public List<OracleDatapoint> getOracleDatapointsFromMethod(CallableDeclaration<?> methodOrConstructor) {
+        // At this point we can already update the OracleDatapointBuilder with the new method features
+        updateOracleDPBuilderWithNewMethodFeatures(methodOrConstructor);
+
         List<OracleDatapoint> oracleDatapoints = new ArrayList<>();
 
         Optional<Javadoc> optionalJavadoc = methodOrConstructor.getJavadoc();
@@ -119,7 +123,9 @@ public class ClassAnalyzer {
         }
 
         // If no Javadoc is present, we generate one OracleDatapoint for each type, with empty javadocTag and methodJavadoc
-        // TODO: Generate the three OracleDatapoints
+        addOracleToList(oracleDatapoints, OracleType.PRE, "");
+        addOracleToList(oracleDatapoints, OracleType.NORMAL_POST, "");
+        addOracleToList(oracleDatapoints, OracleType.EXCEPT_POST, "");
 
         return oracleDatapoints;
     }
@@ -136,28 +142,33 @@ public class ClassAnalyzer {
         List<JavadocBlockTag> javadocTags = methodOrConstructor.getJavadoc().get().getBlockTags(); // TODO: Test with multiple example Javadocs
         for (JavadocBlockTag javadocTag : javadocTags) {
             if (javadocTag.getType().equals(JavadocBlockTag.Type.PARAM)) {
-                // TODO: Generate precondition
+                addOracleToList(oracleDatapoints, OracleType.PRE, javadocTag.toText());
                 hasParamTag = true;
             } else if (javadocTag.getType().equals(JavadocBlockTag.Type.RETURN)) {
-                // TODO: Generate postcondition
+                addOracleToList(oracleDatapoints, OracleType.NORMAL_POST, javadocTag.toText());
                 hasReturnTag = true;
             } else if (javadocTag.getType().equals(JavadocBlockTag.Type.THROWS) || javadocTag.getType().equals(JavadocBlockTag.Type.EXCEPTION)) {
-                // TODO: Generate exceptional behavior
+                addOracleToList(oracleDatapoints, OracleType.EXCEPT_POST, javadocTag.toText());
                 hasThrowsOrExceptionTag = true;
             }
         }
 
         // If there's some missing tag, generate OracleDatapoint without associated tag
         if (!hasParamTag) {
-            // TODO: Generate precondition
+            addOracleToList(oracleDatapoints, OracleType.PRE, "");
         }
         if (!hasReturnTag) {
-            // TODO: Generate postcondition
+            addOracleToList(oracleDatapoints, OracleType.NORMAL_POST, "");
         }
         if (!hasThrowsOrExceptionTag) {
-            // TODO: Generate exceptional behavior
+            addOracleToList(oracleDatapoints, OracleType.EXCEPT_POST, "");
         }
 
         return oracleDatapoints;
+    }
+
+    private void addOracleToList(List<OracleDatapoint> oracleDatapoints, OracleType oracleType, String javadocTag) {
+        oracleDPBuilder.setOracleTypeAndJavadocTag(oracleType, javadocTag);
+        oracleDatapoints.add(oracleDPBuilder.build("method", true));
     }
 }

@@ -37,6 +37,13 @@ public class OracleDatapointBuilder {
         this.setTokensOracleVariablesNonPrivateNonStaticAttributes(new ArrayList<>());
     }
 
+    public void resetWithDefaults() {
+        this.reset();
+        this.setId(0);
+        this.setOracle("");
+        this.setProjectName("");
+    }
+
     /**
      * Sets default general tokens for symbolic grammar.
      */
@@ -224,6 +231,11 @@ public class OracleDatapointBuilder {
         this.datapoint.setTokensOracleVariablesNonPrivateNonStaticAttributes(tokensOracleVariablesNonPrivateNonStaticAttributes);
     }
 
+    public void setOracleTypeAndJavadocTag(OracleType oracleType, String javadocTag) {
+        this.datapoint.setOracleType(oracleType);
+        this.datapoint.setJavadocTag(javadocTag);
+    }
+
     public OracleDatapoint copy() {
         return new OracleDatapoint(
                 this.datapoint.getId(),
@@ -268,11 +280,18 @@ public class OracleDatapointBuilder {
      *
      * @param level the depth of the reset. Must be one of: "default",
      *              "project", "class", or "method".
+     * @param defaults set to false to reset the oracle normally ({@link #reset} method).
+     *                 Set to true to keep default values for some properties
+     *                 ({@link #resetWithDefaults} method).
      * @return a new datapoint {@link OracleDatapoint}.
      */
-    public OracleDatapoint build(String level) {
+    public OracleDatapoint build(String level, boolean defaults) {
         OracleDatapoint oracleDP = this.copy();
-        this.reset();
+        if (defaults) {
+            this.resetWithDefaults();
+        } else {
+            this.reset();
+        }
         // copy fields based on `level`.
         assert featureLevels.contains(level) : String.format("Given level must be one of: %s.%n", featureLevels);
         switch (level) {
