@@ -76,7 +76,7 @@ public class OraclesDataset {
                         fileName,
                         FileFormat.JSON,
                         project.getProjectName(),
-                        chunk
+                        chunk.stream().map(OracleDatapoint::toMapAndLists).collect(Collectors.toList())
                 );
             }
         }
