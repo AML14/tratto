@@ -14,3 +14,5 @@ class ModelClasses:
             return RobertaConfig, RobertaForSequenceClassification, RobertaTokenizer
         if model_name == 'codet5':
             return T5Config, T5ForConditionalGeneration, RobertaTokenizer
+        if model_name == 'codet5+':
+            return T5Config, T5ForConditionalGeneration, AutoTokenizer

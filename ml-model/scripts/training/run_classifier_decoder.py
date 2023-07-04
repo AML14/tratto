@@ -131,6 +131,8 @@ def main():
             args.model_name_or_path,
             config=config
         )
+
+        model.resize_token_embeddings(len(tokenizer))
         model.to(device)
 
         # Prepare optimizer and schedule (linear warmup and decay)

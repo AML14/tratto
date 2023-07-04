@@ -1,6 +1,5 @@
 from flask import Flask, jsonify, request
-
-import predictor
+from scripts.server import predictor_decoder
 
 
 class Server:
@@ -21,7 +20,7 @@ class Server:
     def next_token(self):
         filename = request.args.get('filename')
         if filename:
-            token = predictor.nextToken(
+            token = predictor_decoder.next_token(
                 self.device,
                 filename,
                 self._model_token_classes,

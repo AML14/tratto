@@ -12,6 +12,7 @@ from transformers import PreTrainedTokenizer
 from src.types.ClassificationType import ClassificationType
 from src.types.DatasetType import DatasetType
 from src.types.TrattoModelType import TrattoModelType
+from src.utils import utils
 
 
 class DataProcessorDecoder:
@@ -369,23 +370,57 @@ class DataProcessorDecoder:
 
         # Pre-process the dataset, according to the Tratto model considered (tokenClasses or tokenValues).
         if self._tratto_model_type == TrattoModelType.TOKEN_CLASSES:
-            self._df_dataset["tokenClassesSoFar"] = self._df_dataset["tokenClassesSoFar"].apply(lambda x: "[" + " ".join(x) + "]")
+            # Map token class names
+            _, value_mappings = utils.import_json(
+                os.path.join(
+                    os.path.abspath(__file__),
+                    '..', 'resources',
+                    'tokenClassesValuesMapping.json'
+                )
+            )
+            vocab = self._tokenizer.get_vocab()
+            print(f"Len vocab: {len(vocab.values())}")
+            for new_word in value_mappings.values():
+                for new_sub_word in new_word.split("_"):
+                    if not new_sub_word in vocab.keys():
+                        self._tokenizer.add_tokens([new_sub_word])
+            print(f"Len vocab: {len(self._tokenizer.get_vocab().values())}")
+
+            # Replace the values in the DataFrame column
+            self._df_dataset['tokenClass'] = self._df_dataset['tokenClass'].replace(value_mappings)
+
+            # Map token classes so far to new values and transform it from array to string
+            self._df_dataset["tokenClassesSoFar"] = self._df_dataset["tokenClassesSoFar"].apply(lambda x: "[ " + " ".join([value_mappings[y] for y in x]) + " ]")
+            # Compute eligible token classes
+            df_eligibleTokenClasses = self._df_dataset.groupby(['oracleId', 'oracleSoFar'])['tokenClass'].unique().to_frame()
+            df_eligibleTokenClasses = df_eligibleTokenClasses.rename(columns={'tokenClass': 'eligibleTokenClasses'})
+            self._df_dataset = pd.merge(self._df_dataset, df_eligibleTokenClasses, on=['oracleId', 'oracleSoFar']).reset_index()
+            self._df_dataset["eligibleTokenClasses"] = self._df_dataset["eligibleTokenClasses"].apply(lambda x: "[ " + " ".join(x) + " ]")
+            # Set type of dataframe columns
+            self._df_dataset['eligibleTokenClasses'] = self._df_dataset['eligibleTokenClasses'].astype('string')
             self._df_dataset['tokenClass'] = self._df_dataset['tokenClass'].astype('string')
             self._df_dataset['tokenClassesSoFar'] = self._df_dataset['tokenClassesSoFar'].astype('string')
             # Define the new order of columns
             new_columns_order = [
-                'token', 'tokenInfo', 'tokenClass', 'oracleSoFar', 'tokenClassesSoFar', 'javadocTag', 'oracleType',
-                'packageName', 'className', 'methodJavadoc', 'methodSourceCode', 'classJavadoc', 'classSourceCode',
-                'projectName', 'oracleId', 'label'
+                'token', 'tokenInfo', 'tokenClass', 'oracleSoFar', 'tokenClassesSoFar', 'eligibleTokenClasses',
+                'javadocTag', 'oracleType', 'packageName', 'className', 'methodJavadoc', 'methodSourceCode',
+                'classJavadoc', 'classSourceCode', 'projectName', 'oracleId', 'label'
             ]
             # Reindex the DataFrame with the new order
             self._df_dataset = self._df_dataset.reindex(columns=new_columns_order)
         else:
+            # Compute eligible token values
+            df_eligibleTokens = self._df_dataset.groupby(['oracleId', 'oracleSoFar'])['token'].unique().to_frame()
+            df_eligibleTokens = df_eligibleTokens.rename(columns={'token': 'eligibleTokens'})
+            self._df_dataset = pd.merge(self._df_dataset, df_eligibleTokens, on=['oracleId', 'oracleSoFar']).reset_index()
+            self._df_dataset["eligibleTokens"] = self._df_dataset["eligibleTokens"].apply(lambda x: "[ " + " ".join(x) + " ]")
+            # Set type of dataframe columns
+            self._df_dataset['eligibleTokens'] = self._df_dataset['eligibleTokens'].astype('string')
             # Define the new order of columns
             new_columns_order = [
-                'tokenClass', 'token', 'tokenInfo', 'oracleSoFar', 'javadocTag', 'oracleType', 'projectName',
-                'packageName', 'className', 'methodJavadoc', 'methodSourceCode', 'classJavadoc', 'classSourceCode',
-                'oracleId', 'label'
+                'tokenClass', 'token', 'tokenInfo', 'oracleSoFar', 'eligibleTokens', 'javadocTag', 'oracleType',
+                'projectName', 'packageName', 'className', 'methodJavadoc', 'methodSourceCode', 'classJavadoc',
+                'classSourceCode', 'oracleId', 'label'
             ]
             # Reindex the DataFrame with the new order
             self._df_dataset = self._df_dataset.reindex(columns=new_columns_order)

@@ -1,9 +1,9 @@
 python3 test_token_values_decoder.py \
---model_type codet5 \
---tokenizer_name Salesforce/codet5-base \
---model_name_or_path Salesforce/codet5-base \
---checkpoint_path output_token_classes/checkpoints/lr_1e-05/batch_16/epochs_8/checkpoint_1_1.pt \
+--model_type codet5+ \
+--tokenizer_name Salesforce/codet5p-220m \
+--model_name_or_path Salesforce/codet5p-220m \
+--checkpoint_path checkpoints/token_classes/checkpointtoken_classes.pt \
 --input_path dataset/token-values-dataset \
---output_path test_token_values_decoder \
---project_name gs_core \
+--output_path test_token_values_decoder_t5_plus_eligible \
+--project_name gs-core \
 --classification_type CATEGORY_PREDICTION
