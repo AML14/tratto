@@ -6,7 +6,7 @@ import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.resolution.UnsolvedSymbolException;
 import org.javatuples.Pair;
 import org.javatuples.Quartet;
-import org.javatuples.Quintet;
+import org.javatuples.Sextet;
 import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleType;
 import star.tratto.exceptions.JPClassNotFoundException;
@@ -34,7 +34,7 @@ public class ProjectOracleGenerator {
     private List<Pair<String, String>> projectClassesTokens;
     private List<Quartet<String, String, String, String>> projectMethodsTokens;
     private List<Quartet<String, String, String, String>> projectAttributesTokens;
-    private List<Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> projectTagsTokens;
+    private List<Sextet<String, TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> projectTagsTokens;
 
     /**
      * Creates a new instance of ProjectOracleGenerator.
@@ -99,7 +99,7 @@ public class ProjectOracleGenerator {
         }
         int numNonEmptyOracles = oracleDPs.size();
         // Generate an OracleDatapoint for each remaining JavaDoc tag.
-        for (Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String> jpTag : this.projectTagsTokens) {
+        for (Sextet<String, TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String> jpTag : this.projectTagsTokens) {
             OracleDatapoint nextDatapoint = getEmptyDatapoint(jpTag);
             if (nextDatapoint != null) oracleDPs.add(nextDatapoint);
         }
@@ -126,32 +126,32 @@ public class ProjectOracleGenerator {
      * @param targetTag target JDoctor tag.
      * @return source code tag with the greatest similarity to targetTag.
      */
-    private Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String> findMaximumSimilarityTag(
-            List<Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> tagList,
+    private Sextet<String, TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String> findMaximumSimilarityTag(
+            List<Sextet<String, TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> tagList,
             TypeDeclaration<?> targetClass,
             CallableDeclaration<?> targetCallable,
             OracleType targetOracleType,
             String targetTag
     ) {
         // filter tags by TypeDeclaration, CallableDeclaration, OracleType, and Pattern matching.
-        List<Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> filteredTags = tagList
+        List<Sextet<String, TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> filteredTags = tagList
                 .stream()
                 .filter(tagInfo -> {
-                    if (!tagInfo.getValue0().equals(targetClass) ||
-                        !tagInfo.getValue1().equals(targetCallable) ||
-                        !tagInfo.getValue2().equals(targetOracleType)) return false;
-                    boolean tagHasNoName = !targetTag.contains("@param") && !targetTag.contains("@throws") && tagInfo.getValue3().length() == 0;
-                    Pattern pattern = Pattern.compile(String.format("@(param|return|throws)\\s+(.*\\.)*%s\\b", tagInfo.getValue3()));
+                    if (!tagInfo.getValue1().equals(targetClass) ||
+                        !tagInfo.getValue2().equals(targetCallable) ||
+                        !tagInfo.getValue3().equals(targetOracleType)) return false;
+                    boolean tagHasNoName = !targetTag.contains("@param") && !targetTag.contains("@throws") && tagInfo.getValue4().length() == 0;
+                    Pattern pattern = Pattern.compile(String.format("@(param|return|throws)\\s+(.*\\.)*%s\\b", tagInfo.getValue4()));
                     Matcher matcher = pattern.matcher(targetTag);
                     return matcher.find() || tagHasNoName;
                 })
                 .toList();
         // find index of most semantically similar tag (cosine similarity).
-        Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String> mostSimilarTag = null;
+        Sextet<String, TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String> mostSimilarTag = null;
         double maxSimilarity = -1.0;
-        for (Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String> tag : filteredTags) {
-            String simpleTargetTag = targetTag.replaceAll(String.format("@(param|return|throws)\\s+(.*\\.)*%s\\b", tag.getValue3()),"").replaceAll("<[^>]*>|@code|@link|\\{|\\}|\\n|\\r|\\t", " ");
-            String simpleActualTag = tag.getValue4().replaceAll("<[^>]*>|@code|@link|\\{|\\}|\\n|\\r|\\t", " ");
+        for (Sextet<String, TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String> tag : filteredTags) {
+            String simpleTargetTag = targetTag.replaceAll(String.format("@(param|return|throws)\\s+(.*\\.)*%s\\b", tag.getValue4()),"").replaceAll("<[^>]*>|@code|@link|\\{|\\}|\\n|\\r|\\t", " ");
+            String simpleActualTag = tag.getValue5().replaceAll("<[^>]*>|@code|@link|\\{|\\}|\\n|\\r|\\t", " ");
             double currentSimilarity = StringUtils.semanticSimilarity(simpleTargetTag, simpleActualTag);
             if (currentSimilarity > maxSimilarity) {
                 maxSimilarity = currentSimilarity;
@@ -201,22 +201,23 @@ public class ProjectOracleGenerator {
      * empty oracles (e.g. JavaDoc tags in a project without a corresponding
      * JDoctor condition).
      *
-     * @param jpTag a quintet of tag information, including the declaring
-     *              class, method, type of tag, tag name, and tag content.
+     * @param jpTag a sextet of tag information, including the declaring
+     *              class string, type declaration, method, type of tag,
+     *              tag name, and tag content.
      * @return a fully populated OracleDatapoint. The "oracle" field is set
      * to a semicolon (";"). Returns null if an error occurs during
      * information collection.
      */
     private OracleDatapoint getEmptyDatapoint(
-            Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String> jpTag
+            Sextet<String, TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String> jpTag
     ) {
         OracleDatapointBuilder builder = new OracleDatapointBuilder();
         // get basic information of jpTag.
-        TypeDeclaration<?> jpClass = jpTag.getValue0();
-        CallableDeclaration<?> jpCallable = jpTag.getValue1();
-        OracleType oracleType = jpTag.getValue2();
-        String tagName = jpTag.getValue3();
-        String tagContent = jpTag.getValue4();
+        TypeDeclaration<?> jpClass = jpTag.getValue1();
+        CallableDeclaration<?> jpCallable = jpTag.getValue2();
+        OracleType oracleType = jpTag.getValue3();
+        String tagName = jpTag.getValue4();
+        String tagContent = jpTag.getValue5();
         // get artificial condition information.
         String tagType = switch (oracleType) {
             case PRE -> "@param ";
@@ -228,7 +229,7 @@ public class ProjectOracleGenerator {
         builder.setOracle(";");
         // set project-level information.
         builder.setProjectName(this.project.getProjectName());
-        builder.setClassSourceCode(jpClass.toString());
+        builder.setClassSourceCode(jpTag.getValue0());
         builder.setPackageName(jpClass.resolve().getPackageName());
         builder.setClassName(jpClass.getNameAsString());
         builder.setClassJavadoc(DatasetUtils.getClassJavadoc(jpClass));
@@ -288,6 +289,7 @@ public class ProjectOracleGenerator {
           return null;
         }
         CompilationUnit cu = cuOptional.get();
+        String classSourceCode = DatasetUtils.getOperationClassSource(operation, sourcePath).get(); // Can assume is not empty.
         // get TypeDeclaration of class in CompilationUnit.
         TypeDeclaration<?> jpClass = DatasetUtils.getTypeDeclaration(cu, className);
         assert jpClass != null;
@@ -297,7 +299,7 @@ public class ProjectOracleGenerator {
         // set data point information.
         builder.setConditionInfo(condition);
         builder.setProjectName(projectName);
-        builder.setClassSourceCode(jpClass.toString());
+        builder.setClassSourceCode(classSourceCode);
         builder.setPackageName(packageName);
         builder.setClassName(className);
         builder.setClassJavadoc(DatasetUtils.getClassJavadoc(jpClass));

@@ -428,6 +428,7 @@ public class DatasetUtils {
      * unit.
      *
      * @param cu a compilation unit {@link CompilationUnit} of a java file.
+     * @param fileContent the content of the java file.
      * @return a list of information about each tag. Each entry has the form:
      *  [typeDeclaration, callableDeclaration, oracleType, name, content]
      * where a JavaDoc tag is interpreted as:
@@ -436,10 +437,11 @@ public class DatasetUtils {
      * @throws PackageDeclarationNotFoundException if the package
      * {@link PackageDeclaration} of the compilation unit is not found.
      */
-    private static List<Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> getCuTags(
-            CompilationUnit cu
+    private static List<Sextet<String, TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> getCuTags(
+            CompilationUnit cu,
+            String fileContent
     ) throws PackageDeclarationNotFoundException {
-        List<Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> tagList = new ArrayList<>();
+        List<Sextet<String, TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> tagList = new ArrayList<>();
         // iterate through each class.
         List<TypeDeclaration<?>> jpClasses = cu.getTypes();
         for (TypeDeclaration<?> jpClass : jpClasses) {
@@ -464,7 +466,8 @@ public class DatasetUtils {
                         };
                         if (oracleType == null) continue;
                         // add new tag.
-                        tagList.add(new Quintet<>(
+                        tagList.add(Sextet.with(
+                                fileContent,
                                 jpClass,
                                 jpCallable,
                                 oracleType,
@@ -604,18 +607,19 @@ public class DatasetUtils {
      *  "@tag name content"
      * and the value of "@tag" determines "oracleType".
      */
-    public static List<Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> getProjectTagsTokens(
+    public static List<Sextet<String, TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> getProjectTagsTokens(
             String sourcePath
     ) {
-        List<Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> tagList = new ArrayList<>();
+        List<Sextet<String, TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> tagList = new ArrayList<>();
         List<File> javaFiles = getValidJavaFiles(sourcePath);
         // iterate through each file and add JavaDoc tags.
         for (File javaFile : javaFiles) {
             String filePath = javaFile.getAbsolutePath();
+            String fileContent = FileUtils.readFile(filePath);
             Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnitFromFilePath(filePath);
             if (cu.isPresent()) {
                 try {
-                    tagList.addAll(getCuTags(cu.get()));
+                    tagList.addAll(getCuTags(cu.get(), fileContent));
                 } catch (PackageDeclarationNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -1167,9 +1171,29 @@ public class DatasetUtils {
             Operation operation,
             String sourcePath
     ) {
-        List<String> pathList = Arrays.asList(operation.getClassName().split("\\."));
-        String classPath = Paths.get(sourcePath, pathList.toArray(String[]::new)) + FileFormat.JAVA.getValue();
+        String classPath = getClassPath(operation, sourcePath);
         return JavaParserUtils.getCompilationUnitFromFilePath(classPath);
+    }
+
+    /**
+     * Like previous method, but instead of retrieving the compilation unit,
+     * retrieves the source code of the class.
+     */
+    public static Optional<String> getOperationClassSource(
+            Operation operation,
+            String sourcePath
+    ) {
+        String classPath = getClassPath(operation, sourcePath);
+        String classSource = FileUtils.readFile(classPath);
+        return classSource != null ? Optional.of(classSource) : Optional.empty();
+    }
+
+    private static String getClassPath(
+            Operation operation,
+            String sourcePath
+    ) {
+        List<String> pathList = Arrays.asList(operation.getClassName().split("\\."));
+        return Paths.get(sourcePath, pathList.toArray(String[]::new)) + FileFormat.JAVA.getValue();
     }
 
     /**
