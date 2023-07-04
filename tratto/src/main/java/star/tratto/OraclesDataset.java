@@ -12,15 +12,20 @@ import star.tratto.identifiers.path.Path;
 import star.tratto.util.FileUtils;
 import star.tratto.util.javaparser.DatasetUtils;
 
+import java.io.File;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class OraclesDataset {
     public static final int chunkSize = 100;
     public static final boolean sampleEmptyOracles = false;
 
     public static void main(String[] args) {
+        // Clean folder where dataset will be provisionally stored.
+        FileUtils.deleteDirectory(Path.OUTPUT.getValue());
+
         // Specify the path to JSON file with the list of the input projects and
         // the information, to initialize each of them.
         String projectsPath = FileUtils.getAbsolutePathToFile(Path.REPOS.getValue(), FileName.INPUT_PROJECTS, FileFormat.JSON);
@@ -75,6 +80,13 @@ public class OraclesDataset {
                 );
             }
         }
+
+        // Move the generated oracles to the oracles-dataset folder.
+        FileUtils.deleteDirectory(Path.ORACLES_DATASET.getValue());
+        FileUtils.moveFilesRecursively(
+                Paths.get(Path.OUTPUT.getValue(), "dataset").toString(),
+                Path.ORACLES_DATASET.getValue()
+        );
     }
 
     private static <T> List<List<T>> splitListIntoChunks(List<T> list) {
