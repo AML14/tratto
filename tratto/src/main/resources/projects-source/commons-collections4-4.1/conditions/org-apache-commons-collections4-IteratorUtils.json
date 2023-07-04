@@ -544,7 +544,7 @@
       {
         "description": "@param iterators the iterators to use. iterators is not null or empty or contain nulls.",
         "guard": {
-          "condition": "(iterators==null) == false || iterators.length==0",
+          "condition": "(iterators==null) == false && iterators.length > 0 && Arrays.stream(iterators).noneMatch(jdVar -> jdVar == null)",
           "description": "the iterators to use. iterators is not null or empty or contain nulls."
         }
       }
@@ -665,7 +665,7 @@
       {
         "description": "@param iterators the iterators to use. iterators is not null or empty or contain nulls.",
         "guard": {
-          "condition": "(iterators==null) == false || iterators.length==0",
+          "condition": "(iterators==null) == false && iterators.length > 0 && Arrays.stream(iterators).noneMatch(jdVar -> jdVar == null)",
           "description": "the iterators to use. iterators is not null or empty or contain nulls."
         }
       }
