@@ -10,9 +10,26 @@ Requirements: `python3.9`, `Git LFS` (Git LFS official [website](https://git-lfs
 
 ## 1. Datasets & Models Checkpoints
 
-The datasets and the checkpoints of the trained models are automatically downloaded through `Git LFS`.
-They are stored on the `dataset` and `checkpoints` folders, respectively.
+### 1.1. Datasets
 
+The datasets to train the models can be downloaded from the following links:
+
+1. [token-classes-dataset](https://uses0-my.sharepoint.com/:u:/g/personal/amarlop_us_es/EfhSQDH7I4BOouNGAeclVwABb0-PqecclECYwrEIPQ1IXg?download=1) 
+2. [token-values-dataset](https://uses0-my.sharepoint.com/:u:/g/personal/amarlop_us_es/ERdhUoRSjc5FjRcTWcvkjUYBPYrOk_pAtW8iiNxc4VOleg?download=1)
+
+Unzip the downloaded files, check that the name of the datasets are exactly `token-classes-dataset` and `token-values-dataset` 
+(otherwise rename them), and position them within `tratto/ml-model/dataset`.
+
+### 1.2. Checkpoints
+
+The checkpoints of the trained models can be downloaded from the following links:
+
+1. [token-classes-checkpoint](https://drive.switch.ch/index.php/s/udYlsoWd5tpy1sh) 
+2. [token-values-checkpoint](https://drive.switch.ch/index.php/s/vYpeKzNFH1RYeZi)
+
+Unzip the downloaded files, check that the name of the checkpoints are exactly `checkpoint_token_classes.pt` and `checkpoint_token_values.pt`,
+(otherwise rename them), and position them within `tratto/ml-model/checkpoints/token_classes` and `tratto/ml-model/checkpoints/token_values`,
+respectively.
 
 ## 2. Environment
 
