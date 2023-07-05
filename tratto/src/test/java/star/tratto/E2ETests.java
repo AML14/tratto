@@ -28,6 +28,7 @@ public class E2ETests {
      * </ul>
      */
     @Test
+//    @Disabled
     public void datasetsE2ETest() throws IOException {
         // TODO: Generate oracles dataset. For the moment, we assume it's under src/main/resources/oracles-dataset/
 
@@ -54,6 +55,7 @@ public class E2ETests {
      * token ";" is returned.
      */
     @Test
+//    @Disabled
     public void tokenSuggesterE2ETest() {
         List<String> stringOracles = readOraclesFromExternalFiles();
         TokenSuggesterTest.getNextLegalTokensAuxTest(stringOracles);
