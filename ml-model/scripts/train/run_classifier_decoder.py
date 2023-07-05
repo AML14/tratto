@@ -204,7 +204,7 @@ def main():
         elif args.do_predict:
             if not os.path.exists(args.resume_checkpoint_filename):
                 raise ValueError(f"Impossible to resume checkpoint - File not found {args.resume_checkpoint_filename} (or argument --resume_checkpoint_filename not provided).")
-            best_checkpoint = utils.resume_checkpoint(args.resume_checkpoint_filename)
+            best_checkpoint = utils.resume_checkpoint(args.resume_checkpoint_filename, device)
             # Load the model state dict
             model.load_state_dict(best_checkpoint['model_state_dict'])
             # Load the optimizer state dict

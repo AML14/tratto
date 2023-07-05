@@ -25,10 +25,10 @@ def predict_next(
     # Map token class names
     _, value_mappings = utils.import_json(
         os.path.join(
-            os.path.abspath(__file__),
+            os.path.dirname(os.path.abspath(__file__)),
             '..',
             '..',
-            '..',
+            'src',
             'resources',
             'tokenClassesValuesMapping.json'
         )
@@ -36,22 +36,9 @@ def predict_next(
     # The prediction is performed without accumulating the gradient descent and without updating the weights of the model
     with torch.no_grad():
         for batch_id, batch in enumerate(dl_src, 1):
-            print(f"            Processing batch {batch_id} of {len(dl_src)}")
             # Extract the inputs, the attention masks and the targets from the batch
             src_input = batch[0].to(device)
             src_masks = batch[1].to(device)
-            # Model predictions with token-by-token model
-            print(f"                Model predictions...")
-            outputs_model = model(
-                input_ids=src_input,
-                attention_mask=src_masks
-            )
-            predicted_model = np.array(
-                tokenizer.batch_decode(
-                    torch.argmax(torch.softmax(outputs_model.logits, dim=-1), dim=-1),
-                    skip_special_tokens=True,
-                )
-            )
             # Model predictions with beam-search model
             outputs_generate = model.generate(
                 input_ids=src_input,
@@ -66,16 +53,13 @@ def predict_next(
                     skip_special_tokens=True
                 )
             )
-            assert len(predicted_model) == 1
             assert len(predicted_generate) == num_beams
-            # Predicted token by token-by-token model
-            predicted_1 = predicted_model[0]
             # First-choice beam search
-            predicted_2 = predicted_generate[0]
+            predicted_1 = predicted_generate[0]
 
             # Heuristics to mitigate knowns prediction errors
             if model_type == TrattoModelType.TOKEN_CLASSES:
-                if (predicted_1 not in list(value_mappings.values())) or (not predicted_1 == predicted_2):
+                if predicted_1 not in list(value_mappings.values()):
                     subwordSplit = predicted_1.split("_")
                     # Iterate over the list of possible token classes
                     for eligible in value_mappings.values():
@@ -97,8 +81,7 @@ def predict_next(
                             return eligible
                     return
             else:
-                if predicted_1 == predicted_2 and predicted_1 in eligible_tokens:
-                   return predicted_1
+                return predicted_1
             # If no token has been found, compute the Levenshtein distance among the eligible token classes
             best_distance = float('inf')
             most_probable_token = None
@@ -127,7 +110,7 @@ def pre_process_dataset(
         tokenizer
 ):
     # Drop column id (it is not relevant for training the model)
-    df_dataset = df_dataset.drop(['id'], axis=1)
+    #df_dataset = df_dataset.drop(['id'], axis=1)
     # Map empty cells to empty strings
     df_dataset.fillna('', inplace=True)
     # Assign type to each column
@@ -150,10 +133,10 @@ def pre_process_dataset(
     # Map token class names
     _, value_mappings = utils.import_json(
         os.path.join(
-            os.path.abspath(__file__),
+            os.path.dirname(os.path.abspath(__file__)),
             '..',
             '..',
-            '..',
+            'src',
             'resources',
             'tokenClassesValuesMapping.json'
         )
@@ -166,7 +149,7 @@ def pre_process_dataset(
     # Map token classes so far to new values and transform it from array to string
     df_dataset['tokenClassesSoFar'] = df_dataset['tokenClassesSoFar'].apply(lambda x: "[ " + " ".join([value_mappings[y] for y in x]) + " ]")
     # Delete spurious columns for predicting the next token class
-    df_dataset = df_dataset.drop(['oracleId', 'projectName', 'classJavadoc', 'classSourceCode'], axis=1)
+    df_dataset = df_dataset.drop(['projectName', 'classJavadoc', 'classSourceCode'], axis=1)
     # Return pre-processed dataset
     return df_dataset
 
@@ -185,22 +168,22 @@ def get_input_model_classes(
     df_dataset['eligibleTokenClasses'] = df_dataset['eligibleTokenClasses'].astype('string')
     # Define the new order of columns
     new_columns_order = [
-        'token', 'tokenInfo', 'tokenClass', 'oracleSoFar', 'tokenClassesSoFar', 'eligibleTokenClasses',
+        'oracleId', 'token', 'tokenInfo', 'tokenClass', 'oracleSoFar', 'tokenClassesSoFar', 'eligibleTokenClasses',
         'javadocTag', 'oracleType', 'packageName', 'className', 'methodJavadoc', 'methodSourceCode'
     ]
     # Reindex the DataFrame with the new order
     df_dataset = df_dataset.reindex(columns=new_columns_order)
     # Delete spurious columns for predicting the next token class
-    df_dataset = df_dataset.drop(['token', 'tokenInfo', 'tokenClass'], axis=1)
+    df_dataset = df_dataset.drop(['oracleId', 'token', 'tokenInfo', 'tokenClass'], axis=1)
     # Delete duplicates
-    df_dataset.drop_duplicates()
+    df_dataset = df_dataset.drop_duplicates()
     assert len(df_dataset) == 1
     # Generate string datapoints concatenating the fields of each column and separating them with a special token
     df_src_concat = df_dataset.apply(lambda row: tokenizer.sep_token.join(row.values), axis=1)
     # The pandas dataframe is transformed in a list of strings: each string is an input to the model
     src = df_src_concat.to_numpy().tolist()
     # Extract eligible token classes as list
-    eligible_token_classes = df_dataset['eligibleTokenClasses'].strip("[]").split()
+    eligible_token_classes = df_dataset['eligibleTokenClasses'][0].strip("[]").split()
     # Return source input and token classes dictionary
     return src, eligible_token_classes
 
@@ -220,22 +203,22 @@ def get_input_model_values(
     df_dataset['eligibleTokens'] = df_dataset['eligibleTokens'].astype('string')
     # Define the new order of columns
     new_columns_order = [
-        'tokenClass', 'token', 'tokenInfo', 'oracleSoFar', 'eligibleTokens', 'javadocTag', 'oracleType',
-        'projectName', 'packageName', 'className', 'methodJavadoc', 'methodSourceCode'
+        'oracleId', 'tokenClass', 'token', 'tokenInfo', 'oracleSoFar', 'eligibleTokens', 'javadocTag', 'oracleType',
+        'packageName', 'className', 'methodJavadoc', 'methodSourceCode'
     ]
     # Reindex the DataFrame with the new order
     df_dataset = df_dataset.reindex(columns=new_columns_order)
     # Delete spurious columns for predicting the next token class
-    df_dataset = df_dataset.drop(['tokenClass','token'], axis=1)
+    df_dataset = df_dataset.drop(['oracleId', 'tokenClass','token'], axis=1)
     # Delete duplicates
-    df_dataset.drop_duplicates()
+    df_dataset = df_dataset.drop_duplicates()
     assert len(df_dataset) == 1
     # Generate string datapoints concatenating the fields of each column and separating them with a special token
     df_src_concat = df_dataset.apply(lambda row: tokenizer.sep_token.join(row.values), axis=1)
     # The pandas dataframe is transformed in a list of strings: each string is an input to the model
     src = df_src_concat.to_numpy().tolist()
     # Extract eligible token classes as list
-    eligible_token_values = df_dataset['eligibleTokens'].strip("[]").split()
+    eligible_token_values = df_dataset['eligibleTokens'][0].strip("[]").split()
     # Return source input and token classes dictionary
     return src, eligible_token_values
 
@@ -262,14 +245,16 @@ def next_token(
         filename: str,
         model_classes: Type[PreTrainedModel],
         model_values: Type[PreTrainedModel],
-        tokenizer: PreTrainedTokenizer
+        tokenizer_token_classes: PreTrainedTokenizer,
+        tokenizer_token_values: PreTrainedTokenizer
+
 ):
     # Collect partial dataframes from oracles
     print("Predict next token")
     df_dataset = pd.read_json(filename)
     # Pre-process dataset
     print("Pre-processing dataset")
-    df_dataset = pre_process_dataset(df_dataset, tokenizer)
+    df_dataset = pre_process_dataset(df_dataset, tokenizer_token_classes)
 
     # If there is a single row, there is no need to make predictions. The unique possible value is returned
     if len(df_dataset) == 0:
@@ -277,10 +262,10 @@ def next_token(
 
     # Get model token classes input
     print("Get model token classes input")
-    src_token_classes, eligible_token_classes = get_input_model_classes(df_dataset, tokenizer)
+    src_token_classes, eligible_token_classes = get_input_model_classes(df_dataset, tokenizer_token_classes)
     # Tokenize input
     print("Tokenize model token classes input")
-    t_src_token_classes = tokenize_input(src_token_classes, tokenizer)
+    t_src_token_classes = tokenize_input(src_token_classes, tokenizer_token_classes)
     # Generate data loader
     t_t_src_token_classes = TensorDataset(*t_src_token_classes)
     dl_src_token_classes = DataLoader(
@@ -289,13 +274,13 @@ def next_token(
     )
     # Predict next token class
     print("Predict next token class")
-    next_token_class = predict_next(device, model_classes, dl_src_token_classes, tokenizer, eligible_token_classes)
+    next_token_class = predict_next(device, model_classes, dl_src_token_classes, tokenizer_token_classes, eligible_token_classes, TrattoModelType.TOKEN_CLASSES)
     # Get model token values input
     print("Get model token values input")
-    src_token_values, eligible_token_values = get_input_model_values(df_dataset, next_token_class, tokenizer)
+    src_token_values, eligible_token_values = get_input_model_values(df_dataset, next_token_class, tokenizer_token_values)
     # Tokenize input
     print("Tokenize model token values input")
-    t_src_token_values = tokenize_input(src_token_values, tokenizer)
+    t_src_token_values = tokenize_input(src_token_values, tokenizer_token_values)
     # Generate data loader
     t_t_src_token_values = TensorDataset(*t_src_token_values)
     dl_src_token_values = DataLoader(
@@ -304,7 +289,7 @@ def next_token(
     )
     # Predict next token value
     print("Predict next token value")
-    next_token_value = predict_next(device, model_values, dl_src_token_values, tokenizer, eligible_token_values)
+    next_token_value = predict_next(device, model_values, dl_src_token_values, tokenizer_token_values, eligible_token_values, TrattoModelType.TOKEN_VALUES)
     # Return next token
     return next_token_value
 

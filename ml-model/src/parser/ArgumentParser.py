@@ -7,6 +7,13 @@ class ArgumentParser:
     @staticmethod
     def add_server_arguments(parser: Type[ArgumentParser]):
         parser.add_argument(
+            "--port",
+            default=5000,
+            type=str,
+            required=True,
+            help="The server port."
+        )
+        parser.add_argument(
             "--checkpoint_path_token_classes",
             default=None,
             type=str,
@@ -84,13 +91,6 @@ class ArgumentParser:
             The parser that extract the values of the parameters from the command line
         """
         # Required parameters
-        parser.add_argument(
-            "--port",
-            default=5000,
-            type=str,
-            required=True,
-            help="The server port."
-        )
         parser.add_argument(
             "--data_dir",
             default=None,

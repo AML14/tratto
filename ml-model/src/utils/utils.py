@@ -126,5 +126,5 @@ def release_memory():
     torch.cuda.empty_cache() 
     gc.collect()
 
-def resume_checkpoint(checkpoint_filename: str):
-    return torch.load(checkpoint_filename)
+def resume_checkpoint(checkpoint_filename: str, device: str):
+    return torch.load(checkpoint_filename, map_location=torch.device(device))

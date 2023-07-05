@@ -373,7 +373,7 @@ class DataProcessorDecoder:
             # Map token class names
             _, value_mappings = utils.import_json(
                 os.path.join(
-                    os.path.abspath(__file__),
+                    os.path.dirname(os.path.abspath(__file__)),
                     '..',
                     'resources',
                     'tokenClassesValuesMapping.json'

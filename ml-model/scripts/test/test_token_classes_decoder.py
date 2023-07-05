@@ -29,10 +29,11 @@ def predict(
     # Map token class names
     _, value_mappings = utils.import_json(
         os.path.join(
-            os.path.abspath(__file__),
+            os.path.dirname(os.path.abspath(__file__)),
             '..',
             '..',
             '..',
+            'src',
             'resources',
             'tokenClassesValuesMapping.json'
         )
@@ -174,10 +175,11 @@ def pre_processing(
     # Map token class names
     _, value_mappings = utils.import_json(
         os.path.join(
-            os.path.abspath(__file__),
+            os.path.dirname(os.path.abspath(__file__)),
             '..',
             '..',
             '..',
+            'src',
             'resources',
             'tokenClassesValuesMapping.json'
         )
@@ -319,7 +321,7 @@ def main(
     model.to(device)
 
     # Load checkpoint
-    checkpoint = torch.load(checkpoint_path)
+    checkpoint = torch.load(checkpoint_path, map_location=torch.device(device))
     model.load_state_dict(checkpoint['model_state_dict'])
 
     print("Start predictions")

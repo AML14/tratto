@@ -209,7 +209,7 @@ def main(
     )
     model.to(device)
     # Load checkpoint
-    checkpoint = torch.load(checkpoint_path)
+    checkpoint = torch.load(checkpoint_path, map_location=torch.device(device))
     model.load_state_dict(checkpoint['model_state_dict'])
 
     print("Pre-processing dataset")
