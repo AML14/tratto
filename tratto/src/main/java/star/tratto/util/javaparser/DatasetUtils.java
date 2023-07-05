@@ -14,12 +14,11 @@ import com.github.javaparser.resolution.declarations.ResolvedFieldDeclaration;
 import com.github.javaparser.resolution.declarations.ResolvedReferenceTypeDeclaration;
 import com.github.javaparser.resolution.types.ResolvedType;
 import com.github.javaparser.symbolsolver.javaparsermodel.declarations.JavaParserFieldDeclaration;
-import org.javatuples.Pair;
-import org.javatuples.Quartet;
-import org.javatuples.Quintet;
-import org.javatuples.Triplet;
+import com.github.javaparser.symbolsolver.reflectionmodel.ReflectionFieldDeclaration;
+import org.javatuples.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleType;
 import star.tratto.data.oracles.JDoctorCondition.*;
 import star.tratto.exceptions.JPClassNotFoundException;
@@ -35,10 +34,12 @@ import star.tratto.oraclegrammar.custom.Splitter;
 import star.tratto.util.FileUtils;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * This class provides core utilities for the generation of the oracles
@@ -253,8 +254,7 @@ public class DatasetUtils {
             } else {
                 // unknown type.
                 assert false;
-                String errMsg = String.format("Unexpected type when evaluating %s parameter type.", jpParameterType);
-                logger.error(errMsg);
+                logger.error(String.format("Unexpected type when evaluating %s parameter type.", jpParameterType));
             }
             // check if type is an array.
             if (hasEllipsis) {
@@ -263,8 +263,7 @@ public class DatasetUtils {
             // return class name.
             return Optional.of(className);
         } catch (UnsolvedSymbolException e) {
-            String errMsg = String.format("UnsolvedSymbolException when evaluating %s parameter type.", jpParameterType);
-            logger.error(errMsg);
+            logger.error(String.format("UnsolvedSymbolException when evaluating %s parameter type.", jpParameterType));
             String className = jpParameterType.asClassOrInterfaceType().getNameAsString();
             if (hasEllipsis) {
                 className += "[]";
@@ -302,19 +301,19 @@ public class DatasetUtils {
                             jpParameterType.resolve().isArray()
                     ) {
                         // if not a reference type, ignore package name (e.g. primitives do not have packages).
-                        argumentList.add(new Triplet<>(jpParameter.getNameAsString(), "", jpParameterClassName.get()));
+                        argumentList.add(Triplet.with(jpParameter.getNameAsString(), "", jpParameterClassName.get()));
                     } else if (jpParameterType.resolve().isReferenceType()) {
                         String typeName = JDoctorUtils.getJPTypeName(jpClass, jpCallable, jpParameter);
                         if (JavaParserUtils.isGenericType(jpParameterType.resolve())) {
                             // if reference object is a generic type, ignore package name.
-                            argumentList.add(new Triplet<>(jpParameter.getNameAsString(), "", typeName));
+                            argumentList.add(Triplet.with(jpParameter.getNameAsString(), "", typeName));
                         } else {
                             // otherwise, retrieve necessary package information.
                             String fullyQualifiedName = jpParameterType.resolve().asReferenceType().getQualifiedName();
                             String className = JavaParserUtils.getTypeWithoutPackages(fullyQualifiedName);
                             String parameterPackageName = fullyQualifiedName
                                     .replace(String.format(".%s", className), "");
-                            argumentList.add(new Triplet<>(
+                            argumentList.add(Triplet.with(
                                     jpParameter.getNameAsString(),
                                     parameterPackageName,
                                     jpParameterClassName.get()
@@ -322,8 +321,7 @@ public class DatasetUtils {
                         }
                     }
                 } catch (UnsolvedSymbolException e) {
-                    String errMsg = String.format("Unable to generate triplet for argument %s.", jpParameterType);
-                    logger.error(errMsg);
+                    logger.error(String.format("Unable to generate triplet for argument %s.", jpParameterType));
                 }
             }
         }
@@ -371,7 +369,7 @@ public class DatasetUtils {
             List<MethodDeclaration> jpMethods = jpClass.findAll(MethodDeclaration.class);
             for (MethodDeclaration jpMethod : jpMethods) {
                 if (!jpMethod.isPrivate() && jpMethod.isStatic() && !jpMethod.getType().isVoidType()) {
-                    methodList.add(new Quartet<>(
+                    methodList.add(Quartet.with(
                             jpMethod.getNameAsString(),
                             packageName,
                             className,
@@ -412,7 +410,7 @@ public class DatasetUtils {
                 if (!jpField.isPrivate() && jpField.isStatic()) {
                     // add each variable in declaration.
                     for (VariableDeclarator jpVariable : jpField.getVariables()) {
-                        attributeList.add(new Quartet<>(
+                        attributeList.add(Quartet.with(
                                 jpVariable.getNameAsString(),
                                 packageName,
                                 className,
@@ -430,6 +428,7 @@ public class DatasetUtils {
      * unit.
      *
      * @param cu a compilation unit {@link CompilationUnit} of a java file.
+     * @param fileContent the content of the java file.
      * @return a list of information about each tag. Each entry has the form:
      *  [typeDeclaration, callableDeclaration, oracleType, name, content]
      * where a JavaDoc tag is interpreted as:
@@ -438,10 +437,11 @@ public class DatasetUtils {
      * @throws PackageDeclarationNotFoundException if the package
      * {@link PackageDeclaration} of the compilation unit is not found.
      */
-    private static List<Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> getCuTags(
-            CompilationUnit cu
+    private static List<Sextet<String, TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> getCuTags(
+            CompilationUnit cu,
+            String fileContent
     ) throws PackageDeclarationNotFoundException {
-        List<Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> tagList = new ArrayList<>();
+        List<Sextet<String, TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> tagList = new ArrayList<>();
         // iterate through each class.
         List<TypeDeclaration<?>> jpClasses = cu.getTypes();
         for (TypeDeclaration<?> jpClass : jpClasses) {
@@ -466,7 +466,8 @@ public class DatasetUtils {
                         };
                         if (oracleType == null) continue;
                         // add new tag.
-                        tagList.add(new Quintet<>(
+                        tagList.add(Sextet.with(
+                                fileContent,
                                 jpClass,
                                 jpCallable,
                                 oracleType,
@@ -606,18 +607,19 @@ public class DatasetUtils {
      *  "@tag name content"
      * and the value of "@tag" determines "oracleType".
      */
-    public static List<Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> getProjectTagsTokens(
+    public static List<Sextet<String, TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> getProjectTagsTokens(
             String sourcePath
     ) {
-        List<Quintet<TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> tagList = new ArrayList<>();
+        List<Sextet<String, TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> tagList = new ArrayList<>();
         List<File> javaFiles = getValidJavaFiles(sourcePath);
         // iterate through each file and add JavaDoc tags.
         for (File javaFile : javaFiles) {
             String filePath = javaFile.getAbsolutePath();
+            String fileContent = FileUtils.readFile(filePath);
             Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnitFromFilePath(filePath);
             if (cu.isPresent()) {
                 try {
-                    tagList.addAll(getCuTags(cu.get()));
+                    tagList.addAll(getCuTags(cu.get(), fileContent));
                 } catch (PackageDeclarationNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -640,7 +642,7 @@ public class DatasetUtils {
     ) {
         return new ArrayList<>(jpMethods)
                 .stream()
-                .map(jpMethod -> new Quartet<>(
+                .map(jpMethod -> Quartet.with(
                         jpMethod.getName(),
                         jpMethod.declaringType().getPackageName(),
                         jpMethod.declaringType().getClassName(),
@@ -678,7 +680,7 @@ public class DatasetUtils {
                     .toList();
             methodList.addAll(arrayMethods
                     .stream()
-                    .map(m -> new Quartet<>(m.get(0), "", jpResolvedType.describe(), m.get(1)))
+                    .map(m -> Quartet.with(m.get(0), "", jpResolvedType.describe(), m.get(1)))
                     .toList());
         } else if (JavaParserUtils.isGenericType(jpResolvedType)) {
             // generic type.
@@ -712,10 +714,55 @@ public class DatasetUtils {
             ResolvedType jpResolvedType = jpType.resolve();
             return getMethodsFromType(jpResolvedType);
         } catch (UnsolvedSymbolException e) {
-            String errMsg = String.format("Unable to generate method quartet list from type %s", jpType);
-            logger.error(errMsg);
+            logger.error(String.format("Unable to generate method quartet list from type %s", jpType));
             return new ArrayList<>();
         }
+    }
+
+    /**
+     * Uses methods and fields of JavaParserFieldDeclaration to get a more
+     * detailed field signature (includes all modifiers and value).
+     */
+    private static List<Quartet<String, String, String, String>> convertJavaParserFieldDeclarationToQuartet(
+            JavaParserFieldDeclaration resolvedField
+    ) {
+        List<Quartet<String, String, String, String>> attributeList = new ArrayList<>();
+        FieldDeclaration jpField = resolvedField.getWrappedNode();
+        for (VariableDeclarator jpVariable : jpField.getVariables()) {
+            attributeList.add(Quartet.with(
+                    jpVariable.getNameAsString(),
+                    resolvedField.declaringType().getPackageName(),
+                    resolvedField.declaringType().getClassName(),
+                    JavaParserUtils.getVariableSignature(jpField, jpVariable)
+            ));
+        }
+        return attributeList;
+    }
+
+    /**
+     * Uses methods and fields of ReflectionFieldDeclaration to get a more
+     * detailed field signature (includes all modifiers).
+     */
+    private static List<Quartet<String, String, String, String>> convertReflectionFieldDeclarationToQuartet(
+            ReflectionFieldDeclaration resolvedField
+    ) {
+        List<Quartet<String, String, String, String>> attributeList = new ArrayList<>();
+        String signature;
+        try {
+            Field f = resolvedField.getClass().getDeclaredField("field");
+            f.setAccessible(true);
+            Field field = (Field) f.get(resolvedField);
+            signature = JavaParserUtils.getFieldSignature(resolvedField, field.getModifiers());
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            signature = JavaParserUtils.getFieldSignature(resolvedField);
+        }
+        attributeList.add(Quartet.with(
+                resolvedField.getName(),
+                resolvedField.declaringType().getPackageName(),
+                resolvedField.declaringType().getClassName(),
+                signature
+        ));
+        return attributeList;
     }
 
     /**
@@ -728,20 +775,17 @@ public class DatasetUtils {
     private static List<Quartet<String, String, String, String>> convertFieldDeclarationToQuartet(
             List<ResolvedFieldDeclaration> resolvedFields
     ) {
-        List<Quartet<String, String, String, String>> quartetList = new ArrayList<>();
+        List<Quartet<String, String, String, String>> fieldList = new ArrayList<>();
         for (ResolvedFieldDeclaration resolvedField : resolvedFields) {
             if (resolvedField instanceof JavaParserFieldDeclaration) {
-                FieldDeclaration jpField = ((JavaParserFieldDeclaration) resolvedField).getWrappedNode();
-                for (VariableDeclarator jpVariable : jpField.getVariables()) {
-                    quartetList.add(new Quartet<>(
-                            jpVariable.getNameAsString(),
-                            resolvedField.declaringType().getPackageName(),
-                            resolvedField.declaringType().getClassName(),
-                            JavaParserUtils.getVariableSignature(jpField, jpVariable)
-                    ));
-                }
+                // use JavaParserFieldDeclaration to get a more detailed signature.
+                fieldList.addAll(convertJavaParserFieldDeclarationToQuartet((JavaParserFieldDeclaration) resolvedField));
+            } else if (resolvedField instanceof ReflectionFieldDeclaration) {
+                // use ReflectionFieldDeclaration to get a more detailed signature.
+                fieldList.addAll(convertReflectionFieldDeclarationToQuartet((ReflectionFieldDeclaration) resolvedField));
             } else {
-                quartetList.add(new Quartet<>(
+                // use default ResolvedFieldDeclaration.
+                fieldList.add(Quartet.with(
                         resolvedField.getName(),
                         resolvedField.declaringType().getPackageName(),
                         resolvedField.declaringType().getClassName(),
@@ -749,7 +793,7 @@ public class DatasetUtils {
                 ));
             }
         }
-        return quartetList;
+        return fieldList;
     }
 
     /**
@@ -769,10 +813,11 @@ public class DatasetUtils {
         List<Quartet<String, String, String, String>> fieldList = new ArrayList<>();
         if (jpResolvedType.isArray()) {
             // add array field (length).
-            fieldList.add(new Quartet<>(
+            Pair<String, String> packageAndClass = JavaParserUtils.getTypeFromResolvedType(jpResolvedType);
+            fieldList.add(Quartet.with(
                     "length",
-                    "",
-                    jpResolvedType.describe(),
+                    packageAndClass.getValue0(),
+                    packageAndClass.getValue1(),
                     "public final int length;"
             ));
         } else if (jpResolvedType.isReferenceType()) {
@@ -813,10 +858,30 @@ public class DatasetUtils {
             ResolvedType jpResolvedType = jpType.resolve();
             return getFieldsFromType(jpResolvedType);
         } catch (UnsolvedSymbolException e) {
-            String errMsg = String.format("Unable to generate attribute quartet list from type %s", jpType);
-            logger.error(errMsg);
+            logger.error(String.format("Unable to generate attribute quartet list from type %s", jpType));
             return new ArrayList<>();
         }
+    }
+
+    /**
+     * Like previous method, but to be used with method arguments. This function
+     * handles those cases where the argument is an array but expressed using ellipsis,
+     * e.g., {@code foo(String... bar)}. If the method argument is not an array
+     * of this kind, the method simply calls the previous method.
+     */
+    public static List<Quartet<String, String, String, String>> getFieldsFromParameter(
+            Parameter jpParameter
+    ) {
+        if (JDoctorUtils.hasJPTypeEllipsis(jpParameter.toString())) {
+            Pair<String, String> packageAndClass = JavaParserUtils.getTypeFromResolvedType(jpParameter.getType().resolve());
+            return List.of(Quartet.with(
+                    "length",
+                    packageAndClass.getValue0(),
+                    packageAndClass.getValue1() + "[]",
+                    "public final int length;"
+            ));
+        }
+        return getFieldsFromType(jpParameter.getType());
     }
 
     /**
@@ -890,7 +955,7 @@ public class DatasetUtils {
         List<Quartet<String, String, String, String>> attributeList = new ArrayList<>(convertFieldDeclarationToQuartet(allReceiverFields));
         // add all fields of parameters.
         for (Parameter jpParam : jpCallable.getParameters()) {
-            attributeList.addAll(getFieldsFromType(jpParam.getType()));
+            attributeList.addAll(getFieldsFromParameter(jpParam));
         }
         // add all fields of return type.
         if (jpCallable instanceof MethodDeclaration) {
@@ -932,6 +997,9 @@ public class DatasetUtils {
                         methodArgs,
                         subexpression
                 );
+                if (!resolvedType.isPrimitive()) {
+                    methodList.addAll(getMethodsFromType(JavaParserUtils.getGenericType()));
+                }
                 methodList.addAll(getMethodsFromType(resolvedType));
             } catch (UnsolvedSymbolException | ResolvedTypeNotFound e) {
                 ResolvedType genericType = JavaParserUtils.getGenericType();
@@ -1125,9 +1193,29 @@ public class DatasetUtils {
             Operation operation,
             String sourcePath
     ) {
-        List<String> pathList = Arrays.asList(operation.getClassName().split("\\."));
-        String classPath = Paths.get(sourcePath, pathList.toArray(String[]::new)) + FileFormat.JAVA.getValue();
+        String classPath = getClassPath(operation, sourcePath);
         return JavaParserUtils.getCompilationUnitFromFilePath(classPath);
+    }
+
+    /**
+     * Like previous method, but instead of retrieving the compilation unit,
+     * retrieves the source code of the class.
+     */
+    public static Optional<String> getOperationClassSource(
+            Operation operation,
+            String sourcePath
+    ) {
+        String classPath = getClassPath(operation, sourcePath);
+        String classSource = FileUtils.readFile(classPath);
+        return classSource != null ? Optional.of(classSource) : Optional.empty();
+    }
+
+    private static String getClassPath(
+            Operation operation,
+            String sourcePath
+    ) {
+        List<String> pathList = Arrays.asList(operation.getClassName().split("\\."));
+        return Paths.get(sourcePath, pathList.toArray(String[]::new)) + FileFormat.JAVA.getValue();
     }
 
     /**
@@ -1159,5 +1247,37 @@ public class DatasetUtils {
     ) {
         List<String> pathList = JDoctorUtils.getPathList(operation.getName());
         return JDoctorUtils.getClassNameFromPathList(pathList);
+    }
+
+    /**
+     * Randomly samples oracle data points {@link OracleDatapoint}. Filters
+     * empty or non-empty oracles.
+     *
+     * @param oracleDPs list of oracle data points {@link OracleDatapoint}.
+     * @param isEmpty if the samples data points represent empty oracles.
+     * @param numSamples the number of data points to samples.
+     * @return a random sample of oracle data points.
+     */
+    public static List<OracleDatapoint> randomSample(List<OracleDatapoint> oracleDPs, boolean isEmpty, int numSamples) {
+        // filter empty vs non-empty oracles.
+        List<OracleDatapoint> filterDPs;
+        if (isEmpty) {
+            filterDPs = oracleDPs
+                    .stream()
+                    .filter(dp -> dp.getOracle().equals(";"))
+                    .collect(Collectors.toList());
+        } else {
+            filterDPs = oracleDPs
+                    .stream()
+                    .filter(dp -> !dp.getOracle().equals(";"))
+                    .collect(Collectors.toList());
+        }
+        // randomly sample oracles.
+        Collections.shuffle(filterDPs);
+        List<OracleDatapoint> sample = new ArrayList<>();
+        for (int i = 0; i < numSamples; i++) {
+            sample.add(filterDPs.get(i));
+        }
+        return sample;
     }
 }
