@@ -140,6 +140,46 @@ public class DatasetUtilsTest {
     }
 
     @Test
+    public void getFieldsFromParameterTest() {
+        OracleDatapoint oracleDatapoint = oracleDatapoints.get(1);
+        TypeDeclaration<?> jpClass = getClassOrInterface(oracleDatapoint.getClassSourceCode(), oracleDatapoint.getClassName());
+        String methodName = "value";
+        List<String> methodArgs = List.of("DerivativeStructure");
+        CallableDeclaration<?> jpCallable = getCallableDeclaration(jpClass, methodName, methodArgs);
+        assertNotNull(jpCallable);
+        Parameter jpParam = jpCallable.getParameters().get(0);
+        List<Quartet<String, String, String, String>> expected = new ArrayList<>();
+        List<Quartet<String, String, String, String>> actual = getFieldsFromParameter(jpParam);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void getFieldsFromParameterArrayWithEllipsisTest() {
+        String classSourceCode = """
+                public class SomeClass {
+                    public static String someMethod(String... arg1, int... arg2) {
+                        return "";
+                    }
+                }
+                """;
+        String className = "SomeClass";
+        String methodName = "someMethod";
+
+        TypeDeclaration<?> jpClass = getClassOrInterface(classSourceCode, className);
+        List<String> methodArgs = List.of("String[]", "int[]");
+        CallableDeclaration<?> jpCallable = getCallableDeclaration(jpClass, methodName, methodArgs);
+        assertNotNull(jpCallable);
+        Parameter jpParam1 = jpCallable.getParameters().get(0);
+        Parameter jpParam2 = jpCallable.getParameters().get(1);
+        List<Quartet<String, String, String, String>> expected1 = List.of(Quartet.with("length", "java.lang", "String[]", "public final int length;"));
+        List<Quartet<String, String, String, String>> expected2 = List.of(Quartet.with("length", "", "int[]", "public final int length;"));
+        List<Quartet<String, String, String, String>> actual1 = getFieldsFromParameter(jpParam1);
+        List<Quartet<String, String, String, String>> actual2 = getFieldsFromParameter(jpParam2);
+        assertEquals(expected1, actual1);
+        assertEquals(expected2, actual2);
+    }
+
+    @Test
     public void getTokensMethodVariablesNonPrivateNonStaticNonVoidMethodsTest() {
         OracleDatapoint oracleDatapoint = oracleDatapoints.get(1);
         TypeDeclaration<?> jpClass = getClassOrInterface(oracleDatapoint.getClassSourceCode(), oracleDatapoint.getClassName());

@@ -5,6 +5,7 @@ import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.body.*;
 import com.github.javaparser.ast.comments.JavadocComment;
 import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.type.ArrayType;
 import com.github.javaparser.ast.type.Type;
 import com.github.javaparser.javadoc.Javadoc;
 import com.github.javaparser.javadoc.JavadocBlockTag;
@@ -813,10 +814,11 @@ public class DatasetUtils {
         List<Quartet<String, String, String, String>> fieldList = new ArrayList<>();
         if (jpResolvedType.isArray()) {
             // add array field (length).
+            Pair<String, String> packageAndClass = JavaParserUtils.getTypeFromResolvedType(jpResolvedType);
             fieldList.add(Quartet.with(
                     "length",
-                    "",
-                    jpResolvedType.describe(),
+                    packageAndClass.getValue0(),
+                    packageAndClass.getValue1(),
                     "public final int length;"
             ));
         } else if (jpResolvedType.isReferenceType()) {
@@ -860,6 +862,27 @@ public class DatasetUtils {
             logger.error(String.format("Unable to generate attribute quartet list from type %s", jpType));
             return new ArrayList<>();
         }
+    }
+
+    /**
+     * Like previous method, but to be used with method arguments. This function
+     * handles those cases where the argument is an array but expressed using ellipsis,
+     * e.g., {@code foo(String... bar)}. If the method argument is not an array
+     * of this kind, the method simply calls the previous method.
+     */
+    public static List<Quartet<String, String, String, String>> getFieldsFromParameter(
+            Parameter jpParameter
+    ) {
+        if (JDoctorUtils.hasJPTypeEllipsis(jpParameter.toString())) {
+            Pair<String, String> packageAndClass = JavaParserUtils.getTypeFromResolvedType(jpParameter.getType().resolve());
+            return List.of(Quartet.with(
+                    "length",
+                    packageAndClass.getValue0(),
+                    packageAndClass.getValue1() + "[]",
+                    "public final int length;"
+            ));
+        }
+        return getFieldsFromType(jpParameter.getType());
     }
 
     /**
@@ -933,7 +956,7 @@ public class DatasetUtils {
         List<Quartet<String, String, String, String>> attributeList = new ArrayList<>(convertFieldDeclarationToQuartet(allReceiverFields));
         // add all fields of parameters.
         for (Parameter jpParam : jpCallable.getParameters()) {
-            attributeList.addAll(getFieldsFromType(jpParam.getType()));
+            attributeList.addAll(getFieldsFromParameter(jpParam));
         }
         // add all fields of return type.
         if (jpCallable instanceof MethodDeclaration) {

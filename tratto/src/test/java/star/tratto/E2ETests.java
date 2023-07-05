@@ -31,7 +31,7 @@ public class E2ETests {
 //    @Disabled
     public void datasetsE2ETest() throws IOException {
         // Config for E2E test
-        OracleDP2TokenDPs.CRASH_WRONG_ORACLE = false; // TODO: Set to true after crashing oracles are fixed
+        OracleDP2TokenDPs.CRASH_WRONG_ORACLE = true;
         TokensDataset.ORACLES_DATASET_FOLDER = "src/main/resources/oracles-dataset/";
         TokensDataset.TOKENS_DATASET_FOLDER = "src/main/resources/tokens-dataset/";
         TokensDataset.DATASET_TYPE = TokenDPType.TOKEN_VALUE; // To reduce the size of the generated dataset
