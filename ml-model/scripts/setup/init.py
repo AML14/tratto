@@ -56,6 +56,6 @@ _, checkpoints = utils.import_json(
     )
 )
 
-extract_zip_from_url(datasets)
+#extract_zip_from_url(datasets)
 extract_zip_from_url(checkpoints)
 
