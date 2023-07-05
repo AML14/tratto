@@ -8,36 +8,13 @@ available on [HuggingFace](https://huggingface.co/)).
 
 Requirements: `python3.9`, `Git LFS` (Git LFS official [website](https://git-lfs.com/))
 
-## 1. Datasets & Models Checkpoints
-
-### 1.1. Datasets
-
-The datasets to train the models can be downloaded from the following links:
-
-1. [token-classes-dataset](https://uses0-my.sharepoint.com/:u:/g/personal/amarlop_us_es/EfhSQDH7I4BOouNGAeclVwABb0-PqecclECYwrEIPQ1IXg?download=1) 
-2. [token-values-dataset](https://uses0-my.sharepoint.com/:u:/g/personal/amarlop_us_es/ERdhUoRSjc5FjRcTWcvkjUYBPYrOk_pAtW8iiNxc4VOleg?download=1)
-
-Unzip the downloaded files, check that the name of the datasets are exactly `token-classes-dataset` and `token-values-dataset` 
-(otherwise rename them), and position them within `tratto/ml-model/dataset`.
-
-### 1.2. Checkpoints
-
-The checkpoints of the trained models can be downloaded from the following links:
-
-1. [token-classes-checkpoint](https://drive.switch.ch/index.php/s/udYlsoWd5tpy1sh) 
-2. [token-values-checkpoint](https://drive.switch.ch/index.php/s/vYpeKzNFH1RYeZi)
-
-Unzip the downloaded files, check that the name of the checkpoints are exactly `checkpoint_token_classes.pt` and `checkpoint_token_values.pt`,
-(otherwise rename them), and position them within `tratto/ml-model/checkpoints/token_classes` and `tratto/ml-model/checkpoints/token_values`,
-respectively.
-
-## 2. Environment
+## 1. Environment
 
 In order to set up the environment is not strictly necessary, but recommended to create a [_venv_](https://docs.python.org/3/library/venv.html) 
 or [_conda_](https://docs.conda.io/en/latest/) environment. 
 In the following section we will provide the general information to configure the project on a _conda_ environment.
 
-### 2.1 Install Conda
+### 1.1 Install Conda
 
 The reader can find all the instructions to properly install and setup _conda_, on the official [user guide](https://docs.conda.io/projects/conda/en/stable/user-guide/install/index.html).
 
@@ -63,7 +40,7 @@ macOS and Windows systems.
     conda --version
     ```
 
-### 2.2 Create and activate _conda_ environment
+### 1.2 Create and activate _conda_ environment
 
 4. Create a new conda environment for the **TRATTO** project
    ```shell
@@ -81,7 +58,7 @@ macOS and Windows systems.
     conda install pip
     ```
 
-### 2.3 Install the requirements
+### 1.3 Install the requirements
   
 7. Move to the `ml-model` folder of the `tratto` project
     ```shell
@@ -93,12 +70,25 @@ macOS and Windows systems.
     pip install -r requirements.txt
     ```
 
-### 3.4 Grant permissions to run bash scripts
+### 1.4 Grant permissions to run bash scripts
 
 9. Execute the following command to grant the premission to run all the bash scripts
    ```shell
    chmod a+x *.sh
    ```
+
+## 2. Datasets & Models Checkpoints
+
+Execute the following command to download the datasets to replicate the work, and the final checkpoints to use the models.
+
+   ```shell
+   ./init.sh
+   ```
+
+**Important note**: if you skipped the instructions to configure the enviroment, remember to execute the command described
+at `section 1.4` to grant the permissions to run the bash scripts.
+
+The datasets and checkpoints will be saved in the `ml-model` root directory, with the homonym names.
 
 # Training
 
