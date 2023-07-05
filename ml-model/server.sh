@@ -1,3 +1,4 @@
+export PYTHONPATH="./"
 python3 scripts/server/server.py \
 --port 5000 \
 --model_type_token_classes codet5+ \

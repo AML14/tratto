@@ -30,7 +30,10 @@ def predict(
     _, value_mappings = utils.import_json(
         os.path.join(
             os.path.abspath(__file__),
-            '../../..', 'resources',
+            '..',
+            '..',
+            '..',
+            'resources',
             'tokenClassesValuesMapping.json'
         )
     )
@@ -172,7 +175,10 @@ def pre_processing(
     _, value_mappings = utils.import_json(
         os.path.join(
             os.path.abspath(__file__),
-            '../../..', 'resources',
+            '..',
+            '..',
+            '..',
+            'resources',
             'tokenClassesValuesMapping.json'
         )
     )

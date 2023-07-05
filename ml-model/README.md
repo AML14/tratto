@@ -95,9 +95,9 @@ macOS and Windows systems.
 
 ### 3.4 Grant permissions to run bash scripts
 
-9. Execute the following command to grant the premission to run bash scripts
+9. Execute the following command to grant the premission to run all the bash scripts
    ```shell
-   chmod a+x ./
+   chmod a+x *.sh
    ```
 
 # Training

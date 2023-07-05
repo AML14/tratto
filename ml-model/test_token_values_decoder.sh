@@ -1,3 +1,4 @@
+export PYTHONPATH="./"
 python3 scripts/test/test_token_values_decoder.py \
 --model_type codet5+ \
 --tokenizer_name Salesforce/codet5p-220m \

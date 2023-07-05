@@ -1,3 +1,4 @@
+export PYTHONPATH="./"
 python scripts/test/run_classifier_decoder.py \
 --do_train \
 --do_eval \
