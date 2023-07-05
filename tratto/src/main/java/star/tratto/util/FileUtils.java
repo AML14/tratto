@@ -198,12 +198,53 @@ public class FileUtils {
         return new ArrayList<>();
     }
 
+    public static void deleteDirectory(String dirPath) {
+        try {
+            org.apache.commons.io.FileUtils.deleteDirectory(new File(dirPath));
+        } catch (IOException e) {
+            logger.warn("There was an error when trying to delete the directory {} ", dirPath);
+        }
+    }
+
+    /**
+     * The method moves all the files contained in a given directory to another directory.
+     * If files are contained in subdirectories, these are not copied, i.e., only the files
+     * are moved to the destination directory, at the first level.
+     *
+     * @param orig the path to the directory where the files are located
+     * @param dest the path to the directory where the files must be moved
+     */
+    public static void moveFilesRecursively(String orig, String dest) {
+        File origDir = new File(orig);
+        File destDir = new File(dest);
+        if (!origDir.exists()) {
+            String errMsg = String.format("Directory %s not found.", orig);
+            logger.error(errMsg);
+            return;
+        }
+        if (!destDir.exists()) {
+            boolean success = destDir.mkdirs();
+            if (!success) {
+                String errMsg = String.format("Unable to create folder %s", dest);
+                logger.error(errMsg);
+                return;
+            }
+        }
+        for (File file: Objects.requireNonNull(origDir.listFiles())) {
+            if (file.isDirectory()) {
+                moveFilesRecursively(file.getAbsolutePath(), dest);
+            } else {
+                file.renameTo(new File(dest + "/" + file.getName()));
+            }
+        }
+    }
+
     public static String readFile(String filePath) {
         try {
             return Files.readString(Paths.get(filePath));
         } catch (IOException e) {
             logger.error("Error reading file: " + e.getMessage());
-            return "";
+            return null;
         }
     }
 }

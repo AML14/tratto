@@ -110,7 +110,7 @@
         "exception": "java.lang.IllegalArgumentException",
         "description": "@throws java.lang.IllegalArgumentException either the set or list is not empty.",
         "guard": {
-          "condition": "(receiverObjectID.isEmpty()) == false",
+          "condition": "(set.isEmpty()) == false || (list.isEmpty()) == false",
           "description": "either the set or list is not empty."
         }
       }
@@ -120,14 +120,14 @@
       {
         "description": "@param set the set to decorate. set is empty and not null.",
         "guard": {
-          "condition": "receiverObjectID.isEmpty() && (set==null) == false",
+          "condition": "(set==null) == false && set.isEmpty()",
           "description": "the set to decorate. set is empty and not null."
         }
       },
       {
         "description": "@param list the list to decorate. list is empty and not null.",
         "guard": {
-          "condition": "receiverObjectID.isEmpty() && (list==null) == false",
+          "condition": "(list==null) == false && list.isEmpty()",
           "description": "the list to decorate. list is empty and not null."
         }
       }

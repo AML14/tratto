@@ -29,18 +29,18 @@ public class OracleDatapointBuilderTest {
         assertNull(builder.copy().getClassName());
         // test class-level build.
         builder.setClassName("myClass");
-        builder.setTokensMethodArguments(List.of(new Triplet<>("o1", "java.lang", "Object")));
+        builder.setTokensMethodArguments(List.of(Triplet.with("o1", "java.lang", "Object")));
         builder.build("class", false);
         assertEquals("myProject", builder.copy().getProjectName());
         assertEquals("myClass", builder.copy().getClassName());
         assertNull(builder.copy().getTokensMethodArguments());
         // test method-level build.
-        builder.setTokensMethodArguments(List.of(new Triplet<>("o1", "java.lang", "Object")));
+        builder.setTokensMethodArguments(List.of(Triplet.with("o1", "java.lang", "Object")));
         builder.setId(7);
         builder.build("method", false);
         assertEquals("myProject", builder.copy().getProjectName());
         assertEquals("myClass", builder.copy().getClassName());
-        assertEquals(List.of(new Triplet<>("o1", "java.lang", "Object")), builder.copy().getTokensMethodArguments());
+        assertEquals(List.of(Triplet.with("o1", "java.lang", "Object")), builder.copy().getTokensMethodArguments());
         assertNull(builder.copy().getId());
     }
 

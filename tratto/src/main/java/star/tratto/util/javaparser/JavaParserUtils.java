@@ -712,7 +712,6 @@ public class JavaParserUtils {
         String methodModifiers = methodDeclaration.toString().startsWith("ReflectionMethodDeclaration") ? matcher.group(1) : matcher.group(2);
         // Take into account the case in which the method declaration refers to a method without an access specifier.
         if (methodModifiers == null) {
-            assert methodDeclaration.toString().startsWith("ReflectionMethodDeclaration");
             methodModifiers = "";
         }
         List<String> typeParameterList = getMethodUsageTypeParameters(methodUsage);

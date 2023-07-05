@@ -1,0 +1,119 @@
+[
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.distribution.IntegerDistribution",
+      "name": "cumulativeProbability",
+      "parameterTypes": [
+        "int"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "x"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID<=x",
+          "description": "the probability that a random variable with this distribution takes a value <= x."
+        },
+        "description": "the probability that a random variable with this distribution takes a value <= x.",
+        "guard": {
+          "condition": "true",
+          "description": "the probability that a random variable with this distribution takes a value <= x."
+        }
+      }
+    ],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.distribution.IntegerDistribution",
+      "name": "cumulativeProbability",
+      "parameterTypes": [
+        "int",
+        "int"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "x0",
+        "x1"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NumberIsTooLargeException",
+        "description": "@throws org.apache.commons.math3.exception.NumberIsTooLargeException x0 > x1.",
+        "guard": {
+          "condition": "x0>x1",
+          "description": "x0 > x1."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.distribution.IntegerDistribution",
+      "name": "inverseCumulativeProbability",
+      "parameterTypes": [
+        "double"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "p"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.OutOfRangeException",
+        "description": "@throws org.apache.commons.math3.exception.OutOfRangeException p < 0 or p > 1.",
+        "guard": {
+          "condition": "p<0 || p>1",
+          "description": "p < 0 or p > 1."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.distribution.IntegerDistribution",
+      "name": "sample",
+      "parameterTypes": [
+        "int"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "sampleSize"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NotStrictlyPositiveException",
+        "description": "@throws org.apache.commons.math3.exception.NotStrictlyPositiveException sampleSize is not positive.",
+        "guard": {
+          "condition": "(sampleSize>0) == false",
+          "description": "sampleSize is not positive."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  }
+]
