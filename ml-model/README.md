@@ -84,7 +84,7 @@ Execute the following command to download the checkpoints of the final trained m
 **Important note**: if you skipped the instructions to configure the enviroment, remember to execute the command described
 at `section 1.4` to grant the permissions to run the bash scripts.
 
-The datasets and checkpoints will be saved in the `ml-model` root directory, with the homonym names.
+The checkpoints will be saved in the `ml-model` root directory, with the homonym name.
 
 # Training
 
@@ -113,7 +113,7 @@ file and the pid of the process in the `run_token_classes.pid` (or `run_token_va
 
 ## Server
 
-To run the server and perform predictions on new data (or replicate the evaluation of the models), execute the following
+To run the server and perform predictions on new data (for example, in combination with the main tratto program), execute the following
 command to start the server:
 
    ```shell
@@ -127,5 +127,6 @@ where the dataset for the next token to compute is located (the file must be in 
    ```http request
    http://127.0.0.1:5000/api/next_token?[path_to_file]/[filename].json
    ```
-
+   * **path_to_file** - the absolute path to the directory where the dataset is located.
+   * **filename** - the name of the json file containing the dataset
 The response to the request contains a string representing the next token of the oracle.
