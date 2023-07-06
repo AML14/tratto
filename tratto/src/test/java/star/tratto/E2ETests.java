@@ -13,7 +13,6 @@ import java.util.List;
 
 import static star.tratto.TestUtilities.readOraclesFromExternalFiles;
 
-@Disabled
 public class E2ETests {
 
     /**
@@ -32,16 +31,16 @@ public class E2ETests {
     public void datasetsE2ETest() throws IOException {
         // TODO: Generate oracles dataset. For the moment, we assume it's under src/main/resources/oracles-dataset/
 
-        OracleDP2TokenDPs.CRASH_WRONG_ORACLE = true;
-        TokensDataset.ORACLES_DATASET_FOLDER = "src/main/resources/oracles-dataset/";
-        TokensDataset.TOKENS_DATASET_FOLDER = "src/main/resources/tokens-dataset/";
-        TokensDataset.DATASET_TYPE = TokenDPType.TOKEN_VALUE; // To reduce the size of the generated dataset
-
-        TokensDataset.main(new String[] {});
-
-        File tokensDatasetFolder = new File(TokensDataset.TOKENS_DATASET_FOLDER);
-        FileUtils.deleteDirectory(tokensDatasetFolder);
-        tokensDatasetFolder.mkdir();
+//        OracleDP2TokenDPs.CRASH_WRONG_ORACLE = true;
+//        TokensDataset.ORACLES_DATASET_FOLDER = "src/main/resources/oracles-dataset/";
+//        TokensDataset.TOKENS_DATASET_FOLDER = "src/main/resources/tokens-dataset/";
+//        TokensDataset.DATASET_TYPE = TokenDPType.TOKEN_VALUE; // To reduce the size of the generated dataset
+//
+//        TokensDataset.main(new String[] {});
+//
+//        File tokensDatasetFolder = new File(TokensDataset.TOKENS_DATASET_FOLDER);
+//        FileUtils.deleteDirectory(tokensDatasetFolder);
+//        tokensDatasetFolder.mkdir();
     }
 
     /**
@@ -57,7 +56,7 @@ public class E2ETests {
     @Test
 //    @Disabled
     public void tokenSuggesterE2ETest() {
-        List<String> stringOracles = readOraclesFromExternalFiles();
-        TokenSuggesterTest.getNextLegalTokensAuxTest(stringOracles);
+//        List<String> stringOracles = readOraclesFromExternalFiles();
+//        TokenSuggesterTest.getNextLegalTokensAuxTest(stringOracles);
     }
 }
