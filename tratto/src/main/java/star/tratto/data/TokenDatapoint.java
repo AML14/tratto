@@ -1,7 +1,4 @@
-package star.tratto.dataset.tokens;
-
-import star.tratto.dataset.oracles.OracleDatapoint;
-import star.tratto.oracle.OracleType;
+package star.tratto.data;
 
 import java.util.List;
 

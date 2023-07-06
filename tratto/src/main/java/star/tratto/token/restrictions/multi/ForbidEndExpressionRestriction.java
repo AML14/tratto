@@ -1,7 +1,7 @@
 package star.tratto.token.restrictions.multi;
 
 import org.javatuples.Pair;
-import star.tratto.dataset.oracles.OracleDatapoint;
+import star.tratto.data.OracleDatapoint;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.oraclegrammar.trattoGrammar.ClauseWithVars;
 import star.tratto.oraclegrammar.trattoGrammar.EqIneqComparisonElement;

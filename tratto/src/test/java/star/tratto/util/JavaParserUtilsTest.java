@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import star.tratto.dataset.oracles.OracleDatapoint;
-import star.tratto.dataset.oracles.OracleDatapointTest;
+import star.tratto.data.OracleDatapoint;
+import star.tratto.data.OracleDatapointTest;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -250,6 +250,10 @@ public class JavaParserUtilsTest {
     @Test
     public void getMethodsOfTypeTest() {
         assertTrue(getMethodsOfType("org.apache.commons.math3.analysis.polynomials.PolynomialFunction").stream().map(MethodUsage::getName).collect(Collectors.toList()).contains("polynomialDerivative"));
+        assertTrue(getMethodsOfType("org.apache.commons.math3.linear.RealMatrix").stream().map(MethodUsage::getName).collect(Collectors.toList()).contains("equals"));
+        assertTrue(getMethodsOfType("org.apache.commons.math3.linear.AbstractRealMatrix").stream().map(MethodUsage::getName).collect(Collectors.toList()).contains("equals"));
+        assertTrue(getMethodsOfType("java.util.List").stream().map(MethodUsage::getName).collect(Collectors.toList()).contains("wait"));
+        assertTrue(getMethodsOfType("java.util.ArrayList").stream().map(MethodUsage::getName).collect(Collectors.toList()).contains("wait"));
         assertTrue(getMethodsOfType("unknown.pack.age.AndClass").stream().map(MethodUsage::getName).collect(Collectors.toList()).contains("equals"));
         assertTrue(getMethodsOfType("T").stream().map(MethodUsage::getName).collect(Collectors.toList()).contains("equals"));
         assertThrows(IllegalArgumentException.class, () -> getMethodsOfType("long"));

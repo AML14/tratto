@@ -1,0 +1,74 @@
+pool:
+  vmImage: ubuntu-latest
+jobs:
+- job: unit_tests
+  steps:
+  - template: azure-pipelines-templates/install-dependency.yml
+  - task: Maven@3
+    displayName: 'Build and run tests'
+    inputs:
+      mavenPomFile: 'tratto/pom.xml'
+      mavenOptions: '-Xmx3072m'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '1.17'
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: true
+      testResultsFiles: '**/surefire-reports/TEST-*.xml'
+      goals: 'package'
+  - publish: $(System.DefaultWorkingDirectory)/tratto/target
+    displayName: 'Save coverage'
+    artifact: coverageResults1
+- job: tokensuggester_e2e_tests
+  dependsOn:
+  - unit_tests
+  steps:
+  - template: azure-pipelines-templates/install-dependency.yml
+  - download: current
+    displayName: 'Load previous coverage'
+    artifact: coverageResults1
+  - script: |
+      mkdir -p tratto/target/site
+      mkdir tratto/target/surefire-reports
+      mv ../coverageResults1/site/* tratto/target/site/
+      mv ../coverageResults1/jacoco.exec tratto/target/jacoco.exec
+    displayName: 'Relocate previous coverage'
+  - task: Maven@3
+    displayName: 'Run TokenSuggester E2E tests'
+    inputs:
+      mavenPomFile: 'tratto/pom.xml'
+      mavenOptions: '-Xmx3072m -Dtest=star.tratto.E2ETests#tokenSuggesterE2ETest'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '1.17'
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: true
+      testResultsFiles: '**/surefire-reports/TEST-*.xml'
+      goals: 'test'
+  - publish: $(System.DefaultWorkingDirectory)/tratto/target
+    displayName: 'Save coverage'
+    artifact: coverageResults2
+- job: datasets_e2e_tests
+  dependsOn:
+  - tokensuggester_e2e_tests
+  steps:
+  - template: azure-pipelines-templates/install-dependency.yml
+  - download: current
+    displayName: 'Load previous coverage'
+    artifact: coverageResults2
+  - script: |
+      mkdir -p tratto/target/site
+      mkdir tratto/target/surefire-reports
+      mv ../coverageResults2/site/* tratto/target/site/
+      mv ../coverageResults2/jacoco.exec tratto/target/jacoco.exec
+    displayName: 'Relocate previous coverage'
+  - task: Maven@3
+    displayName: 'Run datasets E2E tests'
+    inputs:
+      mavenPomFile: 'tratto/pom.xml'
+      mavenOptions: '-Xmx3072m -Dtest=star.tratto.E2ETests#datasetsE2ETest'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '1.17'
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: true
+      testResultsFiles: '**/surefire-reports/TEST-*.xml'
+      goals: 'test'
+  - template: azure-pipelines-templates/publish-coverage.yml

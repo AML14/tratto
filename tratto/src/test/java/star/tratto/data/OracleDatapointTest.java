@@ -1,7 +1,8 @@
-package star.tratto.dataset.oracles;
+package star.tratto.data;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
+import star.tratto.data.OracleDatapoint;
 
 import java.io.File;
 import java.io.IOException;

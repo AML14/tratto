@@ -1,4 +1,4 @@
-package star.tratto.dataset.oracles;
+package star.tratto;
 
 public class OraclesDataset {
 

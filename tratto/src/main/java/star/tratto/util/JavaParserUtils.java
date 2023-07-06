@@ -16,7 +16,7 @@ import com.github.javaparser.symbolsolver.utils.SymbolSolverCollectionStrategy;
 import org.javatuples.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import star.tratto.dataset.oracles.OracleDatapoint;
+import star.tratto.data.OracleDatapoint;
 import star.tratto.oraclegrammar.custom.Parser;
 
 import java.nio.file.Paths;
@@ -40,7 +40,7 @@ public class JavaParserUtils {
 
     public static JavaParser getJavaParser() {
         if (javaParser == null) {
-            String root = "src/main/resources/projects-sources";
+            String root = "src/main/resources/projects-packaged";
             SymbolSolverCollectionStrategy strategy = new SymbolSolverCollectionStrategy();
             strategy.collect(Paths.get(root));
             javaParser = new JavaParser();
@@ -270,12 +270,16 @@ public class JavaParserUtils {
      */
     public static Set<MethodUsage> getMethodsOfType(String type) throws IllegalArgumentException {
         ResolvedType resolvedType = null;
+        ResolvedReferenceTypeDeclaration resolvedReferenceTypeDeclaration = null;
         Set<MethodUsage> methods = new HashSet<>();
         boolean useObjectMethods = true;
         try {
             resolvedType = getResolvedType(type);
-            methods.addAll(getResolvedReferenceTypeDeclaration(resolvedType).getAllMethods());
-            useObjectMethods = false;
+            resolvedReferenceTypeDeclaration = getResolvedReferenceTypeDeclaration(resolvedType);
+            methods.addAll(resolvedReferenceTypeDeclaration.getAllMethods());
+            if (!resolvedReferenceTypeDeclaration.isInterface()) { // Interfaces do not always inherit from Object
+                useObjectMethods = false;
+            }
         } catch (UnsupportedOperationException e) {
             if (!resolvedType.isArray()) {
                 throw new IllegalArgumentException("Trying to retrieve available methods from a type that is not " +
@@ -285,7 +289,12 @@ public class JavaParserUtils {
             logger.warn("Unresolvable type: {}", type);
         } finally {
             if (useObjectMethods) {
-                methods.addAll(getResolvedReferenceTypeDeclaration("java.lang.Object").getAllMethods());
+                Set<MethodUsage> objectMethods = getResolvedReferenceTypeDeclaration("java.lang.Object").getAllMethods();
+                objectMethods.forEach(om -> {
+                    if (methods.stream().noneMatch(m -> m.getName().equals(om.getName()) && m.getParamTypes().equals(om.getParamTypes()))) {
+                        methods.add(om);
+                    }
+                });
             }
         }
         return methods;
@@ -433,6 +442,10 @@ public class JavaParserUtils {
         } catch (NoSuchElementException e) {
             throw new RuntimeException("Could not find class or interface " + name + " in compilation unit.", e);
         }
+    }
+
+    public static TypeDeclaration<?> getClassOrInterface(String classSourceCode, String name) {
+        return getClassOrInterface(javaParser.parse(classSourceCode).getResult().get(), name);
     }
 
     public static String getMethodSignature(MethodDeclaration methodDeclaration) {
