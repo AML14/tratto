@@ -584,8 +584,11 @@ public class JavaParserUtils {
         } catch (NoSuchElementException ignored) {}
         try {
             return cu.getEnumByName(name).get();
+        } catch (NoSuchElementException ignored) {}
+        try {
+            return cu.getAnnotationDeclarationByName(name).get();
         } catch (NoSuchElementException e) {
-            throw new RuntimeException("Could not find class or interface " + name + " in compilation unit.", e);
+            throw new RuntimeException("Could not find class, interface, enum or annotation '" + name + "' in compilation unit.", e);
         }
     }
 
