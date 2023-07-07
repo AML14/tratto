@@ -104,6 +104,7 @@ jobs:
       mv ../coverageResults2/jacoco.exec tratto/target/jacoco2.exec
       mv ../coverageResults3/jacoco.exec tratto/target/jacoco3.exec
       mv ../coverageResults4/jacoco.exec tratto/target/jacoco4.exec
+    displayName: 'Load coverage'
   - task: Maven@3
     displayName: 'Create coverage report'
     inputs:
@@ -112,6 +113,8 @@ jobs:
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: '1.17'
       jdkArchitectureOption: 'x64'
+      publishJUnitResults: true
+      testResultsFiles: '**/surefire-reports/TEST-*.xml'
       goals: 'jacoco:merge jacoco:report'
   - task: PublishCodeCoverageResults@1
     displayName: 'Publish coverage report'
