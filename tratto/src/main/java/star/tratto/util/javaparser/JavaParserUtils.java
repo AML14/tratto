@@ -643,9 +643,7 @@ public class JavaParserUtils {
         for (Node comment: methodDeclaration.getAllContainedComments()) { // Remove comments within method signature
             method = method.replace(comment.toString(), "");
         }
-        if (methodDeclaration.getComment().isPresent()) { // At this point, last line is method signature. Remove everything before that
-            method = method.replaceAll("[\\s\\S]*\n", "");
-        }
+        method = method.replaceAll("[\\s\\S]*\n", ""); // Last line is method signature, remove everything before that
         return method.trim().replaceAll(";$", "");
     }
 

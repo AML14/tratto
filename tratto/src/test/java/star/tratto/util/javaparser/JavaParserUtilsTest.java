@@ -419,7 +419,15 @@ public class JavaParserUtilsTest {
                                         "            /* this is another param: */ int param2\n" +
                                         "    ) { return \"\"; }"
                                         ),
-                        className, "someMethod", "private static String someMethod(@Nullable String param1, int param2)")
+                        className, "someMethod", "private static String someMethod(@Nullable String param1, int param2)"),
+                Arguments.of("test12", classSource.replaceAll("XXX",
+                                "\n//    some comment 1\n" +
+                                        "//    some comment 2\n" +
+                                        "\n" +
+                                        "    public static Collection methodWithoutJavadoc(Set param1) {\n" +
+                                        "        return null;\n" +
+                                        "    }"
+                        ), className, "methodWithoutJavadoc","public static Collection methodWithoutJavadoc(Set param1)")
         );
     }
 
