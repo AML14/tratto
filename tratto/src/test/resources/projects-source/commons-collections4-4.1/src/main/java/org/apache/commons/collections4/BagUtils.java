@@ -259,4 +259,8 @@ public class BagUtils {
     public static <E> SortedBag<E> emptySortedBag() {
         return (SortedBag<E>) EMPTY_SORTED_BAG;
     }
+
+    public static Bag methodWithoutJavadoc(Integer param1, double... param2) {
+        return null;
+    }
 }

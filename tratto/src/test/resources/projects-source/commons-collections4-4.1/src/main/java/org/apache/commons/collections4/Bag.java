@@ -1,3 +1,5 @@
+package org.apache.commons.collections4;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -42,6 +44,8 @@ import java.util.Set;
  * @version $Id: Bag.java 1477779 2013-04-30 18:55:24Z tn $
  */
 public interface Bag<E> extends Collection<E> {
+
+    public static final String MADE_UP_VAR = "MADE_UP_VAR";
 
     /**
      * Returns the number of occurrences (cardinality) of the given
@@ -217,4 +221,7 @@ public interface Bag<E> extends Collection<E> {
 //     */
 //    int hashCode();
 
+    public static Collection methodWithoutJavadoc(Set param1) {
+        return null;
+    }
 }
