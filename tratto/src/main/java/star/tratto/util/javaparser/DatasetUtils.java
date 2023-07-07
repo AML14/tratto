@@ -499,7 +499,7 @@ public class DatasetUtils {
      * @param sourcePath the path to the project root directory.
      * @return a list of all valid files {@link File}.
      */
-    private static List<File> getValidJavaFiles(String sourcePath) {
+    public static List<File> getValidJavaFiles(String sourcePath) {
         // get list of all java files.
         File sourceDir = new File(sourcePath);
         List<File> allFiles = FileUtils.extractJavaFilesFromDirectory(sourceDir);
