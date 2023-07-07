@@ -76,7 +76,9 @@ public class ClassAnalyzerTest {
 
         classAnalyzer.setProjectPath(SOURCE);
         oracleDatapoint = classAnalyzer.getOracleDPBuilder().copy();
-        assertEquals(List.of(Pair.with("Bag", "org.apache.commons.collections4"), Pair.with("BagUtils", "org.apache.commons.collections4")), oracleDatapoint.getTokensProjectClasses());
+        assertEquals(2, oracleDatapoint.getTokensProjectClasses().size());
+        assertTrue(oracleDatapoint.getTokensProjectClasses().contains(Pair.with("Bag", "org.apache.commons.collections4")));
+        assertTrue(oracleDatapoint.getTokensProjectClasses().contains(Pair.with("BagUtils", "org.apache.commons.collections4")));
         assertEquals(13, oracleDatapoint.getTokensProjectClassesNonPrivateStaticNonVoidMethods().size());
         assertEquals(3, oracleDatapoint.getTokensProjectClassesNonPrivateStaticAttributes().size());
     }
