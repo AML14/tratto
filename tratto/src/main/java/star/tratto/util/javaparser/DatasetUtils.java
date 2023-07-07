@@ -120,6 +120,16 @@ public class DatasetUtils {
         return JavadocFormat.CLASS_PREFIX.getValue() + optionalJavadocComment.get().getContent() + JavadocFormat.CLASS_SUFFIX.getValue();
     }
 
+    public static String getClassPackage(
+            CompilationUnit cu
+    ) {
+        try {
+            return JavaParserUtils.getPackageDeclarationFromCompilationUnit(cu).getNameAsString();
+        } catch (PackageDeclarationNotFoundException e) {
+            return "";
+        }
+    }
+
     /**
      * Gets the Javadoc comment of a function {@link CallableDeclaration}.
      *
@@ -489,7 +499,7 @@ public class DatasetUtils {
      * @param sourcePath the path to the project root directory.
      * @return a list of all valid files {@link File}.
      */
-    private static List<File> getValidJavaFiles(String sourcePath) {
+    public static List<File> getValidJavaFiles(String sourcePath) {
         // get list of all java files.
         File sourceDir = new File(sourcePath);
         List<File> allFiles = FileUtils.extractJavaFilesFromDirectory(sourceDir);

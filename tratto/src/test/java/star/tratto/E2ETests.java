@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import star.tratto.data.OracleDP2TokenDPs;
 import star.tratto.data.TokenDPType;
 import star.tratto.identifiers.path.Path;
+import star.tratto.input.ClassAnalyzerTest;
 import star.tratto.token.TokenSuggesterTest;
 
 import java.io.File;
@@ -64,5 +65,12 @@ public class E2ETests {
     public void tokenSuggesterE2ETest() {
         List<String> stringOracles = readOraclesFromExternalFiles();
         TokenSuggesterTest.getNextLegalTokensAuxTest(stringOracles);
+    }
+
+    @Test
+//    @Disabled
+    public void classAnalyzerE2ETest() {
+        ClassAnalyzerTest.classAnalyzerE2ETest();
+        ClassAnalyzerTest.resetJavaParserSymbolSolver();
     }
 }

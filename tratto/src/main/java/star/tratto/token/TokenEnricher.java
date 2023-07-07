@@ -1,11 +1,13 @@
 package star.tratto.token;
 
+import com.github.javaparser.resolution.types.ResolvedType;
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
 import star.tratto.data.OracleDatapoint;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.oraclegrammar.trattoGrammar.CanEvaluateToPrimitive;
 import star.tratto.util.JavaTypes;
+import star.tratto.util.javaparser.DatasetUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,6 +15,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static star.tratto.oraclegrammar.custom.Splitter.split;
+import static star.tratto.util.javaparser.DatasetUtils.getFieldsFromType;
+import static star.tratto.util.javaparser.DatasetUtils.getMethodsFromType;
 import static star.tratto.util.javaparser.JavaParserUtils.*;
 import static star.tratto.util.StringUtils.compactExpression;
 import static star.tratto.util.StringUtils.fullyQualifiedClassName;
@@ -200,7 +204,9 @@ public class TokenEnricher {
         methodVariables.addAll(oracleDatapoint.getTokensMethodArguments().stream().map(Triplet::getValue0).collect(Collectors.toList()));
         if (!methodVariables.contains(precedingExpr) &&
                 oracleDatapoint.getTokensOracleVariablesNonPrivateNonStaticAttributes().isEmpty() && oracleDatapoint.getTokensOracleVariablesNonPrivateNonStaticAttributes().isEmpty()) {
-            // TODO: Use token collector to populate oracle variables
+            ResolvedType precedingExprResolvedType = getResolvedType(fullyQualifiedClassName(precedingExprReturnType));
+            oracleDatapoint.setTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(getMethodsFromType(precedingExprResolvedType));
+            oracleDatapoint.setTokensOracleVariablesNonPrivateNonStaticAttributes(getFieldsFromType(precedingExprResolvedType));
         }
 
         // Get non-static attributes of class, including those whose this class is instance of

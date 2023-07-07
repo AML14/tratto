@@ -38,6 +38,16 @@ public class JavaParserUtilsTest {
     private static final JavaParser javaParser = JavaParserUtils.getJavaParser();
 
     @Test
+    public void updateAndResetJavaParserTest() {
+        String qualifiedClass = "plume.Digest";
+        assertEquals("Digest", JavaParserUtils.getTypeWithoutPackages(qualifiedClass));
+        JavaParserUtils.updateSymbolSolver("src/test/resources/projects-source");
+        assertThrows(UnsolvedSymbolException.class, () -> JavaParserUtils.getTypeWithoutPackages(qualifiedClass));
+        JavaParserUtils.resetSymbolSolver();
+        assertEquals("Digest", JavaParserUtils.getTypeWithoutPackages(qualifiedClass));
+    }
+
+    @Test
     public void getResolvedTypeOfExpressionPrimitiveTest() {
         OracleDatapoint oracleDatapoint = oracleDatapoints.get(0);
         TypeDeclaration<?> jpClass = getClassOrInterface(oracleDatapoint.getClassSourceCode(), oracleDatapoint.getClassName());
@@ -183,13 +193,13 @@ public class JavaParserUtilsTest {
         assertFalse(isType1InstanceOfType2("non.existing.Clazz", "java.lang.Object", null));
         assertFalse(isType1InstanceOfType2("non.existing.Clazz", "java.lang.Object", oracleDatapoints.get(0)));
         assertTrue(isType1InstanceOfType2("org.apache.commons.math3.ml.clustering.CentroidCluster", "org.apache.commons.math3.ml.clustering.Cluster", null));
-        assertTrue(isType1InstanceOfType2("star.tratto.token.restrictions.multi.LastMethodNameRestriction", "star.tratto.token.restrictions.multi.MultiTokenRestriction", null));
-        assertFalse(isType1InstanceOfType2("star.tratto.token.restrictions.multi.LastMethodNameRestriction", "star.tratto.token.restrictions.multi.MultiTokenRestrictions", null));
-        assertTrue(isType1InstanceOfType2("star.tratto.oraclegrammar.generator.TrattoGrammarGenerator", "org.eclipse.xtext.generator.AbstractGenerator", null));
+        assertTrue(isType1InstanceOfType2("org.jgrapht.UndirectedGraph", "org.jgrapht.Graph", null));
+        assertFalse(isType1InstanceOfType2("org.jgrapht.UndirectedGraph", "org.jgrapht.Graphs", null));
+        assertTrue(isType1InstanceOfType2("org.graphstream.util.StepCounter", "org.graphstream.stream.SinkAdapter", null));
         // Unexplicably, the following three assertions make PITest fail
-//        assertTrue(isType1InstanceOfType2("org.miv.pherd.Particle", "org.miv.pherd.Particle", null));
-//        assertTrue(isType1InstanceOfType2("plume.ArraysMDE", "plume.ArraysMDE", null));
-//        assertTrue(isType1InstanceOfType2("org.apache.commons.bcel6.classfile.Attribute", "org.apache.commons.bcel6.classfile.Attribute", null));
+        assertTrue(isType1InstanceOfType2("org.miv.pherd.Particle", "org.miv.pherd.Particle", null));
+        assertTrue(isType1InstanceOfType2("plume.ArraysMDE", "plume.ArraysMDE", null));
+        assertTrue(isType1InstanceOfType2("org.apache.commons.bcel6.classfile.Attribute", "org.apache.commons.bcel6.classfile.Attribute", null));
     }
 
     @Test
@@ -232,13 +242,13 @@ public class JavaParserUtilsTest {
         assertFalse(canType1BeInstanceOfType2("non.existing.Clazz", "java.lang.Object", null));
         assertFalse(canType1BeInstanceOfType2("non.existing.Clazz", "java.lang.Object", oracleDatapoints.get(0)));
         assertTrue(canType1BeInstanceOfType2("org.apache.commons.math3.ml.clustering.CentroidCluster", "org.apache.commons.math3.ml.clustering.Cluster", null));
-        assertTrue(canType1BeInstanceOfType2("star.tratto.token.restrictions.multi.LastMethodNameRestriction", "star.tratto.token.restrictions.multi.MultiTokenRestriction", null));
-        assertFalse(canType1BeInstanceOfType2("star.tratto.token.restrictions.multi.LastMethodNameRestriction", "star.tratto.token.restrictions.multi.MultiTokenRestrictions", null));
-        assertTrue(canType1BeInstanceOfType2("star.tratto.oraclegrammar.generator.TrattoGrammarGenerator", "org.eclipse.xtext.generator.AbstractGenerator", null));
+        assertTrue(canType1BeInstanceOfType2("org.jgrapht.UndirectedGraph", "org.jgrapht.Graph", null));
+        assertFalse(canType1BeInstanceOfType2("org.jgrapht.UndirectedGraph", "org.jgrapht.Graphs", null));
+        assertTrue(canType1BeInstanceOfType2("org.graphstream.util.StepCounter", "org.graphstream.stream.SinkAdapter", null));
         // Unexplicably, the following three assertions make PITest fail
-//        assertTrue(canType1BeInstanceOfType2("org.miv.pherd.Particle", "org.miv.pherd.Particle", null));
-//        assertTrue(canType1BeInstanceOfType2("plume.ArraysMDE", "plume.ArraysMDE", null));
-//        assertTrue(canType1BeInstanceOfType2("org.apache.commons.bcel6.classfile.Attribute", "org.apache.commons.bcel6.classfile.Attribute", null));
+        assertTrue(canType1BeInstanceOfType2("org.miv.pherd.Particle", "org.miv.pherd.Particle", null));
+        assertTrue(canType1BeInstanceOfType2("plume.ArraysMDE", "plume.ArraysMDE", null));
+        assertTrue(canType1BeInstanceOfType2("org.apache.commons.bcel6.classfile.Attribute", "org.apache.commons.bcel6.classfile.Attribute", null));
     }
 
     @Test
@@ -281,13 +291,13 @@ public class JavaParserUtilsTest {
         assertFalse(isType1AssignableToType2(Pair.with("non.existing", "Clazz"), Pair.with("java.lang", "Object"), null));
         assertFalse(isType1AssignableToType2(Pair.with("non.existing", "Clazz"), Pair.with("java.lang", "Object"), oracleDatapoints.get(0)));
         assertTrue(isType1AssignableToType2(Pair.with("org.apache.commons.math3.ml.clustering", "CentroidCluster"), Pair.with("org.apache.commons.math3.ml.clustering", "Cluster"), null));
-        assertTrue(isType1AssignableToType2(Pair.with("star.tratto.token.restrictions.multi", "LastMethodNameRestriction"), Pair.with("star.tratto.token.restrictions.multi", "MultiTokenRestriction"), null));
-        assertFalse(isType1AssignableToType2(Pair.with("star.tratto.token.restrictions.multi", "LastMethodNameRestriction"), Pair.with("star.tratto.token.restrictions.multi", "MultiTokenRestrictions"), null));
-        assertTrue(isType1AssignableToType2(Pair.with("star.tratto.oraclegrammar.generator", "TrattoGrammarGenerator"), Pair.with("org.eclipse.xtext.generator", "AbstractGenerator"), null));
+        assertTrue(isType1AssignableToType2(Pair.with("org.jgrapht", "UndirectedGraph"), Pair.with("org.jgrapht", "Graph"), null));
+        assertFalse(isType1AssignableToType2(Pair.with("org.jgrapht", "UndirectedGraph"), Pair.with("org.jgrapht", "Graphs"), null));
+        assertTrue(isType1AssignableToType2(Pair.with("org.graphstream.util", "StepCounter"), Pair.with("org.graphstream.stream", "SinkAdapter"), null));
         // Unexplicably, the following three assertions make PITest fail
-//        assertTrue(isType1AssignableToType2(Pair.with("org.miv.pherd", "Particle"), Pair.with("org.miv.pherd", "Particle"), null));
-//        assertTrue(isType1AssignableToType2(Pair.with("plume", "ArraysMDE"), Pair.with("plume", "ArraysMDE"), null));
-//        assertTrue(isType1AssignableToType2(Pair.with("org.apache.commons.bcel6.classfile", "Attribute"), Pair.with("org.apache.commons.bcel6.classfile", "Attribute"), null));
+        assertTrue(isType1AssignableToType2(Pair.with("org.miv.pherd", "Particle"), Pair.with("org.miv.pherd", "Particle"), null));
+        assertTrue(isType1AssignableToType2(Pair.with("plume", "ArraysMDE"), Pair.with("plume", "ArraysMDE"), null));
+        assertTrue(isType1AssignableToType2(Pair.with("org.apache.commons.bcel6.classfile", "Attribute"), Pair.with("org.apache.commons.bcel6.classfile", "Attribute"), null));
     }
 
     @Test
@@ -409,7 +419,15 @@ public class JavaParserUtilsTest {
                                         "            /* this is another param: */ int param2\n" +
                                         "    ) { return \"\"; }"
                                         ),
-                        className, "someMethod", "private static String someMethod(@Nullable String param1, int param2)")
+                        className, "someMethod", "private static String someMethod(@Nullable String param1, int param2)"),
+                Arguments.of("test12", classSource.replaceAll("XXX",
+                                "\n//    some comment 1\n" +
+                                        "//    some comment 2\n" +
+                                        "\n" +
+                                        "    public static Collection methodWithoutJavadoc(Set param1) {\n" +
+                                        "        return null;\n" +
+                                        "    }"
+                        ), className, "methodWithoutJavadoc","public static Collection methodWithoutJavadoc(Set param1)")
         );
     }
 

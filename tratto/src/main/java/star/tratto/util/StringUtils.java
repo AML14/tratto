@@ -106,6 +106,13 @@ public class StringUtils {
         return packageClassPair.getValue0() + "." + packageClassPair.getValue1();
     }
 
+    public static String getClassNameFromPath(String path) {
+        assert path.endsWith(".java");
+        String[] pathTokens = path.split("/");
+        String className = pathTokens[pathTokens.length - 1];
+        return className.substring(0, className.length() - 5);
+    }
+
     /**
      * Computes the semantic similarity of two strings by the cosine
      * similarity of word frequencies in the input.
