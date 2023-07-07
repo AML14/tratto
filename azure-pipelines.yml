@@ -99,14 +99,20 @@ jobs:
     artifact: coverageResults4
   - script: |
       mkdir -p tratto/target/classes
-      mv ../classesFolder/classes/* tratto/target/classes/
+      mv ../classesFolder/* tratto/target/classes/
       mv ../coverageResults1/jacoco.exec tratto/target/jacoco1.exec
       mv ../coverageResults2/jacoco.exec tratto/target/jacoco2.exec
       mv ../coverageResults3/jacoco.exec tratto/target/jacoco3.exec
       mv ../coverageResults4/jacoco.exec tratto/target/jacoco4.exec
-      mvn -N jacoco:merge
-      mvn jacoco:report
+  - task: Maven@3
     displayName: 'Create coverage report'
+    inputs:
+      mavenPomFile: 'tratto/pom.xml'
+      mavenOptions: '-N'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '1.17'
+      jdkArchitectureOption: 'x64'
+      goals: 'jacoco:merge jacoco:report'
   - task: PublishCodeCoverageResults@1
     displayName: 'Publish coverage report'
     inputs:
