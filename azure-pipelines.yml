@@ -104,20 +104,9 @@ jobs:
       mv ../coverageResults2/jacoco.exec tratto/target/jacoco2.exec
       mv ../coverageResults3/jacoco.exec tratto/target/jacoco3.exec
       mv ../coverageResults4/jacoco.exec tratto/target/jacoco4.exec
-      ls -R ..
-      mvn -version
-    displayName: 'Relocate classes and coverage'
-  - task: Maven@3
+      cd tratto
+      mvn -N jacoco:merge jacoco:report
     displayName: 'Create coverage report'
-    inputs:
-      mavenPomFile: 'tratto/pom.xml'
-      mavenOptions: '-N'
-      javaHomeOption: 'JDKVersion'
-      jdkVersionOption: '1.17'
-      jdkArchitectureOption: 'x64'
-      publishJUnitResults: true
-      testResultsFiles: '**/surefire-reports/TEST-*.xml'
-      goals: 'jacoco:merge jacoco:report'
   - task: PublishCodeCoverageResults@1
     displayName: 'Publish coverage report'
     inputs:
