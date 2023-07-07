@@ -107,8 +107,8 @@ jobs:
       mvn -N jacoco:merge
       mvn jacoco:report
     displayName: 'Create coverage report'
-- task: PublishCodeCoverageResults@1
-  displayName: 'Publish coverage report'
-  inputs:
-    summaryFileLocation: $(System.DefaultWorkingDirectory)/tratto/target/site/jacoco/jacoco.xml
-    pathToSources: $(System.DefaultWorkingDirectory)/tratto/src/main/java/
+  - task: PublishCodeCoverageResults@1
+    displayName: 'Publish coverage report'
+    inputs:
+      summaryFileLocation: $(System.DefaultWorkingDirectory)/tratto/target/site/jacoco/jacoco.xml
+      pathToSources: $(System.DefaultWorkingDirectory)/tratto/src/main/java/
