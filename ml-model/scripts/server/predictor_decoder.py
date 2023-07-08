@@ -10,6 +10,17 @@ from typing import Type, re
 from src.types.TrattoModelType import TrattoModelType
 from src.utils import utils
 
+# Map token class names
+_, value_mappings = utils.import_json(
+    os.path.join(
+        os.path.dirname(os.path.abspath(__file__)),
+        '..',
+        '..',
+        'src',
+        'resources',
+        'tokenClassesValuesMapping.json'
+    )
+)
 
 def predict_next(
         device,
@@ -22,17 +33,6 @@ def predict_next(
     # Model in evaluation mode
     model.eval()
     num_beams = 3
-    # Map token class names
-    _, value_mappings = utils.import_json(
-        os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            '..',
-            '..',
-            'src',
-            'resources',
-            'tokenClassesValuesMapping.json'
-        )
-    )
     # The prediction is performed without accumulating the gradient descent and without updating the weights of the model
     with torch.no_grad():
         for batch_id, batch in enumerate(dl_src, 1):
@@ -130,17 +130,6 @@ def pre_process_dataset(
         'tokenClass': 'string',
         'tokenInfo': 'string'
     })
-    # Map token class names
-    _, value_mappings = utils.import_json(
-        os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            '..',
-            '..',
-            'src',
-            'resources',
-            'tokenClassesValuesMapping.json'
-        )
-    )
 
     update_tokenizer_vocab(tokenizer, value_mappings)
 
@@ -291,7 +280,8 @@ def next_token(
     print("Predict next token value")
     next_token_value = predict_next(device, model_values, dl_src_token_values, tokenizer_token_values, eligible_token_values, TrattoModelType.TOKEN_VALUES)
     # Return next token
-    return next_token_value
+    original_next_token_class = next((key for key, val in value_mappings.items() if val == next_token_class), None)
+    return next_token_value + "\n" + original_next_token_class
 
 
 
