@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.TypeDeclaration;
+import org.javatuples.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import star.tratto.data.OracleDatapoint;
@@ -17,6 +18,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,8 +35,8 @@ public class Tratto {
     private static final ClassAnalyzer classAnalyzer = ClassAnalyzer.getInstance();
     private static final JavaParser javaParser = JavaParserUtils.getJavaParser();
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    private static final String ML_MODEL_API_URL = "TODO";
-    public static String CLASS_PATH = "src/main/resources/classes-under-test/BagUtils.java";
+    private static final String ML_MODEL_API_URL = "http://127.0.0.1:5000/api/next_token?filename=../tratto/src/main/resources/token_datapoints.json";
+    public static String CLASS_PATH = "src/main/resources/projects-source/commons-collections4-4.1/raw/src/main/java/org/apache/commons/collections4/BagUtils.java";
     public static String PROJECT_SOURCE_PATH = "src/main/resources/projects-source/commons-collections4-4.1/raw/src/main/java/";
     public static String PROJECT_JAR_PATH = "src/main/resources/projects-packaged/commons-collections4-4.1-jar-with-dependencies.jar";
     public static String TOKEN_DATAPOINTS_PATH = "src/main/resources/token_datapoints.json";
@@ -48,13 +50,9 @@ public class Tratto {
 
         logger.info("Generating oracles for: \n\tClass: {}\n\tProject source: {}\n\tProject JAR: {}", CLASS_PATH, PROJECT_SOURCE_PATH, PROJECT_JAR_PATH);
 
-        // General setup (tokens and oracles files and HTTP connection)
+        // Set up token datapoints file
         File tokenDatapointsFile = new File(TOKEN_DATAPOINTS_PATH);
-        FileOutputStream tokenDatapointsOutputStream = new FileOutputStream(tokenDatapointsFile, true);
-        File oracleDatapointsFile = new File(ORACLE_DATAPOINTS_PATH);
-        FileOutputStream oracleDatapointsOutputStream = new FileOutputStream(oracleDatapointsFile, true);
-        HttpURLConnection mlModelApiConn = (HttpURLConnection) new URL(ML_MODEL_API_URL).openConnection();
-        mlModelApiConn.setRequestMethod("GET");
+        FileOutputStream tokenDatapointsOutputStream = new FileOutputStream(tokenDatapointsFile);
 
         // Configure JavaParser to resolve symbols from project under test
         JavaParserUtils.updateSymbolSolver(PROJECT_JAR_PATH);
@@ -70,25 +68,52 @@ public class Tratto {
         List<OracleDatapoint> oracleDatapoints = classAnalyzer.getOracleDatapointsFromClass();
         for (OracleDatapoint oracleDatapoint : oracleDatapoints) { // Update each OracleDatapoint until the oracle is complete (ends with ';')
             List<String> oracleSoFarTokens = new ArrayList<>();
+            List<String> tokenClassesSoFar = new ArrayList<>();
+
+            logger.info("-------------------------------------------------------------------------");
+            logger.info("Generating oracle for:\n\tMethod: {}\n\tJavadoc tag: {}\n\tOracle type: {}",
+                    oracleDatapoint.getMethodSourceCode().split("\\{")[0],
+                    oracleDatapoint.getJavadocTag(),
+                    oracleDatapoint.getOracleType());
+
             while (!oracleDatapoint.getOracle().endsWith(";")) {
                 // Generate token datapoints and save to file
-                List<TokenDatapoint> tokenDatapoints = oracleSoFarAndTokenToTokenDatapoints(oracleDatapoint, oracleSoFarTokens, "", TokenDPType.TOKEN);
-                tokenDatapointsFile.delete();
+                List<TokenDatapoint> tokenDatapoints = oracleSoFarAndTokenToTokenDatapoints(oracleDatapoint, oracleSoFarTokens, tokenClassesSoFar, "", TokenDPType.TOKEN);
+                tokenDatapointsOutputStream.close();
+                tokenDatapointsOutputStream = new FileOutputStream(tokenDatapointsFile);
                 tokenDatapointsOutputStream.write(objectMapper.writeValueAsBytes(tokenDatapoints));
 
-                // HTTP call to ML-model API to get next token
-                mlModelApiConn.connect();
-                String nextToken = objectMapper.readValue(mlModelApiConn.getInputStream(), String.class);
+                Pair<String, String> nextTokenValueClass = getNextTokenValueClass(); // HTTP call to ML-model API to get next token and class
 
-                // Update oracleDatapoint.oracle and oracleSoFarTokens with next token
-                oracleDatapoint.setOracle(compactExpression(oracleDatapoint.getOracle() + " " + nextToken));
-                oracleSoFarTokens.add(nextToken);
+                oracleDatapoint.setOracle(compactExpression(oracleDatapoint.getOracle() + " " + nextTokenValueClass.getValue0()));
+                oracleSoFarTokens.add(nextTokenValueClass.getValue0());
+                tokenClassesSoFar.add(nextTokenValueClass.getValue1());
+
+                logger.info("Oracle so far: {}", oracleDatapoint.getOracle());
             }
+            logger.info("Final oracle: {}", oracleDatapoint.getOracle());
+            logger.info("-------------------------------------------------------------------------");
         }
 
-        oracleDatapointsFile.delete();
+        // Save final oracleDatapoints to file
+        File oracleDatapointsFile = new File(ORACLE_DATAPOINTS_PATH);
+        FileOutputStream oracleDatapointsOutputStream = new FileOutputStream(oracleDatapointsFile);
         oracleDatapointsOutputStream.write(objectMapper.writeValueAsBytes(oracleDatapoints));
 
+        // Delete last token datapoints file and close output streams
+        tokenDatapointsFile.delete();
+        oracleDatapointsOutputStream.close();
+        tokenDatapointsOutputStream.close();
+
         logger.info("Finished generating oracles for: \n\tClass: {}\n\tProject source: {}\n\tProject JAR: {}", CLASS_PATH, PROJECT_SOURCE_PATH, PROJECT_JAR_PATH);
+    }
+
+    private static Pair<String, String> getNextTokenValueClass() throws IOException {
+        HttpURLConnection mlModelApiConn = (HttpURLConnection) new URL(ML_MODEL_API_URL).openConnection();
+        mlModelApiConn.setRequestMethod("GET");
+        mlModelApiConn.connect();
+        Pair<String, String> nextTokenValueClass = Pair.fromArray(new String(mlModelApiConn.getInputStream().readAllBytes(), StandardCharsets.UTF_8).split("\n"));
+        mlModelApiConn.disconnect();
+        return nextTokenValueClass;
     }
 }
