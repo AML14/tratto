@@ -199,7 +199,7 @@ public class JavaParserUtils {
      * {@code java.util.Comparator<java.util.Map.Entry<K, V>>}
      * For such example, this method would return the following:
      * {@code Comparator<Map.Entry<K, V>>}
-     * @param resolvedType JavaParser ResolvedType (usually obtained when using Java Symbol Solver)
+     * @param resolvedType JavaParser ResolvedType (usually obtained when using JavaSymbolSolver)
      * @return string representation of the type without packages
      */
     public static String getTypeWithoutPackages(ResolvedType resolvedType) {
