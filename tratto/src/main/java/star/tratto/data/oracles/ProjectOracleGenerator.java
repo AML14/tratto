@@ -48,8 +48,8 @@ public class ProjectOracleGenerator {
      * Creates references to the Project and corresponding JDoctor conditions,
      * and gets project-level token information.
      *
-     * @param project the project under analysis.
-     * @param jDoctorConditions a list of JDoctor conditions.
+     * @param project the project under analysis
+     * @param jDoctorConditions a list of JDoctor conditions
      */
     public void loadProject(
             Project project,
@@ -67,7 +67,7 @@ public class ProjectOracleGenerator {
      * Gets all OracleDatapoint objects for the loaded project from a list
      * of JDoctor conditions. Use "loadProject()" before "generate()".
      *
-     * @return a list of data points {@link OracleDatapoint}.
+     * @return a list of data points {@link OracleDatapoint}
      */
     public List<OracleDatapoint> generate() {
         System.out.printf("Identified %s total JavaDoc tags.%n", this.projectTagsTokens.size());
@@ -119,13 +119,13 @@ public class ProjectOracleGenerator {
      * given JDoctor tag. Only considers tags for a specific target method in
      * a specific target class.
      *
-     * @param tagList list of source code tags.
-     * @param targetClass target class.
-     * @param targetCallable target method/constructor.
-     * @param targetOracleType target oracle type (e.g. pre-condition).
-     * @param targetTag target JDoctor tag.
-     * @return source code tag with the greatest similarity to targetTag.
-     */
+     * @param tagList list of source code tags
+     * @param targetClass target class
+     * @param targetCallable target method/constructor
+     * @param targetOracleType target oracle type (e.g. pre-condition)
+     * @param targetTag target JDoctor tag
+     * @return source code tag with the greatest similarity to targetTag
+     */g
     private Sextet<String, TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String> findMaximumSimilarityTag(
             List<Sextet<String, TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> tagList,
             TypeDeclaration<?> targetClass,
@@ -166,9 +166,9 @@ public class ProjectOracleGenerator {
      * Removes the JavaDoc tag of a given JDoctor condition from the list
      * of total project JavaDoc tags.
      *
-     * @param operation the operation of the JDoctor condition.
-     * @param oracleType the type of oracle (e.g. PRE/NORMAL_POST/EXCEPT_POST).
-     * @param javaDocTag the (JDoctor simplified) JavaDoc tag to be removed.
+     * @param operation the operation of the JDoctor condition
+     * @param oracleType the type of oracle (e.g. PRE/NORMAL_POST/EXCEPT_POST)
+     * @param javaDocTag the (JDoctor simplified) JavaDoc tag to be removed
      */
     private void removeProjectClassesTag(
             JDoctorCondition.Operation operation,
@@ -203,7 +203,7 @@ public class ProjectOracleGenerator {
      *
      * @param jpTag a sextet of tag information, including the declaring
      *              class string, type declaration, method, type of tag,
-     *              tag name, and tag content.
+     *              tag name, and tag content
      * @return a fully populated OracleDatapoint. The "oracle" field is set
      * to a semicolon (";"). Returns null if an error occurs during
      * information collection.
@@ -268,7 +268,7 @@ public class ProjectOracleGenerator {
      * Generates an OracleDatapoint from a given JDoctor condition and
      * operation.
      *
-     * @param operation a JDoctor operation.
+     * @param operation a JDoctor operation
      * @param condition a JDoctor condition (e.g. ThrowsCondition,
      *                  PreCondition, or a list of PostCondition's).
      * @return a fully populated OracleDatapoint. Returns null if error

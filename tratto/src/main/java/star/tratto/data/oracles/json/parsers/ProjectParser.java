@@ -26,7 +26,7 @@ public class ProjectParser {
      * Given the path to the JSON file that lists the Java projects to analyze, the method deserializes the list of
      * JSON project objects contained in the file and generates a list of corresponding Java project records
      * @return a list of Java project records {@link Project}, representing the deserialization of the list of the JSON
-     * project objects contained in the JSON file pointed by the string path passed to the function.
+     * project objects contained in the JSON file pointed by the string path passed to the function
      */
     public static List<Project> initialize(String jsonFilePath) {
         // Instantiate an *ObjectMapper* to parse a JSON file
