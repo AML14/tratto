@@ -93,11 +93,11 @@ public class FileUtils {
     }
 
     /**
-     * The method creates a file {@link File} within a given directory.
+     * The method creates a file within a given directory.
      *
      * @param dirPath the path to the directory where the file must be saved
      * @param fileName the name of the file where to write the content
-     * @param fileFormat the format of the file {@link FileFormat}.
+     * @param fileFormat the format of the file
      *
      * @return the file created
      * @throws IOException If the file cannot be created

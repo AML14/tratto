@@ -529,13 +529,11 @@ public class JavaParserUtils {
     }
 
     /**
-     * Gets the signature of a JavaParser variable declarator
-     * {@link VariableDeclarator}, and return its string representation.
+     * Returns the signature of a JavaParser variable declarator.
      *
      * @param field the JP field declaration
      * @param variable the JP variable declaration
-     * @return a string representation of the signature of the JavaParser
-     * variable declarator {@link VariableDeclarator}
+     * @return a string representation of the signature of {@code variable}
      */
     public static String getVariableSignature(FieldDeclaration field, VariableDeclarator variable) {
         String signature = "";
@@ -549,11 +547,10 @@ public class JavaParserUtils {
     }
 
     /**
-     * Gets the signature of a JavaParser resolved field declaration
-     * {@link ResolvedFieldDeclaration} and return its string representation.
+     * Returns the signature of a JavaParser resolved field declaration.
      *
-     * @param resolvedField resolved field declaration to generate the signature
-     * @return a string representation of the signature of the declaration
+     * @param resolvedField a resolved field declaration
+     * @return a string representation of the signature of {@code resolvedField}
      */
     public static String getFieldSignature(
             ResolvedFieldDeclaration resolvedField
@@ -568,12 +565,11 @@ public class JavaParserUtils {
     }
 
     /**
-     * Generates the signature of a JavaParser callable declaration
-     * {@link CallableDeclaration}, and returns its string representation.
+     * Returns the signature of a JavaParser callable declaration.
      *
-     * @param jpCallable The JavaParser callable declaration
-     * @param jpCallableType Type of declaration (e.g. method or constructor).
-     * @return A string representation of the signature
+     * @param jpCallable a JavaParser callable declaration
+     * @param jpCallableType the type of declaration (e.g. method or constructor)
+     * @return a string representation of the signature
      */
     public static String getCallableSignature(
             CallableDeclaration<?> jpCallable,
@@ -712,7 +708,7 @@ public class JavaParserUtils {
     }
 
     /**
-     * Returns the base element type of a resolved type {@link ResolvedType}.
+     * Returns the base element type of a resolved type.
      * Recursively strips all array variables. For example:
      *  Object[][] => Object
      *
@@ -810,11 +806,10 @@ public class JavaParserUtils {
     }
 
     /**
-     * Get corresponding JavaParser compilation unit {@link CompilationUnit}
-     * from the given file path {@link String}.
+     * Read a compilation unit from a Java file.
      *
      * @param filePath the absolute path to the file
-     * @return an optional JavaParser compilation unit
+     * @return a JavaParser compilation unit
      */
     public static Optional<CompilationUnit> getCompilationUnitFromFilePath(String filePath) {
         File file = new File(filePath);
