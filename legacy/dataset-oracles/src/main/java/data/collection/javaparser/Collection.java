@@ -38,7 +38,7 @@ public class Collection {
 
     /**
      * This method takes an input project and collects its elements (classes and members of it) using JavaParser and JavaSymbolSolver.
-     * It produces a json file for each project, which includes the collected data.
+     * It produces a JSON file for each project, which includes the collected data.
      * @param inputProject object keeps the source path of the project and information for optional parts of data collection process
      */
     public static void collectDataFromProject(InputProject inputProject) throws IOException {
@@ -50,8 +50,8 @@ public class Collection {
 
         List<File> allSourceFiles = listSourceFiles(sourceFilesDir);
 
-        // initialize JavaSymbolSolver
-        // we use static solver which does the analysis by considering the project's source directory
+        // Initialize JavaSymbolSolver.
+        // We use static solver which does the analysis by considering the project's source directory.
         TypeSolver typeSolver = new ReflectionTypeSolver();
         TypeSolver javaParserTypeSolver = new JavaParserTypeSolver(sourceFilesDir);
         CombinedTypeSolver combinedSolver = new CombinedTypeSolver();
@@ -69,12 +69,12 @@ public class Collection {
             sourceFileId++;
             String className = fullPath2ClassName(classFile.getAbsolutePath());
 
-            // create a json object to keep the data collected for a class
+            // Create a JSON object to keep the data collected for a class.
             JSONObject classObject = new JSONObject();
             classObject.put("sourceFileName", className);
             classObject.put("sourceFileId", sourceFileId);
 
-            // try parsing a class (compilation unit) using StaticJavaParser
+            // Try parsing a class (compilation unit) using StaticJavaParser.
             CompilationUnit cu = null;
             try {
                 cu = StaticJavaParser.parse(classFile);
