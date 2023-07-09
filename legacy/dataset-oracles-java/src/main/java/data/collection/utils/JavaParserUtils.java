@@ -217,7 +217,7 @@ public class JavaParserUtils {
         if (jpPackage.isEmpty()) {
             // Raise an exception if the package declaration is empty
             String errMsg = String.format(
-                    "The Java Parser package declaration of the class %s - package %s, is empty",
+                    "The JavaParser package declaration of the class %s - package %s, is empty",
                     className,
                     packageName
             );
@@ -227,7 +227,7 @@ public class JavaParserUtils {
         if (!className.equals(primaryType.get().getNameAsString())){
             // Raise an exception if the package declaration is empty
             String errMsg = String.format(
-                    "The Java Parser package declaration does not match the class of JDoctor condition, for the class %s - package %s",
+                    "The JavaParser package declaration does not match the class of JDoctor condition, for the class %s - package %s",
                     className,
                     packageName
             );
@@ -237,7 +237,7 @@ public class JavaParserUtils {
         if (!packageName.equals(jpPackage.get().getNameAsString())){
             // Raise an exception if the package declaration is empty
             String errMsg = String.format(
-                    "The Java Parser package declaration of the class %s - package %s, is empty",
+                    "The JavaParser package declaration of the class %s - package %s, is empty",
                     className,
                     packageName
             );
@@ -271,8 +271,8 @@ public class JavaParserUtils {
      * through heuristics. This method can be helpful, whenever JavaParser is not able to automatically extract the 
      * Javadoc comment with its built-in methods.
      * 
-     * @param jpNode A Java Parser node representing a Java method or class
-     * @return A {@link String} representing the Javadoc comment associated to the JavaParser {@link Node} passed to the 
+     * @param jpNode a JavaParser node representing a Java method or class
+     * @return a {@link String} representing the Javadoc comment associated to the JavaParser {@link Node} passed to the 
      * function. The string is empty if the Javadoc comment is not present or is not found.
      */
     public static String extractJavadocCommentByHeuristics(BodyDeclaration jpNode) {
@@ -2278,7 +2278,7 @@ public class JavaParserUtils {
         // Check if the package has been found
         if (jpPackage.isEmpty()) {
             // Raise an exception if the package has not been found
-            String errMsg = String.format("The Java Parser package declaration of the compilation unit is empty");
+            String errMsg = String.format("The JavaParser package declaration of the compilation unit is empty");
             throw new PackageDeclarationNotFoundException(errMsg);
         }
         // Return the JavaParser package
@@ -2385,7 +2385,7 @@ public class JavaParserUtils {
      * 
      * @param cu A JavaParser compilation unit {@link CompilationUnit}
      * @return The quartets of strings {@link Quartet<String,String,String,String>}, representing the methods declared
-     * within the classes defined within the Java parser compilation unit {@link CompilationUnit} passed to the function.
+     * within the classes defined within the JavaParser compilation unit {@link CompilationUnit} passed to the function.
      * The methods collected are non-private, non-static, non-void.
      * @throws PackageDeclarationNotFoundException If the package is not found.
      */
@@ -2460,7 +2460,7 @@ public class JavaParserUtils {
      *
      * @param cu A JavaParser compilation unit {@link CompilationUnit}
      * @return The quartets of strings {@link Quartet<String,String,String,String>}, representing the attributes declared
-     * within the classes defined within the Java parser compilation unit {@link CompilationUnit} passed to the function.
+     * within the classes defined within the JavaParser compilation unit {@link CompilationUnit} passed to the function.
      * The attributes collected are static and non-private.
      * @throws PackageDeclarationNotFoundException If the package is not found.
      */
