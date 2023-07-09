@@ -50,8 +50,8 @@ public class Collection {
 
         List<File> allSourceFiles = listSourceFiles(sourceFilesDir);
 
-        //initialize java symbol solver
-        //we use static solver which does the analysis by considering the project's source directory
+        // initialize java symbol solver
+        // we use static solver which does the analysis by considering the project's source directory
         TypeSolver typeSolver = new ReflectionTypeSolver();
         TypeSolver javaParserTypeSolver = new JavaParserTypeSolver(sourceFilesDir);
         CombinedTypeSolver combinedSolver = new CombinedTypeSolver();
@@ -61,7 +61,7 @@ public class Collection {
         JavaSymbolSolver symbolSolver = new JavaSymbolSolver(typeSolver);
         StaticJavaParser.getParserConfiguration().setSymbolResolver(symbolSolver);
 
-        //create json array to keep collected data for each class in the project
+        // create json array to keep collected data for each class in the project
         JSONArray classArray = new JSONArray();
 
         int sourceFileId = 0;
@@ -69,12 +69,12 @@ public class Collection {
             sourceFileId++;
             String className = fullPath2ClassName(classFile.getAbsolutePath());
 
-            //create a json object to keep the data collected for a class
+            // create a json object to keep the data collected for a class
             JSONObject classObject = new JSONObject();
             classObject.put("sourceFileName", className);
             classObject.put("sourceFileId", sourceFileId);
 
-            //try parsing a class (compilation unit) using static java parser
+            // try parsing a class (compilation unit) using static java parser
             CompilationUnit cu = null;
             try {
                 cu = StaticJavaParser.parse(classFile);
@@ -82,23 +82,23 @@ public class Collection {
                 System.out.println("Source file parse error in source " + sourceFileId + " - " + e.getMessage());
             }
 
-            if(cu != null) {
+            if (cu != null) {
                 classObject.put("packageName", cu.getPackageDeclaration().isPresent() ? cu.getPackageDeclaration().get().getName().toString() : "");
                 classObject.put("imports", collectImportsOfSourceFile(cu));
 
-                //get type declarations in a class (class declarations)
+                // get type declarations in a class (class declarations)
                 NodeList<TypeDeclaration<?>> typeDeclarations = cu.getTypes();
                 if (!typeDeclarations.isEmpty()) {
                     TypeDeclaration typeDec = typeDeclarations.get(0);
-                    //typeDec.resolve().getAllAncestors()
-                    //typeDec.resolve().getAllFields();
-                    //typeDec.resolve().getAllMethods();
+                    // typeDec.resolve().getAllAncestors()
+                    // typeDec.resolve().getAllFields();
+                    // typeDec.resolve().getAllMethods();
 //                    try {
 //                        System.out.println(typeDec.resolve().getQualifiedName());
 //                        System.out.println(typeDec.resolve().isReferenceType());
 //                        System.out.println(typeDec.resolve().getAllFields());
 //                        System.out.println(typeDec.resolve().getAllMethods());
-//                    } catch(Exception e){
+//                    } catch (Exception e) {
 //                        System.out.println("cannot solve type dec");
 //                    }
 
@@ -127,8 +127,8 @@ public class Collection {
             classArray.add(classObject);
         }
 
-        //write the collected class data into the json file
-        //all class related data is kept in classArray
+        // write the collected class data into the json file
+        // all class related data is kept in classArray
         try (FileWriter file = new FileWriter(outputDataDir.toString() + "/" + projectName + "_dataCollectedWithJavaParser.json")) {
             file.write(classArray.toJSONString());
             file.flush();
@@ -137,24 +137,24 @@ public class Collection {
         }
     }
 
-    public static JSONArray collectMethodDeclarationsInClass(InputProject inputProject, File classFile, CompilationUnit cu){
+    public static JSONArray collectMethodDeclarationsInClass(InputProject inputProject, File classFile, CompilationUnit cu) {
         NodeList<TypeDeclaration<?>> typeDeclarations = cu.getTypes();
         TypeDeclaration typeDec = typeDeclarations.get(0);
 
         JSONArray methodDeclarationsJsonArray = new JSONArray();
         List<MethodDeclaration> methodDeclarations = typeDec.findAll(MethodDeclaration.class);
-        //System.out.println(methodDeclarations.size());
+        // System.out.println(methodDeclarations.size());
 
-        //for(MethodDeclaration methodDeclaration : methodDeclarations){
+        // for (MethodDeclaration methodDeclaration : methodDeclarations) {
         for (int i = 0; i < methodDeclarations.size(); i++) {
             MethodDeclaration methodDeclaration = methodDeclarations.get(i);
-            //System.out.println("1: " + methodDeclaration.getName());
-            //System.out.println("2: " + methodDeclaration.getJavadocComment());
-            //System.out.println("3: " + methodDeclaration.getDeclarationAsString());
+            // System.out.println("1: " + methodDeclaration.getName());
+            // System.out.println("2: " + methodDeclaration.getJavadocComment());
+            // System.out.println("3: " + methodDeclaration.getDeclarationAsString());
 
             JSONObject methodDeclarationJsonObject = new JSONObject();
 
-            if(methodDeclaration.getParentNode().get().equals(typeDec)){
+            if (methodDeclaration.getParentNode().get().equals(typeDec)) {
                 methodDeclarationJsonObject.put("name", methodDeclaration.getName().toString());
 //            methodDeclarationJsonObject.put("declaration", methodDeclaration.getDeclarationAsString());
                 methodDeclarationJsonObject.put("type", methodDeclaration.getType().toString());
@@ -168,7 +168,7 @@ public class Collection {
                     Javadoc javadoc = methodDeclaration.getJavadoc().get();
                     List<JavadocBlockTag> javadocBlockTags = javadoc.getBlockTags();
 
-                    for(JavadocBlockTag javadocBlockTag : javadocBlockTags){
+                    for (JavadocBlockTag javadocBlockTag : javadocBlockTags) {
                         JSONObject javadocBlockTagObj = new JSONObject();
                         javadocBlockTagObj.put("javadocBlockTag", javadocBlockTag.toString());
                         javadocBlockTagObj.put("javadocBlockType", javadocBlockTag.getType().toString());
@@ -214,18 +214,18 @@ public class Collection {
 
                 methodDeclarationJsonObject.put("parameters", collectParametersOfMethod(methodDeclaration.getParameters()));
 
-                if(inputProject.getCollectFieldAccesses()){
+                if (inputProject.getCollectFieldAccesses()) {
                     methodDeclarationJsonObject.put("fieldAccesses", collectFieldAccessesOfMember(methodDeclaration));
                 }
 
-                if(inputProject.getCollectMethodCalls()) {
+                if (inputProject.getCollectMethodCalls()) {
                     methodDeclarationJsonObject.put("methodCalls", collectMethodCallsOfMember(methodDeclaration));
                 }
 
-                if(inputProject.getCollectLiteralExprs()) {
+                if (inputProject.getCollectLiteralExprs()) {
                     methodDeclarationJsonObject.put("literalExprs", collectLiteralExprsOfMember(methodDeclaration));
                 }
-                if(inputProject.getCollectVariableDeclarationExprs()) {
+                if (inputProject.getCollectVariableDeclarationExprs()) {
                     methodDeclarationJsonObject.put("variableDeclarationExprs", collectVariableDeclarationExprsOfMember(methodDeclaration));
                 }
 
@@ -248,9 +248,9 @@ public class Collection {
 
         JSONArray constructorDeclarationsJsonArray = new JSONArray();
         List<ConstructorDeclaration> constructorDeclarations = typeDec.findAll(ConstructorDeclaration.class);
-        //System.out.println(constructorDeclarations.size());
+        // System.out.println(constructorDeclarations.size());
 
-        //for (ConstructorDeclaration constructorDeclaration : constructorDeclarations) {
+        // for (ConstructorDeclaration constructorDeclaration : constructorDeclarations) {
         for (int i = 0; i < constructorDeclarations.size(); i++) {
             ConstructorDeclaration constructorDeclaration = constructorDeclarations.get(i);
 //            System.out.println("1: " + constructorDeclaration.getName());
@@ -386,7 +386,7 @@ public class Collection {
         return fieldDeclarationsJsonArray;
     }
 
-    public static JSONArray collectFieldAccessesOfMember(BodyDeclaration<?> member){
+    public static JSONArray collectFieldAccessesOfMember(BodyDeclaration<?> member) {
         List<FieldAccessExpr> fieldAccessesOfMember = member.findAll(FieldAccessExpr.class);
         JSONArray fieldAccesses = new JSONArray();
         int fieldAccessesId = 0;
@@ -405,7 +405,7 @@ public class Collection {
         }
         return fieldAccesses;
     }
-    public static JSONArray collectMethodCallsOfMember(BodyDeclaration<?> member){
+    public static JSONArray collectMethodCallsOfMember(BodyDeclaration<?> member) {
         List<MethodCallExpr> methodCallsOfMember = member.findAll(MethodCallExpr.class);
         JSONArray methodCalls = new JSONArray();
         int methodCallId = 0;
@@ -447,7 +447,7 @@ public class Collection {
             methodCall.put("methodReturnType", returnType);
             methodCall.put("methodReturnTypeDescribed", returnTypeDescribed);
 
-            if(!mc.getScope().isEmpty()){
+            if (!mc.getScope().isEmpty()) {
                 methodCall.put("methodCallScope", mc.getScope().get().toString());
             } else {
                 methodCall.put("methodCallScope", "");
@@ -458,7 +458,7 @@ public class Collection {
 
         return methodCalls;
     }
-    public static JSONArray collectLiteralExprsOfMember(BodyDeclaration<?> member){
+    public static JSONArray collectLiteralExprsOfMember(BodyDeclaration<?> member) {
         List<LiteralExpr> literalExprsOfMember = member.findAll(LiteralExpr.class);
         JSONArray literalExprs = new JSONArray();
         int literalExprId = 0;
@@ -477,7 +477,7 @@ public class Collection {
 
         return literalExprs;
     }
-    public static JSONArray collectParametersOfMethod(NodeList<Parameter> parametersOfMember){
+    public static JSONArray collectParametersOfMethod(NodeList<Parameter> parametersOfMember) {
         JSONArray parameters = new JSONArray();
         int parameterId = 0;
         for (Parameter p : parametersOfMember) {
@@ -490,7 +490,7 @@ public class Collection {
             parameter.put("parameter", p.toString());
             parameter.put("parameterName", p.getNameAsString());
             parameter.put("parameterType", p.getType().toString());
-            try{
+            try {
                 parameterTypeResolved = p.resolve().getType().toString();
                 parameterTypeResolvedDescribed = p.resolve().describeType();
             } catch (StackOverflowError | RuntimeException e) {
@@ -504,7 +504,7 @@ public class Collection {
 
         return parameters;
     }
-    public static JSONArray collectVariableDeclarationExprsOfMember(BodyDeclaration<?> member){
+    public static JSONArray collectVariableDeclarationExprsOfMember(BodyDeclaration<?> member) {
         List<VariableDeclarationExpr> variableDeclarationExprsOfMember = member.findAll(VariableDeclarationExpr.class);
         JSONArray variableDeclarationExprs = new JSONArray();
         int variableDeclarationExpId = 0;
@@ -518,9 +518,9 @@ public class Collection {
             variableDeclarationExp.put("variableDeclarationExprRange", vd.getRange().get().toString());
 
             NodeList<VariableDeclarator> declaredVariables = vd.getVariables();
-            for(VariableDeclarator variable : declaredVariables){
+            for (VariableDeclarator variable : declaredVariables) {
                 String variableTypeResolved = "";
-                try{
+                try {
                     variableTypeResolved = variable.getType().resolve().toString();
                 } catch (StackOverflowError | RuntimeException e) {
                     System.out.println("Cannot resolve the field access - " + e.getMessage());
@@ -537,11 +537,11 @@ public class Collection {
 
         return variableDeclarationExprs;
     }
-    public static JSONArray collectImportsOfSourceFile(CompilationUnit cu){
+    public static JSONArray collectImportsOfSourceFile(CompilationUnit cu) {
         JSONArray importsArr = new JSONArray();
         NodeList<ImportDeclaration> imports = cu.getImports();
         int importId = 0;
-        for(ImportDeclaration im : imports){
+        for (ImportDeclaration im : imports) {
             importId++;
             JSONObject importObj = new JSONObject();
             importObj.put("importId", importId);
@@ -556,27 +556,24 @@ public class Collection {
      * @param classFullPath is the full path of a source code file
      * @return a string of class name
      */
-    public static String fullPath2ClassName(String classFullPath){
+    public static String fullPath2ClassName(String classFullPath) {
         String className = "";
-        if(classFullPath.contains("plume")) {
-            className = classFullPath.substring(classFullPath.indexOf("plume/")); //remove till
-            className = className.substring(0, className.indexOf(".java")); //remove .java extension
-            className = className.replace("/", "."); //replace / with .
-        }
-        else if(classFullPath.contains("guava")){
-            className = classFullPath.substring(classFullPath.indexOf("com")); //remove till com
-            className = className.substring(0, className.indexOf(".java")); //remove .java extension
-            className = className.replace("/", "."); //replace / with .
-        }
-        else if(classFullPath.contains("jdk")){
-            className = classFullPath.substring(classFullPath.indexOf("src")); //remove till src
-            className = className.substring(0, className.indexOf(".java")); //remove .java extension
-            className = className.replace("/", "."); //replace / with .
-        }
-        else {
-            className = classFullPath.substring(classFullPath.indexOf("org")); //remove till org
-            className = className.substring(0, className.indexOf(".java")); //remove .java extension
-            className = className.replace("/", "."); //replace / with .
+        if (classFullPath.contains("plume")) {
+            className = classFullPath.substring(classFullPath.indexOf("plume/")); // remove till
+            className = className.substring(0, className.indexOf(".java")); // remove .java extension
+            className = className.replace("/", "."); // replace / with .
+        } else if (classFullPath.contains("guava")) {
+            className = classFullPath.substring(classFullPath.indexOf("com")); // remove till com
+            className = className.substring(0, className.indexOf(".java")); // remove .java extension
+            className = className.replace("/", "."); // replace / with .
+        } else if (classFullPath.contains("jdk")) {
+            className = classFullPath.substring(classFullPath.indexOf("src")); // remove till src
+            className = className.substring(0, className.indexOf(".java")); // remove .java extension
+            className = className.replace("/", "."); // replace / with .
+        } else {
+            className = classFullPath.substring(classFullPath.indexOf("org")); // remove till org
+            className = className.substring(0, className.indexOf(".java")); // remove .java extension
+            className = className.replace("/", "."); // replace / with .
         }
         return className;
     }
@@ -589,7 +586,7 @@ public class Collection {
     public static List<File> listSourceFiles(File directory) {
         List<File> allSourceFiles = new ArrayList<>();
 
-        //skip the hidden files with .DS_Store extension (for mac os)
+        // skip the hidden files with .DS_Store extension (for mac os)
         File[] currentFiles = directory.listFiles(new FilenameFilter() {
             @Override
             public boolean accept(File dir, String name) {
@@ -602,11 +599,11 @@ public class Collection {
                 if (currentFiles[i].getName().endsWith(".java")) {
                     allSourceFiles.add(currentFiles[i]);
                 }
-                //System.out.println("File " + currentFiles[i].getName());
+                // System.out.println("File " + currentFiles[i].getName());
             } else if (currentFiles[i].isDirectory()) {
-                //System.out.println(currentFiles[i].getAbsoluteFile());
+                // System.out.println(currentFiles[i].getAbsoluteFile());
                 allSourceFiles.addAll(listSourceFiles(currentFiles[i].getAbsoluteFile()));
-                //System.out.println("Directory " + currentFiles[i].getName());
+                // System.out.println("Directory " + currentFiles[i].getName());
             }
         }
         return allSourceFiles;

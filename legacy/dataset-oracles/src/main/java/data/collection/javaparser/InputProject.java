@@ -38,7 +38,7 @@ public class InputProject {
 
     public InputProject(String projectName, File projectDir, File sourceFilesDir, File outputDataDir,
                         Boolean collectFieldAccesses, Boolean collectMethodCalls, Boolean collectLiteralExprs,
-                        Boolean collectVariableDeclarationExprs, Boolean collectImportsOfSourceFiles){
+                        Boolean collectVariableDeclarationExprs, Boolean collectImportsOfSourceFiles) {
         setProjectName(projectName);
         setProjectDir(projectDir);
         setSourceFilesDir(sourceFilesDir);
@@ -86,7 +86,7 @@ public class InputProject {
         this.collectFieldAccesses = collectFieldAccesses;
     }
 
-    public Boolean getCollectFieldAccesses(){
+    public Boolean getCollectFieldAccesses() {
         return collectFieldAccesses;
     }
 
@@ -94,7 +94,7 @@ public class InputProject {
         this.collectMethodCalls = collectMethodCalls;
     }
 
-    public Boolean getCollectMethodCalls(){
+    public Boolean getCollectMethodCalls() {
         return collectMethodCalls;
     }
 
@@ -102,7 +102,7 @@ public class InputProject {
         this.collectLiteralExprs = collectLiteralExprs;
     }
 
-    public Boolean getCollectLiteralExprs(){
+    public Boolean getCollectLiteralExprs() {
         return collectLiteralExprs;
     }
 
@@ -110,7 +110,7 @@ public class InputProject {
         this.collectVariableDeclarationExprs = collectVariableDeclarationExprs;
     }
 
-    public Boolean getCollectVariableDeclarationExprs(){
+    public Boolean getCollectVariableDeclarationExprs() {
         return collectVariableDeclarationExprs;
     }
 
@@ -118,7 +118,7 @@ public class InputProject {
         this.collectImportsOfSourceFiles = collectImportsOfSourceFiles;
     }
 
-    public Boolean getCollectImportsOfSourceFiles(){
+    public Boolean getCollectImportsOfSourceFiles() {
         return collectImportsOfSourceFiles;
     }
 
