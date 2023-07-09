@@ -150,8 +150,8 @@ get_main_type <- function(type){
 get_type <- function(projectId, sourceFileId, typeAsList){
   # There are three data pieces collected via javaparser for types (method argument types or could be method return types)
   # typeRaw: raw javaparser output without the application of symbol solver
-  # typeResolved: output of java symbol solver, might be empty if the type is not solved
-  # typeResolvedDescribed: also another output of java symbol solver, might be empty if the type is not solved
+  # typeResolved: output of JavaSymbolSolver, might be empty if the type is not solved
+  # typeResolvedDescribed: also another output of JavaSymbolSolver, might be empty if the type is not solved
   
   # Sample type objects with its three variables:
   # typeRaw: "V"

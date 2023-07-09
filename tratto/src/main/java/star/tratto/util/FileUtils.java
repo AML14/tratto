@@ -162,7 +162,7 @@ public class FileUtils {
     /**
      * The method checks if a file is a Java file.
      * @param file the file to inspect
-     * @return a boolean value: {@code true} if the file is a Java file, {@code false} otherwise.
+     * @return a boolean value: {@code true} if the file is a Java file, {@code false} otherwise
      */
     public static boolean isJavaFile(File file) {
         String fileName = file.getName();
@@ -171,10 +171,10 @@ public class FileUtils {
     }
 
     /**
-     * The method reads a list from a JSON file and returns a corresponding Java list.
+     * The method reads a list from a JSON file.
      * @param filePath the path to the JSON file
      *
-     * @return the list of Java objects parsed from the JSON list
+     * @return the list of values read from the JSON file
      */
     public static List<?> readJSONList(String filePath) {
         File jsonFile = new File(filePath);
