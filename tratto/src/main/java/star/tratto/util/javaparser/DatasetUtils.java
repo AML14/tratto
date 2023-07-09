@@ -64,7 +64,7 @@ public class DatasetUtils {
      * Gets a list of each class name, and corresponding package, name for all
      * classes in a compilation unit.
      *
-     * @param cu the compilation unit of a java file
+     * @param cu the compilation unit of a Java file
      * @return a list of (className, packageName) pairs
      * @throws PackageDeclarationNotFoundException if the package cannot be
      * retrieved
@@ -86,7 +86,7 @@ public class DatasetUtils {
      * Gets the JavaDoc comment of a body declaration using regex patterns.
      * Use ONLY IF JavaDoc comment is not recoverable using JavaParser API.
      *
-     * @param jpBody a member in a java class {@link BodyDeclaration}
+     * @param jpBody a member in a Java class {@link BodyDeclaration}
      * @return the matched JavaDoc comment (empty string if not found)
      */
     private static String getJavadocByPattern(BodyDeclaration<?> jpBody) {
@@ -349,7 +349,7 @@ public class DatasetUtils {
      * Collects information about all non-private, static, non-void methods
      * of a given compilation unit.
      *
-     * @param cu a compilation unit {@link CompilationUnit} of a java file
+     * @param cu a compilation unit {@link CompilationUnit} of a Java file
      * @return a list of information about each method. Each entry has the
      * form:
      *  [methodName, packageName, className, methodSignature]
@@ -385,7 +385,7 @@ public class DatasetUtils {
      * Collects information about all non-private, static attributes of a
      * given compilation unit.
      *
-     * @param cu a compilation unit {@link CompilationUnit} of a java file
+     * @param cu a compilation unit {@link CompilationUnit} of a Java file
      * @return a list of information about each attribute. Each entry has the
      * form:
      *  [variableName, packageName, className, variableSignature]
@@ -427,8 +427,8 @@ public class DatasetUtils {
      * Collects information about all JavaDoc tags in a given compilation
      * unit.
      *
-     * @param cu a compilation unit {@link CompilationUnit} of a java file
-     * @param fileContent the content of the java file
+     * @param cu a compilation unit {@link CompilationUnit} of a Java file
+     * @param fileContent the content of the Java file
      * @return a list of information about each tag. Each entry has the form:
      *  [typeDeclaration, callableDeclaration, oracleType, name, content]
      * where a JavaDoc tag is interpreted as:
@@ -489,10 +489,10 @@ public class DatasetUtils {
      * @return a list of all valid files {@link File}
      */
     private static List<File> getValidJavaFiles(String sourcePath) {
-        // get list of all java files.
+        // Get list of all Java files.
         File sourceDir = new File(sourcePath);
         List<File> allFiles = FileUtils.extractJavaFilesFromDirectory(sourceDir);
-        // get list of files to ignore.
+        // Get list of files to ignore.
         String ignoreFilePath = Paths.get(
                 Path.REPOS.getValue(),
                 FileName.IGNORE_FILE.getValue() + FileFormat.JSON.getValue()
