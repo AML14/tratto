@@ -70,7 +70,7 @@ public class JavaParserUtils {
      * @param jpClass the declaring class
      * @param jpCallable a method
      * @param methodArgs the arguments of the method
-     * @param expression a java expression (e.g. "jpClass.getMethods()").
+     * @param expression a Java expression (e.g. "jpClass.getMethods()").
      * @return the type of the expression
      * @throws ResolvedTypeNotFound if the type is not found
      */
@@ -269,7 +269,7 @@ public class JavaParserUtils {
      * {@code java.util.Comparator<java.util.Map.Entry<K, V>>}
      * For such example, this method would return the following:
      * {@code Comparator<Map.Entry<K, V>>}
-     * @param resolvedType JavaParser ResolvedType (usually obtained when using Java Symbol Solver)
+     * @param resolvedType JavaParser ResolvedType (usually obtained when using JavaSymbolSolver)
      * @return string representation of the type without packages
      */
     public static String getTypeWithoutPackages(ResolvedType resolvedType) {
@@ -705,7 +705,7 @@ public class JavaParserUtils {
         Optional<PackageDeclaration> jpPackage = cu.getPackageDeclaration();
         if (jpPackage.isEmpty()) {
             throw new PackageDeclarationNotFoundException(
-                    "The Java Parser package declaration of the compilation unit is empty"
+                    "The JavaParser package declaration of the compilation unit is empty"
             );
         }
         return jpPackage.get();

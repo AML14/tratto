@@ -37,8 +37,8 @@ public class Collection {
     }
 
     /**
-     * This method takes an input project and collects its elements (classses and members of it) using java parser and java symbol solver
-     * It produces a json file for each project, which includes the collected data
+     * This method takes an input project and collects its elements (classes and members of it) using JavaParser and JavaSymbolSolver.
+     * It produces a json file for each project, which includes the collected data.
      * @param inputProject object keeps the source path of the project and information for optional parts of data collection process
      */
     public static void collectDataFromProject(InputProject inputProject) throws IOException {
@@ -50,7 +50,7 @@ public class Collection {
 
         List<File> allSourceFiles = listSourceFiles(sourceFilesDir);
 
-        // initialize java symbol solver
+        // initialize JavaSymbolSolver
         // we use static solver which does the analysis by considering the project's source directory
         TypeSolver typeSolver = new ReflectionTypeSolver();
         TypeSolver javaParserTypeSolver = new JavaParserTypeSolver(sourceFilesDir);
@@ -74,7 +74,7 @@ public class Collection {
             classObject.put("sourceFileName", className);
             classObject.put("sourceFileId", sourceFileId);
 
-            // try parsing a class (compilation unit) using static java parser
+            // try parsing a class (compilation unit) using StaticJavaParser
             CompilationUnit cu = null;
             try {
                 cu = StaticJavaParser.parse(classFile);
@@ -581,7 +581,7 @@ public class Collection {
     /**
      * This method runs recursively in subdirectories to retrieve all source code files
      * @param directory
-     * @return a list of java source code files in the given directory
+     * @return a list of Java source code files in the given directory
      */
     public static List<File> listSourceFiles(File directory) {
         List<File> allSourceFiles = new ArrayList<>();
