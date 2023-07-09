@@ -199,7 +199,7 @@ public class JavaParserUtils {
             String className,
             String packageName
     ) throws PrimaryTypeNotFoundException, PackageDeclarationNotFoundException {
-        // Get the primary type from the compilation unit: it must represent the primary class of the java file analyzed
+        // Get the primary type from the compilation unit: it must represent the primary class of the Java file analyzed
         Optional<TypeDeclaration<?>> primaryType = cu.getPrimaryType();
         // Check that the primary type is not empty
         if (primaryType.isEmpty()) {
@@ -1386,8 +1386,8 @@ public class JavaParserUtils {
     /**
      * The method reads the corresponding JavaParser compilation unit {@link CompilationUnit}, from a given file {@link File}.
      * 
-     * @param file The file to read (it must represent a java class)
-     * @return An optional JavaParser compilation unit {@link CompilationUnit}. The optional contains the compilation unit,
+     * @param file the file to read (it must represent a Java class)
+     * @return an optional JavaParser compilation unit {@link CompilationUnit}. The optional contains the compilation unit,
      * if found. Otherwise, the method returns an empty optional.
      */
     public Optional<CompilationUnit> getCompilationUnitFromFile(File file) {
@@ -1401,8 +1401,8 @@ public class JavaParserUtils {
      * The method gets the corresponding JavaParser compilation unit {@link CompilationUnit}, from a file lying in the
      * given path passed to the function {@link String}.
      *
-     * @param filePath A string {@link String} representing the absolute path to the file (it must represent a java class)
-     * @return An optional JavaParser compilation unit {@link CompilationUnit}. The optional contains the compilation unit,
+     * @param filePath a string {@link String} representing the absolute path to the file (it must represent a Java class)
+     * @return an optional JavaParser compilation unit {@link CompilationUnit}. The optional contains the compilation unit,
      * if found. Otherwise, the method returns an empty optional.
      */
     public Optional<CompilationUnit> getCompilationUnitFromFilePath(String filePath) {
@@ -1414,8 +1414,8 @@ public class JavaParserUtils {
      * given path passed to the function {@link String}. The method is silent, therefore it does not notify any error
      * if the file is not found.
      *
-     * @param filePath A string {@link String} representing the absolute path to the file (it must represent a java class)
-     * @return An optional JavaParser compilation unit {@link CompilationUnit}. The optional contains the compilation unit,
+     * @param filePath a string {@link String} representing the absolute path to the file (it must represent a Java class)
+     * @return an optional JavaParser compilation unit {@link CompilationUnit}. The optional contains the compilation unit,
      * if found. Otherwise, the method returns an empty optional.
      */
     public Optional<CompilationUnit> getCompilationUnitFromFilePathSilent(String filePath) {
@@ -1428,11 +1428,10 @@ public class JavaParserUtils {
      * {@link Boolean}: if {@code true} the method is silent, therefore it does not notify any error if the file is not
      * found.
      *
-     * @param filePath A string {@link String} representing the absolute path to the file (it must represent a java class)
-     * @param silent Aboolean {@link Boolean}: if {@code true} the method is silent, therefore it does not notify any error
+     * @param filePath the absolute path to a Java file
+     * @param silent if {@code true} the method is silent, therefore this method does not notify any error
      * if the file is not found.
-     * @return An optional JavaParser compilation unit {@link CompilationUnit}. The optional contains the compilation unit,
-     * if found. Otherwise, the method returns an empty optional.
+     * @return the compilation unit, if found
      */
     public Optional<CompilationUnit> getCompilationUnitFromFilePath(String filePath, boolean silent) {
         // Instantiate a file from a given path
@@ -1513,7 +1512,7 @@ public class JavaParserUtils {
             return (ConstructorDeclaration) jpConstructor.get();
         }
         // Raise an exception if the constructor has not been found
-        String errMsg = String.format("The java class passed to the function does not have a constructor that matches the constructor of JDoctor condition.");
+        String errMsg = String.format("The Java class passed to the function does not have a constructor that matches the constructor of JDoctor condition.");
         throw new JPConstructorNotFound(errMsg);
     }
 
