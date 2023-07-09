@@ -99,7 +99,7 @@ public class FileUtils {
      * @param fileName the name of the file where to write the content
      * @param fileFormat the format of the file {@link FileFormat}.
      *
-     * @return the file created {@link File}
+     * @return the file created
      * @throws IOException If the file cannot be created
      */
     public static File createFile(String dirPath, String fileName, FileFormat fileFormat) throws FolderCreationFailedException, IOException, FileNotCreatedException {
@@ -151,8 +151,8 @@ public class FileUtils {
      *
      * @param dirPath the path to the directory where the file must be saved
      * @param fileName the name of the file where to write the content
-     * @param fileFormat the format of the file {@link FileFormat}
-     * @return the complete path to a file.
+     * @param fileFormat the format of the file
+     * @return the complete path to a file
      */
     public static String getAbsolutePathToFile(String dirPath, FileName fileName, FileFormat fileFormat) {
         return Paths.get(dirPath, fileName.getValue()) + fileFormat.getValue();

@@ -67,12 +67,12 @@ public class JavaParserUtils {
      * Gets the type of a given expression. For example:
      *  "jpClass.getMethods().get(0)" => MethodDeclaration
      *
-     * @param jpClass the declaring class {@link TypeDeclaration}.
-     * @param jpCallable a method {@link CallableDeclaration}.
-     * @param methodArgs the arguments of the method.
+     * @param jpClass the declaring class
+     * @param jpCallable a method
+     * @param methodArgs the arguments of the method
      * @param expression a java expression (e.g. "jpClass.getMethods()").
-     * @return the type of the expression {@link ResolvedType}.
-     * @throws ResolvedTypeNotFound if the type is not found.
+     * @return the type of the expression
+     * @throws ResolvedTypeNotFound if the type is not found
      */
     public static ResolvedType getResolvedTypeOfExpression(
             TypeDeclaration<?> jpClass,
@@ -463,7 +463,7 @@ public class JavaParserUtils {
     }
 
     /**
-     * @return a generic "java.lang.Object" type {@link ResolvedType}.
+     * @return a generic "java.lang.Object" type
      */
     public static ResolvedType getGenericType() {
         return javaParser.parse(SYNTHETIC_CLASS_SOURCE).getResult().get()
@@ -532,8 +532,8 @@ public class JavaParserUtils {
      * Gets the signature of a JavaParser variable declarator
      * {@link VariableDeclarator}, and return its string representation.
      *
-     * @param field the JP field declaration {@link FieldDeclaration}
-     * @param variable the JP variable declaration {@link VariableDeclarator}
+     * @param field the JP field declaration
+     * @param variable the JP variable declaration
      * @return a string representation of the signature of the JavaParser
      * variable declarator {@link VariableDeclarator}
      */
@@ -571,9 +571,9 @@ public class JavaParserUtils {
      * Generates the signature of a JavaParser callable declaration
      * {@link CallableDeclaration}, and returns its string representation.
      *
-     * @param jpCallable The JavaParser callable declaration.
+     * @param jpCallable The JavaParser callable declaration
      * @param jpCallableType Type of declaration (e.g. method or constructor).
-     * @return A string representation of the signature.
+     * @return A string representation of the signature
      */
     public static String getCallableSignature(
             CallableDeclaration<?> jpCallable,
@@ -694,10 +694,10 @@ public class JavaParserUtils {
     /**
      * Gets the package of a given compilation unit.
      *
-     * @param cu a compilation unit {@link CompilationUnit}.
-     * @return the package of the compilation unit {@link PackageDeclaration}.
+     * @param cu a compilation unit
+     * @return the package of the compilation unit
      * @throws PackageDeclarationNotFoundException if the package declaration
-     * cannot be found.
+     * cannot be found
      */
     public static PackageDeclaration getPackageDeclarationFromCompilationUnit(
             CompilationUnit cu
@@ -716,8 +716,8 @@ public class JavaParserUtils {
      * Recursively strips all array variables. For example:
      *  Object[][] => Object
      *
-     * @param resolvedType a type {@link ResolvedType}.
-     * @return the base component type.
+     * @param resolvedType a type
+     * @return the base component type
      */
     public static ResolvedType removeArray(ResolvedType resolvedType) {
         if (resolvedType.isArray()) {
@@ -727,7 +727,7 @@ public class JavaParserUtils {
     }
 
     /**
-     * @param resolvedType a JavaParser resolved type {@link ResolvedType}.
+     * @param resolvedType a JavaParser resolved type
      * @return true iff a given type is generic. Ignores any wrapped arrays.
      */
     public static boolean isGenericType(
@@ -740,9 +740,9 @@ public class JavaParserUtils {
     /**
      * Returns true iff a given type name represents a generic type.
      *
-     * @param jpTypeName the name of a type.
-     * @param jpCallable a method {@link CallableDeclaration}.
-     * @param jpClass the declaring class {@link TypeDeclaration}.
+     * @param jpTypeName the name of a type
+     * @param jpCallable a method
+     * @param jpClass the declaring class
      * @return true iff a given type is generic. Ignores any wrapped arrays.
      */
     public static boolean isGenericType(
@@ -768,9 +768,9 @@ public class JavaParserUtils {
     /**
      * Get all methods available to a given class (including superclasses).
      *
-     * @param jpClass object class.
-     * @return list of MethodUsage objects.
-     * @throws JPClassNotFoundException if jpClass is not resolvable.
+     * @param jpClass object class
+     * @return list of MethodUsage objects
+     * @throws JPClassNotFoundException if jpClass is not resolvable
      */
     public static List<MethodUsage> getAllAvailableMethodUsages(
             TypeDeclaration<?> jpClass
@@ -790,9 +790,9 @@ public class JavaParserUtils {
     /**
      * Get all fields available to a given class (including superclasses).
      *
-     * @param jpClass object class.
-     * @return list of ResolvedFieldDeclaration objects.
-     * @throws JPClassNotFoundException if jpClass is not resolvable.
+     * @param jpClass object class
+     * @return list of ResolvedFieldDeclaration objects
+     * @throws JPClassNotFoundException if jpClass is not resolvable
      */
     public static List<ResolvedFieldDeclaration> getAllAvailableResolvedFields(
             TypeDeclaration<?> jpClass
@@ -814,7 +814,7 @@ public class JavaParserUtils {
      * from the given file path {@link String}.
      *
      * @param filePath the absolute path to the file
-     * @return an optional JavaParser compilation unit {@link CompilationUnit}
+     * @return an optional JavaParser compilation unit
      */
     public static Optional<CompilationUnit> getCompilationUnitFromFilePath(String filePath) {
         File file = new File(filePath);
