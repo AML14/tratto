@@ -556,8 +556,8 @@ public class JavaParserUtils {
      * Gets the signature of a JavaParser resolved field declaration
      * {@link ResolvedFieldDeclaration} and return its string representation.
      *
-     * @param resolvedField resolved field declaration.
-     * @return a string representation of the signature of the declaration.
+     * @param resolvedField resolved field declaration
+     * @return a string representation of the signature of the declaration
      */
     public static String getFieldSignature(
             ResolvedFieldDeclaration resolvedField
@@ -578,9 +578,9 @@ public class JavaParserUtils {
      * {@link ResolvedFieldDeclaration} and return its string representation.
      * Uses a given modifier value to determine the modifiers.
      *
-     * @param resolvedField resolved field declaration.
-     * @param modifier an integer representing the field modifiers.
-     * @return a string representation of the signature of the declaration.
+     * @param resolvedField resolved field declaration
+     * @param modifier an integer representing the field modifiers
+     * @return a string representation of the signature of the declaration
      */
     public static String getFieldSignature(
             ResolvedFieldDeclaration resolvedField,
@@ -598,9 +598,9 @@ public class JavaParserUtils {
      * Generates the signature of a JavaParser callable declaration
      * {@link CallableDeclaration}, and returns its string representation.
      *
-     * @param jpCallable The JavaParser callable declaration
-     * @param jpCallableType Type of declaration (e.g. method or constructor).
-     * @return A string representation of the signature
+     * @param jpCallable the JavaParser callable declaration
+     * @param jpCallableType type of declaration (e.g. method or constructor).
+     * @return a string representation of the signature
      */
     public static String getCallableSignature(
             CallableDeclaration<?> jpCallable,
