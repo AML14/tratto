@@ -179,7 +179,6 @@ public class StringUtils {
      * @param map a map of word frequencies
      * @param words the set of all possible words
      * @return a vector representation of the word frequencies
-     * {@link RealVector}
      */
     private static RealVector toRealVector(Map<String, Integer> map, Set<String> words) {
         double[] vector = new double[words.size()];
