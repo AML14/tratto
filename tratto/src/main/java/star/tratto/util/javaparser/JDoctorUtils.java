@@ -1,7 +1,6 @@
 package star.tratto.util.javaparser;
 
 import star.tratto.identifiers.ConditionPrimitiveType;
-import star.tratto.identifiers.JPType;
 
 import com.github.javaparser.ast.body.CallableDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
@@ -153,9 +152,8 @@ public class JDoctorUtils {
             Parameter jpTypeParam
     ) {
         String jpTypeName = removeSpuriousCharacters(jpTypeParam.getType().asString());
-        JPType jpMethodType = JPType.getJPTypeDeclaration(jpTypeParam.getType());
 
-        if (jpMethodType == JPType.CLASS_OR_INTERFACE_TYPE) {
+        if (jpTypeParam.getType().isClassOrInterfaceType()) {
             jpTypeName = removeSpuriousCharacters(jpTypeParam.getType().asClassOrInterfaceType().getName().asString());
         }
         if (hasJPTypeEllipsis(jpTypeParam.toString())) {
