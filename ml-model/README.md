@@ -101,11 +101,11 @@ Run the following command to replicate the training of the `token-values` model 
 
 If you want to run the training as a background process execute one of the corresponding command:
    ```shell
-   nohup ./train_token_classes.sh > log_token_classes.out 2>&1 & echo $! > run_token_classes.pid
+   nohup ./train_token_classes_decoder.sh > log_token_classes.out 2>&1 & echo $! > run_token_classes.pid
    ```
    
    ```shell
-   nohup ./train_token_values.sh > log_token_values.out 2>&1 & echo $! > run_token_values.pid
+   nohup ./train_token_values_decoder.sh > log_token_values.out 2>&1 & echo $! > run_token_values.pid
    ```
 
 The command will run the training in background and will create and save the logs in the `log_token_classes.out`  (or `log_token_values.out`)
