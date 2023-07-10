@@ -27,7 +27,7 @@ import star.tratto.exceptions.ResolvedTypeNotFound;
 import star.tratto.identifiers.JPCallableType;
 import star.tratto.identifiers.file.FileFormat;
 import star.tratto.identifiers.file.FileName;
-import star.tratto.identifiers.path.Path;
+import star.tratto.identifiers.path.IOPath;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.oraclegrammar.custom.Splitter;
 import star.tratto.util.FileUtils;
@@ -493,7 +493,7 @@ public class DatasetUtils {
         List<File> allFiles = FileUtils.extractJavaFilesFromDirectory(sourceDir);
         // Get list of files to ignore.
         String ignoreFilePath = Paths.get(
-                Path.REPOS.getValue(),
+                IOPath.REPOS.getValue(),
                 FileName.IGNORE_FILE.getValue() + FileFormat.JSON.getValue()
         ).toString();
         List<String> ignoreFileList = FileUtils.readJSONList(ignoreFilePath)
@@ -667,7 +667,7 @@ public class DatasetUtils {
         if (jpResolvedType.isArray()) {
             // array type (see dataset/repose/arrayMethods.json).
             String arraysMethodJsonPath = Paths.get(
-                    Path.REPOS.getValue(),
+                    IOPath.REPOS.getValue(),
                     FileName.ARRAY_METHODS.getValue() + FileFormat.JSON.getValue()
             ).toString();
             List<List<String>> arrayMethods = FileUtils.readJSONList(arraysMethodJsonPath)

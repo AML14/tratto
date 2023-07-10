@@ -8,7 +8,7 @@ import star.tratto.data.oracles.json.parsers.JDoctorConditionParser;
 import star.tratto.data.oracles.json.parsers.ProjectParser;
 import star.tratto.identifiers.file.FileFormat;
 import star.tratto.identifiers.file.FileName;
-import star.tratto.identifiers.path.Path;
+import star.tratto.identifiers.path.IOPath;
 import star.tratto.util.FileUtils;
 import star.tratto.util.javaparser.DatasetUtils;
 
@@ -23,11 +23,11 @@ public class OraclesDataset {
 
     public static void main(String[] args) {
         // Clean folder where dataset will be provisionally stored.
-        FileUtils.deleteDirectory(Path.OUTPUT.getValue());
+        FileUtils.deleteDirectory(IOPath.OUTPUT.getValue());
 
         // Specify the path to JSON file with the list of the input projects and
         // the information, to initialize each of them.
-        String projectsPath = FileUtils.getAbsolutePathToFile(Path.REPOS.getValue(), FileName.INPUT_PROJECTS, FileFormat.JSON);
+        String projectsPath = FileUtils.getAbsolutePathToFile(IOPath.REPOS.getValue(), FileName.INPUT_PROJECTS, FileFormat.JSON);
         List<Project> projects = ProjectParser.initialize(projectsPath);
         JDoctorConditionParser jDoctorConditionParser = new JDoctorConditionParser();
         ProjectOracleGenerator oracleDPGenerator = new ProjectOracleGenerator();
@@ -54,7 +54,7 @@ public class OraclesDataset {
                     "oracle_list_%s", project.getProjectName()
             );
             FileUtils.appendToFile(
-                    Path.OUTPUT.getValue(),
+                    IOPath.OUTPUT.getValue(),
                     oracleStringFileName,
                     FileFormat.JSON,
                     project.getProjectName(),
@@ -71,7 +71,7 @@ public class OraclesDataset {
                         i
                 );
                 FileUtils.appendToFile(
-                        Paths.get(Path.OUTPUT.getValue(),"dataset").toString(),
+                        Paths.get(IOPath.OUTPUT.getValue(),"dataset").toString(),
                         fileName,
                         FileFormat.JSON,
                         project.getProjectName(),
@@ -81,10 +81,10 @@ public class OraclesDataset {
         }
 
         // Move the generated oracles to the oracles-dataset folder.
-        FileUtils.deleteDirectory(Path.ORACLES_DATASET.getValue());
+        FileUtils.deleteDirectory(IOPath.ORACLES_DATASET.getValue());
         FileUtils.moveFilesRecursively(
-                Paths.get(Path.OUTPUT.getValue(), "dataset").toString(),
-                Path.ORACLES_DATASET.getValue()
+                Paths.get(IOPath.OUTPUT.getValue(), "dataset").toString(),
+                IOPath.ORACLES_DATASET.getValue()
         );
     }
 
