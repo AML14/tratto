@@ -9,9 +9,9 @@ import java.util.ArrayList;
 public class InitializeProjects {
     public ArrayList<InputProject> inputProjects;
 
-    public void InitializeProjects(){
-        //resourcesDir is used to point out the directory where we keep input projects
-        //dataDir is used to keep the output data files
+    public void InitializeProjects() {
+        // resourcesDir is used to point out the directory where we keep input projects
+        // dataDir is used to keep the output data files
         String resourcesDir = System.getProperty("user.dir") + "/src/main/resources/";
         File dataDir = new File(System.getProperty("user.dir") + "/data/javaparserOutput/");
         if (!dataDir.exists()) {
@@ -20,7 +20,7 @@ public class InitializeProjects {
 
         inputProjects = new ArrayList<>();
 
-        //we don't collect field-accesses, method-calls, and variable declaration expressions anymore
+        // we don't collect field-accesses, method-calls, and variable declaration expressions anymore
         inputProjects.add(new InputProject(
                 "commons-collections4-4.1",
                 new File(resourcesDir + "/ISSTA18_Projects/commons-collections4-4.1/"),

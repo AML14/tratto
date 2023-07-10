@@ -94,13 +94,13 @@ public class FileUtils {
     }
 
     /**
-     * The method creates a file {@link File} within a given directory.
+     * The method creates a file within a given directory.
      *
      * @param dirPath the path to the directory where the file must be saved
      * @param fileName the name of the file where to write the content
-     * @param fileFormat the format of the file {@link FileFormat}.
+     * @param fileFormat the format of the file
      *
-     * @return the file created {@link File}
+     * @return the file created
      * @throws IOException If the file cannot be created
      */
     public static File createFile(String dirPath, String fileName, FileFormat fileFormat) throws FolderCreationFailedException, IOException, FileNotCreatedException {
@@ -152,8 +152,8 @@ public class FileUtils {
      *
      * @param dirPath the path to the directory where the file must be saved
      * @param fileName the name of the file where to write the content
-     * @param fileFormat the format of the file {@link FileFormat}
-     * @return the complete path to a file.
+     * @param fileFormat the format of the file
+     * @return the complete path to a file
      */
     public static String getAbsolutePathToFile(String dirPath, FileName fileName, FileFormat fileFormat) {
         return Paths.get(dirPath, fileName.getValue()) + fileFormat.getValue();
@@ -162,7 +162,7 @@ public class FileUtils {
     /**
      * The method checks if a file is a Java file.
      * @param file the file to inspect
-     * @return a boolean value: {@code true} if the file is a Java file, {@code false} otherwise.
+     * @return a boolean value: {@code true} if the file is a Java file, {@code false} otherwise
      */
     public static boolean isJavaFile(File file) {
         String fileName = file.getName();
@@ -171,10 +171,10 @@ public class FileUtils {
     }
 
     /**
-     * The method reads a list from a JSON file and returns a corresponding Java list.
+     * The method reads a list from a JSON file.
      * @param filePath the path to the JSON file
      *
-     * @return the list of Java objects parsed from the JSON list
+     * @return the list of values read from the JSON file
      */
     public static List<?> readJSONList(String filePath) {
         File jsonFile = new File(filePath);

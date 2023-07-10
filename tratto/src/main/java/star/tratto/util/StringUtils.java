@@ -117,10 +117,10 @@ public class StringUtils {
      * Computes the semantic similarity of two strings by the cosine
      * similarity of word frequencies in the input.
      *
-     * @param s1 a string {@link String}.
-     * @param s2 a string {@link String}.
+     * @param s1 a string
+     * @param s2 a string
      * @return the cosine similarity of the two strings represented by a
-     * double between 0.0 and 1.0.
+     * double between 0.0 and 1.0
      */
     public static double semanticSimilarity(String s1, String s2) {
         s1 = s1.replaceAll("[^a-zA-Z ]", "").toLowerCase();
@@ -150,9 +150,9 @@ public class StringUtils {
     /**
      * Computes the cosine similarity of two lists of words.
      *
-     * @param list1 list of strings.
-     * @param list2 list of strings.
-     * @return the cosine similarity (double between 0 and 1).
+     * @param list1 list of strings
+     * @param list2 list of strings
+     * @return the cosine similarity (double between 0 and 1)
      */
     private static double cosineSimilarity(List<String> list1, List<String> list2) {
         Map<String, Integer> map1 = wordFrequencies(list1);
@@ -168,9 +168,9 @@ public class StringUtils {
     /**
      * Computes the frequency of each string in a list of strings.
      *
-     * @param words a list of strings.
+     * @param words a list of strings
      * @return a map of word frequencies, where the keys are strings and the
-     * values are the number of occurrences.
+     * values are the number of occurrences
      */
     private static Map<String, Integer> wordFrequencies(List<String> words) {
         Map<String, Integer> frequencies = new HashMap<>();
@@ -183,10 +183,9 @@ public class StringUtils {
     /**
      * Converts a map of word frequencies to a vector.
      *
-     * @param map a map of word frequencies.
-     * @param words the set of all possible words.
+     * @param map a map of word frequencies
+     * @param words the set of all possible words
      * @return a vector representation of the word frequencies
-     * {@link RealVector}.
      */
     private static RealVector toRealVector(Map<String, Integer> map, Set<String> words) {
         double[] vector = new double[words.size()];

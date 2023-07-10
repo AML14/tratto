@@ -639,7 +639,7 @@ public class CollectionUtilsTest extends MockTestCase {
         Closure<Collection<Integer>> resultClosure = CollectionUtils.forAllDo(col, testClosure);
         assertSame(testClosure, resultClosure);
         assertTrue(collectionA.isEmpty() && collectionC.isEmpty());
-        // fix for various java 1.6 versions: keep the cast
+        // Fix for various Java 1.6 versions: keep the cast.
         resultClosure = CollectionUtils.forAllDo(col, (Closure<Collection<Integer>>) null);
         assertNull(resultClosure);
         assertTrue(collectionA.isEmpty() && collectionC.isEmpty());
@@ -659,7 +659,7 @@ public class CollectionUtilsTest extends MockTestCase {
         Closure<Collection<Integer>> resultClosure = CollectionUtils.forAllDo(col.iterator(), testClosure);
         assertSame(testClosure, resultClosure);
         assertTrue(collectionA.isEmpty() && collectionC.isEmpty());
-        // fix for various java 1.6 versions: keep the cast
+        // Fix for various Java 1.6 versions: keep the cast.
         resultClosure = CollectionUtils.forAllDo(col.iterator(), (Closure<Collection<Integer>>) null);
         assertNull(resultClosure);
         assertTrue(collectionA.isEmpty() && collectionC.isEmpty());

@@ -157,7 +157,7 @@ public class OracleDatapointBuilder {
      * PreCondition, or a list of PostCondition's). Sets the oracle type,
      * JavaDoc tag, and oracle.
      *
-     * @param condition a JDoctor condition.
+     * @param condition a JDoctor condition
      */
     public void setConditionInfo(Object condition) {
         if (condition instanceof JDoctorCondition.ThrowsCondition) {
@@ -310,7 +310,7 @@ public class OracleDatapointBuilder {
      * @param defaults set to false to reset the oracle normally ({@link #reset} method).
      *                 Set to true to keep default values for some properties
      *                 ({@link #resetWithDefaults} method).
-     * @return a new datapoint {@link OracleDatapoint}.
+     * @return a new datapoint
      */
     public OracleDatapoint build(String level, boolean defaults) {
         OracleDatapoint oracleDP = this.copy();
