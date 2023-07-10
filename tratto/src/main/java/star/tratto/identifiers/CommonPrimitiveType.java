@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
  * primitive types. This class acts as a wrapper to store and convert between
  * representations.
  */
-public enum JDoctorConditionPrimitiveType {
+public enum CommonPrimitiveType {
     // JDoctor representations.
     CONDITION_BOOLEAN("Z"),
     CONDITION_BYTE("B"),
@@ -33,7 +33,7 @@ public enum JDoctorConditionPrimitiveType {
     private static final List<String> allJDoctorPrimitiveTypes = collectAllJDoctorPrimitiveTypeNames();
     private static final List<String> allJPPrimitiveTypes = collectAllJPPrimitiveTypeNames();
 
-    JDoctorConditionPrimitiveType(String name) {
+    CommonPrimitiveType(String name) {
         this.type = name;
     }
 
@@ -45,7 +45,7 @@ public enum JDoctorConditionPrimitiveType {
      * @return the ConditionPrimitiveType whose value corresponds to the given
      * parameter name
      */
-    public static JDoctorConditionPrimitiveType convertTypeNameToConditionPrimitiveType(String parameter) {
+    public static CommonPrimitiveType convertTypeNameToConditionPrimitiveType(String parameter) {
         switch (parameter) {
             case "Z" -> {
                 return CONDITION_BOOLEAN;
@@ -106,7 +106,7 @@ public enum JDoctorConditionPrimitiveType {
      * @param conditionType the JDoctor primitive type
      * @return the corresponding JavaParser primitive type
      */
-    public static JDoctorConditionPrimitiveType jDoctorToJP(JDoctorConditionPrimitiveType conditionType) {
+    public static CommonPrimitiveType jDoctorToJP(CommonPrimitiveType conditionType) {
         switch (conditionType) {
             case CONDITION_BOOLEAN -> {
                 return JP_BOOLEAN;
@@ -143,7 +143,7 @@ public enum JDoctorConditionPrimitiveType {
      * @param conditionType the JavaParser primitive type
      * @return the corresponding JDoctor primitive type
      */
-    public static JDoctorConditionPrimitiveType jpToJDoctor(JDoctorConditionPrimitiveType conditionType) {
+    public static CommonPrimitiveType jpToJDoctor(CommonPrimitiveType conditionType) {
         switch (conditionType) {
             case JP_BOOLEAN -> {
                 return CONDITION_BOOLEAN;
@@ -179,9 +179,9 @@ public enum JDoctorConditionPrimitiveType {
      */
     private static List<String> collectAllJDoctorPrimitiveTypeNames() {
         return Arrays
-                .stream(JDoctorConditionPrimitiveType.values())
+                .stream(CommonPrimitiveType.values())
                 .filter(c -> c.name().startsWith("CONDITION"))
-                .map(JDoctorConditionPrimitiveType::getTypeName)
+                .map(CommonPrimitiveType::getTypeName)
                 .collect(Collectors.toList());
     }
 
@@ -190,9 +190,9 @@ public enum JDoctorConditionPrimitiveType {
      */
     private static List<String> collectAllJPPrimitiveTypeNames() {
         return Arrays
-                .stream(JDoctorConditionPrimitiveType.values())
+                .stream(CommonPrimitiveType.values())
                 .filter(c -> c.name().startsWith("JP"))
-                .map(JDoctorConditionPrimitiveType::getTypeName)
+                .map(CommonPrimitiveType::getTypeName)
                 .collect(Collectors.toList());
     }
 
