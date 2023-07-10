@@ -56,7 +56,7 @@ public class JDoctorUtils {
     }
 
     public static String convertConditionParameterType(String conditionParameterType) {
-        List<String> primitiveConditionsValues = ConditionPrimitiveType.getConditionValues();
+        List<String> primitiveConditionsValues = ConditionPrimitiveType.getAllJDoctorPrimitiveTypeNames();
         conditionParameterType = removeSpuriousCharacters(conditionParameterType);
         if (primitiveConditionsValues.contains(conditionParameterType.replaceAll("[^a-zA-Z]+", ""))) {
             conditionParameterType = convertToPrimitiveType(conditionParameterType);
@@ -69,9 +69,9 @@ public class JDoctorUtils {
     }
 
     public static String convertToPrimitiveType(String primitiveType) {
-        List<String> primitiveConditionsValues = ConditionPrimitiveType.getConditionValues();
+        List<String> primitiveConditionsValues = ConditionPrimitiveType.getAllJDoctorPrimitiveTypeNames();
         if (primitiveConditionsValues.contains(primitiveType.replaceAll("[^a-zA-Z]+", ""))) {
-            String conditionPrimitiveRegex = ConditionPrimitiveType.getConditionRegexValues();
+            String conditionPrimitiveRegex = ConditionPrimitiveType.getJDoctorValuesRegex();
             String regex = String.format(
                     "[^A-Za-z0-9_]*(%s)[^A-Za-z0-9_]*",
                     conditionPrimitiveRegex
@@ -82,9 +82,9 @@ public class JDoctorUtils {
 
             if (matcher.find()) {
                 String extractedPrimitiveType = matcher.group(1);
-                ConditionPrimitiveType conditionParamEnum = ConditionPrimitiveType.convertValue(extractedPrimitiveType);
-                ConditionPrimitiveType conditionParamConverted = ConditionPrimitiveType.condition2jp(conditionParamEnum);
-                return primitiveType.replaceAll(conditionPrimitiveRegex, conditionParamConverted.getValue());
+                ConditionPrimitiveType conditionParamEnum = ConditionPrimitiveType.convertTypeNameToConditionPrimitiveType(extractedPrimitiveType);
+                ConditionPrimitiveType conditionParamConverted = ConditionPrimitiveType.jDoctorToJP(conditionParamEnum);
+                return primitiveType.replaceAll(conditionPrimitiveRegex, conditionParamConverted.getTypeName());
             } else {
                 String errMsg = String.format(
                         "The condition parameter does not match any primitive type: %s",

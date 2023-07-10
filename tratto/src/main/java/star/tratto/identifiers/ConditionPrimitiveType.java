@@ -4,7 +4,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * JDoctor and JavaParser store different representations of the same
+ * primitive types. This class acts as a wrapper to store and convert between
+ * representations.
+ */
 public enum ConditionPrimitiveType {
+    // JDoctor representations.
     CONDITION_BOOLEAN("Z"),
     CONDITION_BYTE("B"),
     CONDITION_CHAR("C"),
@@ -13,6 +19,7 @@ public enum ConditionPrimitiveType {
     CONDITION_INTEGER("I"),
     CONDITION_LONG("J"),
     CONDITION_SHORT("S"),
+    // JavaParser representations.
     JP_BOOLEAN("boolean"),
     JP_BYTE("byte"),
     JP_CHAR("char"),
@@ -22,123 +29,207 @@ public enum ConditionPrimitiveType {
     JP_LONG("long"),
     JP_SHORT("short");
 
-
     private final String type;
+    private static final List<String> allJDoctorPrimitiveTypes = collectAllJDoctorPrimitiveTypeNames();
+    private static final List<String> allJPPrimitiveTypes = collectAllJPPrimitiveTypeNames();
 
-    private ConditionPrimitiveType(String name) {
+    ConditionPrimitiveType(String name) {
         this.type = name;
     }
 
-    public static ConditionPrimitiveType condition2jp(ConditionPrimitiveType conditionType) {
-        switch (conditionType) {
-            case CONDITION_BOOLEAN:
-                return JP_BOOLEAN;
-            case CONDITION_BYTE:
-                return JP_BYTE;
-            case CONDITION_CHAR:
-                return JP_CHAR;
-            case CONDITION_DOUBLE:
-                return JP_DOUBLE;
-            case CONDITION_FLOAT:
-                return JP_FLOAT;
-            case CONDITION_INTEGER:
-                return JP_INTEGER;
-            case CONDITION_LONG:
-                return JP_LONG;
-            case CONDITION_SHORT:
-                return JP_SHORT;
-        }
-        String errMsg = String.format("Unknown primitive type: %s", conditionType.getValue());
-        throw new IllegalArgumentException(errMsg);
-    }
-
-    public static ConditionPrimitiveType convertValue(String parameter) {
+    /**
+     * Converts a String name of a primitive type to a ConditionPrimitiveType
+     * enum. Given name may use either JavaParser or JDoctor format.
+     *
+     * @param parameter a name of a parameter (e.g. "Z", "boolean", "D", "double").
+     * @return the ConditionPrimitiveType whose value corresponds to the given
+     * parameter name.
+     */
+    public static ConditionPrimitiveType convertTypeNameToConditionPrimitiveType(String parameter) {
         switch (parameter) {
-            case "Z":
+            case "Z" -> {
                 return CONDITION_BOOLEAN;
-            case "B":
+            }
+            case "B" -> {
                 return CONDITION_BYTE;
-            case "C":
+            }
+            case "C" -> {
                 return CONDITION_CHAR;
-            case "D":
+            }
+            case "D" -> {
                 return CONDITION_DOUBLE;
-            case "F":
+            }
+            case "F" -> {
                 return CONDITION_FLOAT;
-            case "I":
+            }
+            case "I" -> {
                 return CONDITION_INTEGER;
-            case "J":
+            }
+            case "J" -> {
                 return CONDITION_LONG;
-            case "S":
+            }
+            case "S" -> {
                 return CONDITION_SHORT;
-            case "boolean":
+            }
+            case "boolean" -> {
                 return JP_BOOLEAN;
-            case "byte":
+            }
+            case "byte" -> {
                 return JP_BYTE;
-            case "char":
+            }
+            case "char" -> {
                 return JP_CHAR;
-            case "double":
+            }
+            case "double" -> {
                 return JP_DOUBLE;
-            case "float":
+            }
+            case "float" -> {
                 return JP_FLOAT;
-            case "integer":
+            }
+            case "integer", "int" -> {
                 return JP_INTEGER;
-            case "long":
+            }
+            case "long" -> {
                 return JP_LONG;
-            case "short":
+            }
+            case "short" -> {
                 return JP_SHORT;
+            }
         }
         String errMsg = String.format("Unknown primitive parameter: %s", parameter);
         throw new IllegalArgumentException(errMsg);
     }
 
-    public static String getConditionRegexValues() {
-        List<String> conditionList = getConditionValues();
-        String regex = "[" + String.join("", conditionList) + "]";
-        return regex;
+    /**
+     * Converts a JDoctor primitive type to a JavaParser primitive type.
+     *
+     * @param conditionType the JDoctor primitive type.
+     * @return the corresponding JavaParser primitive type.
+     */
+    public static ConditionPrimitiveType jDoctorToJP(ConditionPrimitiveType conditionType) {
+        switch (conditionType) {
+            case CONDITION_BOOLEAN -> {
+                return JP_BOOLEAN;
+            }
+            case CONDITION_BYTE -> {
+                return JP_BYTE;
+            }
+            case CONDITION_CHAR -> {
+                return JP_CHAR;
+            }
+            case CONDITION_DOUBLE -> {
+                return JP_DOUBLE;
+            }
+            case CONDITION_FLOAT -> {
+                return JP_FLOAT;
+            }
+            case CONDITION_INTEGER -> {
+                return JP_INTEGER;
+            }
+            case CONDITION_LONG -> {
+                return JP_LONG;
+            }
+            case CONDITION_SHORT -> {
+                return JP_SHORT;
+            }
+        }
+        String errMsg = String.format("Unknown primitive type: %s", conditionType.getTypeName());
+        throw new IllegalArgumentException(errMsg);
     }
 
-    public static List<String> getConditionValues() {
-        List<String> conditionList =  Arrays
+    /**
+     * Converts a JavaParser primitive type to a JDoctor primitive type.
+     *
+     * @param conditionType the JavaParser primitive type.
+     * @return the corresponding JDoctor primitive type.
+     */
+    public static ConditionPrimitiveType jpToJDoctor(ConditionPrimitiveType conditionType) {
+        switch (conditionType) {
+            case JP_BOOLEAN -> {
+                return CONDITION_BOOLEAN;
+            }
+            case JP_BYTE -> {
+                return CONDITION_BYTE;
+            }
+            case JP_CHAR -> {
+                return CONDITION_CHAR;
+            }
+            case JP_DOUBLE -> {
+                return CONDITION_DOUBLE;
+            }
+            case JP_FLOAT -> {
+                return CONDITION_FLOAT;
+            }
+            case JP_INTEGER -> {
+                return CONDITION_INTEGER;
+            }
+            case JP_LONG -> {
+                return CONDITION_LONG;
+            }
+            case JP_SHORT -> {
+                return CONDITION_SHORT;
+            }
+        }
+        String errMsg = String.format("Unknown primitive type: %s", conditionType.getTypeName());
+        throw new IllegalArgumentException(errMsg);
+    }
+
+    /**
+     * Gets all JDoctor types as a list of Strings.
+     */
+    private static List<String> collectAllJDoctorPrimitiveTypeNames() {
+        return Arrays
                 .stream(ConditionPrimitiveType.values())
                 .filter(c -> c.name().startsWith("CONDITION"))
-                .map(c -> c.getValue())
+                .map(ConditionPrimitiveType::getTypeName)
                 .collect(Collectors.toList());
-        return conditionList;
     }
 
-    public static List<String> getJPValues() {
-        List<String> jpList =  Arrays
+    /**
+     * Gets all JavaParser types as a list of Strings.
+     */
+    private static List<String> collectAllJPPrimitiveTypeNames() {
+        return Arrays
                 .stream(ConditionPrimitiveType.values())
                 .filter(c -> c.name().startsWith("JP"))
-                .map(c -> c.getValue())
+                .map(ConditionPrimitiveType::getTypeName)
                 .collect(Collectors.toList());
-        return jpList;
     }
 
-    public String getValue() {
+    /**
+     * @return a list of all possible JDoctor primitive types.
+     */
+    public static List<String> getAllJDoctorPrimitiveTypeNames() {
+        return allJDoctorPrimitiveTypes;
+    }
+
+    /**
+     * @return a list of all possible JavaParser primitive types.
+     */
+    public static List<String> getAllJPPrimitiveTypeNames() {
+        return allJPPrimitiveTypes;
+    }
+
+    /**
+     * @return a regex representation of all possible JDoctor primitive types.
+     * Used to find JDoctor types in an arbitrary string.
+     */
+    public static String getJDoctorValuesRegex() {
+        return "[" + String.join("", allJDoctorPrimitiveTypes) + "]";
+    }
+
+    /**
+     * @return a regex representation of all possible JavaParser primitive
+     * types.
+     */
+    public static String getJPValuesRegex() {
+        return "[" + String.join("", allJPPrimitiveTypes) + "]";
+    }
+
+    /**
+     * @return the corresponding JDoctor or JavaParser type name (e.g. "Z", "boolean", "D", "double).
+     */
+    public String getTypeName() {
         return this.type;
-    }
-
-    public static ConditionPrimitiveType jp2condition(ConditionPrimitiveType conditionType) {
-        switch (conditionType) {
-            case JP_BOOLEAN:
-                return CONDITION_BOOLEAN;
-            case JP_BYTE:
-                return CONDITION_BYTE;
-            case JP_CHAR:
-                return CONDITION_CHAR;
-            case JP_DOUBLE:
-                return CONDITION_DOUBLE;
-            case JP_FLOAT:
-                return CONDITION_FLOAT;
-            case JP_INTEGER:
-                return CONDITION_INTEGER;
-            case JP_LONG:
-                return CONDITION_LONG;
-            case JP_SHORT:
-                return CONDITION_SHORT;
-        }
-        String errMsg = String.format("Unknown primitive type: %s", conditionType.getValue());
-        throw new IllegalArgumentException(errMsg);
     }
 }
