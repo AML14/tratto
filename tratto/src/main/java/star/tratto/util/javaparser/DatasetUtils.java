@@ -25,7 +25,6 @@ import star.tratto.exceptions.JPClassNotFoundException;
 import star.tratto.exceptions.PackageDeclarationNotFoundException;
 import star.tratto.exceptions.ResolvedTypeNotFound;
 import star.tratto.identifiers.JPCallableType;
-import star.tratto.identifiers.JavadocFormat;
 import star.tratto.identifiers.file.FileFormat;
 import star.tratto.identifiers.file.FileName;
 import star.tratto.identifiers.path.Path;
@@ -97,9 +96,9 @@ public class DatasetUtils {
             String content = matcher.group(1);
             // change prefix/suffix depending on the type of the member.
             if (jpBody instanceof TypeDeclaration<?>) {
-                return JavadocFormat.CLASS_PREFIX.getValue() + content + JavadocFormat.CLASS_SUFFIX.getValue();
+                return "/**" + content + "*/";
             } else {
-                return JavadocFormat.METHOD_PREFIX.getValue() + content + JavadocFormat.METHOD_SUFFIX.getValue();
+                return "    /**" + content + "*/";
             }
         }
         return "";
@@ -116,7 +115,7 @@ public class DatasetUtils {
     ) {
         Optional<JavadocComment> optionalJavadocComment = jpClass.getJavadocComment();
         if (optionalJavadocComment.isEmpty()) return getJavadocByPattern(jpClass);
-        return JavadocFormat.CLASS_PREFIX.getValue() + optionalJavadocComment.get().getContent() + JavadocFormat.CLASS_SUFFIX.getValue();
+        return "/**" + optionalJavadocComment.get().getContent() + "*/";
     }
 
     /**
@@ -130,7 +129,7 @@ public class DatasetUtils {
     ) {
         Optional<JavadocComment> optionalJavadocComment = jpCallable.getJavadocComment();
         if (optionalJavadocComment.isEmpty()) return getJavadocByPattern(jpCallable);
-        return JavadocFormat.METHOD_PREFIX.getValue() + optionalJavadocComment.get().getContent() + JavadocFormat.METHOD_SUFFIX.getValue();
+        return "    /**" + optionalJavadocComment.get().getContent() + "*/";
     }
 
     /**
