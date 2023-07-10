@@ -44,15 +44,9 @@ public class Tratto {
 
     public static void main(String[] args) throws IOException {
         logger.info("Starting Tratto...");
-
         logger.info("Starting up ML models local server...");
         // TODO: Start up ML models local server
-
         logger.info("Generating oracles for: \n\tClass: {}\n\tProject source: {}\n\tProject JAR: {}", CLASS_PATH, PROJECT_SOURCE_PATH, PROJECT_JAR_PATH);
-
-        // Set up token datapoints file
-        File tokenDatapointsFile = new File(TOKEN_DATAPOINTS_PATH);
-        FileOutputStream tokenDatapointsOutputStream = new FileOutputStream(tokenDatapointsFile);
 
         // Configure JavaParser to resolve symbols from project under test
         JavaParserUtils.updateSymbolSolver(PROJECT_JAR_PATH);
@@ -79,9 +73,9 @@ public class Tratto {
             while (!oracleDatapoint.getOracle().endsWith(";")) {
                 // Generate token datapoints and save to file
                 List<TokenDatapoint> tokenDatapoints = oracleSoFarAndTokenToTokenDatapoints(oracleDatapoint, oracleSoFarTokens, tokenClassesSoFar, "", TokenDPType.TOKEN);
-                tokenDatapointsOutputStream.close();
-                tokenDatapointsOutputStream = new FileOutputStream(tokenDatapointsFile);
+                FileOutputStream tokenDatapointsOutputStream = new FileOutputStream(TOKEN_DATAPOINTS_PATH);
                 tokenDatapointsOutputStream.write(objectMapper.writeValueAsBytes(tokenDatapoints));
+                tokenDatapointsOutputStream.close();
 
                 Pair<String, String> nextTokenValueClass = getNextTokenValueClass(); // HTTP call to ML-model API to get next token and class
 
@@ -99,11 +93,8 @@ public class Tratto {
         File oracleDatapointsFile = new File(ORACLE_DATAPOINTS_PATH);
         FileOutputStream oracleDatapointsOutputStream = new FileOutputStream(oracleDatapointsFile);
         oracleDatapointsOutputStream.write(objectMapper.writeValueAsBytes(oracleDatapoints));
-
-        // Delete last token datapoints file and close output streams
-        tokenDatapointsFile.delete();
         oracleDatapointsOutputStream.close();
-        tokenDatapointsOutputStream.close();
+        new File(TOKEN_DATAPOINTS_PATH).delete();
 
         logger.info("Finished generating oracles for: \n\tClass: {}\n\tProject source: {}\n\tProject JAR: {}", CLASS_PATH, PROJECT_SOURCE_PATH, PROJECT_JAR_PATH);
     }
