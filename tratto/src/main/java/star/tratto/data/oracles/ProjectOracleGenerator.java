@@ -125,7 +125,7 @@ public class ProjectOracleGenerator {
      * @param targetOracleType target oracle type (e.g. pre-condition)
      * @param targetTag target JDoctor tag
      * @return source code tag with the greatest similarity to targetTag
-     */g
+     */
     private Sextet<String, TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String> findMaximumSimilarityTag(
             List<Sextet<String, TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> tagList,
             TypeDeclaration<?> targetClass,
