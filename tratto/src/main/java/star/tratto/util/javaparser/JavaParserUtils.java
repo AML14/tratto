@@ -81,11 +81,11 @@ public class JavaParserUtils {
      * "ResolvedMethodDeclaration".
      *
      * @param jpClass the declaring class
-     * @param jpCallable the method in which the type is used.
-     * @param methodArgs the arguments of the method.
-     * @param expression a Java expression (e.g. "jpClass.getMethods()").
-     * @return the resolved type of the expression.
-     * @throws ResolvedTypeNotFound if the type is not found.
+     * @param jpCallable the method in which the type is used
+     * @param methodArgs the arguments of the method
+     * @param expression a Java expression (e.g. "jpClass.getMethods()")
+     * @return the resolved type of the expression
+     * @throws ResolvedTypeNotFound if the type is not found
      */
     public static ResolvedType getResolvedTypeOfExpression(
             TypeDeclaration<?> jpClass,
@@ -476,7 +476,7 @@ public class JavaParserUtils {
     }
 
     /**
-     * @return a "java.lang.Object" type.
+     * @return a "java.lang.Object" type
      */
     public static ResolvedType getGenericType() {
         return javaParser.parse(SYNTHETIC_CLASS_SOURCE).getResult().get()
@@ -617,7 +617,7 @@ public class JavaParserUtils {
     /**
      * Returns the signature of a JavaParser method declaration.
      *
-     * @param methodDeclaration a JavaParser method declaration.
+     * @param methodDeclaration a JavaParser method declaration
      * @return a string representation of the signature. Signature follows the
      * format:
      *  "[modifiers] [type] [methodName]([parameters]) throws [exceptions]"
@@ -716,11 +716,11 @@ public class JavaParserUtils {
     /**
      * Gets the JavaParser package declaration of a given compilation unit.
      *
-     * @param cu a compilation unit.
+     * @param cu a compilation unit
      * @return the JavaParser package declaration {@link PackageDeclaration}
-     * of the compilation unit.
+     * of the compilation unit
      * @throws PackageDeclarationNotFoundException if the JavaParser package
-     * declaration {@link PackageDeclaration} cannot be found or is unnamed.
+     * declaration {@link PackageDeclaration} cannot be found or is unnamed
      */
     public static PackageDeclaration getPackageDeclarationFromCompilationUnit(
             CompilationUnit cu
@@ -751,7 +751,7 @@ public class JavaParserUtils {
     }
 
     /**
-     * @param resolvedType a JavaParser resolved type.
+     * @param resolvedType a JavaParser resolved type
      * @return true iff a given type is generic. If the given type is an
      * array, then the method tests the base component type.
      */
@@ -765,10 +765,10 @@ public class JavaParserUtils {
     /**
      * Returns true iff a given type name represents a generic type.
      *
-     * @param jpTypeName the name of a type.
-     * @param jpCallable the method using the given type {@code jpTypeName}.
-     * @param jpClass the declaring class of the method {@code jpCallable}.
-     * @return true iff a given type is generic. Ignores any wrapped arrays.
+     * @param jpTypeName the name of a type
+     * @param jpCallable the method using the given type {@code jpTypeName}
+     * @param jpClass the declaring class of the method {@code jpCallable}
+     * @return true iff a given type is generic. Ignores any wrapped arrays
      */
     public static boolean isGenericType(
             String jpTypeName,

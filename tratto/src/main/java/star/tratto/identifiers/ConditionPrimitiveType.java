@@ -41,9 +41,9 @@ public enum ConditionPrimitiveType {
      * Converts a String name of a primitive type to a ConditionPrimitiveType
      * enum. Given name may use either JavaParser or JDoctor format.
      *
-     * @param parameter a name of a parameter (e.g. "Z", "boolean", "D", "double").
+     * @param parameter a name of a parameter (e.g. "Z", "boolean", "D", "double")
      * @return the ConditionPrimitiveType whose value corresponds to the given
-     * parameter name.
+     * parameter name
      */
     public static ConditionPrimitiveType convertTypeNameToConditionPrimitiveType(String parameter) {
         switch (parameter) {
@@ -103,8 +103,8 @@ public enum ConditionPrimitiveType {
     /**
      * Converts a JDoctor primitive type to a JavaParser primitive type.
      *
-     * @param conditionType the JDoctor primitive type.
-     * @return the corresponding JavaParser primitive type.
+     * @param conditionType the JDoctor primitive type
+     * @return the corresponding JavaParser primitive type
      */
     public static ConditionPrimitiveType jDoctorToJP(ConditionPrimitiveType conditionType) {
         switch (conditionType) {
@@ -140,8 +140,8 @@ public enum ConditionPrimitiveType {
     /**
      * Converts a JavaParser primitive type to a JDoctor primitive type.
      *
-     * @param conditionType the JavaParser primitive type.
-     * @return the corresponding JDoctor primitive type.
+     * @param conditionType the JavaParser primitive type
+     * @return the corresponding JDoctor primitive type
      */
     public static ConditionPrimitiveType jpToJDoctor(ConditionPrimitiveType conditionType) {
         switch (conditionType) {
@@ -197,14 +197,14 @@ public enum ConditionPrimitiveType {
     }
 
     /**
-     * @return a list of all possible JDoctor primitive types.
+     * @return a list of all possible JDoctor primitive types
      */
     public static List<String> getAllJDoctorPrimitiveTypeNames() {
         return allJDoctorPrimitiveTypes;
     }
 
     /**
-     * @return a list of all possible JavaParser primitive types.
+     * @return a list of all possible JavaParser primitive types
      */
     public static List<String> getAllJPPrimitiveTypeNames() {
         return allJPPrimitiveTypes;
@@ -220,14 +220,15 @@ public enum ConditionPrimitiveType {
 
     /**
      * @return a regex representation of all possible JavaParser primitive
-     * types.
+     * types
      */
     public static String getJPValuesRegex() {
         return "[" + String.join("", allJPPrimitiveTypes) + "]";
     }
 
     /**
-     * @return the corresponding JDoctor or JavaParser type name (e.g. "Z", "boolean", "D", "double).
+     * @return the corresponding JDoctor or JavaParser type name
+     * (e.g. "Z", "boolean", "D", "double)
      */
     public String getTypeName() {
         return this.type;
