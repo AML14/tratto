@@ -1,10 +1,21 @@
 package star.tratto.util.javaparser;
 
 import com.github.javaparser.JavaParser;
-import com.github.javaparser.ast.*;
-import com.github.javaparser.ast.body.*;
-import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
+import com.github.javaparser.ast.AccessSpecifier;
+import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.Node;
+import com.github.javaparser.ast.NodeList;
+import com.github.javaparser.ast.PackageDeclaration;
+import com.github.javaparser.ast.body.BodyDeclaration;
+import com.github.javaparser.ast.body.CallableDeclaration;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.body.ConstructorDeclaration;
+import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.Parameter;
+import com.github.javaparser.ast.body.TypeDeclaration;
+import com.github.javaparser.ast.body.VariableDeclarator;
+import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.type.TypeParameter;
 import com.github.javaparser.resolution.MethodUsage;
@@ -15,6 +26,7 @@ import com.github.javaparser.resolution.declarations.ResolvedReferenceTypeDeclar
 import com.github.javaparser.resolution.declarations.ResolvedTypeParameterDeclaration;
 import com.github.javaparser.resolution.types.ResolvedType;
 import com.github.javaparser.symbolsolver.javaparsermodel.declarations.JavaParserMethodDeclaration;
+import com.github.javaparser.symbolsolver.reflectionmodel.ReflectionMethodDeclaration;
 import com.github.javaparser.symbolsolver.utils.SymbolSolverCollectionStrategy;
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
@@ -64,15 +76,16 @@ public class JavaParserUtils {
     }
 
     /**
-     * Gets the type of a given expression. For example:
-     *  "jpClass.getMethods().get(0)" => MethodDeclaration
+     * Gets the type of the given java expression. For example, given the
+     * expression "jpClass.getMethods().get(0)", this method outputs,
+     * "ResolvedMethodDeclaration".
      *
      * @param jpClass the declaring class
-     * @param jpCallable a method
-     * @param methodArgs the arguments of the method
+     * @param jpCallable the method in which the type is used.
+     * @param methodArgs the arguments of the method.
      * @param expression a Java expression (e.g. "jpClass.getMethods()").
-     * @return the type of the expression
-     * @throws ResolvedTypeNotFound if the type is not found
+     * @return the resolved type of the expression.
+     * @throws ResolvedTypeNotFound if the type is not found.
      */
     public static ResolvedType getResolvedTypeOfExpression(
             TypeDeclaration<?> jpClass,
@@ -112,7 +125,7 @@ public class JavaParserUtils {
             }
         }
         throw new ResolvedTypeNotFound(String.format(
-                "ResolvedType of expression %s of class %s and method %s not found",
+                "ResolvedType of expression %s of class %s and method %s not found.",
                 expression,
                 jpClass.getNameAsString(),
                 jpCallable.getNameAsString()
@@ -463,7 +476,7 @@ public class JavaParserUtils {
     }
 
     /**
-     * @return a generic "java.lang.Object" type
+     * @return a "java.lang.Object" type.
      */
     public static ResolvedType getGenericType() {
         return javaParser.parse(SYNTHETIC_CLASS_SOURCE).getResult().get()
@@ -533,16 +546,17 @@ public class JavaParserUtils {
      *
      * @param field the JP field declaration
      * @param variable the JP variable declaration
-     * @return a string representation of the signature of {@code variable}
+     * @return a string representation of the signature of {@code variable}.
+     * Signature follows the format:
+     *  "(modifiers) (type) (name)( = initial value);"
      */
     public static String getVariableSignature(FieldDeclaration field, VariableDeclarator variable) {
         String signature = "";
-        signature += field.getAccessSpecifier().asString();
-        signature += field.isStatic() ? " static " : " ";
-        signature += field.isFinal() ? "final " : "";
-        signature += String.format("%s ", variable.getTypeAsString());
-        signature += String.format("%s", variable.getNameAsString());
-        signature += variable.getInitializer().isPresent() ? String.format(" = %s;", variable.getInitializer().get()) : ";";
+        signature += String.join("", field.getModifiers().stream().map(Node::toString).toList());
+        signature += variable.getTypeAsString() + " ";
+        signature += variable.getNameAsString();
+        signature += variable.getInitializer().isPresent() ? " = " + variable.getInitializer().get() : "";
+        signature += ";";
         return signature.trim();
     }
 
@@ -550,7 +564,9 @@ public class JavaParserUtils {
      * Returns the signature of a JavaParser resolved field declaration.
      *
      * @param resolvedField a resolved field declaration
-     * @return a string representation of the signature of {@code resolvedField}
+     * @return a string representation of the signature of {@code resolvedField}.
+     * Signature follows the format:
+     *  "(access-specifier) (static) (type) (name);"
      */
     public static String getFieldSignature(
             ResolvedFieldDeclaration resolvedField
@@ -569,7 +585,9 @@ public class JavaParserUtils {
      *
      * @param jpCallable a JavaParser callable declaration
      * @param jpCallableType the type of declaration (e.g. method or constructor)
-     * @return a string representation of the signature
+     * @return a string representation of the signature. Signature follows the
+     * format:
+     *  "[modifiers] [type] [methodName]([parameters]) throws [exceptions]"
      */
     public static String getCallableSignature(
             CallableDeclaration<?> jpCallable,
@@ -596,6 +614,14 @@ public class JavaParserUtils {
         return getClassOrInterface(javaParser.parse(classSourceCode).getResult().get(), name);
     }
 
+    /**
+     * Returns the signature of a JavaParser method declaration.
+     *
+     * @param methodDeclaration a JavaParser method declaration.
+     * @return a string representation of the signature. Signature follows the
+     * format:
+     *  "[modifiers] [type] [methodName]([parameters]) throws [exceptions]"
+     */
     public static String getMethodSignature(MethodDeclaration methodDeclaration) {
         String method = methodDeclaration.toString();
         if (methodDeclaration.getBody().isPresent()) { // Remove body
@@ -621,7 +647,7 @@ public class JavaParserUtils {
     }
 
     /**
-     * Get all parameters in the method arguments.
+     * Get all formal parameters in the method arguments.
      */
     private static List<String> getMethodUsageParameters(MethodUsage methodUsage) {
         ResolvedMethodDeclaration methodDeclaration = methodUsage.getDeclaration();
@@ -653,15 +679,15 @@ public class JavaParserUtils {
      *     <li>We lose parameter names, which are replaced by "arg0", "arg1", etc.</li>
      * </ul>
      * We consider three types of ResolvedMethodDeclaration's: JavaParserMethodDeclaration,
-     * ReflectionMethodDeclaration, and JavassistMethodDeclaration.
+     * ReflectionMethodDeclaration, and JavassistMethodDeclaration. A signature follows the format:
+     *  "[modifiers] [type] [methodName]([parameters]) throws [exceptions]"
      */
     public static String getMethodSignature(
             MethodUsage methodUsage
     ) {
         ResolvedMethodDeclaration methodDeclaration = methodUsage.getDeclaration();
         // Consider JavaParserMethodDeclaration.
-        if (methodDeclaration.toString().startsWith("JavaParserMethodDeclaration")) {
-            JavaParserMethodDeclaration jpMethodDeclaration = (JavaParserMethodDeclaration) methodDeclaration;
+        if (methodDeclaration instanceof JavaParserMethodDeclaration jpMethodDeclaration) {
             MethodDeclaration jpMethod = jpMethodDeclaration.getWrappedNode();
             return getMethodSignature(jpMethod);
         }
@@ -670,30 +696,31 @@ public class JavaParserUtils {
         if (!matcher.find()) {
             throw new IllegalStateException("Could not parse method signature: " + methodDeclaration);
         }
-        String methodModifiers = methodDeclaration.toString().startsWith("ReflectionMethodDeclaration") ? matcher.group(1) : matcher.group(2);
+        String methodModifiers = methodDeclaration instanceof ReflectionMethodDeclaration ? matcher.group(1) : matcher.group(2);
         // Take into account the case in which the method declaration refers to a method without an access specifier.
         if (methodModifiers == null) {
-            assert methodDeclaration.toString().startsWith("ReflectionMethodDeclaration");
+            assert methodDeclaration instanceof ReflectionMethodDeclaration;
             methodModifiers = "";
         }
         List<String> typeParameterList = getMethodUsageTypeParameters(methodUsage);
-        List<String> parameterList = getMethodUsageParameters(methodUsage);
+        List<String> formalParameterList = getMethodUsageParameters(methodUsage);
         List<String> exceptionList = getMethodUsageExceptions(methodUsage);
         return (methodModifiers + " " + (typeParameterList.isEmpty() ? "" : "<" + String.join(", ", typeParameterList) + ">") +
                 " " + getTypeWithoutPackages(methodDeclaration.getReturnType()) +
                 " " + methodDeclaration.getName() +
-                "(" + String.join(", ", parameterList) + ")" +
+                "(" + String.join(", ", formalParameterList) + ")" +
                 (exceptionList.isEmpty() ? "" : " throws " + String.join(", ", exceptionList)))
                 .replaceAll(" +", " ").trim();
     }
 
     /**
-     * Gets the package of a given compilation unit.
+     * Gets the JavaParser package declaration of a given compilation unit.
      *
-     * @param cu a compilation unit
-     * @return the package of the compilation unit
-     * @throws PackageDeclarationNotFoundException if the package declaration
-     * cannot be found
+     * @param cu a compilation unit.
+     * @return the JavaParser package declaration {@link PackageDeclaration}
+     * of the compilation unit.
+     * @throws PackageDeclarationNotFoundException if the JavaParser package
+     * declaration {@link PackageDeclaration} cannot be found or is unnamed.
      */
     public static PackageDeclaration getPackageDeclarationFromCompilationUnit(
             CompilationUnit cu
@@ -708,8 +735,9 @@ public class JavaParserUtils {
     }
 
     /**
-     * Returns the base element type of a resolved type.
-     * Recursively strips all array variables. For example:
+     * Returns the base component type of the resolved type
+     * {@code resolvedType}. Recursively strips all array variables.
+     * For example:
      *  Object[][] => Object
      *
      * @param resolvedType a type
@@ -723,8 +751,9 @@ public class JavaParserUtils {
     }
 
     /**
-     * @param resolvedType a JavaParser resolved type
-     * @return true iff a given type is generic. Ignores any wrapped arrays.
+     * @param resolvedType a JavaParser resolved type.
+     * @return true iff a given type is generic. If the given type is an
+     * array, then the method tests the base component type.
      */
     public static boolean isGenericType(
             ResolvedType resolvedType
@@ -736,9 +765,9 @@ public class JavaParserUtils {
     /**
      * Returns true iff a given type name represents a generic type.
      *
-     * @param jpTypeName the name of a type
-     * @param jpCallable a method
-     * @param jpClass the declaring class
+     * @param jpTypeName the name of a type.
+     * @param jpCallable the method using the given type {@code jpTypeName}.
+     * @param jpClass the declaring class of the method {@code jpCallable}.
      * @return true iff a given type is generic. Ignores any wrapped arrays.
      */
     public static boolean isGenericType(
@@ -762,7 +791,8 @@ public class JavaParserUtils {
     }
 
     /**
-     * Get all methods available to a given class (including superclasses).
+     * Get all methods available to a given class (including those defined in
+     * superclasses).
      *
      * @param jpClass object class
      * @return list of MethodUsage objects
@@ -775,16 +805,17 @@ public class JavaParserUtils {
             return new ArrayList<>(jpClass.resolve().getAllMethods());
         } catch (UnsolvedSymbolException | IllegalArgumentException e) {
             String errMsg = String.format(
-                    "Impossible to get all the methods of class %s.",
-                    jpClass.getNameAsString()
+                    "Impossible to get all the methods of class %s.\n%s.",
+                    jpClass.getNameAsString(), e
             );
-            System.err.printf(errMsg);
+            logger.error(errMsg);
             throw new JPClassNotFoundException(errMsg);
         }
     }
 
     /**
-     * Get all fields available to a given class (including superclasses).
+     * Get all fields available to a given class (including those defined in
+     * superclasses).
      *
      * @param jpClass object class
      * @return list of ResolvedFieldDeclaration objects
@@ -797,10 +828,10 @@ public class JavaParserUtils {
             return jpClass.resolve().getAllFields();
         } catch (UnsolvedSymbolException | IllegalArgumentException e) {
             String errMsg = String.format(
-                    "Impossible to get all the methods of class %s.",
-                    jpClass.getNameAsString()
+                    "Impossible to get all the methods of class %s.\n%s.",
+                    jpClass.getNameAsString(), e
             );
-            System.err.printf(errMsg);
+            logger.error(errMsg);
             throw new JPClassNotFoundException(errMsg);
         }
     }
