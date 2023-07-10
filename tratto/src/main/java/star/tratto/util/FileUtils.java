@@ -53,7 +53,7 @@ public class FileUtils {
                     logger.error(errMsg);
                 }
             }
-        } catch (IOException | FolderCreationFailedException | FileNotCreatedException e) {
+        } catch (IOException | FolderCreationFailedException e) {
             e.printStackTrace();
         }
     }
