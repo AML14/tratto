@@ -1,6 +1,6 @@
 package star.tratto.util.javaparser;
 
-import star.tratto.identifiers.JDoctorConditionPrimitiveType;
+import star.tratto.identifiers.CommonPrimitiveType;
 
 import com.github.javaparser.ast.body.CallableDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
@@ -55,7 +55,7 @@ public class JDoctorUtils {
     }
 
     public static String convertConditionParameterType(String conditionParameterType) {
-        List<String> primitiveConditionsValues = JDoctorConditionPrimitiveType.getConditionValues();
+        List<String> primitiveConditionsValues = CommonPrimitiveType.getConditionValues();
         conditionParameterType = removeSpuriousCharacters(conditionParameterType);
         if (primitiveConditionsValues.contains(conditionParameterType.replaceAll("[^a-zA-Z]+", ""))) {
             conditionParameterType = convertToPrimitiveType(conditionParameterType);
@@ -68,9 +68,9 @@ public class JDoctorUtils {
     }
 
     public static String convertToPrimitiveType(String primitiveType) {
-        List<String> primitiveConditionsValues = JDoctorConditionPrimitiveType.getConditionValues();
+        List<String> primitiveConditionsValues = CommonPrimitiveType.getConditionValues();
         if (primitiveConditionsValues.contains(primitiveType.replaceAll("[^a-zA-Z]+", ""))) {
-            String conditionPrimitiveRegex = JDoctorConditionPrimitiveType.getConditionRegexValues();
+            String conditionPrimitiveRegex = CommonPrimitiveType.getConditionRegexValues();
             String regex = String.format(
                     "[^A-Za-z0-9_]*(%s)[^A-Za-z0-9_]*",
                     conditionPrimitiveRegex
@@ -81,8 +81,8 @@ public class JDoctorUtils {
 
             if (matcher.find()) {
                 String extractedPrimitiveType = matcher.group(1);
-                JDoctorConditionPrimitiveType conditionParamEnum = JDoctorConditionPrimitiveType.convertValue(extractedPrimitiveType);
-                JDoctorConditionPrimitiveType conditionParamConverted = JDoctorConditionPrimitiveType.condition2jp(conditionParamEnum);
+                CommonPrimitiveType conditionParamEnum = CommonPrimitiveType.convertValue(extractedPrimitiveType);
+                CommonPrimitiveType conditionParamConverted = CommonPrimitiveType.condition2jp(conditionParamEnum);
                 return primitiveType.replaceAll(conditionPrimitiveRegex, conditionParamConverted.getValue());
             } else {
                 String errMsg = String.format(

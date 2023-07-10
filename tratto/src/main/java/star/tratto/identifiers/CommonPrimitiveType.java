@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public enum JDoctorConditionPrimitiveType {
+public enum CommonPrimitiveType {
     CONDITION_BOOLEAN("Z"),
     CONDITION_BYTE("B"),
     CONDITION_CHAR("C"),
@@ -25,11 +25,11 @@ public enum JDoctorConditionPrimitiveType {
 
     private final String type;
 
-    private JDoctorConditionPrimitiveType(String name) {
+    private CommonPrimitiveType(String name) {
         this.type = name;
     }
 
-    public static JDoctorConditionPrimitiveType condition2jp(JDoctorConditionPrimitiveType conditionType) {
+    public static CommonPrimitiveType condition2jp(CommonPrimitiveType conditionType) {
         switch (conditionType) {
             case CONDITION_BOOLEAN:
                 return JP_BOOLEAN;
@@ -52,7 +52,7 @@ public enum JDoctorConditionPrimitiveType {
         throw new IllegalArgumentException(errMsg);
     }
 
-    public static JDoctorConditionPrimitiveType convertValue(String parameter) {
+    public static CommonPrimitiveType convertValue(String parameter) {
         switch (parameter) {
             case "Z":
                 return CONDITION_BOOLEAN;
@@ -99,7 +99,7 @@ public enum JDoctorConditionPrimitiveType {
 
     public static List<String> getConditionValues() {
         List<String> conditionList =  Arrays
-                .stream(JDoctorConditionPrimitiveType.values())
+                .stream(CommonPrimitiveType.values())
                 .filter(c -> c.name().startsWith("CONDITION"))
                 .map(c -> c.getValue())
                 .collect(Collectors.toList());
@@ -108,7 +108,7 @@ public enum JDoctorConditionPrimitiveType {
 
     public static List<String> getJPValues() {
         List<String> jpList =  Arrays
-                .stream(JDoctorConditionPrimitiveType.values())
+                .stream(CommonPrimitiveType.values())
                 .filter(c -> c.name().startsWith("JP"))
                 .map(c -> c.getValue())
                 .collect(Collectors.toList());
@@ -119,7 +119,7 @@ public enum JDoctorConditionPrimitiveType {
         return this.type;
     }
 
-    public static JDoctorConditionPrimitiveType jp2condition(JDoctorConditionPrimitiveType conditionType) {
+    public static CommonPrimitiveType jp2condition(CommonPrimitiveType conditionType) {
         switch (conditionType) {
             case JP_BOOLEAN:
                 return CONDITION_BOOLEAN;
