@@ -1,7 +1,5 @@
 package star.tratto.util.javaparser;
 
-import star.tratto.identifiers.ConditionPrimitiveType;
-import star.tratto.identifiers.JPType;
 import star.tratto.identifiers.CommonPrimitiveType;
 
 import com.github.javaparser.ast.body.CallableDeclaration;
