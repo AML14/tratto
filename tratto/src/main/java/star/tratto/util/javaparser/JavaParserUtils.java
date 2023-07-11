@@ -36,7 +36,6 @@ import star.tratto.data.OracleDatapoint;
 import star.tratto.exceptions.JPClassNotFoundException;
 import star.tratto.exceptions.PackageDeclarationNotFoundException;
 import star.tratto.exceptions.ResolvedTypeNotFound;
-import star.tratto.identifiers.JPCallableType;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.util.JavaTypes;
 
@@ -611,17 +610,15 @@ public class JavaParserUtils {
      * Returns the signature of a JavaParser callable declaration.
      *
      * @param jpCallable a JavaParser callable declaration
-     * @param jpCallableType the type of declaration (e.g. method or constructor)
      * @return a string representation of the signature. Signature follows the
      * format:
      *  "[modifiers] [type] [methodName]([parameters]) throws [exceptions]"
      */
     public static String getCallableSignature(
-            CallableDeclaration<?> jpCallable,
-            JPCallableType jpCallableType
+            CallableDeclaration<?> jpCallable
     ) {
         String methodSignature = jpCallable.toString();
-        Optional<BlockStmt> methodBody = jpCallableType.equals(JPCallableType.METHOD) ?
+        Optional<BlockStmt> methodBody = jpCallable instanceof MethodDeclaration ?
                 ((MethodDeclaration) jpCallable).getBody() :
                 Optional.ofNullable(((ConstructorDeclaration) jpCallable).getBody());
         if (methodBody.isPresent()) {
