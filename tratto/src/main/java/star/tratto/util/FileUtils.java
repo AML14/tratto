@@ -9,7 +9,11 @@ import star.tratto.exceptions.FolderCreationFailedException;
 import star.tratto.identifiers.FileFormat;
 import star.tratto.identifiers.FileName;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +53,7 @@ public class FileUtils {
                     objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, content);
                 }
                 default -> {
-                    String errMsg = String.format("File format %s not yet supported to save the content of a file.", fileFormat.getValue());
+                    String errMsg = String.format("File format %s not yet supported to save the content of a file.", fileFormat.getExtension());
                     logger.error(errMsg);
                 }
             }
@@ -65,7 +69,7 @@ public class FileUtils {
             String projectName,
             String content
     ) {
-        String filePath = Paths.get(dirPath, projectName, fileName + fileFormat.getValue()).toString();
+        String filePath = Paths.get(dirPath, projectName, fileName + fileFormat.getExtension()).toString();
         File file = new File(filePath);
         boolean found = false;
         if (file.exists()) {
@@ -103,7 +107,7 @@ public class FileUtils {
      * @throws IOException if the file cannot be created
      */
     public static File createFile(String dirPath, String fileName, FileFormat fileFormat) throws FolderCreationFailedException, IOException, FileNotCreatedException {
-        String filePath = Paths.get(dirPath, fileName + fileFormat.getValue()).toString();
+        String filePath = Paths.get(dirPath, fileName + fileFormat.getExtension()).toString();
         File dir = new File(dirPath);
         File file = new File(filePath);
         // create directory.
@@ -155,7 +159,7 @@ public class FileUtils {
      * @return the complete path to a file
      */
     public static String getAbsolutePathToFile(String dirPath, FileName fileName, FileFormat fileFormat) {
-        return Paths.get(dirPath, fileName.getValue()) + fileFormat.getValue();
+        return Paths.get(dirPath, fileName.getValue()) + fileFormat.getExtension();
     }
 
     /**
