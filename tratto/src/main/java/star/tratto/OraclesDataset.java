@@ -6,9 +6,9 @@ import star.tratto.data.oracles.Project;
 import star.tratto.data.oracles.ProjectOracleGenerator;
 import star.tratto.data.oracles.json.parsers.JDoctorConditionParser;
 import star.tratto.data.oracles.json.parsers.ProjectParser;
-import star.tratto.identifiers.file.FileFormat;
-import star.tratto.identifiers.file.FileName;
-import star.tratto.identifiers.path.IOPath;
+import star.tratto.identifiers.FileFormat;
+import star.tratto.identifiers.FileName;
+import star.tratto.identifiers.IOPath;
 import star.tratto.util.FileUtils;
 import star.tratto.util.javaparser.DatasetUtils;
 

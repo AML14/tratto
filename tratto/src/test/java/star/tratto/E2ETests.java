@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import star.tratto.data.OracleDP2TokenDPs;
 import star.tratto.data.TokenDPType;
-import star.tratto.identifiers.path.IOPath;
+import star.tratto.identifiers.IOPath;
 import star.tratto.token.TokenSuggesterTest;
 
 import java.io.File;

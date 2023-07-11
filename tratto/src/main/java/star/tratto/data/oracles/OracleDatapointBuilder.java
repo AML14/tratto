@@ -5,8 +5,9 @@ import org.javatuples.Quartet;
 import org.javatuples.Triplet;
 import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleType;
-import star.tratto.identifiers.path.IOPath;
-import star.tratto.identifiers.file.*;
+import star.tratto.identifiers.FileFormat;
+import star.tratto.identifiers.FileName;
+import star.tratto.identifiers.IOPath;
 import star.tratto.util.FileUtils;
 
 import java.util.ArrayList;

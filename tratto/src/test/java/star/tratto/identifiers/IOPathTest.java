@@ -1,7 +1,6 @@
 package star.tratto.identifiers;
 
 import org.junit.jupiter.api.Test;
-import star.tratto.identifiers.path.IOPath;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

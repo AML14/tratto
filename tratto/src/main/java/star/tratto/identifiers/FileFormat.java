@@ -1,4 +1,4 @@
-package star.tratto.identifiers.file;
+package star.tratto.identifiers;
 
 public enum FileFormat {
     JAVA(".java"),

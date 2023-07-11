@@ -3,9 +3,9 @@ package star.tratto.data.oracles.json.parsers;
 import org.junit.jupiter.api.Test;
 import star.tratto.data.oracles.JDoctorCondition;
 import star.tratto.data.oracles.Project;
-import star.tratto.identifiers.file.FileFormat;
-import star.tratto.identifiers.file.FileName;
-import star.tratto.identifiers.path.IOPath;
+import star.tratto.identifiers.FileFormat;
+import star.tratto.identifiers.FileName;
+import star.tratto.identifiers.IOPath;
 import star.tratto.util.FileUtils;
 
 import java.util.ArrayList;

@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import star.tratto.data.oracles.Project;
-import star.tratto.identifiers.path.IOPath;
+import star.tratto.identifiers.IOPath;
 
 import java.io.IOException;
 import java.nio.file.Paths;

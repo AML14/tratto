@@ -24,10 +24,9 @@ import star.tratto.data.oracles.JDoctorCondition.*;
 import star.tratto.exceptions.JPClassNotFoundException;
 import star.tratto.exceptions.PackageDeclarationNotFoundException;
 import star.tratto.exceptions.ResolvedTypeNotFound;
-import star.tratto.identifiers.JPCallableType;
-import star.tratto.identifiers.file.FileFormat;
-import star.tratto.identifiers.file.FileName;
-import star.tratto.identifiers.path.IOPath;
+import star.tratto.identifiers.FileFormat;
+import star.tratto.identifiers.FileName;
+import star.tratto.identifiers.IOPath;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.oraclegrammar.custom.Splitter;
 import star.tratto.util.FileUtils;
@@ -336,11 +335,10 @@ public class DatasetUtils {
     public static String getCallableSourceCode(
             CallableDeclaration<?> jpCallable
     ) {
-        JPCallableType jpCallableType = jpCallable.isConstructorDeclaration() ? JPCallableType.CONSTRUCTOR : JPCallableType.METHOD;
-        String jpSignature = JavaParserUtils.getCallableSignature(jpCallable, jpCallableType);
-        Optional<BlockStmt> jpBody = (jpCallableType == JPCallableType.CONSTRUCTOR) ?
-                Optional.ofNullable(((ConstructorDeclaration) jpCallable).getBody()) :
-                ((MethodDeclaration) jpCallable).getBody();
+        String jpSignature = JavaParserUtils.getCallableSignature(jpCallable);
+        Optional<BlockStmt> jpBody = jpCallable instanceof MethodDeclaration ?
+                ((MethodDeclaration) jpCallable).getBody() :
+                Optional.ofNullable(((ConstructorDeclaration) jpCallable).getBody());
         return jpSignature + (jpBody.isEmpty() ? ";" : jpBody.get().toString());
     }
 
