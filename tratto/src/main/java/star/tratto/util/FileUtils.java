@@ -54,7 +54,7 @@ public class FileUtils {
                     logger.error(errMsg);
                 }
             }
-        } catch (IOException | FolderCreationFailedException | FileNotCreatedException e) {
+        } catch (IOException | FolderCreationFailedException e) {
             e.printStackTrace();
         }
     }
@@ -94,14 +94,14 @@ public class FileUtils {
     }
 
     /**
-     * The method creates a file within a given directory.
+     * The method creates a file within a given directory. If the file already
+     * exists, then this method does nothing.
      *
      * @param dirPath the path to the directory where the file must be saved
      * @param fileName the name of the file where to write the content
      * @param fileFormat the format of the file
-     *
      * @return the file created
-     * @throws IOException If the file cannot be created
+     * @throws IOException if the file cannot be created
      */
     public static File createFile(String dirPath, String fileName, FileFormat fileFormat) throws FolderCreationFailedException, IOException, FileNotCreatedException {
         String filePath = Paths.get(dirPath, fileName + fileFormat.getValue()).toString();
@@ -129,16 +129,16 @@ public class FileUtils {
     }
 
     /**
-     * The method gets the list of all the files that exist within a given directory.
+     * Recursively gets a list of all java files in a given directory.
      *
      * @param dir the directory from which to extract all the files contained
      * @return the list of all the files existing within the given directory
      */
-    public static List<File> extractJavaFilesFromDirectory(File dir) {
+    public static List<File> getAllJavaFilesFromDirectory(File dir) {
         List<File> javaFileList = new ArrayList<>();
         for (File file: Objects.requireNonNull(dir.listFiles())) {
             if (file.isDirectory()) {
-                javaFileList.addAll(extractJavaFilesFromDirectory(file));
+                javaFileList.addAll(getAllJavaFilesFromDirectory(file));
             }
             if (isJavaFile(file)) {
                 javaFileList.add(file);
@@ -173,7 +173,6 @@ public class FileUtils {
     /**
      * The method reads a list from a JSON file.
      * @param filePath the path to the JSON file
-     *
      * @return the list of values read from the JSON file
      */
     public static List<?> readJSONList(String filePath) {

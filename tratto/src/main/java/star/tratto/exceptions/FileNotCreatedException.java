@@ -1,6 +1,8 @@
 package star.tratto.exceptions;
 
-public class FileNotCreatedException extends Exception {
+import java.io.IOException;
+
+public class FileNotCreatedException extends IOException {
     public FileNotCreatedException() {
         super();
     }
