@@ -24,6 +24,9 @@ import star.tratto.data.oracles.JDoctorCondition.*;
 import star.tratto.exceptions.JPClassNotFoundException;
 import star.tratto.exceptions.PackageDeclarationNotFoundException;
 import star.tratto.exceptions.ResolvedTypeNotFound;
+import star.tratto.identifiers.FileFormat;
+import star.tratto.identifiers.FileName;
+import star.tratto.identifiers.IOPath;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.oraclegrammar.custom.Splitter;
 import star.tratto.util.FileUtils;
@@ -332,11 +335,10 @@ public class DatasetUtils {
     public static String getCallableSourceCode(
             CallableDeclaration<?> jpCallable
     ) {
-        JPCallableType jpCallableType = jpCallable.isConstructorDeclaration() ? JPCallableType.CONSTRUCTOR : JPCallableType.METHOD;
-        String jpSignature = JavaParserUtils.getCallableSignature(jpCallable, jpCallableType);
-        Optional<BlockStmt> jpBody = (jpCallableType == JPCallableType.CONSTRUCTOR) ?
-                Optional.ofNullable(((ConstructorDeclaration) jpCallable).getBody()) :
-                ((MethodDeclaration) jpCallable).getBody();
+        String jpSignature = JavaParserUtils.getCallableSignature(jpCallable);
+        Optional<BlockStmt> jpBody = jpCallable instanceof MethodDeclaration ?
+                ((MethodDeclaration) jpCallable).getBody() :
+                Optional.ofNullable(((ConstructorDeclaration) jpCallable).getBody());
         return jpSignature + (jpBody.isEmpty() ? ";" : jpBody.get().toString());
     }
 
@@ -490,7 +492,7 @@ public class DatasetUtils {
         // Get list of files to ignore.
         String ignoreFilePath = Paths.get(
                 IOPath.REPOS.getValue(),
-                FileName.IGNORE_FILE.getValue() + FileFormat.JSON.getValue()
+                FileName.IGNORE_FILE.getValue() + FileFormat.JSON.getExtension()
         ).toString();
         List<String> ignoreFileList = FileUtils.readJSONList(ignoreFilePath)
                 .stream()
@@ -500,7 +502,7 @@ public class DatasetUtils {
         return allFiles
                 .stream()
                 .filter(file -> {
-                    String filename = file.getName().replace(FileFormat.JAVA.getValue(), "");
+                    String filename = file.getName().replace(FileFormat.JAVA.getExtension(), "");
                     return !ignoreFileList.contains(filename);
                 })
                 .toList();
@@ -664,7 +666,7 @@ public class DatasetUtils {
             // array type (see dataset/repose/arrayMethods.json).
             String arraysMethodJsonPath = Paths.get(
                     IOPath.REPOS.getValue(),
-                    FileName.ARRAY_METHODS.getValue() + FileFormat.JSON.getValue()
+                    FileName.ARRAY_METHODS.getValue() + FileFormat.JSON.getExtension()
             ).toString();
             List<List<String>> arrayMethods = FileUtils.readJSONList(arraysMethodJsonPath)
                     .stream()
@@ -1210,7 +1212,7 @@ public class DatasetUtils {
             String sourcePath
     ) {
         List<String> pathList = Arrays.asList(operation.getClassName().split("\\."));
-        return Paths.get(sourcePath, pathList.toArray(String[]::new)) + FileFormat.JAVA.getValue();
+        return Paths.get(sourcePath, pathList.toArray(String[]::new)) + FileFormat.JAVA.getExtension();
     }
 
     /**
