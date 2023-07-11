@@ -1,6 +1,8 @@
 package star.tratto.util.javaparser;
 
 import star.tratto.identifiers.ConditionPrimitiveType;
+import star.tratto.identifiers.JPType;
+import star.tratto.identifiers.CommonPrimitiveType;
 
 import com.github.javaparser.ast.body.CallableDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
@@ -21,13 +23,13 @@ import java.util.stream.Collectors;
  */
 public class JDoctorUtils {
     /**
-     * The method converts the list of JDoctor type names {@code jDoctorTypeNames} into a list of JavaParser type names.
-     * For example, the JDoctor type name <span>[D</span> represents a list of doubles, and the corresponding type name in
-     * JavaParser is <span>double[]</span>. The method apply these conversions from JDoctor type names to JavaParser type
-     * names.
+     * The method converts a list of JDoctor type names {@code jDoctorTypeNames} into a list of JavaParser type names.
+     * For example, the JDoctor type name {@code [D} represents a list of doubles, and the corresponding type name in
+     * JavaParser is {@code double[]}. The method apply these conversions from JDoctor type names to JavaParser type
+     * names. See ConditionPrimitiveType {@link CommonPrimitiveType} for further
      *
-     * @param jDoctorTypeNames the list of JDoctor type names to convert
-     * @return the list of the corresponding JavaParser type names
+     * @param jDoctorTypeNames a list of JDoctor type names to convert
+     * @return a list of the corresponding JavaParser type names
      */
     public static List<String> convertJDoctorConditionTypeNames2JavaParserTypeNames(
             List<String> jDoctorTypeNames
@@ -55,7 +57,7 @@ public class JDoctorUtils {
     }
 
     public static String convertConditionParameterType(String conditionParameterType) {
-        List<String> primitiveConditionsValues = ConditionPrimitiveType.getConditionValues();
+        List<String> primitiveConditionsValues = CommonPrimitiveType.getAllJDoctorPrimitiveTypeNames();
         conditionParameterType = removeSpuriousCharacters(conditionParameterType);
         if (primitiveConditionsValues.contains(conditionParameterType.replaceAll("[^a-zA-Z]+", ""))) {
             conditionParameterType = convertToPrimitiveType(conditionParameterType);
@@ -68,9 +70,9 @@ public class JDoctorUtils {
     }
 
     public static String convertToPrimitiveType(String primitiveType) {
-        List<String> primitiveConditionsValues = ConditionPrimitiveType.getConditionValues();
+        List<String> primitiveConditionsValues = CommonPrimitiveType.getAllJDoctorPrimitiveTypeNames();
         if (primitiveConditionsValues.contains(primitiveType.replaceAll("[^a-zA-Z]+", ""))) {
-            String conditionPrimitiveRegex = ConditionPrimitiveType.getConditionRegexValues();
+            String conditionPrimitiveRegex = CommonPrimitiveType.getJDoctorValuesRegex();
             String regex = String.format(
                     "[^A-Za-z0-9_]*(%s)[^A-Za-z0-9_]*",
                     conditionPrimitiveRegex
@@ -81,9 +83,9 @@ public class JDoctorUtils {
 
             if (matcher.find()) {
                 String extractedPrimitiveType = matcher.group(1);
-                ConditionPrimitiveType conditionParamEnum = ConditionPrimitiveType.convertValue(extractedPrimitiveType);
-                ConditionPrimitiveType conditionParamConverted = ConditionPrimitiveType.condition2jp(conditionParamEnum);
-                return primitiveType.replaceAll(conditionPrimitiveRegex, conditionParamConverted.getValue());
+                CommonPrimitiveType conditionParamEnum = CommonPrimitiveType.convertTypeNameToConditionPrimitiveType(extractedPrimitiveType);
+                CommonPrimitiveType conditionParamConverted = CommonPrimitiveType.jDoctorToJP(conditionParamEnum);
+                return primitiveType.replaceAll(conditionPrimitiveRegex, conditionParamConverted.getTypeName());
             } else {
                 String errMsg = String.format(
                         "The condition parameter does not match any primitive type: %s",
@@ -152,6 +154,7 @@ public class JDoctorUtils {
             Parameter jpTypeParam
     ) {
         String jpTypeName = removeSpuriousCharacters(jpTypeParam.getType().asString());
+
         if (jpTypeParam.getType().isClassOrInterfaceType()) {
             jpTypeName = removeSpuriousCharacters(jpTypeParam.getType().asClassOrInterfaceType().getName().asString());
         }
