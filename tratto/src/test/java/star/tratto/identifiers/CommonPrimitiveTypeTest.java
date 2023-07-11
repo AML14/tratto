@@ -9,23 +9,23 @@ import static org.junit.jupiter.api.Assertions.*;
 public class CommonPrimitiveTypeTest {
     @Test
     public void typeNameToConditionPrimitiveTypeTest() {
-        assertEquals(CommonPrimitiveType.CONDITION_BOOLEAN, CommonPrimitiveType.convertTypeNameToConditionPrimitiveType("Z"));
-        assertEquals(CommonPrimitiveType.CONDITION_BYTE, CommonPrimitiveType.convertTypeNameToConditionPrimitiveType("B"));
-        assertEquals(CommonPrimitiveType.CONDITION_CHAR, CommonPrimitiveType.convertTypeNameToConditionPrimitiveType("C"));
-        assertEquals(CommonPrimitiveType.CONDITION_DOUBLE, CommonPrimitiveType.convertTypeNameToConditionPrimitiveType("D"));
-        assertEquals(CommonPrimitiveType.CONDITION_FLOAT, CommonPrimitiveType.convertTypeNameToConditionPrimitiveType("F"));
-        assertEquals(CommonPrimitiveType.CONDITION_INTEGER, CommonPrimitiveType.convertTypeNameToConditionPrimitiveType("I"));
-        assertEquals(CommonPrimitiveType.CONDITION_LONG, CommonPrimitiveType.convertTypeNameToConditionPrimitiveType("J"));
-        assertEquals(CommonPrimitiveType.CONDITION_SHORT, CommonPrimitiveType.convertTypeNameToConditionPrimitiveType("S"));
-        assertEquals(CommonPrimitiveType.JP_BOOLEAN, CommonPrimitiveType.convertTypeNameToConditionPrimitiveType("boolean"));
-        assertEquals(CommonPrimitiveType.JP_BYTE, CommonPrimitiveType.convertTypeNameToConditionPrimitiveType("byte"));
-        assertEquals(CommonPrimitiveType.JP_CHAR, CommonPrimitiveType.convertTypeNameToConditionPrimitiveType("char"));
-        assertEquals(CommonPrimitiveType.JP_DOUBLE, CommonPrimitiveType.convertTypeNameToConditionPrimitiveType("double"));
-        assertEquals(CommonPrimitiveType.JP_FLOAT, CommonPrimitiveType.convertTypeNameToConditionPrimitiveType("float"));
-        assertEquals(CommonPrimitiveType.JP_INTEGER, CommonPrimitiveType.convertTypeNameToConditionPrimitiveType("integer"));
-        assertEquals(CommonPrimitiveType.JP_INTEGER, CommonPrimitiveType.convertTypeNameToConditionPrimitiveType("int"));
-        assertEquals(CommonPrimitiveType.JP_LONG, CommonPrimitiveType.convertTypeNameToConditionPrimitiveType("long"));
-        assertEquals(CommonPrimitiveType.JP_SHORT, CommonPrimitiveType.convertTypeNameToConditionPrimitiveType("short"));
+        assertEquals(CommonPrimitiveType.CONDITION_BOOLEAN, CommonPrimitiveType.convertTypeNameToCommonPrimitiveType("Z"));
+        assertEquals(CommonPrimitiveType.CONDITION_BYTE, CommonPrimitiveType.convertTypeNameToCommonPrimitiveType("B"));
+        assertEquals(CommonPrimitiveType.CONDITION_CHAR, CommonPrimitiveType.convertTypeNameToCommonPrimitiveType("C"));
+        assertEquals(CommonPrimitiveType.CONDITION_DOUBLE, CommonPrimitiveType.convertTypeNameToCommonPrimitiveType("D"));
+        assertEquals(CommonPrimitiveType.CONDITION_FLOAT, CommonPrimitiveType.convertTypeNameToCommonPrimitiveType("F"));
+        assertEquals(CommonPrimitiveType.CONDITION_INTEGER, CommonPrimitiveType.convertTypeNameToCommonPrimitiveType("I"));
+        assertEquals(CommonPrimitiveType.CONDITION_LONG, CommonPrimitiveType.convertTypeNameToCommonPrimitiveType("J"));
+        assertEquals(CommonPrimitiveType.CONDITION_SHORT, CommonPrimitiveType.convertTypeNameToCommonPrimitiveType("S"));
+        assertEquals(CommonPrimitiveType.JP_BOOLEAN, CommonPrimitiveType.convertTypeNameToCommonPrimitiveType("boolean"));
+        assertEquals(CommonPrimitiveType.JP_BYTE, CommonPrimitiveType.convertTypeNameToCommonPrimitiveType("byte"));
+        assertEquals(CommonPrimitiveType.JP_CHAR, CommonPrimitiveType.convertTypeNameToCommonPrimitiveType("char"));
+        assertEquals(CommonPrimitiveType.JP_DOUBLE, CommonPrimitiveType.convertTypeNameToCommonPrimitiveType("double"));
+        assertEquals(CommonPrimitiveType.JP_FLOAT, CommonPrimitiveType.convertTypeNameToCommonPrimitiveType("float"));
+        assertEquals(CommonPrimitiveType.JP_INTEGER, CommonPrimitiveType.convertTypeNameToCommonPrimitiveType("integer"));
+        assertEquals(CommonPrimitiveType.JP_INTEGER, CommonPrimitiveType.convertTypeNameToCommonPrimitiveType("int"));
+        assertEquals(CommonPrimitiveType.JP_LONG, CommonPrimitiveType.convertTypeNameToCommonPrimitiveType("long"));
+        assertEquals(CommonPrimitiveType.JP_SHORT, CommonPrimitiveType.convertTypeNameToCommonPrimitiveType("short"));
     }
 
     @Test
@@ -67,13 +67,13 @@ public class CommonPrimitiveTypeTest {
     @Test
     public void getJDoctorRegexValuesTest() {
         String expected = "[ZBCDFIJS]";
-        assertEquals(expected, CommonPrimitiveType.getJDoctorValuesRegex());
+        assertEquals(expected, CommonPrimitiveType.getJDoctorPrimitivesRegex());
     }
 
     @Test
     public void getJPRegexValuesTest() {
         String expected = "[booleanbytechardoublefloatintlongshort]";
-        assertEquals(expected, CommonPrimitiveType.getJPValuesRegex());
+        assertEquals(expected, CommonPrimitiveType.getJPPrimitivesRegex());
     }
 
     @Test
