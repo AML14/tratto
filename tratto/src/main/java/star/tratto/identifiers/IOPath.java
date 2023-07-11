@@ -1,4 +1,4 @@
-package star.tratto.identifiers.path;
+package star.tratto.identifiers;
 
 import java.nio.file.Paths;
 

@@ -6,8 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import star.tratto.exceptions.FileNotCreatedException;
 import star.tratto.exceptions.FolderCreationFailedException;
-import star.tratto.identifiers.file.FileFormat;
-import star.tratto.identifiers.file.FileName;
+import star.tratto.identifiers.FileFormat;
+import star.tratto.identifiers.FileName;
 
 import java.io.*;
 import java.nio.file.Paths;

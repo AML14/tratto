@@ -36,7 +36,6 @@ import star.tratto.data.OracleDatapoint;
 import star.tratto.exceptions.JPClassNotFoundException;
 import star.tratto.exceptions.PackageDeclarationNotFoundException;
 import star.tratto.exceptions.ResolvedTypeNotFound;
-import star.tratto.identifiers.JPCallableType;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.util.JavaTypes;
 
@@ -541,6 +540,10 @@ public class JavaParserUtils {
         }
     }
 
+    public static TypeDeclaration<?> getClassOrInterface(String classSourceCode, String name) {
+        return getClassOrInterface(javaParser.parse(classSourceCode).getResult().get(), name);
+    }
+
     /**
      * Returns the signature of a JavaParser variable declarator.
      *
@@ -571,9 +574,32 @@ public class JavaParserUtils {
     public static String getFieldSignature(
             ResolvedFieldDeclaration resolvedField
     ) {
+        boolean hasAccessSpecifier = !resolvedField.accessSpecifier().asString().equals("");
+        boolean isStatic = resolvedField.isStatic();
         String signature = "";
-        signature += resolvedField.accessSpecifier().asString();
-        signature += resolvedField.isStatic() ? " static " : "";
+        signature += hasAccessSpecifier ? resolvedField.accessSpecifier().asString() + " " : "";
+        signature += isStatic ? "static" + " " : "";
+        signature += getTypeWithoutPackages(resolvedField.getType().describe()) + " ";
+        signature += resolvedField.getName();
+        signature += ";";
+        return signature.trim();
+    }
+
+    /**
+     * Gets the signature of a JavaParser resolved field declaration
+     * {@link ResolvedFieldDeclaration} and return its string representation.
+     * Uses a given modifier value to determine the modifiers.
+     *
+     * @param resolvedField resolved field declaration
+     * @param modifier an integer representing the field modifiers
+     * @return a string representation of the signature of the declaration
+     */
+    public static String getFieldSignature(
+            ResolvedFieldDeclaration resolvedField,
+            int modifier
+    ) {
+        String signature = "";
+        signature += (modifier == 0) ? "" : (java.lang.reflect.Modifier.toString(modifier) + " ");
         signature += getTypeWithoutPackages(resolvedField.getType().describe()) + " ";
         signature += resolvedField.getName();
         signature += ";";
@@ -584,17 +610,15 @@ public class JavaParserUtils {
      * Returns the signature of a JavaParser callable declaration.
      *
      * @param jpCallable a JavaParser callable declaration
-     * @param jpCallableType the type of declaration (e.g. method or constructor)
      * @return a string representation of the signature. Signature follows the
      * format:
      *  "[modifiers] [type] [methodName]([parameters]) throws [exceptions]"
      */
     public static String getCallableSignature(
-            CallableDeclaration<?> jpCallable,
-            JPCallableType jpCallableType
+            CallableDeclaration<?> jpCallable
     ) {
         String methodSignature = jpCallable.toString();
-        Optional<BlockStmt> methodBody = jpCallableType.equals(JPCallableType.METHOD) ?
+        Optional<BlockStmt> methodBody = jpCallable instanceof MethodDeclaration ?
                 ((MethodDeclaration) jpCallable).getBody() :
                 Optional.ofNullable(((ConstructorDeclaration) jpCallable).getBody());
         if (methodBody.isPresent()) {
@@ -608,10 +632,6 @@ public class JavaParserUtils {
         }
         methodSignature = methodSignature.replaceAll("/\\*\\*([\\s\\S]*?)\\*/(\\n|\\r|\\t)*", "");
         return methodSignature.trim().replaceAll(";$", "");
-    }
-
-    public static TypeDeclaration<?> getClassOrInterface(String classSourceCode, String name) {
-        return getClassOrInterface(javaParser.parse(classSourceCode).getResult().get(), name);
     }
 
     /**
@@ -699,7 +719,6 @@ public class JavaParserUtils {
         String methodModifiers = methodDeclaration instanceof ReflectionMethodDeclaration ? matcher.group(1) : matcher.group(2);
         // Take into account the case in which the method declaration refers to a method without an access specifier.
         if (methodModifiers == null) {
-            assert methodDeclaration instanceof ReflectionMethodDeclaration;
             methodModifiers = "";
         }
         List<String> typeParameterList = getMethodUsageTypeParameters(methodUsage);
