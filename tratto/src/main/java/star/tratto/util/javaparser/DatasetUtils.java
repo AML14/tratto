@@ -480,7 +480,7 @@ public class DatasetUtils {
 
     /**
      * Finds all ".java" files in a given directory. Files are filtered by an
-     * ad-hoc list of files to ignore (see dataset/repos/ignoreFile.json).
+     * ad-hoc list of files to ignore (see dataset/repos/ignore_file.json).
      *
      * @param sourcePath the path to the project root directory
      * @return a list of all valid files {@link File}
@@ -492,7 +492,7 @@ public class DatasetUtils {
         // Get list of files to ignore.
         String ignoreFilePath = Paths.get(
                 IOPath.REPOS.getValue(),
-                FileName.IGNORE_FILE.getValue() + FileFormat.JSON.getValue()
+                FileName.IGNORE_FILE.getValue() + FileFormat.JSON.getExtension()
         ).toString();
         List<String> ignoreFileList = FileUtils.readJSONList(ignoreFilePath)
                 .stream()
@@ -502,7 +502,7 @@ public class DatasetUtils {
         return allFiles
                 .stream()
                 .filter(file -> {
-                    String filename = file.getName().replace(FileFormat.JAVA.getValue(), "");
+                    String filename = file.getName().replace(FileFormat.JAVA.getExtension(), "");
                     return !ignoreFileList.contains(filename);
                 })
                 .toList();
@@ -663,10 +663,10 @@ public class DatasetUtils {
     ) {
         List<Quartet<String, String, String, String>> methodList = new ArrayList<>();
         if (jpResolvedType.isArray()) {
-            // array type (see dataset/repose/arrayMethods.json).
+            // array type (see dataset/repose/array_methods.json).
             String arraysMethodJsonPath = Paths.get(
                     IOPath.REPOS.getValue(),
-                    FileName.ARRAY_METHODS.getValue() + FileFormat.JSON.getValue()
+                    FileName.ARRAY_METHODS.getValue() + FileFormat.JSON.getExtension()
             ).toString();
             List<List<String>> arrayMethods = FileUtils.readJSONList(arraysMethodJsonPath)
                     .stream()
@@ -1212,7 +1212,7 @@ public class DatasetUtils {
             String sourcePath
     ) {
         List<String> pathList = Arrays.asList(operation.getClassName().split("\\."));
-        return Paths.get(sourcePath, pathList.toArray(String[]::new)) + FileFormat.JAVA.getValue();
+        return Paths.get(sourcePath, pathList.toArray(String[]::new)) + FileFormat.JAVA.getExtension();
     }
 
     /**
