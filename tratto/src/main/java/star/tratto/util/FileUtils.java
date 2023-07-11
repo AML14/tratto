@@ -98,7 +98,8 @@ public class FileUtils {
 
     /**
      * The method creates a file within a given directory. If the file already
-     * exists, then this method does nothing.
+     * exists, then this method does nothing. Returns the File {@link File}
+     * representation of the new file at the specified path.
      *
      * @param dirPath the path to the directory where the file must be saved
      * @param fileName the name of the file where to write the content
