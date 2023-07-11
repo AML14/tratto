@@ -9,9 +9,7 @@ import star.tratto.exceptions.FolderCreationFailedException;
 import star.tratto.identifiers.FileFormat;
 import star.tratto.identifiers.FileName;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -59,40 +57,6 @@ public class FileUtils {
             }
         } catch (IOException | FolderCreationFailedException e) {
             e.printStackTrace();
-        }
-    }
-
-    public static void appendToFileExclusive(
-            String dirPath,
-            String fileName,
-            FileFormat fileFormat,
-            String projectName,
-            String content
-    ) {
-        String filePath = Paths.get(dirPath, projectName, fileName + fileFormat.getExtension()).toString();
-        File file = new File(filePath);
-        boolean found = false;
-        if (file.exists()) {
-            try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-                String line;
-                while ((line = br.readLine()) != null) {
-                    if (line.contains(content)) {
-                        found = true;
-                        break;
-                    }
-                }
-            } catch (IOException e) {
-                logger.error("Error reading file: " + e.getMessage());
-            }
-        }
-        if (!found) {
-            appendToFile(
-                    dirPath,
-                    fileName,
-                    fileFormat,
-                    projectName,
-                    content
-            );
         }
     }
 
