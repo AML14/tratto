@@ -490,7 +490,7 @@ public class DatasetUtils {
     private static List<File> getValidJavaFiles(String sourcePath) {
         // Get list of all Java files.
         File sourceDir = new File(sourcePath);
-        List<File> allFiles = FileUtils.extractJavaFilesFromDirectory(sourceDir);
+        List<File> allFiles = FileUtils.getAllJavaFilesFromDirectory(sourceDir);
         // Get list of files to ignore.
         String ignoreFilePath = Paths.get(
                 IOPath.REPOS.getValue(),

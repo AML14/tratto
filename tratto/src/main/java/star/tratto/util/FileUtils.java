@@ -134,11 +134,11 @@ public class FileUtils {
      * @param dir the directory from which to extract all the files contained
      * @return the list of all the files existing within the given directory
      */
-    public static List<File> extractJavaFilesFromDirectory(File dir) {
+    public static List<File> getAllJavaFilesFromDirectory(File dir) {
         List<File> javaFileList = new ArrayList<>();
         for (File file: Objects.requireNonNull(dir.listFiles())) {
             if (file.isDirectory()) {
-                javaFileList.addAll(extractJavaFilesFromDirectory(file));
+                javaFileList.addAll(getAllJavaFilesFromDirectory(file));
             }
             if (isJavaFile(file)) {
                 javaFileList.add(file);
