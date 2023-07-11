@@ -9,7 +9,9 @@ import star.tratto.exceptions.FolderCreationFailedException;
 import star.tratto.identifiers.FileFormat;
 import star.tratto.identifiers.FileName;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -59,43 +61,10 @@ public class FileUtils {
         }
     }
 
-    public static void appendToFileExclusive(
-            String dirPath,
-            String fileName,
-            FileFormat fileFormat,
-            String projectName,
-            String content
-    ) {
-        String filePath = Paths.get(dirPath, projectName, fileName + fileFormat.getExtension()).toString();
-        File file = new File(filePath);
-        boolean found = false;
-        if (file.exists()) {
-            try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-                String line;
-                while ((line = br.readLine()) != null) {
-                    if (line.contains(content)) {
-                        found = true;
-                        break;
-                    }
-                }
-            } catch (IOException e) {
-                logger.error("Error reading file: " + e.getMessage());
-            }
-        }
-        if (!found) {
-            appendToFile(
-                    dirPath,
-                    fileName,
-                    fileFormat,
-                    projectName,
-                    content
-            );
-        }
-    }
-
     /**
      * The method creates a file within a given directory. If the file already
-     * exists, then this method does nothing.
+     * exists, then this method does nothing. Returns the File {@link File}
+     * representation of the new file at the specified path.
      *
      * @param dirPath the path to the directory where the file must be saved
      * @param fileName the name of the file where to write the content
@@ -190,7 +159,7 @@ public class FileUtils {
                     }
             );
         } catch (IOException e) {
-            String errMsg = String.format("Unexpected error in processing the JSON file %s.", filePath);
+            String errMsg = String.format("Error in processing the JSON file %s.", filePath);
             logger.error(errMsg);
             e.printStackTrace();
         }
