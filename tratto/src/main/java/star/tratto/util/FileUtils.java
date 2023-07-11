@@ -158,7 +158,7 @@ public class FileUtils {
                     }
             );
         } catch (IOException e) {
-            String errMsg = String.format("Unexpected error in processing the JSON file %s.", filePath);
+            String errMsg = String.format("Error in processing the JSON file %s.", filePath);
             logger.error(errMsg);
             e.printStackTrace();
         }
