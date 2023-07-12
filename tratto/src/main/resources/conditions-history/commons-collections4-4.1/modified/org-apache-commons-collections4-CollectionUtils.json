@@ -1272,6 +1272,37 @@
   {
     "operation": {
       "classname": "org.apache.commons.collections4.CollectionUtils",
+      "name": "size",
+      "parameterTypes": [
+        "java.lang.Object"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "object"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID == 0",
+          "description": "the size of the specified collection or 0 if the object was null."
+        },
+        "description": "the size of the specified collection or 0 if the object was null.",
+        "guard": {
+          "condition": "object==null",
+          "description": "the size of the specified collection or 0 if the object was null."
+        }
+      }
+    ],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.CollectionUtils",
       "name": "checkIndexBounds",
       "parameterTypes": [
         "int"
