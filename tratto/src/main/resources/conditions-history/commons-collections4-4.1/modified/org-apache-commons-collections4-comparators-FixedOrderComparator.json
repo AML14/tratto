@@ -174,27 +174,30 @@
     "operation": {
       "classname": "org.apache.commons.collections4.comparators.FixedOrderComparator",
       "name": "addAsEqual",
-      "parameterTypes": []
+      "parameterTypes": [
+        "java.lang.Object",
+        "java.lang.Object"
+      ]
     },
     "identifiers": {
-      "parameters": [],
+      "parameters": [
+        "existingObj",
+        "newObj"
+      ],
       "receiverName": "receiverObjectID",
       "returnName": "methodResultID"
     },
-    "throws": [],
-    "post": [
+    "throws": [
       {
-        "property": {
-          "condition": "methodResultID.equals(org.apache.commons.collections4.comparators.FixedOrderComparator.UnknownObjectBehavior)",
-          "description": "FixedOrderComparator.UnknownObjectBehavior"
-        },
-        "description": "FixedOrderComparator.UnknownObjectBehavior",
+        "exception": "java.lang.UnsupportedOperationException",
+        "description": "@throws java.lang.UnsupportedOperationException if a comparison has already been made.",
         "guard": {
-          "condition": "true",
-          "description": "FixedOrderComparator.UnknownObjectBehavior"
+          "condition": "receiverObjectID.isLocked()",
+          "description": "if a comparison has already been made."
         }
       }
     ],
+    "post": [],
     "pre": []
   }
 ]
