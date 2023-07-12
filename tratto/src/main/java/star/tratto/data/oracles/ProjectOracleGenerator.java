@@ -221,7 +221,7 @@ public class ProjectOracleGenerator {
         // get artificial condition information.
         String tagType = switch (oracleType) {
             case PRE -> "@param ";
-            case NORMAL_POST -> "";
+            case NORMAL_POST -> "@return ";
             case EXCEPT_POST -> "@throws ";
         };
         builder.setOracleType(oracleType);
