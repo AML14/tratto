@@ -45,7 +45,7 @@ public enum CommonPrimitiveType {
      * @return the ConditionPrimitiveType whose value corresponds to the given
      * parameter name
      */
-    public static CommonPrimitiveType convertTypeNameToConditionPrimitiveType(String parameter) {
+    public static CommonPrimitiveType convertTypeNameToCommonPrimitiveType(String parameter) {
         switch (parameter) {
             case "Z" -> {
                 return CONDITION_BOOLEAN;
@@ -214,7 +214,7 @@ public enum CommonPrimitiveType {
      * @return a regex representation of all possible JDoctor primitive types.
      * Used to find JDoctor types in an arbitrary string.
      */
-    public static String getJDoctorValuesRegex() {
+    public static String getJDoctorPrimitivesRegex() {
         return "[" + String.join("", allJDoctorPrimitiveTypes) + "]";
     }
 
@@ -222,7 +222,7 @@ public enum CommonPrimitiveType {
      * @return a regex representation of all possible JavaParser primitive
      * types
      */
-    public static String getJPValuesRegex() {
+    public static String getJPPrimitivesRegex() {
         return "[" + String.join("", allJPPrimitiveTypes) + "]";
     }
 
