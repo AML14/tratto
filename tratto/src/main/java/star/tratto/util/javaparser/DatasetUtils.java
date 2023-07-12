@@ -327,6 +327,28 @@ public class DatasetUtils {
     }
 
     /**
+     * Reconstructs the original tag in source code from a list of tag
+     * information.
+     *
+     * @param jpTag a sextet of tag information, including: file source code,
+     *              JavaParser class, JavaParser method/constructor, oracle
+     *              type, name, and content.
+     * @return the original tag in source code as a String.
+     */
+    public static String reconstructTag(
+            Sextet<String, TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String> jpTag
+    ) {
+        String tagString = switch (jpTag.getValue3()) {
+            case PRE -> "@param ";
+            case NORMAL_POST -> "@return ";
+            case EXCEPT_POST -> "@throws ";
+        };
+        tagString += !jpTag.getValue4().equals("") ?  jpTag.getValue4() + " " : "";
+        tagString += jpTag.getValue5();
+        return tagString;
+    }
+
+    /**
      * Gets the source code of a given function {@link CallableDeclaration}.
      *
      * @param jpCallable a method or constructor
