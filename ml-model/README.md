@@ -40,9 +40,9 @@ macOS and Windows systems.
 
 ### 1.2 Create and activate _conda_ environment
 
-4. Create a new conda environment named "_tratto_" for the **TRATTO** project
+4. Create a new conda environment named "_tratto_" for the **TRATTO** project with Python version 3.9
    ```bash
-    conda create --name tratto
+    conda create --name tratto python=3.9.17
     ```
 
 5. Activate the conda environment

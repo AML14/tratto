@@ -380,12 +380,10 @@ class DataProcessorDecoder:
                 )
             )
             vocab = self._tokenizer.get_vocab()
-            print(f"Len vocab: {len(vocab.values())}")
             for new_word in value_mappings.values():
                 for new_sub_word in new_word.split("_"):
                     if not new_sub_word in vocab.keys():
                         self._tokenizer.add_tokens([new_sub_word])
-            print(f"Len vocab: {len(self._tokenizer.get_vocab().values())}")
 
             # Replace the values in the DataFrame column
             self._df_dataset['tokenClass'] = self._df_dataset['tokenClass'].replace(value_mappings)
@@ -515,7 +513,7 @@ class DataProcessorDecoder:
         # datasets path
         oracles_dataset = os.path.join(d_path)
         # collects partial dataframes from oracles
-        for file_name in os.listdir(oracles_dataset)[80:100]:
+        for file_name in os.listdir(oracles_dataset):
             df = pd.read_json(os.path.join(oracles_dataset, file_name))
             dfs.append(df)
         df_dataset = pd.concat(dfs)

@@ -32,7 +32,6 @@ def predict(
             os.path.dirname(os.path.abspath(__file__)),
             '..',
             '..',
-            '..',
             'src',
             'resources',
             'tokenClassesValuesMapping.json'
@@ -178,7 +177,6 @@ def pre_processing(
             os.path.dirname(os.path.abspath(__file__)),
             '..',
             '..',
-            '..',
             'src',
             'resources',
             'tokenClassesValuesMapping.json'
@@ -262,9 +260,9 @@ def tokenize_datasets(
             return_tensors="pt"
         )
         # Transform the list into a tensor stack
-        t_inputs = torch.stack([torch.tensor(ids) for ids in t_src_dict['input_ids']])
-        t_inputs_attention_masks = torch.stack([torch.tensor(mask) for mask in t_src_dict['attention_mask']])
-        t_targets = torch.stack([torch.tensor(ids) for ids in t_tgt_dict['input_ids']])
+        t_inputs = torch.stack([ids.clone().detach() for ids in t_src_dict['input_ids']])
+        t_inputs_attention_masks = torch.stack([mask.clone().detach() for mask in t_src_dict['attention_mask']])
+        t_targets = torch.stack([ids.clone().detach() for ids in t_tgt_dict['input_ids']])
         # Generate the tokenized dataset
         t_dataset = (t_inputs, t_inputs_attention_masks, t_targets)
         t_datasets.append((identifier,t_dataset))
@@ -307,7 +305,7 @@ def main(
     # Pre-processing data
     datasets = pre_processing(df_dataset, tokenizer, classification_type)
     # Process the data
-    t_datasets = tokenize_datasets(datasets, tokenizer, classification_type)
+    t_datasets = tokenize_datasets(datasets, tokenizer)
 
     # Setup model
     config = config_class.from_pretrained(

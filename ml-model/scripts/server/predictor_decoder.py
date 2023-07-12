@@ -7,6 +7,8 @@ import Levenshtein
 from torch.utils.data import DataLoader, TensorDataset
 from transformers import PreTrainedModel, PreTrainedTokenizer
 from typing import Type, re
+
+from src.pretrained.ModelClasses import ModelClasses
 from src.types.TrattoModelType import TrattoModelType
 from src.utils import utils
 
@@ -32,7 +34,7 @@ def predict_next(
 ):
     # Model in evaluation mode
     model.eval()
-    num_beams = 3
+    num_beams = 1
     # The prediction is performed without accumulating the gradient descent and without updating the weights of the model
     with torch.no_grad():
         for batch_id, batch in enumerate(dl_src, 1):
@@ -79,7 +81,6 @@ def predict_next(
                         # Check if last subword of predicted token matches the end of the current eligible token class
                         if eligible.endswith(camelCaseSplit[-1]):
                             return eligible
-                    return
             else:
                 return predicted_1
             # If no token has been found, compute the Levenshtein distance among the eligible token classes
@@ -91,6 +92,7 @@ def predict_next(
                     best_distance = distance
                     most_probable_token = eligible
             return most_probable_token
+
 
 def update_tokenizer_vocab(
         tokenizer,
@@ -133,6 +135,8 @@ def pre_process_dataset(
 
     update_tokenizer_vocab(tokenizer, value_mappings)
 
+    # Remove method source code
+    df_dataset['methodSourceCode'] = df_dataset['methodSourceCode'].str.split('{').str[0]
     # Replace the values in the DataFrame column
     df_dataset['tokenClass'] = df_dataset['tokenClass'].replace(value_mappings)
     # Map token classes so far to new values and transform it from array to string
@@ -190,6 +194,9 @@ def get_input_model_values(
     df_dataset["eligibleTokens"] = df_dataset["eligibleTokens"].apply(lambda x: "[ " + " ".join(x) + " ]")
     # Set type of dataframe columns
     df_dataset['eligibleTokens'] = df_dataset['eligibleTokens'].astype('string')
+    # Temp empty tokenInfo
+    df_dataset["tokenInfo"] = df_dataset["tokenInfo"].apply(lambda x: "")
+
     # Define the new order of columns
     new_columns_order = [
         'oracleId', 'tokenClass', 'token', 'tokenInfo', 'oracleSoFar', 'eligibleTokens', 'javadocTag', 'oracleType',
@@ -217,10 +224,12 @@ def tokenize_input(
         tokenizer
 ):
     # Tokenize the inputs datapoints
-    inputs_dict = tokenizer(
+    inputs_dict = tokenizer.batch_encode_plus(
         src,
-        padding='max_length',
-        truncation=True
+        max_length=512,
+        padding=True,
+        truncation=True,
+        return_tensors="pt"
     )
     # Transform the list into a tensor stack
     t_inputs = torch.stack([torch.tensor(ids) for ids in inputs_dict['input_ids']])
@@ -246,8 +255,8 @@ def next_token(
     df_dataset = pre_process_dataset(df_dataset, tokenizer_token_classes)
 
     # If there is a single row, there is no need to make predictions. The unique possible value is returned
-    if len(df_dataset) == 0:
-        return df_dataset['token'][0]
+    if len(df_dataset) == 1:
+        return df_dataset['token'][0] + "\n" + next((key for key, val in value_mappings.items() if val == df_dataset['tokenClass'][0]), None)
 
     # Get model token classes input
     print("Get model token classes input")
