@@ -130,7 +130,7 @@ public class JDoctorUtils {
      */
     private static String convertJDoctorPrimitiveToJPPrimitive(String jDoctorPrimitive) {
         List<String> primitiveJDoctorValues = CommonPrimitiveType.getAllJDoctorPrimitiveTypeNames();
-        if (primitiveJDoctorValues.contains(jDoctorPrimitive.replaceAll("[^a-zA-z]+", ""))) {
+        if (primitiveJDoctorValues.contains(jDoctorPrimitive.replaceAll("[^a-zA-Z]+", ""))) {
             // match `jDoctorPrimitive` to a known JDoctor primitive representation.
             String jDoctorRegex = CommonPrimitiveType.getJDoctorPrimitivesRegex();
             String regex = String.format(
@@ -168,7 +168,7 @@ public class JDoctorUtils {
         jDoctorTypeName = removeSpuriousCharacters(jDoctorTypeName);
         // converts primitive type.
         List<String> primitiveJDoctorValues = CommonPrimitiveType.getAllJDoctorPrimitiveTypeNames();
-        if (primitiveJDoctorValues.contains(jDoctorTypeName.replaceAll("[^a-zA-z]+", ""))) {
+        if (primitiveJDoctorValues.contains(jDoctorTypeName.replaceAll("[^a-zA-Z]+", ""))) {
             jDoctorTypeName = convertJDoctorPrimitiveToJPPrimitive(jDoctorTypeName);
         }
         // converts array type.
@@ -247,7 +247,7 @@ public class JDoctorUtils {
     private static String getSupertype(String sourceCode, String jpTypeName) {
         int arrayLevel = getArrayLevel(jpTypeName);
         // finds the supertype.
-        String regex = String.format("%s\\s+extends\\s+([A-za-z0-9_]+)[<[A-Za-z0-9_,]+]*", jpTypeName.replaceAll("\\[]", ""));
+        String regex = String.format("%s\\s+extends\\s+([A-Za-z0-9_]+)[<[A-Za-z0-9_,]+]*", jpTypeName.replaceAll("\\[]", ""));
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(sourceCode);
         if (matcher.find()) {
@@ -266,10 +266,10 @@ public class JDoctorUtils {
      * with generic types in source code. Also ensures name is consistent with
      * JDoctor format for direct comparison.
      *
-     * @param jpClass the declaring class.
-     * @param jpCallable the method using {@code jpParam}.
+     * @param jpClass the declaring class
+     * @param jpCallable the method using {@code jpParam}
      * @param jpParam a parameter
-     * @return
+     * @return the raw name of the parameter in source code
      */
     public static String getRawTypeName(
             TypeDeclaration<?> jpClass,
