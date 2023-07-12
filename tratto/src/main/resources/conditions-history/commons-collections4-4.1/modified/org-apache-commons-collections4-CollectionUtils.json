@@ -29,6 +29,37 @@
   {
     "operation": {
       "classname": "org.apache.commons.collections4.CollectionUtils",
+      "name": "emptyIfNull",
+      "parameterTypes": [
+        "java.util.Collection"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "collection"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID.equals(org.apache.commons.collections4.CollectionUtils.emptyCollection())",
+          "description": "an empty collection if the argument is null."
+        },
+        "description": "an empty collection if the argument is null.",
+        "guard": {
+          "condition": "collection==null",
+          "description": "an empty collection if the argument is null."
+        }
+      }
+    ],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.CollectionUtils",
       "name": "union",
       "parameterTypes": [
         "java.lang.Iterable",
