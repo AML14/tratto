@@ -1365,6 +1365,37 @@
   {
     "operation": {
       "classname": "org.apache.commons.collections4.CollectionUtils",
+      "name": "isNotEmpty",
+      "parameterTypes": [
+        "java.util.Collection"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "coll"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID==true",
+          "description": "true if non-null and non-empty."
+        },
+        "description": "true if non-null and non-empty.",
+        "guard": {
+          "condition": "(coll==null)==false && (coll.isEmpty())==false",
+          "description": "true if non-null and non-empty."
+        }
+      }
+    ],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.CollectionUtils",
       "name": "checkIndexBounds",
       "parameterTypes": [
         "int"
@@ -1978,6 +2009,14 @@
         "guard": {
           "condition": "collection==null",
           "description": "collection is null."
+        }
+      },
+      {
+        "exception": "java.lang.IllegalArgumentException",
+        "description": "@throws java.lang.IllegalArgumentException if collection is empty or contains more than one element.",
+        "guard": {
+          "condition": "collection.isEmpty() || collection.size() > 1",
+          "description": "if collection is empty or contains more than one element."
         }
       }
     ],
