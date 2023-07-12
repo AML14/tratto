@@ -615,6 +615,50 @@
   {
     "operation": {
       "classname": "org.apache.commons.collections4.CollectionUtils",
+      "name": "forAllButLastDo",
+      "parameterTypes": [
+        "java.lang.Iterable",
+        "org.apache.commons.collections4.Closure"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "collection",
+        "closure"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID==null",
+          "description": "the last element in the collection, or null if either collection or closure is null."
+        },
+        "description": "the last element in the collection, or null if either collection or closure is null.",
+        "guard": {
+          "condition": "(collection==null || closure==null)",
+          "description": "the last element in the collection, or null if either collection or closure is null."
+        }
+      },
+      {
+        "property": {
+          "condition": "collection.get(collection.size() - 1)",
+          "description": "the last element in the collection, or null if either collection or closure is null."
+        },
+        "description": "the last element in the collection, or null if either collection or closure is null.",
+        "guard": {
+          "condition": "(collection==null || closure==null)==false",
+          "description": "the last element in the collection, or null if either collection or closure is null."
+        }
+      }
+    ],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.CollectionUtils",
       "name": "select",
       "parameterTypes": [
         "java.lang.Iterable",
