@@ -18,7 +18,6 @@ import star.tratto.exceptions.JPClassNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.Callable;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static star.tratto.TestUtilities.readOracleDatapointsFromOraclesDataset;

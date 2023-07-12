@@ -298,6 +298,14 @@ public class ProjectOracleGenerator {
         assert jpCallable != null;
         // set data point information.
         builder.setConditionInfo(condition);
+        // override JavaDoc tag with tag from source code.
+        builder.setJavadocTag(DatasetUtils.reconstructTag(findMaximumSimilarityTag(
+                this.projectTagsTokens,
+                jpClass,
+                jpCallable,
+                builder.copy().getOracleType(),
+                builder.copy().getJavadocTag()
+        )));
         builder.setProjectName(projectName);
         builder.setClassSourceCode(classSourceCode);
         builder.setPackageName(packageName);
