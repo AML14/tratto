@@ -1242,6 +1242,36 @@
   {
     "operation": {
       "classname": "org.apache.commons.collections4.CollectionUtils",
+      "name": "get",
+      "parameterTypes": [
+        "java.util.Map",
+        "int"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "map",
+        "index"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.IndexOutOfBoundsException",
+        "description": "@throws java.lang.IndexOutOfBoundsException if the index is invalid.",
+        "guard": {
+          "condition": "map.entrySet().size() < index || index < 0",
+          "description": "if the index is invalid."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.CollectionUtils",
       "name": "checkIndexBounds",
       "parameterTypes": [
         "int"
