@@ -125,8 +125,9 @@ The server implements a single REST API endpoint (`/api/next_token`) that receiv
 where the dataset for the next token to compute is located (the file must be in `json` format):
 
    ```http request
-   http://127.0.0.1:5000/api/next_token?[path_to_file]/[filename].json
+   http://127.0.0.1:5000/api/next_token?filename=[path_to_file]/[filename].json
    ```
    * **path_to_file** - the absolute path to the directory where the dataset is located.
-   * **filename** - the name of the json file containing the dataset
+   * **filename** - the name of the json file containing the dataset.
+
 The response to the request contains a string representing the next token of the oracle.
