@@ -266,10 +266,10 @@ public class JDoctorUtils {
      * with generic types in source code. Also ensures name is consistent with
      * JDoctor format for direct comparison.
      *
-     * @param jpClass the declaring class.
-     * @param jpCallable the method using {@code jpParam}.
+     * @param jpClass the declaring class
+     * @param jpCallable the method using {@code jpParam}
      * @param jpParam a parameter
-     * @return
+     * @return the raw name of the parameter in source code
      */
     public static String getRawTypeName(
             TypeDeclaration<?> jpClass,
