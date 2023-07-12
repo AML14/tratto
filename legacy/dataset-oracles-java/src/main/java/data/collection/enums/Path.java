@@ -2,7 +2,7 @@ package data.collection.enums;
 
 import java.nio.file.Paths;
 
-public enum Path {
+public enum IOPath {
     JAVA_PARSER(Paths.get("src", "main", "java", "data", "collection", "javaparser").toString()),
     OUTPUT(Paths.get("target", "output").toString()),
     RESOURCES(Paths.get("src", "main", "resources").toString()),
@@ -10,7 +10,7 @@ public enum Path {
 
     private final String path;
 
-    private Path(String path) {
+    IOPath(String path) {
         this.path = Paths.get(
                 System.getProperty("user.dir"),
                 path

@@ -8,9 +8,11 @@ import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import org.javatuples.Pair;
 import org.javatuples.Quartet;
+import org.javatuples.Sextet;
 import org.javatuples.Triplet;
 import org.junit.jupiter.api.Test;
 import star.tratto.data.OracleDatapoint;
+import star.tratto.data.OracleType;
 import star.tratto.exceptions.JPClassNotFoundException;
 
 import java.util.ArrayList;
@@ -78,6 +80,13 @@ public class DatasetUtilsTest {
         List<Triplet<String, String, String>> expected = oracleDatapoint.getTokensMethodArguments();
         List<Triplet<String, String, String>> actual = getTokensMethodArguments(jpClass, jpCallable);
         assertEquals(expected, actual);
+    }
+
+    @Test
+    public void reconstructTagTest() {
+        assertEquals("@throws IllegalArgumentException if username is null", DatasetUtils.reconstructTag(Sextet.with("", null, null, OracleType.EXCEPT_POST, "IllegalArgumentException", "if username is null")));
+        assertEquals("@return the number of users", DatasetUtils.reconstructTag(Sextet.with("", null, null, OracleType.NORMAL_POST, "", "the number of users")));
+        assertEquals("@param password the user's security key", DatasetUtils.reconstructTag(Sextet.with("", null, null, OracleType.PRE, "password", "the user's security key")));
     }
 
     @Test

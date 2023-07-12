@@ -18,9 +18,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleType;
-import star.tratto.identifiers.file.FileFormat;
-import star.tratto.identifiers.file.FileName;
-import star.tratto.identifiers.path.Path;
+import star.tratto.identifiers.FileFormat;
+import star.tratto.identifiers.FileName;
+import star.tratto.identifiers.IOPath;
 import star.tratto.util.FileUtils;
 import star.tratto.util.javaparser.JavaParserUtils;
 
@@ -247,11 +247,11 @@ public class ClassAnalyzerTest {
         List<OracleDatapoint> oracleDatapoints = new ArrayList<>();
 
         // General variables for later assertions
-        List<String> tokensGeneralGrammar = FileUtils.readJSONList(FileUtils.getAbsolutePathToFile(Path.REPOS.getValue(), FileName.TOKENS_GRAMMAR, FileFormat.JSON))
+        List<String> tokensGeneralGrammar = FileUtils.readJSONList(FileUtils.getAbsolutePathToFile(IOPath.REPOS.getValue(), FileName.TOKENS_GRAMMAR, FileFormat.JSON))
                 .stream()
                 .map(e -> (String) e)
                 .toList();
-        List<Pair<String, String>> tokensGeneralValues = FileUtils.readJSONList(FileUtils.getAbsolutePathToFile(Path.REPOS.getValue(), FileName.TOKENS_GENERAL_VALUES, FileFormat.JSON
+        List<Pair<String, String>> tokensGeneralValues = FileUtils.readJSONList(FileUtils.getAbsolutePathToFile(IOPath.REPOS.getValue(), FileName.TOKENS_GENERAL_VALUES, FileFormat.JSON
                 ))
                 .stream()
                 .map(e -> ((List<?>) e)

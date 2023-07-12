@@ -5,8 +5,9 @@ import org.javatuples.Quartet;
 import org.javatuples.Triplet;
 import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleType;
-import star.tratto.identifiers.path.Path;
-import star.tratto.identifiers.file.*;
+import star.tratto.identifiers.FileFormat;
+import star.tratto.identifiers.FileName;
+import star.tratto.identifiers.IOPath;
 import star.tratto.util.FileUtils;
 
 import java.util.ArrayList;
@@ -81,7 +82,7 @@ public class OracleDatapointBuilder {
      */
     private void setDefaultGrammarTokens() {
         String tokensGrammarPath = FileUtils.getAbsolutePathToFile(
-                Path.REPOS.getValue(),
+                IOPath.REPOS.getValue(),
                 FileName.TOKENS_GRAMMAR,
                 FileFormat.JSON
         );
@@ -97,7 +98,7 @@ public class OracleDatapointBuilder {
      */
     private void setDefaultGeneralValues() {
         String tokenGeneralValuesPath = FileUtils.getAbsolutePathToFile(
-                Path.REPOS.getValue(),
+                IOPath.REPOS.getValue(),
                 FileName.TOKENS_GENERAL_VALUES,
                 FileFormat.JSON
         );

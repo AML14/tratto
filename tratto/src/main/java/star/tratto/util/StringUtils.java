@@ -1,18 +1,25 @@
 package star.tratto.util;
 
+import edu.stanford.nlp.ling.CoreAnnotations.LemmaAnnotation;
+import edu.stanford.nlp.ling.CoreAnnotations.TokensAnnotation;
 import edu.stanford.nlp.ling.CoreLabel;
-import edu.stanford.nlp.pipeline.*;
-import edu.stanford.nlp.ling.CoreAnnotations.*;
+import edu.stanford.nlp.pipeline.Annotation;
+import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import org.apache.commons.math3.linear.ArrayRealVector;
 import org.apache.commons.math3.linear.RealVector;
 import org.javatuples.Pair;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class StringUtils {
-    public static StanfordCoreNLP stanfordCoreNLP = getStanfordCoreNLP();
+    private static StanfordCoreNLP stanfordCoreNLP = getStanfordCoreNLP();
 
     public static StanfordCoreNLP getStanfordCoreNLP() {
         if (stanfordCoreNLP == null) {
@@ -116,9 +123,12 @@ public class StringUtils {
     /**
      * Computes the semantic similarity of two strings by the cosine
      * similarity of word frequencies in the input.
+     * NOTE: During semantic comparison, a word such as "text2int"
+     * will be considered as a single world "textint" rather than two words,
+     * "text" and "int". This avoids potential oversimplification.
      *
-     * @param s1 a string
-     * @param s2 a string
+     * @param s1 a string of one or more words separated by a space
+     * @param s2 a string of one or more words separated by a space
      * @return the cosine similarity of the two strings represented by a
      * double between 0.0 and 1.0
      */
@@ -136,28 +146,26 @@ public class StringUtils {
      * Converts a string into a list of lemmas using the CoreNLP library.
      */
     private static List<String> lemmatize(StanfordCoreNLP pipeline, String documentText) {
-        List<String> lemmas = new ArrayList<>();
         Annotation document = new Annotation(documentText);
         pipeline.annotate(document);
         List<CoreLabel> tokens = document.get(TokensAnnotation.class);
-        for (CoreLabel token : tokens) {
-            String lemma = token.get(LemmaAnnotation.class);
-            lemmas.add(lemma);
-        }
-        return lemmas;
+        return tokens
+                .stream()
+                .map(t -> t.get(LemmaAnnotation.class))
+                .collect(Collectors.toList());
     }
 
     /**
      * Computes the cosine similarity of two lists of words.
      *
-     * @param list1 list of strings
-     * @param list2 list of strings
-     * @return the cosine similarity (double between 0 and 1)
+     * @param list1 list of words
+     * @param list2 list of words
+     * @return the cosine similarity (double between 0.0 and 1.0)
      */
     private static double cosineSimilarity(List<String> list1, List<String> list2) {
         Map<String, Integer> map1 = wordFrequencies(list1);
         Map<String, Integer> map2 = wordFrequencies(list2);
-        Set<String> intersection = new HashSet<>(map1.keySet());
+        LinkedHashSet<String> intersection = new LinkedHashSet<>(map1.keySet());
         intersection.retainAll(map2.keySet());
         RealVector vector1 = toRealVector(map1, intersection);
         RealVector vector2 = toRealVector(map2, intersection);
@@ -185,9 +193,11 @@ public class StringUtils {
      *
      * @param map a map of word frequencies
      * @param words the set of all possible words
-     * @return a vector representation of the word frequencies
+     * @return a vector representation of the word frequencies. Each dimension
+     * represents a different word, where the magnitude of the dimension
+     * corresponds to the word frequency.
      */
-    private static RealVector toRealVector(Map<String, Integer> map, Set<String> words) {
+    private static RealVector toRealVector(Map<String, Integer> map, LinkedHashSet<String> words) {
         double[] vector = new double[words.size()];
         int i = 0;
         for (String word : words) {

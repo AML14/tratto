@@ -6,10 +6,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import star.tratto.exceptions.FileNotCreatedException;
 import star.tratto.exceptions.FolderCreationFailedException;
-import star.tratto.identifiers.file.FileFormat;
-import star.tratto.identifiers.file.FileName;
+import star.tratto.identifiers.FileFormat;
+import star.tratto.identifiers.FileName;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -50,61 +52,28 @@ public class FileUtils {
                     objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, content);
                 }
                 default -> {
-                    String errMsg = String.format("File format %s not yet supported to save the content of a file.", fileFormat.getValue());
+                    String errMsg = String.format("File format %s not yet supported to save the content of a file.", fileFormat.getExtension());
                     logger.error(errMsg);
                 }
             }
-        } catch (IOException | FolderCreationFailedException | FileNotCreatedException e) {
+        } catch (IOException | FolderCreationFailedException e) {
             e.printStackTrace();
         }
     }
 
-    public static void appendToFileExclusive(
-            String dirPath,
-            String fileName,
-            FileFormat fileFormat,
-            String projectName,
-            String content
-    ) {
-        String filePath = Paths.get(dirPath, projectName, fileName + fileFormat.getValue()).toString();
-        File file = new File(filePath);
-        boolean found = false;
-        if (file.exists()) {
-            try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-                String line;
-                while ((line = br.readLine()) != null) {
-                    if (line.contains(content)) {
-                        found = true;
-                        break;
-                    }
-                }
-            } catch (IOException e) {
-                logger.error("Error reading file: " + e.getMessage());
-            }
-        }
-        if (!found) {
-            appendToFile(
-                    dirPath,
-                    fileName,
-                    fileFormat,
-                    projectName,
-                    content
-            );
-        }
-    }
-
     /**
-     * The method creates a file within a given directory.
+     * The method creates a file within a given directory. If the file already
+     * exists, then this method does nothing. Returns the File {@link File}
+     * representation of the new file at the specified path.
      *
      * @param dirPath the path to the directory where the file must be saved
      * @param fileName the name of the file where to write the content
      * @param fileFormat the format of the file
-     *
      * @return the file created
-     * @throws IOException If the file cannot be created
+     * @throws IOException if the file cannot be created
      */
     public static File createFile(String dirPath, String fileName, FileFormat fileFormat) throws FolderCreationFailedException, IOException, FileNotCreatedException {
-        String filePath = Paths.get(dirPath, fileName + fileFormat.getValue()).toString();
+        String filePath = Paths.get(dirPath, fileName + fileFormat.getExtension()).toString();
         File dir = new File(dirPath);
         File file = new File(filePath);
         // create directory.
@@ -129,16 +98,16 @@ public class FileUtils {
     }
 
     /**
-     * The method gets the list of all the files that exist within a given directory.
+     * Recursively gets a list of all java files in a given directory.
      *
      * @param dir the directory from which to extract all the files contained
      * @return the list of all the files existing within the given directory
      */
-    public static List<File> extractJavaFilesFromDirectory(File dir) {
+    public static List<File> getAllJavaFilesFromDirectory(File dir) {
         List<File> javaFileList = new ArrayList<>();
         for (File file: Objects.requireNonNull(dir.listFiles())) {
             if (file.isDirectory()) {
-                javaFileList.addAll(extractJavaFilesFromDirectory(file));
+                javaFileList.addAll(getAllJavaFilesFromDirectory(file));
             }
             if (isJavaFile(file)) {
                 javaFileList.add(file);
@@ -156,7 +125,7 @@ public class FileUtils {
      * @return the complete path to a file
      */
     public static String getAbsolutePathToFile(String dirPath, FileName fileName, FileFormat fileFormat) {
-        return Paths.get(dirPath, fileName.getValue()) + fileFormat.getValue();
+        return Paths.get(dirPath, fileName.getValue()) + fileFormat.getExtension();
     }
 
     /**
@@ -173,7 +142,6 @@ public class FileUtils {
     /**
      * The method reads a list from a JSON file.
      * @param filePath the path to the JSON file
-     *
      * @return the list of values read from the JSON file
      */
     public static List<?> readJSONList(String filePath) {
@@ -191,7 +159,7 @@ public class FileUtils {
                     }
             );
         } catch (IOException e) {
-            String errMsg = String.format("Unexpected error in processing the JSON file %s.", filePath);
+            String errMsg = String.format("Error in processing the JSON file %s.", filePath);
             logger.error(errMsg);
             e.printStackTrace();
         }

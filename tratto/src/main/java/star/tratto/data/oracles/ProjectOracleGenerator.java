@@ -178,7 +178,7 @@ public class ProjectOracleGenerator {
         String sourcePath = this.project.getSrcPath();
         String className = DatasetUtils.getOperationClassName(operation);
         String callableName = DatasetUtils.getOperationCallableName(operation);
-        List<String> parameterTypes = JDoctorUtils.convertJDoctorConditionTypeNames2JavaParserTypeNames(operation.getParameterTypes());
+        List<String> parameterTypes = JDoctorUtils.convertJDoctorTypeNamesToJPTypeNames(operation.getParameterTypes());
         Optional<CompilationUnit> cuOptional = DatasetUtils.getOperationCompilationUnit(operation, sourcePath);
         if (cuOptional.isPresent()) {
             TypeDeclaration<?> jpClass = DatasetUtils.getTypeDeclaration(cuOptional.get(), className);
@@ -282,7 +282,7 @@ public class ProjectOracleGenerator {
         String packageName = DatasetUtils.getOperationPackageName(operation);
         String className = DatasetUtils.getOperationClassName(operation);
         String callableName = DatasetUtils.getOperationCallableName(operation);
-        List<String> parameterTypes = JDoctorUtils.convertJDoctorConditionTypeNames2JavaParserTypeNames(operation.getParameterTypes());
+        List<String> parameterTypes = JDoctorUtils.convertJDoctorTypeNamesToJPTypeNames(operation.getParameterTypes());
         // get CompilationUnit of operation class.
         Optional<CompilationUnit> cuOptional = DatasetUtils.getOperationCompilationUnit(operation, sourcePath);
         if (cuOptional.isEmpty()) {
@@ -298,6 +298,14 @@ public class ProjectOracleGenerator {
         assert jpCallable != null;
         // set data point information.
         builder.setConditionInfo(condition);
+        // override JavaDoc tag with tag from source code.
+        builder.setJavadocTag(DatasetUtils.reconstructTag(findMaximumSimilarityTag(
+                this.projectTagsTokens,
+                jpClass,
+                jpCallable,
+                builder.copy().getOracleType(),
+                builder.copy().getJavadocTag()
+        )));
         builder.setProjectName(projectName);
         builder.setClassSourceCode(classSourceCode);
         builder.setPackageName(packageName);

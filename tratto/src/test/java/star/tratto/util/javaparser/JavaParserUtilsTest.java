@@ -21,7 +21,6 @@ import star.tratto.data.OracleDatapointTest;
 import star.tratto.exceptions.JPClassNotFoundException;
 import star.tratto.exceptions.PackageDeclarationNotFoundException;
 import star.tratto.exceptions.ResolvedTypeNotFound;
-import star.tratto.identifiers.JPCallableType;
 
 import java.nio.file.Paths;
 import java.util.*;
@@ -345,7 +344,7 @@ public class JavaParserUtilsTest {
         OracleDatapoint oracleDatapoint = oracleDatapoints.get(1);
         CallableDeclaration<?> jpCallable = getMethodDeclaration(oracleDatapoint.getMethodSourceCode());
         assertNotNull(jpCallable);
-        String actualSignature = getCallableSignature(jpCallable, JPCallableType.METHOD);
+        String actualSignature = getCallableSignature(jpCallable);
         String expectedSignature = "public DerivativeStructure value(final DerivativeStructure t) throws NullArgumentException, NoDataException";
         assertEquals(expectedSignature, actualSignature);
     }
