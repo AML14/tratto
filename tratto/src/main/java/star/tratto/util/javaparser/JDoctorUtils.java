@@ -130,7 +130,7 @@ public class JDoctorUtils {
      */
     private static String convertJDoctorPrimitiveToJPPrimitive(String jDoctorPrimitive) {
         List<String> primitiveJDoctorValues = CommonPrimitiveType.getAllJDoctorPrimitiveTypeNames();
-        if (primitiveJDoctorValues.contains(jDoctorPrimitive.replaceAll("[^a-zA-z]+", ""))) {
+        if (primitiveJDoctorValues.contains(jDoctorPrimitive.replaceAll("[^a-zA-Z]+", ""))) {
             // match `jDoctorPrimitive` to a known JDoctor primitive representation.
             String jDoctorRegex = CommonPrimitiveType.getJDoctorPrimitivesRegex();
             String regex = String.format(
@@ -168,7 +168,7 @@ public class JDoctorUtils {
         jDoctorTypeName = removeSpuriousCharacters(jDoctorTypeName);
         // converts primitive type.
         List<String> primitiveJDoctorValues = CommonPrimitiveType.getAllJDoctorPrimitiveTypeNames();
-        if (primitiveJDoctorValues.contains(jDoctorTypeName.replaceAll("[^a-zA-z]+", ""))) {
+        if (primitiveJDoctorValues.contains(jDoctorTypeName.replaceAll("[^a-zA-Z]+", ""))) {
             jDoctorTypeName = convertJDoctorPrimitiveToJPPrimitive(jDoctorTypeName);
         }
         // converts array type.
@@ -247,7 +247,7 @@ public class JDoctorUtils {
     private static String getSupertype(String sourceCode, String jpTypeName) {
         int arrayLevel = getArrayLevel(jpTypeName);
         // finds the supertype.
-        String regex = String.format("%s\\s+extends\\s+([A-za-z0-9_]+)[<[A-Za-z0-9_,]+]*", jpTypeName.replaceAll("\\[]", ""));
+        String regex = String.format("%s\\s+extends\\s+([A-Za-z0-9_]+)[<[A-Za-z0-9_,]+]*", jpTypeName.replaceAll("\\[]", ""));
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(sourceCode);
         if (matcher.find()) {

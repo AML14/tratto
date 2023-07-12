@@ -2,11 +2,16 @@ package star.tratto.util.javaparser;
 
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Parameter;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class JDoctorUtilsTest {
+    @Test
+    public void convertJDoctorTypeNamesToJPTypeNamesTest() {
+        assertEquals(List.of("byte[]", "int"), JDoctorUtils.convertJDoctorTypeNamesToJPTypeNames(List.of("[B", "int")));
+    }
+
 
     @Test
     public void isStandardTypeTest() {
