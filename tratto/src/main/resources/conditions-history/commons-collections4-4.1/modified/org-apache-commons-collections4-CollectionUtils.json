@@ -659,6 +659,39 @@
   {
     "operation": {
       "classname": "org.apache.commons.collections4.CollectionUtils",
+      "name": "forAllButLastDo",
+      "parameterTypes": [
+        "java.util.Iterator",
+        "org.apache.commons.collections4.Closure"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "iterator",
+        "closure"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID==null",
+          "description": "the last element in the collection, or null if either iterator or closure is null."
+        },
+        "description": "the last element in the collection, or null if either iterator or closure is null.",
+        "guard": {
+          "condition": "iterator==null || closure==null",
+          "description": "the last element in the collection, or null if either iterator or closure is null."
+        }
+      }
+    ],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.CollectionUtils",
       "name": "select",
       "parameterTypes": [
         "java.lang.Iterable",
