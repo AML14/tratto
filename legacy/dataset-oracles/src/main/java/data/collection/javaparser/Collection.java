@@ -37,7 +37,7 @@ public class Collection {
     }
 
     /**
-     * This method takes an input project and collects its elements (classses and members of it) using JavaParser and JavaSymbolSolver.
+     * This method takes an input project and collects its elements (classes and members of it) using JavaParser and JavaSymbolSolver.
      * It produces a JSON file for each project, which includes the collected data.
      * @param inputProject object keeps the source path of the project and information for optional parts of data collection process
      */
@@ -581,7 +581,7 @@ public class Collection {
     /**
      * This method runs recursively in subdirectories to retrieve all source code files
      * @param directory
-     * @return a list of java source code files in the given directory
+     * @return a list of Java source code files in the given directory
      */
     public static List<File> listSourceFiles(File directory) {
         List<File> allSourceFiles = new ArrayList<>();
