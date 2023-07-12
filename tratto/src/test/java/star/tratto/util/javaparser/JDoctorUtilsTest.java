@@ -1,7 +1,8 @@
 package star.tratto.util.javaparser;
 
-import star.tratto.util.javaparser.JDoctorUtils;
 import org.junit.jupiter.api.Test;
+
+import java.lang.reflect.Parameter;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -23,13 +24,8 @@ public class JDoctorUtilsTest {
 
     @Test
     public void hasJPTypeEllipsisTest() {
-        assertTrue(JDoctorUtils.hasJPTypeEllipsis("Integer..."));
-        assertFalse(JDoctorUtils.hasJPTypeEllipsis("Integer"));
-    }
-
-    @Test
-    public void hasJPTypeExtendsTest() {
-
+        assertTrue(JDoctorUtils.hasEllipsis("Integer..."));
+        assertFalse(JDoctorUtils.hasEllipsis("Integer"));
     }
 
     @Test

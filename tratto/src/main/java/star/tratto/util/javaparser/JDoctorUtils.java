@@ -21,16 +21,72 @@ import java.util.stream.Collectors;
  */
 public class JDoctorUtils {
     /**
-     * @param jDoctorTypeName a JDoctor representation of a type
+     * Removes any type arguments from a parameterized type name.
+     *
+     * @param dirtyTypeName a JDoctor or JavaParser type name
+     * @return the same type name without any type arguments
+     */
+    public static String removeSpuriousCharacters(String dirtyTypeName) {
+        String regex = "(\bsuper\b|\\s|\\?|;|<.*?>)";
+        return dirtyTypeName.replaceAll(regex, "");
+    }
+
+    /**
+     * Splits an identifier, which represents a class path or a
+     * fully-qualified name (for a class or method), into components.
+     *
+     * @param identifier a class path or fully-qualified name
+     * @return identifier components. Includes: path prefix (if the
+     * identifier is a path), all outer classes (separated), the class, and a
+     * file extension (if the identifier is a path).
+     */
+    public static List<String> getIdentifierComponents(
+            String identifier
+    ) {
+        String regex = "[.$]";
+        return Arrays.asList(identifier.split(regex));
+    }
+
+    /**
+     * @param identifierComponents identifier components
+     *                             (see {@code identifierComponents})
+     * @return identifier components, with the suffix removed
+     */
+    public static List<String> removeIdentifierSuffix(
+            List<String> identifierComponents
+    ) {
+        return identifierComponents.subList(0, identifierComponents.size() - 1);
+    }
+
+    /**
+     * @param identifierComponents identifier components without suffix
+     * @return identifier components joined by "."
+     */
+    public static String getPackageNameFromIdentifierComponents(
+            List<String> identifierComponents
+    ) {
+        return String.join(".", identifierComponents);
+    }
+
+    /**
+     * @param identifierComponents identifier components without suffix
+     * @return the innermost class
+     */
+    public static String getClassNameFromIdentifierComponents(
+            List<String> identifierComponents
+    ) {
+        return identifierComponents.get(identifierComponents.size() - 1);
+    }
+
+    /**
+     * @param typeName a JDoctor or JavaParser type name
      * @return the array level of the type
      */
-    private static int getJDoctorArrayLevel(String jDoctorTypeName) {
+    private static int getArrayLevel(String typeName) {
         int arrayLevel = 0;
-        for (char c : jDoctorTypeName.toCharArray()) {
+        for (char c : typeName.toCharArray()) {
             if (c == '[') {
                 arrayLevel++;
-            } else {
-                break;
             }
         }
         return arrayLevel;
@@ -44,8 +100,8 @@ public class JDoctorUtils {
      * @param arrayLevel the number of added array levels
      * @return the new type name with the added number of array levels
      */
-    private static String addArrayLevel(String typeName, int arrayLevel) {
-        return typeName + "[]".repeat(arrayLevel);
+    private static String addJPArrayLevel(String typeName, int arrayLevel) {
+        return typeName + ("[]").repeat(arrayLevel);
     }
 
     /**
@@ -56,9 +112,9 @@ public class JDoctorUtils {
      * @param jDoctorTypeName a JDoctor type name
      * @return the corresponding JavaParser type name
      */
-    private static String convertJDoctorArrayToJavaParserArray(String jDoctorTypeName) {
-        int arrayLevel = getJDoctorArrayLevel(jDoctorTypeName);
-        return addArrayLevel(jDoctorTypeName.substring(arrayLevel), arrayLevel);
+    private static String convertJDoctorArrayToJPArray(String jDoctorTypeName) {
+        int arrayLevel = getArrayLevel(jDoctorTypeName);
+        return addJPArrayLevel(jDoctorTypeName.substring(arrayLevel), arrayLevel);
     }
 
     /**
@@ -72,7 +128,7 @@ public class JDoctorUtils {
      * @throws IllegalArgumentException if {@code jDoctorPrimitive} does not
      * represent a primitive type
      */
-    private static String convertJDoctorPrimitiveToJavaParserPrimitive(String jDoctorPrimitive) {
+    private static String convertJDoctorPrimitiveToJPPrimitive(String jDoctorPrimitive) {
         List<String> primitiveJDoctorValues = CommonPrimitiveType.getAllJDoctorPrimitiveTypeNames();
         if (primitiveJDoctorValues.contains(jDoctorPrimitive.replaceAll("[^a-zA-z]+", ""))) {
             // match `jDoctorPrimitive` to a known JDoctor primitive representation.
@@ -102,88 +158,26 @@ public class JDoctorUtils {
         ));
     }
 
-    private static String convertConditionParameterType(String jDoctorTypeName) {
+    /**
+     * Converts a JDoctor type name to its corresponding JavaParser type name.
+     *
+     * @param jDoctorTypeName a JDoctor representation of a type
+     * @return the corresponding JavaParser representation of a type
+     */
+    private static String convertJDoctorTypeNameToJPTypeName(String jDoctorTypeName) {
         jDoctorTypeName = removeSpuriousCharacters(jDoctorTypeName);
-        // checks if the given JDoctor type name is a primitive type.
+        // converts primitive type.
         List<String> primitiveJDoctorValues = CommonPrimitiveType.getAllJDoctorPrimitiveTypeNames();
         if (primitiveJDoctorValues.contains(jDoctorTypeName.replaceAll("[^a-zA-z]+", ""))) {
-            jDoctorTypeName = convertJDoctorPrimitiveToJavaParserPrimitive(jDoctorTypeName);
+            jDoctorTypeName = convertJDoctorPrimitiveToJPPrimitive(jDoctorTypeName);
         }
-        // checks if the given JDoctor type name is an array type.
+        // converts array type.
         if (jDoctorTypeName.startsWith("[")) {
-            jDoctorTypeName = convertJDoctorArrayToJavaParserArray(jDoctorTypeName);
+            jDoctorTypeName = convertJDoctorArrayToJPArray(jDoctorTypeName);
         }
-        //
-        List<String> paramPathList = getPathList(jDoctorTypeName);
-        return getClassNameFromPathList(paramPathList);
-    }
-
-    public static String getClassNameFromPathList(
-            List<String> pathList
-    ) {
-        return pathList.get(pathList.size() - 1);
-    }
-
-    public static String getExtendsType(String jpMethodString, String jpParamString) {
-        // count dimension of array
-        int howMany = 0;
-        for (char c : jpParamString.toCharArray()) {
-            if (c == '[') {
-                howMany++;
-            }
-        }
-        String regex = String.format("%s\\s+extends\\s+([A-Za-z0-9_]+)[<[A-Za-z0-9_,]+]*", jpParamString.replaceAll("\\[\\]",""));
-
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(jpMethodString);
-
-        if (matcher.find()) {
-            return removeSpuriousCharacters(matcher.group(1)) + "[]".repeat(howMany);
-        } else {
-            String errMsg = String.format(
-                    "The jp method string %s does not match the regex built with jp param string %s",
-                    jpMethodString,
-                    jpParamString
-            );
-            throw new IllegalArgumentException(errMsg);
-        }
-    }
-
-    /**
-     *
-     *
-     * @param packageList
-     * @return
-     */
-    public static String getPackageNameFromPackageList(
-            List<String> packageList
-    ) {
-        return String.join(".", packageList);
-    }
-
-    /**
-     *
-     *
-     * @param pathList
-     * @return
-     */
-    public static List<String> getPackageList(
-            List<String> pathList
-    ) {
-        return pathList.subList(0, pathList.size() - 1);
-    }
-
-    /**
-     *
-     *
-     * @param path
-     * @return
-     */
-    public static List<String> getPathList(
-            String path
-    ) {
-        String regex = "[.$]";
-        return Arrays.asList(path.split(regex));
+        // gets class name.
+        List<String> paramPathList = getIdentifierComponents(jDoctorTypeName);
+        return getClassNameFromIdentifierComponents(paramPathList);
     }
 
     /**
@@ -195,49 +189,114 @@ public class JDoctorUtils {
      * @param jDoctorTypeNames JDoctor type names to convert
      * @return a list of the corresponding JavaParser type names
      */
-    public static List<String> convertJDoctorTypeNamesToJavaParserTypeNames(
+    public static List<String> convertJDoctorTypeNamesToJPTypeNames(
             List<String> jDoctorTypeNames
     ) {
         return jDoctorTypeNames
                 .stream()
-                .map(JDoctorUtils::convertConditionParameterType)
+                .map(JDoctorUtils::convertJDoctorTypeNameToJPTypeName)
                 .collect(Collectors.toList());
     }
 
     /**
+     * @param jpClass a JavaParser class or interface declaration
+     * @return true iff the given class or interface uses generic types
+     */
+    public static boolean hasGenerics(ClassOrInterfaceDeclaration jpClass) {
+        return jpClass.getTypeParameters().size() > 0;
+    }
+
+    /**
+     * @param jpTypeName name of a JavaParser parameter {@link Parameter}
+     * @return true iff the parameter name includes "..."
+     */
+    public static boolean hasEllipsis(String jpTypeName) {
+        return jpTypeName.contains("...");
+    }
+
+    /**
+     * Checks if a given type extends a supertype in source code.
+     * NOTE: We only check "extends" and not "implements" for parameterized
+     * types.
      *
+     * @param sourceCode the method or class source code in which
+     * {@code jpTypeName} is used
+     * @param jpTypeName a JavaParser type name
+     * @return true iff the type name extends another type
+     */
+    public static boolean hasSupertype(String sourceCode, String jpTypeName) {
+        String regex = String.format("%s\\s+extends\\s+([A-Za-z0-9_]+)[<[A-Za-z0-9_,]+]*", jpTypeName.replaceAll("\\[]",""));
+        // Using the Pattern and Matcher classes
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(sourceCode);
+        return matcher.find();
+    }
+
+    /**
+     * Finds the supertype of a given type name in source code. We analyze
+     * source code using JavaParser, such that the given type name must use
+     * the JavaParser representation.
      *
-     * @param primaryType
-     * @param jpCallable
-     * @param jpTypeParam
+     * @param sourceCode the method or class source code in which
+     * {@code jpTypeName} is used
+     * @param jpTypeName a JavaParser type name
+     * @return the name of the supertype of {@code jpTypeName}
+     * @throws IllegalArgumentException if {@code jpTypeName} does not extend
+     * a type
+     */
+    private static String getSupertype(String sourceCode, String jpTypeName) {
+        int arrayLevel = getArrayLevel(jpTypeName);
+        // finds the supertype.
+        String regex = String.format("%s\\s+extends\\s+([A-za-z0-9_]+)[<[A-Za-z0-9_,]+]*", jpTypeName.replaceAll("\\[]", ""));
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(sourceCode);
+        if (matcher.find()) {
+            return removeSpuriousCharacters(matcher.group(1)) + ("[]").repeat(arrayLevel);
+        } else {
+            throw new IllegalArgumentException(String.format(
+                    "The JavaParser source code %s does not match the regex built with the JavaParser type name %s.",
+                    sourceCode,
+                    jpTypeName
+            ));
+        }
+    }
+
+    /**
+     * Gets the raw name of the type in source code. Used to manage edge cases
+     * with generic types in source code. Also ensures name is consistent with
+     * JDoctor format for direct comparison.
+     *
+     * @param jpClass the declaring class.
+     * @param jpCallable the method using {@code jpParam}.
+     * @param jpParam a parameter
      * @return
      */
-    public static String getJPTypeName(
-            TypeDeclaration<?> primaryType,
+    public static String getRawTypeName(
+            TypeDeclaration<?> jpClass,
             CallableDeclaration<?> jpCallable,
-            Parameter jpTypeParam
+            Parameter jpParam
     ) {
-        //
-        String jpTypeName = removeSpuriousCharacters(jpTypeParam.getType().asString());
-        //
-        if (jpTypeParam.getType().isClassOrInterfaceType()) {
-            jpTypeName = removeSpuriousCharacters(jpTypeParam.getType().asClassOrInterfaceType().getName().asString());
+        String jpTypeName = removeSpuriousCharacters(jpParam.getType().asString());
+        // get class name.
+        if (jpParam.getType().isClassOrInterfaceType()) {
+            jpTypeName = removeSpuriousCharacters(jpParam.getType().asClassOrInterfaceType().getNameAsString());
         }
-        //
-        if (hasJPTypeEllipsis(jpTypeParam.toString())) {
-            jpTypeName = addArrayLevel(jpTypeName, 1);
+        // handle ellipsis.
+        if (hasEllipsis(jpParam.toString())) {
+            jpTypeName = addJPArrayLevel(jpTypeName, 1);
         }
-        //
-        if (hasJPTypeExtends(jpCallable.getTokenRange().get().toString(), jpTypeName)) {
-            jpTypeName = getExtendsType(jpCallable.getTokenRange().get().toString(), jpTypeName);
+        // use upper bound if possible.
+        if (hasSupertype(jpCallable.getTokenRange().get().toString(), jpTypeName)) {
+            jpTypeName = getSupertype(jpCallable.getTokenRange().get().toString(), jpTypeName);
         }
-        if (primaryType.isClassOrInterfaceDeclaration()) {
-            ClassOrInterfaceDeclaration jpClass = primaryType.asClassOrInterfaceDeclaration();
-            if (hasGenerics(jpClass)) {
-                for (TypeParameter jpClassType : jpClass.getTypeParameters()) {
-                    if (jpClassType.getNameAsString().equals(jpTypeName.replaceAll("\\[\\]",""))) {
-                        if (hasJPTypeExtends(jpClassType.toString(), jpTypeName)) {
-                            jpTypeName = getExtendsType(jpClassType.toString(), jpTypeName);
+        // handle generic upper bound separately due to naming.
+        if (jpClass.isClassOrInterfaceDeclaration()) {
+            ClassOrInterfaceDeclaration jpClassDeclaration =  jpClass.asClassOrInterfaceDeclaration();
+            if (hasGenerics(jpClassDeclaration)) {
+                for (TypeParameter jpGeneric : jpClassDeclaration.getTypeParameters()) {
+                    if (jpGeneric.getNameAsString().equals(jpTypeName.replaceAll("\\[]", ""))) {
+                        if (hasSupertype(jpGeneric.toString(), jpTypeName)) {
+                            jpTypeName = getSupertype(jpGeneric.toString(), jpTypeName);
                         }
                     }
                 }
@@ -269,47 +328,5 @@ public class JDoctorUtils {
      */
     public static boolean isStandardTypeArray(String conditionType) {
         return conditionType.equals("Object[]") || conditionType.equals("Comparable[]");
-    }
-
-    /**
-     * @param jpClass a JavaParser class or interface declaration
-     * @return true iff the given class or interface uses generic types
-     */
-    private static boolean hasGenerics(ClassOrInterfaceDeclaration jpClass) {
-        return jpClass.getTypeParameters().size() > 0;
-    }
-
-    /**
-     * @param jpParamString name of a JavaParser parameter {@link Parameter}
-     * @return true iff the parameter name includes "..."
-     */
-    public static boolean hasJPTypeEllipsis(String jpParamString) {
-        return jpParamString.contains("...");
-    }
-
-    /**
-     * Checks if a given method string has a type
-     *
-     * @param jpMethodString
-     * @param jpParamString
-     * @return
-     */
-    public static boolean hasJPTypeExtends(String jpMethodString, String jpParamString) {
-        String regex = String.format("%s\\s+extends\\s+([A-Za-z0-9_]+)[<[A-Za-z0-9_,]+]*", jpParamString.replaceAll("\\[\\]",""));
-        // Using the Pattern and Matcher classes
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(jpMethodString);
-        return matcher.find();
-    }
-
-    /**
-     * Removes any type arguments from a parameterized type name.
-     *
-     * @param dirtyType a JDoctor or JavaParser type name
-     * @return the same type name without any type arguments
-     */
-    public static String removeSpuriousCharacters(String dirtyType) {
-        String regex = "(\bsuper\b|\\s|\\?|;|<.*?>)";
-        return dirtyType.replaceAll(regex, "");
     }
 }
