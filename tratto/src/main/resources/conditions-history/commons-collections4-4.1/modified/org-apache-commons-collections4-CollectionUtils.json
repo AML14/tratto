@@ -1334,6 +1334,37 @@
   {
     "operation": {
       "classname": "org.apache.commons.collections4.CollectionUtils",
+      "name": "isEmpty",
+      "parameterTypes": [
+        "java.util.Collection"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "coll"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID==true",
+          "description": "true if empty or null."
+        },
+        "description": "true if empty or null.",
+        "guard": {
+          "condition": "coll.isEmpty() || coll==null",
+          "description": "true if empty or null."
+        }
+      }
+    ],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.CollectionUtils",
       "name": "checkIndexBounds",
       "parameterTypes": [
         "int"
