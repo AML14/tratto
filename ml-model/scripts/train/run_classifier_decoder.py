@@ -7,11 +7,12 @@ import numpy as np
 from torch.utils.data import DataLoader, RandomSampler
 from transformers import AdamW, get_linear_schedule_with_warmup
 
+from src.model.OracleTrainerDecoder import OracleTrainerDecoder
 from src.types.ClassificationType import ClassificationType
 from src.types.DatasetType import DatasetType
 from src.types.DeviceType import DeviceType
 from src.types.TrattoModelType import TrattoModelType
-from src.model.OracleTrainerDecoder import OracleTrainerDecoder
+from src.model.OracleTrainer import OracleTrainer
 from src.utils import logger
 from src.parser.ArgumentParser import ArgumentParser
 from src.processors.DataProcessorDecoder import DataProcessorDecoder
