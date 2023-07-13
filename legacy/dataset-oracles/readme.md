@@ -131,6 +131,3 @@ List of ISSTA'18 projects:
 4. guava-19.0
 5. jgrapht-core-0.9.2
 6. plume-lib-1.1.0
-
-
-
