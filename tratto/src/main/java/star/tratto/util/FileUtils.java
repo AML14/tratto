@@ -62,8 +62,7 @@ public class FileUtils {
 
     /**
      * The method creates a file within a given directory. If the file already
-     * exists, then this method does nothing. Returns the File {@link File}
-     * representation of the new file at the specified path.
+     * exists, then this method does nothing.
      *
      * @param dirPath the path to the directory where the file must be saved
      * @param fileName the name of the file where to write the content
@@ -97,10 +96,10 @@ public class FileUtils {
     }
 
     /**
-     * Recursively gets a list of all java files in a given directory.
+     * Returns all Java files under a given directory (in it or child, recursively).
      *
-     * @param dir the directory from which to extract all the files contained
-     * @return the list of all the files existing within the given directory
+     * @param dir a directory
+     * @return the Java files within the given directory
      */
     public static List<File> getAllJavaFilesFromDirectory(File dir) {
         List<File> javaFileList = new ArrayList<>();
@@ -116,14 +115,14 @@ public class FileUtils {
     }
 
     /**
-     * The method builds a complete path to a file.
+     * Returns an absolute path to a file.
      *
      * @param dirPath the path to the directory where the file must be saved
      * @param fileName the name of the file where to write the content
      * @param fileFormat the format of the file
      * @return the complete path to a file
      */
-    public static String getAbsolutePathToFile(String dirPath, FileName fileName, FileFormat fileFormat) {
+    public static String getAbsolutePath(String dirPath, FileName fileName, FileFormat fileFormat) {
         return Paths.get(dirPath, fileName.getValue()) + fileFormat.getExtension();
     }
 
