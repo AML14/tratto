@@ -124,7 +124,7 @@ public class FileUtils {
      * @param fileFormat the format of the file
      * @return the complete path to a file
      */
-    public static String getAbsolutePathToFile(String dirPath, FileName fileName, FileFormat fileFormat) {
+    public static String getAbsolutePath(String dirPath, FileName fileName, FileFormat fileFormat) {
         return Paths.get(dirPath, fileName.getValue()) + fileFormat.getExtension();
     }
 
