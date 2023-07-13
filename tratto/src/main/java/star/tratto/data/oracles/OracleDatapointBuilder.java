@@ -42,7 +42,7 @@ public class OracleDatapointBuilder {
      * Sets default general tokens for symbolic grammar.
      */
     private void setDefaultGrammarTokens() {
-        String tokensGrammarPath = FileUtils.getAbsolutePathToFile(
+        String tokensGrammarPath = FileUtils.getAbsolutePath(
                 IOPath.REPOS.getValue(),
                 FileName.TOKENS_GRAMMAR,
                 FileFormat.JSON
@@ -58,7 +58,7 @@ public class OracleDatapointBuilder {
      * Sets default global values for tokens.
      */
     private void setDefaultGeneralValues() {
-        String tokenGeneralValuesPath = FileUtils.getAbsolutePathToFile(
+        String tokenGeneralValuesPath = FileUtils.getAbsolutePath(
                 IOPath.REPOS.getValue(),
                 FileName.TOKENS_GENERAL_VALUES,
                 FileFormat.JSON

@@ -162,7 +162,7 @@ public class OracleDPGenerator {
      */
     private HashMap<OracleDPAttrKey, OracleDPAttrValue> defaultTokensGrammar() {
         HashMap<OracleDPAttrKey, OracleDPAttrValue> defaultTokensGrammarMap = new HashMap<>();
-        String tokensGrammarPath = FileUtils.getAbsolutePathToFile(Path.REPOS.getValue(), FileName.TOKENS_GRAMMAR, FileFormat.JSON);
+        String tokensGrammarPath = FileUtils.getAbsolutePath(Path.REPOS.getValue(), FileName.TOKENS_GRAMMAR, FileFormat.JSON);
         List<String> tokenGrammarList = (List<String>) FileUtils.readJSONList(tokensGrammarPath);
         defaultTokensGrammarMap.put(OracleDPAttrKey.TOKENS_GENERAL_GRAMMAR, new OracleDPAttrValue<>(tokenGrammarList));
         return defaultTokensGrammarMap;
@@ -177,7 +177,7 @@ public class OracleDPGenerator {
      */
     private HashMap<OracleDPAttrKey, OracleDPAttrValue> defaultTokensGeneralValues() {
         HashMap<OracleDPAttrKey,OracleDPAttrValue> defaultTokensGrammarMap = new HashMap<>();
-        String tokenGeneralValuesPath = FileUtils.getAbsolutePathToFile(Path.REPOS.getValue(), FileName.TOKENS_GENERAL_VALUES, FileFormat.JSON);
+        String tokenGeneralValuesPath = FileUtils.getAbsolutePath(Path.REPOS.getValue(), FileName.TOKENS_GENERAL_VALUES, FileFormat.JSON);
         List<Pair<String,String>> tokenGeneralValuesList = ((List<List<String>>) FileUtils.readJSONList(tokenGeneralValuesPath)).stream().map(tokenList -> new Pair<>(tokenList.get(0),tokenList.get(1))).toList();
         defaultTokensGrammarMap.put(OracleDPAttrKey.TOKENS_GENERAL_VALUES_GLOBAL_DICTIONARY, new OracleDPAttrValue<>(tokenGeneralValuesList));
         return defaultTokensGrammarMap;

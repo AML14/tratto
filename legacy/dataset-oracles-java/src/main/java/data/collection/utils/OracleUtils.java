@@ -312,7 +312,7 @@ public class OracleUtils {
 
     public static String removeNonVariableTokens(String oracle) {
         // Define the path to the json file with the list of non-variable tokens
-        String jsonFilePath = FileUtils.getAbsolutePathToFile(Path.REPOS.getValue(), FileName.NON_VARIABLE_TOKENS, FileFormat.JSON);
+        String jsonFilePath = FileUtils.getAbsolutePath(Path.REPOS.getValue(), FileName.NON_VARIABLE_TOKENS, FileFormat.JSON);
         // Instantiate an object mapper to read the json file
         ObjectMapper mapper = new ObjectMapper();
         try {

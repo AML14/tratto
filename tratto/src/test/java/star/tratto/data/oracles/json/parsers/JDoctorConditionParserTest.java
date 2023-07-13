@@ -18,7 +18,7 @@ public class JDoctorConditionParserTest {
     @Test
     public void parseJDocConditionsTest() {
         // get actual conditions from
-        List<Project> projects = ProjectParser.initialize(FileUtils.getAbsolutePathToFile(
+        List<Project> projects = ProjectParser.initialize(FileUtils.getAbsolutePath(
                 IOPath.REPOS.getValue(),
                 FileName.INPUT_PROJECTS,
                 FileFormat.JSON

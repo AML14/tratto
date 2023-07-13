@@ -27,7 +27,7 @@ public class OraclesDataset {
 
         // Specify the path to JSON file with the list of the input projects and
         // the information, to initialize each of them.
-        String projectsPath = FileUtils.getAbsolutePathToFile(IOPath.REPOS.getValue(), FileName.INPUT_PROJECTS, FileFormat.JSON);
+        String projectsPath = FileUtils.getAbsolutePath(IOPath.REPOS.getValue(), FileName.INPUT_PROJECTS, FileFormat.JSON);
         List<Project> projects = ProjectParser.initialize(projectsPath);
         JDoctorConditionParser jDoctorConditionParser = new JDoctorConditionParser();
         ProjectOracleGenerator oracleDPGenerator = new ProjectOracleGenerator();

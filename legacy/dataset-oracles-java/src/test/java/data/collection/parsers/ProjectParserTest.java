@@ -17,7 +17,7 @@ public class ProjectParserTest {
     @Test
     public void testInitialize() {
         // parse all projects from provided path.
-        List<Project> actual = ProjectParser.initialize(FileUtils.getAbsolutePathToFile(
+        List<Project> actual = ProjectParser.initialize(FileUtils.getAbsolutePath(
                 Path.REPOS.getValue(),
                 FileName.INPUT_PROJECTS,
                 FileFormat.JSON

@@ -127,7 +127,7 @@ public class FileUtils {
         return javaFileList;
     }
 
-    public static String getAbsolutePathToFile(String dir, FileName fileName, FileFormat fileFormat) {
+    public static String getAbsolutePath(String dir, FileName fileName, FileFormat fileFormat) {
         String filePath = Paths.get(dir, fileName.getValue()).toString() + fileFormat.getValue();
         return filePath;
     }

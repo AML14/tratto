@@ -27,7 +27,7 @@ public class Main {
     public static void main(String[] args) {
         // Specify the path to JSON file with the list of the input projects and
         // the information, to initialize each of them
-        String projectsPath = FileUtils.getAbsolutePathToFile(Path.REPOS.getValue(), FileName.INPUT_PROJECTS, FileFormat.JSON);
+        String projectsPath = FileUtils.getAbsolutePath(Path.REPOS.getValue(), FileName.INPUT_PROJECTS, FileFormat.JSON);
         List<Project> projects = ProjectParser.initialize(projectsPath);
         JDocConditionParser jDocConditionParser = new JDocConditionParser();
         OracleDPGenerator oracleDPGenerator = new OracleDPGenerator();

@@ -138,7 +138,7 @@ public class FileUtilsTest {
         String dirPath = Path.REPOS.getValue();
         FileName fileName = FileName.INPUT_PROJECTS;
         FileFormat format = FileFormat.JSON;
-        String path = FileUtils.getAbsolutePathToFile(dirPath, fileName, format);
+        String path = FileUtils.getAbsolutePath(dirPath, fileName, format);
         assertEquals(new File("src/main/repos/inputProjects.json").getAbsolutePath(), path);
     }
 
