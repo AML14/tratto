@@ -12,7 +12,6 @@ from src.types.ClassificationType import ClassificationType
 from src.types.DatasetType import DatasetType
 from src.types.DeviceType import DeviceType
 from src.types.TrattoModelType import TrattoModelType
-from src.model.OracleTrainer import OracleTrainer
 from src.utils import logger
 from src.parser.ArgumentParser import ArgumentParser
 from src.processors.DataProcessorDecoder import DataProcessorDecoder

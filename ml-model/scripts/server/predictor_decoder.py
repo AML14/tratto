@@ -7,8 +7,6 @@ import Levenshtein
 from torch.utils.data import DataLoader, TensorDataset
 from transformers import PreTrainedModel, PreTrainedTokenizer
 from typing import Type, re
-
-from src.pretrained.ModelClasses import ModelClasses
 from src.types.TrattoModelType import TrattoModelType
 from src.utils import utils
 
