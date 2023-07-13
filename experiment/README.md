@@ -51,7 +51,7 @@ For clarification, consider the following (buggy) code snippet:
  * @param b an integer
  * @returns the sum of the two integer values
  */
-public static int sum(int a, int b) {
+int sum(int a, int b) {
     return a - b;
 }
 ```
