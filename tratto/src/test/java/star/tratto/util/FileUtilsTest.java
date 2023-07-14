@@ -58,7 +58,9 @@ public class FileUtilsTest {
                     .stream()
                     .map(p -> p.getFileName().toString())
                     .toList();
-            assertEquals(List.of("SplitterTest.java", "ParserTest.java"), fileNames);
+            assertEquals(2, fileNames.size());
+            assertTrue(fileNames.contains("SplitterTest.java"));
+            assertTrue(fileNames.contains("ParserTest.java"));
         } catch (IOException e) {
             e.printStackTrace();
             fail();
