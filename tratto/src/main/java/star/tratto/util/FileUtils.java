@@ -2,8 +2,6 @@ package star.tratto.util;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import star.tratto.identifiers.FileFormat;
 import star.tratto.identifiers.FileName;
 
@@ -17,11 +15,10 @@ import java.util.stream.Stream;
 
 
 /**
- * This class manages file I/O utilities.
+ * Manages all necessary I/O utilities (e.g. creating files, writing to files,
+ * retrieving all Java files, etc.).
  */
 public class FileUtils {
-    private static final Logger logger = LoggerFactory.getLogger(FileUtils.class);
-
     /**
      * Combines given information into a file path.
      *
@@ -111,11 +108,9 @@ public class FileUtils {
      * occurs while reading the file
      */
     public static List<?> readJSONList(String filePath) throws IOException {
-        // get path.
+        // find path.
         Path jsonPath = Paths.get(filePath);
-        if (!Files.exists(jsonPath)) {
-            throw new IOException(String.format("JSON file %s not found.", filePath));
-        }
+        if (!Files.exists(jsonPath)) throw new IOException(String.format("JSON file %s not found.", filePath));
         // read input from path.
         ObjectMapper objectMapper = new ObjectMapper();
         try {
