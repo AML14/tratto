@@ -6,6 +6,7 @@ import star.tratto.identifiers.FileName;
 import star.tratto.identifiers.IOPath;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -14,6 +15,21 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class FileUtilsTest {
+    @Test
+    public void testCreateFile() {
+        String dirPath = "src/test/java/star/tratto/util/temp";
+        String fileName = "tempFile";
+        FileFormat fileExtension = FileFormat.TXT;
+        try {
+            FileUtils.createFile(dirPath, fileName, fileExtension);
+            Files.delete(Paths.get("src/test/java/star/tratto/util/temp/tempFile.txt"));
+            Files.delete(Paths.get("src/test/java/star/tratto/util/temp"));
+        } catch (IOException e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
     @Test
     public void getAllJavaFilesFromDirectoryTest() {
         Path dir = Paths.get("src/test/java/star/tratto/oraclegrammar/custom");

@@ -4,8 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import star.tratto.exceptions.FileNotCreatedException;
-import star.tratto.exceptions.FolderCreationFailedException;
 import star.tratto.identifiers.FileFormat;
 import star.tratto.identifiers.FileName;
 
@@ -35,7 +33,7 @@ public class FileUtils {
     ) {
         try {
             // create a new file
-            File file = createFile(Paths.get(dirPath, projectName).toString(), fileName, fileFormat);
+            File file = createFile(Paths.get(dirPath, projectName).toString(), fileName, fileFormat).toFile();
             // depending on the file format, save the content, accordingly
             switch (fileFormat) {
                 case TXT, CSV -> {
@@ -63,36 +61,36 @@ public class FileUtils {
     }
 
     /**
-     * The method creates a file within a given directory. If the file already
-     * exists, then this method does nothing.
+     * Creates a directory at the given path.
      *
-     * @param dirPath the path to the directory where the file must be saved
-     * @param fileName the name of the file where to write the content
-     * @param fileFormat the format of the file
-     * @return the file created
-     * @throws IOException if the file cannot be created
+     * @param dirPath a String representation of the root path
+     * @throws IOException if an error occurs while creating the directory
      */
-    public static File createFile(String dirPath, String fileName, FileFormat fileFormat) throws IOException {
-        String filePath = Paths.get(dirPath, fileName + fileFormat.getExtension()).toString();
-        File dir = new File(dirPath);
-        File file = new File(filePath);
-        // create directory.
-        if (!dir.exists()) {
-            boolean success = dir.mkdirs();
-            if (!success) {
-                String errMsg = String.format("Unable to create folder %s", dirPath);
-                logger.error(errMsg);
-                throw new FolderCreationFailedException();
-            }
+    private static void createDir(String dirPath) throws IOException {
+        Path dir = Paths.get(dirPath);
+        if (!Files.exists(dir)) {
+            Files.createDirectory(dir);
         }
-        // create file.
-        if (!file.exists()) {
-            boolean fileCreated = file.createNewFile();
-            if (!fileCreated) {
-                String errMsg = String.format("Unable to create file %s to path %s.", fileName, dirPath);
-                logger.error(errMsg);
-                throw new FileNotCreatedException();
-            }
+    }
+
+    /**
+     * Creates a file in a given directory. If the file already exists, then
+     * this method does nothing.
+     *
+     * @param dirPath the parent directory of the file.
+     * @param fileName the name of the file to be created
+     * @param fileFormat the file extension
+     * @return the path of the file created
+     * @throws IOException if an error occurs while creating the directory at
+     * {@code dirPath} or while creating the file {@code fileName}.
+     */
+    public static Path createFile(String dirPath, String fileName, FileFormat fileFormat) throws IOException {
+        // make directory if necessary.
+        createDir(dirPath);
+        // make file.
+        Path file = Paths.get(dirPath, fileName + fileFormat.getExtension());
+        if (!Files.exists(file)) {
+            Files.createFile(file);
         }
         return file;
     }
