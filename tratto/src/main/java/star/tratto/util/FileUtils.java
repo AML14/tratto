@@ -12,6 +12,8 @@ import star.tratto.identifiers.FileName;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +57,7 @@ public class FileUtils {
                     logger.error(errMsg);
                 }
             }
-        } catch (IOException | FolderCreationFailedException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -138,29 +140,26 @@ public class FileUtils {
     }
 
     /**
-     * The method reads a list from a JSON file.
-     * @param filePath the path to the JSON file
-     * @return the list of values read from the JSON file
+     * Reads a list from a JSON file.
+     *
+     * @param filePath a path to a JSON file
+     * @return the list of values in the JSON file
+     * @throws IOException if {@code filePath} does not exist or an error
+     * occurs while reading the file
      */
-    public static List<?> readJSONList(String filePath) {
-        File jsonFile = new File(filePath);
-        if (!jsonFile.exists()) {
-            String errMsg = String.format("JSON file %s not found.", filePath);
-            logger.error(errMsg);
-            return new ArrayList<>();
+    public static List<?> readJSONList(String filePath) throws IOException {
+        Path jsonPath = Paths.get(filePath);
+        if (!Files.exists(jsonPath)) {
+            throw new IOException(String.format("JSON file %s not found.", filePath));
         }
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             return objectMapper.readValue(
-                    jsonFile,
-                    new TypeReference<>() {
-                    }
+                    jsonPath.toFile(),
+                    new TypeReference<>() {}
             );
         } catch (IOException e) {
-            String errMsg = String.format("Error in processing the JSON file %s.", filePath);
-            logger.error(errMsg);
-            e.printStackTrace();
+            throw new IOException(String.format("Error in processing the JSON file %s.", filePath), e);
         }
-        return new ArrayList<>();
     }
 }
