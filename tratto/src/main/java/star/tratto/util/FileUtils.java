@@ -15,9 +15,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 /**
@@ -72,7 +72,7 @@ public class FileUtils {
      * @return the file created
      * @throws IOException if the file cannot be created
      */
-    public static File createFile(String dirPath, String fileName, FileFormat fileFormat) throws FolderCreationFailedException, IOException, FileNotCreatedException {
+    public static File createFile(String dirPath, String fileName, FileFormat fileFormat) throws IOException {
         String filePath = Paths.get(dirPath, fileName + fileFormat.getExtension()).toString();
         File dir = new File(dirPath);
         File file = new File(filePath);
@@ -98,45 +98,33 @@ public class FileUtils {
     }
 
     /**
-     * Returns all Java files under a given directory (in it or child, recursively).
+     * Gets all Java files in a given directory (and subdirectories).
      *
      * @param dir a directory
-     * @return the Java files within the given directory
+     * @return all Java files (as Path objects) in {@code dir}
+     * @throws IOException if unable to collect files from {@code dir}
      */
-    public static List<File> getAllJavaFilesFromDirectory(File dir) {
-        List<File> javaFileList = new ArrayList<>();
-        for (File file: Objects.requireNonNull(dir.listFiles())) {
-            if (file.isDirectory()) {
-                javaFileList.addAll(getAllJavaFilesFromDirectory(file));
-            }
-            if (isJavaFile(file)) {
-                javaFileList.add(file);
-            }
+    public static List<Path> getAllJavaFilesFromDirectory(Path dir) throws IOException {
+        try (Stream<Path> walk = Files.walk(dir)) {
+            return walk
+                    .filter(p -> p.getFileName().toString().endsWith(".java"))
+                    .collect(Collectors.toList());
+        } catch (IOException e) {
+            // catch exception to avoid resource leak.
+            throw new IOException(String.format("Error in collecting all files from %s.%n", dir), e);
         }
-        return javaFileList;
     }
 
     /**
-     * Returns an absolute path to a file.
+     * Returns an absolute file path.
      *
-     * @param dirPath the path to the directory where the file must be saved
-     * @param fileName the name of the file where to write the content
-     * @param fileFormat the format of the file
-     * @return the complete path to a file
+     * @param dirPath the root directory path
+     * @param fileName the name of the file in the directory
+     * @param fileFormat the file extension
+     * @return the complete path to the file
      */
     public static String getAbsolutePath(String dirPath, FileName fileName, FileFormat fileFormat) {
         return Paths.get(dirPath, fileName.getValue()) + fileFormat.getExtension();
-    }
-
-    /**
-     * The method checks if a file is a Java file.
-     * @param file the file to inspect
-     * @return a boolean value: {@code true} if the file is a Java file, {@code false} otherwise
-     */
-    public static boolean isJavaFile(File file) {
-        String fileName = file.getName();
-        // The file doesn't have an extension
-        return fileName.endsWith(".java");
     }
 
     /**
@@ -148,10 +136,12 @@ public class FileUtils {
      * occurs while reading the file
      */
     public static List<?> readJSONList(String filePath) throws IOException {
+        // get path.
         Path jsonPath = Paths.get(filePath);
         if (!Files.exists(jsonPath)) {
             throw new IOException(String.format("JSON file %s not found.", filePath));
         }
+        // read input from path.
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             return objectMapper.readValue(
@@ -159,7 +149,7 @@ public class FileUtils {
                     new TypeReference<>() {}
             );
         } catch (IOException e) {
-            throw new IOException(String.format("Error in processing the JSON file %s.", filePath), e);
+            throw new IOException(String.format("Error in processing the JSON file %s.%n", filePath), e);
         }
     }
 }
