@@ -1,6 +1,8 @@
 package star.tratto.exceptions;
 
-public class FolderCreationFailedException extends Exception {
+import java.io.IOException;
+
+public class FolderCreationFailedException extends IOException {
     public FolderCreationFailedException() {
         super();
     }
