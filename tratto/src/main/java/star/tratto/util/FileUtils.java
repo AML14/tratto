@@ -7,8 +7,6 @@ import org.slf4j.LoggerFactory;
 import star.tratto.identifiers.FileFormat;
 import star.tratto.identifiers.FileName;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -24,75 +22,54 @@ import java.util.stream.Stream;
 public class FileUtils {
     private static final Logger logger = LoggerFactory.getLogger(FileUtils.class);
 
-    public static void appendToFile(
+    /**
+     * Combines given information into a file path.
+     *
+     * @param dirPath a base root path
+     * @param fileName the file name
+     * @param fileFormat the type of file (e.g. ".txt", ".json")
+     * @param projectName the corresponding project being analyzed
+     * @return a file path which combines the given information into
+     * format:
+     *  "[dirPath]/[projectName]/[fileName].[fileFormat.getExtension()]"
+     */
+    public static Path getPath(
             String dirPath,
             String fileName,
             FileFormat fileFormat,
-            String projectName,
-            Object content
+            String projectName
     ) {
-        try {
-            // create a new file
-            File file = createFile(Paths.get(dirPath, projectName).toString(), fileName, fileFormat).toFile();
-            // depending on the file format, save the content, accordingly
-            switch (fileFormat) {
-                case TXT, CSV -> {
-                    // Convert content to string
-                    String fileContent = (String) content;
-                    // Create a FileWriter object with append flag set to true
-                    FileWriter writer = new FileWriter(file, true);
-                    // Write content to the file
-                    writer.write(fileContent + "\n");
-                    // Close the FileWriter object
-                    writer.close();
-                }
-                case JSON -> {
-                    ObjectMapper objectMapper = new ObjectMapper();
-                    objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, content);
-                }
-                default -> {
-                    String errMsg = String.format("File format %s not yet supported to save the content of a file.", fileFormat.getExtension());
-                    logger.error(errMsg);
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        return Paths.get(dirPath, projectName, fileName + fileFormat.getExtension());
+    }
+
+    /**
+     * Creates an empty file at a given path. Creates parent directories if
+     * necessary. If the file already exists, then this method does nothing.
+     *
+     * @param path a Path representation of a file
+     * @throws IOException if an error occurs while creating the parent
+     * directories or new file.
+     */
+    public static void createFile(Path path) throws IOException {
+        Files.createDirectories(path.getParent());
+        if (!Files.exists(path)) {
+            Files.createFile(path);
         }
     }
 
     /**
-     * Creates a directory at the given path.
+     * Writes {@code content} to {@code path}. Creates a new file/directories
+     * if necessary. Overwrites any previous content.
      *
-     * @param dirPath a String representation of the root path
-     * @throws IOException if an error occurs while creating the directory
+     * @param path a Path representation of a file
+     * @param content an object to be mapped as JSON content
+     * @throws IOException if unable to create files/directories or unable to
+     * write content to file.
      */
-    private static void createDir(String dirPath) throws IOException {
-        Path dir = Paths.get(dirPath);
-        if (!Files.exists(dir)) {
-            Files.createDirectory(dir);
-        }
-    }
-
-    /**
-     * Creates a file in a given directory. If the file already exists, then
-     * this method does nothing.
-     *
-     * @param dirPath the parent directory of the file.
-     * @param fileName the name of the file to be created
-     * @param fileFormat the file extension
-     * @return the path of the file created
-     * @throws IOException if an error occurs while creating the directory at
-     * {@code dirPath} or while creating the file {@code fileName}.
-     */
-    public static Path createFile(String dirPath, String fileName, FileFormat fileFormat) throws IOException {
-        // make directory if necessary.
-        createDir(dirPath);
-        // make file.
-        Path file = Paths.get(dirPath, fileName + fileFormat.getExtension());
-        if (!Files.exists(file)) {
-            Files.createFile(file);
-        }
-        return file;
+    public static void write(Path path, Object content) throws IOException {
+        createFile(path);
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.writerWithDefaultPrettyPrinter().writeValue(path.toFile(), content);
     }
 
     /**

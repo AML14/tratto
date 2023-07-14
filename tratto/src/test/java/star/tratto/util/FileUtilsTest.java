@@ -16,14 +16,34 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class FileUtilsTest {
     @Test
-    public void testCreateFile() {
-        String dirPath = "src/test/java/star/tratto/util/temp";
-        String fileName = "tempFile";
-        FileFormat fileExtension = FileFormat.TXT;
+    public void getPathTest() {
+        String dirPath = "hanford";
+        String fileName = "hydrogen-bomb";
+        FileFormat fileFormat = FileFormat.CSV;
+        String projectName = "manhattan";
+        assertEquals("hanford/manhattan/hydrogen-bomb.csv", FileUtils.getPath(dirPath, fileName, fileFormat, projectName).toString());
+    }
+
+    @Test
+    public void createFileTest() {
+        Path path = Paths.get("src/test/java/star/tratto/util/temp/tempFile.json");
         try {
-            FileUtils.createFile(dirPath, fileName, fileExtension);
-            Files.delete(Paths.get("src/test/java/star/tratto/util/temp/tempFile.txt"));
-            Files.delete(Paths.get("src/test/java/star/tratto/util/temp"));
+            FileUtils.createFile(path);
+            Files.delete(path);
+            Files.delete(path.getParent());
+        } catch (IOException e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
+    public void writeTest() {
+        Path path = Paths.get("src/test/java/star/tratto/util/temp/tempFile.json");
+        try {
+            FileUtils.write(path, List.of("input1", "input2", "input3"));
+            Files.delete(path);
+            Files.delete(path.getParent());
         } catch (IOException e) {
             e.printStackTrace();
             fail();
