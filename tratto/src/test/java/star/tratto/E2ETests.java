@@ -1,6 +1,5 @@
 package star.tratto;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import star.tratto.data.OracleDP2TokenDPs;
@@ -9,11 +8,13 @@ import star.tratto.identifiers.IOPath;
 import star.tratto.input.ClassAnalyzerTest;
 import star.tratto.token.TokenSuggesterTest;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 import static star.tratto.TestUtilities.readOraclesFromExternalFiles;
+import static star.tratto.util.FileUtils.deleteDirectory;
 
 public class E2ETests {
 
@@ -42,12 +43,10 @@ public class E2ETests {
         TokensDataset.main(new String[] {});
 
         // Delete datasets and recreate folders
-        File oraclesDatasetFolder = new File(IOPath.ORACLES_DATASET.getValue());
-        File tokensDatasetFolder = new File(TokensDataset.TOKENS_DATASET_FOLDER);
-        FileUtils.deleteDirectory(oraclesDatasetFolder);
-        FileUtils.deleteDirectory(tokensDatasetFolder);
-        oraclesDatasetFolder.mkdir();
-        tokensDatasetFolder.mkdir();
+        deleteDirectory(IOPath.ORACLES_DATASET.getValue());
+        deleteDirectory(TokensDataset.TOKENS_DATASET_FOLDER);
+        Files.createDirectories(Paths.get(IOPath.ORACLES_DATASET.getValue()));
+        Files.createDirectories(Paths.get(TokensDataset.TOKENS_DATASET_FOLDER));
     }
 
     /**

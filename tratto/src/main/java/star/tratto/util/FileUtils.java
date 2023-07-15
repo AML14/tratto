@@ -14,7 +14,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -168,7 +170,10 @@ public class FileUtils {
 
     public static void deleteDirectory(String dirPath) {
         try {
-            org.apache.commons.io.FileUtils.deleteDirectory(new File(dirPath));
+            Files.walk(Paths.get(dirPath))
+                    .sorted(Comparator.reverseOrder())
+                    .map(Path::toFile)
+                    .forEach(File::delete);
         } catch (IOException e) {
             logger.warn("There was an error when trying to delete the directory {} ", dirPath);
         }
