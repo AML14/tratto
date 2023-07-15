@@ -39,8 +39,9 @@ public class OraclesAugmentation {
             List<Map> rawOracleDatapoints = objectMapper.readValue(oraclesDatasetFile, List.class);
             for (Map rawOracleDatapoint : rawOracleDatapoints) {
                 OracleDatapoint oracleDatapoint = new OracleDatapoint(rawOracleDatapoint);
-                if (!alternateOracles.containsKey(oracleDatapoint.getOracle())) {
-                    alternateOracles.put(oracleDatapoint.getOracle(), getAlternateOracles(oracleDatapoint));
+                String compactOracle = compactExpression(oracleDatapoint.getOracle());
+                if (!alternateOracles.containsKey(compactOracle)) {
+                    alternateOracles.put(compactOracle, getAlternateOracles(oracleDatapoint));
                 }
             }
         }
