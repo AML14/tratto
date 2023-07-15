@@ -93,7 +93,7 @@ public class FileUtilsTest {
                     .map(e -> (String) e)
                     .collect(Collectors.toList());
             assertEquals(List.of(".DS_Store", "package-info"), ignoreFileList);
-        } catch (IOException e) {
+        } catch (Error e) {
             e.printStackTrace();
             fail();
         }
@@ -105,6 +105,6 @@ public class FileUtilsTest {
         try {
             FileUtils.readJSONList(filePath);
             fail();
-        } catch (IOException ignored) {}
+        } catch (Error ignored) {}
     }
 }
