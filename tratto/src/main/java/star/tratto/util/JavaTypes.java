@@ -98,7 +98,7 @@ public class JavaTypes {
     );
     public static final List<String> TYPICAL_TYPES = TYPICAL.stream().map(Pair::getValue1).collect(Collectors.toList());
 
-    public static boolean isNumeric1AssignableToNumeric2(Pair<String, String> numeric1, Pair<String, String> numeric2) {
+    public static boolean isAssignableToNumeric(Pair<String, String> numeric1, Pair<String, String> numeric2) {
         if (!JavaTypes.NUMBERS.contains(numeric1) || !JavaTypes.NUMBERS.contains(numeric2)) {
             throw new IllegalArgumentException("Both types must be numeric");
         }

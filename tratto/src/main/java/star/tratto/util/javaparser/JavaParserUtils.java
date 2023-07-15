@@ -50,7 +50,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static star.tratto.util.JavaTypes.isNumeric1AssignableToNumeric2;
+import static star.tratto.util.JavaTypes.isAssignableToNumeric;
 import static star.tratto.util.StringUtils.fullyQualifiedClassName;
 
 public class JavaParserUtils {
@@ -520,7 +520,7 @@ public class JavaParserUtils {
                 type1.equals(type2) ||
                 (type1.equals(JavaTypes.NULL) && !JavaTypes.PRIMITIVES.contains(type2)) ||
                 (JavaTypes.PRIMITIVES.contains(type1) && JavaTypes.PRIMITIVES_TO_WRAPPERS.get(type1).equals(type2)) ||
-                (JavaTypes.NUMBERS.contains(type1) && JavaTypes.NUMBERS.contains(type2) && isNumeric1AssignableToNumeric2(type1, type2)) ||
+                (JavaTypes.NUMBERS.contains(type1) && JavaTypes.NUMBERS.contains(type2) && isAssignableToNumeric(type1, type2)) ||
                 isInstanceOf(fullyQualifiedClassName(type1), fullyQualifiedClassName(type2), oracleDatapoint);
     }
 
