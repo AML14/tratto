@@ -68,8 +68,11 @@ public class ParserTest {
                     .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
 
             if (!columnsToCheck.isEmpty()) {
-                fail("The following oracle contains a sequence of tokens such that the same column is marked with an error five or more times:\n"
-                        + stringOracle + "\n\n" + "Columns marked with errors three or more times:\n" + columnsToCheck);
+                fail(String.join(System.lineSeparator(),
+                                 "The following oracle contains a sequence of tokens such that the same column is marked with an error five or more times:",
+                                 stringOracle,
+                                 "Columns marked with errors three or more times:",
+                                 columnsToCheck.toString()));
             }
         }
     }

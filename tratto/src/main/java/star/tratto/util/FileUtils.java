@@ -19,8 +19,7 @@ import java.util.stream.Stream;
 import java.util.Objects;
 
 /**
- * Manages all necessary I/O utilities (e.g. creating files, writing to files,
- * retrieving all Java files, etc.).
+ * I/O utilities: creating files, writing to files, retrieving all Java files, etc.
  */
 public class FileUtils {
     private static final Logger logger = LoggerFactory.getLogger(FileUtils.class);
@@ -49,9 +48,9 @@ public class FileUtils {
      * Creates an empty file at a given path. Creates parent directories if
      * necessary. If the file already exists, then this method does nothing.
      *
-     * @param path a Path representation of a file
+     * @param path a file
      * @throws IOException if an error occurs while creating the parent
-     * directories or new file.
+     * directories or new file
      */
     public static void createFile(Path path) throws IOException {
         Files.createDirectories(path.getParent());
@@ -64,10 +63,10 @@ public class FileUtils {
      * Writes {@code content} to {@code path}. Creates a new file/directories
      * if necessary. Overwrites any previous content.
      *
-     * @param path a Path representation of a file
+     * @param path a file
      * @param content an object to be mapped as JSON content
      * @throws IOException if unable to create files/directories or unable to
-     * write content to file.
+     * write content to file
      */
     public static void write(Path path, Object content) throws IOException {
         createFile(path);
