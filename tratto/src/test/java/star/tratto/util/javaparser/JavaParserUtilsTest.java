@@ -143,101 +143,101 @@ public class JavaParserUtilsTest {
     }
 
     @Test
-    public void isType1InstanceOfType2Test() {
-        assertTrue(isType1InstanceOfType2("String", "String", null));
-        assertTrue(isType1InstanceOfType2("String", "java.lang.String", null));
-        assertTrue(isType1InstanceOfType2("java.lang.String", "String", null));
-        assertTrue(isType1InstanceOfType2("java.lang.String", "java.lang.String", null));
-        assertTrue(isType1InstanceOfType2("String", "Object", null));
-        assertTrue(isType1InstanceOfType2("String", "java.lang.Object", null));
-        assertFalse(isType1InstanceOfType2("Object", "String", null));
-        assertTrue(isType1InstanceOfType2("java.util.List", "Object", null));
-        assertFalse(isType1InstanceOfType2("String", "StringBuilder", null));
-        assertFalse(isType1InstanceOfType2("StringBuilder", "String", null));
-        assertFalse(isType1InstanceOfType2("boolean", "boolean", null));
-        assertTrue(isType1InstanceOfType2("Boolean", "Boolean", null));
-        assertFalse(isType1InstanceOfType2("boolean", "Boolean", null));
-        assertFalse(isType1InstanceOfType2("Boolean", "boolean", null));
-        assertFalse(isType1InstanceOfType2("boolean", "java.lang.Boolean", null));
-        assertFalse(isType1InstanceOfType2("java.lang.Boolean", "boolean", null));
-        assertFalse(isType1InstanceOfType2("Integer", "int", null));
-        assertFalse(isType1InstanceOfType2("int", "Integer", null));
-        assertFalse(isType1InstanceOfType2("int", "Long", null));
-        assertFalse(isType1InstanceOfType2("java.lang.Long", "int", null));
-        assertFalse(isType1InstanceOfType2("long", "Long", null));
-        assertFalse(isType1InstanceOfType2("java.lang.Long", "long", null));
-        assertFalse(isType1InstanceOfType2("Float", "float", null));
-        assertFalse(isType1InstanceOfType2("float", "Float", null));
-        assertFalse(isType1InstanceOfType2("float", "Double", null));
-        assertFalse(isType1InstanceOfType2("java.lang.Double", "float", null));
-        assertFalse(isType1InstanceOfType2("Double", "double", null));
-        assertFalse(isType1InstanceOfType2("double", "Double", null));
-        assertTrue(isType1InstanceOfType2("T", "T", null));
-        assertFalse(isType1InstanceOfType2("T", "java.lang.Object", null));
-        assertTrue(isType1InstanceOfType2("T", "java.lang.Object", oracleDatapoints.get(0)));
-        assertFalse(isType1InstanceOfType2("java.lang.Object", "T", null));
-        assertFalse(isType1InstanceOfType2("java.lang.Object", "T", oracleDatapoints.get(0)));
-        assertFalse(isType1InstanceOfType2("java.lang.Object", "non.existing.Clazz", null));
-        assertFalse(isType1InstanceOfType2("java.lang.Object", "non.existing.Clazz", oracleDatapoints.get(0)));
-        assertFalse(isType1InstanceOfType2("non.existing.Clazz", "java.lang.Object", null));
-        assertFalse(isType1InstanceOfType2("non.existing.Clazz", "java.lang.Object", oracleDatapoints.get(0)));
-        assertTrue(isType1InstanceOfType2("org.apache.commons.math3.ml.clustering.CentroidCluster", "org.apache.commons.math3.ml.clustering.Cluster", null));
-        assertTrue(isType1InstanceOfType2("star.tratto.token.restrictions.multi.LastMethodNameRestriction", "star.tratto.token.restrictions.multi.MultiTokenRestriction", null));
-        assertFalse(isType1InstanceOfType2("star.tratto.token.restrictions.multi.LastMethodNameRestriction", "star.tratto.token.restrictions.multi.MultiTokenRestrictions", null));
-        assertTrue(isType1InstanceOfType2("star.tratto.oraclegrammar.generator.TrattoGrammarGenerator", "org.eclipse.xtext.generator.AbstractGenerator", null));
+    public void isInstanceOfTest() {
+        assertTrue(isInstanceOf("String", "String", null));
+        assertTrue(isInstanceOf("String", "java.lang.String", null));
+        assertTrue(isInstanceOf("java.lang.String", "String", null));
+        assertTrue(isInstanceOf("java.lang.String", "java.lang.String", null));
+        assertTrue(isInstanceOf("String", "Object", null));
+        assertTrue(isInstanceOf("String", "java.lang.Object", null));
+        assertFalse(isInstanceOf("Object", "String", null));
+        assertTrue(isInstanceOf("java.util.List", "Object", null));
+        assertFalse(isInstanceOf("String", "StringBuilder", null));
+        assertFalse(isInstanceOf("StringBuilder", "String", null));
+        assertFalse(isInstanceOf("boolean", "boolean", null));
+        assertTrue(isInstanceOf("Boolean", "Boolean", null));
+        assertFalse(isInstanceOf("boolean", "Boolean", null));
+        assertFalse(isInstanceOf("Boolean", "boolean", null));
+        assertFalse(isInstanceOf("boolean", "java.lang.Boolean", null));
+        assertFalse(isInstanceOf("java.lang.Boolean", "boolean", null));
+        assertFalse(isInstanceOf("Integer", "int", null));
+        assertFalse(isInstanceOf("int", "Integer", null));
+        assertFalse(isInstanceOf("int", "Long", null));
+        assertFalse(isInstanceOf("java.lang.Long", "int", null));
+        assertFalse(isInstanceOf("long", "Long", null));
+        assertFalse(isInstanceOf("java.lang.Long", "long", null));
+        assertFalse(isInstanceOf("Float", "float", null));
+        assertFalse(isInstanceOf("float", "Float", null));
+        assertFalse(isInstanceOf("float", "Double", null));
+        assertFalse(isInstanceOf("java.lang.Double", "float", null));
+        assertFalse(isInstanceOf("Double", "double", null));
+        assertFalse(isInstanceOf("double", "Double", null));
+        assertTrue(isInstanceOf("T", "T", null));
+        assertFalse(isInstanceOf("T", "java.lang.Object", null));
+        assertTrue(isInstanceOf("T", "java.lang.Object", oracleDatapoints.get(0)));
+        assertFalse(isInstanceOf("java.lang.Object", "T", null));
+        assertFalse(isInstanceOf("java.lang.Object", "T", oracleDatapoints.get(0)));
+        assertFalse(isInstanceOf("java.lang.Object", "non.existing.Clazz", null));
+        assertFalse(isInstanceOf("java.lang.Object", "non.existing.Clazz", oracleDatapoints.get(0)));
+        assertFalse(isInstanceOf("non.existing.Clazz", "java.lang.Object", null));
+        assertFalse(isInstanceOf("non.existing.Clazz", "java.lang.Object", oracleDatapoints.get(0)));
+        assertTrue(isInstanceOf("org.apache.commons.math3.ml.clustering.CentroidCluster", "org.apache.commons.math3.ml.clustering.Cluster", null));
+        assertTrue(isInstanceOf("star.tratto.token.restrictions.multi.LastMethodNameRestriction", "star.tratto.token.restrictions.multi.MultiTokenRestriction", null));
+        assertFalse(isInstanceOf("star.tratto.token.restrictions.multi.LastMethodNameRestriction", "star.tratto.token.restrictions.multi.MultiTokenRestrictions", null));
+        assertTrue(isInstanceOf("star.tratto.oraclegrammar.generator.TrattoGrammarGenerator", "org.eclipse.xtext.generator.AbstractGenerator", null));
         // Unexplicably, the following three assertions make PITest fail
-//        assertTrue(isType1InstanceOfType2("org.miv.pherd.Particle", "org.miv.pherd.Particle", null));
-//        assertTrue(isType1InstanceOfType2("plume.ArraysMDE", "plume.ArraysMDE", null));
-//        assertTrue(isType1InstanceOfType2("org.apache.commons.bcel6.classfile.Attribute", "org.apache.commons.bcel6.classfile.Attribute", null));
+//        assertTrue(isInstanceOf("org.miv.pherd.Particle", "org.miv.pherd.Particle", null));
+//        assertTrue(isInstanceOf("plume.ArraysMDE", "plume.ArraysMDE", null));
+//        assertTrue(isInstanceOf("org.apache.commons.bcel6.classfile.Attribute", "org.apache.commons.bcel6.classfile.Attribute", null));
     }
 
     @Test
-    public void canType1BeInstanceOfType2Test() {
-        assertTrue(canType1BeInstanceOfType2("String", "String", null));
-        assertTrue(canType1BeInstanceOfType2("String", "java.lang.String", null));
-        assertTrue(canType1BeInstanceOfType2("java.lang.String", "String", null));
-        assertTrue(canType1BeInstanceOfType2("java.lang.String", "java.lang.String", null));
-        assertTrue(canType1BeInstanceOfType2("String", "Object", null));
-        assertTrue(canType1BeInstanceOfType2("String", "java.lang.Object", null));
-        assertTrue(canType1BeInstanceOfType2("Object", "String", null));
-        assertTrue(canType1BeInstanceOfType2("java.util.List", "Object", null));
-        assertFalse(canType1BeInstanceOfType2("String", "StringBuilder", null));
-        assertFalse(canType1BeInstanceOfType2("StringBuilder", "String", null));
-        assertFalse(canType1BeInstanceOfType2("boolean", "boolean", null));
-        assertTrue(canType1BeInstanceOfType2("Boolean", "Boolean", null));
-        assertFalse(canType1BeInstanceOfType2("boolean", "Boolean", null));
-        assertFalse(canType1BeInstanceOfType2("Boolean", "boolean", null));
-        assertFalse(canType1BeInstanceOfType2("boolean", "java.lang.Boolean", null));
-        assertFalse(canType1BeInstanceOfType2("java.lang.Boolean", "boolean", null));
-        assertFalse(canType1BeInstanceOfType2("Integer", "int", null));
-        assertFalse(canType1BeInstanceOfType2("int", "Integer", null));
-        assertFalse(canType1BeInstanceOfType2("int", "Long", null));
-        assertFalse(canType1BeInstanceOfType2("java.lang.Long", "int", null));
-        assertFalse(canType1BeInstanceOfType2("long", "Long", null));
-        assertFalse(canType1BeInstanceOfType2("java.lang.Long", "long", null));
-        assertFalse(canType1BeInstanceOfType2("Float", "float", null));
-        assertFalse(canType1BeInstanceOfType2("float", "Float", null));
-        assertFalse(canType1BeInstanceOfType2("float", "Double", null));
-        assertFalse(canType1BeInstanceOfType2("java.lang.Double", "float", null));
-        assertFalse(canType1BeInstanceOfType2("Double", "double", null));
-        assertFalse(canType1BeInstanceOfType2("double", "Double", null));
-        assertFalse(canType1BeInstanceOfType2("T", "T", null));
-        assertFalse(canType1BeInstanceOfType2("T", "java.lang.Object", null));
-        assertTrue(canType1BeInstanceOfType2("T", "java.lang.Object", oracleDatapoints.get(0)));
-        assertFalse(canType1BeInstanceOfType2("java.lang.Object", "T", null));
-        assertFalse(canType1BeInstanceOfType2("java.lang.Object", "T", oracleDatapoints.get(0)));
-        assertFalse(canType1BeInstanceOfType2("java.lang.Object", "non.existing.Clazz", null));
-        assertFalse(canType1BeInstanceOfType2("java.lang.Object", "non.existing.Clazz", oracleDatapoints.get(0)));
-        assertFalse(canType1BeInstanceOfType2("non.existing.Clazz", "java.lang.Object", null));
-        assertFalse(canType1BeInstanceOfType2("non.existing.Clazz", "java.lang.Object", oracleDatapoints.get(0)));
-        assertTrue(canType1BeInstanceOfType2("org.apache.commons.math3.ml.clustering.CentroidCluster", "org.apache.commons.math3.ml.clustering.Cluster", null));
-        assertTrue(canType1BeInstanceOfType2("star.tratto.token.restrictions.multi.LastMethodNameRestriction", "star.tratto.token.restrictions.multi.MultiTokenRestriction", null));
-        assertFalse(canType1BeInstanceOfType2("star.tratto.token.restrictions.multi.LastMethodNameRestriction", "star.tratto.token.restrictions.multi.MultiTokenRestrictions", null));
-        assertTrue(canType1BeInstanceOfType2("star.tratto.oraclegrammar.generator.TrattoGrammarGenerator", "org.eclipse.xtext.generator.AbstractGenerator", null));
+    public void doesInstanceofCompileTest() {
+        assertTrue(doesInstanceofCompile("String", "String", null));
+        assertTrue(doesInstanceofCompile("String", "java.lang.String", null));
+        assertTrue(doesInstanceofCompile("java.lang.String", "String", null));
+        assertTrue(doesInstanceofCompile("java.lang.String", "java.lang.String", null));
+        assertTrue(doesInstanceofCompile("String", "Object", null));
+        assertTrue(doesInstanceofCompile("String", "java.lang.Object", null));
+        assertTrue(doesInstanceofCompile("Object", "String", null));
+        assertTrue(doesInstanceofCompile("java.util.List", "Object", null));
+        assertFalse(doesInstanceofCompile("String", "StringBuilder", null));
+        assertFalse(doesInstanceofCompile("StringBuilder", "String", null));
+        assertFalse(doesInstanceofCompile("boolean", "boolean", null));
+        assertTrue(doesInstanceofCompile("Boolean", "Boolean", null));
+        assertFalse(doesInstanceofCompile("boolean", "Boolean", null));
+        assertFalse(doesInstanceofCompile("Boolean", "boolean", null));
+        assertFalse(doesInstanceofCompile("boolean", "java.lang.Boolean", null));
+        assertFalse(doesInstanceofCompile("java.lang.Boolean", "boolean", null));
+        assertFalse(doesInstanceofCompile("Integer", "int", null));
+        assertFalse(doesInstanceofCompile("int", "Integer", null));
+        assertFalse(doesInstanceofCompile("int", "Long", null));
+        assertFalse(doesInstanceofCompile("java.lang.Long", "int", null));
+        assertFalse(doesInstanceofCompile("long", "Long", null));
+        assertFalse(doesInstanceofCompile("java.lang.Long", "long", null));
+        assertFalse(doesInstanceofCompile("Float", "float", null));
+        assertFalse(doesInstanceofCompile("float", "Float", null));
+        assertFalse(doesInstanceofCompile("float", "Double", null));
+        assertFalse(doesInstanceofCompile("java.lang.Double", "float", null));
+        assertFalse(doesInstanceofCompile("Double", "double", null));
+        assertFalse(doesInstanceofCompile("double", "Double", null));
+        assertFalse(doesInstanceofCompile("T", "T", null));
+        assertFalse(doesInstanceofCompile("T", "java.lang.Object", null));
+        assertTrue(doesInstanceofCompile("T", "java.lang.Object", oracleDatapoints.get(0)));
+        assertFalse(doesInstanceofCompile("java.lang.Object", "T", null));
+        assertFalse(doesInstanceofCompile("java.lang.Object", "T", oracleDatapoints.get(0)));
+        assertFalse(doesInstanceofCompile("java.lang.Object", "non.existing.Clazz", null));
+        assertFalse(doesInstanceofCompile("java.lang.Object", "non.existing.Clazz", oracleDatapoints.get(0)));
+        assertFalse(doesInstanceofCompile("non.existing.Clazz", "java.lang.Object", null));
+        assertFalse(doesInstanceofCompile("non.existing.Clazz", "java.lang.Object", oracleDatapoints.get(0)));
+        assertTrue(doesInstanceofCompile("org.apache.commons.math3.ml.clustering.CentroidCluster", "org.apache.commons.math3.ml.clustering.Cluster", null));
+        assertTrue(doesInstanceofCompile("star.tratto.token.restrictions.multi.LastMethodNameRestriction", "star.tratto.token.restrictions.multi.MultiTokenRestriction", null));
+        assertFalse(doesInstanceofCompile("star.tratto.token.restrictions.multi.LastMethodNameRestriction", "star.tratto.token.restrictions.multi.MultiTokenRestrictions", null));
+        assertTrue(doesInstanceofCompile("star.tratto.oraclegrammar.generator.TrattoGrammarGenerator", "org.eclipse.xtext.generator.AbstractGenerator", null));
         // Unexplicably, the following three assertions make PITest fail
-//        assertTrue(canType1BeInstanceOfType2("org.miv.pherd.Particle", "org.miv.pherd.Particle", null));
-//        assertTrue(canType1BeInstanceOfType2("plume.ArraysMDE", "plume.ArraysMDE", null));
-//        assertTrue(canType1BeInstanceOfType2("org.apache.commons.bcel6.classfile.Attribute", "org.apache.commons.bcel6.classfile.Attribute", null));
+//        assertTrue(doesInstanceofCompile("org.miv.pherd.Particle", "org.miv.pherd.Particle", null));
+//        assertTrue(doesInstanceofCompile("plume.ArraysMDE", "plume.ArraysMDE", null));
+//        assertTrue(doesInstanceofCompile("org.apache.commons.bcel6.classfile.Attribute", "org.apache.commons.bcel6.classfile.Attribute", null));
     }
 
     @Test
@@ -291,7 +291,7 @@ public class JavaParserUtilsTest {
 
     @Test
     public void getGenericTypeTest() {
-        ResolvedType genericType = getGenericType();
+        ResolvedType genericType = getObjectType();
         assertEquals("java.lang.Object", genericType.describe());
     }
 
@@ -514,9 +514,9 @@ public class JavaParserUtilsTest {
     }
 
     @Test
-    public void getCompilationUnitFromFilePathTest() {
+    public void getCompilationUnitFromFileTest() {
         String projectsPath = Paths.get("src", "main", "java", "star", "tratto", "data", "OracleType.java").toString();
-        Optional<CompilationUnit> optionalCu = getCompilationUnitFromFilePath(projectsPath);
+        Optional<CompilationUnit> optionalCu = getCompilationUnitFromFile(projectsPath);
         assertTrue(optionalCu.isPresent());
         CompilationUnit cu = optionalCu.get();
         try {
