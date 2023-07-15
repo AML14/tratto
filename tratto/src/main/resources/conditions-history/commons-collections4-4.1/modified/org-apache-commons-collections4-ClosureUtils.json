@@ -371,6 +371,14 @@
           "condition": "predicates==null || closures==null",
           "description": "the either array is null."
         }
+      },
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException if any element in the arrays is null.",
+        "guard": {
+          "condition": "java.util.Arrays.stream(predicates).anyMatch(e -> e==null) || java.util.Arrays.stream(closures).anyMatch(e -> e==null)",
+          "description": "if any element in the arrays is null."
+        }
       }
     ],
     "post": [],
