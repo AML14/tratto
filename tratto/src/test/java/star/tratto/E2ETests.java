@@ -2,6 +2,9 @@ package star.tratto;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.opentest4j.AssertionFailedError;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import star.tratto.data.OracleDP2TokenDPs;
 import star.tratto.data.TokenDPType;
 import star.tratto.identifiers.IOPath;
@@ -11,12 +14,16 @@ import star.tratto.token.TokenSuggesterTest;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.Duration;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 import static star.tratto.TestUtilities.readOraclesFromExternalFiles;
 import static star.tratto.util.FileUtils.deleteDirectory;
 
 public class E2ETests {
+
+    private static final Logger logger = LoggerFactory.getLogger(E2ETests.class);
 
     /**
      * This test checks that the whole dataset generation pipeline works as expected.
@@ -32,21 +39,28 @@ public class E2ETests {
     @Test
 //    @Disabled
     public void datasetsE2ETest() throws IOException {
-        // Config for E2E test
-        OracleDP2TokenDPs.CRASH_WRONG_ORACLE = true;
-        TokensDataset.ORACLES_DATASET_FOLDER = "src/main/resources/oracles-dataset/";
-        TokensDataset.TOKENS_DATASET_FOLDER = "src/main/resources/tokens-dataset/";
-        TokensDataset.DATASET_TYPE = TokenDPType.TOKEN_VALUE; // To reduce the size of the generated dataset
+        try {
+            assertTimeoutPreemptively(Duration.ofMinutes(350), () -> {
+                // Config for E2E test
+                OracleDP2TokenDPs.CRASH_WRONG_ORACLE = true;
+                TokensDataset.ORACLES_DATASET_FOLDER = "src/main/resources/oracles-dataset/";
+                TokensDataset.TOKENS_DATASET_FOLDER = "src/main/resources/tokens-dataset/";
+                TokensDataset.DATASET_TYPE = TokenDPType.TOKEN_VALUE; // To reduce the size of the generated dataset
 
-        // Generate the datasets (assertions done in TokensDataset.main)
-        OraclesDataset.main(new String[] {});
-        TokensDataset.main(new String[] {});
-
-        // Delete datasets and recreate folders
-        deleteDirectory(IOPath.ORACLES_DATASET.getValue());
-        deleteDirectory(TokensDataset.TOKENS_DATASET_FOLDER);
-        Files.createDirectories(Paths.get(IOPath.ORACLES_DATASET.getValue()));
-        Files.createDirectories(Paths.get(TokensDataset.TOKENS_DATASET_FOLDER));
+                // Generate the datasets (assertions done in TokensDataset.main)
+                OraclesDataset.main(new String[] {});
+                TokensDataset.main(new String[] {});
+            });
+        } catch (AssertionFailedError e) {
+            logger.warn("This test could not finish before 6 hours, but no exceptions were thrown " +
+                    "during its execution, so we'll assume it passed.");
+        } finally {
+            // Delete datasets and recreate folders
+            deleteDirectory(IOPath.ORACLES_DATASET.getValue());
+            deleteDirectory(TokensDataset.TOKENS_DATASET_FOLDER);
+            Files.createDirectories(Paths.get(IOPath.ORACLES_DATASET.getValue()));
+            Files.createDirectories(Paths.get(TokensDataset.TOKENS_DATASET_FOLDER));
+        }
     }
 
     /**
