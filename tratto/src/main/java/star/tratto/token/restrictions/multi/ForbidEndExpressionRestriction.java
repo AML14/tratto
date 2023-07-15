@@ -170,13 +170,13 @@ public class ForbidEndExpressionRestriction extends MultiTokenRestriction {
                         (JavaTypes.NUMBERS.contains(leftType) && JavaTypes.NUMBERS.contains(rightType)) || // 2)
                         (leftPrimitive && JavaTypes.PRIMITIVES_TO_WRAPPERS.get(leftType).equals(rightType)) || // 3)
                         (rightPrimitive && JavaTypes.PRIMITIVES_TO_WRAPPERS.get(rightType).equals(leftType)) || // 4)
-                        (!leftPrimitive && !rightPrimitive && canType1BeInstanceOfType2(fullyQualifiedClassName(leftType), fullyQualifiedClassName(rightType), oracleDatapoint)) || // 5)
-                        (!leftPrimitive && !rightPrimitive && canType1BeInstanceOfType2(fullyQualifiedClassName(rightType), fullyQualifiedClassName(leftType), oracleDatapoint)) // 6)
+                        (!leftPrimitive && !rightPrimitive && doesInstanceofCompile(fullyQualifiedClassName(leftType), fullyQualifiedClassName(rightType), oracleDatapoint)) || // 5)
+                        (!leftPrimitive && !rightPrimitive && doesInstanceofCompile(fullyQualifiedClassName(rightType), fullyQualifiedClassName(leftType), oracleDatapoint)) // 6)
                 ) && (
                         ((leftPrimitive || rightPrimitive) && !leftType.equals(rightType)) || // 7)
                         (!leftPrimitive && !rightPrimitive &&
-                                !isType1InstanceOfType2(fullyQualifiedClassName(leftType), fullyQualifiedClassName(rightType), oracleDatapoint) &&
-                                !isType1InstanceOfType2(fullyQualifiedClassName(rightType), fullyQualifiedClassName(leftType), oracleDatapoint)
+                                !isInstanceOf(fullyQualifiedClassName(leftType), fullyQualifiedClassName(rightType), oracleDatapoint) &&
+                                !isInstanceOf(fullyQualifiedClassName(rightType), fullyQualifiedClassName(leftType), oracleDatapoint)
                         ) // 8
                 )
         ) {

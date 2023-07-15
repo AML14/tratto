@@ -1394,7 +1394,7 @@ public class JavaParserUtils {
         // Get absolute path of the file
         String filePath = file.getAbsolutePath();
         // Instantiate a JavaParser compilation unit from the absolute path of the file
-        return getCompilationUnitFromFilePath(filePath);
+        return getCompilationUnitFromFile(filePath);
     }
 
     /**
@@ -1405,8 +1405,8 @@ public class JavaParserUtils {
      * @return an optional JavaParser compilation unit {@link CompilationUnit}. The optional contains the compilation unit,
      * if found. Otherwise, the method returns an empty optional.
      */
-    public Optional<CompilationUnit> getCompilationUnitFromFilePath(String filePath) {
-        return getCompilationUnitFromFilePath(filePath, false);
+    public Optional<CompilationUnit> getCompilationUnitFromFile(String filePath) {
+        return getCompilationUnitFromFile(filePath, false);
     }
 
     /**
@@ -1418,8 +1418,8 @@ public class JavaParserUtils {
      * @return an optional JavaParser compilation unit {@link CompilationUnit}. The optional contains the compilation unit,
      * if found. Otherwise, the method returns an empty optional.
      */
-    public Optional<CompilationUnit> getCompilationUnitFromFilePathSilent(String filePath) {
-        return getCompilationUnitFromFilePath(filePath, true);
+    public Optional<CompilationUnit> getCompilationUnitFromFileSilent(String filePath) {
+        return getCompilationUnitFromFile(filePath, true);
     }
 
     /**
@@ -1433,7 +1433,7 @@ public class JavaParserUtils {
      * if the file is not found.
      * @return the compilation unit, if found
      */
-    public Optional<CompilationUnit> getCompilationUnitFromFilePath(String filePath, boolean silent) {
+    public Optional<CompilationUnit> getCompilationUnitFromFile(String filePath, boolean silent) {
         // Instantiate a file from a given path
         File file = new File(filePath);
         try {
@@ -2733,13 +2733,13 @@ public class JavaParserUtils {
         // Generate the absolute path to the class
         String filePath = Paths.get(project.srcPath(), pathToClass).toString().concat(".java");
         // Search compilation unit, given the entire file path
-        Optional<CompilationUnit> cu = getCompilationUnitFromFilePathSilent(filePath);
+        Optional<CompilationUnit> cu = getCompilationUnitFromFileSilent(filePath);
         if (cu.isEmpty()) {
             filePath = filePath.replace(FileFormat.JAVA.getValue(), "");
             // Get the file path of the source file for the outer class
             String outerClassFilePath = filePath.substring(0, filePath.lastIndexOf(File.separator)) + FileFormat.JAVA.getValue();
             // Parse the source file to get the CompilationUnit of the outer class
-            Optional<CompilationUnit> outerClassCompilationUnit = getCompilationUnitFromFilePathSilent(outerClassFilePath);
+            Optional<CompilationUnit> outerClassCompilationUnit = getCompilationUnitFromFileSilent(outerClassFilePath);
             if (outerClassCompilationUnit.isPresent()) {
                 // Get the name of the inner class
                 String innerClassName = filePath.substring(filePath.lastIndexOf(File.separator) + 1);

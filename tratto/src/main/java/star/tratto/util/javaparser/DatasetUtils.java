@@ -551,7 +551,7 @@ public class DatasetUtils {
         // iterate through each file and add class tokens.
         for (Path javaFile : javaFiles) {
             String filePath = javaFile.toAbsolutePath().toString();
-            Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnitFromFilePath(filePath);
+            Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnitFromFile(filePath);
             if (cu.isPresent()) {
                 try {
                     projectClasses.addAll(getClassNameAndPackage(cu.get()));
@@ -580,7 +580,7 @@ public class DatasetUtils {
         // iterate through each file and add method tokens.
         for (Path javaFile : javaFiles) {
             String filePath = javaFile.toAbsolutePath().toString();
-            Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnitFromFilePath(filePath);
+            Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnitFromFile(filePath);
             if (cu.isPresent()) {
                 try {
                     projectMethods.addAll(getNonPrivateStaticNonVoidMethods(cu.get()));
@@ -609,7 +609,7 @@ public class DatasetUtils {
         // iterate through each file and add attribute tokens.
         for (Path javaFile : javaFiles) {
             String filePath = javaFile.toAbsolutePath().toString();
-            Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnitFromFilePath(filePath);
+            Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnitFromFile(filePath);
             if (cu.isPresent()) {
                 try {
                     attributeList.addAll(getNonPrivateStaticAttributes(cu.get()));
@@ -641,7 +641,7 @@ public class DatasetUtils {
         for (Path javaFile : javaFiles) {
             String filePath = javaFile.toAbsolutePath().toString();
             String fileContent = FileUtils.readFile(filePath);
-            Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnitFromFilePath(filePath);
+            Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnitFromFile(filePath);
             if (cu.isPresent()) {
                 try {
                     tagList.addAll(getCuTags(cu.get(), fileContent));
@@ -710,7 +710,7 @@ public class DatasetUtils {
                     .toList());
         } else if (JavaParserUtils.isGenericType(jpResolvedType)) {
             // generic type.
-            List<MethodUsage> genericMethods = JavaParserUtils.getGenericType().asReferenceType().getAllMethods()
+            List<MethodUsage> genericMethods = JavaParserUtils.getObjectType().asReferenceType().getAllMethods()
                     .stream()
                     .map(MethodUsage::new)
                     .filter(JavaParserUtils::isNonPrivateNonStaticNonVoidMethod)
@@ -945,7 +945,7 @@ public class DatasetUtils {
         }
         // add Object methods.
         methodList.addAll(convertMethodUsageToQuartet(
-                JavaParserUtils.getGenericType().asReferenceType().getAllMethods()
+                JavaParserUtils.getObjectType().asReferenceType().getAllMethods()
                         .stream()
                         .map(MethodUsage::new)
                         .filter(JavaParserUtils::isNonPrivateNonStaticNonVoidMethod)
@@ -1024,11 +1024,11 @@ public class DatasetUtils {
                         subexpression
                 );
                 if (!resolvedType.isPrimitive()) {
-                    methodList.addAll(getMethodsFromType(JavaParserUtils.getGenericType()));
+                    methodList.addAll(getMethodsFromType(JavaParserUtils.getObjectType()));
                 }
                 methodList.addAll(getMethodsFromType(resolvedType));
             } catch (UnsolvedSymbolException | ResolvedTypeNotFound e) {
-                ResolvedType genericType = JavaParserUtils.getGenericType();
+                ResolvedType genericType = JavaParserUtils.getObjectType();
                 methodList.addAll(getMethodsFromType(genericType));
             }
         }
@@ -1070,7 +1070,7 @@ public class DatasetUtils {
                 );
                 attributeList.addAll(getFieldsFromType(resolvedType));
             } catch (UnsolvedSymbolException | ResolvedTypeNotFound e) {
-                ResolvedType genericType = JavaParserUtils.getGenericType();
+                ResolvedType genericType = JavaParserUtils.getObjectType();
                 attributeList.addAll(getFieldsFromType(genericType));
             }
         }
@@ -1220,7 +1220,7 @@ public class DatasetUtils {
             String sourcePath
     ) {
         String classPath = getClassPath(operation, sourcePath);
-        return JavaParserUtils.getCompilationUnitFromFilePath(classPath);
+        return JavaParserUtils.getCompilationUnitFromFile(classPath);
     }
 
     /**
