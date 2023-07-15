@@ -16,9 +16,8 @@ public class StringUtilsTest {
         try {
             getCorrespondingClosingParenthesisIndex(oracleTokens, openingParenthesisIndex);
             fail("Expected IllegalArgumentException");
-        } catch (IllegalArgumentException e) {
-            assertEquals("The openingParenthesisIndex (" + openingParenthesisIndex + ") must be strictly less than " +
-                    "the size of the list (" + oracleTokens.size() + ")", e.getMessage());
+        } catch (IndexOutOfBoundsException e) {
+            assertEquals("openingParenthesisIndex=5, oracle tokens list size=5", e.getMessage());
         }
     }
 

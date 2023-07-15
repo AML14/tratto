@@ -5,3 +5,7 @@ compile:
 clean:
 	cd oracle-grammar/MavenVersion/oracle-grammar && mvn -q clean
 	cd tratto && mvn -q clean
+
+test:
+	cd oracle-grammar/MavenVersion/oracle-grammar && mvn -q package
+	cd tratto && mvn -q package
