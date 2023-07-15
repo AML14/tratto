@@ -7,6 +7,9 @@ import star.tratto.data.OracleDatapoint;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,7 +29,8 @@ public class OraclesAugmentation {
     private static final Logger logger = LoggerFactory.getLogger(OraclesAugmentation.class);
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    private static String ALTERNATE_ORACLES_PATH = "src/main/resources/data-augmentation/oracles.json";
+    private static final String ALTERNATE_ORACLES_PATH = "src/main/resources/data-augmentation/oracles.json";
+    private static final String AUGMENTED_SUFFIX = "-augmented.json";
 
     public static void main(String[] args) throws IOException {
         logger.info("Generating alternate versions of existing oracles...");
@@ -34,9 +38,14 @@ public class OraclesAugmentation {
         logger.info("Writing alternate oracles to: {}", ALTERNATE_ORACLES_PATH);
         Map<String, List<String>> alternateOracles = new HashMap<>();
 
-        File[] oraclesDatasetFiles = new File(ORACLES_DATASET.getValue()).listFiles();
-        for (File oraclesDatasetFile : oraclesDatasetFiles) { // Assume that only dataset files are in the folder
-            List<Map> rawOracleDatapoints = objectMapper.readValue(oraclesDatasetFile, List.class);
+        Path oraclesDatasetPath = Path.of(ORACLES_DATASET.getValue());
+        DirectoryStream<Path> oraclesDatasetStream = Files.newDirectoryStream(oraclesDatasetPath);
+        for (Path oraclesDatasetFile : oraclesDatasetStream) { // Assume that only dataset files are in the folder
+            if (oraclesDatasetFile.toString().endsWith(AUGMENTED_SUFFIX)) {
+                continue; // Skip already augmented files
+            }
+            logger.info("Generating alternate versions of oracles in file: {}", oraclesDatasetFile.getFileName());
+            List<Map> rawOracleDatapoints = objectMapper.readValue(oraclesDatasetFile.toFile(), List.class);
             for (Map rawOracleDatapoint : rawOracleDatapoints) {
                 OracleDatapoint oracleDatapoint = new OracleDatapoint(rawOracleDatapoint);
                 String compactOracle = compactExpression(oracleDatapoint.getOracle());
@@ -47,7 +56,6 @@ public class OraclesAugmentation {
         }
 
         objectMapper.writeValue(new File(ALTERNATE_ORACLES_PATH), alternateOracles);
-
         logger.info("Finished generating alternate versions of existing oracles.");
     }
 
