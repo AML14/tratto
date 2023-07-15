@@ -306,24 +306,24 @@ public class JavaParserUtils {
      * @param oracleDatapoint may be null. If not null, it is used to check if some type is generic.
      * @return true if type1 is an instance of type2, false otherwise
      */
-    public static boolean isType1InstanceOfType2(String type1, String type2, OracleDatapoint oracleDatapoint) {
-        return isType1InstanceOfType2(type1, type2, oracleDatapoint, true);
+    public static boolean isInstanceOf(String type1, String type2, OracleDatapoint oracleDatapoint) {
+        return isInstanceOf(type1, type2, oracleDatapoint, true);
     }
 
     /**
-     * Compared to {@link #isType1InstanceOfType2(String, String, OracleDatapoint)}, this method returns
+     * Compared to {@link #isInstanceOf(String, String, OracleDatapoint)}, this method returns
      * true if type1 and type2 can be compared using the instanceof operator. To better understand this
      * difference, consider the following use cases:
      * <ul>
-     *     <li>{@code isType1InstanceOfType2("String", "Object", null)} returns {@code true}</li>
-     *     <li>{@code isType1InstanceOfType2("Object", "String", null)} returns {@code false}</li>
-     *     <li>{@code canType1BeInstanceOfType2("String", "Object", null)} returns {@code true}</li>
-     *     <li>{@code canType1BeInstanceOfType2("Object", "String", null)} returns {@code true}</li>
+     *     <li>{@code isInstanceOf("String", "Object", null)} returns {@code true}</li>
+     *     <li>{@code isInstanceOf("Object", "String", null)} returns {@code false}</li>
+     *     <li>{@code doesInstanceofCompile("String", "Object", null)} returns {@code true}</li>
+     *     <li>{@code doesInstanceofCompile("Object", "String", null)} returns {@code true}</li>
      * </ul>
      * In other words, this method returns true if the expression "var1 instanceof type2" would compile,
      * where var1 is a variable of type1.
      */
-    public static boolean canType1BeInstanceOfType2(String type1, String type2, OracleDatapoint oracleDatapoint) {
+    public static boolean doesInstanceofCompile(String type1, String type2, OracleDatapoint oracleDatapoint) {
         ResolvedType resolvedType2 = tryToGetResolvedType(type2);
         if (resolvedType2 == null) {
             return false; // Either type2 is generic, or an unknown class. In both cases, type1 cannot be instanceof it
@@ -335,20 +335,20 @@ public class JavaParserUtils {
                 return true; // Special case: type1 is a generic and a type parameter of type2
             }
         } catch (UnsupportedOperationException|NoSuchElementException|NullPointerException ignored) {}
-        return isType1InstanceOfType2(type1, type2, oracleDatapoint, false) || isType1InstanceOfType2(type2, type1, null, false);
+        return isInstanceOf(type1, type2, oracleDatapoint, false) || isInstanceOf(type2, type1, null, false);
     }
 
     /**
-     * Auxiliary method used both by {@link #isType1InstanceOfType2(String, String, OracleDatapoint)}
-     * and {@link #canType1BeInstanceOfType2}.
+     * Auxiliary method used both by {@link #isInstanceOf(String, String, OracleDatapoint)}
+     * and {@link #doesInstanceofCompile}.
      * @param checkEquality if true, returns true if type1 is equal to type2. If false, this check is
-     *                      not performed at all. Must be true if checking if type1 IS instanceof type2.
-     *                      Must be false if checking if type1 CAN BE instanceof type2. This is because
+     *                      not performed at all. Must be true if checking {@code isInstanceOf}.
+     *                      Must be false if checking {@code doesInstanceofCompile}. This is because
      *                      type1 and type2 may be generics or unresolvable classes, and in those cases
      *                      we cannot use the instanceof operator in a generated oracle, because it
      *                      would not compile.
      */
-    private static boolean isType1InstanceOfType2(String type1, String type2, OracleDatapoint oracleDatapoint, boolean checkEquality) {
+    private static boolean isInstanceOf(String type1, String type2, OracleDatapoint oracleDatapoint, boolean checkEquality) {
         // Preliminary checks
         if (JavaTypes.PRIMITIVE_TYPES.contains(type1) || JavaTypes.PRIMITIVE_TYPES.contains(type2)) {
             return false;
@@ -358,7 +358,7 @@ public class JavaParserUtils {
         }
         ResolvedType resolvedType2 = tryToGetResolvedType(type2);
         if (resolvedType2 == null) {
-            return false; // Either type2 is generic, or an unknown class. In both cases, type1 cannot be instanceof it
+            return false; // Type2 is generic or an unknown class. In both cases, type1 cannot be instanceof it
         }
 
         String classSourceCode;
@@ -403,7 +403,7 @@ public class JavaParserUtils {
     }
 
     /**
-     * This method is different from {@link #isType1InstanceOfType2} in that it can be used to compare
+     * This method is different from {@link #isInstanceOf} in that it can be used to compare
      * primitive types and primitive wrapper types. For instance, a boolean is assignable to a Boolean,
      * but not the other way around. Note that this method takes as input pairs of package and class
      * name, instead of fully qualified types.
@@ -424,7 +424,7 @@ public class JavaParserUtils {
                 (type1.equals(JavaTypes.NULL) && !JavaTypes.PRIMITIVES.contains(type2)) ||
                 (JavaTypes.PRIMITIVES.contains(type1) && JavaTypes.PRIMITIVES_TO_WRAPPERS.get(type1).equals(type2)) ||
                 (JavaTypes.NUMBERS.contains(type1) && JavaTypes.NUMBERS.contains(type2) && isNumeric1AssignableToNumeric2(type1, type2)) ||
-                isType1InstanceOfType2(fullyQualifiedClassName(type1), fullyQualifiedClassName(type2), oracleDatapoint);
+                isInstanceOf(fullyQualifiedClassName(type1), fullyQualifiedClassName(type2), oracleDatapoint);
     }
 
     public static TypeDeclaration<?> getClassOrInterface(CompilationUnit cu, String name) {
