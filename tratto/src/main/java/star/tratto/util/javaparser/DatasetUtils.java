@@ -1,5 +1,6 @@
 package star.tratto.util.javaparser;
 
+import java.io.IOException;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.body.*;
@@ -33,6 +34,7 @@ import star.tratto.util.FileUtils;
 
 import java.io.File;
 import java.lang.reflect.Field;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -485,10 +487,11 @@ public class DatasetUtils {
      * @param sourcePath the path to the project root directory
      * @return a list of all valid files {@link File}
      */
-    private static List<File> getValidJavaFiles(String sourcePath) {
+    private static List<Path> getValidJavaFiles(String sourcePath) {
         // Get list of all Java files.
-        File sourceDir = new File(sourcePath);
-        List<File> allFiles = FileUtils.getAllJavaFilesFromDirectory(sourceDir);
+        try {
+        Path sourceDir = Path.of(sourcePath);
+        List<Path> allFiles = FileUtils.getAllJavaFilesFromDirectory(sourceDir);
         // Get list of files to ignore.
         String ignoreFilePath = Paths.get(
                 IOPath.REPOS.getValue(),
@@ -502,10 +505,13 @@ public class DatasetUtils {
         return allFiles
                 .stream()
                 .filter(file -> {
-                    String filename = file.getName().replace(FileFormat.JAVA.getExtension(), "");
+                    String filename = file.toString().replace(FileFormat.JAVA.getExtension(), "");
                     return !ignoreFileList.contains(filename);
                 })
                 .toList();
+        } catch (IOException e) {
+            throw new Error(e);
+        }
     }
 
     /**
@@ -519,10 +525,10 @@ public class DatasetUtils {
             String sourcePath
     ) {
         List<Pair<String, String>> projectClasses = new ArrayList<>();
-        List<File> javaFiles = getValidJavaFiles(sourcePath);
+        List<Path> javaFiles = getValidJavaFiles(sourcePath);
         // iterate through each file and add class tokens.
-        for (File javaFile : javaFiles) {
-            String filePath = javaFile.getAbsolutePath();
+        for (Path javaFile : javaFiles) {
+            String filePath = javaFile.toAbsolutePath().toString();
             Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnitFromFilePath(filePath);
             if (cu.isPresent()) {
                 try {
@@ -548,10 +554,10 @@ public class DatasetUtils {
             String sourcePath
     ) {
         List<Quartet<String, String, String, String>> projectMethods = new ArrayList<>();
-        List<File> javaFiles = getValidJavaFiles(sourcePath);
+        List<Path> javaFiles = getValidJavaFiles(sourcePath);
         // iterate through each file and add method tokens.
-        for (File javaFile : javaFiles) {
-            String filePath = javaFile.getAbsolutePath();
+        for (Path javaFile : javaFiles) {
+            String filePath = javaFile.toAbsolutePath().toString();
             Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnitFromFilePath(filePath);
             if (cu.isPresent()) {
                 try {
@@ -577,10 +583,10 @@ public class DatasetUtils {
             String sourcePath
     ) {
         List<Quartet<String, String, String, String>> attributeList = new ArrayList<>();
-        List<File> javaFiles = getValidJavaFiles(sourcePath);
+        List<Path> javaFiles = getValidJavaFiles(sourcePath);
         // iterate through each file and add attribute tokens.
-        for (File javaFile : javaFiles) {
-            String filePath = javaFile.getAbsolutePath();
+        for (Path javaFile : javaFiles) {
+            String filePath = javaFile.toAbsolutePath().toString();
             Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnitFromFilePath(filePath);
             if (cu.isPresent()) {
                 try {
@@ -608,10 +614,10 @@ public class DatasetUtils {
             String sourcePath
     ) {
         List<Sextet<String, TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> tagList = new ArrayList<>();
-        List<File> javaFiles = getValidJavaFiles(sourcePath);
+        List<Path> javaFiles = getValidJavaFiles(sourcePath);
         // iterate through each file and add JavaDoc tags.
-        for (File javaFile : javaFiles) {
-            String filePath = javaFile.getAbsolutePath();
+        for (Path javaFile : javaFiles) {
+            String filePath = javaFile.toAbsolutePath().toString();
             String fileContent = FileUtils.readFile(filePath);
             Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnitFromFilePath(filePath);
             if (cu.isPresent()) {
@@ -668,13 +674,18 @@ public class DatasetUtils {
                     IOPath.REPOS.getValue(),
                     FileName.ARRAY_METHODS.getValue() + FileFormat.JSON.getExtension()
             ).toString();
-            List<List<String>> arrayMethods = FileUtils.readJSONList(arraysMethodJsonPath)
+            List<List<String>> arrayMethods;
+            try {
+            arrayMethods = FileUtils.readJSONList(arraysMethodJsonPath)
                     .stream()
                     .map(e -> ((List<?>) e)
                             .stream()
                             .map(o -> (String) o)
                             .toList())
                     .toList();
+            } catch (IOException e) {
+                throw new Error(e);
+            }
             methodList.addAll(arrayMethods
                     .stream()
                     .map(m -> Quartet.with(m.get(0), "", jpResolvedType.describe(), m.get(1)))

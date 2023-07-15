@@ -39,8 +39,8 @@ import star.tratto.exceptions.ResolvedTypeNotFound;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.util.JavaTypes;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.ArrayList;
@@ -862,10 +862,10 @@ public class JavaParserUtils {
      * @return a JavaParser compilation unit
      */
     public static Optional<CompilationUnit> getCompilationUnitFromFilePath(String filePath) {
-        File file = new File(filePath);
+        Path path = Paths.get(filePath);
         try {
-            return javaParser.parse(file).getResult();
-        } catch (FileNotFoundException e) {
+            return javaParser.parse(path).getResult();
+        } catch (IOException e) {
             return Optional.empty();
         }
     }
