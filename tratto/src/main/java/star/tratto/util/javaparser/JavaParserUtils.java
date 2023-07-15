@@ -370,15 +370,14 @@ public class JavaParserUtils {
             }
         } catch (UnsolvedSymbolException e) {
             logger.warn("Unresolvable type: {}", referenceType);
-        } finally {
-            if (useObjectMethods) {
-                Set<MethodUsage> objectMethods = getResolvedReferenceTypeDeclaration("java.lang.Object").getAllMethods();
-                objectMethods.forEach(om -> {
-                    if (methods.stream().noneMatch(m -> m.getName().equals(om.getName()) && m.getParamTypes().equals(om.getParamTypes()))) {
-                        methods.add(om);
-                    }
-                });
-            }
+        }
+        if (useObjectMethods) {
+            Set<MethodUsage> objectMethods = getResolvedReferenceTypeDeclaration("java.lang.Object").getAllMethods();
+            objectMethods.forEach(om -> {
+                if (methods.stream().noneMatch(m -> m.getName().equals(om.getName()) && m.getParamTypes().equals(om.getParamTypes()))) {
+                    methods.add(om);
+                }
+            });
         }
         return methods;
     }
