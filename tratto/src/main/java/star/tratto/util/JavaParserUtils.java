@@ -402,6 +402,9 @@ public class JavaParserUtils {
         return resolvedType2;
     }
 
+    // TODO: The "not the other way around" is true only in a certain sense.  Given variables `b`
+    // and `B` of type boolean and Boolean, both "b = B" and "B = b" will compile, because Java
+    // performs automatic boxing and unboxing.  Please clarify the comment.
     /**
      * This method is different from {@link #isInstanceOf} in that it can be used to compare
      * primitive types and primitive wrapper types. For instance, a boolean is assignable to a Boolean,
