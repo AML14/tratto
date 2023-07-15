@@ -1,6 +1,8 @@
 package star.tratto.exceptions;
 
-public class ResolvedTypeNotFound extends Exception {
+import java.io.IOException;
+
+public class ResolvedTypeNotFound extends IOException {
     public ResolvedTypeNotFound() {
         super();
     }

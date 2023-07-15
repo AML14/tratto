@@ -1,6 +1,8 @@
 package star.tratto.exceptions;
 
-public class JPClassNotFoundException extends Exception {
+import java.io.IOException;
+
+public class JPClassNotFoundException extends IOException {
     public JPClassNotFoundException() {
         super();
     }

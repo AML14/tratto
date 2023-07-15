@@ -1,236 +1,219 @@
 package star.tratto.identifiers;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * JDoctor and JavaParser store different representations of the same
- * primitive types. This class acts as a wrapper to store and convert between
- * representations.
+ * This class converts between the field descriptor and source code formats of
+ * a primitive type. The field descriptor (or JVML) format, used by JDoctor,
+ * uses single-letter representations of primitive types. The source code
+ * format, used by JavaParser, uses the string representation in source code
+ * to describe primitive types.
+ * We provide the following conversion table:
+ * <table>
+ *     <caption>Primitive representation conversion table</caption>
+ *     <tr>
+ *          <th scope="col">Field Descriptor</th>
+ *          <th scope="col">Source Code</th>
+ *     </tr>
+ *     <tr>
+ *         <td>Z</td>
+ *         <td>boolean</td>
+ *     </tr>
+ *     <tr>
+ *         <td>B</td>
+ *         <td>byte</td>
+ *     </tr>
+ *     <tr>
+ *         <td>C</td>
+ *         <td>char</td>
+ *     </tr>
+ *     <tr>
+ *         <td>S</td>
+ *         <td>short</td>
+ *     </tr>
+ *     <tr>
+ *         <td>I</td>
+ *         <td>int</td>
+ *     </tr>
+ *     <tr>
+ *         <td>J</td>
+ *         <td>long</td>
+ *     </tr>
+ *     <tr>
+ *         <td>F</td>
+ *         <td>float</td>
+ *     </tr>
+ *     <tr>
+ *         <td>D</td>
+ *         <td>double</td>
+ *     </tr>
+ * </table>
  */
-public enum CommonPrimitiveType {
-    // JDoctor representations.
-    CONDITION_BOOLEAN("Z"),
-    CONDITION_BYTE("B"),
-    CONDITION_CHAR("C"),
-    CONDITION_DOUBLE("D"),
-    CONDITION_FLOAT("F"),
-    CONDITION_INTEGER("I"),
-    CONDITION_LONG("J"),
-    CONDITION_SHORT("S"),
-    // JavaParser representations.
-    JP_BOOLEAN("boolean"),
-    JP_BYTE("byte"),
-    JP_CHAR("char"),
-    JP_DOUBLE("double"),
-    JP_FLOAT("float"),
-    JP_INTEGER("int"),
-    JP_LONG("long"),
-    JP_SHORT("short");
-
-    private final String type;
-    private static final List<String> allJDoctorPrimitiveTypes = collectAllJDoctorPrimitiveTypeNames();
-    private static final List<String> allJPPrimitiveTypes = collectAllJPPrimitiveTypeNames();
-
-    CommonPrimitiveType(String name) {
-        this.type = name;
-    }
+public class CommonPrimitiveType {
+    // base primitive types.
+    private static final Class<Boolean> booleanClass = boolean.class;
+    private static final Class<Byte> byteClass = byte.class;
+    private static final Class<Character> charClass = char.class;
+    private static final Class<Short> shortClass = short.class;
+    private static final Class<Integer> intClass = int.class;
+    private static final Class<Long> longClass = long.class;
+    private static final Class<Float> floatClass = float.class;
+    private static final Class<Double> doubleClass = double.class;
+    // list of all primitive types.
+    private static final List<Class<?>> primitiveList = List.of(
+            booleanClass,
+            byteClass,
+            charClass,
+            shortClass,
+            intClass,
+            longClass,
+            floatClass,
+            doubleClass
+    );
 
     /**
-     * Converts a String name of a primitive type to a ConditionPrimitiveType
-     * enum. Given name may use either JavaParser or JDoctor format.
-     *
-     * @param parameter a name of a parameter (e.g. "Z", "boolean", "D", "double")
-     * @return the ConditionPrimitiveType whose value corresponds to the given
-     * parameter name
+     * @param fieldDescriptor a field descriptor String representation of a primitive type
+     * @return the primitive Class corresponding to the field descriptor
      */
-    public static CommonPrimitiveType convertTypeNameToCommonPrimitiveType(String parameter) {
-        switch (parameter) {
+    private static Class<?> fieldDescriptorToClass(String fieldDescriptor) {
+        switch (fieldDescriptor) {
             case "Z" -> {
-                return CONDITION_BOOLEAN;
+                return booleanClass;
             }
             case "B" -> {
-                return CONDITION_BYTE;
+                return byteClass;
             }
             case "C" -> {
-                return CONDITION_CHAR;
-            }
-            case "D" -> {
-                return CONDITION_DOUBLE;
-            }
-            case "F" -> {
-                return CONDITION_FLOAT;
-            }
-            case "I" -> {
-                return CONDITION_INTEGER;
-            }
-            case "J" -> {
-                return CONDITION_LONG;
+                return charClass;
             }
             case "S" -> {
-                return CONDITION_SHORT;
+                return shortClass;
             }
+            case "I" -> {
+                return intClass;
+            }
+            case "J" -> {
+                return longClass;
+            }
+            case "F" -> {
+                return floatClass;
+            }
+            case "D" -> {
+                return doubleClass;
+            }
+        }
+        throw new IllegalArgumentException("Unrecognized primitive field descriptor: " + fieldDescriptor);
+    }
+
+    /**
+     * @param sourceCode a source code String representation of a primitive type
+     * @return the primitive Class corresponding to the source code
+     */
+    private static Class<?> sourceCodeToClass(String sourceCode) {
+        switch (sourceCode) {
             case "boolean" -> {
-                return JP_BOOLEAN;
+                return booleanClass;
             }
             case "byte" -> {
-                return JP_BYTE;
+                return byteClass;
             }
             case "char" -> {
-                return JP_CHAR;
-            }
-            case "double" -> {
-                return JP_DOUBLE;
-            }
-            case "float" -> {
-                return JP_FLOAT;
-            }
-            case "integer", "int" -> {
-                return JP_INTEGER;
-            }
-            case "long" -> {
-                return JP_LONG;
+                return charClass;
             }
             case "short" -> {
-                return JP_SHORT;
+                return shortClass;
+            }
+            case "int" -> {
+                return intClass;
+            }
+            case "long" -> {
+                return longClass;
+            }
+            case "float" -> {
+                return floatClass;
+            }
+            case "double" -> {
+                return doubleClass;
             }
         }
-        String errMsg = String.format("Unknown primitive parameter: %s", parameter);
-        throw new IllegalArgumentException(errMsg);
+        throw new IllegalArgumentException("Unrecognized primitive source code: " + sourceCode);
     }
 
     /**
-     * Converts a JDoctor primitive type to a JavaParser primitive type.
+     * @param primitiveClass a Class representation of a primitive type
+     * @return the field descriptor String representation of {@code primitiveClass}
+     */
+    private static String classToFieldDescriptor(Class<?> primitiveClass) {
+        if (primitiveClass.equals(booleanClass)) {
+            return "Z";
+        } else if (primitiveClass.equals(byteClass)) {
+            return "B";
+        } else if (primitiveClass.equals(charClass)) {
+            return "C";
+        } else if (primitiveClass.equals(shortClass)) {
+            return "S";
+        } else if (primitiveClass.equals(intClass)) {
+            return "I";
+        } else if (primitiveClass.equals(longClass)) {
+            return "J";
+        } else if (primitiveClass.equals(floatClass)) {
+            return "F";
+        } else if (primitiveClass.equals(doubleClass)) {
+            return "D";
+        }
+        throw new IllegalArgumentException("Unrecognized class: " + primitiveClass);
+    }
+
+    /**
+     * @param primitiveClass a Class representation of a primitive type
+     * @return the source code String representation of {@code primitiveClass}
+     */
+    private static String classToSourceCode(Class<?> primitiveClass) {
+        return primitiveClass.getName();
+    }
+
+    /**
+     * Converts a field descriptor String representation of a primitive type
+     * to a source code String representation. See class JavaDoc for full list
+     * of conversions.
      *
-     * @param conditionType the JDoctor primitive type
-     * @return the corresponding JavaParser primitive type
+     * @param fieldDescriptor a field descriptor String representation of a
+     *                        primitive type
+     * @return the corresponding source code String representation
      */
-    public static CommonPrimitiveType jDoctorToJP(CommonPrimitiveType conditionType) {
-        switch (conditionType) {
-            case CONDITION_BOOLEAN -> {
-                return JP_BOOLEAN;
-            }
-            case CONDITION_BYTE -> {
-                return JP_BYTE;
-            }
-            case CONDITION_CHAR -> {
-                return JP_CHAR;
-            }
-            case CONDITION_DOUBLE -> {
-                return JP_DOUBLE;
-            }
-            case CONDITION_FLOAT -> {
-                return JP_FLOAT;
-            }
-            case CONDITION_INTEGER -> {
-                return JP_INTEGER;
-            }
-            case CONDITION_LONG -> {
-                return JP_LONG;
-            }
-            case CONDITION_SHORT -> {
-                return JP_SHORT;
-            }
-        }
-        String errMsg = String.format("Unknown primitive type: %s", conditionType.getTypeName());
-        throw new IllegalArgumentException(errMsg);
+    public static String convertFieldDescriptorToSourceCode(String fieldDescriptor) {
+        Class<?> primitiveClass = fieldDescriptorToClass(fieldDescriptor);
+        return classToSourceCode(primitiveClass);
     }
 
     /**
-     * Converts a JavaParser primitive type to a JDoctor primitive type.
+     * Converts a source code String representation of a primitive type to a
+     * field descriptor String representation. See class JavaDoc for full list
+     * of conversions.
      *
-     * @param conditionType the JavaParser primitive type
-     * @return the corresponding JDoctor primitive type
+     * @param sourceCode a source code String representation of a primitive
+     *                   type
+     * @return the corresponding field descriptor String representation
      */
-    public static CommonPrimitiveType jpToJDoctor(CommonPrimitiveType conditionType) {
-        switch (conditionType) {
-            case JP_BOOLEAN -> {
-                return CONDITION_BOOLEAN;
-            }
-            case JP_BYTE -> {
-                return CONDITION_BYTE;
-            }
-            case JP_CHAR -> {
-                return CONDITION_CHAR;
-            }
-            case JP_DOUBLE -> {
-                return CONDITION_DOUBLE;
-            }
-            case JP_FLOAT -> {
-                return CONDITION_FLOAT;
-            }
-            case JP_INTEGER -> {
-                return CONDITION_INTEGER;
-            }
-            case JP_LONG -> {
-                return CONDITION_LONG;
-            }
-            case JP_SHORT -> {
-                return CONDITION_SHORT;
-            }
-        }
-        String errMsg = String.format("Unknown primitive type: %s", conditionType.getTypeName());
-        throw new IllegalArgumentException(errMsg);
+    public static String convertSourceCodeToFieldDescriptor(String sourceCode) {
+        Class<?> primitiveClass = sourceCodeToClass(sourceCode);
+        return classToFieldDescriptor(primitiveClass);
     }
 
     /**
-     * Gets all JDoctor types as a list of Strings.
+     * @return field descriptor String representation of all primitive types
      */
-    private static List<String> collectAllJDoctorPrimitiveTypeNames() {
-        return Arrays
-                .stream(CommonPrimitiveType.values())
-                .filter(c -> c.name().startsWith("CONDITION"))
-                .map(CommonPrimitiveType::getTypeName)
-                .collect(Collectors.toList());
+    public static List<String> getAllFieldDescriptors() {
+        return primitiveList.stream().map(CommonPrimitiveType::classToFieldDescriptor).collect(Collectors.toList());
     }
 
     /**
-     * Gets all JavaParser types as a list of Strings.
+     *
+     * @return a regex of all possible field descriptor String representations
+     * of a primitive type. Used to find field descriptors in a given string.
      */
-    private static List<String> collectAllJPPrimitiveTypeNames() {
-        return Arrays
-                .stream(CommonPrimitiveType.values())
-                .filter(c -> c.name().startsWith("JP"))
-                .map(CommonPrimitiveType::getTypeName)
-                .collect(Collectors.toList());
-    }
-
-    /**
-     * @return a list of all possible JDoctor primitive types
-     */
-    public static List<String> getAllJDoctorPrimitiveTypeNames() {
-        return allJDoctorPrimitiveTypes;
-    }
-
-    /**
-     * @return a list of all possible JavaParser primitive types
-     */
-    public static List<String> getAllJPPrimitiveTypeNames() {
-        return allJPPrimitiveTypes;
-    }
-
-    /**
-     * @return a regex representation of all possible JDoctor primitive types.
-     * Used to find JDoctor types in an arbitrary string.
-     */
-    public static String getJDoctorPrimitivesRegex() {
-        return "[" + String.join("", allJDoctorPrimitiveTypes) + "]";
-    }
-
-    /**
-     * @return a regex representation of all possible JavaParser primitive
-     * types
-     */
-    public static String getJPPrimitivesRegex() {
-        return "[" + String.join("", allJPPrimitiveTypes) + "]";
-    }
-
-    /**
-     * @return the corresponding JDoctor or JavaParser type name
-     * (e.g. "Z", "boolean", "D", "double)
-     */
-    public String getTypeName() {
-        return this.type;
+    public static String getAllFieldDescriptorsRegex() {
+        return "[" + String.join("", getAllFieldDescriptors()) + "]";
     }
 }
