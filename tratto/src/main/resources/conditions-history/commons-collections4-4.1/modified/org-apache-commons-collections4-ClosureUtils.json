@@ -316,6 +316,14 @@
           "condition": "java.util.Arrays.stream(predicates).anyMatch(e -> e==null) || java.util.Arrays.stream(closures).anyMatch(e -> e==null)",
           "description": "if any element in the arrays is null."
         }
+      },
+      {
+        "exception": "java.lang.IllegalArgumentException",
+        "description": "@throws java.lang.IllegalArgumentException if the arrays have different sizes.",
+        "guard": {
+          "condition": "predicates.length != closures.length",
+          "description": "if the arrays have different sizes."
+        }
       }
     ],
     "post": [],
