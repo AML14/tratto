@@ -117,7 +117,7 @@ public class TokenEnricher {
         );
 
         // Add default Java classes
-        enrichedTokensPlusInfo.addAll(JavaTypes.TYPICAL
+        enrichedTokensPlusInfo.addAll(JavaTypes.LANG_UTIL
                 .stream()
                 .filter(pair -> doesInstanceofCompile(fullyQualifiedClassName(exprReturnType.getValue0(), exprReturnType.getValue1()), fullyQualifiedClassName(pair.getValue0(), pair.getValue1()), oracleDatapoint))
                 .map(pair -> Triplet.with(pair.getValue1(), "Class", List.of(pair.getValue0(), pair.getValue1())))
