@@ -272,7 +272,7 @@ public class TokenSuggesterTest {
             isTokenLegalBasedOnSingleTokenRestrictions(token, partialExpressionTokens, oracleDatapoint);
             fail("Expected IllegalArgumentException");
         } catch (IllegalArgumentException e) {
-            assertEquals("The provided methodSourceCode cannot be parsed by JavaParser. Method source code:" + System.lineSeparator() + oracleDatapoint.getMethodSourceCode(), e.getMessage());
+            assertEquals("JavaParser cannot parse:" + System.lineSeparator() + oracleDatapoint.getMethodSourceCode(), e.getMessage());
         }
     }
 
