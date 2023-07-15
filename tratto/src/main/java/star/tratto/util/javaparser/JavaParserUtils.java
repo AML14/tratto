@@ -862,7 +862,7 @@ public class JavaParserUtils {
      * @param filePath the absolute path to the file
      * @return a JavaParser compilation unit
      */
-    public static Optional<CompilationUnit> getCompilationUnitFromFilePath(String filePath) {
+    public static Optional<CompilationUnit> getCompilationUnitFromFile(String filePath) {
         Path path = Paths.get(filePath);
         try {
             return javaParser.parse(path).getResult();

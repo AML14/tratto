@@ -514,9 +514,9 @@ public class JavaParserUtilsTest {
     }
 
     @Test
-    public void getCompilationUnitFromFilePathTest() {
+    public void getCompilationUnitFromFileTest() {
         String projectsPath = Paths.get("src", "main", "java", "star", "tratto", "data", "OracleType.java").toString();
-        Optional<CompilationUnit> optionalCu = getCompilationUnitFromFilePath(projectsPath);
+        Optional<CompilationUnit> optionalCu = getCompilationUnitFromFile(projectsPath);
         assertTrue(optionalCu.isPresent());
         CompilationUnit cu = optionalCu.get();
         try {
