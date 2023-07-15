@@ -162,7 +162,7 @@ public class JavaParserUtils {
                 cu.addImport(fullyQualifiedClassName(projectClass.getValue1(), projectClass.getValue0()));
             }
         });
-        if (expression.contains("Arrays")) {
+        if (expression.contains("\\bArrays\\.")) {
             cu.addImport("java.util.Arrays");
         }
     }
@@ -268,13 +268,13 @@ public class JavaParserUtils {
      * type is a primitive, throws an IllegalArgumentException.
      * @throws IllegalArgumentException if the type is not a reference type or an array
      */
-    public static Set<MethodUsage> getMethodsOfType(String type) throws IllegalArgumentException {
+    public static Set<MethodUsage> getMethodsOfType(String referenceType) throws IllegalArgumentException {
         ResolvedType resolvedType = null;
         ResolvedReferenceTypeDeclaration resolvedReferenceTypeDeclaration = null;
         Set<MethodUsage> methods = new HashSet<>();
         boolean useObjectMethods = true;
         try {
-            resolvedType = getResolvedType(type);
+            resolvedType = getResolvedType(referenceType);
             resolvedReferenceTypeDeclaration = getResolvedReferenceTypeDeclaration(resolvedType);
             methods.addAll(resolvedReferenceTypeDeclaration.getAllMethods());
             if (!resolvedReferenceTypeDeclaration.isInterface()) { // Interfaces do not always inherit from Object
@@ -283,10 +283,10 @@ public class JavaParserUtils {
         } catch (UnsupportedOperationException e) {
             if (!resolvedType.isArray()) {
                 throw new IllegalArgumentException("Trying to retrieve available methods from a type that is not " +
-                        "a reference type or an array: " + type, e);
+                        "a reference type or an array: " + referenceType, e);
             }
         } catch (UnsolvedSymbolException e) {
-            logger.warn("Unresolvable type: {}", type);
+            logger.warn("Unresolvable type: {}", referenceType);
         } finally {
             if (useObjectMethods) {
                 Set<MethodUsage> objectMethods = getResolvedReferenceTypeDeclaration("java.lang.Object").getAllMethods();
