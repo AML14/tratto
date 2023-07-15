@@ -544,7 +544,7 @@ public class JavaParserUtils {
         if (bodyDeclaration.isMethodDeclaration() || bodyDeclaration.isConstructorDeclaration()) {
             return bodyDeclaration;
         } else {
-            throw new IllegalArgumentException("Not a constructor or method:" + System.lineSeparator + methodSourceCode);
+            throw new IllegalArgumentException("Not a constructor or method:" + System.lineSeparator() + methodSourceCode);
         }
     }
 
