@@ -6,7 +6,7 @@ import star.tratto.data.OracleDatapoint;
 import java.util.List;
 
 import static star.tratto.util.JavaParserUtils.getReturnTypeOfExpression;
-import static star.tratto.util.JavaParserUtils.isType1InstanceOfType2;
+import static star.tratto.util.JavaParserUtils.isInstanceOf;
 import static star.tratto.util.StringUtils.fullyQualifiedClassName;
 
 /**
@@ -49,6 +49,6 @@ public class NoStreamRestriction extends SingleTokenRestriction {
 
         // If "stream" is suggested as next legal token, then previous token is "." and token before that is a variable. Get its type
         Pair<String, String> streamVariableType = getReturnTypeOfExpression(partialExpressionTokens.get(partialExpressionTokens.size() - 2), oracleDatapoint);
-        return !isType1InstanceOfType2(fullyQualifiedClassName(streamVariableType), "java.util.Collection", oracleDatapoint); // If var is not Collection, "stream" is forbidden
+        return !isInstanceOf(fullyQualifiedClassName(streamVariableType), "java.util.Collection", oracleDatapoint); // If var is not Collection, "stream" is forbidden
     }
 }
