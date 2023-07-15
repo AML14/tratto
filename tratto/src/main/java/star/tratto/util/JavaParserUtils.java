@@ -466,7 +466,7 @@ public class JavaParserUtils {
     }
 
     /**
-     * Unfortunately, the MethodUsage class does not provide a function to obtain the method signature
+     * Unfortunately, the MethodUsage class does not provide a method to obtain the method signature
      * as it was written, so the best that we can do is to reconstruct it to a certain extent. This
      * has the following limitations:
      * <ul>
