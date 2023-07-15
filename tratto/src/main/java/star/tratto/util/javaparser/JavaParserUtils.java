@@ -189,8 +189,9 @@ public class JavaParserUtils {
     }
 
     /**
-     * Given the class and method under test, inserts into the class and returns a synthetic method
+     * Given the class and method under test, creates a synthetic method
      * with the same signature (in terms of type parameters and arguments) as the method under test.
+     * Inserts the synthetic method into the class and returns it.
      */
     private static MethodDeclaration getSyntheticMethod(TypeDeclaration<? extends TypeDeclaration<?>> classUnderTest, BodyDeclaration<?> methodUnderTest) {
         MethodDeclaration syntheticMethod = classUnderTest.addMethod(SYNTHETIC_METHOD_NAME);
