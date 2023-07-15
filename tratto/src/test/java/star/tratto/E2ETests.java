@@ -54,13 +54,13 @@ public class E2ETests {
         } catch (AssertionFailedError e) {
             logger.warn("This test could not finish before 6 hours, but no exceptions were thrown " +
                     "during its execution, so we'll assume it passed.");
-        } finally {
-            // Delete datasets and recreate folders
-            deleteDirectory(IOPath.ORACLES_DATASET.getValue());
-            deleteDirectory(TokensDataset.TOKENS_DATASET_FOLDER);
-            Files.createDirectories(Paths.get(IOPath.ORACLES_DATASET.getValue()));
-            Files.createDirectories(Paths.get(TokensDataset.TOKENS_DATASET_FOLDER));
         }
+
+        // Delete datasets and recreate folders
+        deleteDirectory(IOPath.ORACLES_DATASET.getValue());
+        deleteDirectory(TokensDataset.TOKENS_DATASET_FOLDER);
+        Files.createDirectories(Paths.get(IOPath.ORACLES_DATASET.getValue()));
+        Files.createDirectories(Paths.get(TokensDataset.TOKENS_DATASET_FOLDER));
     }
 
     /**
