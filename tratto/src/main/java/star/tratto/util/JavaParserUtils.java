@@ -25,7 +25,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static star.tratto.util.JavaTypes.isNumeric1AssignableToNumeric2;
+import static star.tratto.util.JavaTypes.isAssignableToNumeric;
 import static star.tratto.util.StringUtils.fullyQualifiedClassName;
 
 public class JavaParserUtils {
@@ -387,7 +387,7 @@ public class JavaParserUtils {
                             .asVariableDeclarationExpr().getVariables().get(0)
                             .resolve().getType());
         } catch (UnsolvedSymbolException e) {
-            logger.warn("Failed to evaluate instanceof within method. Expression: \"type1Var instanceof {}\". Method: \n{}", type2, syntheticMethodBody.getParentNode().get());
+            logger.warn("Failed to evaluate instanceof within method. Expression: \"type1Var instanceof {}\". Method: {}", type2, syntheticMethodBody.getParentNode().get());
             return false;
         }
     }
@@ -426,7 +426,7 @@ public class JavaParserUtils {
                 type1.equals(type2) ||
                 (type1.equals(JavaTypes.NULL) && !JavaTypes.PRIMITIVES.contains(type2)) ||
                 (JavaTypes.PRIMITIVES.contains(type1) && JavaTypes.PRIMITIVES_TO_WRAPPERS.get(type1).equals(type2)) ||
-                (JavaTypes.NUMBERS.contains(type1) && JavaTypes.NUMBERS.contains(type2) && isNumeric1AssignableToNumeric2(type1, type2)) ||
+                (JavaTypes.NUMBERS.contains(type1) && JavaTypes.NUMBERS.contains(type2) && isAssignableToNumeric(type1, type2)) ||
                 isInstanceOf(fullyQualifiedClassName(type1), fullyQualifiedClassName(type2), oracleDatapoint);
     }
 
@@ -533,7 +533,7 @@ public class JavaParserUtils {
         try {
             return javaParser.parseBodyDeclaration(methodSourceCode).getResult().get().asMethodDeclaration();
         } catch (NoSuchElementException e) {
-            throw new IllegalArgumentException("The provided methodSourceCode cannot be parsed by JavaParser. Method source code:\n\n" + methodSourceCode, e);
+            throw new IllegalArgumentException("JavaParser cannot parse:" + System.lineSeparator() + methodSourceCode, e);
         } catch (IllegalStateException e) {
             return null; // This happens when the methodSourceCode is actually a constructor
         }
@@ -544,7 +544,7 @@ public class JavaParserUtils {
         if (bodyDeclaration.isMethodDeclaration() || bodyDeclaration.isConstructorDeclaration()) {
             return bodyDeclaration;
         } else {
-            throw new IllegalArgumentException("The provided methodSourceCode is neither a constructor nor a method. Method source code:\n\n" + methodSourceCode);
+            throw new IllegalArgumentException("Not a constructor or method:" + System.lineSeparator + methodSourceCode);
         }
     }
 
@@ -554,7 +554,7 @@ public class JavaParserUtils {
         } else if (bodyDeclaration.isConstructorDeclaration()) {
             return bodyDeclaration.asConstructorDeclaration().getTypeParameters();
         } else {
-            throw new IllegalArgumentException("The provided bodyDeclaration is neither a constructor nor a method. Body declaration:\n\n" + bodyDeclaration);
+            throw new IllegalArgumentException("Not a constructor or method body:"+ System.lineSeparator() + bodyDeclaration);
         }
     }
 
@@ -564,7 +564,7 @@ public class JavaParserUtils {
         } else if (bodyDeclaration.isConstructorDeclaration()) {
             return bodyDeclaration.asConstructorDeclaration().getParameters();
         } else {
-            throw new IllegalArgumentException("The provided bodyDeclaration is neither a constructor nor a method. Body declaration:\n\n" + bodyDeclaration);
+            throw new IllegalArgumentException("Not a constructor or method body:" + System.lineSeparator() + bodyDeclaration);
         }
     }
 }
