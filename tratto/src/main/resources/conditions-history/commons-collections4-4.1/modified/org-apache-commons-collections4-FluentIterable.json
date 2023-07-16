@@ -479,6 +479,34 @@
   {
     "operation": {
       "classname": "org.apache.commons.collections4.FluentIterable",
+      "name": "get",
+      "parameterTypes": [
+        "int"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "position"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.IndexOutOfBoundsException if the provided position is outside the valid range of this iterable: [0, size).",
+        "guard": {
+          "condition": "position < 0 || position > receiverObjectID.size()",
+          "description": "if the provided position is outside the valid range of this iterable: [0, size)."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.FluentIterable",
       "name": "copyInto",
       "parameterTypes": [
         "java.util.Collection"
