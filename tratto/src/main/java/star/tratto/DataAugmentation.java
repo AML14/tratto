@@ -38,6 +38,9 @@ public class DataAugmentation {
     private static final String AUGMENTED_SUFFIX = "-augmented.json";
     private static Map<String, List<String>> alternateOracles;
     private static Map<String, List<String>> alternateTags;
+    private static int oracleDPsAllowingAugmentation = 0;
+    private static int oracleDPsOriginal = 0;
+    private static int oracleDPsAugmented = 0;
 
     public static void main(String[] args) throws IOException {
         logger.info("Augmenting oracles dataset...");
@@ -65,13 +68,21 @@ public class DataAugmentation {
                     newOracleDatapoint.setOracle(oracleTagCombo.getValue0());
                     newOracleDatapoint.setJavadocTag(oracleTagCombo.getValue1());
                     newOracleDatapoints.add(newOracleDatapoint);
+                    oracleDPsAugmented++;
                 }
+                oracleDPsOriginal++;
             }
 
             String newOracleDatapointsFile = oraclesDatasetFile.toString().replace(".json", AUGMENTED_SUFFIX);
             objectMapper.writeValue(new File(newOracleDatapointsFile), newOracleDatapoints.stream().map(OracleDatapoint::toMapAndLists).toList());
             newOracleDatapoints.clear();
         }
+
+        logger.info("Finished augmenting oracles dataset.");
+        logger.info("Oracle data points original: {}", oracleDPsOriginal);
+        logger.info("Oracle data points allowing augmentation: {}", oracleDPsAllowingAugmentation);
+        logger.info("Oracle data points augmented: {}", oracleDPsAugmented);
+        logger.info("Oracle data points total: {}", oracleDPsOriginal + oracleDPsAugmented);
     }
 
     /**
@@ -98,6 +109,9 @@ public class DataAugmentation {
 
         // Original oracle and Javadoc tag may be combined. This is already in the dataset. Remove it.
         oracleTagCombos.remove(Pair.with(compactOracle, javaDocTag));
+        if (oracleTagCombos.size() > 0) {
+            oracleDPsAllowingAugmentation++;
+        }
 
         return oracleTagCombos;
     }
