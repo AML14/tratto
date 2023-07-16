@@ -44,5 +44,59 @@
     ],
     "post": [],
     "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.analysis.function.StepFunction",
+      "name": "org.apache.commons.math3.analysis.function.StepFunction",
+      "parameterTypes": [
+        "[D",
+        "[D"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "x",
+        "y"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NullArgumentException",
+        "description": "@throws org.apache.commons.math3.exception.NullArgumentException x or y are null.",
+        "guard": {
+          "condition": "x==null || y==null",
+          "description": "x or y are null."
+        }
+      },
+      {
+        "exception": "org.apache.commons.math3.exception.NoDataException",
+        "description": "@throws org.apache.commons.math3.exception.NoDataException x or y are zero-length.",
+        "guard": {
+          "condition": "x.length==0 || y.length==0",
+          "description": "x or y are zero-length."
+        }
+      },
+      {
+        "exception": "org.apache.commons.math3.exception.NonMonotonicSequenceException",
+        "description": "@throws org.apache.commons.math3.exception.NonMonotonicSequenceException if the x array is not sorted in strictly increasing order.",
+        "guard": {
+          "condition": "MathArrays.checkOrder(x)==false",
+          "description": "if the x array is not sorted in strictly increasing order."
+        }
+      },
+      {
+        "exception": "org.apache.commons.math3.exception.DimensionMismatchException",
+        "description": "@throws org.apache.commons.math3.exception.DimensionMismatchException if x and y do not have the same length.",
+        "guard": {
+          "condition": "((x.length) == (y.length)) == false",
+          "description": "if x and y do not have the same length."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
   }
 ]
