@@ -234,5 +234,41 @@
     ],
     "post": [],
     "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.linear.RealVector",
+      "name": "cosine",
+      "parameterTypes": [
+        "org.apache.commons.math3.linear.RealVector"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "v"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.MathArithmeticException",
+        "description": "@throws org.apache.commons.math3.exception.MathArithmeticException if this or v is the null vector.",
+        "guard": {
+          "condition": "receiverObjectID.getNorm()==0 ||v.getNorm()==0",
+          "description": "if this or v is the null vector."
+        }
+      },
+      {
+        "exception": "org.apache.commons.math3.exception.DimensionMismatchException",
+        "description": "@throws org.apache.commons.math3.exception.DimensionMismatchException if the dimensions of this and v do not match.",
+        "guard": {
+          "condition": "receiverObjectID.getDimension() != v.getDimension()",
+          "description": "if the dimensions of this and v do not match."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
   }
 ]
