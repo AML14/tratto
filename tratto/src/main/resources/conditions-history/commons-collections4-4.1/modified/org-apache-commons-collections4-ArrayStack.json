@@ -195,5 +195,47 @@
       }
     ],
     "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.ArrayStack",
+      "name": "search",
+      "parameterTypes": [
+        "java.lang.Object"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "object"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID==receiverObjectID.indexOf(object)+1",
+          "description": "the 1-based depth into the stack of the object, or -1 if not found."
+        },
+        "description": "the 1-based depth into the stack of the object, or -1 if not found.",
+        "guard": {
+          "condition": "receiverObjectID.contains(object) == true",
+          "description": "the 1-based depth into the stack of the object, or -1 if not found."
+        }
+      },
+      {
+        "property": {
+          "condition": "methodResultID==-1",
+          "description": "the 1-based depth into the stack of the object, or -1 if not found."
+        },
+        "description": "the 1-based depth into the stack of the object, or -1 if not found.",
+        "guard": {
+          "condition": "receiverObjectID.contains(object) == false",
+          "description": "the 1-based depth into the stack of the object, or -1 if not found."
+        }
+      }
+    ],
+    "pre": []
   }
 ]
