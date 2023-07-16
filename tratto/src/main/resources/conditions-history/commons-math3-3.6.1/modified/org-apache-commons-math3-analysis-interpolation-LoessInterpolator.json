@@ -127,5 +127,45 @@
     ],
     "post": [],
     "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.analysis.interpolation.LoessInterpolator",
+      "name": "smooth",
+      "parameterTypes": [
+        "xval",
+        "yval",
+        "weights"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "[D",
+        "[D",
+        "[D"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.DimensionMismatchException",
+        "description": "@throws org.apache.commons.math3.exception.DimensionMismatchException if xval and yval have different sizes.",
+        "guard": {
+          "condition": "((xval.length) == (yval.length)) == false",
+          "description": "if xval and yval have different sizes."
+        }
+      },
+      {
+        "exception": "org.apache.commons.math3.exception.NoDataException",
+        "description": "@throws org.apache.commons.math3.exception.NoDataException if xval or yval has zero size.",
+        "guard": {
+          "condition": "xval.length==0 || yval.length==0",
+          "description": "if xval or yval has zero size."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
   }
 ]
