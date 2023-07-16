@@ -46,12 +46,11 @@ public class StringUtils {
      * @throws IllegalArgumentException if openingParenthesisIndex is greater than or equal to the size of oracleTokens,
      *                                  or if oracleTokens does not contain the "(" token at the openingParenthesisIndex
      *                                  position
-     * @return null if no corresponding closing parenthesis is found, otherwise returns the index of the corresponding closing parenthesis
+     * @return null if no corresponding closing parenthesis is found, otherwise returns the index (in {@code oracleTokens}) of the corresponding closing parenthesis
      */
     public static Integer getCorrespondingClosingParenthesisIndex(List<String> oracleTokens, int openingParenthesisIndex) {
         if (openingParenthesisIndex >= oracleTokens.size()) {
-            throw new IllegalArgumentException("The openingParenthesisIndex (" + openingParenthesisIndex + ") must be strictly less than " +
-                    "the size of the list (" + oracleTokens.size() + ")");
+            throw new IndexOutOfBoundsException("openingParenthesisIndex=" + openingParenthesisIndex + ", oracle tokens list size=" + oracleTokens.size());
         } else if (!oracleTokens.get(openingParenthesisIndex).equals("(")) {
             throw new IllegalArgumentException("The token at the openingParenthesisIndex (" + openingParenthesisIndex + ") is not an opening parenthesis. " +
                     "Token: " + oracleTokens.get(openingParenthesisIndex));
@@ -107,10 +106,7 @@ public class StringUtils {
     }
 
     public static String fullyQualifiedClassName(Pair<String, String> packageClassPair) {
-        if (packageClassPair.getValue0().isEmpty()) {
-            return packageClassPair.getValue1();
-        }
-        return packageClassPair.getValue0() + "." + packageClassPair.getValue1();
+        return fullyQualifiedClassName(packageClassPair.getValue0(), packageClassPair.getValue1());
     }
 
     public static String getClassNameFromPath(String path) {

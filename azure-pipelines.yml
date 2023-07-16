@@ -21,6 +21,22 @@ jobs:
   - publish: $(System.DefaultWorkingDirectory)/tratto/target/jacoco.exec
     displayName: 'Save coverage'
     artifact: coverageResults1
+- job: grammar_tests
+  steps:
+  - task: Maven@3
+    displayName: 'Run grammar tests'
+    inputs:
+      mavenPomFile: 'oracle-grammar/MavenVersion/oracle-grammar/pom.xml'
+      mavenOptions: '-Xmx3072m'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '1.17'
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: true
+      testResultsFiles: '**/surefire-reports/TEST-*.xml'
+      goals: 'package'
+- job: tokensuggester_e2e_tests
+  dependsOn:
+  - unit_tests
 - job: tokenSuggester_e2e_tests
   timeoutInMinutes: 0
   steps:
