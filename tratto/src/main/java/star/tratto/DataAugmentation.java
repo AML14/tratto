@@ -12,10 +12,7 @@ import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static star.tratto.identifiers.IOPath.ORACLES_DATASET;
 import static star.tratto.util.StringUtils.compactExpression;
@@ -33,6 +30,7 @@ public class DataAugmentation {
     private static final Logger logger = LoggerFactory.getLogger(DataAugmentation.class);
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
+    private static final Random random = new Random(42); // To make augmented datasets deterministic
     private static final String ALTERNATE_ORACLES_PATH = "src/main/resources/data-augmentation/oracles.json";
     private static final String ALTERNATE_TAGS_PATH = "src/main/resources/data-augmentation/javadoc-tags.json";
     private static final String AUGMENTED_SUFFIX = "-augmented.json";
@@ -97,8 +95,8 @@ public class DataAugmentation {
         List<String> currentAlternateTags = new ArrayList<>(alternateTags.getOrDefault(javaDocTag, List.of()));
         currentAlternateTags.add(javaDocTag); // Add default Javadoc tag
         // Randomize lists so that combination patterns are varied:
-        Collections.shuffle(currentAlternateOracles);
-        Collections.shuffle(currentAlternateTags);
+        Collections.shuffle(currentAlternateOracles, random);
+        Collections.shuffle(currentAlternateTags, random);
 
         int max = Math.max(currentAlternateOracles.size(), currentAlternateTags.size());
         for (int i = 0; i < max; i++) {

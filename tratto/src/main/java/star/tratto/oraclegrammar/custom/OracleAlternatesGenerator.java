@@ -26,7 +26,7 @@ import static star.tratto.util.StringUtils.compactExpression;
  * {@link star.tratto.oraclegrammar.custom.Parser} to analyze and manipulate the
  * oracles in multiple ways. All public methods are transformation rules that take
  * as input a given oracle as a String and return as output a list of alternate
- * versions of the oracles (as Strings as well), which are semantically equivalent.
+ * versions of the oracle (as Strings as well), which are semantically equivalent.
  */
 public class OracleAlternatesGenerator {
     private static Parser parser = Parser.getInstance();

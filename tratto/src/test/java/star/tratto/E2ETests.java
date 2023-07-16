@@ -31,7 +31,12 @@ public class E2ETests {
      * <ul>
      *     <li>It generates the oracles dataset based on the projects source and the
      *     Jdoctor conditions.</li>
-     *     <li>It generates the tokens dataset based on the oracles dataset.</li>
+     *     <li>It generates alternate versions of the oracles based on the oracles
+     *     dataset.</li>
+     *     <li>It augments the oracles dataset with the newly generated oracles and
+     *     the existing alternate versions of the Javadoc tags.</li>
+     *     <li>It generates the tokens dataset based on the augmented oracles
+     *     dataset.</li>
      *     <li>For every oracle in the oracles dataset, it checks that they can be
      *     reconstructed from the tokens dataset. If not, the test fails.</li>
      * </ul>
@@ -47,8 +52,13 @@ public class E2ETests {
                 TokensDataset.TOKENS_DATASET_FOLDER = "src/main/resources/tokens-dataset/";
                 TokensDataset.DATASET_TYPE = TokenDPType.TOKEN_VALUE; // To reduce the size of the generated dataset
 
-                // Generate the datasets (assertions done in TokensDataset.main)
+                // Generate original oracles dataset
                 OraclesDataset.main(new String[] {});
+                // Generate alternate versions of oracles based on oracles dataset
+                OraclesAugmentation.main(new String[] {});
+                // Augment oracles dataset with newly created oracles and existing Javadoc tags alternatives
+                DataAugmentation.main(new String[] {});
+                // Generate tokens dataset based on oracles dataset (assertions are done as dataset is generated)
                 TokensDataset.main(new String[] {});
             });
         } catch (AssertionFailedError e) {
