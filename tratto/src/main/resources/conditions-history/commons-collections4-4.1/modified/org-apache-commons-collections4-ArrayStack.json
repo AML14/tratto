@@ -104,6 +104,46 @@
   {
     "operation": {
       "classname": "org.apache.commons.collections4.ArrayStack",
+      "name": "peek",
+      "parameterTypes": [
+        "int"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "n"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.util.EmptyStackException",
+        "description": "@throws java.util.EmptyStackException if there are not enough items on the stack to satisfy this request.",
+        "guard": {
+          "condition": "receiverObjectID.size() < n",
+          "description": "if there are not enough items on the stack to satisfy this request."
+        }
+      }
+    ],
+    "post": [
+      {
+        "property": {
+          "condition": " methodResultID.equals(receiverObjectID.get(receiverObjectID.size() - n)-1)",
+          "description": "the n'th item on the stack, zero relative."
+        },
+        "description": "the n'th item on the stack, zero relative.",
+        "guard": {
+          "condition": "true",
+          "description": "the n'th item on the stack, zero relative."
+        }
+      }
+    ],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.ArrayStack",
       "name": "pop",
       "parameterTypes": []
     },
