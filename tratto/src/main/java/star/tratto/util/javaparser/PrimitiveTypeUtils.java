@@ -1,4 +1,4 @@
-package star.tratto.util;
+package star.tratto.util.javaparser;
 
 import java.util.List;
 import java.util.stream.Collectors;
