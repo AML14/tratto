@@ -64,11 +64,11 @@ public class PrimitiveTypeUtils {
     }
 
     /**
-     * @param sourceCode a source code String representation of a primitive type
+     * @param primitiveType a source code String representation of a primitive type
      * @return the primitive Class corresponding to the source code
      */
-    private static Class<?> sourceCodeToClass(String sourceCode) {
-        switch (sourceCode) {
+    private static Class<?> primitiveTypeToClass(String primitiveType) {
+        switch (primitiveType) {
             case "boolean" -> {
                 return boolean.class;
             }
@@ -94,7 +94,7 @@ public class PrimitiveTypeUtils {
                 return double.class;
             }
         }
-        throw new IllegalArgumentException("Unrecognized primitive source code: " + sourceCode);
+        throw new IllegalArgumentException("Unrecognized primitive source code: " + primitiveType);
     }
 
     /**
@@ -126,7 +126,7 @@ public class PrimitiveTypeUtils {
      * @param primitiveClass a Class representation of a primitive type
      * @return the source code String representation of {@code primitiveClass}
      */
-    private static String classToSourceCode(Class<?> primitiveClass) {
+    private static String classToPrimitiveType(Class<?> primitiveClass) {
         return primitiveClass.getName();
     }
 
@@ -139,9 +139,9 @@ public class PrimitiveTypeUtils {
      *                        primitive type
      * @return the corresponding source code String representation
      */
-    public static String convertFieldDescriptorToSourceCode(String fieldDescriptor) {
+    public static String convertFieldDescriptorToPrimitiveType(String fieldDescriptor) {
         Class<?> primitiveClass = fieldDescriptorToClass(fieldDescriptor);
-        return classToSourceCode(primitiveClass);
+        return classToPrimitiveType(primitiveClass);
     }
 
     /**
@@ -149,12 +149,12 @@ public class PrimitiveTypeUtils {
      * field descriptor String representation. See class JavaDoc for full list
      * of conversions.
      *
-     * @param sourceCode a source code String representation of a primitive
-     *                   type
+     * @param primitiveType a source code String representation of a primitive
+     *                      type
      * @return the corresponding field descriptor String representation
      */
-    public static String convertSourceCodeToFieldDescriptor(String sourceCode) {
-        Class<?> primitiveClass = sourceCodeToClass(sourceCode);
+    public static String convertPrimitiveTypeToFieldDescriptor(String primitiveType) {
+        Class<?> primitiveClass = primitiveTypeToClass(primitiveType);
         return classToFieldDescriptor(primitiveClass);
     }
 

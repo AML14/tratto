@@ -10,32 +10,32 @@ import static org.junit.jupiter.api.Assertions.*;
 public class PrimitiveTypeUtilsTest {
     @Test
     public void convertFieldDescriptorToSourceCodeTest() {
-        assertEquals("boolean", PrimitiveTypeUtils.convertFieldDescriptorToSourceCode("Z"));
-        assertEquals("byte", PrimitiveTypeUtils.convertFieldDescriptorToSourceCode("B"));
-        assertEquals("char", PrimitiveTypeUtils.convertFieldDescriptorToSourceCode("C"));
-        assertEquals("short", PrimitiveTypeUtils.convertFieldDescriptorToSourceCode("S"));
-        assertEquals("int", PrimitiveTypeUtils.convertFieldDescriptorToSourceCode("I"));
-        assertEquals("long", PrimitiveTypeUtils.convertFieldDescriptorToSourceCode("J"));
-        assertEquals("float", PrimitiveTypeUtils.convertFieldDescriptorToSourceCode("F"));
-        assertEquals("double", PrimitiveTypeUtils.convertFieldDescriptorToSourceCode("D"));
+        assertEquals("boolean", PrimitiveTypeUtils.convertFieldDescriptorToPrimitiveType("Z"));
+        assertEquals("byte", PrimitiveTypeUtils.convertFieldDescriptorToPrimitiveType("B"));
+        assertEquals("char", PrimitiveTypeUtils.convertFieldDescriptorToPrimitiveType("C"));
+        assertEquals("short", PrimitiveTypeUtils.convertFieldDescriptorToPrimitiveType("S"));
+        assertEquals("int", PrimitiveTypeUtils.convertFieldDescriptorToPrimitiveType("I"));
+        assertEquals("long", PrimitiveTypeUtils.convertFieldDescriptorToPrimitiveType("J"));
+        assertEquals("float", PrimitiveTypeUtils.convertFieldDescriptorToPrimitiveType("F"));
+        assertEquals("double", PrimitiveTypeUtils.convertFieldDescriptorToPrimitiveType("D"));
         try {
-            PrimitiveTypeUtils.convertSourceCodeToFieldDescriptor("definitely not primitive");
+            PrimitiveTypeUtils.convertPrimitiveTypeToFieldDescriptor("definitely not primitive");
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
     public void convertSourceCodeToFieldDescriptorTest() {
-        assertEquals("Z", PrimitiveTypeUtils.convertSourceCodeToFieldDescriptor("boolean"));
-        assertEquals("B", PrimitiveTypeUtils.convertSourceCodeToFieldDescriptor("byte"));
-        assertEquals("C", PrimitiveTypeUtils.convertSourceCodeToFieldDescriptor("char"));
-        assertEquals("S", PrimitiveTypeUtils.convertSourceCodeToFieldDescriptor("short"));
-        assertEquals("I", PrimitiveTypeUtils.convertSourceCodeToFieldDescriptor("int"));
-        assertEquals("J", PrimitiveTypeUtils.convertSourceCodeToFieldDescriptor("long"));
-        assertEquals("F", PrimitiveTypeUtils.convertSourceCodeToFieldDescriptor("float"));
-        assertEquals("D", PrimitiveTypeUtils.convertSourceCodeToFieldDescriptor("double"));
+        assertEquals("Z", PrimitiveTypeUtils.convertPrimitiveTypeToFieldDescriptor("boolean"));
+        assertEquals("B", PrimitiveTypeUtils.convertPrimitiveTypeToFieldDescriptor("byte"));
+        assertEquals("C", PrimitiveTypeUtils.convertPrimitiveTypeToFieldDescriptor("char"));
+        assertEquals("S", PrimitiveTypeUtils.convertPrimitiveTypeToFieldDescriptor("short"));
+        assertEquals("I", PrimitiveTypeUtils.convertPrimitiveTypeToFieldDescriptor("int"));
+        assertEquals("J", PrimitiveTypeUtils.convertPrimitiveTypeToFieldDescriptor("long"));
+        assertEquals("F", PrimitiveTypeUtils.convertPrimitiveTypeToFieldDescriptor("float"));
+        assertEquals("D", PrimitiveTypeUtils.convertPrimitiveTypeToFieldDescriptor("double"));
         try {
-            PrimitiveTypeUtils.convertSourceCodeToFieldDescriptor("definitely not primitive");
+            PrimitiveTypeUtils.convertPrimitiveTypeToFieldDescriptor("definitely not primitive");
             fail();
         } catch (IllegalArgumentException ignored) {}
     }

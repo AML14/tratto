@@ -139,7 +139,7 @@ public class JDoctorUtils {
             Matcher matcher = pattern.matcher(jDoctorPrimitive);
             if (matcher.find()) {
                 String jDoctorFieldDescriptor = matcher.group(1);
-                return PrimitiveTypeUtils.convertFieldDescriptorToSourceCode(jDoctorFieldDescriptor);
+                return PrimitiveTypeUtils.convertFieldDescriptorToPrimitiveType(jDoctorFieldDescriptor);
             } else {
                 // `jDoctorPrimitive` does not match any known JDoctor representation.
                 throw new IllegalArgumentException(String.format(
