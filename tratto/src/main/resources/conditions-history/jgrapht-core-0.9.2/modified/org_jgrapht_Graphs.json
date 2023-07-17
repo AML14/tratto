@@ -112,5 +112,45 @@
     ],
     "post": [],
     "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.jgrapht.Graphs",
+      "name": "addEdge",
+      "parameterTypes": [
+        "java.lang.Object",
+        "java.lang.Object",
+        "java.lang.Object"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "sourceVertex",
+        "targetVertex",
+        "e"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.IllegalArgumentException",
+        "description": "@throws java.lang.IllegalArgumentException if source or target vertices are not found in the graph.",
+        "guard": {
+          "condition": "receiverObjectID.contains(sourceVertex)==false || receiverObjectID.contains(targetVertex)==false",
+          "description": "if source or target vertices are not found in the graph."
+        }
+      },
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException if any of the specified vertices is null.",
+        "guard": {
+          "condition": "sourceVertex==null || targetVertex==null",
+          "description": "if any of the specified vertices is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
   }
 ]
