@@ -574,7 +574,16 @@
       "receiverName": "receiverObjectID",
       "returnName": "methodResultID"
     },
-    "throws": [],
+    "throws": [
+      {
+        "exception": "java.lang.IllegalArgumentException",
+        "description": "@throws java.lang.IllegalArgumentException if a value of a is outside of arange.",
+        "guard": {
+          "condition": "min(a) < 0 || max(a) >= arange",
+          "description": "if a value of a is outside of arange."
+        }
+      }
+    ],
     "post": [],
     "pre": [
       {
