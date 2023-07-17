@@ -4,6 +4,7 @@ import com.github.javaparser.ast.body.CallableDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.TypeDeclaration;
+import com.github.javaparser.ast.type.PrimitiveType;
 import com.github.javaparser.ast.type.TypeParameter;
 
 import java.util.Arrays;
@@ -139,7 +140,8 @@ public class JDoctorUtils {
             Matcher matcher = pattern.matcher(jDoctorPrimitive);
             if (matcher.find()) {
                 String jDoctorFieldDescriptor = matcher.group(1);
-                return PrimitiveTypeUtils.convertFieldDescriptorToPrimitiveType(jDoctorFieldDescriptor);
+                String javaParserPrimitiveType = PrimitiveTypeUtils.convertFieldDescriptorToPrimitiveType(jDoctorFieldDescriptor);
+                return jDoctorPrimitive.replaceAll(jDoctorRegex, javaParserPrimitiveType);
             } else {
                 // `jDoctorPrimitive` does not match any known JDoctor representation.
                 throw new IllegalArgumentException(String.format(
