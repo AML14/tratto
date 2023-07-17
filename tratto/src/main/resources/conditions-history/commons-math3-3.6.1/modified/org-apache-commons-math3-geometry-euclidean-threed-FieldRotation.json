@@ -90,5 +90,39 @@
   ],
   "post": [],
   "pre": []
-}
+},
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.geometry.euclidean.threed.FieldRotation",
+      "name": "FieldRotation",
+      "parameterTypes": [
+        "org.apache.commons.math3.geometry.euclidean.threed.FieldVector3D",
+        "org.apache.commons.math3.geometry.euclidean.threed.FieldVector3D",
+        "org.apache.commons.math3.geometry.euclidean.threed.FieldVector3D",
+        "org.apache.commons.math3.geometry.euclidean.threed.FieldVector3D"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "u1",
+        "u2",
+        "v1",
+        "v2"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.MathArithmeticException",
+        "description": "@throws org.apache.commons.math3.exception.MathArithmeticException if the norm of one of the vectors is zero, or if one of the pair is degenerated (i.e. the vectors of the pair are collinear).",
+        "guard": {
+          "condition": "u1.getNorm().getReal()==0 || u2.getNorm().getReal()==0 || v1.getNorm().getReal()==0",
+          "description": "if the matrix is not a 3X3 matrix, or if it cannot be transformed into an orthogonal matrix with the given threshold, or if the determinant of the resulting orthogonal matrix is negative."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  }
 ]
