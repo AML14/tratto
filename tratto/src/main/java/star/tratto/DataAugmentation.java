@@ -32,7 +32,7 @@ public class DataAugmentation {
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private static final Random random = new Random(42); // To make augmented datasets deterministic
     private static final String ALTERNATE_ORACLES_PATH = "src/main/resources/data-augmentation/oracles.json";
-    private static final String ALTERNATE_TAGS_PATH = "src/main/resources/data-augmentation/javadoc-tags.json";
+    public static String ALTERNATE_TAGS_PATH = "src/main/resources/data-augmentation/javadoc-tags.json"; // public for testing purposes
     private static final String AUGMENTED_SUFFIX = "-augmented.json";
     private static Map<String, List<String>> alternateOracles;
     private static Map<String, List<String>> alternateTags;

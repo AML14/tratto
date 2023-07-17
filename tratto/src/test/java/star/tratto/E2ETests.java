@@ -48,6 +48,7 @@ public class E2ETests {
             assertTimeoutPreemptively(Duration.ofMinutes(350), () -> {
                 // Config for E2E test
                 OracleDP2TokenDPs.CRASH_WRONG_ORACLE = true;
+                DataAugmentation.ALTERNATE_TAGS_PATH = "src/test/resources/data-augmentation/javadoc-tags.json";
                 TokensDataset.ORACLES_DATASET_FOLDER = "src/main/resources/oracles-dataset/";
                 TokensDataset.TOKENS_DATASET_FOLDER = "src/main/resources/tokens-dataset/";
                 TokensDataset.DATASET_TYPE = TokenDPType.TOKEN_VALUE; // To reduce the size of the generated dataset
