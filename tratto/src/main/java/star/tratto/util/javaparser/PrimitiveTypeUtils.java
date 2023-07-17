@@ -13,26 +13,21 @@ import java.util.stream.Collectors;
  * See <a href="https://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html#:~:text=4.3.2.%C2%A0Field-,Descriptors,-A%20field%20descriptor">full table</a> for a list of conversions.
  */
 public class PrimitiveTypeUtils {
-    // base primitive types.
-    private static final Class<Boolean> booleanClass = boolean.class;
-    private static final Class<Byte> byteClass = byte.class;
-    private static final Class<Character> charClass = char.class;
-    private static final Class<Short> shortClass = short.class;
-    private static final Class<Integer> intClass = int.class;
-    private static final Class<Long> longClass = long.class;
-    private static final Class<Float> floatClass = float.class;
-    private static final Class<Double> doubleClass = double.class;
     // list of all primitive types.
     private static final List<Class<?>> primitiveList = List.of(
-            booleanClass,
-            byteClass,
-            charClass,
-            shortClass,
-            intClass,
-            longClass,
-            floatClass,
-            doubleClass
+            boolean.class,
+            byte.class,
+            char.class,
+            short.class,
+            int.class,
+            long.class,
+            float.class,
+            double.class
     );
+    // private constructor to avoid creating an instance of this class.
+    private PrimitiveTypeUtils() {
+        throw new UnsupportedOperationException("This class cannot be instantiated.");
+    }
 
     /**
      * @param fieldDescriptor a field descriptor String representation of a primitive type
@@ -41,28 +36,28 @@ public class PrimitiveTypeUtils {
     private static Class<?> fieldDescriptorToClass(String fieldDescriptor) {
         switch (fieldDescriptor) {
             case "Z" -> {
-                return booleanClass;
+                return boolean.class;
             }
             case "B" -> {
-                return byteClass;
+                return byte.class;
             }
             case "C" -> {
-                return charClass;
+                return char.class;
             }
             case "S" -> {
-                return shortClass;
+                return short.class;
             }
             case "I" -> {
-                return intClass;
+                return int.class;
             }
             case "J" -> {
-                return longClass;
+                return long.class;
             }
             case "F" -> {
-                return floatClass;
+                return float.class;
             }
             case "D" -> {
-                return doubleClass;
+                return double.class;
             }
         }
         throw new IllegalArgumentException("Unrecognized primitive field descriptor: " + fieldDescriptor);
@@ -75,28 +70,28 @@ public class PrimitiveTypeUtils {
     private static Class<?> sourceCodeToClass(String sourceCode) {
         switch (sourceCode) {
             case "boolean" -> {
-                return booleanClass;
+                return boolean.class;
             }
             case "byte" -> {
-                return byteClass;
+                return byte.class;
             }
             case "char" -> {
-                return charClass;
+                return char.class;
             }
             case "short" -> {
-                return shortClass;
+                return short.class;
             }
             case "int" -> {
-                return intClass;
+                return int.class;
             }
             case "long" -> {
-                return longClass;
+                return long.class;
             }
             case "float" -> {
-                return floatClass;
+                return float.class;
             }
             case "double" -> {
-                return doubleClass;
+                return double.class;
             }
         }
         throw new IllegalArgumentException("Unrecognized primitive source code: " + sourceCode);
@@ -107,21 +102,21 @@ public class PrimitiveTypeUtils {
      * @return the field descriptor String representation of {@code primitiveClass}
      */
     private static String classToFieldDescriptor(Class<?> primitiveClass) {
-        if (primitiveClass.equals(booleanClass)) {
+        if (primitiveClass.equals(boolean.class)) {
             return "Z";
-        } else if (primitiveClass.equals(byteClass)) {
+        } else if (primitiveClass.equals(byte.class)) {
             return "B";
-        } else if (primitiveClass.equals(charClass)) {
+        } else if (primitiveClass.equals(char.class)) {
             return "C";
-        } else if (primitiveClass.equals(shortClass)) {
+        } else if (primitiveClass.equals(short.class)) {
             return "S";
-        } else if (primitiveClass.equals(intClass)) {
+        } else if (primitiveClass.equals(int.class)) {
             return "I";
-        } else if (primitiveClass.equals(longClass)) {
+        } else if (primitiveClass.equals(long.class)) {
             return "J";
-        } else if (primitiveClass.equals(floatClass)) {
+        } else if (primitiveClass.equals(float.class)) {
             return "F";
-        } else if (primitiveClass.equals(doubleClass)) {
+        } else if (primitiveClass.equals(double.class)) {
             return "D";
         }
         throw new IllegalArgumentException("Unrecognized class: " + primitiveClass);
