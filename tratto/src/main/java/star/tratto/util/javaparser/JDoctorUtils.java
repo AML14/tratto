@@ -1,12 +1,11 @@
 package star.tratto.util.javaparser;
 
-import star.tratto.identifiers.CommonPrimitiveType;
-
 import com.github.javaparser.ast.body.CallableDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.type.TypeParameter;
+import star.tratto.identifiers.CommonPrimitiveType;
 
 import java.util.Arrays;
 import java.util.List;
@@ -129,10 +128,10 @@ public class JDoctorUtils {
      * represent a primitive type
      */
     private static String convertJDoctorPrimitiveToJPPrimitive(String jDoctorPrimitive) {
-        List<String> primitiveJDoctorValues = CommonPrimitiveType.getAllJDoctorPrimitiveTypeNames();
+        List<String> primitiveJDoctorValues = CommonPrimitiveType.getAllFieldDescriptors();
         if (primitiveJDoctorValues.contains(jDoctorPrimitive.replaceAll("[^a-zA-Z]+", ""))) {
             // match `jDoctorPrimitive` to a known JDoctor primitive representation.
-            String jDoctorRegex = CommonPrimitiveType.getJDoctorPrimitivesRegex();
+            String jDoctorRegex = CommonPrimitiveType.getAllFieldDescriptorsRegex();
             String regex = String.format(
                     "[^A-Za-z0-9_]*(%s)[^A-Za-z0-9_]*",
                     jDoctorRegex
@@ -140,10 +139,8 @@ public class JDoctorUtils {
             Pattern pattern = Pattern.compile(regex);
             Matcher matcher = pattern.matcher(jDoctorPrimitive);
             if (matcher.find()) {
-                String foundPrimitiveType = matcher.group(1);
-                CommonPrimitiveType jDoctorCommonPrimitiveType = CommonPrimitiveType.convertTypeNameToCommonPrimitiveType(foundPrimitiveType);
-                CommonPrimitiveType jpCommonPrimitiveType = CommonPrimitiveType.jDoctorToJP(jDoctorCommonPrimitiveType);
-                return jDoctorPrimitive.replaceAll(jDoctorRegex, jpCommonPrimitiveType.getTypeName());
+                String jDoctorFieldDescriptor = matcher.group(1);
+                return CommonPrimitiveType.convertFieldDescriptorToSourceCode(jDoctorFieldDescriptor);
             } else {
                 // `jDoctorPrimitive` does not match any known JDoctor representation.
                 throw new IllegalArgumentException(String.format(
@@ -167,7 +164,7 @@ public class JDoctorUtils {
     private static String convertJDoctorTypeNameToJPTypeName(String jDoctorTypeName) {
         jDoctorTypeName = removeSpuriousCharacters(jDoctorTypeName);
         // converts primitive type.
-        List<String> primitiveJDoctorValues = CommonPrimitiveType.getAllJDoctorPrimitiveTypeNames();
+        List<String> primitiveJDoctorValues = CommonPrimitiveType.getAllFieldDescriptors();
         if (primitiveJDoctorValues.contains(jDoctorTypeName.replaceAll("[^a-zA-Z]+", ""))) {
             jDoctorTypeName = convertJDoctorPrimitiveToJPPrimitive(jDoctorTypeName);
         }

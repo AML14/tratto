@@ -609,7 +609,7 @@ public class OracleDPGenerator {
         List<String> wholePathList = Arrays.asList(operation.classname().split("\\."));
         String srcPath = this.project.srcPath();
         String classPath = Paths.get(srcPath, wholePathList.toArray(String[]::new)) + FileFormat.JAVA.getValue();
-        Optional<CompilationUnit> cu = jpUtils.getCompilationUnitFromFilePath(classPath, true);
+        Optional<CompilationUnit> cu = jpUtils.getCompilationUnitFromFile(classPath, true);
         return cu;
     }
 }

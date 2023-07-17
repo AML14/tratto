@@ -1,5 +1,6 @@
 package star.tratto.util.javaparser;
 
+import java.io.IOException;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.body.*;
@@ -33,6 +34,7 @@ import star.tratto.util.FileUtils;
 
 import java.io.File;
 import java.lang.reflect.Field;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -507,10 +509,11 @@ public class DatasetUtils {
      * @param sourcePath the path to the project root directory
      * @return a list of all valid files {@link File}
      */
-    private static List<File> getValidJavaFiles(String sourcePath) {
+    private static List<Path> getValidJavaFiles(String sourcePath) {
         // Get list of all Java files.
-        File sourceDir = new File(sourcePath);
-        List<File> allFiles = FileUtils.getAllJavaFilesFromDirectory(sourceDir);
+        try {
+        Path sourceDir = Path.of(sourcePath);
+        List<Path> allFiles = FileUtils.getAllJavaFilesFromDirectory(sourceDir);
         // Get list of files to ignore.
         String ignoreFilePath = Paths.get(
                 IOPath.REPOS.getValue(),
@@ -524,10 +527,13 @@ public class DatasetUtils {
         return allFiles
                 .stream()
                 .filter(file -> {
-                    String filename = file.getName().replace(FileFormat.JAVA.getExtension(), "");
+                    String filename = file.toString().replace(FileFormat.JAVA.getExtension(), "");
                     return !ignoreFileList.contains(filename);
                 })
                 .toList();
+        } catch (IOException e) {
+            throw new Error(e);
+        }
     }
 
     /**
@@ -541,11 +547,11 @@ public class DatasetUtils {
             String sourcePath
     ) {
         List<Pair<String, String>> projectClasses = new ArrayList<>();
-        List<File> javaFiles = getValidJavaFiles(sourcePath);
+        List<Path> javaFiles = getValidJavaFiles(sourcePath);
         // iterate through each file and add class tokens.
-        for (File javaFile : javaFiles) {
-            String filePath = javaFile.getAbsolutePath();
-            Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnitFromFilePath(filePath);
+        for (Path javaFile : javaFiles) {
+            String filePath = javaFile.toAbsolutePath().toString();
+            Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnitFromFile(filePath);
             if (cu.isPresent()) {
                 try {
                     projectClasses.addAll(getClassNameAndPackage(cu.get()));
@@ -570,11 +576,11 @@ public class DatasetUtils {
             String sourcePath
     ) {
         List<Quartet<String, String, String, String>> projectMethods = new ArrayList<>();
-        List<File> javaFiles = getValidJavaFiles(sourcePath);
+        List<Path> javaFiles = getValidJavaFiles(sourcePath);
         // iterate through each file and add method tokens.
-        for (File javaFile : javaFiles) {
-            String filePath = javaFile.getAbsolutePath();
-            Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnitFromFilePath(filePath);
+        for (Path javaFile : javaFiles) {
+            String filePath = javaFile.toAbsolutePath().toString();
+            Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnitFromFile(filePath);
             if (cu.isPresent()) {
                 try {
                     projectMethods.addAll(getNonPrivateStaticNonVoidMethods(cu.get()));
@@ -599,11 +605,11 @@ public class DatasetUtils {
             String sourcePath
     ) {
         List<Quartet<String, String, String, String>> attributeList = new ArrayList<>();
-        List<File> javaFiles = getValidJavaFiles(sourcePath);
+        List<Path> javaFiles = getValidJavaFiles(sourcePath);
         // iterate through each file and add attribute tokens.
-        for (File javaFile : javaFiles) {
-            String filePath = javaFile.getAbsolutePath();
-            Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnitFromFilePath(filePath);
+        for (Path javaFile : javaFiles) {
+            String filePath = javaFile.toAbsolutePath().toString();
+            Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnitFromFile(filePath);
             if (cu.isPresent()) {
                 try {
                     attributeList.addAll(getNonPrivateStaticAttributes(cu.get()));
@@ -630,12 +636,12 @@ public class DatasetUtils {
             String sourcePath
     ) {
         List<Sextet<String, TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> tagList = new ArrayList<>();
-        List<File> javaFiles = getValidJavaFiles(sourcePath);
+        List<Path> javaFiles = getValidJavaFiles(sourcePath);
         // iterate through each file and add JavaDoc tags.
-        for (File javaFile : javaFiles) {
-            String filePath = javaFile.getAbsolutePath();
+        for (Path javaFile : javaFiles) {
+            String filePath = javaFile.toAbsolutePath().toString();
             String fileContent = FileUtils.readFile(filePath);
-            Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnitFromFilePath(filePath);
+            Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnitFromFile(filePath);
             if (cu.isPresent()) {
                 try {
                     tagList.addAll(getCuTags(cu.get(), fileContent));
@@ -690,7 +696,8 @@ public class DatasetUtils {
                     IOPath.REPOS.getValue(),
                     FileName.ARRAY_METHODS.getValue() + FileFormat.JSON.getExtension()
             ).toString();
-            List<List<String>> arrayMethods = FileUtils.readJSONList(arraysMethodJsonPath)
+            List<List<String>> arrayMethods;
+            arrayMethods = FileUtils.readJSONList(arraysMethodJsonPath)
                     .stream()
                     .map(e -> ((List<?>) e)
                             .stream()
@@ -703,7 +710,7 @@ public class DatasetUtils {
                     .toList());
         } else if (JavaParserUtils.isGenericType(jpResolvedType)) {
             // generic type.
-            List<MethodUsage> genericMethods = JavaParserUtils.getGenericType().asReferenceType().getAllMethods()
+            List<MethodUsage> genericMethods = JavaParserUtils.getObjectType().asReferenceType().getAllMethods()
                     .stream()
                     .map(MethodUsage::new)
                     .filter(JavaParserUtils::isNonPrivateNonStaticNonVoidMethod)
@@ -938,7 +945,7 @@ public class DatasetUtils {
         }
         // add Object methods.
         methodList.addAll(convertMethodUsageToQuartet(
-                JavaParserUtils.getGenericType().asReferenceType().getAllMethods()
+                JavaParserUtils.getObjectType().asReferenceType().getAllMethods()
                         .stream()
                         .map(MethodUsage::new)
                         .filter(JavaParserUtils::isNonPrivateNonStaticNonVoidMethod)
@@ -1017,11 +1024,11 @@ public class DatasetUtils {
                         subexpression
                 );
                 if (!resolvedType.isPrimitive()) {
-                    methodList.addAll(getMethodsFromType(JavaParserUtils.getGenericType()));
+                    methodList.addAll(getMethodsFromType(JavaParserUtils.getObjectType()));
                 }
                 methodList.addAll(getMethodsFromType(resolvedType));
             } catch (UnsolvedSymbolException | ResolvedTypeNotFound e) {
-                ResolvedType genericType = JavaParserUtils.getGenericType();
+                ResolvedType genericType = JavaParserUtils.getObjectType();
                 methodList.addAll(getMethodsFromType(genericType));
             }
         }
@@ -1063,7 +1070,7 @@ public class DatasetUtils {
                 );
                 attributeList.addAll(getFieldsFromType(resolvedType));
             } catch (UnsolvedSymbolException | ResolvedTypeNotFound e) {
-                ResolvedType genericType = JavaParserUtils.getGenericType();
+                ResolvedType genericType = JavaParserUtils.getObjectType();
                 attributeList.addAll(getFieldsFromType(genericType));
             }
         }
@@ -1213,7 +1220,7 @@ public class DatasetUtils {
             String sourcePath
     ) {
         String classPath = getClassPath(operation, sourcePath);
-        return JavaParserUtils.getCompilationUnitFromFilePath(classPath);
+        return JavaParserUtils.getCompilationUnitFromFile(classPath);
     }
 
     /**

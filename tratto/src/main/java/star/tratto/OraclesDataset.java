@@ -53,6 +53,7 @@ public class OraclesDataset {
             String oracleStringFileName = String.format(
                     "oracle_list_%s", project.getProjectName()
             );
+            /* TODO
             FileUtils.appendToFile(
                     IOPath.OUTPUT.getValue(),
                     oracleStringFileName,
@@ -60,6 +61,7 @@ public class OraclesDataset {
                     project.getProjectName(),
                     oraclesString
             );
+            */
             // save OracleDatapoint chunks.
             List<List<OracleDatapoint>> oracleDPChunks = splitListIntoChunks(oracleDPList);
             for (int i = 0; i < oracleDPChunks.size(); i++) {
@@ -70,6 +72,7 @@ public class OraclesDataset {
                         project.getProjectName(),
                         i
                 );
+                /* TODO
                 FileUtils.appendToFile(
                         Paths.get(IOPath.OUTPUT.getValue(),"dataset").toString(),
                         fileName,
@@ -77,6 +80,7 @@ public class OraclesDataset {
                         project.getProjectName(),
                         chunk.stream().map(OracleDatapoint::toMapAndLists).collect(Collectors.toList())
                 );
+                */
             }
         }
 
