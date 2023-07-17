@@ -5,7 +5,7 @@ import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.type.TypeParameter;
-import star.tratto.identifiers.CommonPrimitiveType;
+import star.tratto.identifiers.PrimitiveTypeUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -128,10 +128,10 @@ public class JDoctorUtils {
      * represent a primitive type
      */
     private static String convertJDoctorPrimitiveToJPPrimitive(String jDoctorPrimitive) {
-        List<String> primitiveJDoctorValues = CommonPrimitiveType.getAllFieldDescriptors();
+        List<String> primitiveJDoctorValues = PrimitiveTypeUtils.getAllFieldDescriptors();
         if (primitiveJDoctorValues.contains(jDoctorPrimitive.replaceAll("[^a-zA-Z]+", ""))) {
             // match `jDoctorPrimitive` to a known JDoctor primitive representation.
-            String jDoctorRegex = CommonPrimitiveType.getAllFieldDescriptorsRegex();
+            String jDoctorRegex = PrimitiveTypeUtils.getAllFieldDescriptorsRegex();
             String regex = String.format(
                     "[^A-Za-z0-9_]*(%s)[^A-Za-z0-9_]*",
                     jDoctorRegex
@@ -140,7 +140,7 @@ public class JDoctorUtils {
             Matcher matcher = pattern.matcher(jDoctorPrimitive);
             if (matcher.find()) {
                 String jDoctorFieldDescriptor = matcher.group(1);
-                return CommonPrimitiveType.convertFieldDescriptorToSourceCode(jDoctorFieldDescriptor);
+                return PrimitiveTypeUtils.convertFieldDescriptorToSourceCode(jDoctorFieldDescriptor);
             } else {
                 // `jDoctorPrimitive` does not match any known JDoctor representation.
                 throw new IllegalArgumentException(String.format(
@@ -164,7 +164,7 @@ public class JDoctorUtils {
     private static String convertJDoctorTypeNameToJPTypeName(String jDoctorTypeName) {
         jDoctorTypeName = removeSpuriousCharacters(jDoctorTypeName);
         // converts primitive type.
-        List<String> primitiveJDoctorValues = CommonPrimitiveType.getAllFieldDescriptors();
+        List<String> primitiveJDoctorValues = PrimitiveTypeUtils.getAllFieldDescriptors();
         if (primitiveJDoctorValues.contains(jDoctorTypeName.replaceAll("[^a-zA-Z]+", ""))) {
             jDoctorTypeName = convertJDoctorPrimitiveToJPPrimitive(jDoctorTypeName);
         }
@@ -181,7 +181,7 @@ public class JDoctorUtils {
      * The method converts a list of JDoctor type names {@code jDoctorTypeNames} into a list of JavaParser type names.
      * For example, the JDoctor type name {@code [D} represents a list of doubles, and the corresponding type name in
      * JavaParser is {@code double[]}. The method apply these conversions from JDoctor type names to JavaParser type
-     * names. See CommonPrimitiveType {@link CommonPrimitiveType} for all possible conversions.
+     * names. See PrimitiveTypeUtils {@link PrimitiveTypeUtils} for all possible conversions.
      *
      * @param jDoctorTypeNames JDoctor type names to convert
      * @return a list of the corresponding JavaParser type names

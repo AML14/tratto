@@ -4,53 +4,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * This class converts between the field descriptor and source code formats of
- * a primitive type. The field descriptor (or JVML) format, used by JDoctor,
- * uses single-letter representations of primitive types. The source code
- * format, used by JavaParser, uses the string representation in source code
- * to describe primitive types.
- * We provide the following conversion table:
- * <table>
- *     <caption>Primitive representation conversion table</caption>
- *     <tr>
- *          <th scope="col">Field Descriptor</th>
- *          <th scope="col">Source Code</th>
- *     </tr>
- *     <tr>
- *         <td>Z</td>
- *         <td>boolean</td>
- *     </tr>
- *     <tr>
- *         <td>B</td>
- *         <td>byte</td>
- *     </tr>
- *     <tr>
- *         <td>C</td>
- *         <td>char</td>
- *     </tr>
- *     <tr>
- *         <td>S</td>
- *         <td>short</td>
- *     </tr>
- *     <tr>
- *         <td>I</td>
- *         <td>int</td>
- *     </tr>
- *     <tr>
- *         <td>J</td>
- *         <td>long</td>
- *     </tr>
- *     <tr>
- *         <td>F</td>
- *         <td>float</td>
- *     </tr>
- *     <tr>
- *         <td>D</td>
- *         <td>double</td>
- *     </tr>
- * </table>
+ * This class provides a collection of static methods to convert between the
+ * field descriptor and source code formats of a primitive type. The field
+ * descriptor (or JVML) format, used by JDoctor, uses single-letter
+ * representations of primitive types. The source code format, used by
+ * JavaParser, uses the string representation in source code to describe
+ * primitive types.
+ * See <a href="https://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html#:~:text=4.3.2.%C2%A0Field-,Descriptors,-A%20field%20descriptor">full table</a> for a list of conversions.
  */
-public class CommonPrimitiveType {
+public class PrimitiveTypeUtils {
     // base primitive types.
     private static final Class<Boolean> booleanClass = boolean.class;
     private static final Class<Byte> byteClass = byte.class;
@@ -205,7 +167,7 @@ public class CommonPrimitiveType {
      * @return field descriptor String representation of all primitive types
      */
     public static List<String> getAllFieldDescriptors() {
-        return primitiveList.stream().map(CommonPrimitiveType::classToFieldDescriptor).collect(Collectors.toList());
+        return primitiveList.stream().map(PrimitiveTypeUtils::classToFieldDescriptor).collect(Collectors.toList());
     }
 
     /**
