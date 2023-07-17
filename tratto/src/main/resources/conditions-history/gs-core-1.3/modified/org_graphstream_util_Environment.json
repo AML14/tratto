@@ -52,5 +52,36 @@
       }
     ],
     "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.graphstream.util.Environment",
+      "name": "getParameter",
+      "parameterTypes": [
+        "java.lang.String"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "parameter"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [
+      {
+        "property": {
+          "condition": "!receiverObjectID.hasParameter(parameter) ? methodResultID.equals(\"\")",
+          "description": "The parameter value (empty string if not set)."
+        },
+        "description": "The parameter value (empty string if not set).",
+        "guard": {
+          "condition": "true",
+          "description": "The parameter value (empty string if not set)."
+        }
+      }
+    ],
+    "pre": []
   }
 ]
