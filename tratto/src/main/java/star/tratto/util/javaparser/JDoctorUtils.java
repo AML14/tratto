@@ -5,7 +5,7 @@ import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.type.TypeParameter;
-import star.tratto.identifiers.PrimitiveTypeUtils;
+import star.tratto.util.PrimitiveTypeUtils;
 
 import java.util.Arrays;
 import java.util.List;

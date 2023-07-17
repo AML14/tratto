@@ -1,4 +1,4 @@
-package star.tratto.identifiers;
+package star.tratto.util;
 
 import java.util.List;
 import java.util.stream.Collectors;
