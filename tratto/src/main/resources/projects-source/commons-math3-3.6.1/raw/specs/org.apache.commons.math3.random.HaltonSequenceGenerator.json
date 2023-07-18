@@ -1,0 +1,106 @@
+[
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.random.HaltonSequenceGenerator",
+      "name": "org.apache.commons.math3.random.HaltonSequenceGenerator",
+      "parameterTypes": [
+        "int"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "dimension"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.OutOfRangeException",
+        "description": "@throws org.apache.commons.math3.exception.OutOfRangeException the space dimension is <1 or >40.",
+        "guard": {
+          "condition": "dimension<1 || dimension>40",
+          "description": "the space dimension is <1 or >40."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.random.HaltonSequenceGenerator",
+      "name": "org.apache.commons.math3.random.HaltonSequenceGenerator",
+      "parameterTypes": [
+        "int",
+        "[I",
+        "[I"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "dimension",
+        "bases",
+        "weights"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NullArgumentException",
+        "description": "@throws org.apache.commons.math3.exception.NullArgumentException base is null.",
+        "guard": {
+          "condition": "bases==null",
+          "description": "base is null."
+        }
+      },
+      {
+        "exception": "org.apache.commons.math3.exception.DimensionMismatchException",
+        "description": "@throws org.apache.commons.math3.exception.DimensionMismatchException weights is !=null and the length of the input arrays differ.",
+        "guard": {
+          "condition": "weights!=null",
+          "description": "weights is !=null and the length of the input arrays differ."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param bases the base number for each dimension entries should be (pairwise) prime. bases is not null.",
+        "guard": {
+          "condition": "(bases==null) == false",
+          "description": "the base number for each dimension entries should be (pairwise) prime. bases is not null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.random.HaltonSequenceGenerator",
+      "name": "skipTo",
+      "parameterTypes": [
+        "int"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "index"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NotPositiveException",
+        "description": "@throws org.apache.commons.math3.exception.NotPositiveException index < 0.",
+        "guard": {
+          "condition": "index<0",
+          "description": "index < 0."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  }
+]

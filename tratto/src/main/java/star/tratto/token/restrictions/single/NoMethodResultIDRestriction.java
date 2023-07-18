@@ -8,8 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static star.tratto.util.JavaParserUtils.getMethodDeclaration;
-import static star.tratto.util.JavaParserUtils.getReturnTypeOfExpression;
+import static star.tratto.util.javaparser.JavaParserUtils.getMethodDeclaration;
+import static star.tratto.util.javaparser.JavaParserUtils.getReturnTypeOfExpression;
 import static star.tratto.util.StringUtils.compactExpression;
 
 /**
@@ -17,9 +17,9 @@ import static star.tratto.util.StringUtils.compactExpression;
  * scenarios, two applicable to all oracles, and one applicable depending on the oracle type. The three
  * scenarios are as follows:
  * 1) Forbid "methodResultID" if method under test is void.
- * 2) Forbid "methodResultID" after "Arrays.stream(" if it is not an array.
- * 3) Preconditions cannot mention methodResultID, normal postconditions cannot mention methodResultID
- * in the guard, and exceptional postconditions cannot mention methodResultID:
+ * 2) Forbid "methodResultID" after "Arrays.stream()" if it is not an array.
+ * 3) Preconditions cannot mention methodResultID, normal post-conditions cannot mention methodResultID
+ * in the guard, and exceptional post-conditions cannot mention methodResultID:
  */
 public class NoMethodResultIDRestriction extends SingleTokenRestriction {
 

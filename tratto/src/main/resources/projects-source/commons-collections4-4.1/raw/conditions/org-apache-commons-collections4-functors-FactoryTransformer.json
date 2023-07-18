@@ -1,0 +1,96 @@
+[
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.functors.FactoryTransformer",
+      "name": "org.apache.commons.collections4.functors.FactoryTransformer",
+      "parameterTypes": [
+        "org.apache.commons.collections4.Factory"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "factory"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param factory the factory to call. factory is not null.",
+        "guard": {
+          "condition": "(factory==null) == false",
+          "description": "the factory to call. factory is not null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.functors.FactoryTransformer",
+      "name": "factoryTransformer",
+      "parameterTypes": [
+        "org.apache.commons.collections4.Factory"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "factory"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the factory is null.",
+        "guard": {
+          "condition": "factory==null",
+          "description": "the factory is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param factory the factory to call. factory is not null.",
+        "guard": {
+          "condition": "(factory==null) == false",
+          "description": "the factory to call. factory is not null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.functors.FactoryTransformer",
+      "name": "transform",
+      "parameterTypes": [
+        "java.lang.Object"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "input"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID.equals(receiverObjectID)",
+          "description": "the transformed result."
+        },
+        "description": "the transformed result.",
+        "guard": {
+          "condition": "true",
+          "description": "the transformed result."
+        }
+      }
+    ],
+    "pre": []
+  }
+]

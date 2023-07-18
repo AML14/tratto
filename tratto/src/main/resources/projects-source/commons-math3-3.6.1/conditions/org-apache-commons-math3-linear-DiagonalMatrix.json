@@ -1,0 +1,88 @@
+[
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.linear.DiagonalMatrix",
+      "name": "org.apache.commons.math3.linear.DiagonalMatrix",
+      "parameterTypes": [
+        "int"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "dimension"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NotStrictlyPositiveException",
+        "description": "@throws org.apache.commons.math3.exception.NotStrictlyPositiveException the dimension is not positive.",
+        "guard": {
+          "condition": "(dimension>0) == false",
+          "description": "the dimension is not positive."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.linear.DiagonalMatrix",
+      "name": "org.apache.commons.math3.linear.DiagonalMatrix",
+      "parameterTypes": [
+        "[D",
+        "boolean"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "d",
+        "copyArray"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NullArgumentException",
+        "description": "@throws org.apache.commons.math3.exception.NullArgumentException d is null.",
+        "guard": {
+          "condition": "d==null",
+          "description": "d is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.linear.DiagonalMatrix",
+      "name": "inverse",
+      "parameterTypes": [
+        "double"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "threshold"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.linear.SingularMatrixException",
+        "description": "@throws org.apache.commons.math3.linear.SingularMatrixException the matrix is singular.",
+        "guard": {
+          "condition": "receiverObjectID.isSingular(threshold)",
+          "description": "the matrix is singular."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  }
+]

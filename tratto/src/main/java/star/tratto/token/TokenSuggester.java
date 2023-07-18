@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 import static star.tratto.token.TokenEnricher.getEnrichedTokensPlusInfo;
 import static star.tratto.token.Tokens.*;
 import static star.tratto.token.restrictions.single.SingleTokenRestrictions.getSingleTokenRestriction;
-import static star.tratto.util.JavaParserUtils.getReturnTypeOfExpression;
+import static star.tratto.util.javaparser.JavaParserUtils.getReturnTypeOfExpression;
 import static star.tratto.util.StringUtils.*;
 
 /**
@@ -55,32 +55,32 @@ public class TokenSuggester {
                 case "\"someString\"":
                     nextLegalTokensWithContextPlusInfo.addAll(getStringTokens(oracleDatapoint)
                             .stream()
-                            .map(stringToken -> new Triplet<>(stringToken, "S_STRING", List.<String>of()))
+                            .map(stringToken -> Triplet.with(stringToken, "S_STRING", List.<String>of()))
                             .collect(Collectors.toList()));
                     break;
                 case "1":
                     nextLegalTokensWithContextPlusInfo.addAll(getIntTokens(oracleDatapoint)
                             .stream()
-                            .map(stringToken -> new Triplet<>(stringToken, "S_INT", List.<String>of()))
+                            .map(stringToken -> Triplet.with(stringToken, "S_INT", List.<String>of()))
                             .collect(Collectors.toList()));
                     break;
                 case "1.0":
                     nextLegalTokensWithContextPlusInfo.addAll(getDoubleTokens(oracleDatapoint)
                             .stream()
-                            .map(stringToken -> new Triplet<>(stringToken, "DOUBLE", List.<String>of()))
+                            .map(stringToken -> Triplet.with(stringToken, "DOUBLE", List.<String>of()))
                             .collect(Collectors.toList()));
                     break;
                 case "someVarOrClassOrFieldOrMethod":
                     nextLegalTokensWithContextPlusInfo.addAll(getEnrichedTokensPlusInfo(partialExpressionTokens, oracleDatapoint));
                     break;
                 case "methodResultID":
-                    nextLegalTokensWithContextPlusInfo.add(new Triplet<>(token, "MethodResultID", getAdditionalInfoOfMethodResultID(oracleDatapoint)));
+                    nextLegalTokensWithContextPlusInfo.add(Triplet.with(token, "MethodResultID", getAdditionalInfoOfMethodResultID(oracleDatapoint)));
                     break;
                 case "this":
-                    nextLegalTokensWithContextPlusInfo.add(new Triplet<>(token, "This", List.of(oracleDatapoint.getPackageName(), oracleDatapoint.getClassName())));
+                    nextLegalTokensWithContextPlusInfo.add(Triplet.with(token, "This", List.of(oracleDatapoint.getPackageName(), oracleDatapoint.getClassName())));
                     break;
                 default:
-                    nextLegalTokensWithContextPlusInfo.add(new Triplet<>(token, getUniqueTokenClass(token, partialExpressionTokens), List.<String>of()));
+                    nextLegalTokensWithContextPlusInfo.add(Triplet.with(token, getUniqueTokenClass(token, partialExpressionTokens), List.<String>of()));
             }
         }
 
@@ -248,7 +248,11 @@ public class TokenSuggester {
     }
 
     private static List<String> getAdditionalInfoOfMethodResultID(OracleDatapoint oracleDatapoint) {
-        return getReturnTypeOfExpression("methodResultID", oracleDatapoint).toList().stream().map(Object::toString).collect(Collectors.toList());
+        return getReturnTypeOfExpression("methodResultID", oracleDatapoint)
+                .toList()
+                .stream()
+                .map(Object::toString)
+                .collect(Collectors.toList());
     }
 
     private static List<String> getStringTokens(OracleDatapoint oracleDatapoint) {

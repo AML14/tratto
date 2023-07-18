@@ -1,13 +1,36 @@
 package star.tratto.util;
 
+import edu.stanford.nlp.ling.CoreAnnotations.LemmaAnnotation;
+import edu.stanford.nlp.ling.CoreAnnotations.TokensAnnotation;
+import edu.stanford.nlp.ling.CoreLabel;
+import edu.stanford.nlp.pipeline.Annotation;
+import edu.stanford.nlp.pipeline.StanfordCoreNLP;
+import org.apache.commons.math3.linear.ArrayRealVector;
+import org.apache.commons.math3.linear.RealVector;
 import org.javatuples.Pair;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class StringUtils {
+    private static StanfordCoreNLP stanfordCoreNLP = getStanfordCoreNLP();
+
+    public static StanfordCoreNLP getStanfordCoreNLP() {
+        if (stanfordCoreNLP == null) {
+            // Initialize the CoreNLP pipeline for lemmatization
+            Properties props = new Properties();
+            props.setProperty("annotators", "tokenize, pos, lemma");
+            stanfordCoreNLP = new StanfordCoreNLP(props);
+        }
+        return stanfordCoreNLP;
+    }
+
     /**
      * Remove spaces and add spaces around "instanceof".
      */
@@ -84,5 +107,98 @@ public class StringUtils {
 
     public static String fullyQualifiedClassName(Pair<String, String> packageClassPair) {
         return fullyQualifiedClassName(packageClassPair.getValue0(), packageClassPair.getValue1());
+    }
+
+    public static String getClassNameFromPath(String path) {
+        assert path.endsWith(".java");
+        String[] pathTokens = path.split("/");
+        String className = pathTokens[pathTokens.length - 1];
+        return className.substring(0, className.length() - 5);
+    }
+
+    /**
+     * Computes the semantic similarity of two strings by the cosine
+     * similarity of word frequencies in the input.
+     * NOTE: During semantic comparison, a word such as "text2int"
+     * will be considered as a single world "textint" rather than two words,
+     * "text" and "int". This avoids potential oversimplification.
+     *
+     * @param s1 a string of one or more words separated by a space
+     * @param s2 a string of one or more words separated by a space
+     * @return the cosine similarity of the two strings represented by a
+     * double between 0.0 and 1.0
+     */
+    public static double semanticSimilarity(String s1, String s2) {
+        s1 = s1.replaceAll("[^a-zA-Z ]", "").toLowerCase();
+        s2 = s2.replaceAll("[^a-zA-Z ]", "").toLowerCase();
+        // Convert the words into lemmas.
+        List<String> tokens1 = lemmatize(stanfordCoreNLP, s1);
+        List<String> tokens2 = lemmatize(stanfordCoreNLP, s2);
+        // Compute the cosine similarity of the two vectors of word frequencies.
+        return cosineSimilarity(tokens1, tokens2);
+    }
+
+    /**
+     * Converts a string into a list of lemmas using the CoreNLP library.
+     */
+    private static List<String> lemmatize(StanfordCoreNLP pipeline, String documentText) {
+        Annotation document = new Annotation(documentText);
+        pipeline.annotate(document);
+        List<CoreLabel> tokens = document.get(TokensAnnotation.class);
+        return tokens
+                .stream()
+                .map(t -> t.get(LemmaAnnotation.class))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Computes the cosine similarity of two lists of words.
+     *
+     * @param list1 list of words
+     * @param list2 list of words
+     * @return the cosine similarity (double between 0.0 and 1.0)
+     */
+    private static double cosineSimilarity(List<String> list1, List<String> list2) {
+        Map<String, Integer> map1 = wordFrequencies(list1);
+        Map<String, Integer> map2 = wordFrequencies(list2);
+        LinkedHashSet<String> intersection = new LinkedHashSet<>(map1.keySet());
+        intersection.retainAll(map2.keySet());
+        RealVector vector1 = toRealVector(map1, intersection);
+        RealVector vector2 = toRealVector(map2, intersection);
+        double denominator = vector1.getNorm() * vector2.getNorm();
+        return denominator > 0.0 ? vector1.dotProduct(vector2) / (denominator) : 0.0;
+    }
+
+    /**
+     * Computes the frequency of each string in a list of strings.
+     *
+     * @param words a list of strings
+     * @return a map of word frequencies, where the keys are strings and the
+     * values are the number of occurrences
+     */
+    private static Map<String, Integer> wordFrequencies(List<String> words) {
+        Map<String, Integer> frequencies = new HashMap<>();
+        for (String word : words) {
+            frequencies.put(word, frequencies.getOrDefault(word, 0) + 1);
+        }
+        return frequencies;
+    }
+
+    /**
+     * Converts a map of word frequencies to a vector.
+     *
+     * @param map a map of word frequencies
+     * @param words the set of all possible words
+     * @return a vector representation of the word frequencies. Each dimension
+     * represents a different word, where the magnitude of the dimension
+     * corresponds to the word frequency.
+     */
+    private static RealVector toRealVector(Map<String, Integer> map, LinkedHashSet<String> words) {
+        double[] vector = new double[words.size()];
+        int i = 0;
+        for (String word : words) {
+            vector[i++] = map.getOrDefault(word, 0);
+        }
+        return new ArrayRealVector(vector);
     }
 }

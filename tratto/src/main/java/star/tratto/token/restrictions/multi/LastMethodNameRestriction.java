@@ -17,7 +17,7 @@ public class LastMethodNameRestriction extends MultiTokenRestriction {
     private static LastMethodNameRestriction instance;
 
     private LastMethodNameRestriction() {
-        this.restrictedTokens = Tokens.TOKENS.stream().filter(token -> !token.equals("(")).collect(Collectors.toList());
+        this.restrictedTokens = Tokens.TOKENS.stream().filter(token -> !token.equals("(")).toList();
         this.nonRestrictedTokens = List.of("(");
     }
 
