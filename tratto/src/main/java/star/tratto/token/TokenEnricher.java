@@ -111,15 +111,15 @@ public class TokenEnricher {
         // For each project class, check if return type of preceding expression is instanceof it. If so, add it to the list
         enrichedTokensPlusInfo.addAll(oracleDatapoint.getTokensProjectClasses()
                 .stream()
-                .filter(pair -> canType1BeInstanceOfType2(fullyQualifiedClassName(exprReturnType.getValue0(), exprReturnType.getValue1()), fullyQualifiedClassName(pair.getValue1(), pair.getValue0()), oracleDatapoint))
+                .filter(pair -> doesInstanceofCompile(fullyQualifiedClassName(exprReturnType.getValue0(), exprReturnType.getValue1()), fullyQualifiedClassName(pair.getValue1(), pair.getValue0()), oracleDatapoint))
                 .map(pair -> Triplet.with(pair.getValue0(), "Class", List.of(pair.getValue1(), pair.getValue0())))
                 .collect(Collectors.toList())
         );
 
         // Add default Java classes
-        enrichedTokensPlusInfo.addAll(JavaTypes.TYPICAL
+        enrichedTokensPlusInfo.addAll(JavaTypes.LANG_UTIL
                 .stream()
-                .filter(pair -> canType1BeInstanceOfType2(fullyQualifiedClassName(exprReturnType.getValue0(), exprReturnType.getValue1()), fullyQualifiedClassName(pair.getValue0(), pair.getValue1()), oracleDatapoint))
+                .filter(pair -> doesInstanceofCompile(fullyQualifiedClassName(exprReturnType.getValue0(), exprReturnType.getValue1()), fullyQualifiedClassName(pair.getValue0(), pair.getValue1()), oracleDatapoint))
                 .map(pair -> Triplet.with(pair.getValue1(), "Class", List.of(pair.getValue0(), pair.getValue1())))
                 .collect(Collectors.toList())
         );
@@ -206,24 +206,24 @@ public class TokenEnricher {
         // Get non-static attributes of class, including those whose this class is instance of
         enrichedTokensPlusInfo.addAll(oracleDatapoint.getTokensMethodVariablesNonPrivateNonStaticAttributes() // Attributes applicable to this, methodResultID and method arguments
                 .stream()
-                .filter(quartet -> isType1InstanceOfType2(fullyQualifiedClassName(precedingExprReturnType.getValue0(), precedingExprReturnType.getValue1()), fullyQualifiedClassName(quartet.getValue1(), quartet.getValue2()), oracleDatapoint))
+                .filter(quartet -> isInstanceOf(fullyQualifiedClassName(precedingExprReturnType.getValue0(), precedingExprReturnType.getValue1()), fullyQualifiedClassName(quartet.getValue1(), quartet.getValue2()), oracleDatapoint))
                 .map(quartet -> Triplet.with(quartet.getValue0(), "ClassField", List.of(quartet.getValue1(), quartet.getValue2(), quartet.getValue3())))
                 .collect(Collectors.toList()));
         enrichedTokensPlusInfo.addAll(oracleDatapoint.getTokensOracleVariablesNonPrivateNonStaticAttributes() // Attributes applicable to elements of the oracle
                 .stream()
-                .filter(quartet -> isType1InstanceOfType2(fullyQualifiedClassName(precedingExprReturnType.getValue0(), precedingExprReturnType.getValue1()), fullyQualifiedClassName(quartet.getValue1(), quartet.getValue2()), oracleDatapoint))
+                .filter(quartet -> isInstanceOf(fullyQualifiedClassName(precedingExprReturnType.getValue0(), precedingExprReturnType.getValue1()), fullyQualifiedClassName(quartet.getValue1(), quartet.getValue2()), oracleDatapoint))
                 .map(quartet -> Triplet.with(quartet.getValue0(), "ClassField", List.of(quartet.getValue1(), quartet.getValue2(), quartet.getValue3())))
                 .collect(Collectors.toList()));
 
         // Get non-static methods of class, including those whose this class is instance of
         enrichedTokensPlusInfo.addAll(oracleDatapoint.getTokensMethodVariablesNonPrivateNonStaticNonVoidMethods() // Methods applicable to this, methodResultID and method arguments
                 .stream()
-                .filter(quartet -> isType1InstanceOfType2(fullyQualifiedClassName(precedingExprReturnType.getValue0(), precedingExprReturnType.getValue1()), fullyQualifiedClassName(quartet.getValue1(), quartet.getValue2()), oracleDatapoint))
+                .filter(quartet -> isInstanceOf(fullyQualifiedClassName(precedingExprReturnType.getValue0(), precedingExprReturnType.getValue1()), fullyQualifiedClassName(quartet.getValue1(), quartet.getValue2()), oracleDatapoint))
                 .map(quartet -> Triplet.with(quartet.getValue0(), "MethodName", List.of(quartet.getValue1(), quartet.getValue2(), quartet.getValue3())))
                 .collect(Collectors.toList()));
         enrichedTokensPlusInfo.addAll(oracleDatapoint.getTokensOracleVariablesNonPrivateNonStaticNonVoidMethods() // Methods applicable to elements of the oracle
                 .stream()
-                .filter(quartet -> isType1InstanceOfType2(fullyQualifiedClassName(precedingExprReturnType.getValue0(), precedingExprReturnType.getValue1()), fullyQualifiedClassName(quartet.getValue1(), quartet.getValue2()), oracleDatapoint))
+                .filter(quartet -> isInstanceOf(fullyQualifiedClassName(precedingExprReturnType.getValue0(), precedingExprReturnType.getValue1()), fullyQualifiedClassName(quartet.getValue1(), quartet.getValue2()), oracleDatapoint))
                 .map(quartet -> Triplet.with(quartet.getValue0(), "MethodName", List.of(quartet.getValue1(), quartet.getValue2(), quartet.getValue3())))
                 .collect(Collectors.toList()));
 
