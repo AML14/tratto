@@ -12,16 +12,17 @@ import star.tratto.identifiers.IOPath;
 import star.tratto.util.FileUtils;
 import star.tratto.util.javaparser.DatasetUtils;
 
+import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class OraclesDataset {
     public static final int chunkSize = 100;
     public static final boolean sampleEmptyOracles = false;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         // Clean folder where dataset will be provisionally stored.
         FileUtils.deleteDirectory(IOPath.OUTPUT.getValue());
 
@@ -49,20 +50,13 @@ public class OraclesDataset {
                     System.out.println("JavaDoc tag: " + sample.getJavadocTag() + " \toracle: " + sample.getOracle());
                 }
             }
-            // save oracles.
-            String oracleStringFileName = String.format(
-                    "oracle_list_%s", project.getProjectName()
-            );
-            /* TODO
-            FileUtils.appendToFile(
-                    IOPath.OUTPUT.getValue(),
-                    oracleStringFileName,
-                    FileFormat.JSON,
-                    project.getProjectName(),
-                    oraclesString
-            );
-            */
-            // save OracleDatapoint chunks.
+
+            // save output.
+            // save raw oracles.
+            String oraclesFileName = "oracles_list_" + project.getProjectName();
+            Path oraclesPath = FileUtils.getPath(IOPath.OUTPUT.getValue(), oraclesFileName, FileFormat.JSON, project.getProjectName());
+            FileUtils.write(oraclesPath, oraclesString);
+            // save oracle datapoint information.
             List<List<OracleDatapoint>> oracleDPChunks = splitListIntoChunks(oracleDPList);
             for (int i = 0; i < oracleDPChunks.size(); i++) {
                 List<OracleDatapoint> chunk = oracleDPChunks.get(i);
@@ -72,15 +66,8 @@ public class OraclesDataset {
                         project.getProjectName(),
                         i
                 );
-                /* TODO
-                FileUtils.appendToFile(
-                        Paths.get(IOPath.OUTPUT.getValue(),"dataset").toString(),
-                        fileName,
-                        FileFormat.JSON,
-                        project.getProjectName(),
-                        chunk.stream().map(OracleDatapoint::toMapAndLists).collect(Collectors.toList())
-                );
-                */
+                Path path = FileUtils.getPath(IOPath.OUTPUT_DATASET.getValue(), fileName, FileFormat.JSON, project.getProjectName());
+                FileUtils.write(path, chunk);
             }
         }
 

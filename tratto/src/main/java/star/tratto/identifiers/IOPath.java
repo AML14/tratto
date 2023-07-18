@@ -4,6 +4,7 @@ import java.nio.file.Paths;
 
 public enum IOPath {
     OUTPUT(Paths.get("target", "output").toString()),
+    OUTPUT_DATASET(Paths.get("target", "output", "dataset").toString()),
     RESOURCES(Paths.get("src", "main", "resources", "projects-source").toString()),
     REPOS(Paths.get("src", "main", "java", "star", "tratto", "data", "repos").toString()),
     ORACLES_DATASET(Paths.get("src", "main", "resources", "oracles-dataset").toString());
