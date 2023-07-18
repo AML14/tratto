@@ -10,8 +10,8 @@ public class JDoctorUtilsTest {
     @Test
     public void convertJDoctorTypeNamesToJPTypeNamesTest() {
         assertEquals(List.of("byte[]", "int"), JDoctorUtils.convertJDoctorTypeNamesToJPTypeNames(List.of("[B", "int")));
+        assertEquals(List.of("char[][]"), JDoctorUtils.convertJDoctorTypeNamesToJPTypeNames(List.of("[[C")));
     }
-
 
     @Test
     public void isStandardTypeTest() {
