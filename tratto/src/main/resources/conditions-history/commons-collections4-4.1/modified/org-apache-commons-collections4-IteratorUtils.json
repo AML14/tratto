@@ -413,10 +413,10 @@
       },
       {
         "exception": "java.lang.IllegalArgumentException",
-        "description": "@throws java.lang.IllegalArgumentExceptionIllegalArgumentException if the array is not an array or end is before start.",
+        "description": "@throws java.lang.IllegalArgumentException if the array is not an array or end is before start.",
         "guard": {
-          "condition": "start > end",
-          "description": "end is before start."
+          "condition": "(array.getClass().isArray())==false || start > end",
+          "description": "if the array is not an array or end is before start."
         }
       }
     ],
