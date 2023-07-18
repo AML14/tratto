@@ -4,7 +4,6 @@ import torch
 import numpy as np
 import pandas as pd
 from torch.utils.data import DataLoader, TensorDataset
-
 from src.types.ClassificationType import ClassificationType
 from src.types.DeviceType import DeviceType
 from src.utils import utils
@@ -15,52 +14,84 @@ def predict(
         device,
         model,
         dl_data,
-        tokenizer
+        tokenizer,
+        classification_type
 ):
     # Model in evaluation mode
     model.eval()
     # stats and counter
     prediction_stats = []
     id_counter = 0
+    num_beams = 1
 
     # The prediction is performed without accumulating the gradient descent and without updating the weights of the model
     with torch.no_grad():
-        for batch_id, batch in enumerate(dl_data,1):
+        for batch_id, batch in enumerate(dl_data, 1):
             print(f"            Processing batch {batch_id} of {len(dl_data)}")
             # Extract the inputs, the attention masks and the targets from the batch
             src_input = batch[0].to(device)
             src_masks = batch[1].to(device)
             tgt_out = batch[2].to(device)
+            javadoc_tags = batch[3].to(device)
 
-            # Train the model
-            print(f"                Model predictions...")
-            outputs = model(
+            # Generate output from trained model
+            outputs_generate = model.generate(
                 input_ids=src_input,
                 attention_mask=src_masks,
-                labels=tgt_out
+                num_beams=num_beams,
+                num_return_sequences=num_beams,
+                do_sample=False
             )
-            # Exctract the predicted values and the expected output
-            predicted = np.array(
+            # Extract the predicted values and the expected output
+            predicted_generate = np.array(
                 tokenizer.batch_decode(
-                    torch.argmax(torch.softmax(outputs.logits, dim=-1), dim=-1),
+                    outputs_generate,
                     skip_special_tokens=True
                 )
             )
+            # Extract expected target values
             expected_out = np.array(
                 tokenizer.batch_decode(
                     tgt_out,
                     skip_special_tokens=True
                 )
             )
-            # Update the counter of the predictions
-            prediction_results = (predicted == expected_out)
-            # Compute statistics
-            for idx, result in enumerate(prediction_results):
+            # Extract original javadoc tags (for analysis purpose)
+            javadoc_tags_str = np.array(
+                tokenizer.batch_decode(
+                    javadoc_tags,
+                    skip_special_tokens=True
+                )
+            )
+            if classification_type == ClassificationType.LABEL_PREDICTION:
+                token_values_out = np.array(
+                    tokenizer.batch_decode(
+                        batch[4].to(device),
+                        skip_special_tokens=True
+                    )
+                )
+            for idx in range(len(predicted_generate)):
+                original_javadoc_tag = javadoc_tags_str[idx]
+                predicted = predicted_generate[idx]
+                expected = expected_out[idx]
+                if not classification_type == ClassificationType.CATEGORY_PREDICTION:
+                    expected_token_value = token_values_out[idx]
+
+                # Update the counter of the predictions
+                prediction_result = (predicted == expected)
+                # Log results
+                print(f"Javadoc Tag: {original_javadoc_tag}")
+                print(f"Prediction result: {prediction_result}")
+                print(f"Predicted token class: {predicted}")
+                print(f"Expected token class: {expected}")
+
+                # Compute statistics
                 stats = {
                     "id": id_counter,
-                    "output": predicted[idx],
-                    "correct": str(result),
-                    "tokenClass": expected_out[idx]
+                    "javadoc_tag": original_javadoc_tag,
+                    "output": predicted,
+                    "correct": str(prediction_result),
+                    "token": expected if classification_type == ClassificationType.CATEGORY_PREDICTION else expected_token_value
                 }
                 id_counter += 1
                 prediction_stats.append(stats)
@@ -98,15 +129,21 @@ def pre_processing(
         'tokenInfo': 'string'
     })
 
-    # Keep only a single instance for each combination of oracleId and oracleSoFar
-    if classification_type == ClassificationType.CATEGORY_PREDICTION:
-        df_dataset = df_dataset[df_dataset['label']=='True']
-    # Map tokenClassesSoFar into string
+    # Compute eligible token values
+    df_eligibleTokens = df_dataset.groupby(['oracleId', 'oracleSoFar'])['token'].unique().to_frame()
+    df_eligibleTokens = df_eligibleTokens.rename(columns={'token': 'eligibleTokens'})
+    df_dataset = pd.merge(df_dataset, df_eligibleTokens, on=['oracleId', 'oracleSoFar']).reset_index()
+    df_dataset["eligibleTokens"] = df_dataset["eligibleTokens"].apply(lambda x: "[ " + " ".join(x) + " ]")
+    # Set type of dataframe columns
+    df_dataset['eligibleTokens'] = df_dataset['eligibleTokens'].astype('string')
     # Define the new order of columns
     new_columns_order = [
-        'tokenClass', 'token', 'tokenInfo', 'oracleSoFar', 'javadocTag', 'oracleType', 'packageName', 'className',
-        'methodJavadoc', 'methodSourceCode', 'classJavadoc', 'classSourceCode', 'projectName', 'oracleId', 'label'
+        'tokenClass', 'token', 'tokenInfo', 'oracleSoFar', 'eligibleTokens', 'javadocTag', 'oracleType',
+        'projectName', 'packageName', 'className', 'methodJavadoc', 'methodSourceCode', 'classJavadoc',
+        'classSourceCode', 'oracleId', 'label'
     ]
+    # Reindex the DataFrame with the new order
+    df_dataset = df_dataset.reindex(columns=new_columns_order)
     # Reindex the DataFrame with the new order
     df_dataset = df_dataset.reindex(columns=new_columns_order)
     # Group the rows by 'oracleId' and 'oracleSoFar'
@@ -116,7 +153,8 @@ def pre_processing(
     # Iterate through the groups and assign them to separate datasets
     for identifier, group_data in df_grouped:
         # Delete the tgt labels from the input dataset, and others less relevant columns
-        group_data = group_data.drop(['tokenClass','oracleId', 'projectName', 'classJavadoc', 'classSourceCode'], axis=1)
+        group_data = group_data.drop(
+            ['label', 'oracleId', 'projectName', 'tokenClass', 'classJavadoc', 'classSourceCode'], axis=1)
         # Get the list of target values from the dataframe
         if classification_type == ClassificationType.CATEGORY_PREDICTION:
             tgt = group_data["token"].values.tolist()
@@ -127,7 +165,12 @@ def pre_processing(
         df_src_concat = group_data.apply(lambda row: tokenizer.sep_token.join(row.values), axis=1)
         # The pandas dataframe is transformed in a list of strings: each string is an input to the model
         src = df_src_concat.to_numpy().tolist()
-        datasets.append((identifier, src, tgt))
+        # Add javadoc tags and token classes for analysis purposes
+        javadoc_tags = group_data["javadocTag"].values.tolist()
+        token_classes = group_data["tokenClass"].values.tolist()
+        # Append grouped dataset
+        datasets.append((identifier, src, tgt, javadoc_tags, token_classes))
+        # Return list of grouped datasets
     return datasets
 
 
@@ -137,7 +180,7 @@ def tokenize_datasets(
 ):
     t_datasets = []
 
-    for identifier, inputs, targets in datasets:
+    for identifier, inputs, targets, javadoc_tags, token_classes in datasets:
         # Tokenize the inputs datapoints
         t_src_dict = tokenizer.batch_encode_plus(
             inputs,
@@ -153,17 +196,42 @@ def tokenize_datasets(
             truncation=True,
             return_tensors="pt"
         )
+        t_javadoctag_dict = tokenizer.batch_encode_plus(
+            javadoc_tags,
+            max_length=512,
+            padding=True,
+            truncation=True,
+            return_tensors="pt"
+        )
+        t_token_classes = tokenizer.batch_encode_plus(
+            token_classes,
+            max_length=512,
+            padding=True,
+            truncation=True,
+            return_tensors="pt"
+        )
         # Transform the list into a tensor stack
-        t_inputs = torch.stack([torch.tensor(ids) for ids in t_src_dict['input_ids']])
-        t_inputs_attention_masks = torch.stack([torch.tensor(mask) for mask in t_src_dict['attention_mask']])
-        t_targets = torch.stack([torch.tensor(ids) for ids in t_tgt_dict['input_ids']])
+        t_inputs = torch.stack([ids.clone().detach() for ids in t_src_dict['input_ids']])
+        t_inputs_attention_masks = torch.stack([mask.clone().detach() for mask in t_src_dict['attention_mask']])
+        t_targets = torch.stack([ids.clone().detach() for ids in t_tgt_dict['input_ids']])
+        t_javadoc_tags = torch.stack([ids.clone().detach() for ids in t_javadoctag_dict['input_ids']])
         # Generate the tokenized dataset
-        t_dataset = (t_inputs, t_inputs_attention_masks, t_targets)
+        t_dataset = (t_inputs, t_inputs_attention_masks, t_targets, t_javadoc_tags, t_token_classes)
         t_datasets.append((identifier,t_dataset))
     return t_datasets
 
 
-def main(args):
+def main(
+        project_name: str,
+        checkpoint_path: str,
+        input_path: str,
+        output_path: str,
+        classification_type: str,
+        model_type: str,
+        tokenizer_name: str,
+        config_name: str,
+        model_name_or_path: str
+):
     """
     The main method load the checkpoint and perform the analysis of the performance of the model on a given
     unseen project.
@@ -176,35 +244,38 @@ def main(args):
     # list of partial dataframes
     dfs = []
     # collects partial dataframes from oracles
-    for file_name in os.listdir(args.input_path):
-        if args.project_name in file_name:
+    for file_name in os.listdir(input_path):
+        if project_name in file_name:
             print(file_name)
-            df = pd.read_json(os.path.join(args.input_path, file_name))
-            dfs.append(df)
+            df = pd.read_json(os.path.join(input_path, file_name))
+            if classification_type == ClassificationType.CATEGORY_PREDICTION:
+                # Keep only a single instance for each combination of oracleId and oracleSoFar
+                df_true_oracles = df[(df['label'] == True)]
+            dfs.append(df_true_oracles)
     df_dataset = pd.concat(dfs)
 
     print("Setup model")
     # Get configuration class, model class, and tokenizer class from the corresponding model type
-    config_class, model_class, tokenizer_class = ModelClasses.getModelClass(args.model_type)
+    config_class, model_class, tokenizer_class = ModelClasses.getModelClass(model_type)
     # Setup tokenizer
-    tokenizer = tokenizer_class.from_pretrained(args.tokenizer_name)
+    tokenizer = tokenizer_class.from_pretrained(tokenizer_name)
 
     # Setup model
     config = config_class.from_pretrained(
-        args.config_name if args.config_name else args.model_name_or_path,
+        config_name if config_name else model_name_or_path,
     )
     model = model_class.from_pretrained(
-        args.model_name_or_path,
+        model_name_or_path,
         config=config
     )
     model.to(device)
     # Load checkpoint
-    checkpoint = torch.load(args.checkpoint_path, map_location=torch.device(device))
+    checkpoint = torch.load(checkpoint_path, map_location=torch.device(device))
     model.load_state_dict(checkpoint['model_state_dict'])
 
     print("Pre-processing dataset")
     # Pre-processing data
-    datasets = pre_processing(df_dataset, tokenizer, ClassificationType(args.classification_type))
+    datasets = pre_processing(df_dataset, tokenizer, classification_type)
     # Process the data
     t_datasets = tokenize_datasets(datasets, tokenizer)
     print("Start predictions")
@@ -217,37 +288,36 @@ def main(args):
         "ones": []
     }
 
-    for idx, t_dataset in enumerate(t_datasets,1):
+    for idx, t_dataset in enumerate(t_datasets, 1):
         identifier, t_data = t_dataset
         print(f"Parsing oracle group {idx} of  {len(t_datasets)}")
         t_t_data = TensorDataset(*t_data)
-        dl_data= DataLoader(
+        dl_data = DataLoader(
             t_t_data,
             batch_size=32
         )
         if not str(identifier[0]) in predictions_stats:
             predictions_stats[str(identifier[0])] = {}
-        p_stats = predict(device, model, dl_data, tokenizer)
+        p_stats = predict(device, model, dl_data, tokenizer, classification_type)
         predictions_stats[str(identifier[0])][identifier[1] if not identifier[1] == "" else "_"] = p_stats
         ones_false = 0
         ones_true = 0
         for p_s in p_stats:
             if not p_s["correct"] == 'True':
-                    model_stats["false_positives"] += 1
-                    ones_false +=1
+                model_stats["false_positives"] += 1
+                ones_false += 1
             else:
                 ones_true += 1
                 model_stats["true_positives"] += 1
         if (not ones_true == 1) or ones_false > 0:
-            model_stats["ones"].append((str(identifier[0]),str(identifier[1]),ones_true,ones_false, ones_true > 0))
+            model_stats["ones"].append((str(identifier[0]), str(identifier[1]), ones_true, ones_false, ones_true > 0))
     # Save statistics
-    if not os.path.exists(args.output_path):
-        os.makedirs(args.output_path)
-    utils.export_stats(os.path.join(args.output_path, args.project_name, "predictions_stats.json"), predictions_stats)
-    utils.export_stats(os.path.join(args.output_path, args.project_name, "model_stats.json"), model_stats)
+    if not os.path.exists(output_path):
+        os.makedirs(output_path)
+    utils.export_stats(os.path.join(output_path, project_name, "predictions_stats.json"), predictions_stats)
+    utils.export_stats(os.path.join(output_path, project_name, "model_stats.json"), model_stats)
     del model
     utils.release_memory()
-
 
 
 if __name__ == "__main__":
@@ -327,4 +397,14 @@ if __name__ == "__main__":
     if not os.path.exists(args.checkpoint_path):
         raise ValueError("The checkpoint path argument contains a value that does not point to an existing checkpoint.")
 
-    main(args)
+    main(
+        args.project_name,
+        args.checkpoint_path,
+        args.input_path,
+        args.output_path,
+        args.classification_type,
+        args.model_type,
+        args.tokenizer_name,
+        args.config_name,
+        args.model_name_or_path
+    )

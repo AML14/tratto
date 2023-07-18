@@ -90,7 +90,7 @@ class DataProcessorDecoder:
         self._d_path = d_path
         self._tokenizer = tokenizer
         self._test_ratio = test_ratio
-        self._df_dataset = self._load_dataset(d_path)
+        self._df_dataset = self._load_dataset(d_path, classification_type)
         self._src = None
         self._tgt = None
         self._src_test = None
@@ -490,7 +490,8 @@ class DataProcessorDecoder:
 
     def _load_dataset(
             self,
-            d_path: str
+            d_path: str,
+            classification_type: Type[ClassificationType]
     ):
         """
             The method applies the dataset preprocessing. It loads dataset from
@@ -510,12 +511,15 @@ class DataProcessorDecoder:
         # list of partial dataframes
         dfs = []
 
-        # datasets path
+        # Datasets path
         oracles_dataset = os.path.join(d_path)
-        # collects partial dataframes from oracles
+        # Collects partial dataframes from oracles
         for file_name in os.listdir(oracles_dataset):
             df = pd.read_json(os.path.join(oracles_dataset, file_name))
-            dfs.append(df)
+            if classification_type == ClassificationType.CATEGORY_PREDICTION:
+                # Keep only a single instance for each combination of oracleId and oracleSoFar
+                df_true_oracles = df[(df['label'] == True)]
+            dfs.append(df_true_oracles)
         df_dataset = pd.concat(dfs)
         return df_dataset
 
