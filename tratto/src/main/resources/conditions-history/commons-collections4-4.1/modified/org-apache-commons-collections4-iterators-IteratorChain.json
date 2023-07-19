@@ -144,7 +144,7 @@
         "exception": "java.lang.ClassCastException",
         "description": "@throws java.lang.ClassCastException if iterators collection doesn't contain an iterator",
         "guard": {
-          "condition": "iteratorChain.stream().anyMatch(jdVar -> (jdVar instanceof Iterator)==false)",
+          "condition": "iteratorChain.stream().anyMatch(jdVar -> jdVar!=IteratorUtils.getIterator(jdVar))",
           "description": "iterators collection is or contains null."
         }
       }
@@ -182,14 +182,6 @@
         "guard": {
           "condition": "iterator==null",
           "description": "the iterator is null."
-        }
-      },
-      {
-        "exception": "java.lang.IllegalStateException",
-        "description": "@throws java.lang.IllegalStateException if I've already started iterating",
-        "guard": {
-          "condition": "iterator==null || receiverObjectID.checkLocked()",
-          "description": "if I've already started iterating"
         }
       }
     ],
