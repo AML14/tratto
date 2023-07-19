@@ -103,13 +103,11 @@ public class FileUtils {
      *
      * @param filePath a path to a JSON file
      * @return the list of values in the JSON file
-     * @throws IOException if {@code filePath} does not exist or an error
-     * occurs while reading the file
      */
-    public static List<?> readJSONList(String filePath) throws IOException {
+    public static List<?> readJSONList(String filePath) {
         // find path.
         Path jsonPath = Paths.get(filePath);
-        if (!Files.exists(jsonPath)) throw new IOException(String.format("JSON file %s not found.", filePath));
+        if (!Files.exists(jsonPath)) throw new Error(String.format("JSON file %s not found.", filePath));
         // read input from path.
         ObjectMapper objectMapper = new ObjectMapper();
         try {
@@ -118,7 +116,7 @@ public class FileUtils {
                     new TypeReference<>() {}
             );
         } catch (IOException e) {
-            throw new IOException(String.format("Error in processing the JSON file %s.%n", filePath), e);
+            throw new Error(String.format("Error in processing the JSON file %s.%n", filePath), e);
         }
     }
 }
