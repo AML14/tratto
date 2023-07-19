@@ -102,12 +102,13 @@ public class TypeUtils {
     }
 
     /**
-     * Adds brackets to a given (source code format) type, increasing the
+     * Adds pairs of square brackets to a given type name, increasing the
      * array level by a specified amount.
      *
-     * @param typeName a source code format type name
+     * @param typeName a type name
      * @param arrayLevel the number of array levels to add
      * @return the new type name with the added number of array levels
+     * (in source code format)
      */
     private static String addSourceCodeArrayLevel(String typeName, int arrayLevel) {
         return typeName + ("[]").repeat(arrayLevel);
@@ -185,16 +186,13 @@ public class TypeUtils {
         if (fieldDescriptor.startsWith("[")) {
             fieldDescriptor = fieldDescriptorArrayToSourceCodeArray(fieldDescriptor);
         }
-        // gets class name.
-        List<String> paramPathList = getNameSegments(fieldDescriptor);
-        return getClassNameFromNameSegments(paramPathList);
+        // gets innermost class.
+        return getClassNameFromNameSegments(getNameSegments(fieldDescriptor));
     }
 
     /**
      * Converts a list of field descriptors {@code fieldDescriptors} to a list
-     * of source code format type names. For example, the field descriptor
-     * {@code [D} represents a list of doubles, and the corresponding source
-     * code format type name is {@code double[]}.
+     * of source code format type names.
      *
      * @param fieldDescriptors field descriptors to convert
      * @return the corresponding source code format type names
@@ -217,7 +215,7 @@ public class TypeUtils {
     }
 
     /**
-     * @param typeName name of a JavaParser parameter {@link Parameter}
+     * @param typeName a source code format type name
      * @return true iff the parameter name includes "..."
      */
     public static boolean hasEllipsis(String typeName) {
