@@ -229,7 +229,7 @@ public class TypeUtils {
      *
      * @param sourceCode the method or class source code in which
      * {@code typeName} is used
-     * @param typeName a JavaParser type name
+     * @param typeName a source code format type name
      * @return true iff the type name extends another type
      */
     public static boolean hasSupertype(String sourceCode, String typeName) {
@@ -243,19 +243,19 @@ public class TypeUtils {
     /**
      * Finds the supertype of a given type name in source code. We analyze
      * source code using JavaParser, such that the given type name must use
-     * the JavaParser representation.
+     * the source code format representation.
      *
      * @param sourceCode the method or class source code in which
-     * {@code jpTypeName} is used
-     * @param jpTypeName a JavaParser type name
-     * @return the name of the supertype of {@code jpTypeName}
-     * @throws IllegalArgumentException if {@code jpTypeName} does not extend
+     * {@code typeName} is used
+     * @param typeName a source code format type name
+     * @return the name of the supertype of {@code typeName}
+     * @throws IllegalArgumentException if {@code typeName} does not extend
      * a type
      */
-    private static String getSupertype(String sourceCode, String jpTypeName) {
-        int arrayLevel = getArrayLevel(jpTypeName);
+    private static String getSupertype(String sourceCode, String typeName) {
+        int arrayLevel = getArrayLevel(typeName);
         // finds the supertype.
-        String regex = String.format("%s\\s+extends\\s+([A-Za-z0-9_]+)[<[A-Za-z0-9_,]+]*", jpTypeName.replaceAll("\\[]", ""));
+        String regex = String.format("%s\\s+extends\\s+([A-Za-z0-9_]+)[<[A-Za-z0-9_,]+]*", typeName.replaceAll("\\[]", ""));
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(sourceCode);
         if (matcher.find()) {
@@ -264,15 +264,15 @@ public class TypeUtils {
             throw new IllegalArgumentException(String.format(
                     "The JavaParser source code %s does not match the regex built with the JavaParser type name %s.",
                     sourceCode,
-                    jpTypeName
+                    typeName
             ));
         }
     }
 
     /**
-     * Gets the raw name of the type in source code. Used to manage edge cases
+     * Gets the raw name of a type in source code. Used to manage edge cases
      * with generic types in source code. Also ensures name is consistent with
-     * JDoctor format for direct comparison.
+     * the field descriptor format for direct comparison.
      *
      * @param jpClass the declaring class
      * @param jpCallable the method using {@code jpParam}
