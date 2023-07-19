@@ -9,8 +9,8 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TypeUtilsTest {
     @Test
     public void convertJDoctorTypeNamesToJPTypeNamesTest() {
-        assertEquals(List.of("byte[]", "int"), TypeUtils.convertJDoctorTypeNamesToJPTypeNames(List.of("[B", "int")));
-        assertEquals(List.of("char[][]"), TypeUtils.convertJDoctorTypeNamesToJPTypeNames(List.of("[[C")));
+        assertEquals(List.of("byte[]", "int"), TypeUtils.fieldDescriptorNamesToSourceCodeNames(List.of("[B", "int")));
+        assertEquals(List.of("char[][]"), TypeUtils.fieldDescriptorNamesToSourceCodeNames(List.of("[[C")));
     }
 
     @Test

@@ -178,42 +178,43 @@ public class TypeUtils {
     }
 
     /**
-     * Converts a JDoctor type name to its corresponding JavaParser type name.
+     * Converts a field descriptor representation of a type name to its
+     * corresponding source code format representation of a type name.
      *
-     * @param jDoctorTypeName a JDoctor representation of a type
-     * @return the corresponding JavaParser representation of a type
+     * @param fieldDescriptor a field descriptor representation of a type
+     * @return the corresponding source code format representation of a type
      */
-    private static String convertJDoctorTypeNameToJPTypeName(String jDoctorTypeName) {
-        jDoctorTypeName = removeTypeArguments(jDoctorTypeName);
+    private static String fieldDescriptorNameToSourceCodeName(String fieldDescriptor) {
+        fieldDescriptor = removeTypeArguments(fieldDescriptor);
         // converts primitive type.
         List<String> primitiveJDoctorValues = PrimitiveTypeUtils.getAllPrimitiveFieldDescriptors();
-        if (primitiveJDoctorValues.contains(jDoctorTypeName.replaceAll("[^a-zA-Z]+", ""))) {
-            jDoctorTypeName = fieldDescriptorPrimitiveToSourceCodePrimitive(jDoctorTypeName);
+        if (primitiveJDoctorValues.contains(fieldDescriptor.replaceAll("[^a-zA-Z]+", ""))) {
+            fieldDescriptor = fieldDescriptorPrimitiveToSourceCodePrimitive(fieldDescriptor);
         }
         // converts array type.
-        if (jDoctorTypeName.startsWith("[")) {
-            jDoctorTypeName = fieldDescriptorArrayToSourceCodeArray(jDoctorTypeName);
+        if (fieldDescriptor.startsWith("[")) {
+            fieldDescriptor = fieldDescriptorArrayToSourceCodeArray(fieldDescriptor);
         }
         // gets class name.
-        List<String> paramPathList = getIdentifierComponents(jDoctorTypeName);
+        List<String> paramPathList = getIdentifierComponents(fieldDescriptor);
         return getClassNameFromIdentifierComponents(paramPathList);
     }
 
     /**
-     * The method converts a list of JDoctor type names {@code jDoctorTypeNames} into a list of JavaParser type names.
-     * For example, the JDoctor type name {@code [D} represents a list of doubles, and the corresponding type name in
-     * JavaParser is {@code double[]}. The method apply these conversions from JDoctor type names to JavaParser type
-     * names. See PrimitiveTypeUtils {@link PrimitiveTypeUtils} for all possible conversions.
+     * Converts a list of field descriptors {@code fieldDescriptors} to a list
+     * of source code format type names. For example, the field descriptor
+     * {@code [D} represents a list of doubles, and the corresponding source
+     * code format type name is {@code double[]}.
      *
-     * @param jDoctorTypeNames JDoctor type names to convert
-     * @return a list of the corresponding JavaParser type names
+     * @param fieldDescriptors field descriptors to convert
+     * @return the corresponding source code format type names
      */
-    public static List<String> convertJDoctorTypeNamesToJPTypeNames(
-            List<String> jDoctorTypeNames
+    public static List<String> fieldDescriptorNamesToSourceCodeNames(
+            List<String> fieldDescriptors
     ) {
-        return jDoctorTypeNames
+        return fieldDescriptors
                 .stream()
-                .map(TypeUtils::convertJDoctorTypeNameToJPTypeName)
+                .map(TypeUtils::fieldDescriptorNameToSourceCodeName)
                 .collect(Collectors.toList());
     }
 
