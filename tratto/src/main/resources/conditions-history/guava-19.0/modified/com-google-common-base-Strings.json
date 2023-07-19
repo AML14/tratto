@@ -60,12 +60,23 @@
     "post": [
       {
         "property": {
-          "condition": "(methodResultID.equals(string)||methodResultID==null)",
+          "condition": "methodResultID.equals(string)",
           "description": "string itself if string is not empty; null if string is empty or null."
         },
         "description": "string itself if string is not empty; null if string is empty or null.",
         "guard": {
-          "condition": "(((string==null)==false) && (string.isEmpty())) == false",
+          "condition": "(string==null || string.isEmpty()) == false",
+          "description": "string itself if string is not empty; null if string is empty or null."
+        }
+      },
+      {
+        "property": {
+          "condition": "methodResultID==null",
+          "description": "string itself if string is not empty; null if string is empty or null."
+        },
+        "description": "string itself if string is not empty; null if string is empty or null.",
+        "guard": {
+          "condition": "string==null || string.isEmpty()",
           "description": "string itself if string is not empty; null if string is empty or null."
         }
       }
