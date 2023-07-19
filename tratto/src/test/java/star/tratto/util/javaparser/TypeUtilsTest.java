@@ -17,7 +17,7 @@ public class TypeUtilsTest {
 
     @Test
     public void getTypeSegmentsTest() {
-        assertEquals(List.of("path/to"), TypeUtils.getTypeSegments("path/to/Class.java"));
+        assertEquals(List.of("path/to"), TypeUtils.getNameSegments("path/to/Class.java"));
     }
 
     @Test

@@ -48,52 +48,43 @@ public class TypeUtils {
     }
 
     /**
-     * Splits a fully-qualified name (of a class or method) or a class path
-     * into segments.
+     * Splits a fully-qualified name (of a class or method) into segments.
+     * Splits name based on "." (package name) and "$" (inner class).
      *
-     * @param pathOrName a class path or fully-qualified name
-     * @return type segments. Includes: path prefix (if {@code pathOrName}
-     * is a path), all outer classes (separated), the class, and a file
-     * extension (if {@code pathOrName} is a path).
+     * @param name a full-qualified method/class name
+     * @return name segments. Includes: all outer packages, all outer classes,
+     * and the innermost class.
      */
-    public static List<String> getTypeSegments(
-            String pathOrName
+    public static List<String> getNameSegments(
+            String name
     ) {
         String regex = "[.$]";
-        return Arrays.asList(pathOrName.split(regex));
+        return Arrays.asList(name.split(regex));
     }
 
     /**
-     * @param typeSegments type segments. Must be derived from a class path.
-     * @return type segments, without the file extension
-     * @see TypeUtils#getTypeSegments(String)
+     * @param nameSegments name segments
+     * @return name segments joined by ".", representing the package name.
+     * NOTE: For inner classes, we represent the package name as:
+     *  [outerClass package].[outerClass]
+     * for continuity with the XText grammar.
+     * @see TypeUtils#getNameSegments(String)
      */
-    public static List<String> removeTypeSegmentsExtension(
-            List<String> typeSegments
+    public static String getPackageNameFromNameSegments(
+            List<String> nameSegments
     ) {
-        return typeSegments.subList(0, typeSegments.size() - 1);
+        return String.join(".", nameSegments.subList(0, nameSegments.size() - 1));
     }
 
     /**
-     * @param typeSegments type segments (without a file extension)
-     * @return type segments joined by ".", representing the package name
-     * @see TypeUtils#getTypeSegments(String)
+     * @param nameSegments name segments
+     * @return innermost class of the name segments
+     * @see TypeUtils#getNameSegments(String)
      */
-    public static String getPackageNameFromTypeSegments(
-            List<String> typeSegments
+    public static String getClassNameFromNameSegments(
+            List<String> nameSegments
     ) {
-        return String.join(".", typeSegments);
-    }
-
-    /**
-     * @param typeSegments type segment (without a file extension)
-     * @return the innermost class of the type segments
-     * @see TypeUtils#getTypeSegments(String)
-     */
-    public static String getClassNameFromTypeSegments(
-            List<String> typeSegments
-    ) {
-        return typeSegments.get(typeSegments.size() - 1);
+        return nameSegments.get(nameSegments.size() - 1);
     }
 
     /**
@@ -195,8 +186,8 @@ public class TypeUtils {
             fieldDescriptor = fieldDescriptorArrayToSourceCodeArray(fieldDescriptor);
         }
         // gets class name.
-        List<String> paramPathList = getTypeSegments(fieldDescriptor);
-        return getClassNameFromTypeSegments(paramPathList);
+        List<String> paramPathList = getNameSegments(fieldDescriptor);
+        return getClassNameFromNameSegments(paramPathList);
     }
 
     /**
