@@ -579,7 +579,7 @@
         "exception": "java.lang.IllegalArgumentException",
         "description": "@throws java.lang.IllegalArgumentException if a value of a is outside of arange.",
         "guard": {
-          "condition": "min(a) < 0 || max(a) >= arange",
+          "condition": "Arrays.stream(a).anyMatch(jdVar -> jdVar > arange)",
           "description": "if a value of a is outside of arange."
         }
       }
@@ -589,7 +589,7 @@
       {
         "description": "@param a an array representing a function from [0..a.length) to [0..arange) each element of a is between 0 and arange inclusive.",
         "guard": {
-          "condition": "arange==0",
+          "condition": "Arrays.stream(a).allMath(jdVar -> jdVar >= 0 && jdVar <= arange)",
           "description": "an array representing a function from [0..a.length) to [0..arange) each element of a is between 0 and arange inclusive."
         }
       }
