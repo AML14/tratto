@@ -51,19 +51,7 @@
         }
       }
     ],
-    "post": [
-      {
-        "property": {
-          "condition": " methodResultID.contains(singleton)==true",
-          "description": "a new FluentIterable containing the singleton"
-        },
-        "description": "a new FluentIterable containing the singleton",
-        "guard": {
-          "condition": "true",
-          "description": "a new FluentIterable containing the singleton"
-        }
-      }
-    ],
+    "post": [],
     "pre": [
       {
         "description": "@param iterable the iterable to wrap into a FluentIterable. iterable is not null.",
@@ -352,7 +340,7 @@
         "exception": "java.lang.NullPointerException",
         "description": "@throws java.lang.NullPointerException if either of the provided iterables is null.",
         "guard": {
-          "condition": "Arrays.asList(others).contains(null)",
+          "condition": "Arrays.stream(others).anyMatch(jdVar -> jdVar==null)",
           "description": "if either of the provided iterables is null."
         }
       }

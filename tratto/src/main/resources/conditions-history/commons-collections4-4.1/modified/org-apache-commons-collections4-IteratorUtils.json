@@ -115,7 +115,7 @@
         "exception": "java.lang.IndexOutOfBoundsException",
         "description": "@throws java.lang.IndexOutOfBoundsException start is less than zero or greater than the length of the array.",
         "guard": {
-          "condition": "start<0 || start>array.length",
+          "condition": "start<0",
           "description": "start is less than zero or greater than the length of the array."
         }
       },
@@ -124,6 +124,14 @@
         "description": "@throws java.lang.NullPointerException array is null.",
         "guard": {
           "condition": "array==null",
+          "description": "array is null."
+        }
+      },
+      {
+        "exception": "java.lang.IllegalArgumentException",
+        "description": "@throws java.lang.IllegalArgumentException if the array is not an array.",
+        "guard": {
+          "condition": "array.getClass().isArray()==false",
           "description": "array is null."
         }
       }
