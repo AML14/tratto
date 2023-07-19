@@ -16,14 +16,28 @@ public class TypeUtilsTest {
     }
 
     @Test
-    public void getTypeSegmentsTest() {
-        assertEquals(List.of("path/to"), TypeUtils.getNameSegments("path/to/Class.java"));
+    public void getNameSegmentsTest() {
+        assertEquals(List.of("normal", "package", "setup", "for", "a", "Class"), TypeUtils.getNameSegments("normal.package.setup.for.a.Class"));
+        assertEquals(List.of("spicy", "example", "that", "uses", "Many", "Inner", "Classes"), TypeUtils.getNameSegments("spicy.example.that.uses.Many$Inner$Classes"));
+        assertEquals(List.of("even", "spicier", "with", "Inner", "Class", "andMethods"), TypeUtils.getNameSegments("even.spicier.with.Inner$Class.andMethods"));
     }
 
     @Test
-    public void convertJDoctorTypeNamesToJPTypeNamesTest() {
+    public void getPackageNameFromNameSegmentsTest() {
+        assertEquals("normal.package.setup.for.a", TypeUtils.getPackageNameFromNameSegments(List.of("normal", "package", "setup", "for", "a", "Class")));
+    }
+
+    @Test
+    public void getClassNameFromNameSegmentsTest() {
+        assertEquals("Class", TypeUtils.getClassNameFromNameSegments(List.of("normal", "package", "setup", "for", "a", "Class")));
+    }
+
+    @Test
+    public void fieldDescriptorNamesToSourceCodeNamesTest() {
         assertEquals(List.of("byte[]", "int"), TypeUtils.fieldDescriptorNamesToSourceCodeNames(List.of("[B", "int")));
         assertEquals(List.of("char[][]"), TypeUtils.fieldDescriptorNamesToSourceCodeNames(List.of("[[C")));
+        assertEquals(List.of("SuperCoolClass[][]"), TypeUtils.fieldDescriptorNamesToSourceCodeNames(List.of("[[com.google.SuperCoolClass")));
+        assertEquals(List.of("Type"), TypeUtils.fieldDescriptorNamesToSourceCodeNames(List.of("Type<with parameters>")));
     }
 
     @Test

@@ -63,7 +63,7 @@ public class TypeUtils {
     }
 
     /**
-     * @param nameSegments name segments
+     * @param nameSegments name segments. Must represent a class.
      * @return name segments joined by ".", representing the package name.
      * NOTE: For inner classes, we represent the package name as:
      *  [outerClass package].[outerClass]
@@ -77,7 +77,7 @@ public class TypeUtils {
     }
 
     /**
-     * @param nameSegments name segments
+     * @param nameSegments name segments. Must represent a class.
      * @return innermost class of the name segments
      * @see TypeUtils#getNameSegments(String)
      */
