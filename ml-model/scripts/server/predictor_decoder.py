@@ -134,13 +134,13 @@ def pre_process_dataset(
     update_tokenizer_vocab(tokenizer, value_mappings)
 
     # Remove method source code
-    df_dataset['methodSourceCode'] = df_dataset['methodSourceCode'].str.split('{').str[0]
+    #df_dataset['methodSourceCode'] = df_dataset['methodSourceCode'].str.split('{').str[0]
     # Replace the values in the DataFrame column
     df_dataset['tokenClass'] = df_dataset['tokenClass'].replace(value_mappings)
     # Map token classes so far to new values and transform it from array to string
     df_dataset['tokenClassesSoFar'] = df_dataset['tokenClassesSoFar'].apply(lambda x: "[ " + " ".join([value_mappings[y] for y in x]) + " ]")
     # Delete spurious columns for predicting the next token class
-    df_dataset = df_dataset.drop(['projectName', 'classJavadoc', 'classSourceCode'], axis=1)
+    df_dataset = df_dataset.drop(['projectName', 'classJavadoc', 'classSourceCode', 'methodSourceCode'], axis=1)
     # Return pre-processed dataset
     return df_dataset
 
@@ -192,18 +192,16 @@ def get_input_model_values(
     df_dataset["eligibleTokens"] = df_dataset["eligibleTokens"].apply(lambda x: "[ " + " ".join(x) + " ]")
     # Set type of dataframe columns
     df_dataset['eligibleTokens'] = df_dataset['eligibleTokens'].astype('string')
-    # Temp empty tokenInfo
-    df_dataset["tokenInfo"] = df_dataset["tokenInfo"].apply(lambda x: "")
 
     # Define the new order of columns
     new_columns_order = [
-        'oracleId', 'tokenClass', 'token', 'tokenInfo', 'oracleSoFar', 'eligibleTokens', 'javadocTag', 'oracleType',
+        'oracleId', 'tokenClass', 'tokenInfo', 'token', 'oracleSoFar', 'eligibleTokens', 'javadocTag', 'oracleType',
         'packageName', 'className', 'methodJavadoc', 'methodSourceCode'
     ]
     # Reindex the DataFrame with the new order
     df_dataset = df_dataset.reindex(columns=new_columns_order)
     # Delete spurious columns for predicting the next token class
-    df_dataset = df_dataset.drop(['oracleId', 'tokenClass','token'], axis=1)
+    df_dataset = df_dataset.drop(['oracleId', 'tokenClass','token', 'tokenInfo'], axis=1)
     # Delete duplicates
     df_dataset = df_dataset.drop_duplicates()
     assert len(df_dataset) == 1

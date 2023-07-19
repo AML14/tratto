@@ -82,8 +82,8 @@ def predict(
                 # Log results
                 print(f"Javadoc Tag: {original_javadoc_tag}")
                 print(f"Prediction result: {prediction_result}")
-                print(f"Predicted token class: {predicted}")
-                print(f"Expected token class: {expected}")
+                print(f"Predicted token value: {predicted}")
+                print(f"Expected token value: {expected}")
 
                 # Compute statistics
                 stats = {
@@ -138,12 +138,12 @@ def pre_processing(
     df_dataset['eligibleTokens'] = df_dataset['eligibleTokens'].astype('string')
     # Define the new order of columns
     new_columns_order = [
-        'tokenClass', 'token', 'tokenInfo', 'oracleSoFar', 'eligibleTokens', 'javadocTag', 'oracleType',
+        'tokenClass', 'tokenInfo', 'token', 'oracleSoFar', 'eligibleTokens', 'javadocTag', 'oracleType',
         'projectName', 'packageName', 'className', 'methodJavadoc', 'methodSourceCode', 'classJavadoc',
         'classSourceCode', 'oracleId', 'label'
     ]
-    # Reindex the DataFrame with the new order
-    df_dataset = df_dataset.reindex(columns=new_columns_order)
+    # Temp empty tokenInfo
+    df_dataset["tokenInfo"] = df_dataset["tokenInfo"].apply(lambda x: "")
     # Reindex the DataFrame with the new order
     df_dataset = df_dataset.reindex(columns=new_columns_order)
     # Group the rows by 'oracleId' and 'oracleSoFar'
@@ -153,23 +153,22 @@ def pre_processing(
     # Iterate through the groups and assign them to separate datasets
     for identifier, group_data in df_grouped:
         # Delete the tgt labels from the input dataset, and others less relevant columns
-        group_data = group_data.drop(
-            ['label', 'oracleId', 'projectName', 'tokenClass', 'classJavadoc', 'classSourceCode'], axis=1)
+        src_group_data = group_data.drop(['label', 'oracleId', 'projectName', 'tokenClass', 'token_info', 'classJavadoc', 'classSourceCode'], axis=1)
         # Get the list of target values from the dataframe
         if classification_type == ClassificationType.CATEGORY_PREDICTION:
-            tgt = group_data["token"].values.tolist()
-            group_data = group_data.drop(['token'], axis=1)
+            tgt = src_group_data["token"].values.tolist()
+            src_group_data = src_group_data.drop(['token'], axis=1)
         else:
-            tgt = group_data["label"].values.tolist()
-            group_data = group_data.drop(['label'], axis=1)
-        df_src_concat = group_data.apply(lambda row: tokenizer.sep_token.join(row.values), axis=1)
+            tgt = src_group_data["label"].values.tolist()
+            src_group_data = src_group_data.drop(['label'], axis=1)
+        df_src_concat = src_group_data.apply(lambda row: tokenizer.sep_token.join(row.values), axis=1)
         # The pandas dataframe is transformed in a list of strings: each string is an input to the model
         src = df_src_concat.to_numpy().tolist()
         # Add javadoc tags and token classes for analysis purposes
         javadoc_tags = group_data["javadocTag"].values.tolist()
-        token_classes = group_data["tokenClass"].values.tolist()
+        tokens = group_data["token"].values.tolist()
         # Append grouped dataset
-        datasets.append((identifier, src, tgt, javadoc_tags, token_classes))
+        datasets.append((identifier, src, tgt, javadoc_tags, tokens))
         # Return list of grouped datasets
     return datasets
 
@@ -180,7 +179,7 @@ def tokenize_datasets(
 ):
     t_datasets = []
 
-    for identifier, inputs, targets, javadoc_tags, token_classes in datasets:
+    for identifier, inputs, targets, javadoc_tags, tokens in datasets:
         # Tokenize the inputs datapoints
         t_src_dict = tokenizer.batch_encode_plus(
             inputs,
@@ -203,8 +202,8 @@ def tokenize_datasets(
             truncation=True,
             return_tensors="pt"
         )
-        t_token_classes = tokenizer.batch_encode_plus(
-            token_classes,
+        t_tokens_dict = tokenizer.batch_encode_plus(
+            tokens,
             max_length=512,
             padding=True,
             truncation=True,
@@ -215,8 +214,9 @@ def tokenize_datasets(
         t_inputs_attention_masks = torch.stack([mask.clone().detach() for mask in t_src_dict['attention_mask']])
         t_targets = torch.stack([ids.clone().detach() for ids in t_tgt_dict['input_ids']])
         t_javadoc_tags = torch.stack([ids.clone().detach() for ids in t_javadoctag_dict['input_ids']])
+        t_tokens = torch.stack([ids.clone().detach() for ids in t_tokens_dict['input_ids']])
         # Generate the tokenized dataset
-        t_dataset = (t_inputs, t_inputs_attention_masks, t_targets, t_javadoc_tags, t_token_classes)
+        t_dataset = (t_inputs, t_inputs_attention_masks, t_targets, t_javadoc_tags, t_tokens)
         t_datasets.append((identifier,t_dataset))
     return t_datasets
 
@@ -394,6 +394,7 @@ if __name__ == "__main__":
     if not os.path.exists(args.input_path):
         raise ValueError("The input path argument contains a value that does not point to an existing folder.")
     # Check if the checkpoint path exists
+    print(args.checkpoint_path)
     if not os.path.exists(args.checkpoint_path):
         raise ValueError("The checkpoint path argument contains a value that does not point to an existing checkpoint.")
 

@@ -389,12 +389,12 @@ class DataProcessorDecoder:
             self._df_dataset['tokenClass'] = self._df_dataset['tokenClass'].replace(value_mappings)
 
             # Map token classes so far to new values and transform it from array to string
-            self._df_dataset["tokenClassesSoFar"] = self._df_dataset["tokenClassesSoFar"].apply(lambda x: "[ " + " ".join([value_mappings[y] for y in x]) + " ]")
+            self._df_dataset["tokenClassesSoFar"] = self._df_dataset["tokenClassesSoFar"].apply(lambda x: "[ " + " ".join(random.sample([value_mappings[y] for y in x], len(x))) + " ]")
             # Compute eligible token classes
             df_eligibleTokenClasses = self._df_dataset.groupby(['oracleId', 'oracleSoFar'])['tokenClass'].unique().to_frame()
             df_eligibleTokenClasses = df_eligibleTokenClasses.rename(columns={'tokenClass': 'eligibleTokenClasses'})
             self._df_dataset = pd.merge(self._df_dataset, df_eligibleTokenClasses, on=['oracleId', 'oracleSoFar']).reset_index()
-            self._df_dataset["eligibleTokenClasses"] = self._df_dataset["eligibleTokenClasses"].apply(lambda x: "[ " + " ".join(x) + " ]")
+            self._df_dataset["eligibleTokenClasses"] = self._df_dataset["eligibleTokenClasses"].apply(lambda x: "[ " + " ".join(random.sample(list(x),len(x))) + " ]")
             # Set type of dataframe columns
             self._df_dataset['eligibleTokenClasses'] = self._df_dataset['eligibleTokenClasses'].astype('string')
             self._df_dataset['tokenClass'] = self._df_dataset['tokenClass'].astype('string')
@@ -412,7 +412,7 @@ class DataProcessorDecoder:
             df_eligibleTokens = self._df_dataset.groupby(['oracleId', 'oracleSoFar'])['token'].unique().to_frame()
             df_eligibleTokens = df_eligibleTokens.rename(columns={'token': 'eligibleTokens'})
             self._df_dataset = pd.merge(self._df_dataset, df_eligibleTokens, on=['oracleId', 'oracleSoFar']).reset_index()
-            self._df_dataset["eligibleTokens"] = self._df_dataset["eligibleTokens"].apply(lambda x: "[ " + " ".join(x) + " ]")
+            self._df_dataset["eligibleTokens"] = self._df_dataset["eligibleTokens"].apply(lambda x: "[ " + " ".join(random.sample(list(x),len(x))) + " ]")
             # Set type of dataframe columns
             self._df_dataset['eligibleTokens'] = self._df_dataset['eligibleTokens'].astype('string')
             # Define the new order of columns
@@ -428,11 +428,11 @@ class DataProcessorDecoder:
             self._df_dataset = self._df_dataset[self._df_dataset['label'] == 'True']
 
         # Delete the tgt labels from the input dataset, and others less relevant columns
-        df_src = self._df_dataset.drop(['label', 'oracleId', 'projectName', 'classJavadoc', 'classSourceCode'], axis=1)
+        df_src = self._df_dataset.drop(['label', 'oracleId', 'projectName', 'methodSourceCode', 'classJavadoc', 'classSourceCode', 'tokenInfo'], axis=1)
         # If the model predicts token classes, remove the token values and the token info from the input, else remove
         # the token classes from the input
         if self._tratto_model_type == TrattoModelType.TOKEN_CLASSES:
-            df_src = df_src.drop(['token', 'tokenInfo'], axis=1)
+            df_src = df_src.drop(['token'], axis=1)
             if self._classification_type == ClassificationType.CATEGORY_PREDICTION:
                 df_src = df_src.drop(['tokenClass'], axis=1)
         else:
@@ -478,12 +478,10 @@ class DataProcessorDecoder:
         src = df_src_concat.to_numpy().tolist()
         # Get the list of target values from the dataframe
         if self._tratto_model_type == TrattoModelType.TOKEN_CLASSES:
-            tgt = self._df_dataset[
-                "tokenClass"].values.tolist() if self._classification_type == ClassificationType.CATEGORY_PREDICTION else \
+            tgt = self._df_dataset["tokenClass"].values.tolist() if self._classification_type == ClassificationType.CATEGORY_PREDICTION else \
             self._df_dataset["label"].values.tolist()
         else:
-            tgt = self._df_dataset[
-                "token"].values.tolist() if self._classification_type == ClassificationType.CATEGORY_PREDICTION else \
+            tgt = self._df_dataset["token"].values.tolist() if self._classification_type == ClassificationType.CATEGORY_PREDICTION else \
             self._df_dataset["label"].values.tolist()
         # Split the dataset into training and test sets with stratified sampling (given imbalanced dataset), based on target classes
         self._src, self._src_test, self._tgt, self._tgt_test = train_test_split(src, tgt, test_size=self._test_ratio)  # stratify=tgt)
