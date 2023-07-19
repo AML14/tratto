@@ -151,7 +151,7 @@
         "exception": "java.lang.IllegalArgumentException",
         "description": "@throws java.lang.IllegalArgumentException if value is greater than Short#MAX_VALUE or less than Short#MIN_VALUE",
         "guard": {
-          "condition": "value > Short.MAX_VALUE || value < Short.MIN_VALUE",
+          "condition": "value != Shorts.saturatedCast(value)",
           "description": "if value is greater than Short.MAX_VALUE or less than Short.MIN_VALUE."
         }
       }
