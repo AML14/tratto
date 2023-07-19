@@ -1,7 +1,6 @@
 package star.tratto.util.javaparser;
 
 import org.junit.jupiter.api.Test;
-import star.tratto.util.javaparser.PrimitiveTypeUtils;
 
 import java.util.List;
 
