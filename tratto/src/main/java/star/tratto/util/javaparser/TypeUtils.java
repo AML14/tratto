@@ -30,18 +30,26 @@ public class TypeUtils {
     /**
      * Removes any type arguments from a parameterized type name.
      *
-     * @param dirtyTypeName a field descriptor or source code type
-     *                      representation
-     * @return the same type representation without any type arguments
+     * @param parameterizedType a field descriptor or source code type
+     *                          representation
+     * @return the same type representation without type arguments
      */
-    public static String removeSpuriousCharacters(String dirtyTypeName) {
-        String regex = "(\bsuper\b|\\s|\\?|;|<.*?>)";
-        return dirtyTypeName.replaceAll(regex, "");
+    public static String removeTypeArguments(String parameterizedType) {
+        // regex to match type arguments in angle brackets.
+        String regex = "<[^<>]*>";
+        // repeatedly remove all type arguments.
+        String previous;
+        String current = parameterizedType;
+        do {
+            previous = current;
+            current = previous.replaceAll(regex, "");
+        } while (!current.equals(previous));
+        return current;
     }
 
     /**
      * Splits an identifier, which represents a class path or a
-     * fully-qualified name (for a class or method), into components.
+     * fully-qualified name (of a class or method), into components.
      *
      * @param identifier a class path or fully-qualified name
      * @return identifier components. Includes: path prefix (if the
@@ -56,16 +64,19 @@ public class TypeUtils {
     }
 
     /**
-     * @param identifierComponents identifier components
-     * @return identifier components, with the suffix (file extension) removed
+     * @see TypeUtils#getIdentifierComponents(String)
+     * @param identifierComponents identifier components. Should be derived
+     *                             from a class path (not FQN).
+     * @return identifier components, without the file extension
      */
-    public static List<String> removeIdentifierSuffix(
+    public static List<String> removeIdentifierComponentsExtension(
             List<String> identifierComponents
     ) {
         return identifierComponents.subList(0, identifierComponents.size() - 1);
     }
 
     /**
+     * @see TypeUtils#getIdentifierComponents(String)
      * @param identifierComponents identifier components without file extension
      * @return identifier components joined by "."
      */
@@ -76,6 +87,7 @@ public class TypeUtils {
     }
 
     /**
+     * @see TypeUtils#getIdentifierComponents(String)
      * @param identifierComponents identifier components without suffix
      * @return the innermost class
      */
@@ -86,7 +98,7 @@ public class TypeUtils {
     }
 
     /**
-     * @param typeName a JDoctor or JavaParser type name
+     * @param typeName a field descriptor or source code type representation
      * @return the array level of the type
      */
     private static int getArrayLevel(String typeName) {
@@ -100,68 +112,69 @@ public class TypeUtils {
     }
 
     /**
-     * Adds brackets to a given type, increasing the array level by a
-     * specified amount.
+     * Adds brackets to a given (source code format) type, increasing the
+     * array level by a specified amount.
      *
-     * @param typeName a component type name
-     * @param arrayLevel the number of added array levels
+     * @param typeName a source code format type name
+     * @param arrayLevel the number of array levels to add
      * @return the new type name with the added number of array levels
      */
-    private static String addJPArrayLevel(String typeName, int arrayLevel) {
+    private static String addSourceCodeArrayLevel(String typeName, int arrayLevel) {
         return typeName + ("[]").repeat(arrayLevel);
     }
 
     /**
-     * Converts a JDoctor array type name to a JavaParser array type name.
-     * JDoctor represents arrays with single square brackets preceding the
-     * name, whereas JavaParser uses pairs of square brackets after the name.
+     * Converts a field descriptor array to a source code format array. This
+     * method ONLY changes the square brackets, and will not change the
+     * component type name. For example:
+     *  [Object => Object[]
+     *  [[D     => D[][]
      *
-     * @param jDoctorTypeName a JDoctor type name
-     * @return the corresponding JavaParser type name
+     * @param fieldDescriptor a field descriptor array type
+     * @return the corresponding source code format array type
      */
-    private static String convertJDoctorArrayToJPArray(String jDoctorTypeName) {
-        int arrayLevel = getArrayLevel(jDoctorTypeName);
-        return addJPArrayLevel(jDoctorTypeName.substring(arrayLevel), arrayLevel);
+    private static String fieldDescriptorArrayToSourceCodeArray(String fieldDescriptor) {
+        int arrayLevel = getArrayLevel(fieldDescriptor);
+        return addSourceCodeArrayLevel(fieldDescriptor.substring(arrayLevel), arrayLevel);
     }
 
     /**
-     * Converts a JDoctor representation of a primitive type to a JavaParser
-     * representation.
+     * Converts a field descriptor representation of a primitive type to a
+     * source code format representation of a primitive type.
      *
-     * @param jDoctorPrimitive a JDoctor primitive type name
-     * @return the corresponding JavaParser primitive type name
-     * @throws IllegalArgumentException if {@code jDoctorPrimitive} does not
-     * match a known JDoctor primitive representation
-     * @throws IllegalArgumentException if {@code jDoctorPrimitive} does not
-     * represent a primitive type
+     * @param fieldDescriptor a field descriptor primitive type name
+     * @return the corresponding source code format primitive type name
+     * @throws IllegalArgumentException if {@code fieldDescriptor} does not
+     * match a known field descriptor primitive representation
      */
-    private static String convertJDoctorPrimitiveToJPPrimitive(String jDoctorPrimitive) {
-        List<String> primitiveJDoctorValues = PrimitiveTypeUtils.getAllPrimitiveFieldDescriptors();
-        if (primitiveJDoctorValues.contains(jDoctorPrimitive.replaceAll("[^a-zA-Z]+", ""))) {
-            // match `jDoctorPrimitive` to a known JDoctor primitive representation.
-            String jDoctorRegex = PrimitiveTypeUtils.getAllPrimitiveFieldDescriptorsRegex();
-            String regex = String.format(
-                    "[^A-Za-z0-9_]*(%s)[^A-Za-z0-9_]*",
-                    jDoctorRegex
-            );
-            Pattern pattern = Pattern.compile(regex);
-            Matcher matcher = pattern.matcher(jDoctorPrimitive);
-            if (matcher.find()) {
-                String jDoctorFieldDescriptor = matcher.group(1);
-                String javaParserPrimitiveType = PrimitiveTypeUtils.fieldDescriptorToPrimitiveType(jDoctorFieldDescriptor);
-                return jDoctorPrimitive.replaceAll(jDoctorRegex, javaParserPrimitiveType);
-            } else {
-                // `jDoctorPrimitive` does not match any known JDoctor representation.
-                throw new IllegalArgumentException(String.format(
-                        "The condition parameter does not match any primitive type: %s",
-                        jDoctorPrimitive
-                ));
-            }
+    private static String fieldDescriptorPrimitiveToSourceCodePrimitive(String fieldDescriptor) {
+        // check that given field descriptor represents a primitive type.
+        List<String> allPrimitiveFieldDescriptors = PrimitiveTypeUtils.getAllPrimitiveFieldDescriptors();
+        if (!allPrimitiveFieldDescriptors.contains(fieldDescriptor.replaceAll("[^a-zA-Z]+", ""))) {
+            throw new IllegalArgumentException(String.format(
+                    "The string passed to the function (%s) does not represent a primitive type",
+                    fieldDescriptor
+            ));
         }
-        throw new IllegalArgumentException(String.format(
-                "The string passed to the function (%s) does not represent a primitive type",
-                jDoctorPrimitive
-        ));
+        // match `fieldDescriptor` to a known primitive field descriptor.
+        String fieldDescriptorRegex = PrimitiveTypeUtils.getAllPrimitiveFieldDescriptorsRegex();
+        String regex = String.format(
+                "[^A-Za-z0-9_]*(%s)[^A-Za-z0-9_]*",
+                fieldDescriptorRegex
+        );
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(fieldDescriptor);
+        if (matcher.find()) {
+            String rawFieldDescriptor = matcher.group(1);
+            String sourceCodePrimitiveType = PrimitiveTypeUtils.fieldDescriptorToPrimitiveType(rawFieldDescriptor);
+            return fieldDescriptor.replaceAll(fieldDescriptorRegex, sourceCodePrimitiveType);
+        } else {
+            // `fieldDescriptor` does not match any known field descriptor.
+            throw new IllegalArgumentException(String.format(
+                    "The condition parameter does not match any primitive type: %s",
+                    fieldDescriptor
+            ));
+        }
     }
 
     /**
@@ -171,15 +184,15 @@ public class TypeUtils {
      * @return the corresponding JavaParser representation of a type
      */
     private static String convertJDoctorTypeNameToJPTypeName(String jDoctorTypeName) {
-        jDoctorTypeName = removeSpuriousCharacters(jDoctorTypeName);
+        jDoctorTypeName = removeTypeArguments(jDoctorTypeName);
         // converts primitive type.
         List<String> primitiveJDoctorValues = PrimitiveTypeUtils.getAllPrimitiveFieldDescriptors();
         if (primitiveJDoctorValues.contains(jDoctorTypeName.replaceAll("[^a-zA-Z]+", ""))) {
-            jDoctorTypeName = convertJDoctorPrimitiveToJPPrimitive(jDoctorTypeName);
+            jDoctorTypeName = fieldDescriptorPrimitiveToSourceCodePrimitive(jDoctorTypeName);
         }
         // converts array type.
         if (jDoctorTypeName.startsWith("[")) {
-            jDoctorTypeName = convertJDoctorArrayToJPArray(jDoctorTypeName);
+            jDoctorTypeName = fieldDescriptorArrayToSourceCodeArray(jDoctorTypeName);
         }
         // gets class name.
         List<String> paramPathList = getIdentifierComponents(jDoctorTypeName);
@@ -213,11 +226,11 @@ public class TypeUtils {
     }
 
     /**
-     * @param jpTypeName name of a JavaParser parameter {@link Parameter}
+     * @param typeName name of a JavaParser parameter {@link Parameter}
      * @return true iff the parameter name includes "..."
      */
-    public static boolean hasEllipsis(String jpTypeName) {
-        return jpTypeName.contains("...");
+    public static boolean hasEllipsis(String typeName) {
+        return typeName.contains("...");
     }
 
     /**
@@ -226,12 +239,12 @@ public class TypeUtils {
      * types.
      *
      * @param sourceCode the method or class source code in which
-     * {@code jpTypeName} is used
-     * @param jpTypeName a JavaParser type name
+     * {@code typeName} is used
+     * @param typeName a JavaParser type name
      * @return true iff the type name extends another type
      */
-    public static boolean hasSupertype(String sourceCode, String jpTypeName) {
-        String regex = String.format("%s\\s+extends\\s+([A-Za-z0-9_]+)[<[A-Za-z0-9_,]+]*", jpTypeName.replaceAll("\\[]",""));
+    public static boolean hasSupertype(String sourceCode, String typeName) {
+        String regex = String.format("%s\\s+extends\\s+([A-Za-z0-9_]+)[<[A-Za-z0-9_,]+]*", typeName.replaceAll("\\[]",""));
         // Using the Pattern and Matcher classes
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(sourceCode);
@@ -257,7 +270,7 @@ public class TypeUtils {
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(sourceCode);
         if (matcher.find()) {
-            return removeSpuriousCharacters(matcher.group(1)) + ("[]").repeat(arrayLevel);
+            return removeTypeArguments(matcher.group(1)) + ("[]").repeat(arrayLevel);
         } else {
             throw new IllegalArgumentException(String.format(
                     "The JavaParser source code %s does not match the regex built with the JavaParser type name %s.",
@@ -282,14 +295,14 @@ public class TypeUtils {
             CallableDeclaration<?> jpCallable,
             Parameter jpParam
     ) {
-        String jpTypeName = removeSpuriousCharacters(jpParam.getType().asString());
+        String jpTypeName = removeTypeArguments(jpParam.getType().asString());
         // get class name.
         if (jpParam.getType().isClassOrInterfaceType()) {
-            jpTypeName = removeSpuriousCharacters(jpParam.getType().asClassOrInterfaceType().getNameAsString());
+            jpTypeName = removeTypeArguments(jpParam.getType().asClassOrInterfaceType().getNameAsString());
         }
         // handle ellipsis.
         if (hasEllipsis(jpParam.toString())) {
-            jpTypeName = addJPArrayLevel(jpTypeName, 1);
+            jpTypeName = addSourceCodeArrayLevel(jpTypeName, 1);
         }
         // use upper bound if possible.
         if (hasSupertype(jpCallable.getTokenRange().get().toString(), jpTypeName)) {

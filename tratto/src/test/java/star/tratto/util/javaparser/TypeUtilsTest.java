@@ -35,8 +35,9 @@ public class TypeUtilsTest {
 
     @Test
     public void removeSpuriousCharactersTest() {
-        assertEquals("List", TypeUtils.removeSpuriousCharacters("List<? extends Integer>"));
-        assertEquals("ArrayList", TypeUtils.removeSpuriousCharacters("ArrayList<? super Number>"));
-        assertEquals("Oversuperstition", TypeUtils.removeSpuriousCharacters("Oversuperstition"));
+        assertEquals("List", TypeUtils.removeTypeArguments("List<? extends Integer>"));
+        assertEquals("ArrayList", TypeUtils.removeTypeArguments("ArrayList<? super Number>"));
+        assertEquals("Oversuperstition", TypeUtils.removeTypeArguments("Oversuperstition"));
+        assertEquals("Foo", TypeUtils.removeTypeArguments("Foo<? super Collection<T>, T>"));
     }
 }

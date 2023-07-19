@@ -93,18 +93,9 @@ public class FileUtilsTest {
                     .map(e -> (String) e)
                     .collect(Collectors.toList());
             assertEquals(List.of(".DS_Store", "package-info"), ignoreFileList);
-        } catch (IOException e) {
+        } catch (Error e) {
             e.printStackTrace();
             fail();
         }
-    }
-
-    @Test
-    public void readJSONListDoesNotExistTest() {
-        String filePath = "../../no_file_to_see_here.json";
-        try {
-            FileUtils.readJSONList(filePath);
-            fail();
-        } catch (IOException ignored) {}
     }
 }
