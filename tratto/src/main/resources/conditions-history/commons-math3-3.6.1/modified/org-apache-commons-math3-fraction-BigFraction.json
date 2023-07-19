@@ -29,7 +29,7 @@
         "exception": "org.apache.commons.math3.exception.ZeroException",
         "description": "@throws org.apache.commons.math3.exception.ZeroException if the denominator is zero.",
         "guard": {
-          "condition": "den==(org.apache.commons.math3.fraction.BigFraction.ZERO)",
+          "condition": "den.signum() == 0",
           "description": "if the denominator is zero."
         }
       }
@@ -209,7 +209,7 @@
         "exception": "org.apache.commons.math3.exception.MathArithmeticException",
         "description": "@throws org.apache.commons.math3.exception.MathArithmeticException if the fraction to divide by is zero.",
         "guard": {
-          "condition": "bg==(org.apache.commons.math3.fraction.BigFraction.ZERO)",
+          "condition": "bg.signum() == 0",
           "description": "if the fraction to divide by is zero."
         }
       }
@@ -253,7 +253,7 @@
         "exception": "org.apache.commons.math3.exception.MathArithmeticException",
         "description": "@throws org.apache.commons.math3.exception.MathArithmeticException if the fraction to divide by is zero.",
         "guard": {
-          "condition": "fraction==(org.apache.commons.math3.fraction.BigFraction.ZERO)",
+          "condition": "fraction.getDenominator().signum() == 0",
           "description": "if the fraction to divide by is zero."
         }
       }
