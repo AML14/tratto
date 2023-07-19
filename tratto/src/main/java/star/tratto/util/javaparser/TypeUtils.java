@@ -64,9 +64,9 @@ public class TypeUtils {
     }
 
     /**
-     * @see TypeUtils#getTypeSegments(String)
      * @param typeSegments type segments. Must be derived from a class path.
      * @return type segments, without the file extension
+     * @see TypeUtils#getTypeSegments(String)
      */
     public static List<String> removeTypeSegmentsExtension(
             List<String> typeSegments
@@ -75,9 +75,9 @@ public class TypeUtils {
     }
 
     /**
-     * @see TypeUtils#getTypeSegments(String)
      * @param typeSegments type segments (without a file extension)
      * @return type segments joined by ".", representing the package name
+     * @see TypeUtils#getTypeSegments(String)
      */
     public static String getPackageNameFromTypeSegments(
             List<String> typeSegments
@@ -86,9 +86,9 @@ public class TypeUtils {
     }
 
     /**
-     * @see TypeUtils#getTypeSegments(String)
      * @param typeSegments type segment (without a file extension)
      * @return the innermost class of the type segments
+     * @see TypeUtils#getTypeSegments(String)
      */
     public static String getClassNameFromTypeSegments(
             List<String> typeSegments
@@ -330,11 +330,11 @@ public class TypeUtils {
      * when comparing arguments to check equality.
      * See `jpParamEqualsJDoctorParam` in DatasetUtils for elaboration.
      *
-     * @param conditionType name of the JDoctor or JavaParser type
+     * @param typeName name of the JDoctor or JavaParser type
      * @return true iff the given type name is "Object" or "Comparable"
      */
-    public static boolean isStandardType(String conditionType) {
-        return conditionType.equals("Object") || conditionType.equals("Comparable");
+    public static boolean isStandardType(String typeName) {
+        return typeName.equals("Object") || typeName.equals("Comparable");
     }
 
     /**
@@ -342,10 +342,10 @@ public class TypeUtils {
      * includes the "Object[]" and "Comparable[]" types.
      * See above method {@code isStandardType} for further elaboration.
      *
-     * @param conditionType name of the JDoctor or JavaParser type
+     * @param typeName name of the JDoctor or JavaParser type
      * @return true iff the given type name is "Object[]" or "Comparable[]"
      */
-    public static boolean isStandardTypeArray(String conditionType) {
-        return conditionType.equals("Object[]") || conditionType.equals("Comparable[]");
+    public static boolean isStandardTypeArray(String typeName) {
+        return typeName.equals("Object[]") || typeName.equals("Comparable[]");
     }
 }

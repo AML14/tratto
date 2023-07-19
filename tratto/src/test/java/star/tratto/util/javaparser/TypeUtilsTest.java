@@ -8,6 +8,19 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TypeUtilsTest {
     @Test
+    public void removeTypeArgumentsTest() {
+        assertEquals("List", TypeUtils.removeTypeArguments("List<? extends Integer>"));
+        assertEquals("ArrayList", TypeUtils.removeTypeArguments("ArrayList<? super Number>"));
+        assertEquals("Oversuperstition", TypeUtils.removeTypeArguments("Oversuperstition"));
+        assertEquals("Foo", TypeUtils.removeTypeArguments("Foo<? super Collection<T>, T>"));
+    }
+
+    @Test
+    public void getTypeSegmentsTest() {
+        assertEquals(List.of("path/to"), TypeUtils.getTypeSegments("path/to/Class.java"));
+    }
+
+    @Test
     public void convertJDoctorTypeNamesToJPTypeNamesTest() {
         assertEquals(List.of("byte[]", "int"), TypeUtils.fieldDescriptorNamesToSourceCodeNames(List.of("[B", "int")));
         assertEquals(List.of("char[][]"), TypeUtils.fieldDescriptorNamesToSourceCodeNames(List.of("[[C")));
@@ -31,13 +44,5 @@ public class TypeUtilsTest {
     public void hasJPTypeEllipsisTest() {
         assertTrue(TypeUtils.hasEllipsis("Integer..."));
         assertFalse(TypeUtils.hasEllipsis("Integer"));
-    }
-
-    @Test
-    public void removeSpuriousCharactersTest() {
-        assertEquals("List", TypeUtils.removeTypeArguments("List<? extends Integer>"));
-        assertEquals("ArrayList", TypeUtils.removeTypeArguments("ArrayList<? super Number>"));
-        assertEquals("Oversuperstition", TypeUtils.removeTypeArguments("Oversuperstition"));
-        assertEquals("Foo", TypeUtils.removeTypeArguments("Foo<? super Collection<T>, T>"));
     }
 }
