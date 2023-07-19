@@ -98,7 +98,7 @@ public class PrimitiveTypeUtils {
     }
 
     /**
-     * @param primitiveClass a Class representation of a primitive type
+     * @param primitiveClass a primitive type
      * @return the field descriptor String representation of {@code primitiveClass}
      */
     private static String classToFieldDescriptor(Class<?> primitiveClass) {
@@ -119,11 +119,11 @@ public class PrimitiveTypeUtils {
         } else if (primitiveClass.equals(double.class)) {
             return "D";
         }
-        throw new IllegalArgumentException("Unrecognized class: " + primitiveClass);
+        throw new IllegalArgumentException("Not a primitive field descriptor: " + primitiveClass);
     }
 
     /**
-     * @param primitiveClass a Class representation of a primitive type
+     * @param primitiveClass a primitive type
      * @return the source code String representation of {@code primitiveClass}
      */
     private static String classToPrimitiveType(Class<?> primitiveClass) {
@@ -131,29 +131,24 @@ public class PrimitiveTypeUtils {
     }
 
     /**
-     * Converts a field descriptor String representation of a primitive type
-     * to a source code String representation. See class JavaDoc for full list
-     * of conversions.
+     * Converts a field descriptor to a primitive type name.
      *
      * @param fieldDescriptor a field descriptor String representation of a
      *                        primitive type
      * @return the corresponding source code String representation
      */
-    public static String convertFieldDescriptorToPrimitiveType(String fieldDescriptor) {
+    public static String fieldDescriptorToPrimitiveType(String fieldDescriptor) {
         Class<?> primitiveClass = fieldDescriptorToClass(fieldDescriptor);
         return classToPrimitiveType(primitiveClass);
     }
 
     /**
-     * Converts a source code String representation of a primitive type to a
-     * field descriptor String representation. See class JavaDoc for full list
-     * of conversions.
+     * Converts a primitive type name to a field descriptor.
      *
-     * @param primitiveType a source code String representation of a primitive
-     *                      type
+     * @param primitiveType a primitive type name
      * @return the corresponding field descriptor String representation
      */
-    public static String convertPrimitiveTypeToFieldDescriptor(String primitiveType) {
+    public static String primitiveTypeToFieldDescriptor(String primitiveType) {
         Class<?> primitiveClass = primitiveTypeToClass(primitiveType);
         return classToFieldDescriptor(primitiveClass);
     }
@@ -161,7 +156,7 @@ public class PrimitiveTypeUtils {
     /**
      * @return field descriptor String representation of all primitive types
      */
-    public static List<String> getAllFieldDescriptors() {
+    public static List<String> getAllPrimitiveFieldDescriptors() {
         return primitiveList.stream().map(PrimitiveTypeUtils::classToFieldDescriptor).collect(Collectors.toList());
     }
 
@@ -170,7 +165,7 @@ public class PrimitiveTypeUtils {
      * @return a regex of all possible field descriptor String representations
      * of a primitive type. Used to find field descriptors in a given string.
      */
-    public static String getAllFieldDescriptorsRegex() {
-        return "[" + String.join("", getAllFieldDescriptors()) + "]";
+    public static String getAllPrimitiveFieldDescriptorsRegex() {
+        return "[ZBCSIJFD]";
     }
 }
