@@ -48,53 +48,52 @@ public class TypeUtils {
     }
 
     /**
-     * Splits an identifier, which represents a class path or a
-     * fully-qualified name (of a class or method), into components.
+     * Splits a fully-qualified name (of a class or method) or a class path
+     * into segments.
      *
-     * @param identifier a class path or fully-qualified name
-     * @return identifier components. Includes: path prefix (if the
-     * identifier is a path), all outer classes (separated), the class, and a
-     * file extension (if the identifier is a path).
+     * @param pathOrName a class path or fully-qualified name
+     * @return type segments. Includes: path prefix (if {@code pathOrName}
+     * is a path), all outer classes (separated), the class, and a file
+     * extension (if {@code pathOrName} is a path).
      */
-    public static List<String> getIdentifierComponents(
-            String identifier
+    public static List<String> getTypeSegments(
+            String pathOrName
     ) {
         String regex = "[.$]";
-        return Arrays.asList(identifier.split(regex));
+        return Arrays.asList(pathOrName.split(regex));
     }
 
     /**
-     * @see TypeUtils#getIdentifierComponents(String)
-     * @param identifierComponents identifier components. Should be derived
-     *                             from a class path (not FQN).
-     * @return identifier components, without the file extension
+     * @see TypeUtils#getTypeSegments(String)
+     * @param typeSegments type segments. Must be derived from a class path.
+     * @return type segments, without the file extension
      */
-    public static List<String> removeIdentifierComponentsExtension(
-            List<String> identifierComponents
+    public static List<String> removeTypeSegmentsExtension(
+            List<String> typeSegments
     ) {
-        return identifierComponents.subList(0, identifierComponents.size() - 1);
+        return typeSegments.subList(0, typeSegments.size() - 1);
     }
 
     /**
-     * @see TypeUtils#getIdentifierComponents(String)
-     * @param identifierComponents identifier components without file extension
-     * @return identifier components joined by "."
+     * @see TypeUtils#getTypeSegments(String)
+     * @param typeSegments type segments (without a file extension)
+     * @return type segments joined by ".", representing the package name
      */
-    public static String getPackageNameFromIdentifierComponents(
-            List<String> identifierComponents
+    public static String getPackageNameFromTypeSegments(
+            List<String> typeSegments
     ) {
-        return String.join(".", identifierComponents);
+        return String.join(".", typeSegments);
     }
 
     /**
-     * @see TypeUtils#getIdentifierComponents(String)
-     * @param identifierComponents identifier components without suffix
-     * @return the innermost class
+     * @see TypeUtils#getTypeSegments(String)
+     * @param typeSegments type segment (without a file extension)
+     * @return the innermost class of the type segments
      */
-    public static String getClassNameFromIdentifierComponents(
-            List<String> identifierComponents
+    public static String getClassNameFromTypeSegments(
+            List<String> typeSegments
     ) {
-        return identifierComponents.get(identifierComponents.size() - 1);
+        return typeSegments.get(typeSegments.size() - 1);
     }
 
     /**
@@ -196,8 +195,8 @@ public class TypeUtils {
             fieldDescriptor = fieldDescriptorArrayToSourceCodeArray(fieldDescriptor);
         }
         // gets class name.
-        List<String> paramPathList = getIdentifierComponents(fieldDescriptor);
-        return getClassNameFromIdentifierComponents(paramPathList);
+        List<String> paramPathList = getTypeSegments(fieldDescriptor);
+        return getClassNameFromTypeSegments(paramPathList);
     }
 
     /**
