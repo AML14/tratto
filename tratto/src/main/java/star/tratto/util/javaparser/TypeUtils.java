@@ -4,7 +4,6 @@ import com.github.javaparser.ast.body.CallableDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.TypeDeclaration;
-import com.github.javaparser.ast.type.PrimitiveType;
 import com.github.javaparser.ast.type.TypeParameter;
 
 import java.util.Arrays;
@@ -14,16 +13,26 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
- * This class manages the differences between JDoctor and JavaParser
- * representations of variables, as well as other utilities for both type
- * representations.
+ * This class provides a collection of static methods to convert between the
+ * field descriptor and source code formats of all Java types. This class
+ * builds upon the functionality of {@link PrimitiveTypeUtils} with methods
+ * that convert between Object and array types, as well as other utilities
+ * for both representations. For our purposes, we note that JDoctor uses
+ * field descriptors to represent types, whereas JavaParser uses source code
+ * format to represent types.
  */
-public class JDoctorUtils {
+public class TypeUtils {
+    // private constructor to avoid creating an instance of this class.
+    private TypeUtils() {
+        throw new UnsupportedOperationException("This class cannot be instantiated.");
+    }
+
     /**
      * Removes any type arguments from a parameterized type name.
      *
-     * @param dirtyTypeName a JDoctor or JavaParser type name
-     * @return the same type name without any type arguments
+     * @param dirtyTypeName a field descriptor or source code type
+     *                      representation
+     * @return the same type representation without any type arguments
      */
     public static String removeSpuriousCharacters(String dirtyTypeName) {
         String regex = "(\bsuper\b|\\s|\\?|;|<.*?>)";
@@ -48,8 +57,7 @@ public class JDoctorUtils {
 
     /**
      * @param identifierComponents identifier components
-     *                             (see {@code identifierComponents})
-     * @return identifier components, with the suffix removed
+     * @return identifier components, with the suffix (file extension) removed
      */
     public static List<String> removeIdentifierSuffix(
             List<String> identifierComponents
@@ -58,7 +66,7 @@ public class JDoctorUtils {
     }
 
     /**
-     * @param identifierComponents identifier components without suffix
+     * @param identifierComponents identifier components without file extension
      * @return identifier components joined by "."
      */
     public static String getPackageNameFromIdentifierComponents(
@@ -128,10 +136,10 @@ public class JDoctorUtils {
      * represent a primitive type
      */
     private static String convertJDoctorPrimitiveToJPPrimitive(String jDoctorPrimitive) {
-        List<String> primitiveJDoctorValues = PrimitiveTypeUtils.getAllFieldDescriptors();
+        List<String> primitiveJDoctorValues = PrimitiveTypeUtils.getAllPrimitiveFieldDescriptors();
         if (primitiveJDoctorValues.contains(jDoctorPrimitive.replaceAll("[^a-zA-Z]+", ""))) {
             // match `jDoctorPrimitive` to a known JDoctor primitive representation.
-            String jDoctorRegex = PrimitiveTypeUtils.getAllFieldDescriptorsRegex();
+            String jDoctorRegex = PrimitiveTypeUtils.getAllPrimitiveFieldDescriptorsRegex();
             String regex = String.format(
                     "[^A-Za-z0-9_]*(%s)[^A-Za-z0-9_]*",
                     jDoctorRegex
@@ -140,7 +148,7 @@ public class JDoctorUtils {
             Matcher matcher = pattern.matcher(jDoctorPrimitive);
             if (matcher.find()) {
                 String jDoctorFieldDescriptor = matcher.group(1);
-                String javaParserPrimitiveType = PrimitiveTypeUtils.convertFieldDescriptorToPrimitiveType(jDoctorFieldDescriptor);
+                String javaParserPrimitiveType = PrimitiveTypeUtils.fieldDescriptorToPrimitiveType(jDoctorFieldDescriptor);
                 return jDoctorPrimitive.replaceAll(jDoctorRegex, javaParserPrimitiveType);
             } else {
                 // `jDoctorPrimitive` does not match any known JDoctor representation.
@@ -165,7 +173,7 @@ public class JDoctorUtils {
     private static String convertJDoctorTypeNameToJPTypeName(String jDoctorTypeName) {
         jDoctorTypeName = removeSpuriousCharacters(jDoctorTypeName);
         // converts primitive type.
-        List<String> primitiveJDoctorValues = PrimitiveTypeUtils.getAllFieldDescriptors();
+        List<String> primitiveJDoctorValues = PrimitiveTypeUtils.getAllPrimitiveFieldDescriptors();
         if (primitiveJDoctorValues.contains(jDoctorTypeName.replaceAll("[^a-zA-Z]+", ""))) {
             jDoctorTypeName = convertJDoctorPrimitiveToJPPrimitive(jDoctorTypeName);
         }
@@ -192,7 +200,7 @@ public class JDoctorUtils {
     ) {
         return jDoctorTypeNames
                 .stream()
-                .map(JDoctorUtils::convertJDoctorTypeNameToJPTypeName)
+                .map(TypeUtils::convertJDoctorTypeNameToJPTypeName)
                 .collect(Collectors.toList());
     }
 
