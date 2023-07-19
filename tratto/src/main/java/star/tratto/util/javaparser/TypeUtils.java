@@ -48,10 +48,10 @@ public class TypeUtils {
     }
 
     /**
-     * Splits a fully-qualified name (of a class or method) into segments.
-     * Splits name based on "." (package name) and "$" (inner class).
+     * Splits a binary name (of a class or method) into segments. Splits name
+     * based on "." (package name) and "$" (inner class).
      *
-     * @param name a full-qualified method/class name
+     * @param name a binary method/class name
      * @return name segments. Includes: all outer packages, all outer classes,
      * and the innermost class.
      */
@@ -67,7 +67,7 @@ public class TypeUtils {
      * @return name segments joined by ".", representing the package name.
      * NOTE: For inner classes, we represent the package name as:
      *  [outerClass package].[outerClass]
-     * for continuity with the XText grammar.
+     * for compatibility with the XText grammar.
      * @see TypeUtils#getNameSegments(String)
      */
     public static String getPackageNameFromNameSegments(
