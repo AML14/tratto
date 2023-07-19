@@ -1,0 +1,88 @@
+[
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.stat.inference.WilcoxonSignedRankTest",
+      "name": "wilcoxonSignedRank",
+      "parameterTypes": [
+        "[D",
+        "[D"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "x",
+        "y"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NullArgumentException",
+        "description": "@throws org.apache.commons.math3.exception.NullArgumentException x or y are null.",
+        "guard": {
+          "condition": "x==null || y==null",
+          "description": "x or y are null."
+        }
+      },
+      {
+        "exception": "org.apache.commons.math3.exception.NoDataException",
+        "description": "@throws org.apache.commons.math3.exception.NoDataException x or y are zero-length.",
+        "guard": {
+          "condition": "x!=null && x.length==0 || y!=null && y.length==0",
+          "description": "x or y are zero-length."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.stat.inference.WilcoxonSignedRankTest",
+      "name": "wilcoxonSignedRankTest",
+      "parameterTypes": [
+        "[D",
+        "[D",
+        "boolean"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "x",
+        "y",
+        "exactPValue"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NullArgumentException",
+        "description": "@throws org.apache.commons.math3.exception.NullArgumentException x or y are null.",
+        "guard": {
+          "condition": "x==null || y==null",
+          "description": "x or y are null."
+        }
+      },
+      {
+        "exception": "org.apache.commons.math3.exception.NoDataException",
+        "description": "@throws org.apache.commons.math3.exception.NoDataException x or y are zero-length.",
+        "guard": {
+          "condition": "x!=null && x.length==0 || y!=null && y.length==0",
+          "description": "x or y are zero-length."
+        }
+      },
+      {
+        "exception": "org.apache.commons.math3.exception.NumberIsTooLargeException",
+        "description": "@throws org.apache.commons.math3.exception.NumberIsTooLargeException exactPValue is true and x.length > 30.",
+        "guard": {
+          "condition": "exactPValue==true",
+          "description": "exactPValue is true and x.length > 30."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  }
+]

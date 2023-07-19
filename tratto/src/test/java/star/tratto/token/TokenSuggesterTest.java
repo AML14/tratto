@@ -2,7 +2,6 @@ package star.tratto.token;
 
 import com.github.javaparser.resolution.UnsolvedSymbolException;
 import org.javatuples.Triplet;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -40,7 +39,7 @@ import static star.tratto.token.TokenSuggester.*;
  */
 public class TokenSuggesterTest {
 
-     private static final Logger logger = LoggerFactory.getLogger(TokenSuggesterTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(TokenSuggesterTest.class);
 
     private static final Parser parser = Parser.getInstance();
     private static final List<OracleDatapoint> oracleDatapoints = readOracleDatapointsFromOraclesDataset();
@@ -242,12 +241,12 @@ public class TokenSuggesterTest {
     private static Stream<Arguments> tokenLegalContextRestrictionsNoThisParameterizedTestData() {
         return Stream.of(
                 Arguments.of("isTokenLegalBasedOnContextRestrictions_PRE_NO_THIS_StaticMethod_Illegal", "", OracleType.PRE,
-                        "public static int someStaticMethod() {\n" +
-                        "    return 1;\n" +
-                        "}\n",
+                        "public static int someStaticMethod() {" + System.lineSeparator() +
+                        "    return 1;" + System.lineSeparator() +
+                        "}" + System.lineSeparator(),
                         false),
                 Arguments.of("isTokenLegalBasedOnContextRestrictions_NORMAL_POST_NO_THIS_NonStaticMethod_Legal", "true ? ", OracleType.NORMAL_POST,
-                        "String someNonStaticMethod();\n",
+                        "String someNonStaticMethod();" + System.lineSeparator(),
                         true)
         );
     }
@@ -272,7 +271,7 @@ public class TokenSuggesterTest {
             isTokenLegalBasedOnSingleTokenRestrictions(token, partialExpressionTokens, oracleDatapoint);
             fail("Expected IllegalArgumentException");
         } catch (IllegalArgumentException e) {
-            assertEquals("The provided methodSourceCode cannot be parsed by JavaParser. Method source code:\n\n" + oracleDatapoint.getMethodSourceCode(), e.getMessage());
+            assertEquals("JavaParser cannot parse:" + System.lineSeparator() + oracleDatapoint.getMethodSourceCode(), e.getMessage());
         }
     }
 

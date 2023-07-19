@@ -165,7 +165,8 @@ public class Parser {
         return (Oracle) allOraclesContents.get(0).eContents()
                 .stream()
                 .filter(eObject -> eObject instanceof Oracle)
-                .collect(Collectors.toList()).get(0);
+                .collect(Collectors.toList())
+                .get(0);
     }
 
     /**
