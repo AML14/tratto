@@ -134,13 +134,13 @@ def pre_process_dataset(
     update_tokenizer_vocab(tokenizer, value_mappings)
 
     # Remove method source code
-    #df_dataset['methodSourceCode'] = df_dataset['methodSourceCode'].str.split('{').str[0]
+    df_dataset['methodSourceCode'] = df_dataset['methodSourceCode'].str.split('{').str[0]
     # Replace the values in the DataFrame column
     df_dataset['tokenClass'] = df_dataset['tokenClass'].replace(value_mappings)
     # Map token classes so far to new values and transform it from array to string
     df_dataset['tokenClassesSoFar'] = df_dataset['tokenClassesSoFar'].apply(lambda x: "[ " + " ".join([value_mappings[y] for y in x]) + " ]")
     # Delete spurious columns for predicting the next token class
-    df_dataset = df_dataset.drop(['projectName', 'classJavadoc', 'classSourceCode', 'methodSourceCode'], axis=1)
+    df_dataset = df_dataset.drop(['projectName', 'classJavadoc', 'classSourceCode'], axis=1)
     # Return pre-processed dataset
     return df_dataset
 
