@@ -427,8 +427,11 @@ class DataProcessorDecoder:
         if self._classification_type == ClassificationType.CATEGORY_PREDICTION:
             self._df_dataset = self._df_dataset[self._df_dataset['label'] == 'True']
 
+        # Remove method source code
+        self._df_dataset['methodSourceCode'] = self._df_dataset['methodSourceCode'].str.split('{').str[0]
+
         # Delete the tgt labels from the input dataset, and others less relevant columns
-        df_src = self._df_dataset.drop(['label', 'oracleId', 'projectName', 'methodSourceCode', 'classJavadoc', 'classSourceCode', 'tokenInfo'], axis=1)
+        df_src = self._df_dataset.drop(['label', 'oracleId', 'projectName', 'classJavadoc', 'classSourceCode', 'tokenInfo'], axis=1)
         # If the model predicts token classes, remove the token values and the token info from the input, else remove
         # the token classes from the input
         if self._tratto_model_type == TrattoModelType.TOKEN_CLASSES:

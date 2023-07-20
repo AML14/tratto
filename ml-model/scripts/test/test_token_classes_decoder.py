@@ -238,7 +238,7 @@ def tokenize_datasets(
             truncation=True,
             return_tensors="pt"
         )
-        t_token_classes = tokenizer.batch_encode_plus(
+        t_token_classes_dict = tokenizer.batch_encode_plus(
             token_classes,
             max_length=512,
             padding=True,
@@ -250,6 +250,7 @@ def tokenize_datasets(
         t_inputs_attention_masks = torch.stack([mask.clone().detach() for mask in t_src_dict['attention_mask']])
         t_targets = torch.stack([ids.clone().detach() for ids in t_tgt_dict['input_ids']])
         t_javadoc_tags = torch.stack([ids.clone().detach() for ids in t_javadoctag_dict['input_ids']])
+        t_token_classes = torch.stack([ids.clone().detach() for ids in t_token_classes_dict['input_ids']])
         # Generate the tokenized dataset
         t_dataset = (t_inputs, t_inputs_attention_masks, t_targets, t_javadoc_tags, t_token_classes)
         t_datasets.append((identifier,t_dataset))
@@ -287,7 +288,6 @@ def main(
                 # Keep only a single instance for each combination of oracleId and oracleSoFar
                 df_true_oracles = df[(df['label'] == True)]
             dfs.append(df_true_oracles)
-            dfs.append(df)
     df_dataset = pd.concat(dfs)
 
     print("Setup model")
