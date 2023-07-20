@@ -83,9 +83,9 @@ public class JavaTypes {
     public static final List<String> BOOLEAN_TYPES = BOOLEANS.stream().map(Pair::getValue1).collect(Collectors.toList());
 
     /**
-     * Typical classes against which one may want to check if a variable is an instance of.
+     * Typical classes from java.lang and java.util packages against which one may want to check if a variable is an instance of.
      */
-    public static final List<Pair<String, String>> TYPICAL = List.of(
+    public static final List<Pair<String, String>> LANG_UTIL = List.of(
             Pair.with("java.lang", "String"),
             Pair.with("java.lang", "Integer"),
             Pair.with("java.lang", "Double"),
@@ -96,9 +96,9 @@ public class JavaTypes {
             Pair.with("java.util", "Map"),
             Pair.with("java.util", "Set")
     );
-    public static final List<String> TYPICAL_TYPES = TYPICAL.stream().map(Pair::getValue1).collect(Collectors.toList());
+    public static final List<String> LANG_UTIL_TYPES = LANG_UTIL.stream().map(Pair::getValue1).collect(Collectors.toList());
 
-    public static boolean isNumeric1AssignableToNumeric2(Pair<String, String> numeric1, Pair<String, String> numeric2) {
+    public static boolean isAssignableToNumeric(Pair<String, String> numeric1, Pair<String, String> numeric2) {
         if (!JavaTypes.NUMBERS.contains(numeric1) || !JavaTypes.NUMBERS.contains(numeric2)) {
             throw new IllegalArgumentException("Both types must be numeric");
         }

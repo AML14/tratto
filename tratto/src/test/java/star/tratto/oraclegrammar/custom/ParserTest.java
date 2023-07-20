@@ -57,7 +57,7 @@ public class ParserTest {
             List<Integer> flattenedErrorColumns = errorColumns
                     .stream()
                     .flatMap(List::stream)
-                    .collect(Collectors.toList());
+                    .toList();
 
             TreeMap<Integer, Integer> columnFrequencies = new TreeMap<>(frequencyMap(flattenedErrorColumns));
 
@@ -68,8 +68,11 @@ public class ParserTest {
                     .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
 
             if (!columnsToCheck.isEmpty()) {
-                fail("The following oracle contains a sequence of tokens such that the same column is marked with an error five or more times:\n"
-                        + stringOracle + "\n\n" + "Columns marked with errors three or more times:\n" + columnsToCheck);
+                fail(String.join(System.lineSeparator(),
+                                 "The following oracle contains a sequence of tokens such that the same column is marked with an error five or more times:",
+                                 stringOracle,
+                                 "Columns marked with errors three or more times:",
+                                 columnsToCheck.toString()));
             }
         }
     }
@@ -370,8 +373,8 @@ public class ParserTest {
         List<EObject> methodsAndAttributes = parser.getAllMethodsAndAttributes(oracle);
         assertEquals(expectedMethodsAndAttributes.size(), methodsAndAttributes.size());
         assertTrue(
-                expectedMethodsAndAttributes.stream().map(StringUtils::compactExpression).collect(Collectors.toList()).containsAll(
-                        methodsAndAttributes.stream().map(eo -> compactExpression(split(eo))).collect(Collectors.toList()))
+                expectedMethodsAndAttributes.stream().map(StringUtils::compactExpression).toList().containsAll(
+                        methodsAndAttributes.stream().map(eo -> compactExpression(split(eo))).toList())
         );
     }
 

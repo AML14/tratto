@@ -1,2 +1,5 @@
 Before building, you must run
-scripts/install_dependencies.sh
+
+```shell
+./scripts/install_dependencies.sh
+```

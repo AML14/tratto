@@ -1,0 +1,234 @@
+[
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.stat.descriptive.rank.Percentile",
+      "name": "org.apache.commons.math3.stat.descriptive.rank.Percentile",
+      "parameterTypes": [
+        "org.apache.commons.math3.stat.descriptive.rank.Percentile"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "original"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NullArgumentException",
+        "description": "@throws org.apache.commons.math3.exception.NullArgumentException original is null.",
+        "guard": {
+          "condition": "original==null",
+          "description": "original is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.stat.descriptive.rank.Percentile",
+      "name": "org.apache.commons.math3.stat.descriptive.rank.Percentile",
+      "parameterTypes": [
+        "double",
+        "org.apache.commons.math3.stat.descriptive.rank.Percentile$EstimationType",
+        "org.apache.commons.math3.stat.ranking.NaNStrategy",
+        "org.apache.commons.math3.util.KthSelector"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "quantile",
+        "estimationType",
+        "nanStrategy",
+        "kthSelector"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NullArgumentException",
+        "description": "@throws org.apache.commons.math3.exception.NullArgumentException type or NaNStrategy passed is null.",
+        "guard": {
+          "condition": "estimationType==null || nanStrategy==null",
+          "description": "type or NaNStrategy passed is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.stat.descriptive.rank.Percentile",
+      "name": "evaluate",
+      "parameterTypes": [
+        "double"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "p"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.MathIllegalArgumentException",
+        "description": "@throws org.apache.commons.math3.exception.MathIllegalArgumentException p is not a valid quantile value (p must be greater than 0 and less than or equal to 100).",
+        "guard": {
+          "condition": "p>0 && p<=100",
+          "description": "p is not a valid quantile value (p must be greater than 0 and less than or equal to 100)."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.stat.descriptive.rank.Percentile",
+      "name": "evaluate",
+      "parameterTypes": [
+        "[D",
+        "double"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "values",
+        "p"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.MathIllegalArgumentException",
+        "description": "@throws org.apache.commons.math3.exception.MathIllegalArgumentException values is null or p is invalid.",
+        "guard": {
+          "condition": "values==null",
+          "description": "values is null or p is invalid."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.stat.descriptive.rank.Percentile",
+      "name": "setQuantile",
+      "parameterTypes": [
+        "double"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "p"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.MathIllegalArgumentException",
+        "description": "@throws org.apache.commons.math3.exception.MathIllegalArgumentException p is not greater than 0 and less than or equal to 100.",
+        "guard": {
+          "condition": "(p>0) == false && p<=100",
+          "description": "p is not greater than 0 and less than or equal to 100."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.stat.descriptive.rank.Percentile",
+      "name": "withEstimationType",
+      "parameterTypes": [
+        "org.apache.commons.math3.stat.descriptive.rank.Percentile$EstimationType"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "newEstimationType"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NullArgumentException",
+        "description": "@throws org.apache.commons.math3.exception.NullArgumentException when newEstimationType is null.",
+        "guard": {
+          "condition": "newEstimationType==null",
+          "description": "when newEstimationType is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.stat.descriptive.rank.Percentile",
+      "name": "withNaNStrategy",
+      "parameterTypes": [
+        "org.apache.commons.math3.stat.ranking.NaNStrategy"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "newNaNStrategy"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NullArgumentException",
+        "description": "@throws org.apache.commons.math3.exception.NullArgumentException when newNaNStrategy is null.",
+        "guard": {
+          "condition": "newNaNStrategy==null",
+          "description": "when newNaNStrategy is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.stat.descriptive.rank.Percentile",
+      "name": "withKthSelector",
+      "parameterTypes": [
+        "org.apache.commons.math3.util.KthSelector"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "newKthSelector"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NullArgumentException",
+        "description": "@throws org.apache.commons.math3.exception.NullArgumentException when newKthSelector is null.",
+        "guard": {
+          "condition": "newKthSelector==null",
+          "description": "when newKthSelector is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  }
+]

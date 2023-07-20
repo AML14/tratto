@@ -1,0 +1,143 @@
+[
+  {
+    "operation": {
+      "classname": "com.google.common.cache.CacheLoader",
+      "name": "load",
+      "parameterTypes": [
+        "java.lang.Object"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "key"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [
+      {
+        "property": {
+          "condition": "(methodResultID==null) == false",
+          "description": "the value associated with key; must not be null."
+        },
+        "description": "the value associated with key; must not be null.",
+        "guard": {
+          "condition": "true",
+          "description": "the value associated with key; must not be null."
+        }
+      }
+    ],
+    "pre": [
+      {
+        "description": "@param key key is !=null. !=null key whose value should be loaded.",
+        "guard": {
+          "condition": "key!=null",
+          "description": "key is !=null. !=null key whose value should be loaded."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "com.google.common.cache.CacheLoader",
+      "name": "reload",
+      "parameterTypes": [
+        "java.lang.Object",
+        "java.lang.Object"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "key",
+        "oldValue"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [
+      {
+        "property": {
+          "condition": "(methodResultID==null) == false",
+          "description": "the future new value associated with key; must not be null, must not return null."
+        },
+        "description": "the future new value associated with key; must not be null, must not return null.",
+        "guard": {
+          "condition": "true",
+          "description": "the future new value associated with key; must not be null, must not return null."
+        }
+      }
+    ],
+    "pre": [
+      {
+        "description": "@param key key is !=null. !=null key whose value should be loaded.",
+        "guard": {
+          "condition": "key!=null",
+          "description": "key is !=null. !=null key whose value should be loaded."
+        }
+      },
+      {
+        "description": "@param oldValue oldValue is !=null. !=null old value corresponding to key.",
+        "guard": {
+          "condition": "oldValue!=null",
+          "description": "oldValue is !=null. !=null old value corresponding to key."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "com.google.common.cache.CacheLoader",
+      "name": "from",
+      "parameterTypes": [
+        "com.google.common.base.Function"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "function"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param function the function to be used for loading values; . function is not null.",
+        "guard": {
+          "condition": "(function==null) == false",
+          "description": "the function to be used for loading values; . function is not null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "com.google.common.cache.CacheLoader",
+      "name": "from",
+      "parameterTypes": [
+        "com.google.common.base.Supplier"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "supplier"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param supplier the supplier to be used for loading values; . supplier is not null.",
+        "guard": {
+          "condition": "(supplier==null) == false",
+          "description": "the supplier to be used for loading values; . supplier is not null."
+        }
+      }
+    ]
+  }
+]

@@ -1,0 +1,42 @@
+[
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.optim.nonlinear.scalar.MultiStartMultivariateOptimizer",
+      "name": "org.apache.commons.math3.optim.nonlinear.scalar.MultiStartMultivariateOptimizer",
+      "parameterTypes": [
+        "org.apache.commons.math3.optim.nonlinear.scalar.MultivariateOptimizer",
+        "int",
+        "org.apache.commons.math3.random.RandomVectorGenerator"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "optimizer",
+        "starts",
+        "generator"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NullArgumentException",
+        "description": "@throws org.apache.commons.math3.exception.NullArgumentException optimizer or generator is null.",
+        "guard": {
+          "condition": "optimizer==null || generator==null",
+          "description": "optimizer or generator is null."
+        }
+      },
+      {
+        "exception": "org.apache.commons.math3.exception.NotStrictlyPositiveException",
+        "description": "@throws org.apache.commons.math3.exception.NotStrictlyPositiveException starts < 1.",
+        "guard": {
+          "condition": "starts<1",
+          "description": "starts < 1."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  }
+]
