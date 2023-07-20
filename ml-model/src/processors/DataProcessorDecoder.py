@@ -425,6 +425,7 @@ class DataProcessorDecoder:
             self._df_dataset = self._df_dataset.reindex(columns=new_columns_order)
 
         if self._classification_type == ClassificationType.CATEGORY_PREDICTION:
+            # Keep only a single instance for each combination of oracleId and oracleSoFar
             self._df_dataset = self._df_dataset[self._df_dataset['label'] == 'True']
 
         # Remove method source code
@@ -517,10 +518,7 @@ class DataProcessorDecoder:
         # Collects partial dataframes from oracles
         for file_name in os.listdir(oracles_dataset):
             df = pd.read_json(os.path.join(oracles_dataset, file_name))
-            if classification_type == ClassificationType.CATEGORY_PREDICTION:
-                # Keep only a single instance for each combination of oracleId and oracleSoFar
-                df_true_oracles = df[(df['label'] == True)]
-            dfs.append(df_true_oracles)
+            dfs.append(df)
         df_dataset = pd.concat(dfs)
         return df_dataset
 
