@@ -1233,9 +1233,9 @@ public class DatasetUtils {
     public static String getOperationPackageName(
             Operation operation
     ) {
-        List<String> pathList = TypeUtils.getIdentifierComponents(operation.getClassName());
-        List<String> packageList = TypeUtils.removeIdentifierSuffix(pathList);
-        return TypeUtils.getPackageNameFromIdentifierComponents(packageList);
+        List<String> pathList = TypeUtils.getNameSegments(operation.getClassName());
+        List<String> packageList = TypeUtils.getPackageNameFromNameSegments(pathList);
+        return TypeUtils.identifierComponents(packageList);
     }
 
     /**
@@ -1244,8 +1244,8 @@ public class DatasetUtils {
     public static String getOperationClassName(
             Operation operation
     ) {
-        List<String> pathList = TypeUtils.getIdentifierComponents(operation.getClassName());
-        return TypeUtils.getClassNameFromIdentifierComponents(pathList);
+        List<String> pathList = TypeUtils.getNameSegments(operation.getClassName());
+        return TypeUtils.getClassNameFromNameSegments(pathList);
     }
 
     /**
@@ -1254,8 +1254,8 @@ public class DatasetUtils {
     public static String getOperationCallableName(
             Operation operation
     ) {
-        List<String> pathList = TypeUtils.getIdentifierComponents(operation.getName());
-        return TypeUtils.getClassNameFromIdentifierComponents(pathList);
+        List<String> pathList = TypeUtils.getNameSegments(operation.getName());
+        return TypeUtils.getClassNameFromNameSegments(pathList);
     }
 
     /**
