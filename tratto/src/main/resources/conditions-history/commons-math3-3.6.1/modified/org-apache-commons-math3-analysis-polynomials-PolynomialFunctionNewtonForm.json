@@ -37,7 +37,7 @@
         "exception": "org.apache.commons.math3.exception.DimensionMismatchException",
         "description": "@throws org.apache.commons.math3.exception.DimensionMismatchException if the size difference between a and c is not equal to 1.",
         "guard": {
-          "condition": "((a.length - c.length) == 1) == false",
+          "condition": "a.length != c.length + 1",
           "description": "if the size difference between a and c is not equal to 1."
         }
       }
@@ -83,10 +83,10 @@
       },
       {
         "exception": "org.apache.commons.math3.exception.DimensionMismatchException",
-        "description": "@throws org.apache.commons.math3.exception.DimensionMismatchException any array has zero length.",
+        "description": "@throws org.apache.commons.math3.exception.DimensionMismatchException if the size difference between {@code a} and {@code c} is not equal to 1.",
         "guard": {
-          "condition": "((a.length - c.length)==1) == false",
-          "description": "any array has zero length."
+          "condition": "a.length != c.length + 1",
+          "description": "if the size difference between {@code a} and {@code c} is not equal to 1."
         }
       }
     ],
@@ -129,10 +129,10 @@
       },
       {
         "exception": "org.apache.commons.math3.exception.DimensionMismatchException",
-        "description": "@throws org.apache.commons.math3.exception.DimensionMismatchException if the size difference between a and c is not equal to 1.",
+        "description": "@throws org.apache.commons.math3.exception.DimensionMismatchException if the size difference between {@code a} and {@code c} is not equal to 1.",
         "guard": {
-          "condition": "((a.length - c.length)==1) == false",
-          "description": "if the size difference between a and c is not equal to 1."
+          "condition": "a.length != c.length + 1",
+          "description": "if the size difference between {@code a} and {@code c} is not equal to 1."
         }
       }
     ],
