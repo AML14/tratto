@@ -85,11 +85,37 @@ public class TypeUtils {
     }
 
     /**
+     * @param typeName a field descriptor or source code type representation
+     * @return the array level of the type
+     */
+    private static int getArrayLevel(String typeName) {
+        int arrayLevel = 0;
+        for (char c : typeName.toCharArray()) {
+            if (c == '[') {
+                arrayLevel++;
+            }
+        }
+        return arrayLevel;
+    }
+
+    /**
+     * Adds pairs of square brackets to a given type name, increasing the
+     * array level by a given amount.
+     *
+     * @param typeName a component type name
+     * @param arrayLevel the number of added array levels
+     * @return the new type name with the added number of array levels
+     */
+    private static String addArrayLevel(String typeName, int arrayLevel) {
+        return typeName + ("[]").repeat(arrayLevel);
+    }
+
+    /**
      * @param fieldDescriptor a field descriptor of a type
      * @return true iff the field descriptor represents an array type
      */
     private static boolean isArray(String fieldDescriptor) {
-        return false;
+        return fieldDescriptor.startsWith("[");
     }
 
     /**
@@ -100,8 +126,19 @@ public class TypeUtils {
         return false;
     }
 
+    /**
+     * Converts a field descriptor array to a source code format array. This
+     * method ONLY changes the square brackets, and will not change the
+     * component type name. For example:
+     *  [Object => Object[]
+     *  [[D     => D[][]
+     *
+     * @param fieldDescriptor a field descriptor array type
+     * @return the corresponding source code format array type
+     */
     private static String fieldDescriptorArrayToSourceFormatArray(String fieldDescriptor) {
-        return fieldDescriptor;
+        int arrayLevel = getArrayLevel(fieldDescriptor);
+        return addArrayLevel(fieldDescriptor.substring(arrayLevel), arrayLevel);
     }
 
     /**
