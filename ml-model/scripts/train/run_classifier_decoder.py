@@ -145,8 +145,7 @@ def main():
         optimizer = AdamW(optimizer_grouped_parameters, lr=args.learning_rate, eps=args.adam_epsilon)
 
         # Instantiate trainer
-        classifier_ids_labels = data_processor.get_ids_labels()
-        classifier_ids_classes = data_processor.get_ids_classes()
+        classifier_ids_labels = data_processor.get_ids_tgt_labels()
         training_steps = len(dl_train) // args.accumulation_steps * args.num_epochs
         scheduler = get_linear_schedule_with_warmup(optimizer, args.warmup_steps, training_steps)
         checkpoint_path = os.path.join(
@@ -163,7 +162,6 @@ def main():
             dl_val,
             dl_test,
             classifier_ids_labels,
-            classifier_ids_classes,
             classification_type,
             checkpoint_path,
             scheduler,

@@ -1,2 +1,3 @@
-from fixtures.arguments import arg_data_dir
-from fixtures.instances import data_processor
+from tests.fixtures.arguments import *
+from tests.fixtures.arguments import *
+from tests.fixtures.instances import *

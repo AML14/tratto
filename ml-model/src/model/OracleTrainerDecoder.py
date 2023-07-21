@@ -61,10 +61,6 @@ class OracleTrainerDecoder:
         The dictionary of labels of the classification model, where the value is the name of a target label, while the
         key element is a numerical identifier representing the index of the one-shot vector representing the target label,
         with value equals to 1.0.
-    classifier_ids_classes: Dict[int,str]
-        The dictionary of classes of the classification model, where the value is the name of a class, while the key element
-        is a numerical identifier representing the index of the one-shot vector representing the class, with value equals
-        to 1.0
     classification_type: Type[ClassificationType]
         Category prediction or label prediction
     checkpoint_path: str
@@ -85,7 +81,6 @@ class OracleTrainerDecoder:
             dl_val: Type[DataLoader],
             dl_test: Type[DataLoader],
             classifier_ids_labels: Dict[int, str],
-            classifier_ids_classes: Dict[int, str],
             classification_type: ClassificationType,
             checkpoint_path: str,
             scheduler: Type[torch.optim.lr_scheduler.LambdaLR],
@@ -98,7 +93,6 @@ class OracleTrainerDecoder:
         self._dl_test = dl_test
         self._optimizer = optimizer
         self._classifier_ids_labels = classifier_ids_labels
-        self._classifier_ids_classes = classifier_ids_classes
         self._classification_type = classification_type
         self._checkpoint_path = checkpoint_path
         self._max_grad_norm = max_grad_norm

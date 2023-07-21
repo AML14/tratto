@@ -90,7 +90,7 @@ class DataProcessorDecoder:
         self._d_path = d_path
         self._tokenizer = tokenizer
         self._test_ratio = test_ratio
-        self._df_dataset = self._load_dataset(d_path, classification_type)
+        self._df_dataset = self._load_dataset(d_path)
         self._src = None
         self._tgt = None
         self._src_test = None
@@ -138,7 +138,7 @@ class DataProcessorDecoder:
         # Return the computed weights
         return class_weights
 
-    def get_ids_labels(
+    def get_ids_tgt_labels(
         self
     ):
         """
@@ -154,7 +154,7 @@ class DataProcessorDecoder:
         Returns
         -------
         The dictionary of labels. The keys are numerical identifiers (int), while the values are strings representing the
-        name of the corresponding target label. The dictionary is empty if the dataset has not been processed yet.
+        name of the corresponding target label.
         """
         if self._classification_type == ClassificationType.CATEGORY_PREDICTION:
             tgt_column_name = "tokenClass" if self._tratto_model_type == TrattoModelType.TOKEN_CLASSES else "token"
@@ -162,9 +162,6 @@ class DataProcessorDecoder:
             tgt_column_name = "label"
         unique_values = np.unique(self._df_dataset[tgt_column_name])
         ids_labels_dict = {i: k for i, k in enumerate(unique_values)}
-        # If the dictionary is empty prints a warning
-        if not bool(ids_labels_dict):
-            print("[Warning] - The ids-label dictionary is empty. The dataset has not been processed yet, or it is empty.")
         return ids_labels_dict
 
     def get_num_labels(self):
@@ -173,18 +170,16 @@ class DataProcessorDecoder:
 
         Returns
         -------
-        An integer representing the number of unique values of labels (0 if the dataset has not been processed yet).
+        An integer representing the number of unique values of labels.
         """
-        num_labels = len(self.get_ids_labels())
-        # If the dictionary is empty print a warning
-        if num_labels == 0:
-            print("[Warning] - The number of labels is 0. It may be that the dataset has not been processed yet.")
+        num_labels = len(self.get_ids_tgt_labels())
         return num_labels
 
-    def get_classes_ids(self):
+    def get_encoder_classes_ids(self):
         """
-        The method computes the dictionary of target classes of the classification model, where the key is the name of a
-        class, while the value element is a numerical identifier representing the codification of a corresponding class.
+        The method computes the dictionary of target classes of the classification model (encoder), where the key is the
+        name of a class, while the value element is a numerical identifier representing the codification of a
+        corresponding class.
 
         Returns
         -------
@@ -196,7 +191,7 @@ class DataProcessorDecoder:
         else:
             return {k: i for i, k in enumerate(self._df_dataset["token"].unique())}
 
-    def get_ids_classes(self):
+    def get_encoder_ids_classes(self):
         """
         The method computes the dictionary of classes of the classification model, a numerical identifier representing
         the index of the one-shot vector representing the class while the value element is the name of the corresponding
@@ -207,7 +202,7 @@ class DataProcessorDecoder:
         The dictionary of classes. The keys are numeric identifiers (integer) representing the codification value of a
         class (int), while the values are the name of the corresponding target class.
         """
-        return {i: k for k, i in self.get_classes_ids().items()}
+        return {i: k for k, i in self.get_encoder_classes_ids().items()}
 
     def get_tgt_classes_size(self):
         """
@@ -402,7 +397,7 @@ class DataProcessorDecoder:
             # Define the new order of columns
             new_columns_order = [
                 'token', 'tokenInfo', 'tokenClass', 'oracleSoFar', 'tokenClassesSoFar', 'eligibleTokenClasses',
-                'javadocTag', 'oracleType', 'packageName', 'className', 'methodJavadoc', 'methodSourceCode',
+                'javadocTag', 'oracleType', 'packageName', 'className', 'methodSourceCode', 'methodJavadoc',
                 'classJavadoc', 'classSourceCode', 'projectName', 'oracleId', 'label'
             ]
             # Reindex the DataFrame with the new order
@@ -418,7 +413,7 @@ class DataProcessorDecoder:
             # Define the new order of columns
             new_columns_order = [
                 'tokenClass', 'token', 'tokenInfo', 'oracleSoFar', 'eligibleTokens', 'javadocTag', 'oracleType',
-                'projectName', 'packageName', 'className', 'methodJavadoc', 'methodSourceCode', 'classJavadoc',
+                'projectName', 'packageName', 'className', 'methodSourceCode', 'methodJavadoc', 'classJavadoc',
                 'classSourceCode', 'oracleId', 'label'
             ]
             # Reindex the DataFrame with the new order
@@ -492,8 +487,7 @@ class DataProcessorDecoder:
 
     def _load_dataset(
             self,
-            d_path: str,
-            classification_type: Type[ClassificationType]
+            d_path: str
     ):
         """
             The method applies the dataset preprocessing. It loads dataset from
@@ -512,7 +506,6 @@ class DataProcessorDecoder:
         """
         # list of partial dataframes
         dfs = []
-
         # Datasets path
         oracles_dataset = os.path.join(d_path)
         # Collects partial dataframes from oracles
