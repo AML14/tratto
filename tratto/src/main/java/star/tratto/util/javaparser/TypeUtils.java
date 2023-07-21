@@ -83,4 +83,76 @@ public class TypeUtils {
     ) {
         return nameSegments.get(nameSegments.size() - 1);
     }
+
+    /**
+     * @param fieldDescriptor a field descriptor of a type
+     * @return true iff the field descriptor represents an array type
+     */
+    private static boolean isArray(String fieldDescriptor) {
+        return false;
+    }
+
+    /**
+     * @param fieldDescriptor a field descriptor of a type
+     * @return true iff the field descriptor represents a primitive type
+     */
+    private static boolean isPrimitive(String fieldDescriptor) {
+        return false;
+    }
+
+    private static String fieldDescriptorArrayToSourceFormatArray(String fieldDescriptor) {
+        return fieldDescriptor;
+    }
+
+    /**
+     * Converts a field descriptor representation of a primitive type to its
+     * corresponding source code format representation.
+     *
+     * @param fieldDescriptor a field descriptor of a primitive type. Can be
+     *                        an array.
+     * @return the corresponding source code format primitive type name
+     * @throws IllegalArgumentException if the field descriptor does not match
+     * a known primitive field descriptor
+     */
+    private static String fieldDescriptorPrimitiveToSourceFormatPrimitive(String fieldDescriptor) {
+        return fieldDescriptor;
+    }
+
+    /**
+     * Converts a field descriptor representation of a type name to its
+     * corresponding source code format representation.
+     *
+     * @param fieldDescriptor a field descriptor representation of a type
+     * @return the corresponding source code format representation of the type
+     */
+    private static String fieldDescriptorToSourceFormat(
+            String fieldDescriptor
+    ) {
+        fieldDescriptor = removeTypeArguments(fieldDescriptor);
+        if (isArray(fieldDescriptor)) {
+            fieldDescriptor = fieldDescriptorArrayToSourceFormatArray(fieldDescriptor);
+        }
+        if (isPrimitive(fieldDescriptor)) {
+            fieldDescriptor = fieldDescriptorPrimitiveToSourceFormatPrimitive(fieldDescriptor);
+        } else {
+            fieldDescriptor = getClassNameFromNameSegments(getNameSegments(fieldDescriptor));
+        }
+        return fieldDescriptor;
+    }
+
+    /**
+     * Converts a list of field descriptors {@code fieldDescriptors} to a list
+     * of source code format type names.
+     *
+     * @param fieldDescriptors field descriptors to convert
+     * @return the corresponding source code format type names
+     */
+    public static List<String> fieldDescriptorsToSourceFormats(
+            List<String> fieldDescriptors
+    ) {
+        return fieldDescriptors
+                .stream()
+                .map(TypeUtils::fieldDescriptorToSourceFormat)
+                .collect(Collectors.toList());
+    }
 }
