@@ -5,11 +5,10 @@ import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.type.TypeParameter;
+import org.plumelib.reflection.Signatures;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -19,6 +18,9 @@ import java.util.stream.Collectors;
  * JavaParser uses the source code format to represent types.
  */
 public class TypeUtils {
+    // all primitive field descriptors.
+    private final static List<String> allPrimitiveFieldDescriptors = List.of("Z", "B", "C", "S", "I", "J", "F", "D");
+
     // private constructor to avoid creating an instance of this class.
     private TypeUtils() {
         throw new UnsupportedOperationException("This class cannot be instantiated.");
@@ -111,22 +113,6 @@ public class TypeUtils {
     }
 
     /**
-     * @param fieldDescriptor a field descriptor of a type
-     * @return true iff the field descriptor represents an array type
-     */
-    private static boolean isArray(String fieldDescriptor) {
-        return fieldDescriptor.startsWith("[");
-    }
-
-    /**
-     * @param fieldDescriptor a field descriptor of a type
-     * @return true iff the field descriptor represents a primitive type
-     */
-    private static boolean isPrimitive(String fieldDescriptor) {
-        return false;
-    }
-
-    /**
      * Converts a field descriptor array to a source code format array. This
      * method ONLY changes the square brackets, and will not change the
      * component type name. For example:
@@ -142,17 +128,11 @@ public class TypeUtils {
     }
 
     /**
-     * Converts a field descriptor representation of a primitive type to its
-     * corresponding source code format representation.
-     *
-     * @param fieldDescriptor a field descriptor of a primitive type. Can be
-     *                        an array.
-     * @return the corresponding source code format primitive type name
-     * @throws IllegalArgumentException if the field descriptor does not match
-     * a known primitive field descriptor
+     * @param fieldDescriptor a field descriptor of a type (can be an array)
+     * @return true iff the field descriptor represents a primitive type
      */
-    private static String fieldDescriptorPrimitiveToSourceFormatPrimitive(String fieldDescriptor) {
-        return fieldDescriptor;
+    private static boolean isPrimitive(String fieldDescriptor) {
+        return allPrimitiveFieldDescriptors.contains(fieldDescriptor.replaceAll("[^a-zA-Z]+", ""));
     }
 
     /**
@@ -166,12 +146,12 @@ public class TypeUtils {
             String fieldDescriptor
     ) {
         fieldDescriptor = removeTypeArguments(fieldDescriptor);
-        if (isArray(fieldDescriptor)) {
-            fieldDescriptor = fieldDescriptorArrayToSourceFormatArray(fieldDescriptor);
-        }
         if (isPrimitive(fieldDescriptor)) {
-            fieldDescriptor = fieldDescriptorPrimitiveToSourceFormatPrimitive(fieldDescriptor);
+            // convert primitive using plume-lib.
+            fieldDescriptor = Signatures.fieldDescriptorToBinaryName(fieldDescriptor);
         } else {
+            // convert object to format compatible with XText grammar.
+            fieldDescriptor = fieldDescriptorArrayToSourceFormatArray(fieldDescriptor);
             fieldDescriptor = getClassNameFromNameSegments(getNameSegments(fieldDescriptor));
         }
         return fieldDescriptor;

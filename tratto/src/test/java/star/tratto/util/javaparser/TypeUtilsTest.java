@@ -34,9 +34,12 @@ public class TypeUtilsTest {
 
     @Test
     public void fieldDescriptorsToSourceFormatsTest() {
+        assertEquals(List.of("boolean", "byte", "char", "short", "int", "long", "float", "double"), TypeUtils.fieldDescriptorsToSourceFormats(List.of("Z", "B", "C", "S", "I", "J", "F", "D")));
+        assertEquals(List.of("RandomObject"), TypeUtils.fieldDescriptorsToSourceFormats(List.of("some.weird.RandomObject")));
         assertEquals(List.of("byte[]", "int"), TypeUtils.fieldDescriptorsToSourceFormats(List.of("[B", "I")));
         assertEquals(List.of("char[][]"), TypeUtils.fieldDescriptorsToSourceFormats(List.of("[[C")));
         assertEquals(List.of("SuperCoolClass[][]"), TypeUtils.fieldDescriptorsToSourceFormats(List.of("[[com.google.SuperCoolClass")));
         assertEquals(List.of("Type"), TypeUtils.fieldDescriptorsToSourceFormats(List.of("Type<with parameters>")));
+        assertEquals(List.of("SuperCoolParameterizedType[]", "double"), TypeUtils.fieldDescriptorsToSourceFormats(List.of("[com.amazon.coretta.SuperCoolParameterizedType<with parameters<T>, Integer>", "D")));
     }
 }
