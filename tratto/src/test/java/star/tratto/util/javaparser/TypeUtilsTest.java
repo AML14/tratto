@@ -17,18 +17,18 @@ public class TypeUtilsTest {
 
     @Test
     public void getNameSegmentsTest() {
-        assertEquals(List.of("normal", "package", "setup", "for", "a", "Class"), TypeUtilsTemp.getNameSegments("normal.package.setup.for.a.Class"));
-        assertEquals(List.of("spicy", "example", "that", "uses", "Many", "Inner", "Classes"), TypeUtilsTemp.getNameSegments("spicy.example.that.uses.Many$Inner$Classes"));
-        assertEquals(List.of("even", "spicier", "with", "Inner", "Class", "andMethods"), TypeUtilsTemp.getNameSegments("even.spicier.with.Inner$Class$andMethods"));
+        assertEquals(List.of("normal", "package", "setup", "for", "a", "Class"), TypeUtils.getNameSegments("normal.package.setup.for.a.Class"));
+        assertEquals(List.of("spicy", "example", "that", "uses", "Many", "Inner", "Classes"), TypeUtils.getNameSegments("spicy.example.that.uses.Many$Inner$Classes"));
+        assertEquals(List.of("even", "spicier", "with", "Inner", "Class", "andMethods"), TypeUtils.getNameSegments("even.spicier.with.Inner$Class$andMethods"));
     }
 
     @Test
     public void getPackageNameFromNameSegmentsTest() {
-        assertEquals("normal.package.setup.for.a", TypeUtilsTemp.getPackageNameFromNameSegments(List.of("normal", "package", "setup", "for", "a", "Class")));
+        assertEquals("normal.package.setup.for.a", TypeUtils.getPackageNameFromNameSegments(List.of("normal", "package", "setup", "for", "a", "Class")));
     }
 
     @Test
     public void getClassNameFromNameSegmentsTest() {
-        assertEquals("Class", TypeUtilsTemp.getClassNameFromNameSegments(List.of("normal", "package", "setup", "for", "a", "Class")));
+        assertEquals("Class", TypeUtils.getClassNameFromNameSegments(List.of("normal", "package", "setup", "for", "a", "Class")));
     }
 }
