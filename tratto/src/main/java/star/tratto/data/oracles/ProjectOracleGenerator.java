@@ -225,7 +225,7 @@ public class ProjectOracleGenerator {
             case EXCEPT_POST -> "@throws ";
         };
         builder.setOracleType(oracleType);
-        builder.setJavadocTag(String.format("%s%s %s", tagType, tagName, tagContent));
+        builder.setJavadocTag(String.format("%s%s%s", tagType, !tagName.equals("") ? tagName + " " : "", tagContent));
         builder.setOracle(";");
         // set project-level information.
         builder.setProjectName(this.project.getProjectName());
