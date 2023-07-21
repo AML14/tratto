@@ -42,4 +42,18 @@ public class TypeUtilsTest {
         assertEquals(List.of("Type"), TypeUtils.fieldDescriptorsToSourceFormats(List.of("Type<with parameters>")));
         assertEquals(List.of("SuperCoolParameterizedType[]", "double"), TypeUtils.fieldDescriptorsToSourceFormats(List.of("[com.amazon.coretta.SuperCoolParameterizedType<with parameters<T>, Integer>", "D")));
     }
+
+    @Test
+    public void isStandardTypeTest() {
+        assertTrue(TypeUtils.isStandardType("Comparable"));
+        assertFalse(TypeUtils.isStandardType("Other"));
+    }
+
+    @Test
+    public void isStandardTypeArrayTest() {
+        assertTrue(TypeUtils.isStandardTypeArray("Object[]"));
+        assertFalse(TypeUtils.isStandardTypeArray("Object"));
+        assertFalse(TypeUtils.isStandardTypeArray("AnyOtherObject"));
+        assertFalse(TypeUtils.isStandardTypeArray("AnyOtherObjectArray[]"));
+    }
 }

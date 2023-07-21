@@ -168,4 +168,28 @@ public class TypeUtils {
                 .map(TypeUtils::fieldDescriptorToSourceFormat)
                 .collect(Collectors.toList());
     }
+
+    /**
+     * We define a "standard" type as a type which implements either the
+     * "Object" or "Comparable" interfaces, which require extra consideration
+     * when comparing arguments to check equality.
+     * See `jpParamEqualsJDoctorParam` in DatasetUtils for elaboration.
+     *
+     * @param typeName name of the JDoctor or JavaParser type
+     * @return true iff the given type name is "Object" or "Comparable"
+     */
+    public static boolean isStandardType(String typeName) {
+        return typeName.equals("Object") || typeName.equals("Comparable");
+    }
+
+    /**
+     * Checks if the given type is an array of standard types.
+     *
+     * @param typeName name of the JDoctor or JavaParser type
+     * @return true iff the given type name is "Object[]" or "Comparable[]"
+     * @see TypeUtils#isStandardType(String)
+     */
+    public static boolean isStandardTypeArray(String typeName) {
+        return typeName.equals("Object[]") || typeName.equals("Comparable[]");
+    }
 }
