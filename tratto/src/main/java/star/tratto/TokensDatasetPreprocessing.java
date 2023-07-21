@@ -61,15 +61,15 @@ public class TokensDatasetPreprocessing {
         // Save all TokenDatapoints in a List of Maps. To save memory, discard some features
         List<Map> allTokenDatapoints = new ArrayList<>();
 
-        // FIRST PHASE: collecting TokenDatapoint IDs that need to be removed
+        // FIRST PHASE: Collecting TokenDatapoint IDs that need to be removed
 
         // Save minified version of ALL TokenDatapoints
         Path tokensDatasetFolder = Paths.get(TOKENS_DATASET_FOLDER);
         DirectoryStream<Path> tokensDatasetStream = Files.newDirectoryStream(tokensDatasetFolder);
+        int totalFiles = 0;
         for (Path tokensDatasetFile : tokensDatasetStream) { // Assume that only dataset files are in the folder
-            logger.info("------------------------------------------------------------");
-            logger.info("Processing file: {}", tokensDatasetFile.getFileName());
-            logger.info("------------------------------------------------------------");
+            totalFiles++;
+            logger.info("Loading TokenDatapoints from file: {}", tokensDatasetFile.getFileName());
 
             List<Map> tokenDatapoints = objectMapper.readValue(tokensDatasetFile.toFile(), List.class);
             tokenDatapoints.forEach(tdp -> {
@@ -97,16 +97,20 @@ public class TokensDatasetPreprocessing {
         int index = 0;
         for (Map tokenDatapoint : allTokenDatapoints) {
             logger.info("[{} / {}] Processing TokenDatapoint with ID {}", ++index, allTokenDatapoints.size(), tokenDatapoint.get("id"));
+
             List<Long> currentIdsDuplicates = new ArrayList<>();
             List<Long> currentIdsContradictory = new ArrayList<>();
             List<Long> currentIdsSinglePossibility = new ArrayList<>();
+
             if (idsToRemove.contains(tokenDatapoint.get("id"))) {
                 continue; // Skip TokenDatapoints that have already been marked for removal
             }
+
             Map tokenDatapointWithoutFeatures = new HashMap(tokenDatapoint);
             tokenDatapointWithoutFeatures.remove("id");
             tokenDatapointWithoutFeatures.remove("oracleId");
-            // Remove duplicates
+
+            // 1. Remove duplicates
             List<Long> duplicateIds = allTokenDatapoints
                     .stream()
                     .filter(tdp -> {
@@ -121,7 +125,7 @@ public class TokensDatasetPreprocessing {
                 currentIdsDuplicates.addAll(duplicateIds.subList(1, duplicateIds.size()));
             }
 
-            // Remove contradictory TokenDatapoints
+            // 2. Remove contradictory TokenDatapoints
             tokenDatapointWithoutFeatures.remove("label");
             if ((Boolean)tokenDatapoint.get("label")) {
                 List<Long> contradictoryIds = allTokenDatapoints
@@ -143,7 +147,7 @@ public class TokensDatasetPreprocessing {
                 }
             }
 
-            // Remove TokenDatapoints with single value for token feature
+            // 3. Remove TokenDatapoints with single value for token feature
             List<Map> singlePossibilityTokenDatapoints = allTokenDatapoints
                     .stream()
                     .filter(tdp -> tdp.get("oracleId").equals(tokenDatapoint.get("oracleId")) && tdp.get("oracleSoFar").equals(tokenDatapoint.get("oracleSoFar")))
@@ -152,6 +156,7 @@ public class TokensDatasetPreprocessing {
                 currentIdsSinglePossibility.addAll(singlePossibilityTokenDatapoints.stream().map(tdp -> (Long)tdp.get("id")).toList());
             }
 
+            // Add IDs to the global lists
             if (currentIdsDuplicates.size() > 0) {
                 logger.info("IDs marked for removal due to duplicates based on current TokenDatapoint: {}", currentIdsDuplicates);
                 idsDuplicates.addAll(currentIdsDuplicates);
@@ -173,8 +178,36 @@ public class TokensDatasetPreprocessing {
         logger.info("Number of TokenDatapoints to remove due to duplicates: {}", idsDuplicates.size());
         logger.info("Number of TokenDatapoints to remove due to contradictions: {}", idsContradictory.size());
         logger.info("Number of TokenDatapoints to remove due to single possibility: {}", idsSinglePossibility.size());
+        idsToRemove = idsToRemove.stream().distinct().toList();
+        logger.info("Unique TokenDatapoints to remove: {}", idsToRemove.size());
 
-        // SECOND PHASE: removing TokenDatapoints with the collected IDs
+        logger.info("-----------------------------------------------------------------------------");
+        logger.info("-----------------------------------------------------------------------------");
+        logger.info("-----------------------------------------------------------------------------");
 
+        logger.info("Updating TokenDatapoints files...");
+
+        // SECOND PHASE: Removing TokenDatapoints with the collected IDs
+        List<Long> finalIdsToRemove = idsToRemove;
+        long removedIds = 0;
+        tokensDatasetStream = Files.newDirectoryStream(tokensDatasetFolder);
+        index = 0;
+        for (Path tokensDatasetFile : tokensDatasetStream) { // Assume that only dataset files are in the folder
+            logger.info("[{} / {}] Checking file: {}", ++index, totalFiles, tokensDatasetFile.getFileName());
+
+            List<Map> tokenDatapoints = objectMapper.readValue(tokensDatasetFile.toFile(), List.class);
+            int oldSize = tokenDatapoints.size();
+            tokenDatapoints.removeIf(tdp -> finalIdsToRemove.contains((Long)tdp.get("id")));
+            int newSize = tokenDatapoints.size();
+            if (oldSize != newSize) {
+                logger.info("Removed {} TokenDatapoints from file {}", oldSize - newSize, tokensDatasetFile.getFileName());
+                objectMapper.writeValue(tokensDatasetFile.toFile(), tokenDatapoints);
+                removedIds += oldSize - newSize;
+            }
+        }
+
+        assert removedIds == idsToRemove.size();
+
+        logger.info("Finished updating TokenDatapoints files");
     }
 }
