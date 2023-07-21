@@ -29,6 +29,37 @@
   {
     "operation": {
       "classname": "org.apache.commons.collections4.CollectionUtils",
+      "name": "emptyIfNull",
+      "parameterTypes": [
+        "java.util.Collection"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "collection"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID.equals(CollectionUtils.emptyCollection())",
+          "description": "an empty collection if the argument is null."
+        },
+        "description": "an empty collection if the argument is null.",
+        "guard": {
+          "condition": "collection==null",
+          "description": "an empty collection if the argument is null."
+        }
+      }
+    ],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.CollectionUtils",
       "name": "union",
       "parameterTypes": [
         "java.lang.Iterable",
@@ -584,6 +615,72 @@
   {
     "operation": {
       "classname": "org.apache.commons.collections4.CollectionUtils",
+      "name": "forAllButLastDo",
+      "parameterTypes": [
+        "java.lang.Iterable",
+        "org.apache.commons.collections4.Closure"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "collection",
+        "closure"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID==null",
+          "description": "the last element in the collection, or null if either collection or closure is null."
+        },
+        "description": "the last element in the collection, or null if either collection or closure is null.",
+        "guard": {
+          "condition": "(collection==null || closure==null)",
+          "description": "the last element in the collection, or null if either collection or closure is null."
+        }
+      }
+    ],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.CollectionUtils",
+      "name": "forAllButLastDo",
+      "parameterTypes": [
+        "java.util.Iterator",
+        "org.apache.commons.collections4.Closure"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "iterator",
+        "closure"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID==null",
+          "description": "the last element in the collection, or null if either iterator or closure is null."
+        },
+        "description": "the last element in the collection, or null if either iterator or closure is null.",
+        "guard": {
+          "condition": "iterator==null || closure==null",
+          "description": "the last element in the collection, or null if either iterator or closure is null."
+        }
+      }
+    ],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.CollectionUtils",
       "name": "select",
       "parameterTypes": [
         "java.lang.Iterable",
@@ -1130,6 +1227,160 @@
         }
       }
     ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.CollectionUtils",
+      "name": "get",
+      "parameterTypes": [
+        "java.util.Map",
+        "int"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "map",
+        "index"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.IndexOutOfBoundsException",
+        "description": "@throws java.lang.IndexOutOfBoundsException if the index is invalid.",
+        "guard": {
+          "condition": "map.entrySet().size() < index || index < 0",
+          "description": "if the index is invalid."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.CollectionUtils",
+      "name": "size",
+      "parameterTypes": [
+        "java.lang.Object"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "object"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID == 0",
+          "description": "the size of the specified collection or 0 if the object was null."
+        },
+        "description": "the size of the specified collection or 0 if the object was null.",
+        "guard": {
+          "condition": "object==null",
+          "description": "the size of the specified collection or 0 if the object was null."
+        }
+      }
+    ],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.CollectionUtils",
+      "name": "sizeIsEmpty",
+      "parameterTypes": [
+        "java.lang.Object"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "object"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID==true",
+          "description": "true if empty or null."
+        },
+        "description": "true if empty or null.",
+        "guard": {
+          "condition": "object==null",
+          "description": "true if empty or null."
+        }
+      }
+    ],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.CollectionUtils",
+      "name": "isEmpty",
+      "parameterTypes": [
+        "java.util.Collection"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "coll"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID==true",
+          "description": "true if empty or null."
+        },
+        "description": "true if empty or null.",
+        "guard": {
+          "condition": "coll.isEmpty() || coll==null",
+          "description": "true if empty or null."
+        }
+      }
+    ],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.CollectionUtils",
+      "name": "isNotEmpty",
+      "parameterTypes": [
+        "java.util.Collection"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "coll"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID==true",
+          "description": "true if non-null and non-empty."
+        },
+        "description": "true if non-null and non-empty.",
+        "guard": {
+          "condition": "(coll==null)==false && (coll.isEmpty())==false",
+          "description": "true if non-null and non-empty."
+        }
+      }
+    ],
+    "pre": []
   },
   {
     "operation": {
@@ -1747,6 +1998,14 @@
         "guard": {
           "condition": "collection==null",
           "description": "collection is null."
+        }
+      },
+      {
+        "exception": "java.lang.IllegalArgumentException",
+        "description": "@throws java.lang.IllegalArgumentException if collection is empty or contains more than one element.",
+        "guard": {
+          "condition": "collection.isEmpty() || collection.size() > 1",
+          "description": "if collection is empty or contains more than one element."
         }
       }
     ],

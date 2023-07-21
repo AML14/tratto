@@ -144,7 +144,7 @@
     "post": [
       {
         "property": {
-          "condition": "methodResultID.equals(string)",
+          "condition": "methodResultID.equals(Strings.nullToEmpty(null))",
           "description": "a string containing string repeated count times (the empty string if count is zero)."
         },
         "description": "a string containing string repeated count times (the empty string if count is zero).",
@@ -160,6 +160,13 @@
         "guard": {
           "condition": "string!=null",
           "description": "string is !=null. !=null string."
+        }
+      },
+      {
+        "description": "@param count the number of times to repeat it; a nonnegative integer.",
+        "guard": {
+          "condition": "(count<0) == false",
+          "description": "count the number of times to repeat it; a nonnegative integer."
         }
       }
     ]

@@ -27,7 +27,7 @@ public class JDoctorConditionParserTest {
         Project gsCoreProject = projects.get(1);
         List<JDoctorCondition> actual = parser.parseJDoctorConditions(gsCoreProject);
         // test that the correct number of conditions is acquired.
-        assertEquals(36, actual.size());
+        assertEquals(40, actual.size());
         // test subset of conditions.
         for (JDoctorCondition condition : actual) {
             if (condition.getOperation().getClassName().equals("org.graphstream.graph.implementations.AbstractElement")) {
