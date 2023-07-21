@@ -1,10 +1,5 @@
 package star.tratto.util.javaparser;
 
-import com.github.javaparser.ast.body.CallableDeclaration;
-import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
-import com.github.javaparser.ast.body.Parameter;
-import com.github.javaparser.ast.body.TypeDeclaration;
-import com.github.javaparser.ast.type.TypeParameter;
 import org.plumelib.reflection.Signatures;
 
 import java.util.Arrays;
@@ -129,9 +124,10 @@ public class TypeUtils {
 
     /**
      * @param fieldDescriptor a field descriptor of a type (can be an array)
-     * @return true iff the field descriptor represents a primitive type
+     * @return true iff the field descriptor represents a primitive type or an
+     * array of primitive types
      */
-    private static boolean isPrimitive(String fieldDescriptor) {
+    private static boolean hasPrimitive(String fieldDescriptor) {
         return allPrimitiveFieldDescriptors.contains(fieldDescriptor.replaceAll("[^a-zA-Z]+", ""));
     }
 
@@ -146,7 +142,7 @@ public class TypeUtils {
             String fieldDescriptor
     ) {
         fieldDescriptor = removeTypeArguments(fieldDescriptor);
-        if (isPrimitive(fieldDescriptor)) {
+        if (hasPrimitive(fieldDescriptor)) {
             // convert primitive using plume-lib.
             fieldDescriptor = Signatures.fieldDescriptorToBinaryName(fieldDescriptor);
         } else {
