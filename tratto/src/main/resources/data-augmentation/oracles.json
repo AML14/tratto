@@ -1640,6 +1640,12 @@
         "((transformer==null))==false;",
         "((transformer!=null)==false)==false;"
     ],
+    "len<0||len>bytes.length-start;": [
+        "(len<0)||len>bytes.length-start;",
+        "len<0||(len>bytes.length-start);",
+        "(len>=0)==false||len>bytes.length-start;",
+        "len<0||(len<=bytes.length-start)==false;"
+    ],
     "true?methodResultID.equals(f):true;": [
         "true?(methodResultID.equals(f)):true;"
     ],
@@ -1689,6 +1695,10 @@
         "dimension<1||(dimension>1000);",
         "(dimension>=1)==false||dimension>1000;",
         "dimension<1||(dimension<=1000)==false;"
+    ],
+    "(this.hasParameter(parameter))==false?methodResultID.equals(\"\"):true;": [
+        "((this.hasParameter(parameter)))==false?methodResultID.equals(\"\"):true;",
+        "(this.hasParameter(parameter))==false?(methodResultID.equals(\"\")):true;"
     ],
     "first!=null?methodResultID.equals(first):methodResultID.equals(second);": [
         "(first!=null)==false?methodResultID.equals(second):methodResultID.equals(first);",
@@ -2684,9 +2694,6 @@
         "(inputCollection==null);",
         "(inputCollection!=null)==false;"
     ],
-    "true?!this.hasParameter(parameter)?methodResultID.equals(\"\"):true;": [
-        "true?(this.hasParameter(parameter))"
-    ],
     "bag==null||lock==null;": [
         "(bag==null)||lock==null;",
         "bag==null||(lock==null);",
@@ -2841,14 +2848,6 @@
     "(bytes==null)==false;": [
         "((bytes==null))==false;",
         "((bytes!=null)==false)==false;"
-    ],
-    "len<0||bytes!=null&&len>(bytes.length-start);": [
-        "(len<0)||bytes!=null&&len>",
-        "len<0||(bytes!=null)&&len>",
-        "len<0||bytes!=null&&(len>)",
-        "len<0||(bytes==null)==false&&len>",
-        "(len>=0)==false||bytes!=null&&len>",
-        "len<0||bytes!=null&&(len<=)==false"
     ],
     "true?methodResultID<=v:true;": [
         "true?(methodResultID<=v):true;",
