@@ -23,7 +23,7 @@ import static star.tratto.util.StringUtils.compactExpression;
 public class OracleDP2TokenDPs {
 
     private static final Parser parser = Parser.getInstance();
-    private static int tokenIndex = 0;
+    private static long tokenIndex = 0;
     private static int negativeSamples = 0;
     private static int positiveSamples = 0;
     public static boolean CRASH_WRONG_ORACLE = false; // TODO: make it configurable
