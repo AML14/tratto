@@ -43,4 +43,44 @@ public class TypeUtils {
         } while (!current.equals(previous));
         return current;
     }
+
+    /**
+     * Splits a binary name (of a class or member) into segments. Splits name
+     * based on "." (package) and "$" (member).
+     *
+     * @param name a binary method/class name
+     * @return name segments. Includes: all outer packages, all outer classes,
+     * the innermost class, and the member name (if {@code name} is a member).
+     */
+    public static List<String> getNameSegments(
+            String name
+    ) {
+        String regex = "[.$]";
+        return Arrays.asList(name.split(regex));
+    }
+
+    /**
+     * @param nameSegments name segments. Must represent a class.
+     * @return name segments joined by ".", representing the package name.
+     * NOTE: For inner classes, we represent the package name as:
+     *  [outerClass package].[outerClass(es)]
+     * for compatibility with the XText grammar.
+     * @see TypeUtilsTemp#getNameSegments(String)
+     */
+    public static String getPackageNameFromNameSegments(
+            List<String> nameSegments
+    ) {
+        return String.join(".", nameSegments.subList(0, nameSegments.size() - 1));
+    }
+
+    /**
+     * @param nameSegments name segments. Must represent a class.
+     * @return innermost class of the name segments
+     * @see TypeUtilsTemp#getNameSegments(String)
+     */
+    public static String getClassNameFromNameSegments(
+            List<String> nameSegments
+    ) {
+        return nameSegments.get(nameSegments.size() - 1);
+    }
 }
