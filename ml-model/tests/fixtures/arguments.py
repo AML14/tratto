@@ -19,8 +19,14 @@ def arg_data_dir(request):
 @pytest.fixture(
     scope='session',
 )
-def arg_data_dir_single_datapoint(request):
-    return os.path.join(os.path.dirname(__file__), '..', 'dataset', 'single_datapoint.json')
+def arg_data_dir_single_datapoint():
+    return os.path.join(os.path.dirname(__file__), '..', 'dataset', 'single-datapoint-dataset')
+
+@pytest.fixture(
+    scope='session',
+)
+def arg_data_dir_ten_datapoints():
+    return os.path.join(os.path.dirname(__file__), '..', 'dataset', 'ten-datapoints-dataset')
 
 @pytest.fixture(
     scope='session'

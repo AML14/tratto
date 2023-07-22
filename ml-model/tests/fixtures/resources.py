@@ -7,7 +7,7 @@ from src.utils import utils
 
 @pytest.fixture(scope="session")
 def value_mappings():
-    value_mappings = utils.import_json(
+    _, value_mappings = utils.import_json(
         os.path.join(
             os.path.dirname(__file__),
             "..",

@@ -24,6 +24,7 @@ def data_processor(
     )
     return data_processor
 
+@pytest.fixture(scope='function')
 def data_processor_single_datapoint(
         arg_data_dir_single_datapoint,
         arg_test_ratio,
@@ -34,6 +35,44 @@ def data_processor_single_datapoint(
 ):
     data_processor = DataProcessorDecoder(
         arg_data_dir_single_datapoint,
+        arg_test_ratio,
+        tokenizer,
+        arg_classification_type,
+        arg_tratto_model_type,
+        arg_folds
+    )
+    return data_processor
+
+@pytest.fixture(scope='function')
+def data_processor_single_datapoint(
+        arg_data_dir_single_datapoint,
+        arg_test_ratio,
+        tokenizer,
+        arg_classification_type,
+        arg_tratto_model_type,
+        arg_folds
+):
+    data_processor = DataProcessorDecoder(
+        arg_data_dir_single_datapoint,
+        arg_test_ratio,
+        tokenizer,
+        arg_classification_type,
+        arg_tratto_model_type,
+        arg_folds
+    )
+    return data_processor
+
+@pytest.fixture(scope='function')
+def data_processor_ten_datapoints(
+        arg_data_dir_ten_datapoints,
+        arg_test_ratio,
+        tokenizer,
+        arg_classification_type,
+        arg_tratto_model_type,
+        arg_folds
+):
+    data_processor = DataProcessorDecoder(
+        arg_data_dir_ten_datapoints,
         arg_test_ratio,
         tokenizer,
         arg_classification_type,

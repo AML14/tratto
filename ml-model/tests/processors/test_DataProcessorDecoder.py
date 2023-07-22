@@ -1,6 +1,8 @@
 import os
 import pytest
+import copy
 from src.types.ClassificationType import ClassificationType
+from itertools import permutations
 from src.types.TrattoModelType import TrattoModelType
 from src.utils import utils
 
@@ -94,3 +96,87 @@ def test_num_labels(
     else:
         assert False
     assert num_labels == len(dataset_tgt_labels)
+
+
+def test_pre_processing_token_classes_so_far(
+        data_processor_ten_datapoints,
+        arg_classification_type,
+        arg_tratto_model_type
+):
+    df_dataset_before_processing = getattr(data_processor_ten_datapoints, '_df_dataset').copy()
+    data_processor_ten_datapoints.pre_processing()
+    df_dataset_after_processing = getattr(data_processor_ten_datapoints, '_df_dataset')
+    expected_tokenClassesSoFar = []
+    assert len(df_dataset_before_processing) == len(df_dataset_after_processing)
+    if arg_classification_type == ClassificationType.CATEGORY_PREDICTION:
+        if arg_tratto_model_type == TrattoModelType.TOKEN_CLASSES:
+            for row in df_dataset_before_processing.itertuples(index=False):
+                equivalent_array = []
+                for perm_tokenClassesSoFar in list(permutations(row.tokenClassesSoFar)):
+                    perm_tokenClassesSoFar_str = f"[ {' '.join(list(perm_tokenClassesSoFar))} ]"
+                    equivalent_array.append(perm_tokenClassesSoFar_str)
+                expected_tokenClassesSoFar.append(equivalent_array)
+
+    expected_tokenClassesSoFar_copy = copy.deepcopy(expected_tokenClassesSoFar)
+
+    for row in df_dataset_after_processing.itertuples(index=False):
+        len_before_research = len(expected_tokenClassesSoFar)
+        for eq_strings in expected_tokenClassesSoFar_copy:
+            if row.eligibleTokenClasses in eq_strings:
+                expected_tokenClassesSoFar.remove(eq_strings)
+                break
+        assert len_before_research == (len(expected_tokenClassesSoFar) + 1)
+    assert len(expected_tokenClassesSoFar) == 0
+
+
+def test_pre_processing_dataset_after(
+        data_processor_ten_datapoints,
+        arg_classification_type,
+        arg_tratto_model_type,
+        value_mappings
+):
+    df_dataset_before_processing = getattr(data_processor_ten_datapoints, '_df_dataset').copy()
+    data_processor_ten_datapoints.pre_processing()
+    df_dataset_after_processing = getattr(data_processor_ten_datapoints, '_df_dataset')
+    if arg_classification_type == ClassificationType.CATEGORY_PREDICTION:
+        assert len(df_dataset_before_processing[df_dataset_before_processing['label']] == True) == len(df_dataset_after_processing)
+    elif arg_classification_type == ClassificationType.LABEL_PREDICTION:
+        assert len(df_dataset_before_processing) == len(df_dataset_after_processing)
+    else:
+        assert False
+
+
+def test_pre_processing_tokenClassesSoFar(
+        data_processor_ten_datapoints,
+        arg_classification_type,
+        arg_tratto_model_type,
+        value_mappings
+):
+    df_dataset_before_processing = getattr(data_processor_ten_datapoints, '_df_dataset').copy()
+    data_processor_ten_datapoints.pre_processing()
+    df_dataset_after_processing = getattr(data_processor_ten_datapoints, '_df_dataset')
+    expected_tokenClassesSoFar = []
+    if arg_tratto_model_type == TrattoModelType.TOKEN_CLASSES:
+        for row in df_dataset_before_processing.itertuples(index=False):
+            if (arg_classification_type == ClassificationType.CATEGORY_PREDICTION and row.label == True) or (arg_classification_type == ClassificationType.LABEL_PREDICTION):
+                equivalent_array = []
+                tokenClassesSoFar_mapped = list(map(lambda t: value_mappings[t], row.tokenClassesSoFar))
+                for perm_tokenClassesSoFar in list(permutations(tokenClassesSoFar_mapped)):
+                    perm_tokenClassesSoFar_str = f"[ {' '.join(list(perm_tokenClassesSoFar))} ]"
+                    equivalent_array.append(perm_tokenClassesSoFar_str)
+                expected_tokenClassesSoFar.append(equivalent_array)
+        for row in df_dataset_after_processing.itertuples(index=False):
+            len_before_research = len(expected_tokenClassesSoFar)
+            expected_tokenClassesSoFar_copy = copy.deepcopy(expected_tokenClassesSoFar)
+            for eq_strings in expected_tokenClassesSoFar_copy:
+                if row.tokenClassesSoFar in eq_strings:
+                    expected_tokenClassesSoFar.remove(eq_strings)
+                    break
+            assert len_before_research == (len(expected_tokenClassesSoFar) + 1)
+        assert len(expected_tokenClassesSoFar) == 0
+    elif arg_tratto_model_type == TrattoModelType.TOKEN_VALUES:
+        assert 'tokenClassesSoFar' not in df_dataset_after_processing.columns.tolist()
+    else:
+        assert False
+
+
