@@ -109,60 +109,7 @@ public class TokensDatasetPreprocessing {
             long projectTDPsSize = projectTokenDatapoints.size();
             logger.info("Total number of TokenDatapoints: {}", projectTDPsSize);
 
-
-//            // To save some execution time, discard oracles which are semicolons. Depending on token-classes
-//            // or token-values dataset, some more tokens may be discarded, and some of them added to the lists
-//            // of token IDs to remove
-//            logger.info("Discarding empty oracles to optimize preprocessing...");
-//            List<Map> semicolonDatapoints = new ArrayList<>();
-//            int oldSize = projectTokenDatapoints.size();
-//            if (DATASET_TYPE == TokenDPType.TOKEN_VALUE) {
-//                projectTokenDatapoints.removeIf(tdp -> {
-//                    if (tdp.get("oracleSoFar").equals("") && tdp.get("token").equals(";") && (Boolean)tdp.get("label")) {
-//                        idsSinglePossibility.add((Long)tdp.get("id"));
-//                        idsToRemove.add((Long)tdp.get("id"));
-//                        semicolonDatapoints.add(tdp);
-//                        return true;
-//                    }
-//                    return false;
-//                });
-//            } else if (DATASET_TYPE == TokenDPType.TOKEN_CLASS) {
-//                List<Long> semicolonOracleIds = new ArrayList<>();
-//                projectTokenDatapoints.removeIf(tdp -> {
-//                    if (tdp.get("oracleSoFar").equals("") && tdp.get("tokenClass").equals("Semicolon") && (Boolean)tdp.get("label")) {
-//                        semicolonOracleIds.add((Long)tdp.get("oracleId"));
-//                        semicolonDatapoints.add(tdp);
-//                        return true;
-//                    } else if (semicolonOracleIds.contains((Long) tdp.get("oracleId"))) {
-//                        semicolonDatapoints.add(tdp);
-//                        return true;
-//                    }
-//                    return false;
-//                });
-//            } else {
-//                throw new IllegalArgumentException("Preprocessing not implemented for dataset type: " + DATASET_TYPE);
-//            }
-//            long projectTDPsSize = projectTokenDatapoints.size();
-//            logger.info("Discarded {} TokenDatapoints related to empty oracles", oldSize - projectTDPsSize);
-//
-//            // From the set of discarded data points, there could be duplicates, which need to be removed
-//            logger.info("Checking for duplicates in discarded data points...");
-//            List<Long> duplicateIds = new ArrayList<>();
-//            long discardedDPsSize = semicolonDatapoints.size();
-//            index = 0;
-//            for (Map semicolonDatapoint : semicolonDatapoints) {
-//                logger.info("[{} / {}] Checking discardedTokenDatapoint with ID {}", ++index, discardedDPsSize, semicolonDatapoint.get("id"));
-//                duplicateIds.addAll(getDuplicateIds(semicolonDatapoints, semicolonDatapoint));
-//            }
-//            idsDuplicates.addAll(duplicateIds);
-//            idsToRemove.addAll(duplicateIds);
-//
-//            logger.info("Removed {} of the TokenDatapoints discarded due to duplications", duplicateIds.size());
-//            logger.info("TokenDatapoints removed: {}", duplicateIds);
-//            logger.info("---------------");
-//            logger.info("TokenDatapoints to analyze after filtering: {}", projectTDPsSize);
             logger.info("Collecting IDs of TokenDatapoints that need to be removed...");
-
             // Apply filters to detect which TokenDatapoints need to be removed
             index = 0;
             for (Map tokenDatapoint : projectTokenDatapoints) {
@@ -177,7 +124,20 @@ public class TokensDatasetPreprocessing {
                 List<Long> currentIdsSinglePossibility = new ArrayList<>();
 
                 // 1. Remove duplicates
-                currentIdsDuplicates.addAll(getDuplicateIds(projectTokenDatapoints, tokenDatapoint));
+                Map datapointsNoIds = new HashMap(tokenDatapoint);
+                datapointsNoIds.remove("id");
+                datapointsNoIds.remove("oracleId");
+                List<Long> duplicateIds = projectTokenDatapoints
+                        .stream()
+                        .filter(tdp -> {
+                            Map tdpWithoutFeatures = new HashMap(tdp);
+                            tdpWithoutFeatures.remove("id");
+                            tdpWithoutFeatures.remove("oracleId");
+                            return tdpWithoutFeatures.equals(datapointsNoIds);
+                        })
+                        .map(tdp -> (Long) tdp.get("id"))
+                        .toList();
+                currentIdsDuplicates.addAll(duplicateIds.subList(1, duplicateIds.size())); // The current datapoint is in this list, so don't add it
 
                 // 2. Remove contradictory TokenDatapoints
                 Map tokenDatapointNoIdTagLabel = new HashMap(tokenDatapoint);
@@ -267,22 +227,5 @@ public class TokensDatasetPreprocessing {
         assert removedIds == idsToRemove.size();
 
         logger.info("Finished updating TokenDatapoints files");
-    }
-
-    private static List<Long> getDuplicateIds(List<Map> datapoints, Map datapoint) {
-        Map datapointsNoIds = new HashMap(datapoint);
-        datapointsNoIds.remove("id");
-        datapointsNoIds.remove("oracleId");
-        List<Long> duplicateIds = datapoints
-                .stream()
-                .filter(tdp -> {
-                    Map tdpWithoutFeatures = new HashMap(tdp);
-                    tdpWithoutFeatures.remove("id");
-                    tdpWithoutFeatures.remove("oracleId");
-                    return tdpWithoutFeatures.equals(datapointsNoIds);
-                })
-                .map(tdp -> (Long) tdp.get("id"))
-                .toList();
-        return duplicateIds.subList(1, duplicateIds.size()); // The current datapoint is in this list, so don't add it
     }
 }
