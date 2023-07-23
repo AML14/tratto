@@ -55,7 +55,30 @@ public class TokensDatasetPreprocessing {
     private static List<Long> idsDuplicates = new ArrayList<>();
     private static List<Long> idsContradictory = new ArrayList<>();
     private static List<Long> idsSinglePossibility = new ArrayList<>();
-    private static List<String> projects = List.of(
+    private static final List<String> singlePossibilityTokenClasses = List.of(
+            "Semicolon",
+            "OpeningParenthesis",
+            "This",
+            "TRUE",
+            "ArraysClass",
+            "EqOperator",
+            "IneqOperator",
+            "Period",
+            "InstanceOfOperator",
+            "NULL",
+            "ClosingParenthesis",
+            "MethodResultID",
+            "BitwiseNegateOperator",
+            "FALSE",
+            "Colon",
+            "QuestionMark",
+            "StreamMethod",
+            "MatchMethodVar",
+            "RightArrow",
+            "Comma",
+            "ClassModifier"
+    );
+    private static final List<String> projects = List.of(
             "plume-lib-1.1.0",
             "jgrapht-core-0.9.2",
             "gs-core-1.3",
@@ -98,13 +121,6 @@ public class TokensDatasetPreprocessing {
                     tdp.remove("classJavadoc");
                     tdp.remove("classSourceCode");
                     tdp.put("methodSourceCode", ((String) tdp.get("methodSourceCode")).split("\\{")[0]);
-                    if (DATASET_TYPE == TokenDPType.TOKEN_CLASS) {
-                        tdp.remove("token");
-                        tdp.remove("tokenInfo");
-                    } else {
-                        tdp.remove("tokenClass");
-                        tdp.remove("tokenClassesSoFar");
-                    }
                 });
                 projectTokenDatapoints.addAll(tokenDatapoints);
             }
@@ -112,45 +128,40 @@ public class TokensDatasetPreprocessing {
             logger.info("Total number of TokenDatapoints: {}", projectTDPsSize);
 
 
-            // Depending on the dataset type, we speed up the processing in two different ways:
-            // 1. For token-values, we simply remove all semicolons as "single-possibility" tokens.
-            // 2. For token-classes, we process the dataset in chunks which all have the same tokenClassesSoFar.size()
-            List<List<Map>> datapointsChunks = new ArrayList<>();
+            // To speed up processing for token-values, we remove all data points whose token class is a single-possible-value one.
             if (DATASET_TYPE == TokenDPType.TOKEN_VALUE) {
-                // TODO
-                List<Long> semicolonIds = new ArrayList<>();
+                List<Long> singleValueIds = new ArrayList<>();
                 projectTokenDatapoints.removeIf(tdp -> {
-                    if (tdp.get("oracleSoFar").equals("") && tdp.get("token").equals(";") && (Boolean)tdp.get("label")) {
+                    if (singlePossibilityTokenClasses.contains((String)tdp.get("tokenClass"))) {
                         idsSinglePossibility.add((Long)tdp.get("id"));
                         idsToRemove.add((Long)tdp.get("id"));
-                        semicolonIds.add((Long)tdp.get("id"));
+                        singleValueIds.add((Long)tdp.get("id"));
                         return true;
                     }
                     return false;
                 });
-                logger.info("Removed {} TokenDatapoints related to semicolons", projectTDPsSize - projectTokenDatapoints.size());
-                logger.info("TokenDatapoints removed: {}", semicolonIds);
+                logger.info("Removed {} TokenDatapoints related to single-possible-values", projectTDPsSize - projectTokenDatapoints.size());
+                logger.info("TokenDatapoints removed: {}", singleValueIds);
                 projectTDPsSize = projectTokenDatapoints.size();
-                logger.info("Total number of TokenDatapoints after removing semicolons: {}", projectTDPsSize);
-                datapointsChunks.add(projectTokenDatapoints);
-            } else {
-                boolean remainingChunks = true;
-                int iSize = 0;
-                while (remainingChunks) {
-                    int finalISize = iSize;
-                    List<Map> currentChunk = projectTokenDatapoints
-                            .stream()
-                            .filter(tdp -> ((List<String>)tdp.get("tokenClassesSoFar")).size() == finalISize)
-                            .toList();
-                    if (currentChunk.isEmpty()) {
-                        remainingChunks = false;
-                    } else {
-                        datapointsChunks.add(currentChunk);
-                        iSize++;
-                    }
-                }
+                logger.info("Total number of TokenDatapoints after removing single-possible-values: {}", projectTDPsSize);
             }
 
+            // Need to remove class- or value- related features from data points for subsequent checks (e.g., .equals())
+            projectTokenDatapoints.forEach(tdp -> {
+                if (DATASET_TYPE == TokenDPType.TOKEN_CLASS) {
+                    tdp.remove("token");
+                    tdp.remove("tokenInfo");
+                } else {
+                    tdp.remove("tokenClass");
+                    tdp.remove("tokenClassesSoFar");
+                }
+            });
+
+            // Also to speed up process, split into chunks which all have the same oracleType, packageName and className.
+            Collection<List<Map>> datapointsChunks = projectTokenDatapoints
+                    .stream()
+                    .collect(Collectors.groupingBy(tdp -> ((String)tdp.get("oracleType") + tdp.get("packageName") + tdp.get("className"))))
+                    .values();
 
             logger.info("Collecting IDs of TokenDatapoints that need to be removed...");
             // Apply filters to detect which TokenDatapoints need to be removed
@@ -205,12 +216,12 @@ public class TokensDatasetPreprocessing {
             }
         }
 
-        logger.info("Total number of TokenDatapoints to remove: {}", idsToRemove.size());
-        logger.info("Number of TokenDatapoints to remove due to duplicates: {}", idsDuplicates.size());
-        logger.info("Number of TokenDatapoints to remove due to contradictions: {}", idsContradictory.size());
-        logger.info("Number of TokenDatapoints to remove due to single possibility: {}", idsSinglePossibility.size());
         idsToRemove = idsToRemove.stream().distinct().toList();
-        logger.info("Unique TokenDatapoints to remove: {}", idsToRemove.size());
+        idsDuplicates = idsDuplicates.stream().distinct().toList();
+        idsContradictory = idsContradictory.stream().distinct().toList();
+        idsSinglePossibility = idsSinglePossibility.stream().distinct().toList();
+
+        logger.info("Finished collecting IDs of TokenDatapoints that need to be removed.");
 
         logger.info("-----------------------------------------------------------------------------");
         logger.info("-----------------------------------------------------------------------------");
@@ -239,7 +250,11 @@ public class TokensDatasetPreprocessing {
 
         assert removedIds == idsToRemove.size();
 
-        logger.info("Finished updating TokenDatapoints files");
+        logger.info("Finished updating TokenDatapoints files. Final stats:");
+        logger.info("Total number of TokenDatapoints removed: {}", idsToRemove.size());
+        logger.info("Number of TokenDatapoints removed due to duplicates: {}", idsDuplicates.size());
+        logger.info("Number of TokenDatapoints removed due to contradictions: {}", idsContradictory.size());
+        logger.info("Number of TokenDatapoints removed due to single possibility: {}", idsSinglePossibility.size());
     }
 
     private static List<Long> getDuplicateIds(List<Map> datapoints, Map datapoint) {
