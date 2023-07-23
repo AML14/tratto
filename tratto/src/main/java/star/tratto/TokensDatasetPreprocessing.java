@@ -65,6 +65,10 @@ public class TokensDatasetPreprocessing {
     );
 
     public static void main(String[] args) throws IOException {
+        if (DATASET_TYPE != TokenDPType.TOKEN_CLASS && DATASET_TYPE != TokenDPType.TOKEN_VALUE) {
+            throw new IllegalArgumentException("Preprocessing not implemented for dataset type: " + DATASET_TYPE);
+        }
+
         logger.info("-----------------------------------------------------------------------------");
         logger.info("Starting tokens dataset preprocessing...");
         logger.info("-----------------------------------------------------------------------------");
@@ -97,11 +101,9 @@ public class TokensDatasetPreprocessing {
                     if (DATASET_TYPE == TokenDPType.TOKEN_CLASS) {
                         tdp.remove("token");
                         tdp.remove("tokenInfo");
-                    } else if (DATASET_TYPE == TokenDPType.TOKEN_VALUE) {
+                    } else {
                         tdp.remove("tokenClass");
                         tdp.remove("tokenClassesSoFar");
-                    } else {
-                        throw new IllegalArgumentException("Preprocessing not implemented for dataset type: " + DATASET_TYPE);
                     }
                 });
                 projectTokenDatapoints.addAll(tokenDatapoints);
@@ -109,51 +111,96 @@ public class TokensDatasetPreprocessing {
             long projectTDPsSize = projectTokenDatapoints.size();
             logger.info("Total number of TokenDatapoints: {}", projectTDPsSize);
 
+
+            // Depending on the dataset type, we speed up the processing in two different ways:
+            // 1. For token-values, we simply remove all semicolons as "single-possibility" tokens.
+            // 2. For token-classes, we process the dataset in chunks which all have the same tokenClassesSoFar.size()
+            List<List<Map>> datapointsChunks = new ArrayList<>();
+            if (DATASET_TYPE == TokenDPType.TOKEN_VALUE) {
+                // TODO
+                List<Long> semicolonIds = new ArrayList<>();
+                projectTokenDatapoints.removeIf(tdp -> {
+                    if (tdp.get("oracleSoFar").equals("") && tdp.get("token").equals(";") && (Boolean)tdp.get("label")) {
+                        idsSinglePossibility.add((Long)tdp.get("id"));
+                        idsToRemove.add((Long)tdp.get("id"));
+                        semicolonIds.add((Long)tdp.get("id"));
+                        return true;
+                    }
+                    return false;
+                });
+                logger.info("Removed {} TokenDatapoints related to semicolons", projectTDPsSize - projectTokenDatapoints.size());
+                logger.info("TokenDatapoints removed: {}", semicolonIds);
+                projectTDPsSize = projectTokenDatapoints.size();
+                logger.info("Total number of TokenDatapoints after removing semicolons: {}", projectTDPsSize);
+                datapointsChunks.add(projectTokenDatapoints);
+            } else {
+                boolean remainingChunks = true;
+                int iSize = 0;
+                while (remainingChunks) {
+                    int finalISize = iSize;
+                    List<Map> currentChunk = projectTokenDatapoints
+                            .stream()
+                            .filter(tdp -> ((List<String>)tdp.get("tokenClassesSoFar")).size() == finalISize)
+                            .toList();
+                    if (currentChunk.isEmpty()) {
+                        remainingChunks = false;
+                    } else {
+                        datapointsChunks.add(currentChunk);
+                        iSize++;
+                    }
+                }
+            }
+
+
             logger.info("Collecting IDs of TokenDatapoints that need to be removed...");
             // Apply filters to detect which TokenDatapoints need to be removed
             index = 0;
-            for (Map tokenDatapoint : projectTokenDatapoints) {
-                logger.info("[{} / {}] Processing TokenDatapoint with ID {}", ++index, projectTDPsSize, tokenDatapoint.get("id"));
+            int indexChunk = 0;
+            for (List<Map> datapointsChunk : datapointsChunks) {
+                logger.info("Processing chunk {}/{} with {} TokenDatapoints", ++indexChunk, datapointsChunks.size(), datapointsChunk.size());
+                for (Map tokenDatapoint : datapointsChunk) {
+                    logger.info("[{} / {}] Processing TokenDatapoint with ID {}", ++index, projectTDPsSize, tokenDatapoint.get("id"));
 
-                if (idsToRemove.contains((Long)tokenDatapoint.get("id"))) {
-                    continue; // Skip TokenDatapoints that have already been marked for removal
-                }
+                    if (idsToRemove.contains((Long) tokenDatapoint.get("id"))) {
+                        continue; // Skip TokenDatapoints that have already been marked for removal
+                    }
 
-                List<Long> currentIdsDuplicates = new ArrayList<>();
-                List<Long> currentIdsContradictory = new ArrayList<>();
-                List<Long> currentIdsSinglePossibility = new ArrayList<>();
+                    List<Long> currentIdsDuplicates = new ArrayList<>();
+                    List<Long> currentIdsContradictory = new ArrayList<>();
+                    List<Long> currentIdsSinglePossibility = new ArrayList<>();
 
-                // 1. Remove duplicates
-                currentIdsDuplicates.addAll(getDuplicateIds(projectTokenDatapoints, tokenDatapoint)); // The current datapoint is in this list, so don't add it
+                    // 1. Remove duplicates
+                    currentIdsDuplicates.addAll(getDuplicateIds(datapointsChunk, tokenDatapoint)); // The current datapoint is in this list, so don't add it
 
-                // 2. Remove contradictory TokenDatapoints
-                currentIdsContradictory.addAll(getContradictoryIds(projectTokenDatapoints, tokenDatapoint, "oracleId"));
-                currentIdsContradictory.addAll(getContradictoryIds(projectTokenDatapoints, tokenDatapoint, "javadocTag"));
+                    // 2. Remove contradictory TokenDatapoints
+                    currentIdsContradictory.addAll(getContradictoryIds(datapointsChunk, tokenDatapoint, "oracleId"));
+                    currentIdsContradictory.addAll(getContradictoryIds(datapointsChunk, tokenDatapoint, "javadocTag"));
 
-                // 3. Remove TokenDatapoints with single value for token feature
-                List<Map> singlePossibilityTokenDatapoints = projectTokenDatapoints
-                        .stream()
-                        .filter(tdp -> tdp.get("oracleId").equals(tokenDatapoint.get("oracleId")) && tdp.get("oracleSoFar").equals(tokenDatapoint.get("oracleSoFar")))
-                        .toList();
-                if (singlePossibilityTokenDatapoints.stream().map(tdp -> tdp.get(tokenFeature)).distinct().count() == 1) {
-                    currentIdsSinglePossibility.addAll(singlePossibilityTokenDatapoints.stream().map(tdp -> (Long) tdp.get("id")).toList());
-                }
+                    // 3. Remove TokenDatapoints with single value for token feature
+                    List<Map> singlePossibilityTokenDatapoints = datapointsChunk
+                            .stream()
+                            .filter(tdp -> tdp.get("oracleId").equals(tokenDatapoint.get("oracleId")) && tdp.get("oracleSoFar").equals(tokenDatapoint.get("oracleSoFar")))
+                            .toList();
+                    if (singlePossibilityTokenDatapoints.stream().map(tdp -> tdp.get(tokenFeature)).distinct().count() == 1) {
+                        currentIdsSinglePossibility.addAll(singlePossibilityTokenDatapoints.stream().map(tdp -> (Long) tdp.get("id")).toList());
+                    }
 
-                // Add IDs to the global lists
-                if (currentIdsDuplicates.size() > 0) {
-                    logger.info("IDs marked for removal due to duplicates based on current TokenDatapoint: {}", currentIdsDuplicates);
-                    idsDuplicates.addAll(currentIdsDuplicates);
-                    idsToRemove.addAll(currentIdsDuplicates);
-                }
-                if (currentIdsContradictory.size() > 0) {
-                    logger.info("IDs marked for removal due to contradictions based on current TokenDatapoint: {}", currentIdsContradictory);
-                    idsContradictory.addAll(currentIdsContradictory);
-                    idsToRemove.addAll(currentIdsContradictory);
-                }
-                if (currentIdsSinglePossibility.size() > 0) {
-                    logger.info("IDs marked for removal due to single possibility based on current TokenDatapoint: {}", currentIdsSinglePossibility);
-                    idsSinglePossibility.addAll(currentIdsSinglePossibility);
-                    idsToRemove.addAll(currentIdsSinglePossibility);
+                    // Add IDs to the global lists
+                    if (currentIdsDuplicates.size() > 0) {
+                        logger.info("IDs marked for removal due to duplicates based on current TokenDatapoint: {}", currentIdsDuplicates);
+                        idsDuplicates.addAll(currentIdsDuplicates);
+                        idsToRemove.addAll(currentIdsDuplicates);
+                    }
+                    if (currentIdsContradictory.size() > 0) {
+                        logger.info("IDs marked for removal due to contradictions based on current TokenDatapoint: {}", currentIdsContradictory);
+                        idsContradictory.addAll(currentIdsContradictory);
+                        idsToRemove.addAll(currentIdsContradictory);
+                    }
+                    if (currentIdsSinglePossibility.size() > 0) {
+                        logger.info("IDs marked for removal due to single possibility based on current TokenDatapoint: {}", currentIdsSinglePossibility);
+                        idsSinglePossibility.addAll(currentIdsSinglePossibility);
+                        idsToRemove.addAll(currentIdsSinglePossibility);
+                    }
                 }
             }
         }
