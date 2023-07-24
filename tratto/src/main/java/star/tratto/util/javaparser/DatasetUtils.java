@@ -1,6 +1,5 @@
 package star.tratto.util.javaparser;
 
-import java.io.IOException;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.body.*;
@@ -19,15 +18,12 @@ import com.github.javaparser.symbolsolver.reflectionmodel.ReflectionFieldDeclara
 import org.javatuples.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleType;
 import star.tratto.data.oracles.JDoctorCondition.*;
 import star.tratto.exceptions.JPClassNotFoundException;
 import star.tratto.exceptions.PackageDeclarationNotFoundException;
 import star.tratto.exceptions.ResolvedTypeNotFound;
-import star.tratto.identifiers.FileFormat;
-import star.tratto.identifiers.FileName;
-import star.tratto.identifiers.IOPath;
+import star.tratto.data.IOPath;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.oraclegrammar.custom.Splitter;
 import star.tratto.util.FileUtils;
@@ -511,29 +507,19 @@ public class DatasetUtils {
      */
     private static List<Path> getValidJavaFiles(String sourcePath) {
         // Get list of all Java files.
-        try {
         Path sourceDir = Path.of(sourcePath);
         List<Path> allFiles = FileUtils.getAllJavaFilesFromDirectory(sourceDir);
         // Get list of files to ignore.
-        String ignoreFilePath = Paths.get(
-                IOPath.REPOS.getValue(),
-                FileName.IGNORE_FILE.getValue() + FileFormat.JSON.getExtension()
-        ).toString();
+        Path ignoreFilePath = IOPath.IGNORE_FILE.getPath();
         List<String> ignoreFileList = FileUtils.readJSONList(ignoreFilePath)
                 .stream()
-                .map(e -> (String) e)
+                .map(f -> (String) f)
                 .toList();
         // filter files.
         return allFiles
                 .stream()
-                .filter(file -> {
-                    String filename = file.toString().replace(FileFormat.JAVA.getExtension(), "");
-                    return !ignoreFileList.contains(filename);
-                })
-                .toList();
-        } catch (IOException e) {
-            throw new Error(e);
-        }
+                .filter(f -> !ignoreFileList.contains(f.getFileName().toString()))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -550,8 +536,7 @@ public class DatasetUtils {
         List<Path> javaFiles = getValidJavaFiles(sourcePath);
         // iterate through each file and add class tokens.
         for (Path javaFile : javaFiles) {
-            String filePath = javaFile.toAbsolutePath().toString();
-            Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnitFromFile(filePath);
+            Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnit(javaFile.toAbsolutePath());
             if (cu.isPresent()) {
                 try {
                     projectClasses.addAll(getClassNameAndPackage(cu.get()));
@@ -579,8 +564,7 @@ public class DatasetUtils {
         List<Path> javaFiles = getValidJavaFiles(sourcePath);
         // iterate through each file and add method tokens.
         for (Path javaFile : javaFiles) {
-            String filePath = javaFile.toAbsolutePath().toString();
-            Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnitFromFile(filePath);
+            Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnit(javaFile.toAbsolutePath());
             if (cu.isPresent()) {
                 try {
                     projectMethods.addAll(getNonPrivateStaticNonVoidMethods(cu.get()));
@@ -608,8 +592,7 @@ public class DatasetUtils {
         List<Path> javaFiles = getValidJavaFiles(sourcePath);
         // iterate through each file and add attribute tokens.
         for (Path javaFile : javaFiles) {
-            String filePath = javaFile.toAbsolutePath().toString();
-            Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnitFromFile(filePath);
+            Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnit(javaFile.toAbsolutePath());
             if (cu.isPresent()) {
                 try {
                     attributeList.addAll(getNonPrivateStaticAttributes(cu.get()));
@@ -639,9 +622,9 @@ public class DatasetUtils {
         List<Path> javaFiles = getValidJavaFiles(sourcePath);
         // iterate through each file and add JavaDoc tags.
         for (Path javaFile : javaFiles) {
-            String filePath = javaFile.toAbsolutePath().toString();
-            String fileContent = FileUtils.readFile(filePath);
-            Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnitFromFile(filePath);
+            Path absoluteJavaFile = javaFile.toAbsolutePath();
+            String fileContent = FileUtils.readString(absoluteJavaFile);
+            Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnit(absoluteJavaFile);
             if (cu.isPresent()) {
                 try {
                     tagList.addAll(getCuTags(cu.get(), fileContent));
@@ -692,12 +675,8 @@ public class DatasetUtils {
         List<Quartet<String, String, String, String>> methodList = new ArrayList<>();
         if (jpResolvedType.isArray()) {
             // array type (see dataset/repose/array_methods.json).
-            String arraysMethodJsonPath = Paths.get(
-                    IOPath.REPOS.getValue(),
-                    FileName.ARRAY_METHODS.getValue() + FileFormat.JSON.getExtension()
-            ).toString();
             List<List<String>> arrayMethods;
-            arrayMethods = FileUtils.readJSONList(arraysMethodJsonPath)
+            arrayMethods = FileUtils.readJSONList(IOPath.ARRAY_METHODS.getPath())
                     .stream()
                     .map(e -> ((List<?>) e)
                             .stream()
@@ -1206,6 +1185,18 @@ public class DatasetUtils {
     }
 
     /**
+     * @param operation an operation of a JDoctor condition
+     * @param sourcePath the source path of the relevant project
+     * @return the path of the class in the JDoctor condition
+     */
+    private static Path getClassPath(
+            Operation operation,
+            String sourcePath
+    ) {
+        return Paths.get(sourcePath, operation.getClassName().replace(".", "/") + ".java");
+    }
+
+    /**
      * Gets the compilation unit {@link CompilationUnit} corresponding to the
      * class of a JDoctor condition.
      *
@@ -1219,8 +1210,8 @@ public class DatasetUtils {
             Operation operation,
             String sourcePath
     ) {
-        String classPath = getClassPath(operation, sourcePath);
-        return JavaParserUtils.getCompilationUnitFromFile(classPath);
+        Path classPath = getClassPath(operation, sourcePath);
+        return JavaParserUtils.getCompilationUnit(classPath);
     }
 
     /**
@@ -1231,17 +1222,13 @@ public class DatasetUtils {
             Operation operation,
             String sourcePath
     ) {
-        String classPath = getClassPath(operation, sourcePath);
-        String classSource = FileUtils.readFile(classPath);
-        return classSource != null ? Optional.of(classSource) : Optional.empty();
-    }
-
-    private static String getClassPath(
-            Operation operation,
-            String sourcePath
-    ) {
-        List<String> pathList = Arrays.asList(operation.getClassName().split("\\."));
-        return Paths.get(sourcePath, pathList.toArray(String[]::new)) + FileFormat.JAVA.getExtension();
+        try {
+            Path classPath = getClassPath(operation, sourcePath);
+            String classSource = FileUtils.readString(classPath);
+            return Optional.of(classSource);
+        } catch (Error e) {
+            return Optional.empty();
+        }
     }
 
     /**
@@ -1273,37 +1260,5 @@ public class DatasetUtils {
     ) {
         List<String> pathList = JDoctorUtils.getIdentifierComponents(operation.getName());
         return JDoctorUtils.getClassNameFromIdentifierComponents(pathList);
-    }
-
-    /**
-     * Randomly samples oracle data points {@link OracleDatapoint}. Filters
-     * empty or non-empty oracles.
-     *
-     * @param oracleDPs list of oracle data points {@link OracleDatapoint}
-     * @param isEmpty if the samples data points represent empty oracles
-     * @param numSamples the number of data points to samples
-     * @return a random sample of oracle data points
-     */
-    public static List<OracleDatapoint> randomSample(List<OracleDatapoint> oracleDPs, boolean isEmpty, int numSamples) {
-        // filter empty vs non-empty oracles.
-        List<OracleDatapoint> filterDPs;
-        if (isEmpty) {
-            filterDPs = oracleDPs
-                    .stream()
-                    .filter(dp -> dp.getOracle().equals(";"))
-                    .collect(Collectors.toList());
-        } else {
-            filterDPs = oracleDPs
-                    .stream()
-                    .filter(dp -> !dp.getOracle().equals(";"))
-                    .collect(Collectors.toList());
-        }
-        // randomly sample oracles.
-        Collections.shuffle(filterDPs);
-        List<OracleDatapoint> sample = new ArrayList<>();
-        for (int i = 0; i < numSamples; i++) {
-            sample.add(filterDPs.get(i));
-        }
-        return sample;
     }
 }
