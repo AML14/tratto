@@ -2,13 +2,10 @@ package star.tratto.util;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import star.tratto.identifiers.FileFormat;
-import star.tratto.identifiers.FileName;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -18,38 +15,6 @@ import java.util.stream.Stream;
  * I/O utilities: creating files, writing to files, retrieving Java files, etc.
  */
 public class FileUtils {
-    /**
-     * Returns an absolute file path.
-     *
-     * @param dirPath the root directory path
-     * @param fileName the name of the file in the directory
-     * @param fileFormat the file extension
-     * @return the complete path to the file
-     */
-    public static Path getAbsolutePath(String dirPath, FileName fileName, FileFormat fileFormat) {
-        return Paths.get(dirPath, fileName.getValue() + fileFormat.getExtension()).toAbsolutePath();
-    }
-
-    /**
-     * Combines given information into a file path.
-     *
-     * @param dirPath a base root path
-     * @param fileName a file name
-     * @param fileFormat a file extension (e.g. ".txt", ".json")
-     * @param projectName the corresponding project under analysis
-     * @return a file path which combines the given information into the
-     * format:
-     *  "[dirPath]/[projectName]/[fileName].[fileFormat.getExtension()]"
-     */
-    public static Path getPath(
-            String dirPath,
-            String fileName,
-            FileFormat fileFormat,
-            String projectName
-    ) {
-        return Paths.get(dirPath, projectName, fileName + fileFormat.getExtension());
-    }
-
     /**
      * Creates an empty directory at a given path. Creates parent directories
      * if necessary. If the directories already exists, then this method does
@@ -110,7 +75,7 @@ public class FileUtils {
     /**
      * Writes {@code content} to {@code path} in JSON format. Creates a new
      * file and parent directories if necessary. If file already exists,
-     * overrides any original content.
+     * overrides any previous content.
      *
      * @param path a file
      * @param content an object to be written in JSON content
@@ -124,6 +89,28 @@ public class FileUtils {
             objectMapper.writerWithDefaultPrettyPrinter().writeValue(path.toFile(), content);
         } catch (IOException e) {
             throw new Error("Error when writing " + content + " to file " + path, e);
+        }
+    }
+
+    /**
+     * Writes {@code contentChunks} to individual files in JSON format.
+     * Creates new files and parent directories if necessary. If files already
+     * exists, overrides any previous content.
+     *
+     * @param path base path for all chunks. The i-th chunk will be written to
+     *             the path "[path]_i.json".
+     * @param contentChunks objects to write
+     * @param <T> the type of each chunk
+     * @throws Error if unable to create files/directories or unable to write
+     * content to file
+     * @see FileUtils#write
+     */
+    public static <T> void writeChunks(Path path, List<T> contentChunks) {
+        for (int i = 0; i < contentChunks.size(); i++) {
+            T chunk = contentChunks.get(i);
+            String chunkFileName = String.format("%s_%d.json", path.getFileName(), i);
+            Path chunkPath = path.getParent().resolve(chunkFileName);
+            FileUtils.write(chunkPath, chunk);
         }
     }
 
