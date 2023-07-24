@@ -859,13 +859,14 @@ public class JavaParserUtils {
     }
 
     /**
-     * Read a compilation unit from a Java file.
+     * Creates a compilation unit from a Java file.
      *
-     * @param filePath the absolute path to the file
-     * @return a JavaParser compilation unit
+     * @param path an absolute file path
+     * @return the corresponding JavaParser compilation unit. Returns
+     * {@code Optional.empty()} if an error occurs while attempting to parse
+     * the file.
      */
-    public static Optional<CompilationUnit> getCompilationUnitFromFile(String filePath) {
-        Path path = Paths.get(filePath);
+    public static Optional<CompilationUnit> getCompilationUnit(Path path) {
         try {
             return javaParser.parse(path).getResult();
         } catch (IOException e) {
