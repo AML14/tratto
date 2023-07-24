@@ -108,7 +108,7 @@ public class FileUtils {
     public static <T> void writeChunks(Path path, List<T> contentChunks) {
         for (int i = 0; i < contentChunks.size(); i++) {
             T chunk = contentChunks.get(i);
-            String chunkFileName = String.format("%s_%d.json", path.getFileName(), i);
+            String chunkFileName = String.format("%s_%d.json", path.getFileName().toString().replace(".json", ""), i);
             Path chunkPath = path.getParent().resolve(chunkFileName);
             FileUtils.write(chunkPath, chunk);
         }
