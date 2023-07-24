@@ -165,7 +165,8 @@ public class Parser {
         return (Oracle) allOraclesContents.get(0).eContents()
                 .stream()
                 .filter(eObject -> eObject instanceof Oracle)
-                .collect(Collectors.toList()).get(0);
+                .collect(Collectors.toList())
+                .get(0);
     }
 
     /**
@@ -360,7 +361,7 @@ public class Parser {
             if (lastClauseTrueWithJdVar.getArrayStreamClauseFromClass() != null) {
                 return compactExpression(split(lastClauseTrueWithJdVar.getArrayStreamClauseFromClass().getIsolableVarOrClass())) + "[0]";
             } else if (lastClauseTrueWithJdVar.getArrayStreamClauseFromVar() != null) {
-                return compactExpression(split(lastClauseTrueWithJdVar.getArrayStreamClauseFromVar().getGeneralVarOrClass())) + ".get(0)";
+                return compactExpression(split(lastClauseTrueWithJdVar.getArrayStreamClauseFromVar().getGeneralVarOrClass())) + ".stream().findFirst().get()";
             } else {
                 throw new IllegalStateException("Unexpected ClauseTrue with jdVar: " + compactExpression(split(lastClauseTrueWithJdVar)));
             }

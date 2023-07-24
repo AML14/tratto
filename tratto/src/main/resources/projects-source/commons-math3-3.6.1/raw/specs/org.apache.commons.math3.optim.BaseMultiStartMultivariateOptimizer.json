@@ -1,0 +1,42 @@
+[
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.optim.BaseMultiStartMultivariateOptimizer",
+      "name": "org.apache.commons.math3.optim.BaseMultiStartMultivariateOptimizer",
+      "parameterTypes": [
+        "org.apache.commons.math3.optim.BaseMultivariateOptimizer",
+        "int",
+        "org.apache.commons.math3.random.RandomVectorGenerator"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "optimizer",
+        "starts",
+        "generator"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NotStrictlyPositiveException",
+        "description": "@throws org.apache.commons.math3.exception.NotStrictlyPositiveException starts < 1.",
+        "guard": {
+          "condition": "starts<1",
+          "description": "starts < 1."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param starts Number of starts to perform. If starts == 1. starts is the optimize(OptimizationData[]) optimize will return the same solution as the given optimizer would return.",
+        "guard": {
+          "condition": "starts==1",
+          "description": "Number of starts to perform. If starts == 1. starts is the optimize(OptimizationData[]) optimize will return the same solution as the given optimizer would return."
+        }
+      }
+    ]
+  }
+]

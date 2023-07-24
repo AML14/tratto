@@ -1,0 +1,90 @@
+[
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.analysis.differentiation.FiniteDifferencesDifferentiator",
+      "name": "org.apache.commons.math3.analysis.differentiation.FiniteDifferencesDifferentiator",
+      "parameterTypes": [
+        "int",
+        "double"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "nbPoints",
+        "stepSize"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NotPositiveException",
+        "description": "@throws org.apache.commons.math3.exception.NotPositiveException stepsize <= 0 (note that NotPositiveException extends NumberIsTooSmallException).",
+        "guard": {
+          "condition": "stepSize<=0",
+          "description": "stepsize <= 0 (note that NotPositiveException extends NumberIsTooSmallException)."
+        }
+      },
+      {
+        "exception": "org.apache.commons.math3.exception.NumberIsTooSmallException",
+        "description": "@throws org.apache.commons.math3.exception.NumberIsTooSmallException nbPoint <= 1.",
+        "guard": {
+          "condition": "nbPoints<=1",
+          "description": "nbPoint <= 1."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.analysis.differentiation.FiniteDifferencesDifferentiator",
+      "name": "org.apache.commons.math3.analysis.differentiation.FiniteDifferencesDifferentiator",
+      "parameterTypes": [
+        "int",
+        "double",
+        "double",
+        "double"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "nbPoints",
+        "stepSize",
+        "tLower",
+        "tUpper"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NotPositiveException",
+        "description": "@throws org.apache.commons.math3.exception.NotPositiveException stepsize <= 0 (note that NotPositiveException extends NumberIsTooSmallException).",
+        "guard": {
+          "condition": "stepSize<=0",
+          "description": "stepsize <= 0 (note that NotPositiveException extends NumberIsTooSmallException)."
+        }
+      },
+      {
+        "exception": "org.apache.commons.math3.exception.NumberIsTooSmallException",
+        "description": "@throws org.apache.commons.math3.exception.NumberIsTooSmallException nbPoint <= 1.",
+        "guard": {
+          "condition": "nbPoints<=1",
+          "description": "nbPoint <= 1."
+        }
+      },
+      {
+        "exception": "org.apache.commons.math3.exception.NumberIsTooLargeException",
+        "description": "@throws org.apache.commons.math3.exception.NumberIsTooLargeException stepSize * (nbPoints - 1) >= tUpper - tLower.",
+        "guard": {
+          "condition": "stepSize>=tUpper",
+          "description": "stepSize * (nbPoints - 1) >= tUpper - tLower."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  }
+]

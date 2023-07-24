@@ -57,7 +57,7 @@ public class ParserTest {
             List<Integer> flattenedErrorColumns = errorColumns
                     .stream()
                     .flatMap(List::stream)
-                    .collect(Collectors.toList());
+                    .toList();
 
             TreeMap<Integer, Integer> columnFrequencies = new TreeMap<>(frequencyMap(flattenedErrorColumns));
 
@@ -68,8 +68,11 @@ public class ParserTest {
                     .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
 
             if (!columnsToCheck.isEmpty()) {
-                fail("The following oracle contains a sequence of tokens such that the same column is marked with an error five or more times:\n"
-                        + stringOracle + "\n\n" + "Columns marked with errors three or more times:\n" + columnsToCheck);
+                fail(String.join(System.lineSeparator(),
+                                 "The following oracle contains a sequence of tokens such that the same column is marked with an error five or more times:",
+                                 stringOracle,
+                                 "Columns marked with errors three or more times:",
+                                 columnsToCheck.toString()));
             }
         }
     }
@@ -348,19 +351,19 @@ public class ParserTest {
                 Arguments.of("getLastJdVarArrayElementTest1", "", "", null),
                 Arguments.of("getLastJdVarArrayElementTest2", "jdVar", "this.someMethod();", null),
                 Arguments.of("getLastJdVarArrayElementTest3", "jdVar", "Arrays.stream(someVar).anyMatch(jdVar -> jdVar.field==null);", "someVar[0]"),
-                Arguments.of("getLastJdVarArrayElementTest4", "jdVar.field", "this.stream().allMatch(jdVar -> jdVar.field==null);", "this.get(0)"),
-                Arguments.of("getLastJdVarArrayElementTest5", "jdVar==1", "methodResultID.stream().allMatch(jdVar -> jdVar == 1) && Arrays.stream(a).anyMatch(jdVar -> jdVar==null);", "methodResultID.get(0)"),
-                Arguments.of("getLastJdVarArrayElementTest6", "jdVar!=null", "methodResultID.stream().allMatch(jdVar -> jdVar!=null) && this.stream().anyMatch(jdVar -> jdVar!=null);", "this.get(0)"),
+                Arguments.of("getLastJdVarArrayElementTest4", "jdVar.field", "this.stream().allMatch(jdVar -> jdVar.field==null);", "this.stream().findFirst().get()"),
+                Arguments.of("getLastJdVarArrayElementTest5", "jdVar==1", "methodResultID.stream().allMatch(jdVar -> jdVar == 1) && Arrays.stream(a).anyMatch(jdVar -> jdVar==null);", "methodResultID.stream().findFirst().get()"),
+                Arguments.of("getLastJdVarArrayElementTest6", "jdVar!=null", "methodResultID.stream().allMatch(jdVar -> jdVar!=null) && this.stream().anyMatch(jdVar -> jdVar!=null);", "this.stream().findFirst().get()"),
                 Arguments.of("getLastJdVarArrayElementTest7", "jdVar!=null && jdVar > 1", "Arrays.stream(a).allMatch(jdVar -> jdVar!=null && jdVar > 1) && Arrays.stream(b).anyMatch(jdVar -> jdVar!=null&&jdVar>1);", "b[0]"),
-                Arguments.of("getLastJdVarArrayElementTest8", "jdVar.field.method()", "c.stream().allMatch(jdVar -> jdVar.field.method()", "c.get(0)"),
+                Arguments.of("getLastJdVarArrayElementTest8", "jdVar.field.method()", "c.stream().allMatch(jdVar -> jdVar.field.method()", "c.stream().findFirst().get()"),
                 Arguments.of("getLastJdVarArrayElementTest9", null, "", null),
                 Arguments.of("getLastJdVarArrayElementTest10", null, "this.someMethod();", null),
                 Arguments.of("getLastJdVarArrayElementTest11", null, "Arrays.stream(someVar).anyMatch(jdVar -> jdVar.field==null);", "someVar[0]"),
-                Arguments.of("getLastJdVarArrayElementTest12", null, "this.stream().allMatch(jdVar -> jdVar.field==null);", "this.get(0)"),
+                Arguments.of("getLastJdVarArrayElementTest12", null, "this.stream().allMatch(jdVar -> jdVar.field==null);", "this.stream().findFirst().get()"),
                 Arguments.of("getLastJdVarArrayElementTest13", null, "methodResultID.stream().allMatch(jdVar -> jdVar == 1) && Arrays.stream(a).anyMatch(jdVar -> jdVar==null);", "a[0]"),
-                Arguments.of("getLastJdVarArrayElementTest14", null, "methodResultID.stream().allMatch(jdVar -> jdVar!=null) && this.stream().anyMatch(jdVar -> jdVar!=null);", "this.get(0)"),
+                Arguments.of("getLastJdVarArrayElementTest14", null, "methodResultID.stream().allMatch(jdVar -> jdVar!=null) && this.stream().anyMatch(jdVar -> jdVar!=null);", "this.stream().findFirst().get()"),
                 Arguments.of("getLastJdVarArrayElementTest15", null, "Arrays.stream(a).allMatch(jdVar -> jdVar!=null && jdVar > 1) && Arrays.stream(b).anyMatch(jdVar -> jdVar!=null&&jdVar>1);", "b[0]"),
-                Arguments.of("getLastJdVarArrayElementTest16", null, "c.stream().allMatch(jdVar -> jdVar.field.method()", "c.get(0)")
+                Arguments.of("getLastJdVarArrayElementTest16", null, "c.stream().allMatch(jdVar -> jdVar.field.method()", "c.stream().findFirst().get()")
         );
     }
 
@@ -370,8 +373,8 @@ public class ParserTest {
         List<EObject> methodsAndAttributes = parser.getAllMethodsAndAttributes(oracle);
         assertEquals(expectedMethodsAndAttributes.size(), methodsAndAttributes.size());
         assertTrue(
-                expectedMethodsAndAttributes.stream().map(StringUtils::compactExpression).collect(Collectors.toList()).containsAll(
-                        methodsAndAttributes.stream().map(eo -> compactExpression(split(eo))).collect(Collectors.toList()))
+                expectedMethodsAndAttributes.stream().map(StringUtils::compactExpression).toList().containsAll(
+                        methodsAndAttributes.stream().map(eo -> compactExpression(split(eo))).toList())
         );
     }
 

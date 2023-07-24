@@ -313,7 +313,7 @@
         "exception": "java.lang.NullPointerException",
         "description": "@throws java.lang.NullPointerException if any element in the arrays is null.",
         "guard": {
-          "condition": "java.util.Arrays.stream(predicates).anyMatch(e -> e==null) || java.util.Arrays.stream(closures).anyMatch(e -> e==null)",
+          "condition": "Arrays.stream(predicates).anyMatch(jdVar -> jdVar==null) || Arrays.stream(closures).anyMatch(jdVar -> jdVar==null)",
           "description": "if any element in the arrays is null."
         }
       },
@@ -376,7 +376,7 @@
         "exception": "java.lang.NullPointerException",
         "description": "@throws java.lang.NullPointerException if any element in the arrays is null.",
         "guard": {
-          "condition": "java.util.Arrays.stream(predicates).anyMatch(e -> e==null) || java.util.Arrays.stream(closures).anyMatch(e -> e==null)",
+          "condition": "Arrays.stream(predicates).anyMatch(jdVar -> jdVar==null) || Arrays.stream(closures).anyMatch(jdVar -> jdVar==null)",
           "description": "if any element in the arrays is null."
         }
       },
@@ -435,7 +435,7 @@
         "exception": "java.lang.NullPointerException",
         "description": "@throws java.lang.NullPointerException if any closure in the map is null.",
         "guard": {
-          "condition": "predicatesAndClosures.values().stream().anyMatch(e -> e==null)",
+          "condition": "predicatesAndClosures.containsValue(null)",
           "description": "if any closure in the map is null."
         }
       },
@@ -479,7 +479,7 @@
         "exception": "java.lang.NullPointerException",
         "description": "@throws java.lang.NullPointerException if any closure in the map is null.",
         "guard": {
-          "condition": "objectsAndClosures.values().stream().anyMatch(e -> e==null)",
+          "condition": "objectsAndClosures.containsValue(null)",
           "description": "if any closure in the map is null."
         }
       },

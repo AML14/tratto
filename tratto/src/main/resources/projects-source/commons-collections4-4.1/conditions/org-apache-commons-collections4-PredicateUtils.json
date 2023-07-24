@@ -1,0 +1,876 @@
+[
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.PredicateUtils",
+      "name": "instanceofPredicate",
+      "parameterTypes": [
+        "java.lang.Class"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "type"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the class is null.",
+        "guard": {
+          "condition": "type==null",
+          "description": "the class is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param type the type to check for. type is not null.",
+        "guard": {
+          "condition": "(type==null) == false",
+          "description": "the type to check for. type is not null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.PredicateUtils",
+      "name": "invokerPredicate",
+      "parameterTypes": [
+        "java.lang.String"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "methodName"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the methodName is null.",
+        "guard": {
+          "condition": "methodName==null",
+          "description": "the methodName is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param methodName the method name to call on the input object. methodName is not null.",
+        "guard": {
+          "condition": "(methodName==null) == false",
+          "description": "the method name to call on the input object. methodName is not null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.PredicateUtils",
+      "name": "invokerPredicate",
+      "parameterTypes": [
+        "java.lang.String",
+        "[Ljava.lang.Class;",
+        "[Ljava.lang.Object;"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "methodName",
+        "paramTypes",
+        "args"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the method name is null.",
+        "guard": {
+          "condition": "methodName==null",
+          "description": "the method name is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param methodName the method name to call on the input object. methodName is not null.",
+        "guard": {
+          "condition": "(methodName==null) == false",
+          "description": "the method name to call on the input object. methodName is not null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.PredicateUtils",
+      "name": "andPredicate",
+      "parameterTypes": [
+        "org.apache.commons.collections4.Predicate",
+        "org.apache.commons.collections4.Predicate"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "predicate1",
+        "predicate2"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException either predicate is null.",
+        "guard": {
+          "condition": "predicate1==null || predicate2==null",
+          "description": "either predicate is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param predicate1 the first predicate. predicate1 is not null.",
+        "guard": {
+          "condition": "(predicate1==null) == false",
+          "description": "the first predicate. predicate1 is not null."
+        }
+      },
+      {
+        "description": "@param predicate2 the second predicate. predicate2 is not null.",
+        "guard": {
+          "condition": "(predicate2==null) == false",
+          "description": "the second predicate. predicate2 is not null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.PredicateUtils",
+      "name": "allPredicate",
+      "parameterTypes": [
+        "[Lorg.apache.commons.collections4.Predicate;"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "predicates"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the predicates array is null.",
+        "guard": {
+          "condition": "predicates==null",
+          "description": "the predicates array is null."
+        }
+      },
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException any predicate in the array is null.",
+        "guard": {
+          "condition": "Arrays.stream(predicates).anyMatch(jdVar -> jdVar==null)",
+          "description": "any predicate in the array is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param predicates an array of predicates to check. predicates is not null.",
+        "guard": {
+          "condition": "(predicates==null) == false",
+          "description": "an array of predicates to check. predicates is not null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.PredicateUtils",
+      "name": "allPredicate",
+      "parameterTypes": [
+        "java.util.Collection"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "predicates"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the predicates collection is null.",
+        "guard": {
+          "condition": "predicates==null",
+          "description": "the predicates collection is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param predicates a collection of predicates to check. predicates is not null.",
+        "guard": {
+          "condition": "(predicates==null) == false",
+          "description": "a collection of predicates to check. predicates is not null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.PredicateUtils",
+      "name": "orPredicate",
+      "parameterTypes": [
+        "org.apache.commons.collections4.Predicate",
+        "org.apache.commons.collections4.Predicate"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "predicate1",
+        "predicate2"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException either predicate is null.",
+        "guard": {
+          "condition": "predicate1==null || predicate2==null",
+          "description": "either predicate is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param predicate1 the first predicate. predicate1 is not null.",
+        "guard": {
+          "condition": "(predicate1==null) == false",
+          "description": "the first predicate. predicate1 is not null."
+        }
+      },
+      {
+        "description": "@param predicate2 the second predicate. predicate2 is not null.",
+        "guard": {
+          "condition": "(predicate2==null) == false",
+          "description": "the second predicate. predicate2 is not null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.PredicateUtils",
+      "name": "anyPredicate",
+      "parameterTypes": [
+        "[Lorg.apache.commons.collections4.Predicate;"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "predicates"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the predicates array is null.",
+        "guard": {
+          "condition": "predicates==null",
+          "description": "the predicates array is null."
+        }
+      },
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException any predicate in the array is null.",
+        "guard": {
+          "condition": "Arrays.stream(predicates).anyMatch(jdVar -> jdVar==null)",
+          "description": "any predicate in the array is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param predicates an array of predicates to check. predicates is not null.",
+        "guard": {
+          "condition": "(predicates==null) == false",
+          "description": "an array of predicates to check. predicates is not null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.PredicateUtils",
+      "name": "anyPredicate",
+      "parameterTypes": [
+        "java.util.Collection"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "predicates"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the predicates collection is null.",
+        "guard": {
+          "condition": "predicates==null",
+          "description": "the predicates collection is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param predicates a collection of predicates to check. predicates is not null.",
+        "guard": {
+          "condition": "(predicates==null) == false",
+          "description": "a collection of predicates to check. predicates is not null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.PredicateUtils",
+      "name": "eitherPredicate",
+      "parameterTypes": [
+        "org.apache.commons.collections4.Predicate",
+        "org.apache.commons.collections4.Predicate"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "predicate1",
+        "predicate2"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException either predicate is null.",
+        "guard": {
+          "condition": "predicate1==null || predicate2==null",
+          "description": "either predicate is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param predicate1 the first predicate. predicate1 is not null.",
+        "guard": {
+          "condition": "(predicate1==null) == false",
+          "description": "the first predicate. predicate1 is not null."
+        }
+      },
+      {
+        "description": "@param predicate2 the second predicate. predicate2 is not null.",
+        "guard": {
+          "condition": "(predicate2==null) == false",
+          "description": "the second predicate. predicate2 is not null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.PredicateUtils",
+      "name": "onePredicate",
+      "parameterTypes": [
+        "[Lorg.apache.commons.collections4.Predicate;"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "predicates"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the predicates array is null.",
+        "guard": {
+          "condition": "predicates==null",
+          "description": "the predicates array is null."
+        }
+      },
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException any predicate in the array is null.",
+        "guard": {
+          "condition": "Arrays.stream(predicates).anyMatch(jdVar -> jdVar==null)",
+          "description": "any predicate in the array is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param predicates an array of predicates to check. predicates is not null.",
+        "guard": {
+          "condition": "(predicates==null) == false",
+          "description": "an array of predicates to check. predicates is not null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.PredicateUtils",
+      "name": "onePredicate",
+      "parameterTypes": [
+        "java.util.Collection"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "predicates"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the predicates collection is null.",
+        "guard": {
+          "condition": "predicates==null",
+          "description": "the predicates collection is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param predicates a collection of predicates to check. predicates is not null.",
+        "guard": {
+          "condition": "(predicates==null) == false",
+          "description": "a collection of predicates to check. predicates is not null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.PredicateUtils",
+      "name": "neitherPredicate",
+      "parameterTypes": [
+        "org.apache.commons.collections4.Predicate",
+        "org.apache.commons.collections4.Predicate"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "predicate1",
+        "predicate2"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException either predicate is null.",
+        "guard": {
+          "condition": "predicate1==null || predicate2==null",
+          "description": "either predicate is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param predicate1 the first predicate. predicate1 is not null.",
+        "guard": {
+          "condition": "(predicate1==null) == false",
+          "description": "the first predicate. predicate1 is not null."
+        }
+      },
+      {
+        "description": "@param predicate2 the second predicate. predicate2 is not null.",
+        "guard": {
+          "condition": "(predicate2==null) == false",
+          "description": "the second predicate. predicate2 is not null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.PredicateUtils",
+      "name": "nonePredicate",
+      "parameterTypes": [
+        "[Lorg.apache.commons.collections4.Predicate;"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "predicates"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the predicates array is null.",
+        "guard": {
+          "condition": "predicates==null",
+          "description": "the predicates array is null."
+        }
+      },
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException any predicate in the array is null.",
+        "guard": {
+          "condition": "Arrays.stream(predicates).anyMatch(jdVar -> jdVar==null)",
+          "description": "any predicate in the array is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param predicates an array of predicates to check. predicates is not null.",
+        "guard": {
+          "condition": "(predicates==null) == false",
+          "description": "an array of predicates to check. predicates is not null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.PredicateUtils",
+      "name": "nonePredicate",
+      "parameterTypes": [
+        "java.util.Collection"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "predicates"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the predicates collection is null.",
+        "guard": {
+          "condition": "predicates==null",
+          "description": "the predicates collection is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param predicates a collection of predicates to check. predicates is not null.",
+        "guard": {
+          "condition": "(predicates==null) == false",
+          "description": "a collection of predicates to check. predicates is not null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.PredicateUtils",
+      "name": "notPredicate",
+      "parameterTypes": [
+        "org.apache.commons.collections4.Predicate"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "predicate"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the predicate is null.",
+        "guard": {
+          "condition": "predicate==null",
+          "description": "the predicate is null."
+        }
+      }
+    ],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID.equals(predicate)",
+          "description": "the not predicate."
+        },
+        "description": "the not predicate.",
+        "guard": {
+          "condition": "true",
+          "description": "the not predicate."
+        }
+      }
+    ],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.PredicateUtils",
+      "name": "asPredicate",
+      "parameterTypes": [
+        "org.apache.commons.collections4.Transformer"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "transformer"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the transformer is null.",
+        "guard": {
+          "condition": "transformer==null",
+          "description": "the transformer is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param transformer the transformer to wrap. transformer is not null.",
+        "guard": {
+          "condition": "(transformer==null) == false",
+          "description": "the transformer to wrap. transformer is not null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.PredicateUtils",
+      "name": "nullIsExceptionPredicate",
+      "parameterTypes": [
+        "org.apache.commons.collections4.Predicate"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "predicate"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the predicate is null.",
+        "guard": {
+          "condition": "predicate==null",
+          "description": "the predicate is null."
+        }
+      }
+    ],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID.equals(predicate)",
+          "description": "the predicate."
+        },
+        "description": "the predicate.",
+        "guard": {
+          "condition": "true",
+          "description": "the predicate."
+        }
+      }
+    ],
+    "pre": [
+      {
+        "description": "@param predicate the predicate to wrap. predicate is not null.",
+        "guard": {
+          "condition": "(predicate==null) == false",
+          "description": "the predicate to wrap. predicate is not null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.PredicateUtils",
+      "name": "nullIsFalsePredicate",
+      "parameterTypes": [
+        "org.apache.commons.collections4.Predicate"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "predicate"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the predicate is null.",
+        "guard": {
+          "condition": "predicate==null",
+          "description": "the predicate is null."
+        }
+      }
+    ],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID.equals(predicate)",
+          "description": "the predicate."
+        },
+        "description": "the predicate.",
+        "guard": {
+          "condition": "true",
+          "description": "the predicate."
+        }
+      }
+    ],
+    "pre": [
+      {
+        "description": "@param predicate the predicate to wrap. predicate is not null.",
+        "guard": {
+          "condition": "(predicate==null) == false",
+          "description": "the predicate to wrap. predicate is not null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.PredicateUtils",
+      "name": "nullIsTruePredicate",
+      "parameterTypes": [
+        "org.apache.commons.collections4.Predicate"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "predicate"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the predicate is null.",
+        "guard": {
+          "condition": "predicate==null",
+          "description": "the predicate is null."
+        }
+      }
+    ],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID.equals(predicate)",
+          "description": "the predicate."
+        },
+        "description": "the predicate.",
+        "guard": {
+          "condition": "true",
+          "description": "the predicate."
+        }
+      }
+    ],
+    "pre": [
+      {
+        "description": "@param predicate the predicate to wrap. predicate is not null.",
+        "guard": {
+          "condition": "(predicate==null) == false",
+          "description": "the predicate to wrap. predicate is not null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.PredicateUtils",
+      "name": "transformedPredicate",
+      "parameterTypes": [
+        "org.apache.commons.collections4.Transformer",
+        "org.apache.commons.collections4.Predicate"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "transformer",
+        "predicate"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the transformer or the predicate is null.",
+        "guard": {
+          "condition": "transformer==null || predicate==null",
+          "description": "the transformer or the predicate is null."
+        }
+      }
+    ],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID.equals(predicate)",
+          "description": "the predicate."
+        },
+        "description": "the predicate.",
+        "guard": {
+          "condition": "true",
+          "description": "the predicate."
+        }
+      }
+    ],
+    "pre": []
+  }
+]

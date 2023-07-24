@@ -1,0 +1,70 @@
+[
+  {
+    "operation": {
+      "classname": "com.google.common.util.concurrent.TimeLimiter",
+      "name": "newProxy",
+      "parameterTypes": [
+        "java.lang.Object",
+        "java.lang.Class",
+        "long",
+        "java.util.concurrent.TimeUnit"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "target",
+        "interfaceType",
+        "timeoutDuration",
+        "timeoutUnit"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.IllegalArgumentException",
+        "description": "@throws java.lang.IllegalArgumentException interfaceType is a regular class enum or annotation type rather than an interface.",
+        "guard": {
+          "condition": "(interfaceType==null)==false && interfaceType.isEnum()",
+          "description": "interfaceType is a regular class enum or annotation type rather than an interface."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "com.google.common.util.concurrent.TimeLimiter",
+      "name": "callWithTimeout",
+      "parameterTypes": [
+        "java.util.concurrent.Callable",
+        "long",
+        "java.util.concurrent.TimeUnit",
+        "boolean"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "callable",
+        "timeoutDuration",
+        "timeoutUnit",
+        "interruptible"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.InterruptedException",
+        "description": "@throws java.lang.InterruptedException interruptible is true and our thread is interrupted during execution.",
+        "guard": {
+          "condition": "interruptible==true",
+          "description": "interruptible is true and our thread is interrupted during execution."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  }
+]

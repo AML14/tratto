@@ -21,7 +21,7 @@ class TrattoGrammarParsingTest {
 	@Test
 	def void loadModel() {
 		val result = parseHelper.parse('''
-			Hello Xtext!
+			this.var.method() >= arg1+3 && Arrays.stream(arg2).anyMatch(jdVar -> jdVar < 5.1) || ((arg3.stream().allMatch(jdVar -> jdVar.equals("hello", 3)))) ? (methodResultID instanceof SomeClass)==false : someVar.someMethod(SomeClass.class, null);
 		''')
 		Assert.assertNotNull(result)
 		val errors = result.eResource.errors
