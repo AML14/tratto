@@ -85,6 +85,29 @@ public class FileUtils {
     }
 
     /**
+     * Recursively deletes all files and subdirectories in a given path.
+     *
+     * @param dirPath the root directory
+     */
+    public static void deleteDirectory(Path dirPath) {
+        try (Stream<Path> walk = Files.walk(dirPath)) {
+            walk
+                    .filter(Files::isDirectory)
+                    .forEach(p -> {
+                        try {
+                            Files.delete(p);
+                        } catch (IOException e) {
+                            throw new Error(
+                                    "Error when deleting the file " + p + " in the directory " + dirPath, e
+                            );
+                        }
+                    });
+        } catch (IOException e) {
+            throw new Error("Error when trying to delete the directory " + dirPath, e);
+        }
+    }
+
+    /**
      * Writes {@code content} to {@code path} in JSON format. Creates a new
      * file and parent directories if necessary. If file already exists,
      * overrides any original content.
@@ -137,47 +160,6 @@ public class FileUtils {
     }
 
     /**
-     * Gets all Java files in a given directory (and subdirectories).
-     *
-     * @param dir a directory
-     * @return all Java files (as Path objects) in {@code dir}
-     * @throws Error if unable to collect files from {@code dir}
-     */
-    public static List<Path> getAllJavaFilesFromDirectory(Path dir) {
-        try (Stream<Path> walk = Files.walk(dir)) {
-            return walk
-                    .filter(p -> p.getFileName().toString().endsWith(".java"))
-                    .collect(Collectors.toList());
-        } catch (IOException e) {
-            // catch exception to avoid resource leak.
-            throw new Error("Error in collecting all files from " + dir, e);
-        }
-    }
-
-    /**
-     * Recursively deletes all files and subdirectories in a given path.
-     *
-     * @param dirPath the root directory
-     */
-    public static void deleteDirectory(Path dirPath) {
-        try (Stream<Path> walk = Files.walk(dirPath)) {
-            walk
-                    .filter(Files::isDirectory)
-                    .forEach(p -> {
-                        try {
-                            Files.delete(p);
-                        } catch (IOException e) {
-                            throw new Error(
-                                    "Error when deleting the file " + p + " in the directory " + dirPath, e
-                            );
-                        }
-                    });
-        } catch (IOException e) {
-            throw new Error("Error when trying to delete the directory " + dirPath, e);
-        }
-    }
-
-    /**
      * Recursively moves all files in a given directory to another directory.
      *
      * @param source the directory where the files are located
@@ -211,5 +193,23 @@ public class FileUtils {
 //        } catch (IOException e) {
 //            throw new Error("Error when moving files from " + source + " to " + destination, e);
 //        }
+    }
+
+    /**
+     * Gets all Java files in a given directory (and subdirectories).
+     *
+     * @param dir a directory
+     * @return all Java files (as Path objects) in {@code dir}
+     * @throws Error if unable to collect files from {@code dir}
+     */
+    public static List<Path> getAllJavaFilesFromDirectory(Path dir) {
+        try (Stream<Path> walk = Files.walk(dir)) {
+            return walk
+                    .filter(p -> p.getFileName().toString().endsWith(".java"))
+                    .collect(Collectors.toList());
+        } catch (IOException e) {
+            // catch exception to avoid resource leak.
+            throw new Error("Error in collecting all files from " + dir, e);
+        }
     }
 }
