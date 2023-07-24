@@ -1,4 +1,4 @@
-package star.tratto.identifiers;
+package star.tratto.data;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -18,10 +18,9 @@ public enum IOPath {
     ARRAY_METHODS(IOPath.REPOS.getPath().resolve("array_methods.json")),
     IGNORE_FILE(IOPath.REPOS.getPath().resolve("ignore_file.json")),
     INPUT_PROJECTS(IOPath.REPOS.getPath().resolve("input_projects.json")),
-    NON_VARIABLE_TOKENS(IOPath.REPOS.getPath().resolve("non_variable_tokens")),
-    ORACLE_DATAPOINTS(IOPath.REPOS.getPath().resolve("oracle_datapoints")),
-    TOKENS_GENERAL_VALUES(IOPath.REPOS.getPath().resolve("tokens_general_values")),
-    TOKENS_GRAMMAR(IOPath.REPOS.getPath().resolve("tokens_grammar"));
+    NON_VARIABLE_TOKENS(IOPath.REPOS.getPath().resolve("non_variable_tokens.json")),
+    TOKENS_GENERAL_VALUES(IOPath.REPOS.getPath().resolve("tokens_general_values.json")),
+    TOKENS_GRAMMAR(IOPath.REPOS.getPath().resolve("tokens_grammar.json"));
 
     private final Path path;
 
