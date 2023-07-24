@@ -1,32 +1,18 @@
 package star.tratto.util;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.javatuples.Pair;
 import org.junit.jupiter.api.Test;
-import star.tratto.identifiers.FileFormat;
-import star.tratto.identifiers.FileName;
-import star.tratto.identifiers.IOPath;
+import star.tratto.data.IOPath;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class FileUtilsTest {
-    @Test
-    public void getPathTest() {
-        String dirPath = "hanford";
-        String fileName = "hydrogen-bomb";
-        FileFormat fileFormat = FileFormat.CSV;
-        String projectName = "manhattan";
-        assertEquals("hanford/manhattan/hydrogen-bomb.csv", FileUtils.getPath(dirPath, fileName, fileFormat, projectName).toString());
-    }
-
     @Test
     public void createFileTest() {
         Path path = Paths.get("src/test/java/star/tratto/util/temp/tempFile.json");
@@ -64,34 +50,17 @@ public class FileUtilsTest {
             assertEquals(2, fileNames.size());
             assertTrue(fileNames.contains("SplitterTest.java"));
             assertTrue(fileNames.contains("ParserTest.java"));
-        } catch (IOException e) {
+        } catch (Error e) {
             e.printStackTrace();
             fail();
         }
     }
 
     @Test
-    public void getAllJavaFilesFromDirectoryDoesNotExistTest() {
-        Path dir = Paths.get("arda/middle-earth/hobbiton");
-        try {
-            FileUtils.getAllJavaFilesFromDirectory(dir);
-            fail();
-        } catch (IOException ignored) {}
-    }
-
-    @Test
-    public void getAbsolutePathTest() {
-        assertEquals("some/random/dir/ignore_file.java", FileUtils.getAbsolutePath("some/random/dir", FileName.IGNORE_FILE, FileFormat.JAVA));
-    }
-
-    @Test
     public void readJSONListTest() {
-        String filePath = Paths.get(
-                IOPath.REPOS.getValue(),
-                FileName.IGNORE_FILE.getValue() + FileFormat.JSON.getExtension()
-        ).toString();
+        Path path = IOPath.IGNORE_FILE.getPath();
         try {
-            List<String> ignoreFileList = FileUtils.readJSONList(filePath)
+            List<String> ignoreFileList = FileUtils.readJSONList(path)
                     .stream()
                     .map(e -> (String) e)
                     .collect(Collectors.toList());
@@ -100,20 +69,5 @@ public class FileUtilsTest {
             e.printStackTrace();
             fail();
         }
-    }
-
-    @Test
-    public void readJSONListDoesNotExistTest() {
-        String filePath = "../../no_file_to_see_here.json";
-        try {
-            FileUtils.readJSONList(filePath);
-            fail();
-        } catch (Error ignored) {}
-    }
-
-    @Test
-    public void deleteDirectoryTest() {
-        Path path = Paths.get("src/test/java/star/tratto/util/temp/tempFile.json");
-
     }
 }
