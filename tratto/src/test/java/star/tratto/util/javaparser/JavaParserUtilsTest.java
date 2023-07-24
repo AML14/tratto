@@ -22,6 +22,7 @@ import star.tratto.exceptions.JPClassNotFoundException;
 import star.tratto.exceptions.PackageDeclarationNotFoundException;
 import star.tratto.exceptions.ResolvedTypeNotFound;
 
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -515,8 +516,8 @@ public class JavaParserUtilsTest {
 
     @Test
     public void getCompilationUnitFromFileTest() {
-        String projectsPath = Paths.get("src", "main", "java", "star", "tratto", "data", "OracleType.java").toString();
-        Optional<CompilationUnit> optionalCu = getCompilationUnitFromFile(projectsPath);
+        Path projectsPath = Paths.get("src", "main", "java", "star", "tratto", "data", "OracleType.java");
+        Optional<CompilationUnit> optionalCu = getCompilationUnit(projectsPath);
         assertTrue(optionalCu.isPresent());
         CompilationUnit cu = optionalCu.get();
         try {

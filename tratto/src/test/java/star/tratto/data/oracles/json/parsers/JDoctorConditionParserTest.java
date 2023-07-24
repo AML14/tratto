@@ -3,9 +3,7 @@ package star.tratto.data.oracles.json.parsers;
 import org.junit.jupiter.api.Test;
 import star.tratto.data.oracles.JDoctorCondition;
 import star.tratto.data.oracles.Project;
-import star.tratto.identifiers.FileFormat;
-import star.tratto.identifiers.FileName;
-import star.tratto.identifiers.IOPath;
+import star.tratto.data.IOPath;
 import star.tratto.util.FileUtils;
 
 import java.util.ArrayList;
@@ -18,11 +16,7 @@ public class JDoctorConditionParserTest {
     @Test
     public void parseJDocConditionsTest() {
         // get actual conditions from
-        List<Project> projects = ProjectParser.initialize(FileUtils.getAbsolutePath(
-                IOPath.REPOS.getValue(),
-                FileName.INPUT_PROJECTS,
-                FileFormat.JSON
-        ));
+        List<Project> projects = ProjectParser.initialize(IOPath.INPUT_PROJECTS.getPath());
         JDoctorConditionParser parser = new JDoctorConditionParser();
         Project gsCoreProject = projects.get(1);
         List<JDoctorCondition> actual = parser.parseJDoctorConditions(gsCoreProject);
