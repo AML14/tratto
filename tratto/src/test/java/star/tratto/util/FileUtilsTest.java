@@ -1,5 +1,7 @@
 package star.tratto.util;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.javatuples.Pair;
 import org.junit.jupiter.api.Test;
 import star.tratto.identifiers.FileFormat;
 import star.tratto.identifiers.FileName;
@@ -10,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -106,5 +109,11 @@ public class FileUtilsTest {
             FileUtils.readJSONList(filePath);
             fail();
         } catch (Error ignored) {}
+    }
+
+    @Test
+    public void deleteDirectoryTest() {
+        Path path = Paths.get("src/test/java/star/tratto/util/temp/tempFile.json");
+
     }
 }
