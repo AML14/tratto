@@ -51,6 +51,33 @@ public class FileUtilsTest {
     }
 
     @Test
+    public void copyTest() {
+        try {
+            Path root = setupFileEnvironment();
+            Path other = root.getParent().resolve("otherTemp");
+            FileUtils.copy(root, other);
+            FileUtils.deleteDirectory(other);
+            FileUtils.deleteDirectory(root);
+        } catch (Error e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
+    public void moveTest() {
+        try {
+            Path root = setupFileEnvironment();
+            Path other = root.getParent().resolve("otherTemp");
+            FileUtils.move(root, other);
+            FileUtils.deleteDirectory(other);
+        } catch (Error e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
     public void writeTest() {
         Path path = Paths.get("src/test/java/star/tratto/util/temp/tempFile.json");
         try {

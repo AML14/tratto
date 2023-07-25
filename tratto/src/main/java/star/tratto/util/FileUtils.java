@@ -68,7 +68,7 @@ public class FileUtils {
                             } else {
                                 Files.delete(p);
                             }
-                        } catch (Exception e) {
+                        } catch (IOException e) {
                             throw new Error("Error when trying to delete the file " + p, e);
                         }
                     });
@@ -77,6 +77,82 @@ public class FileUtils {
         } catch (IOException e) {
             throw new Error("Error when trying to delete the directory " + dirPath, e);
         }
+    }
+
+    /**
+     * @param root a root directory
+     * @param extension a file/subdirectory in the given root directory
+     * @return the path of {@code extension}, with {@code root} removed
+     * @throws IllegalArgumentException if {@code extension} is not a child
+     * of {@code root}
+     */
+    private static Path getPathSuffix(Path root, Path extension) {
+        if (!extension.startsWith(root)) {
+            throw new IllegalArgumentException(extension + " must be an extension of " + root);
+        }
+        return extension.subpath(root.getNameCount(), extension.getNameCount());
+    }
+
+    /**
+     * Returns the relative path of the target file when moved from the source
+     * directory to the new destination directory.
+     *
+     * @param source
+     * @param destination
+     * @param target
+     * @return the relative path of target in the destination directory. For
+     * example, given {@code source = [prefix]/[source]},
+     * {@code destination = [otherPrefix]/[destination]}, and
+     * {@code target = [prefix]/[source]/[suffix]/[filename]}, we output,
+     * {@code relativePath = [otherPrefix]/[destination]/[suffix]/[filename]}
+     */
+    private static Path getRelativePath(Path source, Path destination, Path target) {
+        if (source.equals(target)) return destination;
+        Path suffix = getPathSuffix(source, target);
+        return destination.resolve(suffix);
+    }
+
+    /**
+     * Recursively copies all files in a given directory to another directory.
+     *
+     * @param source the directory where the files are located
+     * @param destination the directory where the files will be copied to
+     * @throws Error if a file in source already exists in destination
+     */
+    public static void copy(Path source, Path destination) {
+        if (!Files.exists(source)) throw new Error("Directory " + source + " is not found");
+        if (!Files.exists(destination)) createDirectories(destination);
+        try (Stream<Path> walk = Files.walk(source)) {
+            walk
+                    .forEach(p -> {
+                        Path relativePath = getRelativePath(source, destination, p);
+                        try {
+                            if (Files.isDirectory(p)) {
+                                createDirectories(relativePath);
+                            } else {
+                                Files.createFile(relativePath);
+                            }
+                        } catch (IOException e) {
+                            throw new Error("Error when trying to move the file " + p, e);
+                        }
+                    });
+        } catch (IOException e) {
+            throw new Error("Error when trying to copy " + source + " to " + destination, e);
+        }
+    }
+
+    /**
+     * Recursively moves all files in a given directory to another directory.
+     *
+     * @param source the directory where the files are located
+     * @param destination the directory where the files will be moved to
+     * @throws Error if a file in source already exists in destination
+     */
+    public static void move(Path source, Path destination) {
+        if (!Files.exists(source)) throw new Error("Directory " + source + " is not found");
+        if (!Files.exists(destination)) createDirectories(destination);
+        copy(source, destination);
+        deleteDirectory(source);
     }
 
     /**
@@ -150,30 +226,6 @@ public class FileUtils {
             );
         } catch (IOException e) {
             throw new Error("Error in processing the JSON file " + jsonPath, e);
-        }
-    }
-
-    /**
-     * Recursively moves all files in a given directory to another directory.
-     *
-     * @param source the directory where the files are located
-     * @param destination the directory where the files will be moved to
-     */
-    public static void move(Path source, Path destination) {
-        if (!Files.exists(source)) throw new Error("Directory" + source + " is not found");
-        if (!Files.exists(destination)) createDirectories(destination);
-        try (Stream<Path> walk = Files.walk(source)) {
-            walk
-                    .filter(Files::isDirectory)
-                    .forEach(p -> {
-                        try {
-                            Files.move(p, destination);
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    });
-        } catch (IOException e) {
-            throw new Error("Error when moving files from " + source + " to " + destination, e);
         }
     }
 
