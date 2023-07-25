@@ -182,28 +182,6 @@ public class FileUtils {
     }
 
     /**
-     * Writes {@code contentChunks} to individual files in JSON format.
-     * Creates new files and parent directories if necessary. If files already
-     * exists, overrides any previous content.
-     *
-     * @param path base path for all chunks. The i-th chunk will be written to
-     *             the path "[path]_i.json".
-     * @param contentChunks objects to write
-     * @param <T> the type of each chunk
-     * @throws Error if unable to create files/directories or unable to write
-     * content to file
-     * @see FileUtils#write
-     */
-    public static <T> void writeChunks(Path path, List<T> contentChunks) {
-        for (int i = 0; i < contentChunks.size(); i++) {
-            T chunk = contentChunks.get(i);
-            String chunkFileName = String.format("%s_%d.json", path.getFileName().toString().replace(".json", ""), i);
-            Path chunkPath = path.getParent().resolve(chunkFileName);
-            FileUtils.write(chunkPath, chunk);
-        }
-    }
-
-    /**
      * @param path a file
      * @return the file contents as a String
      */

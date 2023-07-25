@@ -91,21 +91,6 @@ public class FileUtilsTest {
     }
 
     @Test
-    public void writeChunksTest() {
-        Path path = Paths.get("src/test/java/star/tratto/util/temp/tempFile.json");
-        try {
-            FileUtils.writeChunks(path, List.of("input1", "input2", "input3"));
-            Files.delete(Paths.get("src/test/java/star/tratto/util/temp/tempFile_0.json"));
-            Files.delete(Paths.get("src/test/java/star/tratto/util/temp/tempFile_1.json"));
-            Files.delete(Paths.get("src/test/java/star/tratto/util/temp/tempFile_2.json"));
-            Files.delete(path.getParent());
-        } catch (Exception e) {
-            e.printStackTrace();
-            fail();
-        }
-    }
-
-    @Test
     public void getAllJavaFilesFromDirectoryTest() {
         Path dir = Paths.get("src/test/java/star/tratto/oraclegrammar/custom");
         try {
