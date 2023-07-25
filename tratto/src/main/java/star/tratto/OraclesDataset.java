@@ -34,13 +34,13 @@ public class OraclesDataset {
     }
 
     /**
-     * Writes {@code contentChunks} to individual files in JSON format.
-     * Creates new files and parent directories if necessary. If files already
-     * exists, overrides any previous content.
+     * Writes {@code oracleDPChunks} to individual JSON files. Creates new
+     * files and parent directories if necessary. If files already exist,
+     * overrides any previous content.
      *
      * @param path base path for all chunks. The i-th chunk will be written to
      *             the path "[path]_i.json".
-     * @param oracleDPChunks objects to write
+     * @param oracleDPChunks oracle datapoints to write
      * @throws Error if unable to create files/directories or unable to write
      * content to file
      * @see FileUtils#write
