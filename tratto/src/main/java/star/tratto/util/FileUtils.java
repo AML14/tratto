@@ -21,6 +21,7 @@ public class FileUtils {
      * nothing.
      *
      * @param path a path
+     * @throws Error if an error occurs while creating the directory
      */
     public static void createDirectories(Path path) {
         try {
@@ -52,21 +53,27 @@ public class FileUtils {
     /**
      * Recursively deletes all files and subdirectories in a given path.
      *
-     * @param dirPath the root directory
+     * @param dirPath a root directory
+     * @throws Error if an error occurs while traversing or deleting files
      */
     public static void deleteDirectory(Path dirPath) {
         try (Stream<Path> walk = Files.walk(dirPath)) {
             walk
-                    .filter(Files::isDirectory)
+                    .filter(p -> !p.equals(dirPath))
                     .forEach(p -> {
                         try {
-                            Files.delete(p);
-                        } catch (IOException e) {
-                            throw new Error(
-                                    "Error when deleting the file " + p + " in the directory " + dirPath, e
-                            );
+                            if (Files.isDirectory(p)) {
+                                // empty directory before deleting
+                                deleteDirectory(p);
+                            } else {
+                                Files.delete(p);
+                            }
+                        } catch (Exception e) {
+                            throw new Error("Error when trying to delete the file " + p, e);
                         }
                     });
+            // delete root directory last
+            Files.delete(dirPath);
         } catch (IOException e) {
             throw new Error("Error when trying to delete the directory " + dirPath, e);
         }
@@ -168,18 +175,6 @@ public class FileUtils {
         } catch (IOException e) {
             throw new Error("Error when moving files from " + source + " to " + destination, e);
         }
-
-//        try (Stream<Path> paths = Files.list(source)) {
-//            for (Path path : paths.toList()) {
-//                if (Files.isDirectory(path)) {
-//                    move(path.toAbsolutePath(), destination);
-//                } else {
-//                    Files.move(source, destination);
-//                }
-//            }
-//        } catch (IOException e) {
-//            throw new Error("Error when moving files from " + source + " to " + destination, e);
-//        }
     }
 
     /**

@@ -13,6 +13,19 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class FileUtilsTest {
+    private Path setupFileEnvironment() {
+        Path root = Paths.get("src/test/java/star/tratto/util/temp");
+        FileUtils.createDirectories(root);
+        FileUtils.createDirectories(root.resolve("other1"));
+        FileUtils.createDirectories(root.resolve("other2"));
+        FileUtils.createDirectories(root.resolve("other3"));
+        FileUtils.createFile(root.resolve("other1/tempFile_a.json"));
+        FileUtils.createFile(root.resolve("other1/tempFile_b.json"));
+        FileUtils.createFile(root.resolve("other1/nested_directory/tempFile_secret.json"));
+        FileUtils.createFile(root.resolve("other3/bonus.txt"));
+        return root;
+    }
+
     @Test
     public void createFileTest() {
         Path path = Paths.get("src/test/java/star/tratto/util/temp/tempFile.json");
@@ -21,6 +34,17 @@ public class FileUtilsTest {
             Files.delete(path);
             Files.delete(path.getParent());
         } catch (IOException e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
+    public void deleteDirectoryTest() {
+        Path root = setupFileEnvironment();
+        try {
+            FileUtils.deleteDirectory(root);
+        } catch (Error e) {
             e.printStackTrace();
             fail();
         }
