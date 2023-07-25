@@ -6,85 +6,53 @@ import star.tratto.data.oracles.Project;
 import star.tratto.data.oracles.ProjectOracleGenerator;
 import star.tratto.data.oracles.json.parsers.JDoctorConditionParser;
 import star.tratto.data.oracles.json.parsers.ProjectParser;
-import star.tratto.identifiers.FileFormat;
-import star.tratto.identifiers.FileName;
-import star.tratto.identifiers.IOPath;
+import star.tratto.data.IOPath;
 import star.tratto.util.FileUtils;
 import star.tratto.util.javaparser.DatasetUtils;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 
 public class OraclesDataset {
-    public static final int chunkSize = 100;
-    public static final boolean sampleEmptyOracles = false;
+    // parser objects used to generate oracles dataset.
+    private static final JDoctorConditionParser jDoctorConditionParser = new JDoctorConditionParser();
+    private static final ProjectOracleGenerator oracleDPGenerator = new ProjectOracleGenerator();
+    // number of oracle datapoints per file (avoids generating absurdly large files).
+    private static final int chunkSize = 100;
 
-    public static void main(String[] args) throws IOException {
-        // Clean folder where dataset will be provisionally stored.
-        FileUtils.deleteDirectory(IOPath.OUTPUT.getValue());
-
-        // Specify the path to JSON file with the list of the input projects and
-        // the information, to initialize each of them.
-        String projectsPath = FileUtils.getAbsolutePath(IOPath.REPOS.getValue(), FileName.INPUT_PROJECTS, FileFormat.JSON);
-        List<Project> projects = ProjectParser.initialize(projectsPath);
-        JDoctorConditionParser jDoctorConditionParser = new JDoctorConditionParser();
-        ProjectOracleGenerator oracleDPGenerator = new ProjectOracleGenerator();
-
-        for (Project project : projects) {
-            System.out.println("\nCollecting data from: " + project.getProjectName());
-            // get JDoctor conditions and load project to generator.
-            List<JDoctorCondition> jDoctorConditions = jDoctorConditionParser.parseJDoctorConditions(project);
-            oracleDPGenerator.loadProject(project, jDoctorConditions);
-            // get oracle data points.
-            List<OracleDatapoint> oracleDPList = oracleDPGenerator.generate();
-            List<String> oraclesString = oracleDPList.stream().map(OracleDatapoint::getOracle).toList();
-            // randomly sample empty oracles.
-            if (sampleEmptyOracles) {
-                int numSamples = 10;
-                List<OracleDatapoint> emptySample = DatasetUtils.randomSample(oracleDPList, true, numSamples);
-                System.out.printf("Randomly sampling %d empty oracles:%n", numSamples);
-                for (OracleDatapoint sample : emptySample) {
-                    System.out.println("JavaDoc tag: " + sample.getJavadocTag() + " \toracle: " + sample.getOracle());
-                }
-            }
-
-            // save output.
-            // save raw oracles.
-            String oraclesFileName = "oracles_list_" + project.getProjectName();
-            Path oraclesPath = FileUtils.getPath(IOPath.OUTPUT.getValue(), oraclesFileName, FileFormat.JSON, project.getProjectName());
-            FileUtils.write(oraclesPath, oraclesString);
-            // save oracle datapoint information.
-            List<List<OracleDatapoint>> oracleDPChunks = splitListIntoChunks(oracleDPList);
-            for (int i = 0; i < oracleDPChunks.size(); i++) {
-                List<OracleDatapoint> chunk = oracleDPChunks.get(i);
-                String fileName = String.format(
-                        "%s_%s_%d",
-                        FileName.ORACLE_DATAPOINTS.getValue(),
-                        project.getProjectName(),
-                        i
-                );
-                Path path = FileUtils.getPath(IOPath.OUTPUT_DATASET.getValue(), fileName, FileFormat.JSON, project.getProjectName());
-                FileUtils.write(path, chunk);
-            }
-        }
-
-        // Move the generated oracles to the oracles-dataset folder.
-        FileUtils.deleteDirectory(IOPath.ORACLES_DATASET.getValue());
-        FileUtils.moveFilesRecursively(
-                Paths.get(IOPath.OUTPUT.getValue(), "dataset").toString(),
-                IOPath.ORACLES_DATASET.getValue()
-        );
+    /**
+     * @param project a project under analysis
+     * @return the corresponding oracle datapoints of the project
+     */
+    private static List<OracleDatapoint> getProjectOracleDatapoints(Project project) {
+        System.out.println("\nCollecting data from: " + project.getProjectName());
+        List<JDoctorCondition> jDoctorConditions = jDoctorConditionParser.parseJDoctorConditions(project);
+        oracleDPGenerator.loadProject(project, jDoctorConditions);
+        return oracleDPGenerator.generate();
     }
 
-    private static <T> List<List<T>> splitListIntoChunks(List<T> list) {
-        List<List<T>> chunks = new ArrayList<>();
-        for (int i = 0; i < list.size(); i += chunkSize) {
-            int endIndex = Math.min(i + chunkSize, list.size());
-            chunks.add(list.subList(i, endIndex));
+    public static void main(String[] args) throws IOException {
+        // clean output directories.
+        FileUtils.deleteDirectory(IOPath.OUTPUT.getPath());
+        FileUtils.deleteDirectory(IOPath.ORACLES_DATASET.getPath());
+        // load projects.
+        List<Project> projects = ProjectParser.initialize(IOPath.INPUT_PROJECTS.getPath());
+        for (Project project : projects) {
+            // get oracle data points.
+            List<OracleDatapoint> oracleDPs = getProjectOracleDatapoints(project);
+            List<String> oracles = oracleDPs.stream().map(OracleDatapoint::getOracle).toList();
+            // save all oracles in target output.
+            String oraclesFileName = String.format("oracles_list_%s.json", project.getProjectName());
+            Path oraclesPath = IOPath.OUTPUT.getPath().resolve(project.getProjectName()).resolve(oraclesFileName);
+            FileUtils.write(oraclesPath, oracles);
+            // save oracle datapoint information in chunks.
+            List<List<OracleDatapoint>> oracleDPChunks = DatasetUtils.splitListIntoChunks(oracleDPs, chunkSize);
+            String oracleDPFileName = String.format("oracle_datapoints_%s.json", project.getProjectName());
+            Path oracleDPPath = IOPath.OUTPUT_DATASET.getPath().resolve(project.getProjectName()).resolve(oracleDPFileName);
+            FileUtils.writeChunks(oracleDPPath, oracleDPChunks);
         }
-        return chunks;
+        // move oracles dataset from target to resources folder for TokensDataset.
+        FileUtils.move(IOPath.OUTPUT_DATASET.getPath(), IOPath.ORACLES_DATASET.getPath());
     }
 }

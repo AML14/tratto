@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -51,12 +52,14 @@ public class FileUtils {
     }
 
     /**
-     * Recursively deletes all files and subdirectories in a given path.
+     * Recursively deletes all files and subdirectories in a given path. If
+     * the file does not exist, then this method does nothing.
      *
      * @param dirPath a root directory
      * @throws Error if an error occurs while traversing or deleting files
      */
     public static void deleteDirectory(Path dirPath) {
+        if (!Files.exists(dirPath)) return;
         try (Stream<Path> walk = Files.walk(dirPath)) {
             walk
                     .filter(p -> !p.equals(dirPath))
@@ -114,10 +117,11 @@ public class FileUtils {
 
     /**
      * Recursively copies all files in a given directory to another directory.
+     * If a file in source already exists in destination, then the original
+     * file will be overridden.
      *
      * @param source the directory where the files are located
      * @param destination the directory where the files will be copied to
-     * @throws Error if a file in source already exists in destination
      */
     public static void copy(Path source, Path destination) {
         if (!Files.exists(source)) throw new Error("Directory " + source + " is not found");
@@ -130,7 +134,7 @@ public class FileUtils {
                             if (Files.isDirectory(p)) {
                                 createDirectories(relativePath);
                             } else {
-                                Files.createFile(relativePath);
+                                Files.copy(p, relativePath, StandardCopyOption.REPLACE_EXISTING);
                             }
                         } catch (IOException e) {
                             throw new Error("Error when trying to move the file " + p, e);
@@ -143,6 +147,8 @@ public class FileUtils {
 
     /**
      * Recursively moves all files in a given directory to another directory.
+     * If a file in source already exists in destination, then the original
+     * file will be overridden.
      *
      * @param source the directory where the files are located
      * @param destination the directory where the files will be moved to
