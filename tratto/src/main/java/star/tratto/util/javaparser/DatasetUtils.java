@@ -1261,4 +1261,21 @@ public class DatasetUtils {
         List<String> pathList = JDoctorUtils.getIdentifierComponents(operation.getName());
         return JDoctorUtils.getClassNameFromIdentifierComponents(pathList);
     }
+
+    /**
+     * Chunks a list of objects into multiple lists.
+     *
+     * @param list the flattened list of objects
+     * @param chunkSize the number of objects per chunk
+     * @return a list of lists of objects
+     * @param <T> an arbitrary object
+     */
+    public static <T> List<List<T>> splitListIntoChunks(List<T> list, int chunkSize) {
+        List<List<T>> chunks = new ArrayList<>();
+        for (int i = 0; i < list.size(); i += chunkSize) {
+            int endIndex = Math.min(i + chunkSize, list.size());
+            chunks.add(list.subList(i, endIndex));
+        }
+        return chunks;
+    }
 }
