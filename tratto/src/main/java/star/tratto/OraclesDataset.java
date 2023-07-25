@@ -49,7 +49,7 @@ public class OraclesDataset {
             // save oracle datapoint information in chunks.
             List<List<OracleDatapoint>> oracleDPChunks = DatasetUtils.splitListIntoChunks(oracleDPs, chunkSize);
             String oracleDPFileName = String.format("oracle_datapoints_%s.json", project.getProjectName());
-            Path oracleDPPath = IOPath.OUTPUT_DATASET.getPath().resolve(project.getProjectName()).resolve(oracleDPFileName);
+            Path oracleDPPath = IOPath.OUTPUT_DATASET.getPath().resolve(oracleDPFileName);
             FileUtils.writeChunks(oracleDPPath, oracleDPChunks);
         }
         // move oracles dataset from target to resources folder for TokensDataset.
