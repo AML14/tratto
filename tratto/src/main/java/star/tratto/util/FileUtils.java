@@ -97,9 +97,9 @@ public class FileUtils {
      * Returns the relative path of the target file when moved from the source
      * directory to the new destination directory.
      *
-     * @param source
-     * @param destination
-     * @param target
+     * @param source the source directory
+     * @param destination the destination directory
+     * @param target the target file in the source directory
      * @return the relative path of target in the destination directory. For
      * example, given {@code source = [prefix]/[source]},
      * {@code destination = [otherPrefix]/[destination]}, and
