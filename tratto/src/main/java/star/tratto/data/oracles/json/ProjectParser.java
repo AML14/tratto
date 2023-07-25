@@ -1,4 +1,4 @@
-package star.tratto.data.oracles.json.parsers;
+package star.tratto.data.oracles.json;
 
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import star.tratto.data.oracles.Project;
-import star.tratto.data.oracles.json.deserializers.ProjectDeserializer;
+import star.tratto.data.oracles.ProjectDeserializer;
 
 import java.io.IOException;
 import java.nio.file.Files;

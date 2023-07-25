@@ -1,4 +1,4 @@
-package star.tratto.data.oracles.json.parsers;
+package star.tratto.data.oracles.json;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import star.tratto.data.oracles.JDoctorCondition;

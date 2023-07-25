@@ -1,4 +1,4 @@
-package star.tratto.data.oracles.json.deserializers;
+package star.tratto.data.oracles;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
