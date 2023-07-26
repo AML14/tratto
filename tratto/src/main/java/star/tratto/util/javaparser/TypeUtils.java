@@ -29,16 +29,13 @@ public class TypeUtils {
     }
 
     /**
-     * Removes any type arguments from a parameterized type name. Also removes
-     * semicolons, since this method is used when transforming field descriptors
-     * to source code format.
+     * Removes type arguments and semicolons from a parameterized type name.
      *
      * @param parameterizedType a field descriptor or source code
      *                          representation of a type
      * @return the raw type without type arguments
      */
     public static String removeTypeArgumentsAndSemicolon(String parameterizedType) {
-        // regex to match type arguments in angle brackets.
         String regex = "<[^<>]*>|;";
         // repeatedly remove all type arguments.
         String previous;
