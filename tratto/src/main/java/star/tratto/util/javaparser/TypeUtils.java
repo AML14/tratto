@@ -28,15 +28,17 @@ public class TypeUtils {
     }
 
     /**
-     * Removes any type arguments from a parameterized type name.
+     * Removes any type arguments from a parameterized type name. Also removes
+     * semicolons, since this method is used when transforming field descriptors
+     * to source code format.
      *
      * @param parameterizedType a field descriptor or source code type
      *                          representation
      * @return the same type representation without type arguments
      */
-    public static String removeTypeArguments(String parameterizedType) {
+    public static String removeTypeArgumentsAndSemicolon(String parameterizedType) {
         // regex to match type arguments in angle brackets.
-        String regex = "<[^<>]*>";
+        String regex = "<[^<>]*>|;";
         // repeatedly remove all type arguments.
         String previous;
         String current = parameterizedType;
@@ -176,7 +178,7 @@ public class TypeUtils {
      * @return the corresponding source code format representation of a type
      */
     private static String fieldDescriptorNameToSourceCodeName(String fieldDescriptor) {
-        fieldDescriptor = removeTypeArguments(fieldDescriptor);
+        fieldDescriptor = removeTypeArgumentsAndSemicolon(fieldDescriptor);
         // converts primitive type.
         List<String> primitiveJDoctorValues = PrimitiveTypeUtils.getAllPrimitiveFieldDescriptors();
         if (primitiveJDoctorValues.contains(fieldDescriptor.replaceAll("[^a-zA-Z]+", ""))) {
@@ -259,7 +261,7 @@ public class TypeUtils {
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(sourceCode);
         if (matcher.find()) {
-            return removeTypeArguments(matcher.group(1)) + ("[]").repeat(arrayLevel);
+            return removeTypeArgumentsAndSemicolon(matcher.group(1)) + ("[]").repeat(arrayLevel);
         } else {
             throw new IllegalArgumentException(String.format(
                     "The JavaParser source code %s does not match the regex built with the JavaParser type name %s.",
@@ -284,10 +286,10 @@ public class TypeUtils {
             CallableDeclaration<?> jpCallable,
             Parameter jpParam
     ) {
-        String jpTypeName = removeTypeArguments(jpParam.getType().asString());
+        String jpTypeName = removeTypeArgumentsAndSemicolon(jpParam.getType().asString());
         // get class name.
         if (jpParam.getType().isClassOrInterfaceType()) {
-            jpTypeName = removeTypeArguments(jpParam.getType().asClassOrInterfaceType().getNameAsString());
+            jpTypeName = removeTypeArgumentsAndSemicolon(jpParam.getType().asClassOrInterfaceType().getNameAsString());
         }
         // handle ellipsis.
         if (hasEllipsis(jpParam.toString())) {
