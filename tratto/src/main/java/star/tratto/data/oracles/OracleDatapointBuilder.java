@@ -5,11 +5,10 @@ import org.javatuples.Quartet;
 import org.javatuples.Triplet;
 import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleType;
-import star.tratto.identifiers.FileFormat;
-import star.tratto.identifiers.FileName;
-import star.tratto.identifiers.IOPath;
+import star.tratto.data.IOPath;
 import star.tratto.util.FileUtils;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -81,11 +80,7 @@ public class OracleDatapointBuilder {
      * Sets default general tokens for symbolic grammar.
      */
     private void setDefaultGrammarTokens() {
-        String tokensGrammarPath = FileUtils.getAbsolutePathToFile(
-                IOPath.REPOS.getValue(),
-                FileName.TOKENS_GRAMMAR,
-                FileFormat.JSON
-        );
+        Path tokensGrammarPath = IOPath.TOKENS_GRAMMAR.getPath();
         List<String> tokenGrammar = FileUtils.readJSONList(tokensGrammarPath)
                 .stream()
                 .map(e -> (String) e)
@@ -97,12 +92,8 @@ public class OracleDatapointBuilder {
      * Sets default global values for tokens.
      */
     private void setDefaultGeneralValues() {
-        String tokenGeneralValuesPath = FileUtils.getAbsolutePathToFile(
-                IOPath.REPOS.getValue(),
-                FileName.TOKENS_GENERAL_VALUES,
-                FileFormat.JSON
-        );
-        List<Pair<String, String>> tokenGeneralValues = FileUtils.readJSONList(tokenGeneralValuesPath)
+        Path tokensGeneralValuesPath = IOPath.TOKENS_GENERAL_VALUES.getPath();
+        List<Pair<String, String>> tokenGeneralValues = FileUtils.readJSONList(tokensGeneralValuesPath)
                 .stream()
                 .map(e -> ((List<?>) e)
                         .stream()

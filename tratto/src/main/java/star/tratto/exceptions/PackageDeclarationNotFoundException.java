@@ -1,6 +1,8 @@
 package star.tratto.exceptions;
 
-public class PackageDeclarationNotFoundException extends Exception{
+import java.io.IOException;
+
+public class PackageDeclarationNotFoundException extends IOException {
     public PackageDeclarationNotFoundException() {
         super();
     }

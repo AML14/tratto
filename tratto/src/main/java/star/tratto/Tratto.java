@@ -19,11 +19,13 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
 import static star.tratto.data.OracleDP2TokenDPs.oracleSoFarAndTokenToTokenDatapoints;
-import static star.tratto.util.FileUtils.readFile;
+import static star.tratto.util.FileUtils.readString;
 import static star.tratto.util.StringUtils.getClassNameFromPath;
 import static star.tratto.util.javaparser.JavaParserUtils.getClassOrInterface;
 import static star.tratto.util.StringUtils.compactExpression;
@@ -53,7 +55,7 @@ public class Tratto {
 
         // Set up OracleDatapointBuilder within ClassAnalyzer based on project and class under test
         String className = getClassNameFromPath(CLASS_PATH);
-        String classSourceCode = readFile(CLASS_PATH);
+        String classSourceCode = readString(Paths.get(CLASS_PATH));
         CompilationUnit classCu = javaParser.parse(classSourceCode).getResult().get();
         TypeDeclaration<?> classTd = getClassOrInterface(classCu, className);
         classAnalyzer.setProjectPath(PROJECT_SOURCE_PATH);

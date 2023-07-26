@@ -2,222 +2,232 @@ package star.tratto.util;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import star.tratto.exceptions.FileNotCreatedException;
-import star.tratto.exceptions.FolderCreationFailedException;
-import star.tratto.identifiers.FileFormat;
-import star.tratto.identifiers.FileName;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Comparator;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
-import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 /**
- * This class manages file I/O utilities.
+ * I/O utilities: creating files, writing to files, retrieving Java files, etc.
  */
 public class FileUtils {
-    private static final Logger logger = LoggerFactory.getLogger(FileUtils.class);
-
-    public static void appendToFile(
-            String dirPath,
-            String fileName,
-            FileFormat fileFormat,
-            String projectName,
-            Object content
-    ) {
+    /**
+     * Creates an empty directory at a given path. Creates parent directories
+     * if necessary. If the directories already exists, then this method does
+     * nothing.
+     *
+     * @param path a path
+     * @throws Error if an error occurs while creating the directory
+     */
+    public static void createDirectories(Path path) {
         try {
-            // create a new file
-            File file = createFile(Paths.get(dirPath, projectName).toString(), fileName, fileFormat);
-            // depending on the file format, save the content, accordingly
-            switch (fileFormat) {
-                case TXT, CSV -> {
-                    // Convert content to string
-                    String fileContent = (String) content;
-                    // Create a FileWriter object with append flag set to true
-                    FileWriter writer = new FileWriter(file, true);
-                    // Write content to the file
-                    writer.write(fileContent + "\n");
-                    // Close the FileWriter object
-                    writer.close();
-                }
-                case JSON -> {
-                    ObjectMapper objectMapper = new ObjectMapper();
-                    objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, content);
-                }
-                default -> {
-                    String errMsg = String.format("File format %s not yet supported to save the content of a file.", fileFormat.getExtension());
-                    logger.error(errMsg);
-                }
-            }
-        } catch (IOException | FolderCreationFailedException e) {
-            e.printStackTrace();
+            Files.createDirectories(path);
+        } catch (IOException e) {
+            throw new Error("Error when creating directory " + path, e);
         }
     }
 
     /**
-     * The method creates a file within a given directory. If the file already
-     * exists, then this method does nothing. Returns the File {@link File}
-     * representation of the new file at the specified path.
+     * Creates an empty file at a given path. Creates parent directories if
+     * necessary. If the file already exists, then this method does nothing.
      *
-     * @param dirPath the path to the directory where the file must be saved
-     * @param fileName the name of the file where to write the content
-     * @param fileFormat the format of the file
-     * @return the file created
-     * @throws IOException if the file cannot be created
+     * @param path a file
+     * @throws Error if an error occurs while creating the parent directories
+     * or new file
      */
-    public static File createFile(String dirPath, String fileName, FileFormat fileFormat) throws FolderCreationFailedException, IOException, FileNotCreatedException {
-        String filePath = Paths.get(dirPath, fileName + fileFormat.getExtension()).toString();
-        File dir = new File(dirPath);
-        File file = new File(filePath);
-        // create directory.
-        if (!dir.exists()) {
-            boolean success = dir.mkdirs();
-            if (!success) {
-                String errMsg = String.format("Unable to create folder %s", dirPath);
-                logger.error(errMsg);
-                throw new FolderCreationFailedException();
+    public static void createFile(Path path) {
+        try {
+            createDirectories(path.getParent());
+            if (!Files.exists(path)) {
+                Files.createFile(path);
             }
+        } catch (IOException e) {
+            throw new Error("Error when creating file " + path, e);
         }
-        // create file.
-        if (!file.exists()) {
-            boolean fileCreated = file.createNewFile();
-            if (!fileCreated) {
-                String errMsg = String.format("Unable to create file %s to path %s.", fileName, dirPath);
-                logger.error(errMsg);
-                throw new FileNotCreatedException();
-            }
-        }
-        return file;
     }
 
     /**
-     * Recursively gets a list of all java files in a given directory.
+     * Recursively deletes all files and subdirectories in a given path. If
+     * the file does not exist, then this method does nothing.
      *
-     * @param dir the directory from which to extract all the files contained
-     * @return the list of all the files existing within the given directory
+     * @param dirPath a root directory
+     * @throws Error if an error occurs while traversing or deleting files
      */
-    public static List<File> getAllJavaFilesFromDirectory(File dir) {
-        List<File> javaFileList = new ArrayList<>();
-        for (File file: Objects.requireNonNull(dir.listFiles())) {
-            if (file.isDirectory()) {
-                javaFileList.addAll(getAllJavaFilesFromDirectory(file));
-            }
-            if (isJavaFile(file)) {
-                javaFileList.add(file);
-            }
+    public static void deleteDirectory(Path dirPath) {
+        if (!Files.exists(dirPath)) return;
+        try (Stream<Path> walk = Files.walk(dirPath)) {
+            walk
+                    .filter(p -> !p.equals(dirPath))
+                    .forEach(p -> {
+                        try {
+                            if (Files.isDirectory(p)) {
+                                // empty directory before deleting
+                                deleteDirectory(p);
+                            } else {
+                                Files.delete(p);
+                            }
+                        } catch (IOException e) {
+                            throw new Error("Error when trying to delete the file " + p, e);
+                        }
+                    });
+            // delete root directory last
+            Files.delete(dirPath);
+        } catch (IOException e) {
+            throw new Error("Error when trying to delete the directory " + dirPath, e);
         }
-        return javaFileList;
     }
 
     /**
-     * The method builds a complete path to a file.
+     * @param root a root directory
+     * @param extension a file/subdirectory in the given root directory
+     * @return the path of {@code extension}, with {@code root} removed
+     * @throws IllegalArgumentException if {@code extension} is not a child
+     * of {@code root}
+     */
+    private static Path getPathSuffix(Path root, Path extension) {
+        if (!extension.startsWith(root)) {
+            throw new IllegalArgumentException(extension + " must be an extension of " + root);
+        }
+        return extension.subpath(root.getNameCount(), extension.getNameCount());
+    }
+
+    /**
+     * Returns the relative path of the target file when moved from the source
+     * directory to the new destination directory.
      *
-     * @param dirPath the path to the directory where the file must be saved
-     * @param fileName the name of the file where to write the content
-     * @param fileFormat the format of the file
-     * @return the complete path to a file
+     * @param source the source directory
+     * @param destination the destination directory
+     * @param target the target file in the source directory
+     * @return the relative path of target in the destination directory. For
+     * example, given {@code source = [prefix]/[source]},
+     * {@code destination = [otherPrefix]/[destination]}, and
+     * {@code target = [prefix]/[source]/[suffix]/[filename]}, we output,
+     * {@code relativePath = [otherPrefix]/[destination]/[suffix]/[filename]}
      */
-    public static String getAbsolutePathToFile(String dirPath, FileName fileName, FileFormat fileFormat) {
-        return Paths.get(dirPath, fileName.getValue()) + fileFormat.getExtension();
+    private static Path getRelativePath(Path source, Path destination, Path target) {
+        if (source.equals(target)) return destination;
+        Path suffix = getPathSuffix(source, target);
+        return destination.resolve(suffix);
     }
 
     /**
-     * The method checks if a file is a Java file.
-     * @param file the file to inspect
-     * @return a boolean value: {@code true} if the file is a Java file, {@code false} otherwise
+     * Recursively copies all files in a given directory to another directory.
+     * If a file in source already exists in destination, then the original
+     * file will be overridden.
+     *
+     * @param source the directory where the files are located
+     * @param destination the directory where the files will be copied to
      */
-    public static boolean isJavaFile(File file) {
-        String fileName = file.getName();
-        // The file doesn't have an extension
-        return fileName.endsWith(".java");
-    }
-
-    /**
-     * The method reads a list from a JSON file.
-     * @param filePath the path to the JSON file
-     * @return the list of values read from the JSON file
-     */
-    public static List<?> readJSONList(String filePath) {
-        File jsonFile = new File(filePath);
-        if (!jsonFile.exists()) {
-            String errMsg = String.format("JSON file %s not found.", filePath);
-            logger.error(errMsg);
-            return new ArrayList<>();
+    public static void copy(Path source, Path destination) {
+        if (!Files.exists(source)) throw new Error("Directory " + source + " is not found");
+        if (!Files.exists(destination)) createDirectories(destination);
+        try (Stream<Path> walk = Files.walk(source)) {
+            walk
+                    .forEach(p -> {
+                        Path relativePath = getRelativePath(source, destination, p);
+                        try {
+                            if (Files.isDirectory(p)) {
+                                createDirectories(relativePath);
+                            } else {
+                                Files.copy(p, relativePath, StandardCopyOption.REPLACE_EXISTING);
+                            }
+                        } catch (IOException e) {
+                            throw new Error("Error when trying to move the file " + p, e);
+                        }
+                    });
+        } catch (IOException e) {
+            throw new Error("Error when trying to copy " + source + " to " + destination, e);
         }
+    }
+
+    /**
+     * Recursively moves all files in a given directory to another directory.
+     * If a file in source already exists in destination, then the original
+     * file will be overridden.
+     *
+     * @param source the directory where the files are located
+     * @param destination the directory where the files will be moved to
+     * @throws Error if a file in source already exists in destination
+     */
+    public static void move(Path source, Path destination) {
+        if (!Files.exists(source)) throw new Error("Directory " + source + " is not found");
+        if (!Files.exists(destination)) createDirectories(destination);
+        copy(source, destination);
+        deleteDirectory(source);
+    }
+
+    /**
+     * Writes {@code content} to {@code path} in JSON format. Creates a new
+     * file and parent directories if necessary. If file already exists,
+     * overrides any previous content.
+     *
+     * @param path a file
+     * @param content an object to be written in JSON content
+     * @throws Error if unable to create files/directories or unable to write
+     * content to file
+     */
+    public static void write(Path path, Object content) {
+        try {
+            createFile(path);
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(path.toFile(), content);
+        } catch (IOException e) {
+            throw new Error("Error when writing " + content + " to file " + path, e);
+        }
+    }
+
+    /**
+     * @param path a file
+     * @return the file contents as a String
+     */
+    public static String readString(Path path) {
+        try {
+            return Files.readString(path);
+        } catch (IOException e) {
+            throw new Error("Error in processing file " + path, e);
+        }
+    }
+
+    /**
+     * Reads a list of objects from a JSON file.
+     *
+     * @param jsonPath a JSON file
+     * @return the list of objects in the JSON file
+     * @throws Error if unable to process JSON file
+     */
+    public static List<?> readJSONList(Path jsonPath) {
+        if (!Files.exists(jsonPath)) throw new Error("JSON file " + jsonPath + " not found");
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             return objectMapper.readValue(
-                    jsonFile,
-                    new TypeReference<>() {
-                    }
+                    jsonPath.toFile(),
+                    new TypeReference<>() {}
             );
         } catch (IOException e) {
-            String errMsg = String.format("Error in processing the JSON file %s.", filePath);
-            logger.error(errMsg);
-            e.printStackTrace();
-        }
-        return new ArrayList<>();
-    }
-
-    public static void deleteDirectory(String dirPath) {
-        try {
-            Files.walk(Paths.get(dirPath))
-                    .sorted(Comparator.reverseOrder())
-                    .map(Path::toFile)
-                    .forEach(File::delete);
-        } catch (IOException e) {
-            logger.warn("There was an error when trying to delete the directory {} ", dirPath);
+            throw new Error("Error in processing the JSON file " + jsonPath, e);
         }
     }
 
     /**
-     * The method moves all the files contained in a given directory to another directory.
-     * If files are contained in subdirectories, these are not copied, i.e., only the files
-     * are moved to the destination directory, at the first level.
+     * Gets all Java files in a given directory (and subdirectories).
      *
-     * @param orig the path to the directory where the files are located
-     * @param dest the path to the directory where the files must be moved
+     * @param dir a directory
+     * @return all Java files (as Path objects) in {@code dir}
+     * @throws Error if unable to collect files from {@code dir}
      */
-    public static void moveFilesRecursively(String orig, String dest) {
-        File origDir = new File(orig);
-        File destDir = new File(dest);
-        if (!origDir.exists()) {
-            String errMsg = String.format("Directory %s not found.", orig);
-            logger.error(errMsg);
-            return;
-        }
-        if (!destDir.exists()) {
-            boolean success = destDir.mkdirs();
-            if (!success) {
-                String errMsg = String.format("Unable to create folder %s", dest);
-                logger.error(errMsg);
-                return;
-            }
-        }
-        for (File file: Objects.requireNonNull(origDir.listFiles())) {
-            if (file.isDirectory()) {
-                moveFilesRecursively(file.getAbsolutePath(), dest);
-            } else {
-                file.renameTo(new File(dest + "/" + file.getName()));
-            }
-        }
-    }
-
-    public static String readFile(String filePath) {
-        try {
-            return Files.readString(Paths.get(filePath));
+    public static List<Path> getAllJavaFilesFromDirectory(Path dir) {
+        try (Stream<Path> walk = Files.walk(dir)) {
+            return walk
+                    .filter(p -> p.getFileName().toString().endsWith(".java"))
+                    .collect(Collectors.toList());
         } catch (IOException e) {
-            logger.error("Error reading file: " + e.getMessage());
-            return null;
+            // catch exception to avoid resource leak.
+            throw new Error("Error in collecting all files from " + dir, e);
         }
     }
 }

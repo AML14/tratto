@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static star.tratto.identifiers.IOPath.ORACLES_DATASET;
+import static star.tratto.data.IOPath.ORACLES_DATASET;
 import static star.tratto.oraclegrammar.custom.OracleAlternatesGenerator.*;
 import static star.tratto.util.StringUtils.compactExpression;
 
@@ -34,12 +34,11 @@ public class OraclesAugmentation {
 
     public static void main(String[] args) throws IOException {
         logger.info("Generating alternate versions of existing oracles...");
-        logger.info("Reading oracles from: {}", ORACLES_DATASET.getValue());
+        logger.info("Reading oracles from: {}", ORACLES_DATASET.getPath());
         logger.info("Writing alternate oracles to: {}", ALTERNATE_ORACLES_PATH);
         Map<String, List<String>> alternateOracles = new HashMap<>();
 
-        Path oraclesDatasetPath = Path.of(ORACLES_DATASET.getValue());
-        DirectoryStream<Path> oraclesDatasetStream = Files.newDirectoryStream(oraclesDatasetPath);
+        DirectoryStream<Path> oraclesDatasetStream = Files.newDirectoryStream(ORACLES_DATASET.getPath());
         for (Path oraclesDatasetFile : oraclesDatasetStream) { // Assume that only dataset files are in the folder
             if (oraclesDatasetFile.toString().endsWith(AUGMENTED_SUFFIX)) {
                 continue; // Skip already augmented files

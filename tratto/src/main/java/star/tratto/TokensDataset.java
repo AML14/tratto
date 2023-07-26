@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import star.tratto.data.*;
+import star.tratto.util.FileUtils;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -29,7 +30,7 @@ public class TokensDataset {
         validateArgs(args);
         logger.info("Dataset type: {}", DATASET_TYPE);
         Path tokensDatasetFolder = Paths.get(TOKENS_DATASET_FOLDER);
-        deleteDirectory(TOKENS_DATASET_FOLDER);
+        FileUtils.deleteDirectory(tokensDatasetFolder);
         Files.createDirectories(tokensDatasetFolder);
         Path oraclesDatasetPath = Path.of(ORACLES_DATASET_FOLDER);
         DirectoryStream<Path> oraclesDatasetStream = Files.newDirectoryStream(oraclesDatasetPath);

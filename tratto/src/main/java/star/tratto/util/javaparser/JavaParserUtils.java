@@ -29,6 +29,7 @@ import com.github.javaparser.resolution.declarations.ResolvedTypeParameterDeclar
 import com.github.javaparser.resolution.types.ResolvedType;
 import com.github.javaparser.resolution.types.ResolvedWildcard;
 import com.github.javaparser.symbolsolver.JavaSymbolSolver;
+import com.github.javaparser.resolution.types.ResolvedWildcard;
 import com.github.javaparser.symbolsolver.javaparsermodel.declarations.JavaParserMethodDeclaration;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.ClassLoaderTypeSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.CombinedTypeSolver;
@@ -46,8 +47,8 @@ import star.tratto.exceptions.ResolvedTypeNotFound;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.util.JavaTypes;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.lang.reflect.Field;
 import java.nio.file.Paths;
 import java.util.List;
@@ -255,8 +256,9 @@ public class JavaParserUtils {
     }
 
     /**
-     * Given the class and method under test, inserts into the class and returns a synthetic method
+     * Given the class and method under test, creates a synthetic method
      * with the same signature (in terms of type parameters and arguments) as the method under test.
+     * Inserts the synthetic method into the class and returns it.
      */
     private static MethodDeclaration getSyntheticMethod(TypeDeclaration<? extends TypeDeclaration<?>> classUnderTest, BodyDeclaration<?> methodUnderTest) {
         MethodDeclaration syntheticMethod = classUnderTest.addMethod(SYNTHETIC_METHOD_NAME);
@@ -551,7 +553,7 @@ public class JavaParserUtils {
     /**
      * @return a "java.lang.Object" type
      */
-    public static ResolvedType getGenericType() {
+    public static ResolvedType getObjectType() {
         return javaParser.parse(SYNTHETIC_CLASS_SOURCE).getResult().get()
                 .getLocalDeclarationFromClassname(SYNTHETIC_CLASS_NAME).get(0)
                 .addMethod(SYNTHETIC_METHOD_NAME).getBody().get()
@@ -934,16 +936,17 @@ public class JavaParserUtils {
     }
 
     /**
-     * Read a compilation unit from a Java file.
+     * Creates a compilation unit from a Java file.
      *
-     * @param filePath the absolute path to the file
-     * @return a JavaParser compilation unit
+     * @param path an absolute file path
+     * @return the corresponding JavaParser compilation unit. Returns
+     * {@code Optional.empty()} if an error occurs while attempting to parse
+     * the file.
      */
-    public static Optional<CompilationUnit> getCompilationUnitFromFilePath(String filePath) {
-        File file = new File(filePath);
+    public static Optional<CompilationUnit> getCompilationUnit(Path path) {
         try {
-            return javaParser.parse(file).getResult();
-        } catch (FileNotFoundException e) {
+            return javaParser.parse(path).getResult();
+        } catch (IOException e) {
             return Optional.empty();
         }
     }

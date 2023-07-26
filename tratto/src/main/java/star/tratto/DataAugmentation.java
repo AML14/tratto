@@ -14,7 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
-import static star.tratto.identifiers.IOPath.ORACLES_DATASET;
+import static star.tratto.data.IOPath.ORACLES_DATASET;
 import static star.tratto.util.StringUtils.compactExpression;
 
 /**
@@ -42,7 +42,7 @@ public class DataAugmentation {
 
     public static void main(String[] args) throws IOException {
         logger.info("Augmenting oracles dataset...");
-        logger.info("Reading oracle data points from: {}", ORACLES_DATASET.getValue());
+        logger.info("Reading oracle data points from: {}", ORACLES_DATASET.getPath());
         logger.info("Reading alternate oracles from: {}", ALTERNATE_ORACLES_PATH);
         logger.info("Reading alternate Javadoc tags from: {}", ALTERNATE_TAGS_PATH);
 
@@ -50,8 +50,7 @@ public class DataAugmentation {
         alternateOracles = objectMapper.readValue(new File(ALTERNATE_ORACLES_PATH), new TypeReference<>(){});
         alternateTags = objectMapper.readValue(new File(ALTERNATE_TAGS_PATH), new TypeReference<>(){});
 
-        Path oraclesDatasetPath = Path.of(ORACLES_DATASET.getValue());
-        DirectoryStream<Path> oraclesDatasetStream = Files.newDirectoryStream(oraclesDatasetPath);
+        DirectoryStream<Path> oraclesDatasetStream = Files.newDirectoryStream(ORACLES_DATASET.getPath());
         for (Path oraclesDatasetFile : oraclesDatasetStream) {
             if (oraclesDatasetFile.toString().endsWith(AUGMENTED_SUFFIX)) {
                 continue; // Skip already augmented files

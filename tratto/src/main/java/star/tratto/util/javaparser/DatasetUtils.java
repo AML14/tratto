@@ -18,21 +18,20 @@ import com.github.javaparser.symbolsolver.reflectionmodel.ReflectionFieldDeclara
 import org.javatuples.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleType;
 import star.tratto.data.oracles.JDoctorCondition.*;
 import star.tratto.exceptions.JPClassNotFoundException;
 import star.tratto.exceptions.PackageDeclarationNotFoundException;
 import star.tratto.exceptions.ResolvedTypeNotFound;
-import star.tratto.identifiers.FileFormat;
-import star.tratto.identifiers.FileName;
-import star.tratto.identifiers.IOPath;
+import star.tratto.data.IOPath;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.oraclegrammar.custom.Splitter;
 import star.tratto.util.FileUtils;
+import star.tratto.util.javaparser.TypeUtils;
 
 import java.io.File;
 import java.lang.reflect.Field;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -240,7 +239,7 @@ public class DatasetUtils {
             Parameter jpParameter
     ) {
         Type jpParameterType = jpParameter.getType();
-        boolean hasEllipsis = JDoctorUtils.hasEllipsis(jpParameter.toString());
+        boolean hasEllipsis = TypeUtils.hasEllipsis(jpParameter.toString());
         try {
             ResolvedType jpResolvedParameterType = jpParameterType.resolve();
             String className = "";
@@ -252,7 +251,7 @@ public class DatasetUtils {
             } else if (jpResolvedParameterType.isReferenceType()) {
                 // if object is generic, use generic name.
                 if (JavaParserUtils.isGenericType(jpResolvedParameterType)) {
-                    className = JDoctorUtils.getRawTypeName(jpClass, jpCallable, jpParameter);
+                    className = TypeUtils.getRawTypeName(jpClass, jpCallable, jpParameter);
                 } else {
                     className = JavaParserUtils.getTypeWithoutPackages(jpResolvedParameterType.asReferenceType().getQualifiedName());
                 }
@@ -311,7 +310,7 @@ public class DatasetUtils {
                         // if not a reference type, ignore package name (e.g. primitives do not have packages).
                         argumentList.add(Triplet.with(jpParameter.getNameAsString(), "", jpParameterClassName.get()));
                     } else if (jpParameterType.resolve().isReferenceType()) {
-                        String typeName = JDoctorUtils.getRawTypeName(jpClass, jpCallable, jpParameter);
+                        String typeName = TypeUtils.getRawTypeName(jpClass, jpCallable, jpParameter);
                         if (JavaParserUtils.isGenericType(jpParameterType.resolve())) {
                             // if reference object is a generic type, ignore package name.
                             argumentList.add(Triplet.with(jpParameter.getNameAsString(), "", typeName));
@@ -517,27 +516,21 @@ public class DatasetUtils {
      * @param sourcePath the path to the project root directory
      * @return a list of all valid files {@link File}
      */
-    public static List<File> getValidJavaFiles(String sourcePath) {
+    public static List<Path> getValidJavaFiles(String sourcePath) {
         // Get list of all Java files.
-        File sourceDir = new File(sourcePath);
-        List<File> allFiles = FileUtils.getAllJavaFilesFromDirectory(sourceDir);
+        Path sourceDir = Path.of(sourcePath);
+        List<Path> allFiles = FileUtils.getAllJavaFilesFromDirectory(sourceDir);
         // Get list of files to ignore.
-        String ignoreFilePath = Paths.get(
-                IOPath.REPOS.getValue(),
-                FileName.IGNORE_FILE.getValue() + FileFormat.JSON.getExtension()
-        ).toString();
+        Path ignoreFilePath = IOPath.IGNORE_FILE.getPath();
         List<String> ignoreFileList = FileUtils.readJSONList(ignoreFilePath)
                 .stream()
-                .map(e -> (String) e)
+                .map(f -> (String) f)
                 .toList();
         // filter files.
         return allFiles
                 .stream()
-                .filter(file -> {
-                    String filename = file.getName().replace(FileFormat.JAVA.getExtension(), "");
-                    return !ignoreFileList.contains(filename);
-                })
-                .toList();
+                .filter(f -> !ignoreFileList.contains(f.getFileName().toString()))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -551,11 +544,10 @@ public class DatasetUtils {
             String sourcePath
     ) {
         List<Pair<String, String>> projectClasses = new ArrayList<>();
-        List<File> javaFiles = getValidJavaFiles(sourcePath);
+        List<Path> javaFiles = getValidJavaFiles(sourcePath);
         // iterate through each file and add class tokens.
-        for (File javaFile : javaFiles) {
-            String filePath = javaFile.getAbsolutePath();
-            Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnitFromFilePath(filePath);
+        for (Path javaFile : javaFiles) {
+            Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnit(javaFile.toAbsolutePath());
             if (cu.isPresent()) {
                 try {
                     projectClasses.addAll(getClassNameAndPackage(cu.get()));
@@ -580,11 +572,10 @@ public class DatasetUtils {
             String sourcePath
     ) {
         List<Quartet<String, String, String, String>> projectMethods = new ArrayList<>();
-        List<File> javaFiles = getValidJavaFiles(sourcePath);
+        List<Path> javaFiles = getValidJavaFiles(sourcePath);
         // iterate through each file and add method tokens.
-        for (File javaFile : javaFiles) {
-            String filePath = javaFile.getAbsolutePath();
-            Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnitFromFilePath(filePath);
+        for (Path javaFile : javaFiles) {
+            Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnit(javaFile.toAbsolutePath());
             if (cu.isPresent()) {
                 try {
                     projectMethods.addAll(getNonPrivateStaticNonVoidMethods(cu.get()));
@@ -609,11 +600,10 @@ public class DatasetUtils {
             String sourcePath
     ) {
         List<Quartet<String, String, String, String>> attributeList = new ArrayList<>();
-        List<File> javaFiles = getValidJavaFiles(sourcePath);
+        List<Path> javaFiles = getValidJavaFiles(sourcePath);
         // iterate through each file and add attribute tokens.
-        for (File javaFile : javaFiles) {
-            String filePath = javaFile.getAbsolutePath();
-            Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnitFromFilePath(filePath);
+        for (Path javaFile : javaFiles) {
+            Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnit(javaFile.toAbsolutePath());
             if (cu.isPresent()) {
                 try {
                     attributeList.addAll(getNonPrivateStaticAttributes(cu.get()));
@@ -640,12 +630,12 @@ public class DatasetUtils {
             String sourcePath
     ) {
         List<Sextet<String, TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> tagList = new ArrayList<>();
-        List<File> javaFiles = getValidJavaFiles(sourcePath);
+        List<Path> javaFiles = getValidJavaFiles(sourcePath);
         // iterate through each file and add JavaDoc tags.
-        for (File javaFile : javaFiles) {
-            String filePath = javaFile.getAbsolutePath();
-            String fileContent = FileUtils.readFile(filePath);
-            Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnitFromFilePath(filePath);
+        for (Path javaFile : javaFiles) {
+            Path absoluteJavaFile = javaFile.toAbsolutePath();
+            String fileContent = FileUtils.readString(absoluteJavaFile);
+            Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnit(absoluteJavaFile);
             if (cu.isPresent()) {
                 try {
                     tagList.addAll(getCuTags(cu.get(), fileContent));
@@ -696,11 +686,8 @@ public class DatasetUtils {
         List<Quartet<String, String, String, String>> methodList = new ArrayList<>();
         if (jpResolvedType.isArray()) {
             // array type (see dataset/repose/array_methods.json).
-            String arraysMethodJsonPath = Paths.get(
-                    IOPath.REPOS.getValue(),
-                    FileName.ARRAY_METHODS.getValue() + FileFormat.JSON.getExtension()
-            ).toString();
-            List<List<String>> arrayMethods = FileUtils.readJSONList(arraysMethodJsonPath)
+            List<List<String>> arrayMethods;
+            arrayMethods = FileUtils.readJSONList(IOPath.ARRAY_METHODS.getPath())
                     .stream()
                     .map(e -> ((List<?>) e)
                             .stream()
@@ -713,7 +700,7 @@ public class DatasetUtils {
                     .toList());
         } else if (JavaParserUtils.isGenericType(jpResolvedType)) {
             // generic type.
-            List<MethodUsage> genericMethods = JavaParserUtils.getGenericType().asReferenceType().getAllMethods()
+            List<MethodUsage> genericMethods = JavaParserUtils.getObjectType().asReferenceType().getAllMethods()
                     .stream()
                     .map(MethodUsage::new)
                     .filter(JavaParserUtils::isNonPrivateNonStaticNonVoidMethod)
@@ -901,7 +888,7 @@ public class DatasetUtils {
     public static List<Quartet<String, String, String, String>> getFieldsFromParameter(
             Parameter jpParameter
     ) {
-        if (JDoctorUtils.hasEllipsis(jpParameter.toString())) {
+        if (TypeUtils.hasEllipsis(jpParameter.toString())) {
             Pair<String, String> packageAndClass = JavaParserUtils.getTypeFromResolvedType(jpParameter.getType().resolve());
             return List.of(Quartet.with(
                     "length",
@@ -948,7 +935,7 @@ public class DatasetUtils {
         }
         // add Object methods.
         methodList.addAll(convertMethodUsageToQuartet(
-                JavaParserUtils.getGenericType().asReferenceType().getAllMethods()
+                JavaParserUtils.getObjectType().asReferenceType().getAllMethods()
                         .stream()
                         .map(MethodUsage::new)
                         .filter(JavaParserUtils::isNonPrivateNonStaticNonVoidMethod)
@@ -1027,11 +1014,11 @@ public class DatasetUtils {
                         subexpression
                 );
                 if (!resolvedType.isPrimitive()) {
-                    methodList.addAll(getMethodsFromType(JavaParserUtils.getGenericType()));
+                    methodList.addAll(getMethodsFromType(JavaParserUtils.getObjectType()));
                 }
                 methodList.addAll(getMethodsFromType(resolvedType));
             } catch (UnsolvedSymbolException | ResolvedTypeNotFound e) {
-                ResolvedType genericType = JavaParserUtils.getGenericType();
+                ResolvedType genericType = JavaParserUtils.getObjectType();
                 methodList.addAll(getMethodsFromType(genericType));
             }
         }
@@ -1073,7 +1060,7 @@ public class DatasetUtils {
                 );
                 attributeList.addAll(getFieldsFromType(resolvedType));
             } catch (UnsolvedSymbolException | ResolvedTypeNotFound e) {
-                ResolvedType genericType = JavaParserUtils.getGenericType();
+                ResolvedType genericType = JavaParserUtils.getObjectType();
                 attributeList.addAll(getFieldsFromType(genericType));
             }
         }
@@ -1099,9 +1086,9 @@ public class DatasetUtils {
             TypeDeclaration<?> jpClass
     ) {
         if (jDoctorParam.equals(jpParam)) return true;
-        boolean jDoctorParamIsStandard = JDoctorUtils.isStandardType(jDoctorParam);
-        boolean jDoctorParamIsStandardArray = JDoctorUtils.isStandardTypeArray(jDoctorParam);
-        boolean jpParamIsStandard = JDoctorUtils.isStandardType(jpParam);
+        boolean jDoctorParamIsStandard = TypeUtils.isStandardType(jDoctorParam);
+        boolean jDoctorParamIsStandardArray = TypeUtils.isStandardTypeArray(jDoctorParam);
+        boolean jpParamIsStandard = TypeUtils.isStandardType(jpParam);
         boolean jpParamIsArray = jpParam.endsWith("[]");
         boolean jpParamIsGeneric = JavaParserUtils.isGenericType(jpParam, jpCallable, jpClass);
         return (jDoctorParamIsStandard && jpParamIsStandard) ||
@@ -1162,7 +1149,7 @@ public class DatasetUtils {
                     // check if parameters are equal.
                     List<String> currentParamList = currentCallable.getParameters()
                             .stream()
-                            .map(p -> JDoctorUtils.getRawTypeName(jpClass, currentCallable, p))
+                            .map(p -> TypeUtils.getRawTypeName(jpClass, currentCallable, p))
                             .toList();
                     if (jpParamListEqualsJDoctorParamList(
                             targetParamList,
@@ -1209,6 +1196,18 @@ public class DatasetUtils {
     }
 
     /**
+     * @param operation an operation of a JDoctor condition
+     * @param sourcePath the source path of the relevant project
+     * @return the path of the class in the JDoctor condition
+     */
+    private static Path getClassPath(
+            Operation operation,
+            String sourcePath
+    ) {
+        return Paths.get(sourcePath, operation.getClassName().replace(".", "/") + ".java");
+    }
+
+    /**
      * Gets the compilation unit {@link CompilationUnit} corresponding to the
      * class of a JDoctor condition.
      *
@@ -1222,8 +1221,8 @@ public class DatasetUtils {
             Operation operation,
             String sourcePath
     ) {
-        String classPath = getClassPath(operation, sourcePath);
-        return JavaParserUtils.getCompilationUnitFromFilePath(classPath);
+        Path classPath = getClassPath(operation, sourcePath);
+        return JavaParserUtils.getCompilationUnit(classPath);
     }
 
     /**
@@ -1234,17 +1233,13 @@ public class DatasetUtils {
             Operation operation,
             String sourcePath
     ) {
-        String classPath = getClassPath(operation, sourcePath);
-        String classSource = FileUtils.readFile(classPath);
-        return classSource != null ? Optional.of(classSource) : Optional.empty();
-    }
-
-    private static String getClassPath(
-            Operation operation,
-            String sourcePath
-    ) {
-        List<String> pathList = Arrays.asList(operation.getClassName().split("\\."));
-        return Paths.get(sourcePath, pathList.toArray(String[]::new)) + FileFormat.JAVA.getExtension();
+        try {
+            Path classPath = getClassPath(operation, sourcePath);
+            String classSource = FileUtils.readString(classPath);
+            return Optional.of(classSource);
+        } catch (Error e) {
+            return Optional.empty();
+        }
     }
 
     /**
@@ -1253,9 +1248,8 @@ public class DatasetUtils {
     public static String getOperationPackageName(
             Operation operation
     ) {
-        List<String> pathList = JDoctorUtils.getIdentifierComponents(operation.getClassName());
-        List<String> packageList = JDoctorUtils.removeIdentifierSuffix(pathList);
-        return JDoctorUtils.getPackageNameFromIdentifierComponents(packageList);
+        List<String> pathList = TypeUtils.getNameSegments(operation.getClassName());
+        return TypeUtils.getPackageNameFromNameSegments(pathList);
     }
 
     /**
@@ -1264,8 +1258,8 @@ public class DatasetUtils {
     public static String getOperationClassName(
             Operation operation
     ) {
-        List<String> pathList = JDoctorUtils.getIdentifierComponents(operation.getClassName());
-        return JDoctorUtils.getClassNameFromIdentifierComponents(pathList);
+        List<String> pathList = TypeUtils.getNameSegments(operation.getClassName());
+        return TypeUtils.getClassNameFromNameSegments(pathList);
     }
 
     /**
@@ -1274,39 +1268,24 @@ public class DatasetUtils {
     public static String getOperationCallableName(
             Operation operation
     ) {
-        List<String> pathList = JDoctorUtils.getIdentifierComponents(operation.getName());
-        return JDoctorUtils.getClassNameFromIdentifierComponents(pathList);
+        List<String> pathList = TypeUtils.getNameSegments(operation.getName());
+        return TypeUtils.getClassNameFromNameSegments(pathList);
     }
 
     /**
-     * Randomly samples oracle data points {@link OracleDatapoint}. Filters
-     * empty or non-empty oracles.
+     * Chunks a list of objects into multiple lists.
      *
-     * @param oracleDPs list of oracle data points {@link OracleDatapoint}
-     * @param isEmpty if the samples data points represent empty oracles
-     * @param numSamples the number of data points to samples
-     * @return a random sample of oracle data points
+     * @param list the flattened list of objects
+     * @param chunkSize the number of objects per chunk
+     * @return a list of lists of objects
+     * @param <T> an arbitrary object
      */
-    public static List<OracleDatapoint> randomSample(List<OracleDatapoint> oracleDPs, boolean isEmpty, int numSamples) {
-        // filter empty vs non-empty oracles.
-        List<OracleDatapoint> filterDPs;
-        if (isEmpty) {
-            filterDPs = oracleDPs
-                    .stream()
-                    .filter(dp -> dp.getOracle().equals(";"))
-                    .collect(Collectors.toList());
-        } else {
-            filterDPs = oracleDPs
-                    .stream()
-                    .filter(dp -> !dp.getOracle().equals(";"))
-                    .collect(Collectors.toList());
+    public static <T> List<List<T>> splitListIntoChunks(List<T> list, int chunkSize) {
+        List<List<T>> chunks = new ArrayList<>();
+        for (int i = 0; i < list.size(); i += chunkSize) {
+            int endIndex = Math.min(i + chunkSize, list.size());
+            chunks.add(list.subList(i, endIndex));
         }
-        // randomly sample oracles.
-        Collections.shuffle(filterDPs);
-        List<OracleDatapoint> sample = new ArrayList<>();
-        for (int i = 0; i < numSamples; i++) {
-            sample.add(filterDPs.get(i));
-        }
-        return sample;
+        return chunks;
     }
 }
