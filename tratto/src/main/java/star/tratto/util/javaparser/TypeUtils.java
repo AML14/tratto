@@ -196,8 +196,7 @@ public class TypeUtils {
      * @return true iff the given type name extends another type
      */
     private static boolean hasSupertype(String sourceCode, String typeName) {
-        String componentType = typeName.replaceAll("\\[]", "");
-        String regex = componentType + "\\s+extends\\s+([A-Za-z0-9_]+)";
+        String regex = String.format("%s\\s+extends\\s+([A-Za-z0-9_]+)[<[A-Za-z0-9_,]+]*", typeName.replaceAll("\\[]",""));
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(sourceCode);
         return matcher.find();
@@ -215,8 +214,7 @@ public class TypeUtils {
      * a type
      */
     private static String getSupertype(String sourceCode, String typeName) {
-        String componentType = typeName.replaceAll("\\[]", "");
-        String regex = componentType + "\\s+extends\\s+([A-Za-z0-9_]+)";
+        String regex = String.format("%s\\s+extends\\s+([A-Za-z0-9_]+)[<[A-Za-z0-9_,]+]*", typeName.replaceAll("\\[]",""));
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(sourceCode);
         if (matcher.find()) {
@@ -250,21 +248,12 @@ public class TypeUtils {
         if (callableTokenRange.isPresent() && hasSupertype(callableTokenRange.get().toString(), typeName)) {
             typeName = getSupertype(callableTokenRange.get().toString(), typeName);
         }
-//        // get upper bound from method/constructor declaration
-//        for (TypeParameter jpGeneric : jpCallable.getTypeParameters()) {
-//            if (jpGeneric.getNameAsString().equals(componentType)) {
-//                if (hasSupertype(jpGeneric.toString(), componentType)) {
-//                    typeName = getSupertype(jpGeneric.toString(), componentType);
-//                }
-//            }
-//        }
         // get upper bound from class declaration
-        String componentType = typeName.replaceAll("\\[]", "");
         if (jpDeclaration.isClassOrInterfaceDeclaration()) {
             for (TypeParameter jpGeneric : jpDeclaration.asClassOrInterfaceDeclaration().getTypeParameters()) {
-                if (jpGeneric.getNameAsString().equals(componentType)) {
-                    if (hasSupertype(jpGeneric.toString(), componentType)) {
-                        typeName = getSupertype(jpGeneric.toString(), componentType);
+                if (jpGeneric.getNameAsString().equals(typeName.replaceAll("\\[]", ""))) {
+                    if (hasSupertype(jpGeneric.toString(), typeName)) {
+                        typeName = getSupertype(jpGeneric.toString(), typeName);
                     }
                 }
             }

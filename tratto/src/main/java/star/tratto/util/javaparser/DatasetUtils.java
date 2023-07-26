@@ -27,7 +27,6 @@ import star.tratto.data.IOPath;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.oraclegrammar.custom.Splitter;
 import star.tratto.util.FileUtils;
-import star.tratto.util.javaparser.TypeUtils;
 
 import java.io.File;
 import java.lang.reflect.Field;
