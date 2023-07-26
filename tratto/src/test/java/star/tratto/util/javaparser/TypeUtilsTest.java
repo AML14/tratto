@@ -62,79 +62,62 @@ public class TypeUtilsTest {
         assertTrue(TypeUtils.hasEllipsis(varArg));
     }
 
-//    @Test
-//    public void getRawTypeNamePrimitiveTest() {
-//        PrimitiveType integerType = new PrimitiveType(PrimitiveType.Primitive.INT);
-//        ClassOrInterfaceDeclaration jpClass = new ClassOrInterfaceDeclaration()
-//                .setName("Foo")
-//                .addModifier(Modifier.Keyword.PUBLIC);
-//        MethodDeclaration jpCallable = new MethodDeclaration()
-//                .setName("printElements")
-//                .addModifier(Modifier.Keyword.PUBLIC)
-//                .addParameter(integerType, "arg0");
-//        assertEquals("int", TypeUtils.getRawTypeName(jpClass, jpCallable, jpCallable.getParameter(0)));
-//    }
-//
-//    @Test
-//    public void getRawTypeNameVarArgTest() {
-//        PrimitiveType integerType = new PrimitiveType(PrimitiveType.Primitive.INT);
-//        Parameter parameter = new Parameter(integerType, "arg0")
-//                .setVarArgs(true);
-//        ClassOrInterfaceDeclaration jpClass = new ClassOrInterfaceDeclaration()
-//                .setName("Foo")
-//                .addModifier(Modifier.Keyword.PUBLIC);
-//        MethodDeclaration jpCallable = new MethodDeclaration()
-//                .setName("printElements")
-//                .addModifier(Modifier.Keyword.PUBLIC)
-//                .addParameter(parameter);
-//        assertEquals("int[]", TypeUtils.getRawTypeName(jpClass, jpCallable, jpCallable.getParameter(0)));
-//    }
-//
-//    @Test
-//    public void getRawTypeNameWithoutGenericUpperBoundTest() {
-//        ClassOrInterfaceDeclaration jpClass = new ClassOrInterfaceDeclaration()
-//                .setName("Foo")
-//                .addModifier(Modifier.Keyword.PUBLIC);
-//        MethodDeclaration jpCallable = jpClass.addMethod("printElements")
-//                .addModifier(Modifier.Keyword.PUBLIC)
-//                .addTypeParameter(new TypeParameter("T"))
-//                .addParameter("T", "arg0");
-//        assertEquals("T", TypeUtils.getRawTypeName(jpClass, jpCallable, jpCallable.getParameter(0)));
-//    }
-//
-//    @Test
-//    public void getRawTypeNameWithMethodGenericUpperBoundTest() {
-//        // create generic type with upper bound
-//        ClassOrInterfaceType upperBound = new ClassOrInterfaceType()
-//                .setName("Number");
-//        TypeParameter genericWithUpperBound = new TypeParameter("U", new NodeList<>(upperBound));
-//        // instantiate new class and method
-//        CompilationUnit cu = new CompilationUnit();
-//        ClassOrInterfaceDeclaration jpClass = cu.addClass("Foo")
-//                .addModifier(Modifier.Keyword.PUBLIC);
-//        MethodDeclaration jpCallable = jpClass.addMethod("printElements")
-//                .addModifier(Modifier.Keyword.PUBLIC)
-//                .addTypeParameter(genericWithUpperBound)
-//                .addParameter("U", "arg0");
-//        assertEquals("Number", TypeUtils.getRawTypeName(jpClass, jpCallable, jpCallable.getParameter(0)));
-//    }
-//
-//    @Test
-//    public void getRawTypeNameWithClassGenericUpperBoundTest() {
-//        // create generic type with upper bound
-//        ClassOrInterfaceType upperBound = new ClassOrInterfaceType()
-//                .setName("Integer");
-//        TypeParameter genericWithUpperBound = new TypeParameter("U", new NodeList<>(upperBound));
-//        // instantiate new class and method
-//        CompilationUnit cu = new CompilationUnit();
-//        ClassOrInterfaceDeclaration jpClass = cu.addClass("Foo")
-//                .addModifier(Modifier.Keyword.PUBLIC)
-//                .addTypeParameter(genericWithUpperBound);
-//        MethodDeclaration jpCallable = jpClass.addMethod("printElements")
-//                .addModifier(Modifier.Keyword.PUBLIC)
-//                .addParameter("U", "arg0");
-//        assertEquals("Integer", TypeUtils.getRawTypeName(jpClass, jpCallable, jpCallable.getParameter(0)));
-//    }
+    @Test
+    public void getRawTypeNamePrimitiveTest() {
+        PrimitiveType integerType = new PrimitiveType(PrimitiveType.Primitive.INT);
+        ClassOrInterfaceDeclaration jpClass = new ClassOrInterfaceDeclaration()
+                .setName("Foo")
+                .addModifier(Modifier.Keyword.PUBLIC);
+        MethodDeclaration jpCallable = new MethodDeclaration()
+                .setName("printElements")
+                .addModifier(Modifier.Keyword.PUBLIC)
+                .addParameter(integerType, "arg0");
+        assertEquals("int", TypeUtils.getRawTypeName(jpClass, jpCallable, jpCallable.getParameter(0)));
+    }
+
+    @Test
+    public void getRawTypeNameVarArgTest() {
+        PrimitiveType integerType = new PrimitiveType(PrimitiveType.Primitive.INT);
+        Parameter parameter = new Parameter(integerType, "arg0")
+                .setVarArgs(true);
+        ClassOrInterfaceDeclaration jpClass = new ClassOrInterfaceDeclaration()
+                .setName("Foo")
+                .addModifier(Modifier.Keyword.PUBLIC);
+        MethodDeclaration jpCallable = new MethodDeclaration()
+                .setName("printElements")
+                .addModifier(Modifier.Keyword.PUBLIC)
+                .addParameter(parameter);
+        assertEquals("int[]", TypeUtils.getRawTypeName(jpClass, jpCallable, jpCallable.getParameter(0)));
+    }
+
+    @Test
+    public void getRawTypeNameWithoutGenericUpperBoundTest() {
+        ClassOrInterfaceDeclaration jpClass = new ClassOrInterfaceDeclaration()
+                .setName("Foo")
+                .addModifier(Modifier.Keyword.PUBLIC);
+        MethodDeclaration jpCallable = jpClass.addMethod("printElements")
+                .addModifier(Modifier.Keyword.PUBLIC)
+                .addTypeParameter(new TypeParameter("T"))
+                .addParameter("T", "arg0");
+        assertEquals("T", TypeUtils.getRawTypeName(jpClass, jpCallable, jpCallable.getParameter(0)));
+    }
+
+    @Test
+    public void getRawTypeNameWithGenericUpperBoundTest() {
+        // create generic type with upper bound
+        ClassOrInterfaceType upperBound = new ClassOrInterfaceType()
+                .setName("Integer");
+        TypeParameter genericWithUpperBound = new TypeParameter("U", new NodeList<>(upperBound));
+        // instantiate new class and method
+        CompilationUnit cu = new CompilationUnit();
+        ClassOrInterfaceDeclaration jpClass = cu.addClass("Foo")
+                .addModifier(Modifier.Keyword.PUBLIC)
+                .addTypeParameter(genericWithUpperBound);
+        MethodDeclaration jpCallable = jpClass.addMethod("printElements")
+                .addModifier(Modifier.Keyword.PUBLIC)
+                .addParameter("U", "arg0");
+        assertEquals("Integer", TypeUtils.getRawTypeName(jpClass, jpCallable, jpCallable.getParameter(0)));
+    }
 
     @Test
     public void isStandardTypeTest() {

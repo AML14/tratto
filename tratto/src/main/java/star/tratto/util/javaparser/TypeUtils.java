@@ -1,5 +1,6 @@
 package star.tratto.util.javaparser;
 
+import com.github.javaparser.TokenRange;
 import com.github.javaparser.ast.body.CallableDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.TypeDeclaration;
@@ -8,6 +9,7 @@ import org.plumelib.reflection.Signatures;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -194,8 +196,7 @@ public class TypeUtils {
      * @return true iff the given type name extends another type
      */
     private static boolean hasSupertype(String sourceCode, String typeName) {
-        String componentType = typeName.replaceAll("\\[]", "");
-        String regex = componentType + "\\s+extends\\s+([A-Za-z0-9_]+)";
+        String regex = String.format("%s\\s+extends\\s+([A-Za-z0-9_]+)[<[A-Za-z0-9_,]+]*", typeName.replaceAll("\\[]",""));
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(sourceCode);
         return matcher.find();
@@ -213,8 +214,7 @@ public class TypeUtils {
      * a type
      */
     private static String getSupertype(String sourceCode, String typeName) {
-        String componentType = typeName.replaceAll("\\[]", "");
-        String regex = componentType + "\\s+extends\\s+([A-Za-z0-9_]+)";
+        String regex = String.format("%s\\s+extends\\s+([A-Za-z0-9_]+)[<[A-Za-z0-9_,]+]*", typeName.replaceAll("\\[]",""));
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(sourceCode);
         if (matcher.find()) {
@@ -243,21 +243,17 @@ public class TypeUtils {
             CallableDeclaration<?> jpCallable,
             String typeName
     ) {
-        String componentType = typeName.replaceAll("\\[]", "");
         // get upper bound from method/constructor declaration
-        for (TypeParameter jpGeneric : jpCallable.getTypeParameters()) {
-            if (jpGeneric.getNameAsString().equals(componentType)) {
-                if (hasSupertype(jpGeneric.toString(), componentType)) {
-                    typeName = getSupertype(jpGeneric.toString(), componentType);
-                }
-            }
+        Optional<TokenRange> callableTokenRange = jpCallable.getTokenRange();
+        if (callableTokenRange.isPresent() && hasSupertype(callableTokenRange.get().toString(), typeName)) {
+            typeName = getSupertype(callableTokenRange.get().toString(), typeName);
         }
         // get upper bound from class declaration
         if (jpDeclaration.isClassOrInterfaceDeclaration()) {
             for (TypeParameter jpGeneric : jpDeclaration.asClassOrInterfaceDeclaration().getTypeParameters()) {
-                if (jpGeneric.getNameAsString().equals(componentType)) {
-                    if (hasSupertype(jpGeneric.toString(), componentType)) {
-                        typeName = getSupertype(jpGeneric.toString(), componentType);
+                if (jpGeneric.getNameAsString().equals(typeName.replaceAll("\\[]", ""))) {
+                    if (hasSupertype(jpGeneric.toString(), typeName)) {
+                        typeName = getSupertype(jpGeneric.toString(), typeName);
                     }
                 }
             }
