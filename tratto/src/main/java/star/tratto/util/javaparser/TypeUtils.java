@@ -211,9 +211,8 @@ public class TypeUtils {
     }
 
     /**
-     * Finds the supertype of a given type name in source code. We analyze
-     * source code using JavaParser, such that the given type name must use
-     * the source code format representation.
+     * Finds the supertype of a given type name in source code. The given
+     * type name must use the source code format representation.
      *
      * @param sourceCode the method or class source code in which
      * {@code typeName} is used
@@ -223,13 +222,13 @@ public class TypeUtils {
      * a type
      */
     private static String getSupertype(String sourceCode, String typeName) {
-        int arrayLevel = getArrayLevel(typeName);
-        // finds the supertype.
-        String regex = String.format("%s\\s+extends\\s+([A-Za-z0-9_]+)[<[A-Za-z0-9_,]+]*", typeName.replaceAll("\\[]", ""));
+        String componentType = typeName.replaceAll("\\[]", "");
+        String regex = componentType + "\\s+extends\\s+([A-Za-z0-9_]+)";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(sourceCode);
         if (matcher.find()) {
-            return removeTypeArgumentsAndSemicolon(matcher.group(1)) + ("[]").repeat(arrayLevel);
+            String typeBound = removeTypeArgumentsAndSemicolon(matcher.group(1));
+            return addArrayLevel(typeBound, getArrayLevel(typeName));
         } else {
             throw new IllegalArgumentException(String.format(
                     "The JavaParser source code %s does not match the regex built with the JavaParser type name %s.",
