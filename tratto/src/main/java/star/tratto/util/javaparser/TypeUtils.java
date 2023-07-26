@@ -176,14 +176,6 @@ public class TypeUtils {
     }
 
     /**
-     * @param jpClass a JavaParser class or interface declaration
-     * @return true iff the class/interface has generic type parameters
-     */
-    public static boolean hasTypeParameters(ClassOrInterfaceDeclaration jpClass) {
-        return jpClass.getTypeParameters().size() > 0;
-    }
-
-    /**
      * @param typeName a source code format type name
      * @return true iff the type represents a vararg (e.g. uses "...")
      */
@@ -243,43 +235,39 @@ public class TypeUtils {
      * with generic types in source code. Also ensures name is consistent with
      * the field descriptor format for direct comparison.
      *
-     * @param jpClass the declaring class
+     * @param jpDeclaration the declaring type (e.g. class, enum, etc.)
      * @param jpCallable the method using {@code jpParam}
      * @param jpParam a parameter
      * @return the raw name of the parameter in source code
      */
     public static String getRawTypeName(
-            TypeDeclaration<?> jpClass,
+            TypeDeclaration<?> jpDeclaration,
             CallableDeclaration<?> jpCallable,
             Parameter jpParam
     ) {
-        String jpTypeName = removeTypeArgumentsAndSemicolon(jpParam.getType().asString());
-        // get class name.
+        // get type name
+        String typeName;
         if (jpParam.getType().isClassOrInterfaceType()) {
-            jpTypeName = removeTypeArgumentsAndSemicolon(jpParam.getType().asClassOrInterfaceType().getNameAsString());
+            typeName = removeTypeArgumentsAndSemicolon(jpParam.getType().asClassOrInterfaceType().getNameAsString());
+        } else {
+            typeName = removeTypeArgumentsAndSemicolon(jpParam.getType().asString());
         }
-        // handle ellipsis.
-        if (hasEllipsis(jpParam.toString())) {
-            jpTypeName = addArrayLevel(jpTypeName, 1);
-        }
-        // use upper bound if possible.
-        if (hasSupertype(jpCallable.getTokenRange().get().toString(), jpTypeName)) {
-            jpTypeName = getSupertype(jpCallable.getTokenRange().get().toString(), jpTypeName);
-        }
-        // handle generic upper bound separately due to naming.
-        if (jpClass.isClassOrInterfaceDeclaration()) {
-            ClassOrInterfaceDeclaration jpClassDeclaration =  jpClass.asClassOrInterfaceDeclaration();
-            if (hasTypeParameters(jpClassDeclaration)) {
-                for (TypeParameter jpGeneric : jpClassDeclaration.getTypeParameters()) {
-                    if (jpGeneric.getNameAsString().equals(jpTypeName.replaceAll("\\[]", ""))) {
-                        if (hasSupertype(jpGeneric.toString(), jpTypeName)) {
-                            jpTypeName = getSupertype(jpGeneric.toString(), jpTypeName);
-                        }
-                    }
+        // add array level for varargs
+        if (hasEllipsis(jpParam.toString())) typeName = addArrayLevel(typeName, 1);
+        // use upperbound if possible
+        String callableTokenRange = jpCallable.getTokenRange().get().toString();
+        if (hasSupertype(callableTokenRange, typeName)) typeName = getSupertype(callableTokenRange, typeName);
+        // if generic type, use class-level upper bounds
+        if (jpDeclaration.isClassOrInterfaceDeclaration()) {
+            ClassOrInterfaceDeclaration jpClass = jpDeclaration.asClassOrInterfaceDeclaration();
+            String componentType = typeName.replaceAll("\\[]", "");
+            for (TypeParameter jpGeneric : jpClass.getTypeParameters()) {
+                if (jpGeneric.getNameAsString().equals(componentType)) {
+                    if (hasSupertype(jpGeneric.toString(), componentType)) typeName = getSupertype(jpGeneric.toString(), componentType);
                 }
             }
         }
-        return jpTypeName;
+        return typeName;
     }
 
     /**

@@ -47,19 +47,6 @@ public class TypeUtilsTest {
     }
 
     @Test
-    public void hasTypeParametersTest() {
-        ClassOrInterfaceDeclaration classWithoutTypeParameters = new ClassOrInterfaceDeclaration()
-                .setName("Foo")
-                .addModifier(Modifier.Keyword.PUBLIC);
-        ClassOrInterfaceDeclaration classWithTypeParameters = new ClassOrInterfaceDeclaration()
-                .setName("Bar")
-                .addModifier(Modifier.Keyword.PUBLIC)
-                .addTypeParameter(new TypeParameter("T"));
-        assertFalse(TypeUtils.hasTypeParameters(classWithoutTypeParameters));
-        assertTrue(TypeUtils.hasTypeParameters(classWithTypeParameters));
-    }
-
-    @Test
     public void hasEllipsisTest() {
         String normalType = "int";
         String almost = "How..";
