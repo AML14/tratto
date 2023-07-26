@@ -1,5 +1,10 @@
 package star.tratto.util.javaparser;
 
+import com.github.javaparser.ast.body.CallableDeclaration;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.body.Parameter;
+import com.github.javaparser.ast.body.TypeDeclaration;
+import com.github.javaparser.ast.type.TypeParameter;
 import org.plumelib.reflection.Signatures;
 
 import java.util.Arrays;
@@ -145,20 +150,12 @@ public class TypeUtils {
     private static String fieldDescriptorToSourceFormat(
             String fieldDescriptor
     ) {
-        fieldDescriptor = removeTypeArguments(fieldDescriptor);
+        fieldDescriptor = removeTypeArgumentsAndSemicolon(fieldDescriptor);
         if (hasPrimitive(fieldDescriptor)) {
-            // convert primitive using plume-lib.
             fieldDescriptor = Signatures.fieldDescriptorToBinaryName(fieldDescriptor);
         } else {
-            // convert object to format compatible with XText grammar.
             fieldDescriptor = fieldDescriptorArrayToSourceFormatArray(fieldDescriptor);
             fieldDescriptor = getClassNameFromNameSegments(getNameSegments(fieldDescriptor));
-    private static String fieldDescriptorNameToSourceCodeName(String fieldDescriptor) {
-        fieldDescriptor = removeTypeArgumentsAndSemicolon(fieldDescriptor);
-        // converts primitive type.
-        List<String> primitiveJDoctorValues = PrimitiveTypeUtils.getAllPrimitiveFieldDescriptors();
-        if (primitiveJDoctorValues.contains(fieldDescriptor.replaceAll("[^a-zA-Z]+", ""))) {
-            fieldDescriptor = fieldDescriptorPrimitiveToSourceCodePrimitive(fieldDescriptor);
         }
         return fieldDescriptor;
     }
@@ -264,7 +261,7 @@ public class TypeUtils {
         }
         // handle ellipsis.
         if (hasEllipsis(jpParam.toString())) {
-            jpTypeName = addSourceCodeArrayLevel(jpTypeName, 1);
+            jpTypeName = addArrayLevel(jpTypeName, 1);
         }
         // use upper bound if possible.
         if (hasSupertype(jpCallable.getTokenRange().get().toString(), jpTypeName)) {
