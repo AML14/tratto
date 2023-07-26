@@ -93,8 +93,8 @@ public class FileUtils {
      * @param root a root directory
      * @param extension a file/subdirectory in the given root directory
      * @return the path of {@code extension}, with {@code root} removed
-     * @throws IllegalArgumentException if {@code extension} is not a child
-     * of {@code root}
+     * @throws IllegalArgumentException if {@code extension} is equal to
+     * {@code root} or if {@code extension} is not a child of {@code root}
      */
     private static Path getPathSuffix(Path root, Path extension) {
         if (!extension.startsWith(root)) {
@@ -104,17 +104,19 @@ public class FileUtils {
     }
 
     /**
-     * Returns the relative path of the target file when moved from the source
-     * directory to the new destination directory.
+     * Returns the path of the target file when moved from the source
+     * directory to the destination directory.
      *
      * @param source the source directory
      * @param destination the destination directory
      * @param target the target file in the source directory
      * @return the relative path of target in the destination directory. For
-     * example, given {@code source = [prefix]/[source]},
-     * {@code destination = [otherPrefix]/[destination]}, and
-     * {@code target = [prefix]/[source]/[suffix]/[filename]}, we output,
-     * {@code relativePath = [otherPrefix]/[destination]/[suffix]/[filename]}
+     * example, let
+     *      source = [sourcePrefix]/[source]
+     *      destination = [destinationPrefix]/[destination]
+     *      target = [sourcePrefix]/[source]/[suffix]/[fileName]
+     * then the method outputs,
+     *      relativePath = [destinationPrefix]/[destination]/[suffix]/[fileName]
      */
     private static Path getRelativePath(Path source, Path destination, Path target) {
         if (source.equals(target)) return destination;
@@ -123,12 +125,14 @@ public class FileUtils {
     }
 
     /**
-     * Recursively copies all files in a given directory to another directory.
-     * If a file in source already exists in destination, then the original
-     * file will be overridden.
+     * Recursively copies all files from the source directory to the
+     * destination directory. If a file in the source directory already exists
+     * in the destination directory, then the original file will be overridden.
      *
      * @param source the directory where the files are located
      * @param destination the directory where the files will be copied to
+     * @throws Error if the source directory does not exist or an error occurs
+     * while copying a file
      */
     public static void copy(Path source, Path destination) {
         if (!Files.exists(source)) throw new Error("Directory " + source + " is not found");
@@ -153,13 +157,14 @@ public class FileUtils {
     }
 
     /**
-     * Recursively moves all files in a given directory to another directory.
-     * If a file in source already exists in destination, then the original
-     * file will be overridden.
+     * Recursively moves all files from the source directory to the
+     * destination directory. If a file in the source directory already exists
+     * in the destination directory, then the original file will be overridden.
      *
      * @param source the directory where the files are located
      * @param destination the directory where the files will be moved to
-     * @throws Error if a file in source already exists in destination
+     * @throws Error if the source directory does not exist or an error occurs
+     * while moving a file
      */
     public static void move(Path source, Path destination) {
         if (!Files.exists(source)) throw new Error("Directory " + source + " is not found");
@@ -171,7 +176,7 @@ public class FileUtils {
     /**
      * Writes {@code content} to {@code path} in JSON format. Creates a new
      * file and parent directories if necessary. If file already exists,
-     * overrides any previous content.
+     * then this method overrides any previous content.
      *
      * @param path a file
      * @param content an object to be written in JSON content
@@ -191,6 +196,7 @@ public class FileUtils {
     /**
      * @param path a file
      * @return the file contents as a String
+     * @throws Error if unable to process the file
      */
     public static String readString(Path path) {
         try {
