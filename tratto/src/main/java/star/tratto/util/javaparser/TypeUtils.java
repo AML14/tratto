@@ -1,8 +1,6 @@
 package star.tratto.util.javaparser;
 
-import com.github.javaparser.TokenRange;
 import com.github.javaparser.ast.body.CallableDeclaration;
-import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.type.TypeParameter;
@@ -10,7 +8,6 @@ import org.plumelib.reflection.Signatures;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -248,14 +245,16 @@ public class TypeUtils {
     ) {
         String componentType = typeName.replaceAll("\\[]", "");
         // get upper bound from method/constructor declaration
-        Optional<TokenRange> callableTokens = jpCallable.getTokenRange();
-        if (callableTokens.isPresent() && hasSupertype(callableTokens.get().toString(), componentType)) {
-            typeName = getSupertype(callableTokens.get().toString(), componentType);
+        for (TypeParameter jpGeneric : jpCallable.getTypeParameters()) {
+            if (jpGeneric.getNameAsString().equals(componentType)) {
+                if (hasSupertype(jpGeneric.toString(), componentType)) {
+                    typeName = getSupertype(jpGeneric.toString(), componentType);
+                }
+            }
         }
         // get upper bound from class declaration
         if (jpDeclaration.isClassOrInterfaceDeclaration()) {
-            ClassOrInterfaceDeclaration jpClass = jpDeclaration.asClassOrInterfaceDeclaration();
-            for (TypeParameter jpGeneric : jpClass.getTypeParameters()) {
+            for (TypeParameter jpGeneric : jpDeclaration.asClassOrInterfaceDeclaration().getTypeParameters()) {
                 if (jpGeneric.getNameAsString().equals(componentType)) {
                     if (hasSupertype(jpGeneric.toString(), componentType)) {
                         typeName = getSupertype(jpGeneric.toString(), componentType);
