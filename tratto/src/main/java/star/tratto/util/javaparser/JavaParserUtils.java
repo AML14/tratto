@@ -892,7 +892,7 @@ public class JavaParserUtils {
         return !fieldDeclaration.accessSpecifier().equals(AccessSpecifier.PRIVATE) && !fieldDeclaration.isStatic();
     }
 
-    public static boolean isStaticNonPrivateNonVoidMethod(MethodUsage methodUsage) {
+    public static boolean isNonPrivateStaticNonVoidMethod(MethodUsage methodUsage) {
         return methodUsage.getDeclaration().isStatic() && isNonPrivateNonVoidMethod(methodUsage);
     }
 
