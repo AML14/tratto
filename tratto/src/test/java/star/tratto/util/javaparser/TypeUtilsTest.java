@@ -1,8 +1,5 @@
 package star.tratto.util.javaparser;
 
-import com.github.javaparser.ast.Modifier;
-import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
-import com.github.javaparser.ast.type.TypeParameter;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
