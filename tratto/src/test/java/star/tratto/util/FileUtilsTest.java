@@ -1,9 +1,7 @@
 package star.tratto.util;
 
 import org.junit.jupiter.api.Test;
-import star.tratto.identifiers.FileFormat;
-import star.tratto.identifiers.FileName;
-import star.tratto.identifiers.IOPath;
+import star.tratto.data.IOPath;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -15,13 +13,17 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class FileUtilsTest {
-    @Test
-    public void getPathTest() {
-        String dirPath = "hanford";
-        String fileName = "hydrogen-bomb";
-        FileFormat fileFormat = FileFormat.CSV;
-        String projectName = "manhattan";
-        assertEquals("hanford/manhattan/hydrogen-bomb.csv", FileUtils.getPath(dirPath, fileName, fileFormat, projectName).toString());
+    private Path setupFileEnvironment() {
+        Path root = Paths.get("src/test/java/star/tratto/util/temp");
+        FileUtils.createDirectories(root);
+        FileUtils.createDirectories(root.resolve("other1"));
+        FileUtils.createDirectories(root.resolve("other2"));
+        FileUtils.createDirectories(root.resolve("other3"));
+        FileUtils.createFile(root.resolve("other1/tempFile_a.json"));
+        FileUtils.createFile(root.resolve("other1/tempFile_b.json"));
+        FileUtils.createFile(root.resolve("other1/nested_directory/tempFile_secret.json"));
+        FileUtils.createFile(root.resolve("other3/bonus.txt"));
+        return root;
     }
 
     @Test
@@ -32,6 +34,44 @@ public class FileUtilsTest {
             Files.delete(path);
             Files.delete(path.getParent());
         } catch (IOException e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
+    public void deleteDirectoryTest() {
+        Path root = setupFileEnvironment();
+        try {
+            FileUtils.deleteDirectory(root);
+        } catch (Error e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
+    public void copyTest() {
+        try {
+            Path root = setupFileEnvironment();
+            Path other = root.getParent().resolve("otherTemp");
+            FileUtils.copy(root, other);
+            FileUtils.deleteDirectory(other);
+            FileUtils.deleteDirectory(root);
+        } catch (Error e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
+    public void moveTest() {
+        try {
+            Path root = setupFileEnvironment();
+            Path other = root.getParent().resolve("otherTemp");
+            FileUtils.move(root, other);
+            FileUtils.deleteDirectory(other);
+        } catch (Error e) {
             e.printStackTrace();
             fail();
         }
@@ -61,34 +101,17 @@ public class FileUtilsTest {
             assertEquals(2, fileNames.size());
             assertTrue(fileNames.contains("SplitterTest.java"));
             assertTrue(fileNames.contains("ParserTest.java"));
-        } catch (IOException e) {
+        } catch (Error e) {
             e.printStackTrace();
             fail();
         }
     }
 
     @Test
-    public void getAllJavaFilesFromDirectoryDoesNotExistTest() {
-        Path dir = Paths.get("arda/middle-earth/hobbiton");
-        try {
-            FileUtils.getAllJavaFilesFromDirectory(dir);
-            fail();
-        } catch (IOException ignored) {}
-    }
-
-    @Test
-    public void getAbsolutePathTest() {
-        assertEquals("some/random/dir/ignore_file.java", FileUtils.getAbsolutePath("some/random/dir", FileName.IGNORE_FILE, FileFormat.JAVA));
-    }
-
-    @Test
     public void readJSONListTest() {
-        String filePath = Paths.get(
-                IOPath.REPOS.getValue(),
-                FileName.IGNORE_FILE.getValue() + FileFormat.JSON.getExtension()
-        ).toString();
+        Path path = IOPath.IGNORE_FILE.getPath();
         try {
-            List<String> ignoreFileList = FileUtils.readJSONList(filePath)
+            List<String> ignoreFileList = FileUtils.readJSONList(path)
                     .stream()
                     .map(e -> (String) e)
                     .collect(Collectors.toList());
