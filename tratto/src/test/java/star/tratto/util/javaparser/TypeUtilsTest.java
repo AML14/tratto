@@ -57,14 +57,6 @@ public class TypeUtilsTest {
     }
 
     @Test
-    public void hasSupertypeTest() {
-        String withoutSuperType = "<U> U getU() { ... }";
-        String withSuperType = "class D <@Brain T extends B & A & @Tripe C> { ... }";
-        assertFalse(TypeUtils.hasSupertype(withoutSuperType, "U"));
-        assertTrue(TypeUtils.hasSupertype(withSuperType, "T"));
-    }
-
-    @Test
     public void isStandardTypeTest() {
         assertTrue(TypeUtils.isStandardType("Comparable"));
         assertFalse(TypeUtils.isStandardType("Other"));

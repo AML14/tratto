@@ -1,5 +1,6 @@
 package star.tratto.util.javaparser;
 
+import com.github.javaparser.TokenRange;
 import com.github.javaparser.ast.body.CallableDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.Parameter;
@@ -9,6 +10,7 @@ import org.plumelib.reflection.Signatures;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -194,7 +196,7 @@ public class TypeUtils {
      * @param typeName a source code format type name
      * @return true iff the given type name extends another type
      */
-    public static boolean hasSupertype(String sourceCode, String typeName) {
+    private static boolean hasSupertype(String sourceCode, String typeName) {
         String componentType = typeName.replaceAll("\\[]", "");
         String regex = componentType + "\\s+extends\\s+([A-Za-z0-9_]+)";
         Pattern pattern = Pattern.compile(regex);
@@ -231,6 +233,40 @@ public class TypeUtils {
     }
 
     /**
+     * Gets the upper bound of a generic type from the method or class source
+     *
+     * @param jpDeclaration the declaring class
+     * @param jpCallable the method using {@code typeName}
+     * @param typeName a type name represented in source code format
+     * @return the upper bound (if it exists) from either the relevant method
+     * or declaring class
+     */
+    private static String getGenericUpperBound(
+            TypeDeclaration<?> jpDeclaration,
+            CallableDeclaration<?> jpCallable,
+            String typeName
+    ) {
+        String componentType = typeName.replaceAll("\\[]", "");
+        // get upper bound from method/constructor declaration
+        Optional<TokenRange> callableTokens = jpCallable.getTokenRange();
+        if (callableTokens.isPresent() && hasSupertype(callableTokens.get().toString(), componentType)) {
+            typeName = getSupertype(callableTokens.get().toString(), componentType);
+        }
+        // get upper bound from class declaration
+        if (jpDeclaration.isClassOrInterfaceDeclaration()) {
+            ClassOrInterfaceDeclaration jpClass = jpDeclaration.asClassOrInterfaceDeclaration();
+            for (TypeParameter jpGeneric : jpClass.getTypeParameters()) {
+                if (jpGeneric.getNameAsString().equals(componentType)) {
+                    if (hasSupertype(jpGeneric.toString(), componentType)) {
+                        typeName = getSupertype(jpGeneric.toString(), componentType);
+                    }
+                }
+            }
+        }
+        return typeName;
+    }
+
+    /**
      * Gets the raw name of a type in source code. Used to manage edge cases
      * with generic types in source code. Also ensures name is consistent with
      * the field descriptor format for direct comparison.
@@ -253,20 +289,11 @@ public class TypeUtils {
             typeName = removeTypeArgumentsAndSemicolon(jpParam.getType().asString());
         }
         // add array level for varargs
-        if (hasEllipsis(jpParam.toString())) typeName = addArrayLevel(typeName, 1);
-        // use upperbound if possible
-        String callableTokenRange = jpCallable.getTokenRange().get().toString();
-        if (hasSupertype(callableTokenRange, typeName)) typeName = getSupertype(callableTokenRange, typeName);
-        // if generic type, use class-level upper bounds
-        if (jpDeclaration.isClassOrInterfaceDeclaration()) {
-            ClassOrInterfaceDeclaration jpClass = jpDeclaration.asClassOrInterfaceDeclaration();
-            String componentType = typeName.replaceAll("\\[]", "");
-            for (TypeParameter jpGeneric : jpClass.getTypeParameters()) {
-                if (jpGeneric.getNameAsString().equals(componentType)) {
-                    if (hasSupertype(jpGeneric.toString(), componentType)) typeName = getSupertype(jpGeneric.toString(), componentType);
-                }
-            }
+        if (hasEllipsis(jpParam.toString())) {
+            typeName = addArrayLevel(typeName, 1);
         }
+        // use upper bound, if possible
+        typeName = getGenericUpperBound(jpDeclaration, jpCallable, typeName);
         return typeName;
     }
 
