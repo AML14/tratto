@@ -293,6 +293,9 @@ public class TypeUtils {
         }
         // use upper bound, if possible
         typeName = getGenericUpperBound(jpDeclaration, jpCallable, typeName);
+        if (hasEllipsis(jpParam.toString())) {
+            System.out.println(jpParam.toString() + " " + typeName);
+        }
         return typeName;
     }
 
