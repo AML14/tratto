@@ -91,17 +91,14 @@ public class FileUtilsTest {
     }
 
     @Test
-    public void getAllJavaFilesFromDirectoryTest() {
-        Path dir = Paths.get("src/test/java/star/tratto/oraclegrammar/custom");
+    public void readStringTest() {
+        Path path = Paths.get("src/test/java/star/tratto/util/temp/tempFile.json");
         try {
-            List<String> fileNames = FileUtils.getAllJavaFilesFromDirectory(dir)
-                    .stream()
-                    .map(p -> p.getFileName().toString())
-                    .toList();
-            assertEquals(2, fileNames.size());
-            assertTrue(fileNames.contains("SplitterTest.java"));
-            assertTrue(fileNames.contains("ParserTest.java"));
-        } catch (Error e) {
+            FileUtils.write(path, List.of("input1", "input2", "input3"));
+            assertEquals("[ \"input1\", \"input2\", \"input3\" ]", FileUtils.readString(path));
+            Files.delete(path);
+            Files.delete(path.getParent());
+        } catch (IOException e) {
             e.printStackTrace();
             fail();
         }
@@ -116,6 +113,23 @@ public class FileUtilsTest {
                     .map(e -> (String) e)
                     .collect(Collectors.toList());
             assertEquals(List.of(".DS_Store", "package-info.java"), ignoreFileList);
+        } catch (Error e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
+    public void getAllJavaFilesFromDirectoryTest() {
+        Path dir = Paths.get("src/test/java/star/tratto/oraclegrammar/custom");
+        try {
+            List<String> fileNames = FileUtils.getAllJavaFilesFromDirectory(dir)
+                    .stream()
+                    .map(p -> p.getFileName().toString())
+                    .toList();
+            assertEquals(2, fileNames.size());
+            assertTrue(fileNames.contains("SplitterTest.java"));
+            assertTrue(fileNames.contains("ParserTest.java"));
         } catch (Error e) {
             e.printStackTrace();
             fail();
