@@ -1,5 +1,8 @@
 package star.tratto.util.javaparser;
 
+import com.github.javaparser.ast.Modifier;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.type.TypeParameter;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -41,6 +44,37 @@ public class TypeUtilsTest {
         assertEquals(List.of("SuperCoolClass[][]"), TypeUtils.fieldDescriptorsToSourceFormats(List.of("[[com.google.SuperCoolClass")));
         assertEquals(List.of("Type"), TypeUtils.fieldDescriptorsToSourceFormats(List.of("Type<with parameters>")));
         assertEquals(List.of("SuperCoolParameterizedType[]", "double"), TypeUtils.fieldDescriptorsToSourceFormats(List.of("[com.amazon.coretta.SuperCoolParameterizedType<with parameters<T>, Integer>", "D")));
+    }
+
+    @Test
+    public void hasTypeParametersTest() {
+        ClassOrInterfaceDeclaration classWithoutTypeParameters = new ClassOrInterfaceDeclaration()
+                .setName("Foo")
+                .addModifier(Modifier.Keyword.PUBLIC);
+        ClassOrInterfaceDeclaration classWithTypeParameters = new ClassOrInterfaceDeclaration()
+                .setName("Bar")
+                .addModifier(Modifier.Keyword.PUBLIC)
+                .addTypeParameter(new TypeParameter("T"));
+        assertFalse(TypeUtils.hasTypeParameters(classWithoutTypeParameters));
+        assertTrue(TypeUtils.hasTypeParameters(classWithTypeParameters));
+    }
+
+    @Test
+    public void hasEllipsisTest() {
+        String normalType = "int";
+        String almost = "How..";
+        String varArg = "int...";
+        assertFalse(TypeUtils.hasEllipsis(normalType));
+        assertFalse(TypeUtils.hasEllipsis(almost));
+        assertTrue(TypeUtils.hasEllipsis(varArg));
+    }
+
+    @Test
+    public void hasSupertypeTest() {
+        String withoutSuperType = "<U> U getU() { ... }";
+        String withSuperType = "class D <@Brain T extends B & A & @Tripe C> { ... }";
+        assertFalse(TypeUtils.hasSupertype(withoutSuperType, "U"));
+        assertTrue(TypeUtils.hasSupertype(withSuperType, "T"));
     }
 
     @Test
