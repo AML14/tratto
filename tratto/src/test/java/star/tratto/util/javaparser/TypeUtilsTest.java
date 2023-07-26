@@ -5,6 +5,7 @@ import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.type.PrimitiveType;
 import com.github.javaparser.ast.type.TypeParameter;
@@ -62,7 +63,7 @@ public class TypeUtilsTest {
     }
 
     @Test
-    public void getRawTypeNameNotGenericTest() {
+    public void getRawTypeNamePrimitiveTest() {
         PrimitiveType integerType = new PrimitiveType(PrimitiveType.Primitive.INT);
         ClassOrInterfaceDeclaration jpClass = new ClassOrInterfaceDeclaration()
                 .setName("Foo")
@@ -72,6 +73,21 @@ public class TypeUtilsTest {
                 .addModifier(Modifier.Keyword.PUBLIC)
                 .addParameter(integerType, "arg0");
         assertEquals("int", TypeUtils.getRawTypeName(jpClass, jpCallable, jpCallable.getParameter(0)));
+    }
+
+    @Test
+    public void getRawTypeNameVarArgTest() {
+        PrimitiveType integerType = new PrimitiveType(PrimitiveType.Primitive.INT);
+        Parameter parameter = new Parameter(integerType, "arg0")
+                .setVarArgs(true);
+        ClassOrInterfaceDeclaration jpClass = new ClassOrInterfaceDeclaration()
+                .setName("Foo")
+                .addModifier(Modifier.Keyword.PUBLIC);
+        MethodDeclaration jpCallable = new MethodDeclaration()
+                .setName("printElements")
+                .addModifier(Modifier.Keyword.PUBLIC)
+                .addParameter(parameter);
+        assertEquals("int[]", TypeUtils.getRawTypeName(jpClass, jpCallable, jpCallable.getParameter(0)));
     }
 
     @Test
