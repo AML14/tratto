@@ -9,10 +9,10 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TypeUtilsTest {
     @Test
     public void removeTypeArgumentsTest() {
-        assertEquals("List", TypeUtils.removeTypeArguments("List<? extends Integer>"));
-        assertEquals("ArrayList", TypeUtils.removeTypeArguments("ArrayList<? super Number>"));
-        assertEquals("Oversuperstition", TypeUtils.removeTypeArguments("Oversuperstition"));
-        assertEquals("Foo", TypeUtils.removeTypeArguments("Foo<? super Collection<T>, T>"));
+        assertEquals("List", TypeUtils.removeTypeArgumentsAndSemicolon("List<? extends Integer>"));
+        assertEquals("ArrayList", TypeUtils.removeTypeArgumentsAndSemicolon("ArrayList<? super Number>"));
+        assertEquals("Oversuperstition", TypeUtils.removeTypeArgumentsAndSemicolon("Oversuperstition"));
+        assertEquals("Foo", TypeUtils.removeTypeArgumentsAndSemicolon("Foo<? super Collection<T>, T>"));
     }
 
     @Test
