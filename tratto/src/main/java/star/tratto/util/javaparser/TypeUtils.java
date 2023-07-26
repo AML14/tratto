@@ -1,5 +1,6 @@
 package star.tratto.util.javaparser;
 
+import com.github.javaparser.TokenRange;
 import com.github.javaparser.ast.body.CallableDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.TypeDeclaration;
@@ -8,6 +9,7 @@ import org.plumelib.reflection.Signatures;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -243,16 +245,21 @@ public class TypeUtils {
             CallableDeclaration<?> jpCallable,
             String typeName
     ) {
-        String componentType = typeName.replaceAll("\\[]", "");
         // get upper bound from method/constructor declaration
-        for (TypeParameter jpGeneric : jpCallable.getTypeParameters()) {
-            if (jpGeneric.getNameAsString().equals(componentType)) {
-                if (hasSupertype(jpGeneric.toString(), componentType)) {
-                    typeName = getSupertype(jpGeneric.toString(), componentType);
-                }
-            }
+        Optional<TokenRange> callableTokenRange = jpCallable.getTokenRange();
+        if (callableTokenRange.isPresent() && hasSupertype(callableTokenRange.get().toString(), typeName)) {
+            typeName = getSupertype(callableTokenRange.get().toString(), typeName);
         }
+//        // get upper bound from method/constructor declaration
+//        for (TypeParameter jpGeneric : jpCallable.getTypeParameters()) {
+//            if (jpGeneric.getNameAsString().equals(componentType)) {
+//                if (hasSupertype(jpGeneric.toString(), componentType)) {
+//                    typeName = getSupertype(jpGeneric.toString(), componentType);
+//                }
+//            }
+//        }
         // get upper bound from class declaration
+        String componentType = typeName.replaceAll("\\[]", "");
         if (jpDeclaration.isClassOrInterfaceDeclaration()) {
             for (TypeParameter jpGeneric : jpDeclaration.asClassOrInterfaceDeclaration().getTypeParameters()) {
                 if (jpGeneric.getNameAsString().equals(componentType)) {
@@ -293,9 +300,6 @@ public class TypeUtils {
         }
         // use upper bound, if possible
         typeName = getGenericUpperBound(jpDeclaration, jpCallable, typeName);
-        if (hasEllipsis(jpParam.toString())) {
-            System.out.println(jpParam.toString() + " " + typeName);
-        }
         return typeName;
     }
 
