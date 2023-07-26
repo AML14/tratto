@@ -676,7 +676,6 @@ public class DatasetUtils {
                     FileName.ARRAY_METHODS.getValue() + FileFormat.JSON.getExtension()
             ).toString();
             List<List<String>> arrayMethods;
-            try {
             arrayMethods = FileUtils.readJSONList(arraysMethodJsonPath)
                     .stream()
                     .map(e -> ((List<?>) e)
@@ -684,9 +683,6 @@ public class DatasetUtils {
                             .map(o -> (String) o)
                             .toList())
                     .toList();
-            } catch (IOException e) {
-                throw new Error(e);
-            }
             methodList.addAll(arrayMethods
                     .stream()
                     .map(m -> Quartet.with(m.get(0), "", jpResolvedType.describe(), m.get(1)))
@@ -1234,8 +1230,7 @@ public class DatasetUtils {
             Operation operation
     ) {
         List<String> pathList = TypeUtils.getNameSegments(operation.getClassName());
-        List<String> packageList = TypeUtils.getPackageNameFromNameSegments(pathList);
-        return TypeUtils.identifierComponents(packageList);
+        return TypeUtils.getPackageNameFromNameSegments(pathList);
     }
 
     /**
