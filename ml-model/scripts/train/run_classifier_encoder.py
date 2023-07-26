@@ -13,7 +13,7 @@ from src.types.ClassificationType import ClassificationType
 from src.types.DatasetType import DatasetType
 from src.types.DeviceType import DeviceType
 from src.types.TrattoModelType import TrattoModelType
-from src.model.OracleTrainer import OracleTrainer
+from src.model.OracleTrainerEncoder import OracleTrainerEncoder
 from src.utils import logger
 from src.parser.ArgumentParser import ArgumentParser
 from src.processors.DataProcessor import DataProcessor
@@ -173,7 +173,7 @@ def main():
             f"batch_{args.batch_size}",
             f"epochs_{args.num_epochs}"
         )
-        oracle_trainer = OracleTrainer(
+        oracle_trainer = OracleTrainerEncoder(
             model,
             loss_fn,
             optimizer,
