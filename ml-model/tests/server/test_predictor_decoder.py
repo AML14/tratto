@@ -6,6 +6,21 @@ from src.types.TrattoModelType import TrattoModelType
 from tests.utils import generate_equivalent_tokenClassesSoFar, generate_equivalent_eligibles, generate_src_input, \
     generate_tokenClassSoFar_str, generate_eligibles, generate_eligibles_str
 
+def test_pre_processing(
+        df_dataset_server,
+        tokenizer,
+        value_mappings
+):
+    df_dataset_server_before_pre_process = df_dataset_server.copy()
+    df_dataset_server_after_pre_process = pre_process_dataset(df_dataset_server, tokenizer)
+    assert len(df_dataset_server_before_pre_process) == len(df_dataset_server_after_pre_process)
+    for idx in range(len(df_dataset_server)):
+        row_before = df_dataset_server_before_pre_process.loc[idx]
+        row_after = df_dataset_server_after_pre_process.loc[idx]
+        assert row_after.tokenClass in list(value_mappings.values())
+        assert row_after.tokenClassesSoFar == f"[ {' '.join(list(map(lambda x: value_mappings[x], row_before.tokenClassesSoFar)))} ]"
+        assert row_after.methodSourceCode == row_before.methodSourceCode.split('{')[0]
+
 
 def test_get_input(
         df_dataset_server,

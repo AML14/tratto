@@ -3,7 +3,7 @@ import pandas as pd
 import pytest
 from transformers import AutoTokenizer
 
-from src.processors.DataProcessor import DataProcessor
+from src.processors.DataProcessorDecoder import DataProcessorDecoder
 from src.utils.utils import import_json
 
 
@@ -16,7 +16,7 @@ def data_processor(
         arg_tratto_model_type,
         arg_folds
 ):
-    data_processor = DataProcessor(
+    data_processor = DataProcessorDecoder(
         arg_data_dir,
         arg_test_ratio,
         tokenizer,
@@ -35,7 +35,7 @@ def data_processor_single_datapoint(
         arg_tratto_model_type,
         arg_folds
 ):
-    data_processor = DataProcessor(
+    data_processor = DataProcessorDecoder(
         arg_data_dir_single_datapoint,
         arg_test_ratio,
         tokenizer,
@@ -54,7 +54,7 @@ def data_processor_single_datapoint(
         arg_tratto_model_type,
         arg_folds
 ):
-    data_processor = DataProcessor(
+    data_processor = DataProcessorDecoder(
         arg_data_dir_single_datapoint,
         arg_test_ratio,
         tokenizer,
@@ -73,7 +73,7 @@ def data_processor_ten_datapoints(
         arg_tratto_model_type,
         arg_folds
 ):
-    data_processor = DataProcessor(
+    data_processor = DataProcessorDecoder(
         arg_data_dir_ten_datapoints,
         arg_test_ratio,
         tokenizer,

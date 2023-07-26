@@ -5,6 +5,7 @@ import torch
 import random
 import numpy as np
 from torch.utils.data import DataLoader, RandomSampler
+from torch.optim import AdamW
 from transformers import AdamW, get_linear_schedule_with_warmup
 
 from src.model.OracleTrainerDecoder import OracleTrainerDecoder
@@ -14,7 +15,7 @@ from src.types.DeviceType import DeviceType
 from src.types.TrattoModelType import TrattoModelType
 from src.utils import logger
 from src.parser.ArgumentParser import ArgumentParser
-from src.processors.DataProcessor import DataProcessor
+from src.processors.DataProcessorDecoder import DataProcessorDecoder
 from src.pretrained.ModelClasses import ModelClasses
 from src.utils import utils
 
@@ -77,8 +78,8 @@ def main():
     tokenizer = tokenizer_class.from_pretrained(args.tokenizer_name)
 
     logger.print_load_dataset(args.data_dir)
-    # Create DataProcessor instance
-    data_processor = DataProcessor(
+    # Create DataProcessorDecoder instance
+    data_processor = DataProcessorDecoder(
         args.data_dir,
         args.test_ratio,
         tokenizer,
