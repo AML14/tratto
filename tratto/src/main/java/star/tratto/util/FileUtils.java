@@ -13,9 +13,16 @@ import java.util.stream.Stream;
 
 
 /**
- * I/O utilities: creating files, writing to files, retrieving Java files, etc.
+ * This class provides a collection of static methods for a variety of file
+ * input and output utilities, such as: creating, copying, moving, writing,
+ * reading, etc.
  */
 public class FileUtils {
+    // private constructor to avoid creating an instance of this class.
+    private FileUtils() {
+        throw new UnsupportedOperationException("This class cannot be instantiated.");
+    }
+
     /**
      * Creates an empty directory at a given path. Creates parent directories
      * if necessary. If the directories already exists, then this method does
