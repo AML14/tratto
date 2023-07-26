@@ -14,7 +14,7 @@ from src.types.DeviceType import DeviceType
 from src.types.TrattoModelType import TrattoModelType
 from src.utils import logger
 from src.parser.ArgumentParser import ArgumentParser
-from src.processors.DataProcessorDecoder import DataProcessorDecoder
+from src.processors.DataProcessor import DataProcessor
 from src.pretrained.ModelClasses import ModelClasses
 from src.utils import utils
 
@@ -78,7 +78,7 @@ def main():
 
     logger.print_load_dataset(args.data_dir)
     # Create DataProcessor instance
-    data_processor = DataProcessorDecoder(
+    data_processor = DataProcessor(
         args.data_dir,
         args.test_ratio,
         tokenizer,

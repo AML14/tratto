@@ -29,6 +29,13 @@ def arg_data_dir_ten_datapoints():
     return os.path.join(os.path.dirname(__file__), '..', 'dataset', 'ten-datapoints-dataset')
 
 @pytest.fixture(
+    scope='session',
+)
+def arg_data_dir_server():
+    return os.path.join(os.path.dirname(__file__), '..', 'dataset', 'server-dataset')
+
+
+@pytest.fixture(
     scope='session'
 )
 def arg_test_ratio():

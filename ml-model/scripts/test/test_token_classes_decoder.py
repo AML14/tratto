@@ -182,6 +182,11 @@ def pre_processing(
     ]
     # Reindex the DataFrame with the new order
     df_dataset = df_dataset.reindex(columns=new_columns_order)
+
+    if classification_type == ClassificationType.CATEGORY_PREDICTION:
+        # Keep only a single instance for each combination of oracleId and oracleSoFar
+        df_dataset = df_dataset[(df_dataset['label'] == 'True')]
+
     # Group the rows by 'oracleId' and 'oracleSoFar'
     df_grouped = df_dataset.groupby(['oracleId', 'oracleSoFar'])
     # Create an empty dictionary to store the separate datasets
@@ -284,10 +289,7 @@ def main(
         if project_name in file_name:
             print(file_name)
             df = pd.read_json(os.path.join(input_path, file_name))
-            if classification_type == ClassificationType.CATEGORY_PREDICTION:
-                # Keep only a single instance for each combination of oracleId and oracleSoFar
-                df_true_oracles = df[(df['label'] == True)]
-            dfs.append(df_true_oracles)
+            dfs.append(df)
     df_dataset = pd.concat(dfs)
 
     print("Setup model")
@@ -296,9 +298,12 @@ def main(
     # Setup tokenizer
     tokenizer = tokenizer_class.from_pretrained(tokenizer_name)
 
+    print(df_dataset.shape)
+
     print("Pre-processing dataset")
     # Pre-processing data
     datasets = pre_processing(df_dataset, tokenizer, classification_type)
+    print(len(datasets))
     # Process the data
     t_datasets = tokenize_datasets(datasets, tokenizer)
 

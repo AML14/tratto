@@ -142,10 +142,13 @@ def pre_processing(
         'projectName', 'packageName', 'className', 'methodJavadoc', 'methodSourceCode', 'classJavadoc',
         'classSourceCode', 'oracleId', 'label'
     ]
-    # Temp empty tokenInfo
-    df_dataset["tokenInfo"] = df_dataset["tokenInfo"].apply(lambda x: "")
     # Reindex the DataFrame with the new order
     df_dataset = df_dataset.reindex(columns=new_columns_order)
+
+    if classification_type == ClassificationType.CATEGORY_PREDICTION:
+        # Keep only a single instance for each combination of oracleId and oracleSoFar
+        df_dataset = df_dataset[(df_dataset['label'] == 'True')]
+
     # Group the rows by 'oracleId' and 'oracleSoFar'
     df_grouped = df_dataset.groupby(['oracleId', 'oracleSoFar'])
     # Create an empty dictionary to store the separate datasets
@@ -248,9 +251,6 @@ def main(
         if project_name in file_name:
             print(file_name)
             df = pd.read_json(os.path.join(input_path, file_name))
-            if classification_type == ClassificationType.CATEGORY_PREDICTION:
-                # Keep only a single instance for each combination of oracleId and oracleSoFar
-                df_true_oracles = df[(df['label'] == True)]
             dfs.append(df_true_oracles)
     df_dataset = pd.concat(dfs)
 

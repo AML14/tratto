@@ -160,7 +160,7 @@ def get_input_model_classes(
     # Define the new order of columns
     new_columns_order = [
         'oracleId', 'token', 'tokenInfo', 'tokenClass', 'oracleSoFar', 'tokenClassesSoFar', 'eligibleTokenClasses',
-        'javadocTag', 'oracleType', 'packageName', 'className', 'methodJavadoc', 'methodSourceCode'
+        'javadocTag', 'oracleType', 'packageName', 'className', 'methodSourceCode', 'methodJavadoc'
     ]
     # Reindex the DataFrame with the new order
     df_dataset = df_dataset.reindex(columns=new_columns_order)
@@ -196,7 +196,7 @@ def get_input_model_values(
     # Define the new order of columns
     new_columns_order = [
         'oracleId', 'tokenClass', 'tokenInfo', 'token', 'oracleSoFar', 'eligibleTokens', 'javadocTag', 'oracleType',
-        'packageName', 'className', 'methodJavadoc', 'methodSourceCode'
+        'packageName', 'className', 'methodSourceCode', 'methodJavadoc'
     ]
     # Reindex the DataFrame with the new order
     df_dataset = df_dataset.reindex(columns=new_columns_order)
@@ -241,7 +241,6 @@ def next_token(
         model_values: Type[PreTrainedModel],
         tokenizer_token_classes: PreTrainedTokenizer,
         tokenizer_token_values: PreTrainedTokenizer
-
 ):
     # Collect partial dataframes from oracles
     print("Predict next token")
