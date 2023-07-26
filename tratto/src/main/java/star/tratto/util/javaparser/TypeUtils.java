@@ -204,7 +204,7 @@ public class TypeUtils {
      */
     public static boolean hasSupertype(String sourceCode, String typeName) {
         String componentType = typeName.replaceAll("\\[]", "");
-        String regex = componentType + "\\s+extends\\s+([A-Za-z0-9_]+)[<[A-Za-z0-9_,]+]*";
+        String regex = componentType + "\\s+extends\\s+([A-Za-z0-9_]+)<[A-Za-z0-9_,]*";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(sourceCode);
         return matcher.find();
