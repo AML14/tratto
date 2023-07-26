@@ -92,7 +92,7 @@ public class FileUtilsTest {
                     .stream()
                     .map(e -> (String) e)
                     .collect(Collectors.toList());
-            assertEquals(List.of(".DS_Store", "package-info"), ignoreFileList);
+            assertEquals(List.of(".DS_Store", "package-info.java"), ignoreFileList);
         } catch (Error e) {
             e.printStackTrace();
             fail();
