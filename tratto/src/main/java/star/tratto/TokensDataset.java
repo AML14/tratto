@@ -1,18 +1,17 @@
 package star.tratto;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import star.tratto.data.*;
+import star.tratto.util.FileUtils;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static star.tratto.data.OracleDP2TokenDPs.oracleDatapointToTokenDatapoints;
 
@@ -29,19 +28,19 @@ public class TokensDataset {
     public static void main(String[] args) throws IOException {
         validateArgs(args);
         logger.info("Dataset type: {}", DATASET_TYPE);
-        File tokensDatasetFolder = new File(TOKENS_DATASET_FOLDER);
+        Path tokensDatasetFolder = Paths.get(TOKENS_DATASET_FOLDER);
         FileUtils.deleteDirectory(tokensDatasetFolder);
-        tokensDatasetFolder.mkdir();
-        File[] oraclesDatasetFiles = new File(ORACLES_DATASET_FOLDER).listFiles();
-        for (File oraclesDatasetFile : oraclesDatasetFiles) { // Assume that only dataset files are in the folder
+        Files.createDirectories(tokensDatasetFolder);
+        Path oraclesDatasetPath = Path.of(ORACLES_DATASET_FOLDER);
+        DirectoryStream<Path> oraclesDatasetStream = Files.newDirectoryStream(oraclesDatasetPath);
+        for (Path oraclesDatasetFile : oraclesDatasetStream) { // Assume that only dataset files are in the folder
             logger.info("------------------------------------------------------------");
-            logger.info("Processing file: {}", oraclesDatasetFile.getName());
+            logger.info("Processing file: {}", oraclesDatasetFile.getFileName());
             logger.info("------------------------------------------------------------");
-            File tokensDatasetFile = new File(TOKENS_DATASET_FOLDER + fileIndex++ + "_" + oraclesDatasetFile.getName());
-            tokensDatasetFile.delete();
-            FileOutputStream tokensDatasetOutputStream = new FileOutputStream(tokensDatasetFile, true);
+            Path tokensDatasetFile = Paths.get(TOKENS_DATASET_FOLDER + fileIndex++ + "_" + oraclesDatasetFile.getFileName());
+            OutputStream tokensDatasetOutputStream = Files.newOutputStream(tokensDatasetFile);
 
-            List<Map> rawOracleDatapoints = objectMapper.readValue(oraclesDatasetFile, List.class);
+            List<Map> rawOracleDatapoints = objectMapper.readValue(oraclesDatasetFile.toFile(), List.class);
             for (Map rawOracleDatapoint : rawOracleDatapoints) {
                 OracleDatapoint oracleDatapoint = new OracleDatapoint(rawOracleDatapoint);
                 logger.info("Processing oracle: {}", oracleDatapoint.getOracle());
@@ -54,14 +53,13 @@ public class TokensDataset {
                 }
 
                 for (TokenDatapoint tokenDatapoint : tokenDatapoints) {
-                    if (tokensDatasetFile.length() == 0) {
+                    if (Files.size(tokensDatasetFile) == 0) {
                         tokensDatasetOutputStream.write("[".getBytes());
-                    } else if (tokensDatasetFile.length() / 1000 / 1000 > 48) { // Limit file size to 50 MB
+                    } else if (Files.size(tokensDatasetFile) / 1000 / 1000 > 48) { // Limit file size to 50 MB
                         tokensDatasetOutputStream.write("]".getBytes());
                         tokensDatasetOutputStream.close();
-                        tokensDatasetFile = new File(TOKENS_DATASET_FOLDER + fileIndex++ + "_" + oraclesDatasetFile.getName());
-                        tokensDatasetFile.delete();
-                        tokensDatasetOutputStream = new FileOutputStream(tokensDatasetFile, true);
+                        tokensDatasetFile = Paths.get(TOKENS_DATASET_FOLDER + fileIndex++ + "_" + oraclesDatasetFile.getFileName());
+                        tokensDatasetOutputStream = Files.newOutputStream(tokensDatasetFile);
                         tokensDatasetOutputStream.write("[".getBytes());
                     } else {
                         tokensDatasetOutputStream.write(",".getBytes());
