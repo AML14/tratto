@@ -177,33 +177,34 @@ public class TypeUtils {
 
     /**
      * @param jpClass a JavaParser class or interface declaration
-     * @return true iff the given class or interface uses generic types
+     * @return true iff the class/interface has generic type parameters
      */
-    public static boolean hasGenerics(ClassOrInterfaceDeclaration jpClass) {
+    public static boolean hasTypeParameters(ClassOrInterfaceDeclaration jpClass) {
         return jpClass.getTypeParameters().size() > 0;
     }
 
     /**
      * @param typeName a source code format type name
-     * @return true iff the parameter name includes "..."
+     * @return true iff the type represents a vararg (e.g. uses "...")
      */
     public static boolean hasEllipsis(String typeName) {
         return typeName.contains("...");
     }
 
     /**
-     * Checks if a given type extends a supertype in source code.
+     * Checks if a given type extends a supertype in source code (e.g. has an
+     * upper bound).
      * NOTE: We only check "extends" and not "implements" for parameterized
      * types.
      *
      * @param sourceCode the method or class source code in which
      * {@code typeName} is used
      * @param typeName a source code format type name
-     * @return true iff the type name extends another type
+     * @return true iff the given type name extends another type
      */
     public static boolean hasSupertype(String sourceCode, String typeName) {
-        String regex = String.format("%s\\s+extends\\s+([A-Za-z0-9_]+)[<[A-Za-z0-9_,]+]*", typeName.replaceAll("\\[]",""));
-        // Using the Pattern and Matcher classes
+        String componentType = typeName.replaceAll("\\[]", "");
+        String regex = componentType + "\\s+extends\\s+([A-Za-z0-9_]+)[<[A-Za-z0-9_,]+]*";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(sourceCode);
         return matcher.find();
@@ -269,7 +270,7 @@ public class TypeUtils {
         // handle generic upper bound separately due to naming.
         if (jpClass.isClassOrInterfaceDeclaration()) {
             ClassOrInterfaceDeclaration jpClassDeclaration =  jpClass.asClassOrInterfaceDeclaration();
-            if (hasGenerics(jpClassDeclaration)) {
+            if (hasTypeParameters(jpClassDeclaration)) {
                 for (TypeParameter jpGeneric : jpClassDeclaration.getTypeParameters()) {
                     if (jpGeneric.getNameAsString().equals(jpTypeName.replaceAll("\\[]", ""))) {
                         if (hasSupertype(jpGeneric.toString(), jpTypeName)) {
