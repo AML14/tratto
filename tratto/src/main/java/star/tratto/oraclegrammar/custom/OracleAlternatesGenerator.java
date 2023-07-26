@@ -29,7 +29,7 @@ import static star.tratto.util.StringUtils.compactExpression;
  * versions of the oracle (as Strings as well), which are semantically equivalent.
  */
 public class OracleAlternatesGenerator {
-    private static Parser parser = Parser.getInstance();
+    private static final Parser parser = Parser.getInstance();
 
     /**
      * Example input: {@code A ? B : C}

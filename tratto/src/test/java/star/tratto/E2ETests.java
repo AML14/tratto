@@ -1,5 +1,7 @@
 package star.tratto;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.opentest4j.AssertionFailedError;
@@ -9,17 +11,24 @@ import star.tratto.data.OracleDP2TokenDPs;
 import star.tratto.data.TokenDPType;
 import star.tratto.data.IOPath;
 import star.tratto.input.ClassAnalyzerTest;
+import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.token.TokenSuggesterTest;
 import star.tratto.util.FileUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 import static star.tratto.TestUtilities.readOraclesFromExternalFiles;
+import static star.tratto.oraclegrammar.custom.Splitter.split;
+import static star.tratto.util.StringUtils.compactExpression;
 
 public class E2ETests {
 
@@ -43,20 +52,27 @@ public class E2ETests {
      */
     @Test
 //    @Disabled
-    public void datasetsE2ETest() throws IOException {
+    public void datasetsE2ETest() {
+        // Config for E2E test
+        OracleDP2TokenDPs.CRASH_WRONG_ORACLE = true;
+        DataAugmentation.ALTERNATE_TAGS_PATH = "src/test/resources/data-augmentation/javadoc-tags.json";
+        TokensDataset.ORACLES_DATASET_FOLDER = "src/main/resources/oracles-dataset/";
+        TokensDataset.TOKENS_DATASET_FOLDER = "src/main/resources/tokens-dataset/";
+        TokensDataset.DATASET_TYPE = TokenDPType.TOKEN_VALUE; // To reduce the size of the generated dataset
+        Parser parser = Parser.getInstance();
+
         try {
             assertTimeoutPreemptively(Duration.ofMinutes(350), () -> {
-                // Config for E2E test
-                OracleDP2TokenDPs.CRASH_WRONG_ORACLE = true;
-                DataAugmentation.ALTERNATE_TAGS_PATH = "src/test/resources/data-augmentation/javadoc-tags.json";
-                TokensDataset.ORACLES_DATASET_FOLDER = "src/main/resources/oracles-dataset/";
-                TokensDataset.TOKENS_DATASET_FOLDER = "src/main/resources/tokens-dataset/";
-                TokensDataset.DATASET_TYPE = TokenDPType.TOKEN_VALUE; // To reduce the size of the generated dataset
 
                 // Generate original oracles dataset
                 OraclesDataset.main(new String[] {});
                 // Generate alternate versions of oracles based on oracles dataset
                 OraclesAugmentation.main(new String[] {});
+                // For each oracle (original and alternate versions), check at least that they can be correctly parsed
+                getOriginalAndAlternateOracles().forEach(o -> {
+                    logger.info("Checking parsability of oracle: {}", o);
+                    assertEquals(compactExpression(o), compactExpression(split(parser.getOracle(o))));
+                });
                 // Augment oracles dataset with newly created oracles and existing Javadoc tags alternatives
                 DataAugmentation.main(new String[] {});
                 // Generate tokens dataset based on oracles dataset (assertions are done as dataset is generated)
@@ -74,6 +90,20 @@ public class E2ETests {
         FileUtils.deleteDirectory(tokensDataset);
         FileUtils.createDirectories(oraclesDataset);
         FileUtils.createDirectories(tokensDataset);
+    }
+
+    private static List<String> getOriginalAndAlternateOracles() throws IOException {
+        String oraclesPath = "src/main/resources/data-augmentation/oracles.json";
+        return ((Map<String, List<String>>)new ObjectMapper().readValue(new File(oraclesPath), new TypeReference<>(){})).entrySet()
+                .stream()
+                .map(entry -> {
+                    List<String> allOracles = new ArrayList<>(List.of(entry.getKey()));
+                    allOracles.addAll(entry.getValue());
+                    return allOracles;
+                })
+                .flatMap(List::stream)
+                .toList();
+
     }
 
     /**
