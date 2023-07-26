@@ -27,6 +27,7 @@ import star.tratto.data.IOPath;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.oraclegrammar.custom.Splitter;
 import star.tratto.util.FileUtils;
+import star.tratto.util.javaparser.TypeUtils;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -228,7 +229,7 @@ public class DatasetUtils {
             Parameter jpParameter
     ) {
         Type jpParameterType = jpParameter.getType();
-        boolean hasEllipsis = JDoctorUtils.hasEllipsis(jpParameter.toString());
+        boolean hasEllipsis = TypeUtils.hasEllipsis(jpParameter.toString());
         try {
             ResolvedType jpResolvedParameterType = jpParameterType.resolve();
             String className = "";
@@ -240,7 +241,7 @@ public class DatasetUtils {
             } else if (jpResolvedParameterType.isReferenceType()) {
                 // if object is generic, use generic name.
                 if (JavaParserUtils.isGenericType(jpResolvedParameterType)) {
-                    className = JDoctorUtils.getRawTypeName(jpClass, jpCallable, jpParameter);
+                    className = TypeUtils.getRawTypeName(jpClass, jpCallable, jpParameter);
                 } else {
                     className = JavaParserUtils.getTypeWithoutPackages(jpResolvedParameterType.asReferenceType().getQualifiedName());
                 }
@@ -299,7 +300,7 @@ public class DatasetUtils {
                         // if not a reference type, ignore package name (e.g. primitives do not have packages).
                         argumentList.add(Triplet.with(jpParameter.getNameAsString(), "", jpParameterClassName.get()));
                     } else if (jpParameterType.resolve().isReferenceType()) {
-                        String typeName = JDoctorUtils.getRawTypeName(jpClass, jpCallable, jpParameter);
+                        String typeName = TypeUtils.getRawTypeName(jpClass, jpCallable, jpParameter);
                         if (JavaParserUtils.isGenericType(jpParameterType.resolve())) {
                             // if reference object is a generic type, ignore package name.
                             argumentList.add(Triplet.with(jpParameter.getNameAsString(), "", typeName));
@@ -877,7 +878,7 @@ public class DatasetUtils {
     public static List<Quartet<String, String, String, String>> getFieldsFromParameter(
             Parameter jpParameter
     ) {
-        if (JDoctorUtils.hasEllipsis(jpParameter.toString())) {
+        if (TypeUtils.hasEllipsis(jpParameter.toString())) {
             Pair<String, String> packageAndClass = JavaParserUtils.getTypeFromResolvedType(jpParameter.getType().resolve());
             return List.of(Quartet.with(
                     "length",
@@ -1075,9 +1076,9 @@ public class DatasetUtils {
             TypeDeclaration<?> jpClass
     ) {
         if (jDoctorParam.equals(jpParam)) return true;
-        boolean jDoctorParamIsStandard = JDoctorUtils.isStandardType(jDoctorParam);
-        boolean jDoctorParamIsStandardArray = JDoctorUtils.isStandardTypeArray(jDoctorParam);
-        boolean jpParamIsStandard = JDoctorUtils.isStandardType(jpParam);
+        boolean jDoctorParamIsStandard = TypeUtils.isStandardType(jDoctorParam);
+        boolean jDoctorParamIsStandardArray = TypeUtils.isStandardTypeArray(jDoctorParam);
+        boolean jpParamIsStandard = TypeUtils.isStandardType(jpParam);
         boolean jpParamIsArray = jpParam.endsWith("[]");
         boolean jpParamIsGeneric = JavaParserUtils.isGenericType(jpParam, jpCallable, jpClass);
         return (jDoctorParamIsStandard && jpParamIsStandard) ||
@@ -1138,7 +1139,7 @@ public class DatasetUtils {
                     // check if parameters are equal.
                     List<String> currentParamList = currentCallable.getParameters()
                             .stream()
-                            .map(p -> JDoctorUtils.getRawTypeName(jpClass, currentCallable, p))
+                            .map(p -> TypeUtils.getRawTypeName(jpClass, currentCallable, p))
                             .toList();
                     if (jpParamListEqualsJDoctorParamList(
                             targetParamList,
@@ -1237,9 +1238,8 @@ public class DatasetUtils {
     public static String getOperationPackageName(
             Operation operation
     ) {
-        List<String> pathList = JDoctorUtils.getIdentifierComponents(operation.getClassName());
-        List<String> packageList = JDoctorUtils.removeIdentifierSuffix(pathList);
-        return JDoctorUtils.getPackageNameFromIdentifierComponents(packageList);
+        List<String> pathList = TypeUtils.getNameSegments(operation.getClassName());
+        return TypeUtils.getPackageNameFromNameSegments(pathList);
     }
 
     /**
@@ -1248,8 +1248,8 @@ public class DatasetUtils {
     public static String getOperationClassName(
             Operation operation
     ) {
-        List<String> pathList = JDoctorUtils.getIdentifierComponents(operation.getClassName());
-        return JDoctorUtils.getClassNameFromIdentifierComponents(pathList);
+        List<String> pathList = TypeUtils.getNameSegments(operation.getClassName());
+        return TypeUtils.getClassNameFromNameSegments(pathList);
     }
 
     /**
@@ -1258,8 +1258,8 @@ public class DatasetUtils {
     public static String getOperationCallableName(
             Operation operation
     ) {
-        List<String> pathList = JDoctorUtils.getIdentifierComponents(operation.getName());
-        return JDoctorUtils.getClassNameFromIdentifierComponents(pathList);
+        List<String> pathList = TypeUtils.getNameSegments(operation.getName());
+        return TypeUtils.getClassNameFromNameSegments(pathList);
     }
 
     /**

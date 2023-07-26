@@ -25,6 +25,7 @@ import com.github.javaparser.resolution.declarations.ResolvedMethodDeclaration;
 import com.github.javaparser.resolution.declarations.ResolvedReferenceTypeDeclaration;
 import com.github.javaparser.resolution.declarations.ResolvedTypeParameterDeclaration;
 import com.github.javaparser.resolution.types.ResolvedType;
+import com.github.javaparser.resolution.types.ResolvedWildcard;
 import com.github.javaparser.symbolsolver.javaparsermodel.declarations.JavaParserMethodDeclaration;
 import com.github.javaparser.symbolsolver.reflectionmodel.ReflectionMethodDeclaration;
 import com.github.javaparser.symbolsolver.utils.SymbolSolverCollectionStrategy;
@@ -269,6 +270,15 @@ public class JavaParserUtils {
                 return Pair.with(arrayElementType.getPackageName(), arrayElementType.getClassName() + suffix);
             } else {
                 return Pair.with("", arrayElement.describe() + suffix);
+            }
+        } else if (resolvedType.isWildcard()) { // e.g., in Collection<? extends String>, "? extends String" is a wildcard
+            ResolvedWildcard type = resolvedType.asWildcard();
+            ResolvedType boundedType = type.getBoundedType();
+            if (boundedType != null) {
+                ResolvedReferenceTypeDeclaration resolvedBoundedType = type.getBoundedType().asReferenceType().getTypeDeclaration().get();
+                return Pair.with(resolvedBoundedType.getPackageName(), resolvedBoundedType.getClassName());
+            } else { // e.g., in Collection<?>, "?" can be anything, so we return Object
+                return Pair.with("java.lang", "Object");
             }
         } else {
             return Pair.with("", resolvedType.describe()); // Primitive type
