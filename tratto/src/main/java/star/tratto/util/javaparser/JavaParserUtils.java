@@ -567,13 +567,11 @@ public class JavaParserUtils {
      *  "(modifiers) (type) (name)( = initial value);"
      */
     public static String getVariableSignature(FieldDeclaration field, VariableDeclarator variable) {
-        String signature = "";
-        signature += String.join("", field.getModifiers().stream().map(Node::toString).toList());
-        signature += variable.getTypeAsString() + " ";
-        signature += variable.getNameAsString();
-        signature += variable.getInitializer().isPresent() ? " = " + variable.getInitializer().get() : "";
-        signature += ";";
-        return signature.trim();
+        return (String.join("", field.getModifiers().stream().map(Node::toString).toList()) +
+                variable.getTypeAsString() + " " +
+                variable.getNameAsString() +
+                (variable.getInitializer().isPresent() ? " = " + variable.getInitializer().get() : "") +
+                ";").trim();
     }
 
     /**
@@ -589,13 +587,11 @@ public class JavaParserUtils {
     ) {
         boolean hasAccessSpecifier = !resolvedField.accessSpecifier().asString().equals("");
         boolean isStatic = resolvedField.isStatic();
-        String signature = "";
-        signature += hasAccessSpecifier ? resolvedField.accessSpecifier().asString() + " " : "";
-        signature += isStatic ? "static" + " " : "";
-        signature += getTypeWithoutPackages(resolvedField.getType().describe()) + " ";
-        signature += resolvedField.getName();
-        signature += ";";
-        return signature.trim();
+        return ((hasAccessSpecifier ? resolvedField.accessSpecifier().asString() + " " : "") +
+                (isStatic ? "static" + " " : "") +
+                getTypeWithoutPackages(resolvedField.getType().describe()) + " " +
+                resolvedField.getName() +
+                ";");
     }
 
     /**
@@ -611,12 +607,10 @@ public class JavaParserUtils {
             ResolvedFieldDeclaration resolvedField,
             int modifier
     ) {
-        String signature = "";
-        signature += (modifier == 0) ? "" : (java.lang.reflect.Modifier.toString(modifier) + " ");
-        signature += getTypeWithoutPackages(resolvedField.getType().describe()) + " ";
-        signature += resolvedField.getName();
-        signature += ";";
-        return signature.trim();
+        return ((modifier == 0) ? "" : (java.lang.reflect.Modifier.toString(modifier) + " ") +
+                getTypeWithoutPackages(resolvedField.getType()) + " " +
+                resolvedField.getName() +
+                ";").trim();
     }
 
     /**
