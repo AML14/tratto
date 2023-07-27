@@ -6,6 +6,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static star.tratto.util.StringUtils.getCorrespondingClosingParenthesisIndex;
+import static star.tratto.util.StringUtils.semanticSimilarity;
 
 public class StringUtilsTest {
 
@@ -68,5 +69,11 @@ public class StringUtilsTest {
         assertEquals(6, getCorrespondingClosingParenthesisIndex(oracleTokens, openingParenthesisIndex2));
         assertEquals(16, getCorrespondingClosingParenthesisIndex(oracleTokens, openingParenthesisIndex3));
         assertEquals(13, getCorrespondingClosingParenthesisIndex(oracleTokens, openingParenthesisIndex4));
+    }
+
+    @Test
+    public void semanticSimilarityTest() {
+        assertEquals(1.0, semanticSimilarity("the", "the"));
+        assertEquals(0.0, semanticSimilarity("the", "bratwurst"));
     }
 }
