@@ -6,7 +6,7 @@ import random
 import numpy as np
 from torch.utils.data import DataLoader, RandomSampler
 from torch.optim import AdamW
-from transformers import AdamW, get_linear_schedule_with_warmup
+from transformers import get_linear_schedule_with_warmup
 
 from src.model.OracleTrainerDecoder import OracleTrainerDecoder
 from src.types.ClassificationType import ClassificationType

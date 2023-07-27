@@ -367,7 +367,7 @@ class DataProcessorDecoder:
                 (self._df_dataset['token'] != ';') |
                 (self._df_dataset['label'] != True)
             ]
-            selected_rows = df_empty_semicolon_true.groupby('oracleId').apply(lambda x: x.sample(1, random_state=42))
+            selected_rows = df_empty_semicolon_true.groupby('oracleId', group_keys=False).apply(lambda x: x.sample(1, random_state=42))
             self._df_dataset = pd.concat([df_not_empty_semicolon_true, selected_rows])
             self._df_dataset = self._df_dataset.reset_index(drop=True)
 

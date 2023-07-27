@@ -5,8 +5,8 @@ import numpy as np
 from typing import Type, Union, Tuple, Dict, List
 from collections import Counter
 import torch
-import torch.optim as optim
-from transformers import PreTrainedModel, AdamW, PreTrainedTokenizer
+from torch.optim import AdamW
+from transformers import PreTrainedModel, PreTrainedTokenizer
 from torch.nn import Module
 from torch.utils.data import DataLoader
 from sklearn.metrics import f1_score, accuracy_score, precision_score, recall_score
