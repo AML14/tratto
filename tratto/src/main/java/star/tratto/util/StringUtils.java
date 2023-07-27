@@ -198,6 +198,21 @@ public class StringUtils {
     }
 
     /**
+     * Computes the cosine similarity of two vectors. Imitates behavior of
+     * {@link RealVector#cosine} without throwing exceptions. If the norm of
+     * either vector is 0.0, then the method returns 0.0.
+     *
+     * @param vector1 a vector
+     * @param vector2 a vector
+     * @return the cosine similarity of the two vectors
+     */
+    private static double getCosineSimilarity(RealVector vector1, RealVector vector2) {
+        double denominator = vector1.getNorm() * vector2.getNorm();
+        if (denominator == 0.0) return 0.0;
+        return vector1.dotProduct(vector2) / denominator;
+    }
+
+    /**
      * Computes the cosine similarity from two lists of lemmas.
      *
      * @param lemmas1 list of lemmas
@@ -210,7 +225,7 @@ public class StringUtils {
         TreeSet<String> intersectionKeys = getSetIntersection(wordsFreq1.keySet(), wordsFreq2.keySet());
         RealVector wordVector1 = wordFrequencyToVector(wordsFreq1, intersectionKeys);
         RealVector wordVector2 = wordFrequencyToVector(wordsFreq2, intersectionKeys);
-        return wordVector1.cosine(wordVector2);
+        return getCosineSimilarity(wordVector1, wordVector2);
     }
 
     /**
