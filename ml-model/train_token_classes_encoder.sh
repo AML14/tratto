@@ -7,7 +7,7 @@ python scripts/train/run_classifier.py \
 --tokenizer_name roberta-base \
 --model_name_or_path microsoft/codebert-base \
 --tratto_model_type token_classes \
---task_name tokenClasses_classifier \
+--task_name tokenClasses_classifier_encoder \
 --max_seq_length 512 \
 --batch_size 32 \
 --learning_rate 1e-5 \
@@ -17,5 +17,5 @@ python scripts/train/run_classifier.py \
 --test_ratio 0.1 \
 --validation_ratio 0.1 \
 --data_dir ./dataset/token-classes-dataset \
---output_dir ./output_token_classes \
+--output_dir ./output_token_classes_encoder \
 --classification_type label_prediction

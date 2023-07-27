@@ -3,19 +3,19 @@ python scripts/train/run_classifier.py \
 --do_train \
 --do_eval \
 --do_predict \
---model_type codet5+ \
---tokenizer_name Salesforce/codet5p-220m \
---model_name_or_path Salesforce/codet5p-220m \
+--model_type roberta \
+--tokenizer_name roberta-base \
+--model_name_or_path microsoft/codebert-base \
 --tratto_model_type token_values \
 --task_name tokenValues_classifier \
 --max_seq_length 512 \
---batch_size 24 \
+--batch_size 32 \
 --learning_rate 1e-5 \
---num_epochs 20 \
+--num_epochs 8 \
 --save_steps 1000 \
 --accumulation_steps 1 \
 --test_ratio 0.1 \
 --validation_ratio 0.1 \
---data_dir ./dataset/token-values-dataset \
---output_dir ./output_token_values_decoder \
---classification_type category_prediction
+--data_dir ./dataset/token-classes-dataset \
+--output_dir ./output_token_classes_encoder \
+--classification_type label_prediction
