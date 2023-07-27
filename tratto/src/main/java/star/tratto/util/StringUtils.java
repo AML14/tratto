@@ -19,8 +19,13 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+/**
+ * This class provides a collection of static methods for manipulating and
+ * evaluating strings, such as removing unnecessary spaces or computing the
+ * semantic similarity of two inputs.
+ */
 public class StringUtils {
-    // a suite of NLP tools for determining the similarity of two strings
+    // a suite of NLP tools for pre-processing text inputs
     private static final StanfordCoreNLP stanfordCoreNLP = getStanfordCoreNLP();
 
     // private constructor to avoid creating an instance of this class
@@ -29,10 +34,10 @@ public class StringUtils {
     }
 
     /**
-     * @return a new StanfordCoreNLP object with the necessary annotators for
-     * determining semantic similarity of two strings. We use the following
-     * annotators:
-     *  - tokenize: splits input text into tokens (e.g. words, punctuation)
+     * @return a new StanfordCoreNLP object with the necessary properties for
+     * preprocessing two strings for semantic comparison. We use the following
+     * modifiers:
+     *  - tokenize: splits input into tokens (e.g. words, punctuation)
      *  - pos: assigns a part-of-speech to each token
      *  - lemma: converts each word to its base root (e.g. "running" -> "run")
      */
@@ -131,7 +136,7 @@ public class StringUtils {
     /**
      * Transforms a String of words to a list of the corresponding lemmas. A
      * lemma is a dictionary-defined canonical form of a word. StanfordCoreNLP
-     * uses WordNet to determine canonical forms. For example:
+     * uses WordNet to determine the canonical forms. For example:
      *  "running"   ->  "run"
      *  "better"    ->  "good"
      * When calculating semantic similarity, we use lemmas (rather than words)
@@ -171,10 +176,10 @@ public class StringUtils {
      * Converts a map of word frequencies to a vector.
      *
      * @param frequencies a map of word frequencies
-     * @param words the set of all possible words
+     * @param words the set of all words to be considered in the vector
      * @return a vector representation of the word frequencies. Each entry
-     * corresponds a different word, where the value of the entry corresponds
-     * to the word frequency.
+     * corresponds to a different word, where the value of the entry
+     * corresponds to the word frequency.
      */
     private static RealVector wordFrequencyToVector(Map<String, Integer> frequencies, TreeSet<String> words) {
         double[] vector = new double[words.size()];
