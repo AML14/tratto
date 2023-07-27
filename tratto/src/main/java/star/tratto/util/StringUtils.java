@@ -11,10 +11,10 @@ import org.javatuples.Pair;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -153,8 +153,23 @@ public class StringUtils {
         return null;
     }
 
-    private static RealVector wordFrequencyToVector(Map<String, Integer> frequencies, LinkedHashSet<String> words) {
-        return null;
+    /**
+     * Converts a map of word frequencies to a vector.
+     *
+     * @param frequencies a map of word frequencies
+     * @param words the set of all possible words
+     * @return a vector representation of the word frequencies. Each entry
+     * corresponds a different word, where the value of the entry corresponds
+     * to the word frequency.
+     */
+    private static RealVector wordFrequencyToVector(Map<String, Integer> frequencies, TreeSet<String> words) {
+        double[] vector = new double[words.size()];
+        int i = 0;
+        for (String word : words) {
+            vector[i] = frequencies.getOrDefault(word, 0);
+            i++;
+        }
+        return new ArrayRealVector(vector);
     }
 
     private static double lemmasToCosineSimilarity(List<String> lemmas1, List<String> lemmas2) {
@@ -191,10 +206,10 @@ public class StringUtils {
     private static double cosineSimilarity(List<String> list1, List<String> list2) {
         Map<String, Integer> map1 = wordFrequencies(list1);
         Map<String, Integer> map2 = wordFrequencies(list2);
-        LinkedHashSet<String> intersection = new LinkedHashSet<>(map1.keySet());
+        TreeSet<String> intersection = new TreeSet<>(map1.keySet());
         intersection.retainAll(map2.keySet());
-        RealVector vector1 = toRealVector(map1, intersection);
-        RealVector vector2 = toRealVector(map2, intersection);
+        RealVector vector1 = wordFrequencyToVector(map1, intersection);
+        RealVector vector2 = wordFrequencyToVector(map2, intersection);
         double denominator = vector1.getNorm() * vector2.getNorm();
         return denominator > 0.0 ? vector1.dotProduct(vector2) / (denominator) : 0.0;
     }
@@ -212,23 +227,5 @@ public class StringUtils {
             frequencies.put(word, frequencies.getOrDefault(word, 0) + 1);
         }
         return frequencies;
-    }
-
-    /**
-     * Converts a map of word frequencies to a vector.
-     *
-     * @param map a map of word frequencies
-     * @param words the set of all possible words
-     * @return a vector representation of the word frequencies. Each dimension
-     * represents a different word, where the magnitude of the dimension
-     * corresponds to the word frequency.
-     */
-    private static RealVector toRealVector(Map<String, Integer> map, LinkedHashSet<String> words) {
-        double[] vector = new double[words.size()];
-        int i = 0;
-        for (String word : words) {
-            vector[i++] = map.getOrDefault(word, 0);
-        }
-        return new ArrayRealVector(vector);
     }
 }
