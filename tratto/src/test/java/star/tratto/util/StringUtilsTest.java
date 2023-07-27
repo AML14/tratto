@@ -6,6 +6,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static star.tratto.util.StringUtils.getCorrespondingClosingParenthesisIndex;
+import static star.tratto.util.StringUtils.semanticSimilarity;
 
 public class StringUtilsTest {
 
@@ -38,7 +39,7 @@ public class StringUtilsTest {
     public void getCorrespondingClosingParenthesisIndex_Test1() {
         List<String> oracleTokens = List.of("this", ".", "someMethod", "(", "someArg");
         int openingParenthesisIndex = 3;
-        assertEquals(null, getCorrespondingClosingParenthesisIndex(oracleTokens, openingParenthesisIndex));
+        assertNull(getCorrespondingClosingParenthesisIndex(oracleTokens, openingParenthesisIndex));
     }
 
     @Test
@@ -53,7 +54,7 @@ public class StringUtilsTest {
         List<String> oracleTokens = List.of("this", ".", "someMethod", "(", "(", "someArg", ")");
         int openingParenthesisIndex1 = 3;
         int openingParenthesisIndex2 = 4;
-        assertEquals(null, getCorrespondingClosingParenthesisIndex(oracleTokens, openingParenthesisIndex1));
+        assertNull(getCorrespondingClosingParenthesisIndex(oracleTokens, openingParenthesisIndex1));
         assertEquals(6, getCorrespondingClosingParenthesisIndex(oracleTokens, openingParenthesisIndex2));
     }
 
@@ -64,9 +65,15 @@ public class StringUtilsTest {
         int openingParenthesisIndex2 = 4;
         int openingParenthesisIndex3 = 8;
         int openingParenthesisIndex4 = 9;
-        assertEquals(null, getCorrespondingClosingParenthesisIndex(oracleTokens, openingParenthesisIndex1));
+        assertNull(getCorrespondingClosingParenthesisIndex(oracleTokens, openingParenthesisIndex1));
         assertEquals(6, getCorrespondingClosingParenthesisIndex(oracleTokens, openingParenthesisIndex2));
         assertEquals(16, getCorrespondingClosingParenthesisIndex(oracleTokens, openingParenthesisIndex3));
         assertEquals(13, getCorrespondingClosingParenthesisIndex(oracleTokens, openingParenthesisIndex4));
+    }
+
+    @Test
+    public void semanticSimilarityTest() {
+        assertEquals(1.0, semanticSimilarity("the", "the"));
+        assertEquals(0.0, semanticSimilarity("the", "bratwurst"));
     }
 }

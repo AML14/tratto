@@ -13,7 +13,7 @@ import org.javatuples.Triplet;
 import org.junit.jupiter.api.Test;
 import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleType;
-import star.tratto.exceptions.JPClassNotFoundException;
+import star.tratto.data.JPClassNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;

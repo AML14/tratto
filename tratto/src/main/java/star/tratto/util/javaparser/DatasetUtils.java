@@ -20,10 +20,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import star.tratto.data.OracleType;
 import star.tratto.data.oracles.JDoctorCondition.*;
-import star.tratto.exceptions.JPClassNotFoundException;
-import star.tratto.exceptions.PackageDeclarationNotFoundException;
-import star.tratto.exceptions.ResolvedTypeNotFound;
-import star.tratto.data.IOPath;
+import star.tratto.data.JPClassNotFoundException;
+import star.tratto.data.PackageDeclarationNotFoundException;
+import star.tratto.data.ResolvedTypeNotFound;
+import star.tratto.data.TrattoPath;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.oraclegrammar.custom.Splitter;
 import star.tratto.util.FileUtils;
@@ -293,8 +293,8 @@ public class DatasetUtils {
                 try {
                     if (
                             jpParameterType.resolve().isTypeVariable() ||
-                            jpParameterType.resolve().isPrimitive() ||
-                            jpParameterType.resolve().isArray()
+                                    jpParameterType.resolve().isPrimitive() ||
+                                    jpParameterType.resolve().isArray()
                     ) {
                         // if not a reference type, ignore package name (e.g. primitives do not have packages).
                         argumentList.add(Triplet.with(jpParameter.getNameAsString(), "", jpParameterClassName.get()));
@@ -510,7 +510,7 @@ public class DatasetUtils {
         Path sourceDir = Path.of(sourcePath);
         List<Path> allFiles = FileUtils.getAllJavaFilesFromDirectory(sourceDir);
         // Get list of files to ignore.
-        Path ignoreFilePath = IOPath.IGNORE_FILE.getPath();
+        Path ignoreFilePath = TrattoPath.IGNORE_FILE.getPath();
         List<String> ignoreFileList = FileUtils.readJSONList(ignoreFilePath)
                 .stream()
                 .map(f -> (String) f)
@@ -676,7 +676,7 @@ public class DatasetUtils {
         if (jpResolvedType.isArray()) {
             // array type (see dataset/repose/array_methods.json).
             List<List<String>> arrayMethods;
-            arrayMethods = FileUtils.readJSONList(IOPath.ARRAY_METHODS.getPath())
+            arrayMethods = FileUtils.readJSONList(TrattoPath.ARRAY_METHODS.getPath())
                     .stream()
                     .map(e -> ((List<?>) e)
                             .stream()
@@ -838,14 +838,14 @@ public class DatasetUtils {
                 // unable to recover type declaration.
                 logger.error(String.format(
                         "Unable to analyze the resolved type %s: " +
-                        "resolved type declaration not found.", jpResolvedType
+                                "resolved type declaration not found.", jpResolvedType
                 ));
             }
         } else if (!(jpResolvedType.isPrimitive() || jpResolvedType.isVoid() || jpResolvedType.isTypeVariable())) {
             // unknown type.
             logger.error(String.format(
                     "Return type %s different from ReferenceType, PrimitiveType, " +
-                    "ArrayType, TypeVariable, and VoidType not yet supported%n", jpResolvedType
+                            "ArrayType, TypeVariable, and VoidType not yet supported%n", jpResolvedType
             ));
         }
         return fieldList;

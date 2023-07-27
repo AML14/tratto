@@ -9,7 +9,7 @@ import org.javatuples.Quartet;
 import org.javatuples.Sextet;
 import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleType;
-import star.tratto.exceptions.JPClassNotFoundException;
+import star.tratto.data.JPClassNotFoundException;
 import star.tratto.util.StringUtils;
 import star.tratto.util.javaparser.DatasetUtils;
 import star.tratto.util.javaparser.TypeUtils;
