@@ -4,9 +4,13 @@ import torch
 import numpy as np
 import pandas as pd
 import Levenshtein
+import re
 from torch.utils.data import DataLoader, TensorDataset
 from transformers import PreTrainedModel, PreTrainedTokenizer
-from typing import Type, re
+from typing import Type
+
+from src.types.ClassificationType import ClassificationType
+from src.types.TransformerType import TransformerType
 from src.types.TrattoModelType import TrattoModelType
 from src.utils import utils
 
@@ -146,7 +150,9 @@ def pre_process_dataset(
 
 def get_input_model_classes(
         df_dataset,
-        tokenizer
+        tokenizer,
+        classification_type,
+        transformer_type
 ):
     # Compute eligible token classes
     df_eligibleTokenClasses = df_dataset.groupby(['oracleId', 'oracleSoFar'])['tokenClass'].unique().to_frame()
@@ -165,10 +171,14 @@ def get_input_model_classes(
     # Reindex the DataFrame with the new order
     df_dataset = df_dataset.reindex(columns=new_columns_order)
     # Delete spurious columns for predicting the next token class
-    df_dataset = df_dataset.drop(['oracleId', 'token', 'tokenInfo', 'tokenClass'], axis=1)
-    # Delete duplicates
-    df_dataset = df_dataset.drop_duplicates()
-    assert len(df_dataset) == 1
+    df_dataset = df_dataset.drop(['oracleId', 'token', 'tokenInfo'], axis=1)
+    if classification_type == ClassificationType.CATEGORY_PREDICTION:
+        # Remove category to predict
+        df_dataset = df_dataset.drop(['tokenClass'], axis=1)
+    if transformer_type == TransformerType.DECODER and classification_type == ClassificationType.CATEGORY_PREDICTION:
+        # Delete duplicates
+        df_dataset = df_dataset.drop_duplicates()
+        assert len(df_dataset) == 1
     # Generate string datapoints concatenating the fields of each column and separating them with a special token
     df_src_concat = df_dataset.apply(lambda row: tokenizer.sep_token.join(row.values), axis=1)
     # The pandas dataframe is transformed in a list of strings: each string is an input to the model
@@ -181,7 +191,9 @@ def get_input_model_classes(
 def get_input_model_values(
         df_dataset,
         next_token_class,
-        tokenizer
+        tokenizer,
+        classification_type,
+        transformer_type
 ):
     # Filter datapoints
     df_dataset = df_dataset[df_dataset['tokenClass'] == next_token_class]
@@ -195,16 +207,21 @@ def get_input_model_values(
 
     # Define the new order of columns
     new_columns_order = [
-        'oracleId', 'tokenClass', 'tokenInfo', 'token', 'oracleSoFar', 'eligibleTokens', 'javadocTag', 'oracleType',
-        'packageName', 'className', 'methodSourceCode', 'methodJavadoc'
+        'oracleId', 'token', 'oracleSoFar', 'eligibleTokens', 'tokenInfo', 'tokenClass',
+        'javadocTag', 'oracleType', 'packageName', 'className', 'methodSourceCode', 'methodJavadoc'
     ]
     # Reindex the DataFrame with the new order
     df_dataset = df_dataset.reindex(columns=new_columns_order)
     # Delete spurious columns for predicting the next token class
-    df_dataset = df_dataset.drop(['oracleId', 'tokenClass','token', 'tokenInfo'], axis=1)
-    # Delete duplicates
-    df_dataset = df_dataset.drop_duplicates()
-    assert len(df_dataset) == 1
+    df_dataset = df_dataset.drop(['oracleId'], axis=1)
+    if classification_type == ClassificationType.CATEGORY_PREDICTION:
+        # Remove category to predict
+        df_dataset = df_dataset.drop(['token'], axis=1)
+    if transformer_type == TransformerType.DECODER and classification_type == ClassificationType.CATEGORY_PREDICTION:
+        df_dataset = df_dataset.drop(['tokenInfo'], axis=1)
+        # Delete duplicates
+        df_dataset = df_dataset.drop_duplicates()
+        assert len(df_dataset) == 1
     # Generate string datapoints concatenating the fields of each column and separating them with a special token
     df_src_concat = df_dataset.apply(lambda row: tokenizer.sep_token.join(row.values), axis=1)
     # The pandas dataframe is transformed in a list of strings: each string is an input to the model
@@ -237,6 +254,10 @@ def tokenize_input(
 def next_token(
         device,
         filename: str,
+        classification_type_token_classes: Type[ClassificationType],
+        classification_type_token_values: Type[ClassificationType],
+        transformer_type_token_classes: Type[TransformerType],
+        transformer_type_token_values: Type[TransformerType],
         model_classes: Type[PreTrainedModel],
         model_values: Type[PreTrainedModel],
         tokenizer_token_classes: PreTrainedTokenizer,
@@ -255,7 +276,12 @@ def next_token(
 
     # Get model token classes input
     print("Get model token classes input")
-    src_token_classes, eligible_token_classes = get_input_model_classes(df_dataset, tokenizer_token_classes)
+    src_token_classes, eligible_token_classes = get_input_model_classes(
+        df_dataset,
+        tokenizer_token_classes,
+        classification_type_token_classes,
+        transformer_type_token_classes
+    )
     # Tokenize input
     print("Tokenize model token classes input")
     t_src_token_classes = tokenize_input(src_token_classes, tokenizer_token_classes)
@@ -270,7 +296,13 @@ def next_token(
     next_token_class = predict_next(device, model_classes, dl_src_token_classes, tokenizer_token_classes, eligible_token_classes, TrattoModelType.TOKEN_CLASSES)
     # Get model token values input
     print("Get model token values input")
-    src_token_values, eligible_token_values = get_input_model_values(df_dataset, next_token_class, tokenizer_token_values)
+    src_token_values, eligible_token_values = get_input_model_values(
+        df_dataset,
+        next_token_class,
+        tokenizer_token_values,
+        classification_type_token_values,
+        transformer_type_token_values
+    )
     # Tokenize input
     print("Tokenize model token values input")
     t_src_token_values = tokenize_input(src_token_values, tokenizer_token_values)

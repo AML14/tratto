@@ -15,7 +15,7 @@ from src.types.DeviceType import DeviceType
 from src.types.TrattoModelType import TrattoModelType
 from src.utils import logger
 from src.parser.ArgumentParser import ArgumentParser
-from src.processors.DataProcessorDecoder import DataProcessorDecoder
+from src.processors.DataProcessor import DataProcessor
 from src.pretrained.ModelClasses import ModelClasses
 from src.utils import utils
 
@@ -73,16 +73,17 @@ def main():
     set_seed(device, args.seed)
 
     # Get configuration class, model class, and tokenizer class from the corresponding model type
-    config_class, model_class, tokenizer_class = ModelClasses.getModelClass(args.model_type)
+    config_class, model_class, tokenizer_class, transformer_type = ModelClasses.getModelClass(args.model_type)
     # Setup tokenizer
     tokenizer = tokenizer_class.from_pretrained(args.tokenizer_name)
 
     logger.print_load_dataset(args.data_dir)
-    # Create DataProcessorDecoder instance
-    data_processor = DataProcessorDecoder(
+    # Create DataProcessor instance
+    data_processor = DataProcessor(
         args.data_dir,
         args.test_ratio,
         tokenizer,
+        transformer_type,
         classification_type,
         tratto_model_type,
         args.folds              # if folds = 1 no cross-validation is performed
@@ -146,7 +147,7 @@ def main():
         optimizer = AdamW(optimizer_grouped_parameters, lr=args.learning_rate, eps=args.adam_epsilon)
 
         # Instantiate trainer
-        classifier_ids_labels = data_processor.get_ids_tgt_labels()
+        classifier_ids_labels = data_processor.get_encoder_ids_labels()
         training_steps = len(dl_train) // args.accumulation_steps * args.num_epochs
         scheduler = get_linear_schedule_with_warmup(optimizer, args.warmup_steps, training_steps)
         checkpoint_path = os.path.join(

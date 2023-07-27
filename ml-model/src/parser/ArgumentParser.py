@@ -2,6 +2,10 @@ from src.pretrained.ModelClasses import ModelClasses
 from argparse import ArgumentParser
 from typing import Type
 
+from src.types.ClassificationType import ClassificationType
+from src.types.TransformerType import TransformerType
+from src.types.TrattoModelType import TrattoModelType
+
 
 class ArgumentParser:
     @staticmethod
@@ -32,14 +36,38 @@ class ArgumentParser:
             default=None,
             type=str,
             required=True,
-            help="TokenClasses model type for the selected in the list: " + ", ".join(ModelClasses.get_available_model_classes())
+            help="TokenClasses model type for the selected in the list: " + ", ".join(
+                ModelClasses.get_available_model_classes()
+            )
         )
         parser.add_argument(
             "--model_type_token_values",
             default=None,
             type=str,
             required=True,
-            help="TokenValues model type for the selected in the list: " + ", ".join(ModelClasses.get_available_model_classes())
+            help="TokenValues model type for the selected in the list: " + ", ".join(
+                ModelClasses.get_available_model_classes()
+            )
+        )
+        parser.add_argument(
+            "--classification_type_token_classes",
+            default=None,
+            type=str,
+            required=True,
+            help="TokenClasses classification type for the selected in the list: " + ", ".join([
+                ClassificationType.CATEGORY_PREDICTION,
+                ClassificationType.LABEL_PREDICTION
+            ])
+        )
+        parser.add_argument(
+            "--classification_type_token_values",
+            default=None,
+            type=str,
+            required=True,
+            help="TokenValues classification type for the selected in the list: " + ", ".join([
+                ClassificationType.CATEGORY_PREDICTION,
+                ClassificationType.LABEL_PREDICTION
+            ])
         )
         parser.add_argument(
             "--tokenizer_name_token_classes",
@@ -103,7 +131,18 @@ class ArgumentParser:
             default=None,
             type=str,
             required=True,
-            help="Model type selected in the list: " + ", ".join(ModelClasses.get_available_model_classes()))
+            help="Model type selected in the list: " + ", ".join(ModelClasses.get_available_model_classes())
+        )
+        parser.add_argument(
+            "--transformer_type",
+            default=None,
+            type=str,
+            required=True,
+            help="Transformer type selected in the list: " + ", ".join([
+                TransformerType.ENCODER,
+                TransformerType.DECODER
+            ])
+        )
         parser.add_argument(
             "--tokenizer_name",
             default=None,
@@ -114,37 +153,42 @@ class ArgumentParser:
             "--config_name",
             default=None,
             type=str,
-            help="Pretrained config name or path if not the same as model_name")
+            help="Pretrained config name or path if not the same as model_name"
+        )
         parser.add_argument(
             "--model_name_or_path",
             default=None,
             type=str,
             required=True,
-            help="Path to pre-trained model or shortcut name.")
+            help="Path to pre-trained model or shortcut name."
+        )
         parser.add_argument(
             "--task_name",
             default='tokenClasses',
             type=str,
             required=True,
-            help="The name of the task to train the model: tokenClasses or tokenValues.")
+            help="The name of the task to train the model: tokenClasses or tokenValues."
+        )
         parser.add_argument(
             "--output_dir",
             default=None,
             type=str,
             required=True,
-            help="The output directory where the model predictions and checkpoints will be written.")
-
+            help="The output directory where the model predictions and checkpoints will be written."
+        )
         # Optional parameters
         parser.add_argument(
             "--classification_type",
             default="label_prediction",
             type=str,
-            help="Classification type: category prediction (category_prediction) or label prediction (label_prediction).")
+            help="Classification type: category prediction (category_prediction) or label prediction (label_prediction)."
+        )
         parser.add_argument(
             "--tratto_model_type",
             default="token_classes",
             type=str,
-            help="Tratto model type: token classes (token_classes) or token values (token_values).")
+            help="Tratto model type: token classes (token_classes) or token values (token_values)."
+        )
         parser.add_argument(
             "--max_seq_length",
             default=512,
@@ -253,15 +297,18 @@ class ArgumentParser:
         parser.add_argument(
             "--eval_all_checkpoints",
             action='store_true',
-            help="Evaluate all checkpoints starting with the same prefix as model_name ending and ending with step number")
+            help="Evaluate all checkpoints starting with the same prefix as model_name ending and ending with step number"
+        )
         parser.add_argument(
             "--no_cuda",
             action='store_true',
-            help="Avoid using CUDA when available")
+            help="Avoid using CUDA when available"
+        )
         parser.add_argument(
             "--overwrite_output_dir",
             action='store_true',
-            help="Overwrite the content of the output directory")
+            help="Overwrite the content of the output directory"
+        )
         parser.add_argument(
             "--seed",
             type=int,

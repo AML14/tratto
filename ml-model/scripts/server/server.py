@@ -7,6 +7,7 @@ from typing import Type
 from src.pretrained.ModelClasses import ModelClasses
 from src.server.Server import Server
 from src.parser.ArgumentParser import ArgumentParser
+from src.types.ClassificationType import ClassificationType
 from src.types.DeviceType import DeviceType
 from src.types.TrattoModelType import TrattoModelType
 from src.utils import utils
@@ -30,7 +31,7 @@ def setup_model(
         tratto_model_type: Type[TrattoModelType],
         config_name: str = None
 ):
-    config_class, model_class, tokenizer_class = ModelClasses.getModelClass(model_type)
+    config_class, model_class, tokenizer_class, transformer_type = ModelClasses.getModelClass(model_type)
     # Setup tokenizer
     tokenizer = tokenizer_class.from_pretrained(tokenizer_name)
 
@@ -64,7 +65,7 @@ def setup_model(
         checkpoint_path
     )
     resume_checkpoint(pt_model, abs_checkpoint_path, device)
-    return pt_model, tokenizer
+    return pt_model, tokenizer, transformer_type
 
 
 if __name__ == '__main__':
@@ -75,7 +76,7 @@ if __name__ == '__main__':
     # Connect to device
     device = utils.connect_to_device(DeviceType.GPU)
     # Setup tokenClasses model
-    model_token_classes, tokenizer_token_classes = setup_model(
+    model_token_classes, tokenizer_token_classes, transformer_type_token_classes = setup_model(
         device,
         args.model_type_token_classes,
         args.tokenizer_name_token_classes,
@@ -85,7 +86,7 @@ if __name__ == '__main__':
         args.config_name_token_classes
     )
     # Setup tokenValues model
-    model_token_values, tokenizer_token_values = setup_model(
+    model_token_values, tokenizer_token_values, transformer_type_token_values = setup_model(
         device,
         args.model_type_token_values,
         args.tokenizer_name_token_values,
@@ -97,10 +98,14 @@ if __name__ == '__main__':
     # Instantiate server
     server = Server(
         device,
+        ClassificationType(args.classification_type_token_classes),
+        ClassificationType(args.classification_type_token_values),
+        transformer_type_token_classes,
+        transformer_type_token_values,
         model_token_classes,
         model_token_values,
         tokenizer_token_classes,
-        tokenizer_token_values
+        tokenizer_token_values,
     )
     # Run server
     server.run(args.port)

@@ -294,7 +294,7 @@ def main(
 
     print("Setup model")
     # Get configuration class, model class, and tokenizer class from the corresponding model type
-    config_class, model_class, tokenizer_class = ModelClasses.getModelClass(model_type)
+    config_class, model_class, tokenizer_class, transformer_type = ModelClasses.getModelClass(model_type)
     # Setup tokenizer
     tokenizer = tokenizer_class.from_pretrained(tokenizer_name)
 

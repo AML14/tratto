@@ -4,6 +4,7 @@ python scripts/train/run_classifier_decoder.py \
 --do_eval \
 --do_predict \
 --model_type codet5+ \
+--transformer_type encoder \
 --tokenizer_name Salesforce/codet5p-220m \
 --model_name_or_path Salesforce/codet5p-220m \
 --tratto_model_type token_values \

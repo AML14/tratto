@@ -1,12 +1,14 @@
 from itertools import permutations
 
 from src.types.ClassificationType import ClassificationType
+from src.types.TransformerType import TransformerType
 from src.types.TrattoModelType import TrattoModelType
 
 
 def generate_src_input(
         datapoint,
         tokenizer,
+        transformer_type,
         classification_type,
         tratto_model_type
 ):
@@ -22,6 +24,9 @@ def generate_src_input(
         input += f"{datapoint.eligibleTokenClasses}{tokenizer.sep_token}"
     elif tratto_model_type == TrattoModelType.TOKEN_VALUES:
         input += f"{datapoint.eligibleTokens}{tokenizer.sep_token}"
+        if transformer_type == TransformerType.ENCODER or classification_type == ClassificationType.LABEL_PREDICTION:
+            input += f"{datapoint.tokenInfo}{tokenizer.sep_token}"
+        input += f"{datapoint.tokenClass}{tokenizer.sep_token}"
     input += f"{datapoint.javadocTag}{tokenizer.sep_token}"
     input += f"{datapoint.oracleType}{tokenizer.sep_token}"
     input += f"{datapoint.packageName}{tokenizer.sep_token}"

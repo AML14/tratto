@@ -1,6 +1,8 @@
 from transformers import RobertaConfig, RobertaTokenizer, RobertaForSequenceClassification, T5ForConditionalGeneration, T5Config
 from transformers import AutoConfig, AutoTokenizer, AutoModelForSequenceClassification
 
+from src.types.TransformerType import TransformerType
+
 
 class ModelClasses:
 
@@ -11,8 +13,8 @@ class ModelClasses:
     @staticmethod
     def getModelClass(model_name: str) :
         if model_name == 'roberta':
-            return RobertaConfig, RobertaForSequenceClassification, RobertaTokenizer
+            return RobertaConfig, RobertaForSequenceClassification, RobertaTokenizer, TransformerType.ENCODER
         if model_name == 'codet5':
-            return T5Config, T5ForConditionalGeneration, RobertaTokenizer
+            return T5Config, T5ForConditionalGeneration, RobertaTokenizer, TransformerType.DECODER
         if model_name == 'codet5+':
-            return T5Config, T5ForConditionalGeneration, AutoTokenizer
+            return T5Config, T5ForConditionalGeneration, AutoTokenizer, TransformerType.DECODER
