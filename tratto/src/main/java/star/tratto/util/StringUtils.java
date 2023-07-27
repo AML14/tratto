@@ -149,6 +149,18 @@ public class StringUtils {
                 .collect(Collectors.toList());
     }
 
+    private static Map<String, Integer> getWordFrequencies(List<String> words) {
+        return null;
+    }
+
+    private static RealVector wordFrequencyToVector(Map<String, Integer> frequencies, LinkedHashSet<String> words) {
+        return null;
+    }
+
+    private static double lemmasToCosineSimilarity(List<String> lemmas1, List<String> lemmas2) {
+        return 0.0;
+    }
+
     /**
      * Computes the semantic similarity of two strings by the cosine
      * similarity of word frequencies in the input.
