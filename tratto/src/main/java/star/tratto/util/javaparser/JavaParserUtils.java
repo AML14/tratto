@@ -832,7 +832,7 @@ public class JavaParserUtils {
             return new ArrayList<>(jpClass.resolve().getAllMethods());
         } catch (UnsolvedSymbolException | IllegalArgumentException e) {
             String errMsg = String.format(
-                    "Impossible to get all the methods of class %s.\n%s.",
+                    "Impossible to get all the methods of the class %s.%n%s.",
                     jpClass.getNameAsString(), e
             );
             logger.error(errMsg);
@@ -855,7 +855,7 @@ public class JavaParserUtils {
             return jpClass.resolve().getAllFields();
         } catch (UnsolvedSymbolException | IllegalArgumentException e) {
             String errMsg = String.format(
-                    "Impossible to get all the methods of class %s.\n%s.",
+                    "Impossible to get all the methods of class %s.%n%s.",
                     jpClass.getNameAsString(), e
             );
             logger.error(errMsg);
