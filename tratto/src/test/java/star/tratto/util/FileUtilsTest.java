@@ -1,7 +1,7 @@
 package star.tratto.util;
 
 import org.junit.jupiter.api.Test;
-import star.tratto.data.IOPath;
+import star.tratto.data.TrattoPath;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -106,7 +106,7 @@ public class FileUtilsTest {
 
     @Test
     public void readJSONListTest() {
-        Path path = IOPath.IGNORE_FILE.getPath();
+        Path path = TrattoPath.IGNORE_FILE.getPath();
         try {
             List<String> ignoreFileList = FileUtils.readJSONList(path)
                     .stream()
