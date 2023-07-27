@@ -28,8 +28,12 @@ public class StringUtils {
     }
 
     /**
-     * @return a new StanfordCoreNLP object with the necessary properties for
-     * determining semantic similarity of two strings
+     * @return a new StanfordCoreNLP object with the necessary annotators for
+     * determining semantic similarity of two strings. We use the following
+     * annotators:
+     *  - tokenize: splits input text into tokens (e.g. words, punctuation)
+     *  - pos: assigns a part-of-speech to each token
+     *  - lemma: converts each word to its base root (e.g. "running" -> "run")
      */
     private static StanfordCoreNLP getStanfordCoreNLP() {
         Properties properties = new Properties();
@@ -116,6 +120,36 @@ public class StringUtils {
     }
 
     /**
+     * @return removes all non-alphabetic and space characters in a String,
+     * and sets all alphabetic characters to lower case
+     */
+    private static String toAllLowerCaseLetters(String s) {
+        return s.replaceAll("[^a-zA-Z ]", "").toLowerCase();
+    }
+
+    /**
+     * Transforms a String of words to a list of the corresponding lemmas. A
+     * lemma is a dictionary-defined canonical form of a word. StanfordCoreNLP
+     * uses WordNet to determine canonical forms. For example:
+     *  "running"   ->  "run"
+     *  "better"    ->  "good"
+     * When calculating semantic similarity, we use lemmas (rather than words)
+     * to avoid treating similar words as entirely separate.
+     *
+     * @param words lowercase alphabetic characters separated by spaces
+     * @return lemma corresponding to words in the original String
+     */
+    private static List<String> toLemmas(String words) {
+        Annotation processedText = new Annotation(words);
+        stanfordCoreNLP.annotate(processedText);
+        List<CoreLabel> tokens = processedText.get(TokensAnnotation.class);
+        return tokens
+                .stream()
+                .map(t -> t.get(LemmaAnnotation.class))
+                .collect(Collectors.toList());
+    }
+
+    /**
      * Computes the semantic similarity of two strings by the cosine
      * similarity of word frequencies in the input.
      * NOTE: During semantic comparison, a word such as "text2int"
@@ -128,26 +162,11 @@ public class StringUtils {
      * double between 0.0 and 1.0
      */
     public static double semanticSimilarity(String s1, String s2) {
-        s1 = s1.replaceAll("[^a-zA-Z ]", "").toLowerCase();
-        s2 = s2.replaceAll("[^a-zA-Z ]", "").toLowerCase();
-        // Convert the words into lemmas.
-        List<String> tokens1 = lemmatize(stanfordCoreNLP, s1);
-        List<String> tokens2 = lemmatize(stanfordCoreNLP, s2);
-        // Compute the cosine similarity of the two vectors of word frequencies.
+        s1 = toAllLowerCaseLetters(s1);
+        s2 = toAllLowerCaseLetters(s2);
+        List<String> tokens1 = toLemmas(s1);
+        List<String> tokens2 = toLemmas(s2);
         return cosineSimilarity(tokens1, tokens2);
-    }
-
-    /**
-     * Converts a string into a list of lemmas using the CoreNLP library.
-     */
-    private static List<String> lemmatize(StanfordCoreNLP pipeline, String documentText) {
-        Annotation document = new Annotation(documentText);
-        pipeline.annotate(document);
-        List<CoreLabel> tokens = document.get(TokensAnnotation.class);
-        return tokens
-                .stream()
-                .map(t -> t.get(LemmaAnnotation.class))
-                .collect(Collectors.toList());
     }
 
     /**
