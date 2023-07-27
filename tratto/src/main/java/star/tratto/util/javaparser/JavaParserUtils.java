@@ -63,7 +63,12 @@ public class JavaParserUtils {
     private static final String SYNTHETIC_CLASS_NAME = "Tratto__AuxiliaryClass";
     private static final String SYNTHETIC_CLASS_SOURCE = "public class " + SYNTHETIC_CLASS_NAME + " {}";
     private static final String SYNTHETIC_METHOD_NAME = "__tratto__auxiliaryMethod";
-    private static final Pattern METHOD_SIGNATURE = Pattern.compile("^ReflectionMethodDeclaration\\{method=((.*) )?\\S+ \\S+\\(.*\\}$|^JavassistMethodDeclaration\\{ctMethod\\=.*\\[((.*) )?\\S+ \\(.*\\).*\\]}$");
+    // matches the signature from either a ReflectionMethodDeclaration or JavassistMethodDeclaration
+    // (both implementations of ResolvedMethodDeclaration)
+    private static final Pattern METHOD_SIGNATURE = Pattern.compile(
+            "^ReflectionMethodDeclaration\\{method=((.*) )?\\S+ \\S+\\(.*}$|" +
+                  "^JavassistMethodDeclaration\\{ctMethod=.*\\[((.*) )?\\S+ \\(.*\\).*]}$"
+    );
     // matches the binary name of a class (e.g. "package.submodule.InnerClass$OuterClass")
     private static final Pattern PACKAGE_CLASS = Pattern.compile("[a-zA-Z_$][a-zA-Z\\d_$]*(\\.[a-zA-Z_$][a-zA-Z\\d_$]*)*");
 
