@@ -1,4 +1,4 @@
-package star.tratto.exceptions;
+package star.tratto.data;
 
 import java.io.IOException;
 
