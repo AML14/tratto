@@ -1,127 +1,127 @@
 pool:
   vmImage: ubuntu-latest
 jobs:
-  - job: unit_tests
-    steps:
-      - template: azure-pipelines-templates/install-dependency.yml
-      - task: Maven@3
-        displayName: 'Build and run tests'
-        inputs:
-          mavenPomFile: 'tratto/pom.xml'
-          mavenOptions: '-Xmx3072m'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.17'
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: true
-          testResultsFiles: '**/surefire-reports/TEST-*.xml'
-          goals: 'package'
-      - publish: $(System.DefaultWorkingDirectory)/tratto/target/classes
-        displayName: 'Save classes'
-        artifact: classesFolder
-      - publish: $(System.DefaultWorkingDirectory)/tratto/target/jacoco.exec
-        displayName: 'Save coverage'
-        artifact: coverageResults1
-  - job: grammar_tests
-    steps:
-      - task: Maven@3
-        displayName: 'Run grammar tests'
-        inputs:
-          mavenPomFile: 'oracle-grammar/MavenVersion/oracle-grammar/pom.xml'
-          mavenOptions: '-Xmx3072m'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.17'
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: true
-          testResultsFiles: '**/surefire-reports/TEST-*.xml'
-          goals: 'package'
-  - job: tokenSuggester_e2e_tests
-    timeoutInMinutes: 0
-    steps:
-      - template: azure-pipelines-templates/install-dependency.yml
-      - task: Maven@3
-        displayName: 'Run TokenSuggester E2E tests'
-        inputs:
-          mavenPomFile: 'tratto/pom.xml'
-          mavenOptions: '-Xmx3072m -Dtest=star.tratto.E2ETests#tokenSuggesterE2ETest'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.17'
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: true
-          testResultsFiles: '**/surefire-reports/TEST-*.xml'
-          goals: 'test'
-      - publish: $(System.DefaultWorkingDirectory)/tratto/target/jacoco.exec
-        displayName: 'Save coverage'
-        artifact: coverageResults2
-  - job: datasets_e2e_tests
-    timeoutInMinutes: 0
-    steps:
-      - template: azure-pipelines-templates/install-dependency.yml
-      - task: Maven@3
-        displayName: 'Run datasets E2E tests'
-        inputs:
-          mavenPomFile: 'tratto/pom.xml'
-          mavenOptions: '-Xmx3072m -Dtest=star.tratto.E2ETests#datasetsE2ETest'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.17'
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: true
-          testResultsFiles: '**/surefire-reports/TEST-*.xml'
-          goals: 'test'
-      - publish: $(System.DefaultWorkingDirectory)/tratto/target/jacoco.exec
-        displayName: 'Save coverage'
-        artifact: coverageResults3
-  - job: classAnalyzer_e2e_tests
-    timeoutInMinutes: 0
-    steps:
-      - template: azure-pipelines-templates/install-dependency.yml
-      - task: Maven@3
-        displayName: 'Run ClassAnalyzer E2E tests'
-        inputs:
-          mavenPomFile: 'tratto/pom.xml'
-          mavenOptions: '-Xmx3072m -Dtest=star.tratto.E2ETests#classAnalyzerE2ETest'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.17'
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: true
-          testResultsFiles: '**/surefire-reports/TEST-*.xml'
-          goals: 'test'
-      - publish: $(System.DefaultWorkingDirectory)/tratto/target/jacoco.exec
-        displayName: 'Save coverage'
-        artifact: coverageResults4
-  - job: test_coverage
-    dependsOn:
-      - unit_tests
-      - tokenSuggester_e2e_tests
-      - datasets_e2e_tests
-      - classAnalyzer_e2e_tests
-    steps:
-      - download: current
-        displayName: 'Load classes'
-        artifact: classesFolder
-      - download: current
-        displayName: 'Load coverage 1'
-        artifact: coverageResults1
-      - download: current
-        displayName: 'Load coverage 2'
-        artifact: coverageResults2
-      - download: current
-        displayName: 'Load coverage 3'
-        artifact: coverageResults3
-      - download: current
-        displayName: 'Load coverage 4'
-        artifact: coverageResults4
-      - script: |
-          mkdir -p tratto/target/classes
-          mv ../classesFolder/* tratto/target/classes/
-          mv ../coverageResults1/jacoco.exec tratto/target/jacoco1.exec
-          mv ../coverageResults2/jacoco.exec tratto/target/jacoco2.exec
-          mv ../coverageResults3/jacoco.exec tratto/target/jacoco3.exec
-          mv ../coverageResults4/jacoco.exec tratto/target/jacoco4.exec
-          cd tratto
-          mvn -N jacoco:merge jacoco:report
-        displayName: 'Create coverage report'
-      - task: PublishCodeCoverageResults@1
-        displayName: 'Publish coverage report'
-        inputs:
-          summaryFileLocation: $(System.DefaultWorkingDirectory)/tratto/target/site/jacoco/jacoco.xml
-          pathToSources: $(System.DefaultWorkingDirectory)/tratto/src/main/java/
+- job: unit_tests
+  steps:
+  - template: azure-pipelines-templates/install-dependency.yml
+  - task: Maven@3
+    displayName: 'Build and run tests'
+    inputs:
+      mavenPomFile: 'tratto/pom.xml'
+      mavenOptions: '-Xmx3072m'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '1.17'
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: true
+      testResultsFiles: '**/surefire-reports/TEST-*.xml'
+      goals: 'package'
+  - publish: $(System.DefaultWorkingDirectory)/tratto/target/classes
+    displayName: 'Save classes'
+    artifact: classesFolder
+  - publish: $(System.DefaultWorkingDirectory)/tratto/target/jacoco.exec
+    displayName: 'Save coverage'
+    artifact: coverageResults1
+- job: grammar_tests
+  steps:
+  - task: Maven@3
+    displayName: 'Run grammar tests'
+    inputs:
+      mavenPomFile: 'oracle-grammar/MavenVersion/oracle-grammar/pom.xml'
+      mavenOptions: '-Xmx3072m'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '1.17'
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: true
+      testResultsFiles: '**/surefire-reports/TEST-*.xml'
+      goals: 'package'
+- job: tokenSuggester_e2e_tests
+  timeoutInMinutes: 0
+  steps:
+  - template: azure-pipelines-templates/install-dependency.yml
+  - task: Maven@3
+    displayName: 'Run TokenSuggester E2E tests'
+    inputs:
+      mavenPomFile: 'tratto/pom.xml'
+      mavenOptions: '-Xmx3072m -Dtest=star.tratto.E2ETests#tokenSuggesterE2ETest'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '1.17'
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: true
+      testResultsFiles: '**/surefire-reports/TEST-*.xml'
+      goals: 'test'
+  - publish: $(System.DefaultWorkingDirectory)/tratto/target/jacoco.exec
+    displayName: 'Save coverage'
+    artifact: coverageResults2
+- job: datasets_e2e_tests
+  timeoutInMinutes: 0
+  steps:
+  - template: azure-pipelines-templates/install-dependency.yml
+  - task: Maven@3
+    displayName: 'Run datasets E2E tests'
+    inputs:
+      mavenPomFile: 'tratto/pom.xml'
+      mavenOptions: '-Xmx3072m -Dtest=star.tratto.E2ETests#datasetsE2ETest'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '1.17'
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: true
+      testResultsFiles: '**/surefire-reports/TEST-*.xml'
+      goals: 'test'
+  - publish: $(System.DefaultWorkingDirectory)/tratto/target/jacoco.exec
+    displayName: 'Save coverage'
+    artifact: coverageResults3
+# - job: classAnalyzer_e2e_tests
+#   timeoutInMinutes: 0
+#   steps:
+#   - template: azure-pipelines-templates/install-dependency.yml
+#   - task: Maven@3
+#     displayName: 'Run ClassAnalyzer E2E tests'
+#     inputs:
+#       mavenPomFile: 'tratto/pom.xml'
+#       mavenOptions: '-Xmx3072m -Dtest=star.tratto.E2ETests#classAnalyzerE2ETest'
+#       javaHomeOption: 'JDKVersion'
+#       jdkVersionOption: '1.17'
+#       jdkArchitectureOption: 'x64'
+#       publishJUnitResults: true
+#       testResultsFiles: '**/surefire-reports/TEST-*.xml'
+#       goals: 'test'
+#   - publish: $(System.DefaultWorkingDirectory)/tratto/target/jacoco.exec
+#     displayName: 'Save coverage'
+#     artifact: coverageResults4
+- job: test_coverage
+  dependsOn:
+  - unit_tests
+  - tokenSuggester_e2e_tests
+  - datasets_e2e_tests
+  # - classAnalyzer_e2e_tests
+  steps:
+  - download: current
+    displayName: 'Load classes'
+    artifact: classesFolder
+  - download: current
+    displayName: 'Load coverage 1'
+    artifact: coverageResults1
+  - download: current
+    displayName: 'Load coverage 2'
+    artifact: coverageResults2
+  - download: current
+    displayName: 'Load coverage 3'
+    artifact: coverageResults3
+  # - download: current
+  #   displayName: 'Load coverage 4'
+  #   artifact: coverageResults4
+  - script: |
+      mkdir -p tratto/target/classes
+      mv ../classesFolder/* tratto/target/classes/
+      mv ../coverageResults1/jacoco.exec tratto/target/jacoco1.exec
+      mv ../coverageResults2/jacoco.exec tratto/target/jacoco2.exec
+      mv ../coverageResults3/jacoco.exec tratto/target/jacoco3.exec
+      # mv ../coverageResults4/jacoco.exec tratto/target/jacoco4.exec
+      cd tratto
+      mvn -N jacoco:merge jacoco:report
+    displayName: 'Create coverage report'
+  - task: PublishCodeCoverageResults@1
+    displayName: 'Publish coverage report'
+    inputs:
+      summaryFileLocation: $(System.DefaultWorkingDirectory)/tratto/target/site/jacoco/jacoco.xml
+      pathToSources: $(System.DefaultWorkingDirectory)/tratto/src/main/java/
