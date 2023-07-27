@@ -149,8 +149,21 @@ public class StringUtils {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Creates a map from each word to its corresponding frequency in a given
+     * list of words.
+     *
+     * @param words a list of words
+     * @return a map of word frequencies, where the keys are unique words and
+     * the values are the number of occurrences in {@code words}
+     */
     private static Map<String, Integer> getWordFrequencies(List<String> words) {
-        return null;
+        Map<String, Integer> wordFrequencies = new HashMap<>();
+        for (String word : words) {
+            int currentCount = wordFrequencies.getOrDefault(word, 0);
+            wordFrequencies.put(word, currentCount + 1);
+        }
+        return wordFrequencies;
     }
 
     /**
@@ -204,28 +217,13 @@ public class StringUtils {
      * @return the cosine similarity (double between 0.0 and 1.0)
      */
     private static double cosineSimilarity(List<String> list1, List<String> list2) {
-        Map<String, Integer> map1 = wordFrequencies(list1);
-        Map<String, Integer> map2 = wordFrequencies(list2);
+        Map<String, Integer> map1 = getWordFrequencies(list1);
+        Map<String, Integer> map2 = getWordFrequencies(list2);
         TreeSet<String> intersection = new TreeSet<>(map1.keySet());
         intersection.retainAll(map2.keySet());
         RealVector vector1 = wordFrequencyToVector(map1, intersection);
         RealVector vector2 = wordFrequencyToVector(map2, intersection);
         double denominator = vector1.getNorm() * vector2.getNorm();
         return denominator > 0.0 ? vector1.dotProduct(vector2) / (denominator) : 0.0;
-    }
-
-    /**
-     * Computes the frequency of each string in a list of strings.
-     *
-     * @param words a list of strings
-     * @return a map of word frequencies, where the keys are strings and the
-     * values are the number of occurrences
-     */
-    private static Map<String, Integer> wordFrequencies(List<String> words) {
-        Map<String, Integer> frequencies = new HashMap<>();
-        for (String word : words) {
-            frequencies.put(word, frequencies.getOrDefault(word, 0) + 1);
-        }
-        return frequencies;
     }
 }
