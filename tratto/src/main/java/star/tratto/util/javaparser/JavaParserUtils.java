@@ -311,7 +311,7 @@ public class JavaParserUtils {
         return type;
     }
 
-    public static String getTypeWithoutPackages(String type) {
+    private static String getTypeWithoutPackages(String type) {
         Matcher matcher = PACKAGE_CLASS.matcher(type);
         while (matcher.find()) {
             if (matcher.group().contains(".")) {
