@@ -43,10 +43,12 @@ import star.tratto.util.JavaTypes;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashSet;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.*;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -426,7 +428,7 @@ public class JavaParserUtils {
             if (type2TypeParameters.contains(type1)) {
                 return true; // Special case: type1 is a generic and a type parameter of type2
             }
-        } catch (UnsupportedOperationException|NoSuchElementException|NullPointerException ignored) {}
+        } catch (UnsupportedOperationException | NoSuchElementException | NullPointerException ignored) {}
         return isInstanceOf(type1, type2, oracleDatapoint, false) || isInstanceOf(type2, type1, null, false);
     }
 
