@@ -1,3 +1,3 @@
 import pytest
-from src.model.OracleTrainer import OracleTraine
+from src.model.OracleTrainer import OracleTrainer
 
