@@ -19,21 +19,22 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class StringUtils {
-    private static StanfordCoreNLP stanfordCoreNLP = getStanfordCoreNLP();
+    // a suite of NLP tools for determining the similarity of two strings
+    private static final StanfordCoreNLP stanfordCoreNLP = getStanfordCoreNLP();
 
-    // private constructor to avoid creating an instance of this class.
+    // private constructor to avoid creating an instance of this class
     private StringUtils() {
         throw new UnsupportedOperationException("This class cannot be instantiated.");
     }
 
-    public static StanfordCoreNLP getStanfordCoreNLP() {
-        if (stanfordCoreNLP == null) {
-            // Initialize the CoreNLP pipeline for lemmatization
-            Properties props = new Properties();
-            props.setProperty("annotators", "tokenize, pos, lemma");
-            stanfordCoreNLP = new StanfordCoreNLP(props);
-        }
-        return stanfordCoreNLP;
+    /**
+     * @return a new StanfordCoreNLP object with the necessary properties for
+     * determining semantic similarity of two strings
+     */
+    private static StanfordCoreNLP getStanfordCoreNLP() {
+        Properties properties = new Properties();
+        properties.setProperty("annotators", "tokenize, pos, lemma");
+        return new StanfordCoreNLP(properties);
     }
 
     /**
