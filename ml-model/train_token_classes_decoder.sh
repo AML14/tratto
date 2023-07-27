@@ -1,10 +1,9 @@
 export PYTHONPATH="./"
-python scripts/train/run_classifier_decoder.py \
+python scripts/train/run_classifier.py \
 --do_train \
 --do_eval \
 --do_predict \
 --model_type codet5+ \
---transformer_type encoder \
 --tokenizer_name Salesforce/codet5p-220m \
 --model_name_or_path Salesforce/codet5p-220m \
 --tratto_model_type token_classes \
@@ -13,7 +12,7 @@ python scripts/train/run_classifier_decoder.py \
 --batch_size 24 \
 --learning_rate 1e-5 \
 --num_epochs 20 \
---save_steps 500 \
+--save_steps 1000 \
 --accumulation_steps 1 \
 --test_ratio 0.1 \
 --validation_ratio 0.1 \

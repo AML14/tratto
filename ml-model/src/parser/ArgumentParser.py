@@ -134,16 +134,6 @@ class ArgumentParser:
             help="Model type selected in the list: " + ", ".join(ModelClasses.get_available_model_classes())
         )
         parser.add_argument(
-            "--transformer_type",
-            default=None,
-            type=str,
-            required=True,
-            help="Transformer type selected in the list: " + ", ".join([
-                TransformerType.ENCODER,
-                TransformerType.DECODER
-            ])
-        )
-        parser.add_argument(
             "--tokenizer_name",
             default=None,
             type=str,

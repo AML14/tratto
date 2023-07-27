@@ -8,10 +8,11 @@ from torch.utils.data import DataLoader, RandomSampler
 from torch.optim import AdamW
 from transformers import get_linear_schedule_with_warmup
 
-from src.model.OracleTrainerDecoder import OracleTrainerDecoder
+from src.model.OracleTrainer import OracleTrainer
 from src.types.ClassificationType import ClassificationType
 from src.types.DatasetType import DatasetType
 from src.types.DeviceType import DeviceType
+from src.types.TransformerType import TransformerType
 from src.types.TrattoModelType import TrattoModelType
 from src.utils import logger
 from src.parser.ArgumentParser import ArgumentParser
@@ -62,7 +63,7 @@ def main():
         try:
             tratto_model_type = TrattoModelType(args.tratto_model_type.upper())
         except:
-            print(f"Model type {args.tratto_model_type} not recognized. Classification type {TrattoModelType.TOKEN_CLASSES} used.")
+            print(f"Model type {args.tratto_model_type} not recognized. Tratto model type {TrattoModelType.TOKEN_CLASSES} used.")
 
     logger.print_welcome(classification_type, tratto_model_type)
     # Logging - load gpu
@@ -157,7 +158,7 @@ def main():
             f"batch_{args.batch_size}",
             f"epochs_{args.num_epochs}"
         )
-        oracle_trainer = OracleTrainerDecoder(
+        oracle_trainer = OracleTrainer(
             model,
             optimizer,
             dl_train,
@@ -165,6 +166,7 @@ def main():
             dl_test,
             classifier_ids_labels,
             classification_type,
+            transformer_type,
             checkpoint_path,
             scheduler,
             tokenizer

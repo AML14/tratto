@@ -98,8 +98,8 @@ if __name__ == '__main__':
     # Instantiate server
     server = Server(
         device,
-        ClassificationType(args.classification_type_token_classes),
-        ClassificationType(args.classification_type_token_values),
+        ClassificationType(args.classification_type_token_classes.upper()),
+        ClassificationType(args.classification_type_token_values.upper()),
         transformer_type_token_classes,
         transformer_type_token_values,
         model_token_classes,

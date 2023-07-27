@@ -559,7 +559,7 @@ class DataProcessor:
         # Datasets path
         oracles_dataset = os.path.join(d_path)
         # Collects partial dataframes from oracles
-        for file_name in os.listdir(oracles_dataset):
+        for file_name in os.listdir(oracles_dataset)[:1]:
             df = pd.read_json(os.path.join(oracles_dataset, file_name))
             dfs.append(df)
         df_dataset = pd.concat(dfs)
@@ -610,13 +610,14 @@ class DataProcessor:
             padding=True,
             return_tensors="pt"
         )
-        t_tgt_dict = self._tokenizer.batch_encode_plus(
-            targets,
-            max_length=8,
-            truncation=True,
-            padding=True,
-            return_tensors="pt"
-        )
+        if self._transformer_type == TransformerType.DECODER:
+            t_tgt_dict = self._tokenizer.batch_encode_plus(
+                targets,
+                max_length=8,
+                truncation=True,
+                padding=True,
+                return_tensors="pt"
+            )
         # Transform the list into a tensor stack
         #
         #   t_src_dict['input_ids'] = [[t_i_1_1,...,t_i_1_n],...,[t_i_k_1,...,t_i_k_n]]
@@ -630,7 +631,10 @@ class DataProcessor:
         # this is the structure accepted by the DataLoader, to process the dataset
         t_inputs = torch.stack([ids.clone().detach() for ids in t_src_dict['input_ids']])
         t_inputs_attention_masks = torch.stack([mask.clone().detach() for mask in t_src_dict['attention_mask']])
-        t_targets = torch.stack([ids.clone().detach() for ids in t_tgt_dict['input_ids']])
+        if self._transformer_type == TransformerType.DECODER:
+            t_targets = torch.stack([ids.clone().detach() for ids in t_tgt_dict['input_ids']])
+        else:
+            t_targets = torch.stack([torch.tensor(t) for t in targets])
         # Generate the tokenized dataset
         tokenized_dataset = (t_inputs, t_inputs_attention_masks, t_targets)
         # Return the tokenized dataset
