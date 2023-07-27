@@ -88,7 +88,7 @@ public class RestrictionsUtils {
             matchingClasses.forEach(c -> matchingMethods.addAll(
                     getMethodsOfType(fullyQualifiedClassName(c.getValue1(), c.getValue0()))
                             .stream()
-                            .filter(m -> m.getName().equals(methodName) && isStaticNonPrivateNonVoidMethod(m))
+                            .filter(m -> m.getName().equals(methodName) && isNonPrivateStaticNonVoidMethod(m))
                             .collect(Collectors.toList())
             ));
         } else {

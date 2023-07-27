@@ -25,6 +25,7 @@ import com.github.javaparser.resolution.declarations.ResolvedMethodDeclaration;
 import com.github.javaparser.resolution.declarations.ResolvedReferenceTypeDeclaration;
 import com.github.javaparser.resolution.declarations.ResolvedTypeParameterDeclaration;
 import com.github.javaparser.resolution.types.ResolvedType;
+import com.github.javaparser.resolution.types.ResolvedWildcard;
 import com.github.javaparser.symbolsolver.javaparsermodel.declarations.JavaParserMethodDeclaration;
 import com.github.javaparser.symbolsolver.reflectionmodel.ReflectionMethodDeclaration;
 import com.github.javaparser.symbolsolver.utils.SymbolSolverCollectionStrategy;
@@ -33,9 +34,9 @@ import org.javatuples.Triplet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import star.tratto.data.OracleDatapoint;
-import star.tratto.exceptions.JPClassNotFoundException;
-import star.tratto.exceptions.PackageDeclarationNotFoundException;
-import star.tratto.exceptions.ResolvedTypeNotFound;
+import star.tratto.data.JPClassNotFoundException;
+import star.tratto.data.PackageDeclarationNotFoundException;
+import star.tratto.data.ResolvedTypeNotFound;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.util.JavaTypes;
 
@@ -269,6 +270,15 @@ public class JavaParserUtils {
                 return Pair.with(arrayElementType.getPackageName(), arrayElementType.getClassName() + suffix);
             } else {
                 return Pair.with("", arrayElement.describe() + suffix);
+            }
+        } else if (resolvedType.isWildcard()) { // e.g., in Collection<? extends String>, "? extends String" is a wildcard
+            ResolvedWildcard type = resolvedType.asWildcard();
+            ResolvedType boundedType = type.getBoundedType();
+            if (boundedType != null) {
+                ResolvedReferenceTypeDeclaration resolvedBoundedType = type.getBoundedType().asReferenceType().getTypeDeclaration().get();
+                return Pair.with(resolvedBoundedType.getPackageName(), resolvedBoundedType.getClassName());
+            } else { // e.g., in Collection<?>, "?" can be anything, so we return Object
+                return Pair.with("java.lang", "Object");
             }
         } else {
             return Pair.with("", resolvedType.describe()); // Primitive type
@@ -859,13 +869,14 @@ public class JavaParserUtils {
     }
 
     /**
-     * Read a compilation unit from a Java file.
+     * Creates a compilation unit from a Java file.
      *
-     * @param filePath the absolute path to the file
-     * @return a JavaParser compilation unit
+     * @param path an absolute file path
+     * @return the corresponding JavaParser compilation unit. Returns
+     * {@code Optional.empty()} if an error occurs while attempting to parse
+     * the file.
      */
-    public static Optional<CompilationUnit> getCompilationUnitFromFile(String filePath) {
-        Path path = Paths.get(filePath);
+    public static Optional<CompilationUnit> getCompilationUnit(Path path) {
         try {
             return javaParser.parse(path).getResult();
         } catch (IOException e) {
@@ -881,7 +892,7 @@ public class JavaParserUtils {
         return !fieldDeclaration.accessSpecifier().equals(AccessSpecifier.PRIVATE) && !fieldDeclaration.isStatic();
     }
 
-    public static boolean isStaticNonPrivateNonVoidMethod(MethodUsage methodUsage) {
+    public static boolean isNonPrivateStaticNonVoidMethod(MethodUsage methodUsage) {
         return methodUsage.getDeclaration().isStatic() && isNonPrivateNonVoidMethod(methodUsage);
     }
 

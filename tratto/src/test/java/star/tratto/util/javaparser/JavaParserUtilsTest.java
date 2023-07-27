@@ -18,10 +18,11 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleDatapointTest;
-import star.tratto.exceptions.JPClassNotFoundException;
-import star.tratto.exceptions.PackageDeclarationNotFoundException;
-import star.tratto.exceptions.ResolvedTypeNotFound;
+import star.tratto.data.JPClassNotFoundException;
+import star.tratto.data.PackageDeclarationNotFoundException;
+import star.tratto.data.ResolvedTypeNotFound;
 
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -515,8 +516,8 @@ public class JavaParserUtilsTest {
 
     @Test
     public void getCompilationUnitFromFileTest() {
-        String projectsPath = Paths.get("src", "main", "java", "star", "tratto", "data", "OracleType.java").toString();
-        Optional<CompilationUnit> optionalCu = getCompilationUnitFromFile(projectsPath);
+        Path projectsPath = Paths.get("src", "main", "java", "star", "tratto", "data", "OracleType.java");
+        Optional<CompilationUnit> optionalCu = getCompilationUnit(projectsPath);
         assertTrue(optionalCu.isPresent());
         CompilationUnit cu = optionalCu.get();
         try {
