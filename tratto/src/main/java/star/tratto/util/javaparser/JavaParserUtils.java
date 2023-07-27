@@ -66,11 +66,11 @@ public class JavaParserUtils {
     // matches the signature from either a ReflectionMethodDeclaration or JavassistMethodDeclaration
     // (both implementations of ResolvedMethodDeclaration)
     private static final Pattern METHOD_SIGNATURE = Pattern.compile(
-            "^ReflectionMethodDeclaration\\{method=((.*) )?\\S+ \\S+\\(.*}$|" +
-                  "^JavassistMethodDeclaration\\{ctMethod=.*\\[((.*) )?\\S+ \\(.*\\).*]}$"
+            "^ReflectionMethodDeclaration\\{method=((.*) )?\\S+ \\S+\\(.*\\}$|" +
+                  "^JavassistMethodDeclaration\\{ctMethod\\=.*\\[((.*) )?\\S+ \\(.*\\).*\\]}$"
     );
     // matches the binary name of a class (e.g. "package.submodule.InnerClass$OuterClass")
-    private static final Pattern PACKAGE_CLASS = Pattern.compile("[a-zA-Z_$][a-zA-Z\\d_$]*(\\.[a-zA-Z_$][a-zA-Z\\d_$]*)*");
+    private static final Pattern PACKAGE_CLASS = Pattern.compile("[a-zA-Z_][a-zA-Z\\d_]*(\\.[a-zA-Z_][a-zA-Z\\d_]*)*");
 
     // private constructor to avoid creating an instance of this class.
     private JavaParserUtils() {
@@ -314,8 +314,8 @@ public class JavaParserUtils {
             type = getTypeWithoutPackages(type);
         } else if (resolvedType.isArray()) {
             ResolvedType componentType = removeArray(resolvedType);
-            if (componentType.isArray()) {
-                type = getTypeWithoutPackages(componentType);
+            if (componentType.isReferenceType()) {
+                type = getTypeWithoutPackages(type);
             }
         }
         return type;
@@ -436,7 +436,7 @@ public class JavaParserUtils {
             if (type2TypeParameters.contains(type1)) {
                 return true; // Special case: type1 is a generic and a type parameter of type2
             }
-        } catch (UnsupportedOperationException | NoSuchElementException | NullPointerException ignored) {}
+        } catch (UnsupportedOperationException|NoSuchElementException|NullPointerException ignored) {}
         return isInstanceOf(type1, type2, oracleDatapoint, false) || isInstanceOf(type2, type1, null, false);
     }
 
@@ -774,17 +774,16 @@ public class JavaParserUtils {
      * Returns the base component type of the resolved type
      * {@code resolvedType}. Recursively strips all array variables.
      * For example:
-     *  Object[][]  =>  Object
+     *  Object[][] => Object
      *
      * @param resolvedType a type
      * @return the base component type
      */
     public static ResolvedType removeArray(ResolvedType resolvedType) {
-        ResolvedType componentType = resolvedType;
-        while (componentType.isArray()) {
-            componentType = componentType.asArrayType().getComponentType();
+        if (resolvedType.isArray()) {
+            return removeArray(resolvedType.asArrayType().getComponentType());
         }
-        return componentType;
+        return resolvedType;
     }
 
     /**
