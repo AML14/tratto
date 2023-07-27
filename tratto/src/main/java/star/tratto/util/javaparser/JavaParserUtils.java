@@ -66,6 +66,11 @@ public class JavaParserUtils {
     private static final Pattern METHOD_SIGNATURE = Pattern.compile("^ReflectionMethodDeclaration\\{method=((.*) )?\\S+ \\S+\\(.*\\}$|^JavassistMethodDeclaration\\{ctMethod\\=.*\\[((.*) )?\\S+ \\(.*\\).*\\]}$");
     private static final Pattern PACKAGE_CLASS = Pattern.compile("[a-zA-Z_][a-zA-Z\\d_]*(\\.[a-zA-Z_][a-zA-Z\\d_]*)*"); // e.g., "a.b.C"
 
+    // private constructor to avoid creating an instance of this class.
+    private JavaParserUtils() {
+        throw new UnsupportedOperationException("This class cannot be instantiated.");
+    }
+
     public static JavaParser getJavaParser() {
         if (javaParser == null) {
             String root = "src/main/resources/projects-packaged";
