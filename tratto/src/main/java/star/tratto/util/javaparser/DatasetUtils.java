@@ -242,11 +242,11 @@ public class DatasetUtils {
                 if (JavaParserUtils.isGenericType(jpResolvedParameterType)) {
                     className = TypeUtils.getRawTypeName(jpClass, jpCallable, jpParameter);
                 } else {
-                    className = JavaParserUtils.getTypeWithoutPackages(jpResolvedParameterType.asReferenceType().getQualifiedName());
+                    className = JavaParserUtils.getTypeWithoutPackages(jpResolvedParameterType.asReferenceType());
                 }
             } else if (jpResolvedParameterType.isArray()) {
                 // special case: return early if type is an array to avoid redundant brackets.
-                return Optional.of(JavaParserUtils.getTypeWithoutPackages(jpResolvedParameterType.asArrayType().describe()));
+                return Optional.of(JavaParserUtils.getTypeWithoutPackages(jpResolvedParameterType.asArrayType()));
             } else {
                 // unknown type.
                 assert false;
@@ -305,9 +305,8 @@ public class DatasetUtils {
                             argumentList.add(Triplet.with(jpParameter.getNameAsString(), "", typeName));
                         } else {
                             // otherwise, retrieve necessary package information.
-                            String fullyQualifiedName = jpParameterType.resolve().asReferenceType().getQualifiedName();
-                            String className = JavaParserUtils.getTypeWithoutPackages(fullyQualifiedName);
-                            String parameterPackageName = fullyQualifiedName
+                            String className = JavaParserUtils.getTypeWithoutPackages(jpParameterType.resolve().asReferenceType());
+                            String parameterPackageName = jpParameterType.resolve().asReferenceType().getQualifiedName()
                                     .replace(String.format(".%s", className), "");
                             argumentList.add(Triplet.with(
                                     jpParameter.getNameAsString(),
