@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -185,45 +186,49 @@ public class StringUtils {
         return new ArrayRealVector(vector);
     }
 
+    /**
+     * @param set1 a set of words
+     * @param set2 a set of words
+     * @return the words in both sets
+     */
+    private static TreeSet<String> getSetIntersection(Set<String> set1, Set<String> set2) {
+        TreeSet<String> intersectionKeys = new TreeSet<>(set1);
+        intersectionKeys.retainAll(set2);
+        return intersectionKeys;
+    }
+
+    /**
+     * Computes the cosine similarity from two lists of lemmas.
+     *
+     * @param lemmas1 list of lemmas
+     * @param lemmas2 list of lemmas
+     * @return the cosine similarity (double between 0.0 and 1.0)
+     */
     private static double lemmasToCosineSimilarity(List<String> lemmas1, List<String> lemmas2) {
-        return 0.0;
+        Map<String, Integer> wordsFreq1 = getWordFrequencies(lemmas1);
+        Map<String, Integer> wordsFreq2 = getWordFrequencies(lemmas2);
+        TreeSet<String> intersectionKeys = getSetIntersection(wordsFreq1.keySet(), wordsFreq2.keySet());
+        RealVector wordVector1 = wordFrequencyToVector(wordsFreq1, intersectionKeys);
+        RealVector wordVector2 = wordFrequencyToVector(wordsFreq2, intersectionKeys);
+        return wordVector1.cosine(wordVector2);
     }
 
     /**
      * Computes the semantic similarity of two strings by the cosine
-     * similarity of word frequencies in the input.
-     * NOTE: During semantic comparison, a word such as "text2int"
-     * will be considered as a single world "textint" rather than two words,
-     * "text" and "int". This avoids potential oversimplification.
+     * similarity of their word frequency vectors. We define a word as a
+     * sequence of alphabetic characters separated by a space. We convert
+     * words into their canonical forms using the StanfordCoreNLP toolkit.
      *
-     * @param s1 a string of one or more words separated by a space
-     * @param s2 a string of one or more words separated by a space
-     * @return the cosine similarity of the two strings represented by a
+     * @param s1 a string of words
+     * @param s2 a string of words
+     * @return the cosine similarity of the two strings represented as a
      * double between 0.0 and 1.0
      */
     public static double semanticSimilarity(String s1, String s2) {
         s1 = toAllLowerCaseLetters(s1);
         s2 = toAllLowerCaseLetters(s2);
-        List<String> tokens1 = toLemmas(s1);
-        List<String> tokens2 = toLemmas(s2);
-        return cosineSimilarity(tokens1, tokens2);
-    }
-
-    /**
-     * Computes the cosine similarity of two lists of words.
-     *
-     * @param list1 list of words
-     * @param list2 list of words
-     * @return the cosine similarity (double between 0.0 and 1.0)
-     */
-    private static double cosineSimilarity(List<String> list1, List<String> list2) {
-        Map<String, Integer> map1 = getWordFrequencies(list1);
-        Map<String, Integer> map2 = getWordFrequencies(list2);
-        TreeSet<String> intersection = new TreeSet<>(map1.keySet());
-        intersection.retainAll(map2.keySet());
-        RealVector vector1 = wordFrequencyToVector(map1, intersection);
-        RealVector vector2 = wordFrequencyToVector(map2, intersection);
-        double denominator = vector1.getNorm() * vector2.getNorm();
-        return denominator > 0.0 ? vector1.dotProduct(vector2) / (denominator) : 0.0;
+        List<String> lemmas1 = toLemmas(s1);
+        List<String> lemmas2 = toLemmas(s2);
+        return lemmasToCosineSimilarity(lemmas1, lemmas2);
     }
 }
