@@ -18,7 +18,7 @@ class Server:
         self._app = Flask(__name__)
         self._device = device
         self._classification_type_token_classes = classification_type_token_classes
-        self._classification_type_token_classes = classification_type_token_values
+        self._classification_type_token_values = classification_type_token_values
         self._transformer_type_token_classes = transformer_type_token_classes
         self._transformer_type_token_values = transformer_type_token_values
         self._model_token_classes = model_token_classes
@@ -35,12 +35,12 @@ class Server:
                 filename,
                 self._classification_type_token_classes,
                 self._classification_type_token_values,
+                self._transformer_type_token_classes,
+                self._transformer_type_token_values,
                 self._model_token_classes,
                 self._model_token_values,
                 self._tokenizer_token_classes,
-                self._tokenizer_token_values,
-                self._transformer_type_token_classes,
-                self._transformer_type_token_values
+                self._tokenizer_token_values
             )
             # Create a response object with the string content
             response = make_response(token)
