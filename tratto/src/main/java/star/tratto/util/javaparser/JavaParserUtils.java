@@ -307,12 +307,9 @@ public class JavaParserUtils {
         if (resolvedType.isReferenceType()) {
             type = getTypeWithoutPackages(type);
         } else if (resolvedType.isArray()) {
-            ResolvedType arrayElement = resolvedType.asArrayType().getComponentType();
-            while (arrayElement.isArray()) {
-                arrayElement = arrayElement.asArrayType().getComponentType();
-            }
-            if (arrayElement.isReferenceType()) {
-                type = getTypeWithoutPackages(type);
+            ResolvedType componentType = removeArray(resolvedType);
+            if (componentType.isArray()) {
+                type = getTypeWithoutPackages(componentType);
             }
         }
         return type;
