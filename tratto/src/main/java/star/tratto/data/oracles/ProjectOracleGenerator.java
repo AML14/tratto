@@ -10,6 +10,7 @@ import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleType;
 import star.tratto.data.JPClassNotFoundException;
 import star.tratto.data.records.ClassTokens;
+import star.tratto.data.records.MethodTokens;
 import star.tratto.util.StringUtils;
 import star.tratto.util.javaparser.DatasetUtils;
 import star.tratto.util.javaparser.TypeUtils;
@@ -34,7 +35,7 @@ public class ProjectOracleGenerator {
     private Project project;
     private List<JDoctorCondition> jDoctorConditions;
     private List<ClassTokens> projectClassesTokens;
-    private List<Quartet<String, String, String, String>> projectMethodsTokens;
+    private List<MethodTokens> projectMethodsTokens;
     private List<Quartet<String, String, String, String>> projectAttributesTokens;
     private List<Sextet<String, TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> projectTagsTokens;
 

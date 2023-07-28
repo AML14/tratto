@@ -8,6 +8,7 @@ import star.tratto.data.IOPath;
 import star.tratto.data.records.ClassTokens;
 import star.tratto.data.records.JavadocValueTokens;
 import star.tratto.data.records.MethodArgumentTokens;
+import star.tratto.data.records.MethodTokens;
 import star.tratto.util.FileUtils;
 
 import java.nio.file.Path;
@@ -186,7 +187,7 @@ public class OracleDatapointBuilder {
         this.datapoint.setTokensProjectClasses(tokensProjectClasses);
     }
 
-    public void setTokensProjectClassesNonPrivateStaticNonVoidMethods(List<Quartet<String, String, String, String>> tokensProjectClassesNonPrivateStaticNonVoidMethods) {
+    public void setTokensProjectClassesNonPrivateStaticNonVoidMethods(List<MethodTokens> tokensProjectClassesNonPrivateStaticNonVoidMethods) {
         this.datapoint.setTokensProjectClassesNonPrivateStaticNonVoidMethods(tokensProjectClassesNonPrivateStaticNonVoidMethods);
     }
 
@@ -202,7 +203,7 @@ public class OracleDatapointBuilder {
         this.datapoint.setTokensMethodArguments(tokensMethodArguments);
     }
 
-    public void setTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(List<Quartet<String, String, String, String>> tokensMethodVariablesNonPrivateNonStaticNonVoidMethods) {
+    public void setTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(List<MethodTokens> tokensMethodVariablesNonPrivateNonStaticNonVoidMethods) {
         this.datapoint.setTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(tokensMethodVariablesNonPrivateNonStaticNonVoidMethods);
     }
 
@@ -210,7 +211,7 @@ public class OracleDatapointBuilder {
         this.datapoint.setTokensMethodVariablesNonPrivateNonStaticAttributes(tokensMethodVariablesNonPrivateNonStaticAttributes);
     }
 
-    public void setTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(List<Quartet<String, String, String, String>> tokensOracleVariablesNonPrivateNonStaticNonVoidMethods) {
+    public void setTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(List<MethodTokens> tokensOracleVariablesNonPrivateNonStaticNonVoidMethods) {
         this.datapoint.setTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(tokensOracleVariablesNonPrivateNonStaticNonVoidMethods);
     }
 

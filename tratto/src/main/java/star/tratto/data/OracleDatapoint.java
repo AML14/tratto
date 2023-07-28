@@ -5,6 +5,7 @@ import org.javatuples.Quartet;
 import star.tratto.data.records.ClassTokens;
 import star.tratto.data.records.JavadocValueTokens;
 import star.tratto.data.records.MethodArgumentTokens;
+import star.tratto.data.records.MethodTokens;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -32,7 +33,7 @@ public class OracleDatapoint {
     /** A list of pairs (token, package). */
     private List<ClassTokens> tokensProjectClasses;
     /** A list of quadruples (token, package, class, signature). */
-    private List<Quartet<String, String, String, String>> tokensProjectClassesNonPrivateStaticNonVoidMethods;
+    private List<MethodTokens> tokensProjectClassesNonPrivateStaticNonVoidMethods;
     /** A list of quadruples (token, package, class, declaration). */
     private List<Quartet<String, String, String, String>> tokensProjectClassesNonPrivateStaticAttributes;
     /** A list of pairs (token, type). */
@@ -40,11 +41,11 @@ public class OracleDatapoint {
     /** A list of triples (token, package, class). */
     private List<MethodArgumentTokens> tokensMethodArguments;
     /** A list of quadruples (token, package, class, signature). */
-    private List<Quartet<String, String, String, String>> tokensMethodVariablesNonPrivateNonStaticNonVoidMethods;
+    private List<MethodTokens> tokensMethodVariablesNonPrivateNonStaticNonVoidMethods;
     /** A list of quadruples (token, package, class, declaration). */
     private List<Quartet<String, String, String, String>> tokensMethodVariablesNonPrivateNonStaticAttributes;
     /** A list of quadruples (token, package, class, signature). */
-    private List<Quartet<String, String, String, String>> tokensOracleVariablesNonPrivateNonStaticNonVoidMethods;
+    private List<MethodTokens> tokensOracleVariablesNonPrivateNonStaticNonVoidMethods;
     /** A list of quadruples (token, package, class, declaration). */
     private List<Quartet<String, String, String, String>> tokensOracleVariablesNonPrivateNonStaticAttributes;
 
@@ -63,13 +64,13 @@ public class OracleDatapoint {
         this.tokensGeneralGrammar = (List<String>) oracleDatapointMap.get("tokensGeneralGrammar");
         this.tokensGeneralValuesGlobalDictionary = ((List<List<String>>) oracleDatapointMap.get("tokensGeneralValuesGlobalDictionary")).stream().map(Pair::fromCollection).toList();
         this.tokensProjectClasses = ((List<List<String>>) oracleDatapointMap.get("tokensProjectClasses")).stream().map(ClassTokens::new).toList();
-        this.tokensProjectClassesNonPrivateStaticNonVoidMethods = ((List<List<String>>) oracleDatapointMap.get("tokensProjectClassesNonPrivateStaticNonVoidMethods")).stream().map(Quartet::fromCollection).toList();
+        this.tokensProjectClassesNonPrivateStaticNonVoidMethods = ((List<List<String>>) oracleDatapointMap.get("tokensProjectClassesNonPrivateStaticNonVoidMethods")).stream().map(MethodTokens::new).toList();
         this.tokensProjectClassesNonPrivateStaticAttributes = ((List<List<String>>) oracleDatapointMap.get("tokensProjectClassesNonPrivateStaticAttributes")).stream().map(Quartet::fromCollection).toList();
         this.tokensMethodJavadocValues = ((List<List<String>>) oracleDatapointMap.get("tokensMethodJavadocValues")).stream().map(JavadocValueTokens::new).toList();
         this.tokensMethodArguments = ((List<List<String>>) oracleDatapointMap.get("tokensMethodArguments")).stream().map(MethodArgumentTokens::new).toList();
-        this.tokensMethodVariablesNonPrivateNonStaticNonVoidMethods = ((List<List<String>>) oracleDatapointMap.get("tokensMethodVariablesNonPrivateNonStaticNonVoidMethods")).stream().map(Quartet::fromCollection).toList();
+        this.tokensMethodVariablesNonPrivateNonStaticNonVoidMethods = ((List<List<String>>) oracleDatapointMap.get("tokensMethodVariablesNonPrivateNonStaticNonVoidMethods")).stream().map(MethodTokens::new).toList();
         this.tokensMethodVariablesNonPrivateNonStaticAttributes = ((List<List<String>>) oracleDatapointMap.get("tokensMethodVariablesNonPrivateNonStaticAttributes")).stream().map(Quartet::fromCollection).toList();
-        this.tokensOracleVariablesNonPrivateNonStaticNonVoidMethods = ((List<List<String>>) oracleDatapointMap.get("tokensOracleVariablesNonPrivateNonStaticNonVoidMethods")).stream().map(Quartet::fromCollection).toList();
+        this.tokensOracleVariablesNonPrivateNonStaticNonVoidMethods = ((List<List<String>>) oracleDatapointMap.get("tokensOracleVariablesNonPrivateNonStaticNonVoidMethods")).stream().map(MethodTokens::new).toList();
         this.tokensOracleVariablesNonPrivateNonStaticAttributes = ((List<List<String>>) oracleDatapointMap.get("tokensOracleVariablesNonPrivateNonStaticAttributes")).stream().map(Quartet::fromCollection).toList();
     }
 
@@ -88,13 +89,13 @@ public class OracleDatapoint {
             List<String> tokensGeneralGrammar,
             List<Pair<String, String>> tokensGeneralValuesGlobalDictionary,
             List<ClassTokens> tokensProjectClasses,
-            List<Quartet<String, String, String, String>> tokensProjectClassesNonPrivateStaticNonVoidMethods,
+            List<MethodTokens> tokensProjectClassesNonPrivateStaticNonVoidMethods,
             List<Quartet<String, String, String, String>> tokensProjectClassesNonPrivateStaticAttributes,
             List<JavadocValueTokens> tokensMethodJavadocValues,
             List<MethodArgumentTokens> tokensMethodArguments,
-            List<Quartet<String, String, String, String>> tokensMethodVariablesNonPrivateNonStaticNonVoidMethods,
+            List<MethodTokens> tokensMethodVariablesNonPrivateNonStaticNonVoidMethods,
             List<Quartet<String, String, String, String>> tokensMethodVariablesNonPrivateNonStaticAttributes,
-            List<Quartet<String, String, String, String>> tokensOracleVariablesNonPrivateNonStaticNonVoidMethods,
+            List<MethodTokens> tokensOracleVariablesNonPrivateNonStaticNonVoidMethods,
             List<Quartet<String, String, String, String>> tokensOracleVariablesNonPrivateNonStaticAttributes
     ) {
         this.id = id;
@@ -142,13 +143,13 @@ public class OracleDatapoint {
         oracleDatapointMap.put("tokensGeneralGrammar", tokensGeneralGrammar);
         oracleDatapointMap.put("tokensGeneralValuesGlobalDictionary", tokensGeneralValuesGlobalDictionary.stream().map(Pair::toList).collect(Collectors.toList()));
         oracleDatapointMap.put("tokensProjectClasses", tokensProjectClasses.stream().map(ClassTokens::toList).collect(Collectors.toList()));
-        oracleDatapointMap.put("tokensProjectClassesNonPrivateStaticNonVoidMethods", tokensProjectClassesNonPrivateStaticNonVoidMethods.stream().map(Quartet::toList).collect(Collectors.toList()));
+        oracleDatapointMap.put("tokensProjectClassesNonPrivateStaticNonVoidMethods", tokensProjectClassesNonPrivateStaticNonVoidMethods.stream().map(MethodTokens::toList).collect(Collectors.toList()));
         oracleDatapointMap.put("tokensProjectClassesNonPrivateStaticAttributes", tokensProjectClassesNonPrivateStaticAttributes.stream().map(Quartet::toList).collect(Collectors.toList()));
         oracleDatapointMap.put("tokensMethodJavadocValues", tokensMethodJavadocValues.stream().map(JavadocValueTokens::toList).collect(Collectors.toList()));
         oracleDatapointMap.put("tokensMethodArguments", tokensMethodArguments.stream().map(MethodArgumentTokens::toList).collect(Collectors.toList()));
-        oracleDatapointMap.put("tokensMethodVariablesNonPrivateNonStaticNonVoidMethods", tokensMethodVariablesNonPrivateNonStaticNonVoidMethods.stream().map(Quartet::toList).collect(Collectors.toList()));
+        oracleDatapointMap.put("tokensMethodVariablesNonPrivateNonStaticNonVoidMethods", tokensMethodVariablesNonPrivateNonStaticNonVoidMethods.stream().map(MethodTokens::toList).collect(Collectors.toList()));
         oracleDatapointMap.put("tokensMethodVariablesNonPrivateNonStaticAttributes", tokensMethodVariablesNonPrivateNonStaticAttributes.stream().map(Quartet::toList).collect(Collectors.toList()));
-        oracleDatapointMap.put("tokensOracleVariablesNonPrivateNonStaticNonVoidMethods", tokensOracleVariablesNonPrivateNonStaticNonVoidMethods.stream().map(Quartet::toList).collect(Collectors.toList()));
+        oracleDatapointMap.put("tokensOracleVariablesNonPrivateNonStaticNonVoidMethods", tokensOracleVariablesNonPrivateNonStaticNonVoidMethods.stream().map(MethodTokens::toList).collect(Collectors.toList()));
         oracleDatapointMap.put("tokensOracleVariablesNonPrivateNonStaticAttributes", tokensOracleVariablesNonPrivateNonStaticAttributes.stream().map(Quartet::toList).collect(Collectors.toList()));
         return oracleDatapointMap;
     }
@@ -272,11 +273,11 @@ public class OracleDatapoint {
         this.tokensProjectClasses = tokensProjectClasses;
     }
 
-    public List<Quartet<String, String, String, String>> getTokensProjectClassesNonPrivateStaticNonVoidMethods() {
+    public List<MethodTokens> getTokensProjectClassesNonPrivateStaticNonVoidMethods() {
         return tokensProjectClassesNonPrivateStaticNonVoidMethods;
     }
 
-    public void setTokensProjectClassesNonPrivateStaticNonVoidMethods(List<Quartet<String, String, String, String>> tokensProjectClassesNonPrivateStaticNonVoidMethods) {
+    public void setTokensProjectClassesNonPrivateStaticNonVoidMethods(List<MethodTokens> tokensProjectClassesNonPrivateStaticNonVoidMethods) {
         this.tokensProjectClassesNonPrivateStaticNonVoidMethods = tokensProjectClassesNonPrivateStaticNonVoidMethods;
     }
 
@@ -304,11 +305,11 @@ public class OracleDatapoint {
         this.tokensMethodArguments = tokensMethodArguments;
     }
 
-    public List<Quartet<String, String, String, String>> getTokensMethodVariablesNonPrivateNonStaticNonVoidMethods() {
+    public List<MethodTokens> getTokensMethodVariablesNonPrivateNonStaticNonVoidMethods() {
         return tokensMethodVariablesNonPrivateNonStaticNonVoidMethods;
     }
 
-    public void setTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(List<Quartet<String, String, String, String>> tokensMethodVariablesNonPrivateNonStaticNonVoidMethods) {
+    public void setTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(List<MethodTokens> tokensMethodVariablesNonPrivateNonStaticNonVoidMethods) {
         this.tokensMethodVariablesNonPrivateNonStaticNonVoidMethods = tokensMethodVariablesNonPrivateNonStaticNonVoidMethods;
     }
 
@@ -320,11 +321,11 @@ public class OracleDatapoint {
         this.tokensMethodVariablesNonPrivateNonStaticAttributes = tokensMethodVariablesNonPrivateNonStaticAttributes;
     }
 
-    public List<Quartet<String, String, String, String>> getTokensOracleVariablesNonPrivateNonStaticNonVoidMethods() {
+    public List<MethodTokens> getTokensOracleVariablesNonPrivateNonStaticNonVoidMethods() {
         return tokensOracleVariablesNonPrivateNonStaticNonVoidMethods;
     }
 
-    public void setTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(List<Quartet<String, String, String, String>> tokensOracleVariablesNonPrivateNonStaticNonVoidMethods) {
+    public void setTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(List<MethodTokens> tokensOracleVariablesNonPrivateNonStaticNonVoidMethods) {
         this.tokensOracleVariablesNonPrivateNonStaticNonVoidMethods = tokensOracleVariablesNonPrivateNonStaticNonVoidMethods;
     }
 

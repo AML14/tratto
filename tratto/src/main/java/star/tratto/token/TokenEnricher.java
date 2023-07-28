@@ -162,8 +162,8 @@ public class TokenEnricher {
         // Get static methods of class
         enrichedTokensPlusInfo.addAll(oracleDatapoint.getTokensProjectClassesNonPrivateStaticNonVoidMethods()
                 .stream()
-                .filter(quartet -> quartet.getValue2().equals(previousToken))
-                .map(quartet -> Triplet.with(quartet.getValue0(), "MethodName", List.of(quartet.getValue1(), quartet.getValue2(), quartet.getValue3())))
+                .filter(quartet -> quartet.className().equals(previousToken))
+                .map(quartet -> Triplet.with(quartet.methodName(), "MethodName", List.of(quartet.packageName(), quartet.className(), quartet.methodSignature())))
                 .collect(Collectors.toList())
         );
 
@@ -220,13 +220,13 @@ public class TokenEnricher {
         // Get non-static methods of class, including those whose this class is instance of
         enrichedTokensPlusInfo.addAll(oracleDatapoint.getTokensMethodVariablesNonPrivateNonStaticNonVoidMethods() // Methods applicable to this, methodResultID and method arguments
                 .stream()
-                .filter(quartet -> isInstanceOf(fullyQualifiedClassName(precedingExprReturnType.getValue0(), precedingExprReturnType.getValue1()), fullyQualifiedClassName(quartet.getValue1(), quartet.getValue2()), oracleDatapoint))
-                .map(quartet -> Triplet.with(quartet.getValue0(), "MethodName", List.of(quartet.getValue1(), quartet.getValue2(), quartet.getValue3())))
+                .filter(quartet -> isInstanceOf(fullyQualifiedClassName(precedingExprReturnType.getValue0(), precedingExprReturnType.getValue1()), fullyQualifiedClassName(quartet.packageName(), quartet.className()), oracleDatapoint))
+                .map(quartet -> Triplet.with(quartet.methodName(), "MethodName", List.of(quartet.packageName(), quartet.className(), quartet.methodSignature())))
                 .collect(Collectors.toList()));
         enrichedTokensPlusInfo.addAll(oracleDatapoint.getTokensOracleVariablesNonPrivateNonStaticNonVoidMethods() // Methods applicable to elements of the oracle
                 .stream()
-                .filter(quartet -> isInstanceOf(fullyQualifiedClassName(precedingExprReturnType.getValue0(), precedingExprReturnType.getValue1()), fullyQualifiedClassName(quartet.getValue1(), quartet.getValue2()), oracleDatapoint))
-                .map(quartet -> Triplet.with(quartet.getValue0(), "MethodName", List.of(quartet.getValue1(), quartet.getValue2(), quartet.getValue3())))
+                .filter(quartet -> isInstanceOf(fullyQualifiedClassName(precedingExprReturnType.getValue0(), precedingExprReturnType.getValue1()), fullyQualifiedClassName(quartet.packageName(), quartet.className()), oracleDatapoint))
+                .map(quartet -> Triplet.with(quartet.methodName(), "MethodName", List.of(quartet.packageName(), quartet.className(), quartet.methodSignature())))
                 .collect(Collectors.toList()));
 
         return enrichedTokensPlusInfo.stream().distinct().collect(Collectors.toList()); // Possible duplicates among "variables" and "oracle" columns

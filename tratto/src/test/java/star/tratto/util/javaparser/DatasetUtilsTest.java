@@ -6,16 +6,15 @@ import com.github.javaparser.ast.body.CallableDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.TypeDeclaration;
-import org.javatuples.Pair;
 import org.javatuples.Quartet;
 import org.javatuples.Sextet;
-import org.javatuples.Triplet;
 import org.junit.jupiter.api.Test;
 import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleType;
 import star.tratto.data.JPClassNotFoundException;
 import star.tratto.data.records.JavadocValueTokens;
 import star.tratto.data.records.MethodArgumentTokens;
+import star.tratto.data.records.MethodTokens;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -114,7 +113,7 @@ public class DatasetUtilsTest {
         assertNotNull(jpCallable);
         Parameter jpParam = jpCallable.getParameters().get(0);
         assertEquals(jpParam.getType().asString(), "DerivativeStructure");
-        List<Quartet<String, String, String, String>> actualList = getMethodsFromType(jpParam.getType().resolve());
+        List<MethodTokens> actualList = getMethodsFromType(jpParam.getType().resolve());
         List<String> possiblePackageNames = List.of(
                 "org.apache.commons.math3.analysis.differentiation",
                 "java.lang",
@@ -126,13 +125,13 @@ public class DatasetUtilsTest {
                 "RealFieldElement",
                 "FieldElement"
         );
-        for (Quartet<String, String, String, String> method : actualList) {
+        for (MethodTokens method : actualList) {
             // assert package name and class name are within valid possibilities.
-            assertTrue(possiblePackageNames.contains(method.getValue1()));
-            assertTrue(possibleClassNames.contains(method.getValue2()));
+            assertTrue(possiblePackageNames.contains(method.packageName()));
+            assertTrue(possibleClassNames.contains(method.className()));
             // assert methods are not private and not static.
-            assertFalse(method.getValue3().contains("private"));
-            assertFalse(method.getValue3().contains("static"));
+            assertFalse(method.methodSignature().contains("private"));
+            assertFalse(method.methodSignature().contains("static"));
         }
     }
 
@@ -199,7 +198,7 @@ public class DatasetUtilsTest {
         CallableDeclaration<?> jpCallable = getCallableDeclaration(jpClass, methodName, methodArgs);
         assertNotNull(jpCallable);
         try {
-            List<Quartet<String, String, String, String>> actualList = getTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(
+            List<MethodTokens> actualList = getTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(
                     jpClass,
                     jpCallable
             );
@@ -221,13 +220,13 @@ public class DatasetUtilsTest {
                     "FieldElement",
                     "Object"
             );
-            for (Quartet<String, String, String, String> method : actualList) {
+            for (MethodTokens method : actualList) {
                 // assert package name and class name are within valid possibilities.
-                assertTrue(possiblePackageNames.contains(method.getValue1()));
-                assertTrue(possibleClassNames.contains(method.getValue2()));
+                assertTrue(possiblePackageNames.contains(method.packageName()));
+                assertTrue(possibleClassNames.contains(method.className()));
                 // assert methods are not private and not static.
-                assertFalse(method.getValue3().contains("private"));
-                assertFalse(method.getValue3().contains("static"));
+                assertFalse(method.methodSignature().contains("private"));
+                assertFalse(method.methodSignature().contains("static"));
             }
         } catch (JPClassNotFoundException e) {
             fail();
@@ -261,7 +260,7 @@ public class DatasetUtilsTest {
         List<String> methodArgs = List.of("DerivativeStructure");
         CallableDeclaration<?> jpCallable = getCallableDeclaration(jpClass, methodName, methodArgs);
         assertNotNull(jpCallable);
-        List<Quartet<String, String, String, String>> actualList = DatasetUtils.getTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(
+        List<MethodTokens> actualList = DatasetUtils.getTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(
                 jpClass,
                 jpCallable,
                 oracleDatapoint.getTokensMethodArguments(),
@@ -275,13 +274,13 @@ public class DatasetUtilsTest {
                 "Object",
                 "double[]"
         );
-        for (Quartet<String, String, String, String> method : actualList) {
+        for (MethodTokens method : actualList) {
             // assert package name and class name are within valid possibilities.
-            assertTrue(possiblePackageNames.contains(method.getValue1()));
-            assertTrue(possibleClassNames.contains(method.getValue2()));
+            assertTrue(possiblePackageNames.contains(method.packageName()));
+            assertTrue(possibleClassNames.contains(method.className()));
             // assert methods are not private and not static.
-            assertFalse(method.getValue3().contains("private"));
-            assertFalse(method.getValue3().contains("static"));
+            assertFalse(method.methodSignature().contains("private"));
+            assertFalse(method.methodSignature().contains("static"));
         }
     }
 

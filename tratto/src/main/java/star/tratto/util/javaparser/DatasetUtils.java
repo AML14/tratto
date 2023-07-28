@@ -27,6 +27,7 @@ import star.tratto.data.TrattoPath;
 import star.tratto.data.records.ClassTokens;
 import star.tratto.data.records.JavadocValueTokens;
 import star.tratto.data.records.MethodArgumentTokens;
+import star.tratto.data.records.MethodTokens;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.oraclegrammar.custom.Splitter;
 import star.tratto.util.FileUtils;
@@ -375,10 +376,10 @@ public class DatasetUtils {
      * @throws PackageDeclarationNotFoundException if the package
      * {@link PackageDeclaration} of the compilation unit is not found
      */
-    private static List<Quartet<String, String, String, String>> getNonPrivateStaticNonVoidMethods(
+    private static List<MethodTokens> getNonPrivateStaticNonVoidMethods(
             CompilationUnit cu
     ) throws PackageDeclarationNotFoundException {
-        List<Quartet<String, String, String, String>> methodList = new ArrayList<>();
+        List<MethodTokens> methodList = new ArrayList<>();
         // get package name.
         String packageName = JavaParserUtils.getPackageDeclarationFromCompilationUnit(cu).getNameAsString();
         // iterate over each class in the compilation unit.
@@ -388,7 +389,7 @@ public class DatasetUtils {
             List<MethodDeclaration> jpMethods = jpClass.findAll(MethodDeclaration.class);
             for (MethodDeclaration jpMethod : jpMethods) {
                 if (!jpMethod.isPrivate() && jpMethod.isStatic() && !jpMethod.getType().isVoidType()) {
-                    methodList.add(Quartet.with(
+                    methodList.add(new MethodTokens(
                             jpMethod.getNameAsString(),
                             packageName,
                             className,
@@ -559,10 +560,10 @@ public class DatasetUtils {
      * form:
      *  [methodName, packageName, className, methodSignature]
      */
-    public static List<Quartet<String, String, String, String>> getProjectNonPrivateStaticNonVoidMethodsTokens(
+    public static List<MethodTokens> getProjectNonPrivateStaticNonVoidMethodsTokens(
             String sourcePath
     ) {
-        List<Quartet<String, String, String, String>> projectMethods = new ArrayList<>();
+        List<MethodTokens> projectMethods = new ArrayList<>();
         List<Path> javaFiles = getValidJavaFiles(sourcePath);
         // iterate through each file and add method tokens.
         for (Path javaFile : javaFiles) {
@@ -647,12 +648,12 @@ public class DatasetUtils {
      * generic type parameters, return type, method signature, parameters,
      * and exceptions (unless otherwise un-recoverable).
      */
-    private static List<Quartet<String, String, String, String>> convertMethodUsageToQuartet(
+    private static List<MethodTokens> convertMethodUsageToQuartet(
             List<MethodUsage> jpMethods
     ) {
         return new ArrayList<>(jpMethods)
                 .stream()
-                .map(jpMethod -> Quartet.with(
+                .map(jpMethod -> new MethodTokens(
                         jpMethod.getName(),
                         jpMethod.declaringType().getPackageName(),
                         jpMethod.declaringType().getClassName(),
@@ -671,10 +672,10 @@ public class DatasetUtils {
      * form:
      *  [methodName, packageName, className, methodSignature]
      */
-    public static List<Quartet<String, String, String, String>> getMethodsFromType(
+    public static List<MethodTokens> getMethodsFromType(
             ResolvedType jpResolvedType
     ) {
-        List<Quartet<String, String, String, String>> methodList = new ArrayList<>();
+        List<MethodTokens> methodList = new ArrayList<>();
         if (jpResolvedType.isArray()) {
             // array type (see dataset/repose/array_methods.json).
             List<List<String>> arrayMethods;
@@ -687,7 +688,7 @@ public class DatasetUtils {
                     .toList();
             methodList.addAll(arrayMethods
                     .stream()
-                    .map(m -> Quartet.with(m.get(0), "", jpResolvedType.describe(), m.get(1)))
+                    .map(m -> new MethodTokens(m.get(0), "", jpResolvedType.describe(), m.get(1)))
                     .toList());
         } else if (JavaParserUtils.isTypeParameter(jpResolvedType)) {
             // generic type.
@@ -714,7 +715,7 @@ public class DatasetUtils {
      * an empty list if an error occurs. See public "getMethodsFromType()"
      * method above for further detail.
      */
-    private static List<Quartet<String, String, String, String>> getMethodsFromType(
+    private static List<MethodTokens> getMethodsFromType(
             Type jpType
     ) {
         try {
@@ -906,7 +907,7 @@ public class DatasetUtils {
      * @throws JPClassNotFoundException if the declaring class is not
      * resolvable
      */
-    public static List<Quartet<String, String, String, String>> getTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(
+    public static List<MethodTokens> getTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(
             TypeDeclaration<?> jpClass,
             CallableDeclaration<?> jpCallable
     ) throws JPClassNotFoundException {
@@ -915,7 +916,7 @@ public class DatasetUtils {
                 .stream()
                 .filter(JavaParserUtils::isNonPrivateNonStaticNonVoidMethod)
                 .toList();
-        List<Quartet<String, String, String, String>> methodList = new ArrayList<>(convertMethodUsageToQuartet(allReceiverMethods));
+        List<MethodTokens> methodList = new ArrayList<>(convertMethodUsageToQuartet(allReceiverMethods));
         // add all methods of parameters.
         for (Parameter jpParam : jpCallable.getParameters()) {
             methodList.addAll(getMethodsFromType(jpParam.getType()));
@@ -984,13 +985,13 @@ public class DatasetUtils {
      * form:
      *  [methodName, packageName, className, methodSignature]
      */
-    public static List<Quartet<String, String, String, String>> getTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(
+    public static List<MethodTokens> getTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(
             TypeDeclaration<?> jpClass,
             CallableDeclaration<?> jpCallable,
             List<MethodArgumentTokens> methodArgs,
             String oracle
     ) {
-        List<Quartet<String, String, String, String>> methodList = new ArrayList<>();
+        List<MethodTokens> methodList = new ArrayList<>();
         List<LinkedList<String>> oracleSubExpressions = Parser.getInstance().getAllMethodsAndAttributes(oracle)
                 .stream()
                 .map(e -> new LinkedList<>(Splitter.split(e)))

@@ -12,8 +12,6 @@ import java.util.List;
  * @param typeName the name of the corresponding type
  */
 public record MethodArgumentTokens(String argumentName, String packageName, String typeName) {
-
-
     // Non-canonical constructor using List to read from file
     public MethodArgumentTokens(List<String> tokens) {
         this(tokens.get(0), tokens.get(1), tokens.get(2));
