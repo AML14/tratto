@@ -90,6 +90,20 @@ public class JavaParserUtils {
     }
 
     /**
+     * @return a "java.lang.Object" type
+     */
+    public static ResolvedType getObjectType() {
+        return javaParser.parse(SYNTHETIC_CLASS_SOURCE).getResult().orElseThrow()
+                .getLocalDeclarationFromClassname(SYNTHETIC_CLASS_NAME).get(0)
+                .addMethod(SYNTHETIC_METHOD_NAME).getBody().orElseThrow()
+                .addStatement("java.lang.Object objectVar;")
+                .getStatements().getLast().orElseThrow()
+                .asExpressionStmt().getExpression()
+                .asVariableDeclarationExpr().getVariables().get(0)
+                .resolve().getType();
+    }
+
+    /**
      * Injects a synthetic method into a class given a method under test,
      * including:
      *  - variable declaration for each method argument
@@ -533,20 +547,6 @@ public class JavaParserUtils {
             logger.warn("Failed to evaluate instanceof within method. Expression: \"type1Var instanceof {}\". Method: {}", type2, syntheticMethodBody.getParentNode().get());
             return false;
         }
-    }
-
-    /**
-     * @return a "java.lang.Object" type
-     */
-    public static ResolvedType getObjectType() {
-        return javaParser.parse(SYNTHETIC_CLASS_SOURCE).getResult().get()
-                .getLocalDeclarationFromClassname(SYNTHETIC_CLASS_NAME).get(0)
-                .addMethod(SYNTHETIC_METHOD_NAME).getBody().get()
-                .addStatement("java.lang.Object objectVar;")
-                .getStatements().getLast().get()
-                .asExpressionStmt().getExpression()
-                .asVariableDeclarationExpr().getVariables().get(0)
-                .resolve().getType();
     }
 
     private static ResolvedType tryToGetResolvedType(String type2) {
