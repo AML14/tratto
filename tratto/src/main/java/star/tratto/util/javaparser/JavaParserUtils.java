@@ -115,7 +115,7 @@ public class JavaParserUtils {
         // create synthetic method
         BlockStmt methodBody = jpClass.addMethod(SYNTHETIC_METHOD_NAME).getBody()
                 .orElseThrow(() -> new NoSuchElementException("Unable to retrieve synthetic method body."));
-        // add method arguments as variable statements in method body
+        // add method arguments as variable statements in method body (e.g. "ArgType argName;")
         for (Triplet<String, String, String> methodArg : methodArgs) {
             methodBody.addStatement(methodArg.getValue2() + " " + methodArg.getValue0() + ";");
         }
