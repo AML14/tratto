@@ -110,13 +110,7 @@ public class JavaParserUtils {
     ) throws ResolvedTypeNotFound {
         // throw error when given a constructor due to JavaParser behavior differences
         if (jpCallable.getNameAsString().equals(jpClass.getNameAsString())) {
-            throw new ResolvedTypeNotFound(String.format(
-                    "ResolvedType of expression %s of class %s and constructor %s not found." +
-                    "Unable to generate synthetic constructors.",
-                    expression,
-                    jpClass.getNameAsString(),
-                    jpCallable.getNameAsString()
-            ));
+            throw new ResolvedTypeNotFound("Unable to generate synthetic constructor for class " + jpClass.getNameAsString());
         }
         // create synthetic method
         BlockStmt methodBody = jpClass.addMethod(SYNTHETIC_METHOD_NAME).getBody()
@@ -143,15 +137,18 @@ public class JavaParserUtils {
 
     /**
      * Gets the type of the given java expression. For example, given the
-     * expression "jpClass.getMethods().get(0)", this method outputs,
-     * "ResolvedMethodDeclaration".
+     * expression, {@code Integer.MAX_VALUE - Integer.MIN_VALUE}, the method
+     * returns a JavaParser representation of the type {@code int}.
      *
      * @param jpClass the declaring class
-     * @param jpCallable the method in which the type is used
-     * @param methodArgs the arguments of the method
-     * @param expression a Java expression (e.g. "jpClass.getMethods()")
-     * @return the resolved type of the expression
-     * @throws ResolvedTypeNotFound if the type is not found
+     * @param jpCallable the method under analysis
+     * @param methodArgs the arguments in the method under analysis
+     * @param expression a Java expression
+     * @return the resolved return type of the expression
+     * @throws ResolvedTypeNotFound if {@code jpClass} is not a class/interface
+     * or if {@code jpCallable} is a constructor
+     * @throws NoSuchElementException if an error occurs while parsing the
+     * expression
      */
     public static ResolvedType getResolvedTypeOfExpression(
             TypeDeclaration<?> jpClass,
@@ -166,6 +163,7 @@ public class JavaParserUtils {
                     methodArgs,
                     expression
             );
+            // find expression in synthetic method and resolve return type
             return jpClass.asClassOrInterfaceDeclaration()
                     .getMethodsByName(SYNTHETIC_METHOD_NAME).get(0)
                     .getBody().orElseThrow()
