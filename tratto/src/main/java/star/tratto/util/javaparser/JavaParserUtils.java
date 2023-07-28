@@ -120,7 +120,7 @@ public class JavaParserUtils {
         }
         // create synthetic method
         BlockStmt methodBody = jpClass.addMethod(SYNTHETIC_METHOD_NAME).getBody()
-                .orElseThrow(() -> new NoSuchElementException("Unable to resolve synthetic method body."));
+                .orElseThrow(() -> new NoSuchElementException("Unable to retrieve synthetic method body."));
         // add method arguments as variable statements in method body
         for (Triplet<String, String, String> methodArg : methodArgs) {
             methodBody.addStatement(methodArg.getValue2() + " " + methodArg.getValue0() + ";");
@@ -168,11 +168,11 @@ public class JavaParserUtils {
             );
             return jpClass.asClassOrInterfaceDeclaration()
                     .getMethodsByName(SYNTHETIC_METHOD_NAME).get(0)
-                    .getBody().get()
-                    .getStatements().getLast().get()
+                    .getBody().orElseThrow()
+                    .getStatements().getLast().orElseThrow()
                     .asExpressionStmt().getExpression()
                     .asVariableDeclarationExpr().getVariables().get(0)
-                    .getInitializer().get()
+                    .getInitializer().orElseThrow()
                     .calculateResolvedType();
         }
         throw new ResolvedTypeNotFound(String.format(
