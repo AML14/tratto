@@ -54,7 +54,7 @@ public class JavaParserUtilsTest {
     }
 
     @Test
-    public void getResolvedTypeOfExpressionPrimitiveObject() {
+    public void getResolvedTypeOfExpressionObjectTest() {
         OracleDatapoint oracleDatapoint = oracleDatapoints.get(1);
         TypeDeclaration<?> jpClass = getClassOrInterface(oracleDatapoint.getClassSourceCode(), oracleDatapoint.getClassName());
         CallableDeclaration<?> jpCallable = getMethodDeclaration(oracleDatapoint.getMethodSourceCode());
