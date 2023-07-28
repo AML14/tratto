@@ -611,15 +611,16 @@ public class JavaParserUtils {
     }
 
     /**
-     * Returns the signature of a JavaParser variable declarator.
+     * Returns the String variable declaration represented by a JavaParser
+     * VariableDeclarator.
      *
-     * @param field the JP field declaration
-     * @param variable the JP variable declaration
-     * @return a string representation of the signature of {@code variable}.
-     * Signature follows the format:
+     * @param field the JavaParser field declaration
+     * @param variable the JavaParser variable declaration
+     * @return a string representation of the declaration of {@code variable}.
+     * The declaration follows the format:
      *  "(modifiers) (type) (name)( = initial value);"
      */
-    public static String getVariableSignature(FieldDeclaration field, VariableDeclarator variable) {
+    public static String getVariableDeclaration(FieldDeclaration field, VariableDeclarator variable) {
         return (String.join("", field.getModifiers().stream().map(Node::toString).toList()) +
                 variable.getTypeAsString() + " " +
                 variable.getNameAsString() +

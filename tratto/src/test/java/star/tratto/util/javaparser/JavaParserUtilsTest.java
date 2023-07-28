@@ -316,7 +316,7 @@ public class JavaParserUtilsTest {
         TypeDeclaration<?> jpClass = getClassOrInterface(oracleDatapoint.getClassSourceCode(), oracleDatapoint.getClassName());
         FieldDeclaration jpField = jpClass.getFields().get(0);
         VariableDeclarator jpVariable = jpField.getVariable(0);
-        String variableSignature = getVariableSignature(jpField, jpVariable);
+        String variableSignature = getVariableDeclaration(jpField, jpVariable);
         assertEquals("private static final long serialVersionUID = -7726511984200295583L;", variableSignature);
     }
 

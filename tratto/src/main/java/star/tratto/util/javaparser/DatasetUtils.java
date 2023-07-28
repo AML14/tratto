@@ -430,7 +430,7 @@ public class DatasetUtils {
                                 jpVariable.getNameAsString(),
                                 packageName,
                                 className,
-                                JavaParserUtils.getVariableSignature(jpField, jpVariable)
+                                JavaParserUtils.getVariableDeclaration(jpField, jpVariable)
                         ));
                     }
                 }
@@ -737,7 +737,7 @@ public class DatasetUtils {
                     jpVariable.getNameAsString(),
                     resolvedField.declaringType().getPackageName(),
                     resolvedField.declaringType().getClassName(),
-                    JavaParserUtils.getVariableSignature(jpField, jpVariable)
+                    JavaParserUtils.getVariableDeclaration(jpField, jpVariable)
             ));
         }
         return attributeList;
