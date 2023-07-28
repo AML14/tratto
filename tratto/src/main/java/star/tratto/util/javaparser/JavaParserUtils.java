@@ -60,6 +60,7 @@ public class JavaParserUtils {
     private static final Logger logger = LoggerFactory.getLogger(JavaParserUtils.class);
     private static JavaParser javaParser = getJavaParser();
     private static final Parser parser = Parser.getInstance();
+    // artificial source code used to parse arbitrary source code expressions using JavaParser
     private static final String SYNTHETIC_CLASS_NAME = "Tratto__AuxiliaryClass";
     private static final String SYNTHETIC_CLASS_SOURCE = "public class " + SYNTHETIC_CLASS_NAME + " {}";
     private static final String SYNTHETIC_METHOD_NAME = "__tratto__auxiliaryMethod";
@@ -89,6 +90,58 @@ public class JavaParserUtils {
     }
 
     /**
+     * Injects a synthetic method into a class given a method under test,
+     * including:
+     *  - variable declaration for each method argument
+     *  - variable declaration for return type of analyzed method
+     *  - variable declaration (of unknown type) using given expression
+     *
+     * @param jpClass the class in which to insert the synthetic method
+     * @param jpCallable the method being analyzed
+     * @param methodArgs information about the arguments of {@code jpCallable}
+     * @param expression an expression to add at the end of the method
+     * @throws ResolvedTypeNotFound if {@code jpCallable} is a constructor
+     */
+    private static void addSyntheticMethodWithExpression(
+            TypeDeclaration<?> jpClass,
+            CallableDeclaration<?> jpCallable,
+            List<Triplet<String, String, String>> methodArgs,
+            String expression
+    ) throws ResolvedTypeNotFound {
+        // throw error when given a constructor due to JavaParser behavior differences
+        if (jpCallable.getNameAsString().equals(jpClass.getNameAsString())) {
+            throw new ResolvedTypeNotFound(String.format(
+                    "ResolvedType of expression %s of class %s and constructor %s not found." +
+                    "Unable to generate synthetic constructors.",
+                    expression,
+                    jpClass.getNameAsString(),
+                    jpCallable.getNameAsString()
+            ));
+        }
+        // create synthetic method
+        BlockStmt methodBody = jpClass.addMethod(SYNTHETIC_METHOD_NAME).getBody()
+                .orElseThrow(() -> new NoSuchElementException("Unable to resolve synthetic method body."));
+        // add method arguments as variable statements in method body
+        for (Triplet<String, String, String> methodArg : methodArgs) {
+            methodBody.addStatement(methodArg.getValue2() + " " + methodArg.getValue0() + ";");
+        }
+        // add return type (if non-void)
+        String returnType = ((MethodDeclaration) jpCallable).getType().asString();
+        if (!returnType.equals("void")) {
+            methodBody.addStatement(
+                    returnType + " methodResultID = " + jpCallable.getNameAsString() + "(" +
+                            methodArgs
+                                    .stream()
+                                    .map(Triplet::getValue0)
+                                    .collect(Collectors.joining(", "))
+                    + ");"
+            );
+        }
+        // add expression
+        methodBody.addStatement("var returnType = " + expression + ";");
+    }
+
+    /**
      * Gets the type of the given java expression. For example, given the
      * expression "jpClass.getMethods().get(0)", this method outputs,
      * "ResolvedMethodDeclaration".
@@ -106,36 +159,21 @@ public class JavaParserUtils {
             List<Triplet<String, String, String>> methodArgs,
             String expression
     ) throws ResolvedTypeNotFound {
-        String SYNTHETIC_METHOD_NAME = "__tratto__auxiliaryMethod";
         if (jpClass instanceof ClassOrInterfaceDeclaration) {
-            BlockStmt syntheticMethodBody = jpClass.addMethod(SYNTHETIC_METHOD_NAME).getBody().get();
-            // add statement per method argument.
-            for (Triplet<String, String, String> methodArg : methodArgs) {
-                syntheticMethodBody.addStatement(methodArg.getValue2() + " " + methodArg.getValue0() + ";");
-            }
-            // get method declaration.
-            if (!jpCallable.getNameAsString().equals(jpClass.getNameAsString())) {
-                String jpMethodType = ((MethodDeclaration) jpCallable).getType().asString();
-                if (!jpMethodType.equals("void")) {
-                    syntheticMethodBody.addStatement(
-                            jpMethodType + " methodResultID = " + jpCallable.getNameAsString() + "(" +
-                                    methodArgs
-                                            .stream()
-                                            .map(Triplet::getValue0)
-                                            .collect(Collectors.joining(", "))
-                                    + ");"
-                    );
-                }
-                syntheticMethodBody.addStatement("var returnType = " + expression + ";");
-                return jpClass.asClassOrInterfaceDeclaration()
-                        .getMethodsByName(SYNTHETIC_METHOD_NAME).get(0)
-                        .getBody().get()
-                        .getStatements().getLast().get()
-                        .asExpressionStmt().getExpression()
-                        .asVariableDeclarationExpr().getVariables().get(0)
-                        .getInitializer().get()
-                        .calculateResolvedType();
-            }
+            addSyntheticMethodWithExpression(
+                    jpClass,
+                    jpCallable,
+                    methodArgs,
+                    expression
+            );
+            return jpClass.asClassOrInterfaceDeclaration()
+                    .getMethodsByName(SYNTHETIC_METHOD_NAME).get(0)
+                    .getBody().get()
+                    .getStatements().getLast().get()
+                    .asExpressionStmt().getExpression()
+                    .asVariableDeclarationExpr().getVariables().get(0)
+                    .getInitializer().get()
+                    .calculateResolvedType();
         }
         throw new ResolvedTypeNotFound(String.format(
                 "ResolvedType of expression %s of class %s and method %s not found.",
