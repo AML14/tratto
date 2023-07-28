@@ -26,6 +26,7 @@ import star.tratto.data.ResolvedTypeNotFound;
 import star.tratto.data.TrattoPath;
 import star.tratto.data.records.ClassTokens;
 import star.tratto.data.records.JavadocValueTokens;
+import star.tratto.data.records.MethodArgumentTokens;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.oraclegrammar.custom.Splitter;
 import star.tratto.util.FileUtils;
@@ -281,11 +282,11 @@ public class DatasetUtils {
      * where "packageName" refers to the package of the parameter type (empty
      * if the parameter is not a reference type).
      */
-    public static List<Triplet<String, String, String>> getTokensMethodArguments(
+    public static List<MethodArgumentTokens> getTokensMethodArguments(
             TypeDeclaration<?> jpClass,
             CallableDeclaration<?> jpCallable
     ) {
-        List<Triplet<String, String, String>> argumentList = new ArrayList<>();
+        List<MethodArgumentTokens> argumentList = new ArrayList<>();
         List<Parameter> jpParameters = jpCallable.getParameters();
         // iterate through each parameter in the method arguments.
         for (Parameter jpParameter : jpParameters) {
@@ -295,22 +296,22 @@ public class DatasetUtils {
                 try {
                     if (
                             jpParameterType.resolve().isTypeVariable() ||
-                                    jpParameterType.resolve().isPrimitive() ||
-                                    jpParameterType.resolve().isArray()
+                            jpParameterType.resolve().isPrimitive() ||
+                            jpParameterType.resolve().isArray()
                     ) {
                         // if not a reference type, ignore package name (e.g. primitives do not have packages).
-                        argumentList.add(Triplet.with(jpParameter.getNameAsString(), "", jpParameterClassName.get()));
+                        argumentList.add(new MethodArgumentTokens(jpParameter.getNameAsString(), "", jpParameterClassName.get()));
                     } else if (jpParameterType.resolve().isReferenceType()) {
                         String typeName = TypeUtils.getRawTypeName(jpClass, jpCallable, jpParameter);
                         if (JavaParserUtils.isTypeParameter(jpParameterType.resolve())) {
                             // if reference object is a generic type, ignore package name.
-                            argumentList.add(Triplet.with(jpParameter.getNameAsString(), "", typeName));
+                            argumentList.add(new MethodArgumentTokens(jpParameter.getNameAsString(), "", typeName));
                         } else {
                             // otherwise, retrieve necessary package information.
                             String className = JavaParserUtils.getTypeWithoutPackages(jpParameterType.resolve().asReferenceType());
                             String parameterPackageName = jpParameterType.resolve().asReferenceType().getQualifiedName()
                                     .replace(String.format(".%s", className), "");
-                            argumentList.add(Triplet.with(
+                            argumentList.add(new MethodArgumentTokens(
                                     jpParameter.getNameAsString(),
                                     parameterPackageName,
                                     jpParameterClassName.get()
@@ -318,7 +319,7 @@ public class DatasetUtils {
                         }
                     }
                 } catch (UnsolvedSymbolException e) {
-                    logger.error(String.format("Unable to generate triplet for argument %s.", jpParameterType));
+                    logger.error(String.format("Unable to generate MethodArgumentTokens for argument %s.", jpParameterType));
                 }
             }
         }
@@ -986,7 +987,7 @@ public class DatasetUtils {
     public static List<Quartet<String, String, String, String>> getTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(
             TypeDeclaration<?> jpClass,
             CallableDeclaration<?> jpCallable,
-            List<Triplet<String, String, String>> methodArgs,
+            List<MethodArgumentTokens> methodArgs,
             String oracle
     ) {
         List<Quartet<String, String, String, String>> methodList = new ArrayList<>();
@@ -1031,7 +1032,7 @@ public class DatasetUtils {
     public static List<Quartet<String, String, String, String>> getTokensOracleVariablesNonPrivateNonStaticAttributes(
             TypeDeclaration<?> jpClass,
             CallableDeclaration<?> jpCallable,
-            List<Triplet<String, String, String>> methodArgs,
+            List<MethodArgumentTokens> methodArgs,
             String oracle
     ) {
         List<Quartet<String, String, String, String>> attributeList = new ArrayList<>();

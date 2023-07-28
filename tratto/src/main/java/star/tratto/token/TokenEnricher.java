@@ -4,6 +4,7 @@ import org.javatuples.Pair;
 import org.javatuples.Triplet;
 import star.tratto.data.OracleDatapoint;
 import star.tratto.data.records.ClassTokens;
+import star.tratto.data.records.MethodArgumentTokens;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.oraclegrammar.trattoGrammar.CanEvaluateToPrimitive;
 import star.tratto.util.JavaTypes;
@@ -76,8 +77,8 @@ public class TokenEnricher {
 
         enrichedTokensPlusInfo.addAll(oracleDatapoint.getTokensMethodArguments()
                 .stream()
-                .filter(ma -> ma.getValue2().contains("[]"))
-                .map(triplet -> Triplet.with(triplet.getValue0(), "MethodArgument", List.of(triplet.getValue1(), triplet.getValue2())))
+                .filter(ma -> ma.typeName().contains("[]"))
+                .map(triplet -> Triplet.with(triplet.argumentName(), "MethodArgument", List.of(triplet.packageName(), triplet.typeName())))
                 .collect(Collectors.toList())
         );
 
@@ -198,7 +199,7 @@ public class TokenEnricher {
 
         // Special case: if preceding token is not "this", "methodResultID" or a method argument, and last two columns (oracle variables) are empty, need to populate them
         List<String> methodVariables = new ArrayList<>(List.of("this", "methodResultID"));
-        methodVariables.addAll(oracleDatapoint.getTokensMethodArguments().stream().map(Triplet::getValue0).collect(Collectors.toList()));
+        methodVariables.addAll(oracleDatapoint.getTokensMethodArguments().stream().map(MethodArgumentTokens::argumentName).collect(Collectors.toList()));
         if (!methodVariables.contains(precedingExpr) &&
                 oracleDatapoint.getTokensOracleVariablesNonPrivateNonStaticAttributes().isEmpty() && oracleDatapoint.getTokensOracleVariablesNonPrivateNonStaticAttributes().isEmpty()) {
             // TODO: Use token collector to populate oracle variables
@@ -243,7 +244,7 @@ public class TokenEnricher {
         // Get method arguments
         enrichedTokensPlusInfo.addAll(oracleDatapoint.getTokensMethodArguments()
                 .stream()
-                .map(triplet -> Triplet.with(triplet.getValue0(), "MethodArgument", List.of(triplet.getValue1(), triplet.getValue2())))
+                .map(triplet -> Triplet.with(triplet.argumentName(), "MethodArgument", List.of(triplet.packageName(), triplet.typeName())))
                 .collect(Collectors.toList())
         );
 

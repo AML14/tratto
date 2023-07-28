@@ -15,6 +15,7 @@ import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleType;
 import star.tratto.data.JPClassNotFoundException;
 import star.tratto.data.records.JavadocValueTokens;
+import star.tratto.data.records.MethodArgumentTokens;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,8 +79,8 @@ public class DatasetUtilsTest {
         List<String> methodArgs = List.of("DerivativeStructure");
         CallableDeclaration<?> jpCallable = getCallableDeclaration(jpClass, methodName, methodArgs);
         assertNotNull(jpCallable);
-        List<Triplet<String, String, String>> expected = oracleDatapoint.getTokensMethodArguments();
-        List<Triplet<String, String, String>> actual = getTokensMethodArguments(jpClass, jpCallable);
+        List<MethodArgumentTokens> expected = oracleDatapoint.getTokensMethodArguments();
+        List<MethodArgumentTokens> actual = getTokensMethodArguments(jpClass, jpCallable);
         assertEquals(expected, actual);
     }
 

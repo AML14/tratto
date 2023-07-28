@@ -2,12 +2,12 @@ package star.tratto.data.oracles;
 
 import org.javatuples.Pair;
 import org.javatuples.Quartet;
-import org.javatuples.Triplet;
 import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleType;
 import star.tratto.data.IOPath;
 import star.tratto.data.records.ClassTokens;
 import star.tratto.data.records.JavadocValueTokens;
+import star.tratto.data.records.MethodArgumentTokens;
 import star.tratto.util.FileUtils;
 
 import java.nio.file.Path;
@@ -198,7 +198,7 @@ public class OracleDatapointBuilder {
         this.datapoint.setTokensMethodJavadocValues(tokensMethodJavadocValues);
     }
 
-    public void setTokensMethodArguments(List<Triplet<String, String, String>> tokensMethodArguments) {
+    public void setTokensMethodArguments(List<MethodArgumentTokens> tokensMethodArguments) {
         this.datapoint.setTokensMethodArguments(tokensMethodArguments);
     }
 

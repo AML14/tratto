@@ -21,6 +21,7 @@ import star.tratto.data.OracleDatapointTest;
 import star.tratto.data.JPClassNotFoundException;
 import star.tratto.data.PackageDeclarationNotFoundException;
 import star.tratto.data.ResolvedTypeNotFound;
+import star.tratto.data.records.MethodArgumentTokens;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -42,7 +43,7 @@ public class JavaParserUtilsTest {
         OracleDatapoint oracleDatapoint = oracleDatapoints.get(0);
         TypeDeclaration<?> jpClass = getClassOrInterface(oracleDatapoint.getClassSourceCode(), oracleDatapoint.getClassName());
         CallableDeclaration<?> jpCallable = getMethodDeclaration(oracleDatapoint.getMethodSourceCode());
-        List<Triplet<String, String, String>> methodArgs = oracleDatapoint.getTokensMethodArguments();
+        List<MethodArgumentTokens> methodArgs = oracleDatapoint.getTokensMethodArguments();
         String subExpression = oracleDatapoint.getOracle().substring(0, 20);
         try {
             ResolvedType resolvedType = getResolvedTypeOfExpression(jpClass, jpCallable, methodArgs, subExpression);
@@ -58,7 +59,7 @@ public class JavaParserUtilsTest {
         OracleDatapoint oracleDatapoint = oracleDatapoints.get(1);
         TypeDeclaration<?> jpClass = getClassOrInterface(oracleDatapoint.getClassSourceCode(), oracleDatapoint.getClassName());
         CallableDeclaration<?> jpCallable = getMethodDeclaration(oracleDatapoint.getMethodSourceCode());
-        List<Triplet<String, String, String>> methodArgs = oracleDatapoint.getTokensMethodArguments();
+        List<MethodArgumentTokens> methodArgs = oracleDatapoint.getTokensMethodArguments();
         String subExpression = oracleDatapoint.getOracle().substring(0, 4);
         try {
             ResolvedType resolvedType = getResolvedTypeOfExpression(jpClass, jpCallable, methodArgs, subExpression);
