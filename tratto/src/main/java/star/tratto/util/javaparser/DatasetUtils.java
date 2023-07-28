@@ -446,7 +446,7 @@ public class DatasetUtils {
      * @param cu a compilation unit {@link CompilationUnit} of a Java file
      * @param fileContent the content of the Java file
      * @return a list of information about each tag. Each entry has the form:
-     *  [typeDeclaration, callableDeclaration, oracleType, name, content]
+     *  [fileContent, typeDeclaration, callableDeclaration, oracleType, name, content]
      * where a JavaDoc tag is interpreted as:
      *  "@tag name content"
      * and the value of "@tag" determines "oracleType".
