@@ -387,12 +387,14 @@ public class JavaParserUtils {
     }
 
     /**
-     * Given a fully qualified class name, returns the corresponding ResolvedReferenceTypeDeclaration.
-     * This is useful to perform other operations on top of the returned object, such as getting all
-     * methods and fields.
-     * @param type fully qualified type, e.g., "java.util.List"
+     * Returns the {@link ResolvedReferenceTypeDeclaration} of a given binary
+     * type name.
+     *
+     * @param type binary type name, e.g., {@code java.util.List}
+     * @return the corresponding JavaParser ResolvedReferenceTypeDeclaration
      * @throws UnsolvedSymbolException if the type cannot be resolved
-     * @throws UnsupportedOperationException if the type is an array or a primitive type
+     * @throws UnsupportedOperationException if the type is an array or
+     * primitive type
      */
     public static ResolvedReferenceTypeDeclaration getResolvedReferenceTypeDeclaration(String type) throws UnsolvedSymbolException, UnsupportedOperationException {
         return getResolvedType(type).asReferenceType().getTypeDeclaration().get();
