@@ -629,14 +629,15 @@ public class JavaParserUtils {
     }
 
     /**
-     * Returns the signature of a JavaParser resolved field declaration.
+     * Returns the String field declaration represented by a JavaParser
+     * {@link ResolvedFieldDeclaration}.
      *
      * @param resolvedField a resolved field declaration
-     * @return a string representation of the signature of {@code resolvedField}.
-     * Signature follows the format:
+     * @return a string representation of the declaration of
+     * {@code resolvedField}. The declaration follows the format:
      *  "(access-specifier) (static) (type) (name);"
      */
-    public static String getFieldSignature(
+    public static String getFieldDeclaration(
             ResolvedFieldDeclaration resolvedField
     ) {
         boolean hasAccessSpecifier = !resolvedField.accessSpecifier().asString().equals("");
@@ -649,15 +650,17 @@ public class JavaParserUtils {
     }
 
     /**
-     * Gets the signature of a JavaParser resolved field declaration
-     * {@link ResolvedFieldDeclaration} and return its string representation.
-     * Uses a given modifier value to determine the modifiers.
+     * Gets the String field declaration represented by a JavaParser
+     * {@link ResolvedFieldDeclaration}. Uses a given modifier value to
+     * determine the modifiers.
      *
      * @param resolvedField resolved field declaration
      * @param modifier an integer representing the field modifiers
-     * @return a string representation of the signature of the declaration
+     * @return a string representation of the declaration. The declaration
+     * follows the format:
+     *  "(modifiers) (type) (name);"
      */
-    public static String getFieldSignature(
+    public static String getFieldDeclaration(
             ResolvedFieldDeclaration resolvedField,
             int modifier
     ) {

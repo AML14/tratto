@@ -325,7 +325,7 @@ public class JavaParserUtilsTest {
         OracleDatapoint oracleDatapoint = oracleDatapoints.get(1);
         TypeDeclaration<?> jpClass = getClassOrInterface(oracleDatapoint.getClassSourceCode(), oracleDatapoint.getClassName());
         FieldDeclaration jpField = jpClass.getFields().get(0);
-        String fieldSignature = getFieldSignature(jpField.resolve());
+        String fieldSignature = getFieldDeclaration(jpField.resolve());
         // not able to retrieve "final" keyword and assignment value from ResolvedFieldDeclaration.
         assertEquals("private static long serialVersionUID;", fieldSignature);
     }

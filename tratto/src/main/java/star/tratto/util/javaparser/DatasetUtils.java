@@ -756,9 +756,9 @@ public class DatasetUtils {
             Field f = resolvedField.getClass().getDeclaredField("field");
             f.setAccessible(true);
             Field field = (Field) f.get(resolvedField);
-            signature = JavaParserUtils.getFieldSignature(resolvedField, field.getModifiers());
+            signature = JavaParserUtils.getFieldDeclaration(resolvedField, field.getModifiers());
         } catch (NoSuchFieldException | IllegalAccessException e) {
-            signature = JavaParserUtils.getFieldSignature(resolvedField);
+            signature = JavaParserUtils.getFieldDeclaration(resolvedField);
         }
         attributeList.add(Quartet.with(
                 resolvedField.getName(),
@@ -793,7 +793,7 @@ public class DatasetUtils {
                         resolvedField.getName(),
                         resolvedField.declaringType().getPackageName(),
                         resolvedField.declaringType().getClassName(),
-                        JavaParserUtils.getFieldSignature(resolvedField)
+                        JavaParserUtils.getFieldDeclaration(resolvedField)
                 ));
             }
         }
