@@ -406,18 +406,24 @@ class OracleTrainer:
                 loss = outputs.loss
                 total_loss += loss.item()
                 # Exctract the predicted values and the expected output
-                predicted = np.array(
-                    self._tokenizer.batch_decode(
-                        torch.argmax(torch.softmax(outputs.logits, dim=-1), dim=-1),
-                        skip_special_tokens=True
+                # Decode outputs and expected values
+                if self._transformer_type == TransformerType.DECODER:
+                    predicted = np.array(
+                        self._tokenizer.batch_decode(
+                            torch.argmax(torch.softmax(outputs.logits, dim=-1), dim=-1),
+                            skip_special_tokens=True
+                        )
                     )
-                )
-                expected_out = np.array(
-                    self._tokenizer.batch_decode(
-                        tgt_out,
-                        skip_special_tokens=True
+                    expected_out = np.array(
+                        self._tokenizer.batch_decode(
+                            tgt_out,
+                            skip_special_tokens=True
+                        )
                     )
-                )
+                else:
+                    predicted_ids = torch.argmax(torch.softmax(outputs.logits, dim=-1), dim=-1)
+                    predicted = np.array(list(map(lambda x: self._classifier_ids_labels[x], predicted_ids.tolist())))
+                    expected_out = np.array(list(map(lambda x: self._classifier_ids_labels[x], tgt_out.tolist())))
                 # Accumulate predictions and labels
                 all_predictions.extend(predicted)
                 all_labels.extend(expected_out)
@@ -511,18 +517,24 @@ class OracleTrainer:
                 # Compute the loss
                 print(f"                Computing loss...")
                 # Exctract the predicted values and the expected output
-                predicted = np.array(
-                    self._tokenizer.batch_decode(
-                        torch.argmax(torch.softmax(outputs.logits, dim=-1), dim=-1),
-                        skip_special_tokens=True
+                # Decode outputs and expected values
+                if self._transformer_type == TransformerType.DECODER:
+                    predicted = np.array(
+                        self._tokenizer.batch_decode(
+                            torch.argmax(torch.softmax(outputs.logits, dim=-1), dim=-1),
+                            skip_special_tokens=True
+                        )
                     )
-                )
-                expected_out = np.array(
-                    self._tokenizer.batch_decode(
-                        tgt_out,
-                        skip_special_tokens=True
+                    expected_out = np.array(
+                        self._tokenizer.batch_decode(
+                            tgt_out,
+                            skip_special_tokens=True
+                        )
                     )
-                )
+                else:
+                    predicted_ids = torch.argmax(torch.softmax(outputs.logits, dim=-1), dim=-1)
+                    predicted = np.array(list(map(lambda x: self._classifier_ids_labels[x], predicted_ids.tolist())))
+                    expected_out = np.array(list(map(lambda x: self._classifier_ids_labels[x], tgt_out.tolist())))
                 # Accumulate predictions and labels
                 all_predictions.extend(predicted)
                 all_labels.extend(expected_out)
