@@ -3,7 +3,11 @@ package star.tratto.util.javaparser;
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.PackageDeclaration;
-import com.github.javaparser.ast.body.*;
+import com.github.javaparser.ast.body.CallableDeclaration;
+import com.github.javaparser.ast.body.FieldDeclaration;
+import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.TypeDeclaration;
+import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.resolution.MethodUsage;
 import com.github.javaparser.resolution.UnsolvedSymbolException;
 import com.github.javaparser.resolution.declarations.ResolvedDeclaration;
@@ -22,8 +26,13 @@ import star.tratto.data.JPClassNotFoundException;
 import star.tratto.data.PackageDeclarationNotFoundException;
 import star.tratto.data.ResolvedTypeNotFound;
 
+import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -53,7 +62,7 @@ public class JavaParserUtilsTest {
     }
 
     @Test
-    public void getResolvedTypeOfExpressionPrimitiveObject() {
+    public void getResolvedTypeOfExpressionObjectTest() {
         OracleDatapoint oracleDatapoint = oracleDatapoints.get(1);
         TypeDeclaration<?> jpClass = getClassOrInterface(oracleDatapoint.getClassSourceCode(), oracleDatapoint.getClassName());
         CallableDeclaration<?> jpCallable = getMethodDeclaration(oracleDatapoint.getMethodSourceCode());
@@ -315,7 +324,7 @@ public class JavaParserUtilsTest {
         TypeDeclaration<?> jpClass = getClassOrInterface(oracleDatapoint.getClassSourceCode(), oracleDatapoint.getClassName());
         FieldDeclaration jpField = jpClass.getFields().get(0);
         VariableDeclarator jpVariable = jpField.getVariable(0);
-        String variableSignature = getVariableSignature(jpField, jpVariable);
+        String variableSignature = getVariableDeclaration(jpField, jpVariable);
         assertEquals("private static final long serialVersionUID = -7726511984200295583L;", variableSignature);
     }
 
@@ -324,7 +333,7 @@ public class JavaParserUtilsTest {
         OracleDatapoint oracleDatapoint = oracleDatapoints.get(1);
         TypeDeclaration<?> jpClass = getClassOrInterface(oracleDatapoint.getClassSourceCode(), oracleDatapoint.getClassName());
         FieldDeclaration jpField = jpClass.getFields().get(0);
-        String fieldSignature = getFieldSignature(jpField.resolve());
+        String fieldSignature = getFieldDeclaration(jpField.resolve());
         // not able to retrieve "final" keyword and assignment value from ResolvedFieldDeclaration.
         assertEquals("private static long serialVersionUID;", fieldSignature);
     }
@@ -363,28 +372,28 @@ public class JavaParserUtilsTest {
                 Arguments.of("test5", "import star.tratto.dataset.OracleDatapoint; " + classSource.replaceAll("XXX", "synchronized OracleDatapoint " + methodName + "() { return null; }"),
                         className, methodName, "synchronized OracleDatapoint someMethod()"),
                 Arguments.of("test6", "import org.jgrapht.graph.*; " + classSource
-                        .replaceAll("public class", "public abstract class")
-                        .replaceAll("XXX", "\n    // *** Constructors ***\n    // another comment\n    /**\n     * hello\n     */\n    public static <V, E> E addEdgeWithVertices(Graph<V, E> g, V sourceVertex, V targetVertex) {\n" +
-                                "        g.addVertex(sourceVertex);\n" +
-                                "        g.addVertex(targetVertex);\n" +
-                                "        return g.addEdge(sourceVertex, targetVertex);\n" +
-                                "    }\n"),
+                                .replaceAll("public class", "public abstract class")
+                                .replaceAll("XXX", "\n    // *** Constructors ***\n    // another comment\n    /**\n     * hello\n     */\n    public static <V, E> E addEdgeWithVertices(Graph<V, E> g, V sourceVertex, V targetVertex) {\n" +
+                                        "        g.addVertex(sourceVertex);\n" +
+                                        "        g.addVertex(targetVertex);\n" +
+                                        "        return g.addEdge(sourceVertex, targetVertex);\n" +
+                                        "    }\n"),
                         className, "addEdgeWithVertices", "public static <V, E> E addEdgeWithVertices(Graph<V, E> g, V sourceVertex, V targetVertex)"),
                 Arguments.of("test7", "import org.jgrapht.graph.*; " + classSource
-                        .replaceAll("public class", "public abstract class")
-                        .replaceAll("XXX", "\n    /**\n     * hello\n     */\n    // *** Constructors ***\n    // another comment\n    public static <V, E> E addEdgeWithVertices(Graph<V, E> g, V sourceVertex, V targetVertex) {\n" +
-                                "        g.addVertex(sourceVertex);\n" +
-                                "        g.addVertex(targetVertex);\n" +
-                                "        return g.addEdge(sourceVertex, targetVertex);\n" +
-                                "    }"),
+                                .replaceAll("public class", "public abstract class")
+                                .replaceAll("XXX", "\n    /**\n     * hello\n     */\n    // *** Constructors ***\n    // another comment\n    public static <V, E> E addEdgeWithVertices(Graph<V, E> g, V sourceVertex, V targetVertex) {\n" +
+                                        "        g.addVertex(sourceVertex);\n" +
+                                        "        g.addVertex(targetVertex);\n" +
+                                        "        return g.addEdge(sourceVertex, targetVertex);\n" +
+                                        "    }"),
                         className, "addEdgeWithVertices", "public static <V, E> E addEdgeWithVertices(Graph<V, E> g, V sourceVertex, V targetVertex)"),
                 Arguments.of("test8", "import org.jgrapht.graph.*; " + classSource
-                        .replaceAll("public class", "public abstract class")
-                        .replaceAll("XXX", "\n    /**\n     * hello\n     */\n    public static <V, E> E addEdgeWithVertices(Graph<V, E> g, V sourceVertex, V targetVertex) {\n" +
-                                "        g.addVertex(sourceVertex);\n" +
-                                "        g.addVertex(targetVertex);\n" +
-                                "        return g.addEdge(sourceVertex, targetVertex);\n" +
-                                "    }"),
+                                .replaceAll("public class", "public abstract class")
+                                .replaceAll("XXX", "\n    /**\n     * hello\n     */\n    public static <V, E> E addEdgeWithVertices(Graph<V, E> g, V sourceVertex, V targetVertex) {\n" +
+                                        "        g.addVertex(sourceVertex);\n" +
+                                        "        g.addVertex(targetVertex);\n" +
+                                        "        return g.addEdge(sourceVertex, targetVertex);\n" +
+                                        "    }"),
                         className, "addEdgeWithVertices", "public static <V, E> E addEdgeWithVertices(Graph<V, E> g, V sourceVertex, V targetVertex)"),
                 Arguments.of("test9", "import org.jgrapht.graph.*; " + classSource
                                 .replaceAll("public class", "public abstract class")
@@ -407,7 +416,7 @@ public class JavaParserUtilsTest {
                                         "            @Nullable String param1,\n" +
                                         "            /* this is another param: */ int param2\n" +
                                         "    ) { return \"\"; }"
-                                        ),
+                                ),
                         className, "someMethod", "private static String someMethod(@Nullable String param1, int param2)")
         );
     }
@@ -419,7 +428,7 @@ public class JavaParserUtilsTest {
         MethodUsage methodUsage = new ArrayList<>(getResolvedReferenceTypeDeclaration(packageClass).getAllMethods()
                 .stream()
                 .sorted(Comparator.comparing(MethodUsage::toString))
-                .collect(Collectors.toList()))
+                .toList())
                 .stream()
                 .filter(method -> method.getName().equals(methodName))
                 .findFirst().get();
@@ -468,7 +477,7 @@ public class JavaParserUtilsTest {
         CallableDeclaration<?> jpCallable = getMethodDeclaration(oracleDatapoint.getMethodSourceCode());
         String typeName = "T";
         assertNotNull(jpCallable);
-        assertTrue(isGenericType(typeName, jpCallable, jpClass));
+        assertTrue(isTypeParameter(typeName, jpCallable, jpClass));
     }
 
     @Test
@@ -515,8 +524,8 @@ public class JavaParserUtilsTest {
 
     @Test
     public void getCompilationUnitFromFileTest() {
-        String projectsPath = Paths.get("src", "main", "java", "star", "tratto", "data", "OracleType.java").toString();
-        Optional<CompilationUnit> optionalCu = getCompilationUnitFromFile(projectsPath);
+        Path projectsPath = Paths.get("src", "main", "java", "star", "tratto", "data", "OracleType.java");
+        Optional<CompilationUnit> optionalCu = getCompilationUnit(projectsPath);
         assertTrue(optionalCu.isPresent());
         CompilationUnit cu = optionalCu.get();
         try {
