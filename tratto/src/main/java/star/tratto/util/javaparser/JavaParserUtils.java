@@ -299,36 +299,41 @@ public class JavaParserUtils {
     }
 
     /**
-     * A resolved type may be void, primitive, an array of primitives or a reference type (including
-     * package and class). It the type is a reference type, this method returns the fully qualified
-     * type without packages. A fully qualified type may contain more than one package, for example:
-     * {@code java.util.Comparator<java.util.Map.Entry<K, V>>}
-     * For such example, this method would return the following:
-     * {@code Comparator<Map.Entry<K, V>>}
-     * @param resolvedType JavaParser ResolvedType (usually obtained when using JavaSymbolSolver)
+     * @param typeName a binary name of a type
+     * @return the simple name of a type (without packages for classes).
+     * Includes outer classes when given an inner class, e.g.
+     *     package.Outer$Inner    =>    Outer$Inner
+     */
+    private static String getTypeWithoutPackages(String typeName) {
+        Matcher matcher = PACKAGE_CLASS.matcher(typeName);
+        // remove package for reference types
+        while (matcher.find()) {
+            if (matcher.group().contains(".")) {
+                typeName = typeName.replaceAll(
+                        matcher.group(),
+                        getResolvedReferenceTypeDeclaration(matcher.group()).getClassName()
+                );
+            }
+        }
+        return typeName;
+    }
+
+    /**
+     * A resolved type may be void, primitive, an array, or a reference type
+     * (including arrays of reference types). If the type involves a reference
+     * type, this method returns the binary name without packages.
+     *
+     * @param resolvedType JavaParser ResolvedType
      * @return string representation of the type without packages
      */
     public static String getTypeWithoutPackages(ResolvedType resolvedType) {
-        String type = resolvedType.describe();
-        if (resolvedType.isReferenceType()) {
-            type = getTypeWithoutPackages(type);
-        } else if (resolvedType.isArray()) {
-            ResolvedType componentType = removeArray(resolvedType);
-            if (componentType.isReferenceType()) {
-                type = getTypeWithoutPackages(type);
-            }
+        String typeName = resolvedType.describe();
+        ResolvedType componentType = removeArray(resolvedType);
+        if (componentType.isReferenceType()) {
+            // we use the original type name to avoid removing the array
+            typeName = getTypeWithoutPackages(typeName);
         }
-        return type;
-    }
-
-    private static String getTypeWithoutPackages(String type) {
-        Matcher matcher = PACKAGE_CLASS.matcher(type);
-        while (matcher.find()) {
-            if (matcher.group().contains(".")) {
-                type = type.replaceAll(matcher.group(), getResolvedReferenceTypeDeclaration(matcher.group()).getClassName());
-            }
-        }
-        return type;
+        return typeName;
     }
 
     /**
@@ -823,7 +828,7 @@ public class JavaParserUtils {
                             .toList()
             );
         }
-        return jpClassGenericTypes.contains(jpTypeName.replaceAll("\\[\\]", ""));
+        return jpClassGenericTypes.contains(jpTypeName.replaceAll("\\[]", ""));
     }
 
     /**
