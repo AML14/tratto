@@ -715,7 +715,7 @@ public class JavaParserUtils {
     }
 
     /**
-     * Get all generic types of a given method.
+     * Get all type parameters of a given method.
      */
     private static List<String> getMethodUsageTypeParameters(MethodUsage methodUsage) {
         return methodUsage.getDeclaration().getTypeParameters()
@@ -829,10 +829,11 @@ public class JavaParserUtils {
 
     /**
      * @param resolvedType a JavaParser resolved type
-     * @return true iff a given type is generic. If the given type is an
-     * array, then the method tests the base component type.
+     * @return true iff a given type represents a type parameter of a generic
+     * class. If the given type is an array, then the method analyzes the base
+     * component type.
      */
-    public static boolean isGenericType(
+    public static boolean isTypeParameter(
             ResolvedType resolvedType
     ) {
         ResolvedType componentType = removeArray(resolvedType);
@@ -840,31 +841,35 @@ public class JavaParserUtils {
     }
 
     /**
-     * Returns true iff a given type name represents a generic type.
+     * Returns true iff a given type name represents a type parameter of a
+     * generic class.
      *
-     * @param jpTypeName the name of a type
-     * @param jpCallable the method using the given type {@code jpTypeName}
-     * @param jpClass the declaring class of the method {@code jpCallable}
-     * @return true iff a given type is generic. Ignores any wrapped arrays
+     * @param typeName the name of a type
+     * @param jpCallable the method using {@code typeName}
+     * @param jpClass the declaring class of {@code jpCallable}
+     * @return true iff a given type is a type parameter. If the given type is
+     * an array, then this method analyzes the base component type.
      */
-    public static boolean isGenericType(
-            String jpTypeName,
+    public static boolean isTypeParameter(
+            String typeName,
             CallableDeclaration<?> jpCallable,
             TypeDeclaration<?> jpClass
     ) {
-        List<String> jpClassGenericTypes = jpCallable.getTypeParameters()
+        // add all type parameters of the method
+        List<String> typeParameterNames = jpCallable.getTypeParameters()
                 .stream()
                 .map(NodeWithSimpleName::getNameAsString)
                 .collect(Collectors.toList());
+        // add all type parameters of the class
         if (jpClass instanceof ClassOrInterfaceDeclaration) {
-            jpClassGenericTypes.addAll(
+            typeParameterNames.addAll(
                     jpClass.asClassOrInterfaceDeclaration().getTypeParameters()
                             .stream()
                             .map(NodeWithSimpleName::getNameAsString)
                             .toList()
             );
         }
-        return jpClassGenericTypes.contains(jpTypeName.replaceAll("\\[]", ""));
+        return typeParameterNames.contains(typeName.replaceAll("\\[]", ""));
     }
 
     /**

@@ -239,7 +239,7 @@ public class DatasetUtils {
                 className = jpParameterType.asPrimitiveType().asString();
             } else if (jpResolvedParameterType.isReferenceType()) {
                 // if object is generic, use generic name.
-                if (JavaParserUtils.isGenericType(jpResolvedParameterType)) {
+                if (JavaParserUtils.isTypeParameter(jpResolvedParameterType)) {
                     className = TypeUtils.getRawTypeName(jpClass, jpCallable, jpParameter);
                 } else {
                     className = JavaParserUtils.getTypeWithoutPackages(jpResolvedParameterType.asReferenceType());
@@ -300,7 +300,7 @@ public class DatasetUtils {
                         argumentList.add(Triplet.with(jpParameter.getNameAsString(), "", jpParameterClassName.get()));
                     } else if (jpParameterType.resolve().isReferenceType()) {
                         String typeName = TypeUtils.getRawTypeName(jpClass, jpCallable, jpParameter);
-                        if (JavaParserUtils.isGenericType(jpParameterType.resolve())) {
+                        if (JavaParserUtils.isTypeParameter(jpParameterType.resolve())) {
                             // if reference object is a generic type, ignore package name.
                             argumentList.add(Triplet.with(jpParameter.getNameAsString(), "", typeName));
                         } else {
@@ -686,7 +686,7 @@ public class DatasetUtils {
                     .stream()
                     .map(m -> Quartet.with(m.get(0), "", jpResolvedType.describe(), m.get(1)))
                     .toList());
-        } else if (JavaParserUtils.isGenericType(jpResolvedType)) {
+        } else if (JavaParserUtils.isTypeParameter(jpResolvedType)) {
             // generic type.
             List<MethodUsage> genericMethods = JavaParserUtils.getObjectType().asReferenceType().getAllMethods()
                     .stream()
@@ -1078,7 +1078,7 @@ public class DatasetUtils {
         boolean jDoctorParamIsStandardArray = TypeUtils.isStandardTypeArray(jDoctorParam);
         boolean jpParamIsStandard = TypeUtils.isStandardType(jpParam);
         boolean jpParamIsArray = jpParam.endsWith("[]");
-        boolean jpParamIsGeneric = JavaParserUtils.isGenericType(jpParam, jpCallable, jpClass);
+        boolean jpParamIsGeneric = JavaParserUtils.isTypeParameter(jpParam, jpCallable, jpClass);
         return (jDoctorParamIsStandard && jpParamIsStandard) ||
                 ((jpParamIsGeneric && !jpParamIsArray) && jDoctorParamIsStandard) ||
                 ((jpParamIsGeneric && jpParamIsArray) && jDoctorParamIsStandardArray);
