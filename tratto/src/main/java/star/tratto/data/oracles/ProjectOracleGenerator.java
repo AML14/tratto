@@ -4,17 +4,19 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.CallableDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.resolution.UnsolvedSymbolException;
-import org.javatuples.Pair;
 import org.javatuples.Quartet;
 import org.javatuples.Sextet;
 import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleType;
 import star.tratto.data.JPClassNotFoundException;
+import star.tratto.data.records.ClassTokens;
 import star.tratto.util.StringUtils;
 import star.tratto.util.javaparser.DatasetUtils;
 import star.tratto.util.javaparser.TypeUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,7 +33,7 @@ public class ProjectOracleGenerator {
     // project-level fields.
     private Project project;
     private List<JDoctorCondition> jDoctorConditions;
-    private List<Pair<String, String>> projectClassesTokens;
+    private List<ClassTokens> projectClassesTokens;
     private List<Quartet<String, String, String, String>> projectMethodsTokens;
     private List<Quartet<String, String, String, String>> projectAttributesTokens;
     private List<Sextet<String, TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> projectTagsTokens;

@@ -305,8 +305,8 @@ public class JavaParserUtils {
 
     private static void addImports(CompilationUnit cu, String expression, OracleDatapoint oracleDatapoint) {
         oracleDatapoint.getTokensProjectClasses().forEach(projectClass -> {
-            if (expression.contains(projectClass.getValue0())) {
-                cu.addImport(fullyQualifiedClassName(projectClass.getValue1(), projectClass.getValue0()));
+            if (expression.contains(projectClass.className())) {
+                cu.addImport(fullyQualifiedClassName(projectClass.packageName(), projectClass.className()));
             }
         });
         if (expression.contains("\\bArrays\\.")) {

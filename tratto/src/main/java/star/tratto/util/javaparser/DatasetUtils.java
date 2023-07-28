@@ -24,6 +24,7 @@ import star.tratto.data.JPClassNotFoundException;
 import star.tratto.data.PackageDeclarationNotFoundException;
 import star.tratto.data.ResolvedTypeNotFound;
 import star.tratto.data.TrattoPath;
+import star.tratto.data.records.ClassTokens;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.oraclegrammar.custom.Splitter;
 import star.tratto.util.FileUtils;
@@ -57,23 +58,23 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets a list of each class name, and corresponding package, name for all
+     * Gets a list of each class name and corresponding package names for all
      * classes in a compilation unit.
      *
      * @param cu the compilation unit of a Java file
-     * @return a list of (className, packageName) pairs
+     * @return a list of (className, packageName) records
      * @throws PackageDeclarationNotFoundException if the package cannot be
      * retrieved
      */
-    private static List<Pair<String, String>> getClassNameAndPackage(
+    private static List<ClassTokens> getClassNameAndPackage(
             CompilationUnit cu
     ) throws PackageDeclarationNotFoundException {
-        List<Pair<String, String>> classList = new ArrayList<>();
+        List<ClassTokens> classList = new ArrayList<>();
         String packageName = JavaParserUtils.getPackageDeclarationFromCompilationUnit(cu).getNameAsString();
         // iterate through each class in the compilation unit.
         List<TypeDeclaration<?>> jpClasses = cu.getTypes();
         for (TypeDeclaration<?> jpClass : jpClasses) {
-            classList.add(new Pair<>(jpClass.getNameAsString(), packageName));
+            classList.add(new ClassTokens(jpClass.getNameAsString(), packageName));
         }
         return classList;
     }
@@ -528,10 +529,10 @@ public class DatasetUtils {
      * @param sourcePath the project root directory
      * @return a list of (className, packageName) pairs
      */
-    public static List<Pair<String, String>> getProjectClassesTokens(
+    public static List<ClassTokens> getProjectClassesTokens(
             String sourcePath
     ) {
-        List<Pair<String, String>> projectClasses = new ArrayList<>();
+        List<ClassTokens> projectClasses = new ArrayList<>();
         List<Path> javaFiles = getValidJavaFiles(sourcePath);
         // iterate through each file and add class tokens.
         for (Path javaFile : javaFiles) {

@@ -5,6 +5,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.javatuples.Pair;
 import org.javatuples.Quartet;
 import star.tratto.data.OracleDatapoint;
+import star.tratto.data.records.ClassTokens;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.oraclegrammar.trattoGrammar.MethodCall;
 import star.tratto.token.Tokens;
@@ -81,12 +82,12 @@ public class RestrictionsUtils {
         List<MethodUsage> matchingMethods = new ArrayList<>(); // TODO: Don't consider method under test
 
         if (!precedingExpr.contains(".") && oracleDatapoint.isProjectClass(precedingExpr)) { // Preceding expression is a project class
-            List<Pair<String, String>> matchingClasses = oracleDatapoint.getTokensProjectClasses()
+            List<ClassTokens> matchingClasses = oracleDatapoint.getTokensProjectClasses()
                     .stream()
-                    .filter(c -> c.getValue0().equals(precedingExpr))
+                    .filter(c -> c.className().equals(precedingExpr))
                     .collect(Collectors.toList());
             matchingClasses.forEach(c -> matchingMethods.addAll(
-                    getMethodsOfType(fullyQualifiedClassName(c.getValue1(), c.getValue0()))
+                    getMethodsOfType(fullyQualifiedClassName(c.packageName(), c.className()))
                             .stream()
                             .filter(m -> m.getName().equals(methodName) && isNonPrivateStaticNonVoidMethod(m))
                             .collect(Collectors.toList())

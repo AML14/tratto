@@ -6,6 +6,7 @@ import org.javatuples.Triplet;
 import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleType;
 import star.tratto.data.IOPath;
+import star.tratto.data.records.ClassTokens;
 import star.tratto.util.FileUtils;
 
 import java.nio.file.Path;
@@ -60,7 +61,7 @@ public class OracleDatapointBuilder {
                         .stream()
                         .map(o -> (String) o)
                         .collect(Collectors.toList()))
-                .collect(Collectors.toList())
+                .toList()
                 .stream()
                 .map(tokenList -> new Pair<>(tokenList.get(0), tokenList.get(1)))
                 .collect(Collectors.toList());
@@ -180,7 +181,7 @@ public class OracleDatapointBuilder {
         this.datapoint.setTokensGeneralValuesGlobalDictionary(tokensGeneralValuesGlobalDictionary);
     }
 
-    public void setTokensProjectClasses(List<Pair<String, String>> tokensProjectClasses) {
+    public void setTokensProjectClasses(List<ClassTokens> tokensProjectClasses) {
         this.datapoint.setTokensProjectClasses(tokensProjectClasses);
     }
 
