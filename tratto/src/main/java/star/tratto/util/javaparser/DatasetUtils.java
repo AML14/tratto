@@ -239,14 +239,14 @@ public class DatasetUtils {
                 className = jpParameterType.asPrimitiveType().asString();
             } else if (jpResolvedParameterType.isReferenceType()) {
                 // if object is generic, use generic name.
-                if (JavaParserUtils.isGenericType(jpResolvedParameterType)) {
+                if (JavaParserUtils.isTypeParameter(jpResolvedParameterType)) {
                     className = TypeUtils.getRawTypeName(jpClass, jpCallable, jpParameter);
                 } else {
-                    className = JavaParserUtils.getTypeWithoutPackages(jpResolvedParameterType.asReferenceType().getQualifiedName());
+                    className = JavaParserUtils.getTypeWithoutPackages(jpResolvedParameterType.asReferenceType());
                 }
             } else if (jpResolvedParameterType.isArray()) {
                 // special case: return early if type is an array to avoid redundant brackets.
-                return Optional.of(JavaParserUtils.getTypeWithoutPackages(jpResolvedParameterType.asArrayType().describe()));
+                return Optional.of(JavaParserUtils.getTypeWithoutPackages(jpResolvedParameterType.asArrayType()));
             } else {
                 // unknown type.
                 assert false;
@@ -300,14 +300,13 @@ public class DatasetUtils {
                         argumentList.add(Triplet.with(jpParameter.getNameAsString(), "", jpParameterClassName.get()));
                     } else if (jpParameterType.resolve().isReferenceType()) {
                         String typeName = TypeUtils.getRawTypeName(jpClass, jpCallable, jpParameter);
-                        if (JavaParserUtils.isGenericType(jpParameterType.resolve())) {
+                        if (JavaParserUtils.isTypeParameter(jpParameterType.resolve())) {
                             // if reference object is a generic type, ignore package name.
                             argumentList.add(Triplet.with(jpParameter.getNameAsString(), "", typeName));
                         } else {
                             // otherwise, retrieve necessary package information.
-                            String fullyQualifiedName = jpParameterType.resolve().asReferenceType().getQualifiedName();
-                            String className = JavaParserUtils.getTypeWithoutPackages(fullyQualifiedName);
-                            String parameterPackageName = fullyQualifiedName
+                            String className = JavaParserUtils.getTypeWithoutPackages(jpParameterType.resolve().asReferenceType());
+                            String parameterPackageName = jpParameterType.resolve().asReferenceType().getQualifiedName()
                                     .replace(String.format(".%s", className), "");
                             argumentList.add(Triplet.with(
                                     jpParameter.getNameAsString(),
@@ -431,7 +430,7 @@ public class DatasetUtils {
                                 jpVariable.getNameAsString(),
                                 packageName,
                                 className,
-                                JavaParserUtils.getVariableSignature(jpField, jpVariable)
+                                JavaParserUtils.getVariableDeclaration(jpField, jpVariable)
                         ));
                     }
                 }
@@ -687,7 +686,7 @@ public class DatasetUtils {
                     .stream()
                     .map(m -> Quartet.with(m.get(0), "", jpResolvedType.describe(), m.get(1)))
                     .toList());
-        } else if (JavaParserUtils.isGenericType(jpResolvedType)) {
+        } else if (JavaParserUtils.isTypeParameter(jpResolvedType)) {
             // generic type.
             List<MethodUsage> genericMethods = JavaParserUtils.getObjectType().asReferenceType().getAllMethods()
                     .stream()
@@ -738,7 +737,7 @@ public class DatasetUtils {
                     jpVariable.getNameAsString(),
                     resolvedField.declaringType().getPackageName(),
                     resolvedField.declaringType().getClassName(),
-                    JavaParserUtils.getVariableSignature(jpField, jpVariable)
+                    JavaParserUtils.getVariableDeclaration(jpField, jpVariable)
             ));
         }
         return attributeList;
@@ -757,9 +756,9 @@ public class DatasetUtils {
             Field f = resolvedField.getClass().getDeclaredField("field");
             f.setAccessible(true);
             Field field = (Field) f.get(resolvedField);
-            signature = JavaParserUtils.getFieldSignature(resolvedField, field.getModifiers());
+            signature = JavaParserUtils.getFieldDeclaration(resolvedField, field.getModifiers());
         } catch (NoSuchFieldException | IllegalAccessException e) {
-            signature = JavaParserUtils.getFieldSignature(resolvedField);
+            signature = JavaParserUtils.getFieldDeclaration(resolvedField);
         }
         attributeList.add(Quartet.with(
                 resolvedField.getName(),
@@ -794,7 +793,7 @@ public class DatasetUtils {
                         resolvedField.getName(),
                         resolvedField.declaringType().getPackageName(),
                         resolvedField.declaringType().getClassName(),
-                        JavaParserUtils.getFieldSignature(resolvedField)
+                        JavaParserUtils.getFieldDeclaration(resolvedField)
                 ));
             }
         }
@@ -1079,7 +1078,7 @@ public class DatasetUtils {
         boolean jDoctorParamIsStandardArray = TypeUtils.isStandardTypeArray(jDoctorParam);
         boolean jpParamIsStandard = TypeUtils.isStandardType(jpParam);
         boolean jpParamIsArray = jpParam.endsWith("[]");
-        boolean jpParamIsGeneric = JavaParserUtils.isGenericType(jpParam, jpCallable, jpClass);
+        boolean jpParamIsGeneric = JavaParserUtils.isTypeParameter(jpParam, jpCallable, jpClass);
         return (jDoctorParamIsStandard && jpParamIsStandard) ||
                 ((jpParamIsGeneric && !jpParamIsArray) && jDoctorParamIsStandard) ||
                 ((jpParamIsGeneric && jpParamIsArray) && jDoctorParamIsStandardArray);
