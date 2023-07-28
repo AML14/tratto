@@ -25,6 +25,7 @@ import star.tratto.data.PackageDeclarationNotFoundException;
 import star.tratto.data.ResolvedTypeNotFound;
 import star.tratto.data.TrattoPath;
 import star.tratto.data.records.ClassTokens;
+import star.tratto.data.records.JavadocValueTokens;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.oraclegrammar.custom.Splitter;
 import star.tratto.util.FileUtils;
@@ -139,21 +140,21 @@ public class DatasetUtils {
      * in the JavaDoc comment. The first element is the numeric value, and the
      * second element is the type of numeric value ("int" or "double").
      */
-    private static List<Pair<String, String>> findAllNumericValuesInJavadoc(
+    private static List<JavadocValueTokens> findAllNumericValuesInJavadoc(
             String javadocComment
     ) {
         // Defines regex to find integers and doubles within a string.
         Pattern pattern = Pattern.compile("-?\\d+(\\.\\d+)?");
         Matcher matcher = pattern.matcher(javadocComment);
         // Iterate through all occurrences.
-        List<Pair<String, String>> numericValues = new ArrayList<>();
+        List<JavadocValueTokens> numericValues = new ArrayList<>();
         while (matcher.find()) {
             String match = matcher.group();
             if (match.contains(".")) {
                 // double (decimal).
                 try {
                     double realValue = Double.parseDouble(match);
-                    numericValues.add(new Pair<>(Double.toString(realValue), "double"));
+                    numericValues.add(new JavadocValueTokens(Double.toString(realValue), "double"));
                 } catch (Exception e) {
                     logger.error(String.format("Number exceed maximum float value: %s%n", match));
                 }
@@ -161,7 +162,7 @@ public class DatasetUtils {
                 // integer (no decimal).
                 try {
                     long longIntValue = Long.parseLong(match);
-                    numericValues.add(new Pair<>(Long.toString(longIntValue), "int"));
+                    numericValues.add(new JavadocValueTokens(Long.toString(longIntValue), "int"));
                 } catch (NumberFormatException e) {
                     logger.error(String.format("Number exceed maximum integer value: %s", match));
                 }
@@ -180,17 +181,17 @@ public class DatasetUtils {
      * the JavaDoc comment. The first element is the string value, and the
      * second element is the type of value (always "String").
      */
-    private static List<Pair<String, String>> findAllStringValuesInJavadoc(
+    private static List<JavadocValueTokens> findAllStringValuesInJavadoc(
             String jpJavadoc
     ) {
         // Defines regex to match values within a string.
         Pattern pattern = Pattern.compile("\\\"(.*?)\\\"|\\\'(.*?)\\\'");
         Matcher matcher = pattern.matcher(jpJavadoc);
         // Iterate through all occurrences.
-        List<Pair<String, String>> stringValues = new ArrayList<>();
+        List<JavadocValueTokens> stringValues = new ArrayList<>();
         while (matcher.find()) {
-            String match = String.format("\"%s\"",!(matcher.group(1) == null) ? matcher.group(1) : matcher.group(2));
-            stringValues.add(new Pair<>(match, "String"));
+            String value = String.format("\"%s\"",!(matcher.group(1) == null) ? matcher.group(1) : matcher.group(2));
+            stringValues.add(new JavadocValueTokens(value, "String"));
         }
         return stringValues;
     }
@@ -205,10 +206,10 @@ public class DatasetUtils {
      *  [value, valueType]
      * For example: [["name", "String"], ["64", "int"]]
      */
-    public static List<Pair<String, String>> getJavadocValues(
+    public static List<JavadocValueTokens> getJavadocValues(
             String jpJavadoc
     ) {
-        List<Pair<String, String>> pairList = new ArrayList<>();
+        List<JavadocValueTokens> pairList = new ArrayList<>();
         pairList.addAll(findAllNumericValuesInJavadoc(jpJavadoc));
         pairList.addAll(findAllStringValuesInJavadoc(jpJavadoc));
         return pairList;

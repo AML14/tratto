@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleType;
 import star.tratto.data.JPClassNotFoundException;
+import star.tratto.data.records.JavadocValueTokens;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,8 +65,8 @@ public class DatasetUtilsTest {
         CallableDeclaration<?> jpCallable = getCallableDeclaration(jpClass, methodName, methodArgs);
         assertNotNull(jpCallable);
         String javadoc = getCallableJavadoc(jpCallable).trim();
-        List<Pair<String, String>> expected = oracleDatapoint.getTokensMethodJavadocValues();
-        List<Pair<String, String>> actual = getJavadocValues(javadoc);
+        List<JavadocValueTokens> expected = oracleDatapoint.getTokensMethodJavadocValues();
+        List<JavadocValueTokens> actual = getJavadocValues(javadoc);
         assertEquals(expected, actual);
     }
 
