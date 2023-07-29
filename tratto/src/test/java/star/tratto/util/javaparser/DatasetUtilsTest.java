@@ -6,12 +6,12 @@ import com.github.javaparser.ast.body.CallableDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.TypeDeclaration;
-import org.javatuples.Quartet;
 import org.javatuples.Sextet;
 import org.junit.jupiter.api.Test;
 import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleType;
 import star.tratto.data.JPClassNotFoundException;
+import star.tratto.data.records.AttributeTokens;
 import star.tratto.data.records.JavadocValueTokens;
 import star.tratto.data.records.MethodArgumentTokens;
 import star.tratto.data.records.MethodTokens;
@@ -144,8 +144,8 @@ public class DatasetUtilsTest {
         CallableDeclaration<?> jpCallable = getCallableDeclaration(jpClass, methodName, methodArgs);
         assertNotNull(jpCallable);
         Parameter jpParam = jpCallable.getParameters().get(0);
-        List<Quartet<String, String, String, String>> expected = new ArrayList<>();
-        List<Quartet<String, String, String, String>> actual = getFieldsFromType(jpParam.getType().resolve());
+        List<AttributeTokens> expected = new ArrayList<>();
+        List<AttributeTokens> actual = getFieldsFromType(jpParam.getType().resolve());
         assertEquals(expected, actual);
     }
 
@@ -158,8 +158,8 @@ public class DatasetUtilsTest {
         CallableDeclaration<?> jpCallable = getCallableDeclaration(jpClass, methodName, methodArgs);
         assertNotNull(jpCallable);
         Parameter jpParam = jpCallable.getParameters().get(0);
-        List<Quartet<String, String, String, String>> expected = new ArrayList<>();
-        List<Quartet<String, String, String, String>> actual = getFieldsFromParameter(jpParam);
+        List<AttributeTokens> expected = new ArrayList<>();
+        List<AttributeTokens> actual = getFieldsFromParameter(jpParam);
         assertEquals(expected, actual);
     }
 
@@ -181,10 +181,10 @@ public class DatasetUtilsTest {
         assertNotNull(jpCallable);
         Parameter jpParam1 = jpCallable.getParameters().get(0);
         Parameter jpParam2 = jpCallable.getParameters().get(1);
-        List<Quartet<String, String, String, String>> expected1 = List.of(Quartet.with("length", "java.lang", "String[]", "public final int length;"));
-        List<Quartet<String, String, String, String>> expected2 = List.of(Quartet.with("length", "", "int[]", "public final int length;"));
-        List<Quartet<String, String, String, String>> actual1 = getFieldsFromParameter(jpParam1);
-        List<Quartet<String, String, String, String>> actual2 = getFieldsFromParameter(jpParam2);
+        List<AttributeTokens> expected1 = List.of(new AttributeTokens("length", "java.lang", "String[]", "public final int length;"));
+        List<AttributeTokens> expected2 = List.of(new AttributeTokens("length", "", "int[]", "public final int length;"));
+        List<AttributeTokens> actual1 = getFieldsFromParameter(jpParam1);
+        List<AttributeTokens> actual2 = getFieldsFromParameter(jpParam2);
         assertEquals(expected1, actual1);
         assertEquals(expected2, actual2);
     }
@@ -242,7 +242,7 @@ public class DatasetUtilsTest {
         CallableDeclaration<?> jpCallable = getCallableDeclaration(jpClass, methodName, methodArgs);
         assertNotNull(jpCallable);
         try {
-            List<Quartet<String, String, String, String>> actualList = DatasetUtils.getTokensMethodVariablesNonPrivateNonStaticAttributes(
+            List<AttributeTokens> actualList = DatasetUtils.getTokensMethodVariablesNonPrivateNonStaticAttributes(
                     jpClass,
                     jpCallable
             );
@@ -292,13 +292,13 @@ public class DatasetUtilsTest {
         List<String> methodArgs = List.of("DerivativeStructure");
         CallableDeclaration<?> jpCallable = getCallableDeclaration(jpClass, methodName, methodArgs);
         assertNotNull(jpCallable);
-        List<Quartet<String, String, String, String>> actualList = DatasetUtils.getTokensOracleVariablesNonPrivateNonStaticAttributes(
+        List<AttributeTokens> actualList = DatasetUtils.getTokensOracleVariablesNonPrivateNonStaticAttributes(
                 jpClass,
                 jpCallable,
                 oracleDatapoint.getTokensMethodArguments(),
                 oracleDatapoint.getOracle()
         );
-        assertEquals(List.of(Quartet.with("length", "", "double[]", "public final int length;")), actualList);
+        assertEquals(List.of(new AttributeTokens("length", "", "double[]", "public final int length;")), actualList);
     }
 
     @Test

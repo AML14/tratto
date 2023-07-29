@@ -154,8 +154,8 @@ public class TokenEnricher {
         // Get static attributes of class
         enrichedTokensPlusInfo.addAll(oracleDatapoint.getTokensProjectClassesNonPrivateStaticAttributes()
                 .stream()
-                .filter(quartet -> quartet.getValue2().equals(previousToken))
-                .map(quartet -> Triplet.with(quartet.getValue0(), "ClassField", List.of(quartet.getValue1(), quartet.getValue2(), quartet.getValue3())))
+                .filter(quartet -> quartet.className().equals(previousToken))
+                .map(quartet -> Triplet.with(quartet.attributeName(), "ClassField", List.of(quartet.packageName(), quartet.className(), quartet.attributeDeclaration())))
                 .collect(Collectors.toList())
         );
 
@@ -208,13 +208,13 @@ public class TokenEnricher {
         // Get non-static attributes of class, including those whose this class is instance of
         enrichedTokensPlusInfo.addAll(oracleDatapoint.getTokensMethodVariablesNonPrivateNonStaticAttributes() // Attributes applicable to this, methodResultID and method arguments
                 .stream()
-                .filter(quartet -> isInstanceOf(fullyQualifiedClassName(precedingExprReturnType.getValue0(), precedingExprReturnType.getValue1()), fullyQualifiedClassName(quartet.getValue1(), quartet.getValue2()), oracleDatapoint))
-                .map(quartet -> Triplet.with(quartet.getValue0(), "ClassField", List.of(quartet.getValue1(), quartet.getValue2(), quartet.getValue3())))
+                .filter(quartet -> isInstanceOf(fullyQualifiedClassName(precedingExprReturnType.getValue0(), precedingExprReturnType.getValue1()), fullyQualifiedClassName(quartet.packageName(), quartet.className()), oracleDatapoint))
+                .map(quartet -> Triplet.with(quartet.attributeName(), "ClassField", List.of(quartet.packageName(), quartet.className(), quartet.attributeDeclaration())))
                 .collect(Collectors.toList()));
         enrichedTokensPlusInfo.addAll(oracleDatapoint.getTokensOracleVariablesNonPrivateNonStaticAttributes() // Attributes applicable to elements of the oracle
                 .stream()
-                .filter(quartet -> isInstanceOf(fullyQualifiedClassName(precedingExprReturnType.getValue0(), precedingExprReturnType.getValue1()), fullyQualifiedClassName(quartet.getValue1(), quartet.getValue2()), oracleDatapoint))
-                .map(quartet -> Triplet.with(quartet.getValue0(), "ClassField", List.of(quartet.getValue1(), quartet.getValue2(), quartet.getValue3())))
+                .filter(quartet -> isInstanceOf(fullyQualifiedClassName(precedingExprReturnType.getValue0(), precedingExprReturnType.getValue1()), fullyQualifiedClassName(quartet.packageName(), quartet.className()), oracleDatapoint))
+                .map(quartet -> Triplet.with(quartet.attributeName(), "ClassField", List.of(quartet.packageName(), quartet.className(), quartet.attributeDeclaration())))
                 .collect(Collectors.toList()));
 
         // Get non-static methods of class, including those whose this class is instance of

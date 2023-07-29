@@ -15,7 +15,8 @@ import com.github.javaparser.resolution.declarations.ResolvedReferenceTypeDeclar
 import com.github.javaparser.resolution.types.ResolvedType;
 import com.github.javaparser.symbolsolver.javaparsermodel.declarations.JavaParserFieldDeclaration;
 import com.github.javaparser.symbolsolver.reflectionmodel.ReflectionFieldDeclaration;
-import org.javatuples.*;
+import org.javatuples.Pair;
+import org.javatuples.Sextet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import star.tratto.data.OracleType;
@@ -24,6 +25,7 @@ import star.tratto.data.JPClassNotFoundException;
 import star.tratto.data.PackageDeclarationNotFoundException;
 import star.tratto.data.ResolvedTypeNotFound;
 import star.tratto.data.TrattoPath;
+import star.tratto.data.records.AttributeTokens;
 import star.tratto.data.records.ClassTokens;
 import star.tratto.data.records.JavadocValueTokens;
 import star.tratto.data.records.MethodArgumentTokens;
@@ -412,10 +414,10 @@ public class DatasetUtils {
      * @throws PackageDeclarationNotFoundException if the package
      * {@link PackageDeclaration} of the compilation unit is not found
      */
-    private static List<Quartet<String, String, String, String>> getNonPrivateStaticAttributes(
+    private static List<AttributeTokens> getNonPrivateStaticAttributes(
             CompilationUnit cu
     ) throws PackageDeclarationNotFoundException {
-        List<Quartet<String, String, String, String>> attributeList = new ArrayList<>();
+        List<AttributeTokens> attributeList = new ArrayList<>();
         // get package name.
         String packageName = JavaParserUtils.getPackageDeclarationFromCompilationUnit(cu).getNameAsString();
         // get all classes in compilation unit.
@@ -430,7 +432,7 @@ public class DatasetUtils {
                 if (!jpField.isPrivate() && jpField.isStatic()) {
                     // add each variable in declaration.
                     for (VariableDeclarator jpVariable : jpField.getVariables()) {
-                        attributeList.add(Quartet.with(
+                        attributeList.add(new AttributeTokens(
                                 jpVariable.getNameAsString(),
                                 packageName,
                                 className,
@@ -588,10 +590,10 @@ public class DatasetUtils {
      * form:
      *  [variableName, packageName, className, variableSignature]
      */
-    public static List<Quartet<String, String, String, String>> getProjectNonPrivateStaticAttributesTokens(
+    public static List<AttributeTokens> getProjectNonPrivateStaticAttributesTokens(
             String sourcePath
     ) {
-        List<Quartet<String, String, String, String>> attributeList = new ArrayList<>();
+        List<AttributeTokens> attributeList = new ArrayList<>();
         List<Path> javaFiles = getValidJavaFiles(sourcePath);
         // iterate through each file and add attribute tokens.
         for (Path javaFile : javaFiles) {
@@ -731,13 +733,13 @@ public class DatasetUtils {
      * Uses methods and fields of JavaParserFieldDeclaration to get a more
      * detailed field signature (includes all modifiers and value).
      */
-    private static List<Quartet<String, String, String, String>> convertJavaParserFieldDeclarationToQuartet(
+    private static List<AttributeTokens> convertJavaParserFieldDeclarationToQuartet(
             JavaParserFieldDeclaration resolvedField
     ) {
-        List<Quartet<String, String, String, String>> attributeList = new ArrayList<>();
+        List<AttributeTokens> attributeList = new ArrayList<>();
         FieldDeclaration jpField = resolvedField.getWrappedNode();
         for (VariableDeclarator jpVariable : jpField.getVariables()) {
-            attributeList.add(Quartet.with(
+            attributeList.add(new AttributeTokens(
                     jpVariable.getNameAsString(),
                     resolvedField.declaringType().getPackageName(),
                     resolvedField.declaringType().getClassName(),
@@ -751,10 +753,10 @@ public class DatasetUtils {
      * Uses methods and fields of ReflectionFieldDeclaration to get a more
      * detailed field signature (includes all modifiers).
      */
-    private static List<Quartet<String, String, String, String>> convertReflectionFieldDeclarationToQuartet(
+    private static List<AttributeTokens> convertReflectionFieldDeclarationToQuartet(
             ReflectionFieldDeclaration resolvedField
     ) {
-        List<Quartet<String, String, String, String>> attributeList = new ArrayList<>();
+        List<AttributeTokens> attributeList = new ArrayList<>();
         String signature;
         try {
             Field f = resolvedField.getClass().getDeclaredField("field");
@@ -764,7 +766,7 @@ public class DatasetUtils {
         } catch (NoSuchFieldException | IllegalAccessException e) {
             signature = JavaParserUtils.getFieldDeclaration(resolvedField);
         }
-        attributeList.add(Quartet.with(
+        attributeList.add(new AttributeTokens(
                 resolvedField.getName(),
                 resolvedField.declaringType().getPackageName(),
                 resolvedField.declaringType().getClassName(),
@@ -780,10 +782,10 @@ public class DatasetUtils {
      * where "className" refers to the name of the field type. If possible,
      * declarations with multiple fields are split into individual quartets.
      */
-    private static List<Quartet<String, String, String, String>> convertFieldDeclarationToQuartet(
+    private static List<AttributeTokens> convertFieldDeclarationToQuartet(
             List<ResolvedFieldDeclaration> resolvedFields
     ) {
-        List<Quartet<String, String, String, String>> fieldList = new ArrayList<>();
+        List<AttributeTokens> fieldList = new ArrayList<>();
         for (ResolvedFieldDeclaration resolvedField : resolvedFields) {
             if (resolvedField instanceof JavaParserFieldDeclaration) {
                 // use JavaParserFieldDeclaration to get a more detailed signature.
@@ -793,7 +795,7 @@ public class DatasetUtils {
                 fieldList.addAll(convertReflectionFieldDeclarationToQuartet((ReflectionFieldDeclaration) resolvedField));
             } else {
                 // use default ResolvedFieldDeclaration.
-                fieldList.add(Quartet.with(
+                fieldList.add(new AttributeTokens(
                         resolvedField.getName(),
                         resolvedField.declaringType().getPackageName(),
                         resolvedField.declaringType().getClassName(),
@@ -815,14 +817,14 @@ public class DatasetUtils {
      * where "className" refers to the name of the field type. If possible,
      * declarations with multiple fields are split into individual quartets.
      */
-    public static List<Quartet<String, String, String, String>> getFieldsFromType(
+    public static List<AttributeTokens> getFieldsFromType(
             ResolvedType jpResolvedType
     ) {
-        List<Quartet<String, String, String, String>> fieldList = new ArrayList<>();
+        List<AttributeTokens> fieldList = new ArrayList<>();
         if (jpResolvedType.isArray()) {
             // add array field (length).
             Pair<String, String> packageAndClass = JavaParserUtils.getTypeFromResolvedType(jpResolvedType);
-            fieldList.add(Quartet.with(
+            fieldList.add(new AttributeTokens(
                     "length",
                     packageAndClass.getValue0(),
                     packageAndClass.getValue1(),
@@ -859,7 +861,7 @@ public class DatasetUtils {
      * an empty list if an error occurs. See public "getFieldsFromType()"
      * method above for further detail.
      */
-    private static List<Quartet<String, String, String, String>> getFieldsFromType(
+    private static List<AttributeTokens> getFieldsFromType(
             Type jpType
     ) {
         try {
@@ -877,12 +879,12 @@ public class DatasetUtils {
      * e.g., {@code foo(String... bar)}. If the method argument is not an array
      * of this kind, the method simply calls the previous method.
      */
-    public static List<Quartet<String, String, String, String>> getFieldsFromParameter(
+    public static List<AttributeTokens> getFieldsFromParameter(
             Parameter jpParameter
     ) {
         if (TypeUtils.hasEllipsis(jpParameter.toString())) {
             Pair<String, String> packageAndClass = JavaParserUtils.getTypeFromResolvedType(jpParameter.getType().resolve());
-            return List.of(Quartet.with(
+            return List.of(new AttributeTokens(
                     "length",
                     packageAndClass.getValue0(),
                     packageAndClass.getValue1() + "[]",
@@ -951,7 +953,7 @@ public class DatasetUtils {
      * @throws JPClassNotFoundException if the declaring class is not
      * resolvable
      */
-    public static List<Quartet<String, String, String, String>> getTokensMethodVariablesNonPrivateNonStaticAttributes(
+    public static List<AttributeTokens> getTokensMethodVariablesNonPrivateNonStaticAttributes(
             TypeDeclaration<?> jpClass,
             CallableDeclaration<?> jpCallable
     ) throws JPClassNotFoundException {
@@ -960,7 +962,7 @@ public class DatasetUtils {
                 .stream()
                 .filter(JavaParserUtils::isNonPrivateNonStaticAttribute)
                 .toList();
-        List<Quartet<String, String, String, String>> attributeList = new ArrayList<>(convertFieldDeclarationToQuartet(allReceiverFields));
+        List<AttributeTokens> attributeList = new ArrayList<>(convertFieldDeclarationToQuartet(allReceiverFields));
         // add all fields of parameters.
         for (Parameter jpParam : jpCallable.getParameters()) {
             attributeList.addAll(getFieldsFromParameter(jpParam));
@@ -1030,13 +1032,13 @@ public class DatasetUtils {
      * form:
      *  [fieldName, packageName, className, fieldSignature]
      */
-    public static List<Quartet<String, String, String, String>> getTokensOracleVariablesNonPrivateNonStaticAttributes(
+    public static List<AttributeTokens> getTokensOracleVariablesNonPrivateNonStaticAttributes(
             TypeDeclaration<?> jpClass,
             CallableDeclaration<?> jpCallable,
             List<MethodArgumentTokens> methodArgs,
             String oracle
     ) {
-        List<Quartet<String, String, String, String>> attributeList = new ArrayList<>();
+        List<AttributeTokens> attributeList = new ArrayList<>();
         List<LinkedList<String>> oracleSubexpressions = Parser.getInstance().getAllMethodsAndAttributes(oracle)
                 .stream()
                 .map(e -> new LinkedList<>(Splitter.split(e)))

@@ -4,11 +4,11 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.CallableDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.resolution.UnsolvedSymbolException;
-import org.javatuples.Quartet;
 import org.javatuples.Sextet;
 import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleType;
 import star.tratto.data.JPClassNotFoundException;
+import star.tratto.data.records.AttributeTokens;
 import star.tratto.data.records.ClassTokens;
 import star.tratto.data.records.MethodTokens;
 import star.tratto.util.StringUtils;
@@ -36,7 +36,7 @@ public class ProjectOracleGenerator {
     private List<JDoctorCondition> jDoctorConditions;
     private List<ClassTokens> projectClassesTokens;
     private List<MethodTokens> projectMethodsTokens;
-    private List<Quartet<String, String, String, String>> projectAttributesTokens;
+    private List<AttributeTokens> projectAttributesTokens;
     private List<Sextet<String, TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> projectTagsTokens;
 
     /**
@@ -292,7 +292,7 @@ public class ProjectOracleGenerator {
           return null;
         }
         CompilationUnit cu = cuOptional.get();
-        String classSourceCode = DatasetUtils.getOperationClassSource(operation, sourcePath).get(); // Can assume is not empty.
+        String classSourceCode = DatasetUtils.getOperationClassSource(operation, sourcePath).orElseThrow();
         // get TypeDeclaration of class in CompilationUnit.
         TypeDeclaration<?> jpClass = DatasetUtils.getTypeDeclaration(cu, className);
         assert jpClass != null;
