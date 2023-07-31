@@ -1,5 +1,5 @@
 export PYTHONPATH="./"
-python3 scripts/test/test_token_classes_decoder.py \
+python3 scripts/test/test_single_project.py \
 --model_type roberta \
 --tokenizer_name roberta-base \
 --model_name_or_path microsoft/codebert-base \
