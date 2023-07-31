@@ -379,12 +379,16 @@ def main(
 
     # List of partial dataframes
     dfs = []
+    counter = 0
     # Collects partial dataframes from oracles
     for file_name in os.listdir(input_path):
         if project_name in file_name:
             print(file_name)
             df = pd.read_json(os.path.join(input_path, file_name))
             dfs.append(df)
+            counter += 1
+        if counter > 2:
+            break
     df_dataset = pd.concat(dfs)
     df_dataset.reset_index(drop=True, inplace=True)
 
@@ -553,8 +557,8 @@ if __name__ == "__main__":
         args.checkpoint_path,
         args.input_path,
         args.output_path,
-        args.classification_type,
-        args.tratto_model_type,
+        ClassificationType(args.classification_type.upper()),
+        TrattoModelType(args.tratto_model_type.upper()),
         args.model_type,
         args.tokenizer_name,
         args.config_name,
