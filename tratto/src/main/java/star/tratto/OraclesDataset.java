@@ -1,12 +1,12 @@
 package star.tratto;
 
 import star.tratto.data.OracleDatapoint;
+import star.tratto.data.TrattoPath;
 import star.tratto.data.oracles.JDoctorCondition;
 import star.tratto.data.oracles.Project;
 import star.tratto.data.oracles.ProjectOracleGenerator;
 import star.tratto.data.oracles.json.JDoctorConditionParser;
 import star.tratto.data.oracles.json.ProjectParser;
-import star.tratto.data.IOPath;
 import star.tratto.util.FileUtils;
 import star.tratto.util.javaparser.DatasetUtils;
 
@@ -56,25 +56,25 @@ public class OraclesDataset {
 
     public static void main(String[] args) throws IOException {
         // clean output directories.
-        FileUtils.deleteDirectory(IOPath.OUTPUT.getPath());
-        FileUtils.deleteDirectory(IOPath.ORACLES_DATASET.getPath());
+        FileUtils.deleteDirectory(TrattoPath.OUTPUT.getPath());
+        FileUtils.deleteDirectory(TrattoPath.ORACLES_DATASET.getPath());
         // load projects.
-        List<Project> projects = ProjectParser.initialize(IOPath.INPUT_PROJECTS.getPath());
+        List<Project> projects = ProjectParser.initialize(TrattoPath.INPUT_PROJECTS.getPath());
         for (Project project : projects) {
             // get oracle data points.
             List<OracleDatapoint> oracleDPs = getProjectOracleDatapoints(project);
             List<String> oracles = oracleDPs.stream().map(OracleDatapoint::getOracle).toList();
             // save all oracles in target output.
             String oraclesFileName = String.format("oracles_list_%s.json", project.getProjectName());
-            Path oraclesPath = IOPath.OUTPUT.getPath().resolve(project.getProjectName()).resolve(oraclesFileName);
+            Path oraclesPath = TrattoPath.OUTPUT.getPath().resolve(project.getProjectName()).resolve(oraclesFileName);
             FileUtils.write(oraclesPath, oracles);
             // save oracle datapoint information in chunks.
             List<List<OracleDatapoint>> oracleDPChunks = DatasetUtils.splitListIntoChunks(oracleDPs, chunkSize);
             String oracleDPFileName = String.format("oracle_datapoints_%s.json", project.getProjectName());
-            Path oracleDPPath = IOPath.OUTPUT_DATASET.getPath().resolve(oracleDPFileName);
+            Path oracleDPPath = TrattoPath.OUTPUT_DATASET.getPath().resolve(oracleDPFileName);
             writeChunks(oracleDPPath, oracleDPChunks);
         }
         // move oracles dataset from target to resources folder for TokensDataset.
-        FileUtils.move(IOPath.OUTPUT_DATASET.getPath(), IOPath.ORACLES_DATASET.getPath());
+        FileUtils.move(TrattoPath.OUTPUT_DATASET.getPath(), TrattoPath.ORACLES_DATASET.getPath());
     }
 }
