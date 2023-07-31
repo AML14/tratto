@@ -4,8 +4,8 @@ import org.junit.jupiter.api.Test;
 import star.tratto.data.TrattoPath;
 import star.tratto.data.oracles.JDoctorCondition;
 import star.tratto.data.oracles.Project;
-import star.tratto.data.oracles.json.JDoctorConditionParser;
-import star.tratto.data.oracles.json.ProjectParser;
+import star.tratto.data.oracles.JDoctorConditionParser;
+import star.tratto.data.oracles.ProjectParser;
 
 import java.util.ArrayList;
 import java.util.List;
