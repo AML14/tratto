@@ -16,7 +16,6 @@ import com.github.javaparser.resolution.types.ResolvedType;
 import com.github.javaparser.symbolsolver.javaparsermodel.declarations.JavaParserFieldDeclaration;
 import com.github.javaparser.symbolsolver.reflectionmodel.ReflectionFieldDeclaration;
 import org.javatuples.Pair;
-import org.javatuples.Sextet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import star.tratto.data.OracleType;
@@ -27,6 +26,7 @@ import star.tratto.data.ResolvedTypeNotFound;
 import star.tratto.data.TrattoPath;
 import star.tratto.data.records.AttributeTokens;
 import star.tratto.data.records.ClassTokens;
+import star.tratto.data.records.JavadocTagTokens;
 import star.tratto.data.records.JavadocValueTokens;
 import star.tratto.data.records.MethodArgumentTokens;
 import star.tratto.data.records.MethodTokens;
@@ -339,15 +339,15 @@ public class DatasetUtils {
      * @return the original tag in source code as a String.
      */
     public static String reconstructTag(
-            Sextet<String, TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String> jpTag
+            JavadocTagTokens jpTag
     ) {
-        String tagString = switch (jpTag.getValue3()) {
+        String tagString = switch (jpTag.oracleType()) {
             case PRE -> "@param ";
             case NORMAL_POST -> "@return ";
             case EXCEPT_POST -> "@throws ";
         };
-        tagString += !jpTag.getValue4().equals("") ?  jpTag.getValue4() + " " : "";
-        tagString += jpTag.getValue5();
+        tagString += !jpTag.tagName().equals("") ?  jpTag.tagName() + " " : "";
+        tagString += jpTag.tagBody();
         return tagString;
     }
 
@@ -459,11 +459,11 @@ public class DatasetUtils {
      * @throws PackageDeclarationNotFoundException if the package
      * {@link PackageDeclaration} of the compilation unit is not found
      */
-    private static List<Sextet<String, TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> getCuTags(
+    private static List<JavadocTagTokens> getCuTags(
             CompilationUnit cu,
             String fileContent
     ) throws PackageDeclarationNotFoundException {
-        List<Sextet<String, TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> tagList = new ArrayList<>();
+        List<JavadocTagTokens> tagList = new ArrayList<>();
         // iterate through each class.
         List<TypeDeclaration<?>> jpClasses = cu.getTypes();
         for (TypeDeclaration<?> jpClass : jpClasses) {
@@ -488,7 +488,7 @@ public class DatasetUtils {
                         };
                         if (oracleType == null) continue;
                         // add new tag.
-                        tagList.add(Sextet.with(
+                        tagList.add(new JavadocTagTokens(
                                 fileContent,
                                 jpClass,
                                 jpCallable,
@@ -620,10 +620,10 @@ public class DatasetUtils {
      *  "@tag name content"
      * and the value of "@tag" determines "oracleType".
      */
-    public static List<Sextet<String, TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> getProjectTagsTokens(
+    public static List<JavadocTagTokens> getProjectTagsTokens(
             String sourcePath
     ) {
-        List<Sextet<String, TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> tagList = new ArrayList<>();
+        List<JavadocTagTokens> tagList = new ArrayList<>();
         List<Path> javaFiles = getValidJavaFiles(sourcePath);
         // iterate through each file and add JavaDoc tags.
         for (Path javaFile : javaFiles) {
