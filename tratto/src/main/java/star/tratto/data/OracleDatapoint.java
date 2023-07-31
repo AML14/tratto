@@ -12,40 +12,63 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * Oracle containing the information as it is extracted from the Oracles Dataset.
+ * This class represents an individual datapoint in the Oracles Dataset. Each
+ * OracleDatapoint corresponds to an assertion that must be true (the oracle)
+ * based on a JavaDoc tag. Each JavaDoc has a corresponding method, with a
+ * declaring class, in a corresponding project.
  */
 public class OracleDatapoint {
+    // a unique identifier for each oracle datapoint
     private Integer id;
+    // a boolean expression corresponding to a test assertion
     private String oracle;
+    // the type of oracle (e.g. pre-condition, post-condition, exceptional condition)
     private OracleType oracleType;
+    // the name of the project being analyzed
     private String projectName;
+    // the package name of the class under analysis
     private String packageName;
+    // the name of the class under analysis
     private String className;
+    // the Javadoc tag corresponding to the oracle expression
     private String javadocTag;
+    // the Javadoc of the method under analysis
     private String methodJavadoc;
+    // the source code of the method under analysis
     private String methodSourceCode;
+    // the Javadoc of the class under analysis
     private String classJavadoc;
+    // the source code of the class under analysis
     private String classSourceCode;
+    // default tokens for the XText grammar (see "./repos/tokens_grammar.json")
     private List<String> tokensGeneralGrammar;
-    /** A list of pairs (token, type). */
+    // default (token, type) pairs for the XText grammar
     private List<ValueTokens> tokensGeneralValuesGlobalDictionary;
-    /** A list of pairs (token, package). */
+    // all classes in the Java project (className, packageName)
     private List<ClassTokens> tokensProjectClasses;
-    /** A list of quadruples (token, package, class, signature). */
+    // all non-private, static methods in the Java project (methodName, packageName, className, methodSignature)
     private List<MethodTokens> tokensProjectClassesNonPrivateStaticNonVoidMethods;
-    /** A list of quadruples (token, package, class, declaration). */
+    // all non-private, static attributes in the Java project (attributeName, packageName, className, attributeDeclaration)
     private List<AttributeTokens> tokensProjectClassesNonPrivateStaticAttributes;
-    /** A list of pairs (token, type). */
+    // all values in the corresponding method Javadoc (value, type)
     private List<ValueTokens> tokensMethodJavadocValues;
-    /** A list of triples (token, package, class). */
+    // all arguments of the corresponding method (argumentName, packageName, className)
     private List<MethodArgumentTokens> tokensMethodArguments;
-    /** A list of quadruples (token, package, class, signature). */
+    // all non-private, non-static, non-void methods from:
+    //  (1) the declaring class,
+    //  (2) each method argument,
+    //  (3) the method return type
+    // (methodName, packageName, className, methodSignature)
     private List<MethodTokens> tokensMethodVariablesNonPrivateNonStaticNonVoidMethods;
-    /** A list of quadruples (token, package, class, declaration). */
+    // all non-private, non-static, attributes from:
+    //  (1) the declaring class,
+    //  (2) each method argument,
+    //  (3) the method return type
+    // (attributeName, packageName, className, attributeDeclaration)
     private List<AttributeTokens> tokensMethodVariablesNonPrivateNonStaticAttributes;
-    /** A list of quadruples (token, package, class, signature). */
+    // all non-private, non-static, non-void method from the return type of each possible oracle sub-expression
     private List<MethodTokens> tokensOracleVariablesNonPrivateNonStaticNonVoidMethods;
-    /** A list of quadruples (token, package, class, declaration). */
+    // all non-private, non-static attributes from the return type of each possible oracle sub-expression
     private List<AttributeTokens> tokensOracleVariablesNonPrivateNonStaticAttributes;
 
     public OracleDatapoint(Map oracleDatapointMap) {
