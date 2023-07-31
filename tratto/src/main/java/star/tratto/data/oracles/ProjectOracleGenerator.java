@@ -16,6 +16,7 @@ import star.tratto.data.records.JDoctorCondition.PreCondition;
 import star.tratto.data.records.JDoctorCondition.ThrowsCondition;
 import star.tratto.data.records.JavadocTagTokens;
 import star.tratto.data.records.MethodTokens;
+import star.tratto.data.records.Project;
 import star.tratto.util.StringUtils;
 import star.tratto.util.javaparser.DatasetUtils;
 import star.tratto.util.javaparser.TypeUtils;
@@ -65,10 +66,10 @@ public class ProjectOracleGenerator {
     ) {
         this.project = project;
         this.jDoctorConditions = jDoctorConditions;
-        this.projectClassesTokens = DatasetUtils.getProjectClassTokens(this.project.getSrcPath());
-        this.projectMethodsTokens = DatasetUtils.getProjectNonPrivateStaticNonVoidMethodsTokens(this.project.getSrcPath());
-        this.projectAttributesTokens = DatasetUtils.getProjectNonPrivateStaticAttributesTokens(this.project.getSrcPath());
-        this.projectTagsTokens = DatasetUtils.getProjectTagsTokens(this.project.getSrcPath());
+        this.projectClassesTokens = DatasetUtils.getProjectClassTokens(this.project.srcPath());
+        this.projectMethodsTokens = DatasetUtils.getProjectNonPrivateStaticNonVoidMethodsTokens(this.project.srcPath());
+        this.projectAttributesTokens = DatasetUtils.getProjectNonPrivateStaticAttributesTokens(this.project.srcPath());
+        this.projectTagsTokens = DatasetUtils.getProjectTagsTokens(this.project.srcPath());
     }
 
     /**
@@ -183,7 +184,7 @@ public class ProjectOracleGenerator {
             OracleType oracleType,
             String javaDocTag
     ) {
-        String sourcePath = this.project.getSrcPath();
+        String sourcePath = this.project.srcPath();
         String className = DatasetUtils.getOperationClassName(operation);
         String callableName = DatasetUtils.getOperationCallableName(operation);
         List<String> parameterTypes = TypeUtils.fieldDescriptorsToSourceFormats(operation.parameterTypes());
@@ -236,7 +237,7 @@ public class ProjectOracleGenerator {
         builder.setJavadocTag(String.format("%s%s%s", tagType, !tagName.equals("") ? tagName + " " : "", tagContent));
         builder.setOracle(";");
         // set project-level information.
-        builder.setProjectName(this.project.getProjectName());
+        builder.setProjectName(this.project.projectName());
         builder.setClassSourceCode(jpTag.fileContent());
         builder.setPackageName(jpClass.resolve().getPackageName());
         builder.setClassName(jpClass.getNameAsString());
@@ -285,8 +286,8 @@ public class ProjectOracleGenerator {
     private OracleDatapoint getNextDatapoint(JDoctorCondition.Operation operation, Object condition) {
         OracleDatapointBuilder builder = new OracleDatapointBuilder();
         // get basic information of operation.
-        String sourcePath = this.project.getSrcPath();
-        String projectName = this.project.getProjectName();
+        String sourcePath = this.project.srcPath();
+        String projectName = this.project.projectName();
         String packageName = DatasetUtils.getOperationPackageName(operation);
         String className = DatasetUtils.getOperationClassName(operation);
         String callableName = DatasetUtils.getOperationCallableName(operation);

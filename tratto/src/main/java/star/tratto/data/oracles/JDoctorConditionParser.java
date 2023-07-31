@@ -2,6 +2,7 @@ package star.tratto.data.oracles;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import star.tratto.data.records.JDoctorCondition;
+import star.tratto.data.records.Project;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,7 +30,7 @@ public class JDoctorConditionParser {
      */
     public List<JDoctorCondition> parseJDoctorConditions(Project project) {
         // get path of JDoctor conditions.
-        File jDoctorConditionsDir = new File(project.getjDoctorConditionsPath());
+        File jDoctorConditionsDir = new File(project.jDoctorConditionsPath());
         // get all JSON files related to JDoctor conditions.
         File[] jDoctorConditionsFiles = jDoctorConditionsDir.listFiles();
         // convert each JSON file to list of JDoctorConditions.

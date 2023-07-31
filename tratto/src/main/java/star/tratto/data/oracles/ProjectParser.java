@@ -8,8 +8,7 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import star.tratto.data.oracles.Project;
-import star.tratto.data.oracles.ProjectDeserializer;
+import star.tratto.data.records.Project;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -59,7 +58,7 @@ public class ProjectParser {
             return projectList
                     .stream()
                     .filter(p -> {
-                        Path projectDir = Paths.get(p.getProjectPath());
+                        Path projectDir = Paths.get(p.projectPath());
                         return Files.exists(projectDir) && Files.isDirectory(projectDir);
                     })
                     .collect(Collectors.toList());
