@@ -1,8 +1,7 @@
 package star.tratto.data.oracles;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import star.tratto.data.oracles.JDoctorCondition;
-import star.tratto.data.oracles.Project;
+import star.tratto.data.records.JDoctorCondition;
 
 import java.io.File;
 import java.io.IOException;

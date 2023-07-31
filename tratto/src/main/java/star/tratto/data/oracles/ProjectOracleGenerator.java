@@ -9,6 +9,11 @@ import star.tratto.data.OracleType;
 import star.tratto.data.JPClassNotFoundException;
 import star.tratto.data.records.AttributeTokens;
 import star.tratto.data.records.ClassTokens;
+import star.tratto.data.records.JDoctorCondition;
+import star.tratto.data.records.JDoctorCondition.Operation;
+import star.tratto.data.records.JDoctorCondition.PostCondition;
+import star.tratto.data.records.JDoctorCondition.PreCondition;
+import star.tratto.data.records.JDoctorCondition.ThrowsCondition;
 import star.tratto.data.records.JavadocTagTokens;
 import star.tratto.data.records.MethodTokens;
 import star.tratto.util.StringUtils;
@@ -77,27 +82,27 @@ public class ProjectOracleGenerator {
         List<OracleDatapoint> oracleDPs = new ArrayList<>();
         // Generate an OracleDatapoint for each JDoctor condition.
         for (JDoctorCondition jDoctorCondition : this.jDoctorConditions) {
-            JDoctorCondition.Operation operation = jDoctorCondition.getOperation();
+            Operation operation = jDoctorCondition.operation();
             // Add all ThrowsCondition oracles to dataset.
-            List<JDoctorCondition.ThrowsCondition> throwsConditions = jDoctorCondition.getThrowsConditions();
-            for (JDoctorCondition.ThrowsCondition condition : throwsConditions) {
+            List<ThrowsCondition> throwsConditions = jDoctorCondition.throwsCondition();
+            for (ThrowsCondition condition : throwsConditions) {
                 OracleDatapoint nextDatapoint = getNextDatapoint(operation, condition);
                 if (nextDatapoint != null) oracleDPs.add(nextDatapoint);
-                removeProjectClassesTag(operation, OracleType.EXCEPT_POST, condition.getDescription());
+                removeProjectClassesTag(operation, OracleType.EXCEPT_POST, condition.description());
             }
             // Add all PreCondition oracles to dataset.
-            List<JDoctorCondition.PreCondition> preConditions = jDoctorCondition.getPreCondition();
-            for (JDoctorCondition.PreCondition condition : preConditions) {
+            List<PreCondition> preConditions = jDoctorCondition.preConditions();
+            for (PreCondition condition : preConditions) {
                 OracleDatapoint nextDatapoint = getNextDatapoint(operation, condition);
                 if (nextDatapoint != null) oracleDPs.add(nextDatapoint);
-                removeProjectClassesTag(operation, OracleType.PRE, condition.getDescription());
+                removeProjectClassesTag(operation, OracleType.PRE, condition.description());
             }
             // Add all PostCondition oracles to dataset.
-            List<JDoctorCondition.PostCondition> postConditions = jDoctorCondition.getPostConditions();
+            List<PostCondition> postConditions = jDoctorCondition.postConditions();
             if (postConditions.size() > 0) {
                 OracleDatapoint nextDatapoint = getNextDatapoint(operation, postConditions);
                 if (nextDatapoint != null) oracleDPs.add(nextDatapoint);
-                removeProjectClassesTag(operation, OracleType.NORMAL_POST, postConditions.get(0).getDescription());
+                removeProjectClassesTag(operation, OracleType.NORMAL_POST, postConditions.get(0).description());
             }
         }
         int numNonEmptyOracles = oracleDPs.size();
@@ -181,7 +186,7 @@ public class ProjectOracleGenerator {
         String sourcePath = this.project.getSrcPath();
         String className = DatasetUtils.getOperationClassName(operation);
         String callableName = DatasetUtils.getOperationCallableName(operation);
-        List<String> parameterTypes = TypeUtils.fieldDescriptorsToSourceFormats(operation.getParameterTypes());
+        List<String> parameterTypes = TypeUtils.fieldDescriptorsToSourceFormats(operation.parameterTypes());
         Optional<CompilationUnit> cuOptional = DatasetUtils.getOperationCompilationUnit(operation, sourcePath);
         if (cuOptional.isPresent()) {
             TypeDeclaration<?> jpClass = DatasetUtils.getTypeDeclaration(cuOptional.get(), className);
@@ -285,7 +290,7 @@ public class ProjectOracleGenerator {
         String packageName = DatasetUtils.getOperationPackageName(operation);
         String className = DatasetUtils.getOperationClassName(operation);
         String callableName = DatasetUtils.getOperationCallableName(operation);
-        List<String> parameterTypes = TypeUtils.fieldDescriptorsToSourceFormats(operation.getParameterTypes());
+        List<String> parameterTypes = TypeUtils.fieldDescriptorsToSourceFormats(operation.parameterTypes());
         // get CompilationUnit of operation class.
         Optional<CompilationUnit> cuOptional = DatasetUtils.getOperationCompilationUnit(operation, sourcePath);
         if (cuOptional.isEmpty()) {

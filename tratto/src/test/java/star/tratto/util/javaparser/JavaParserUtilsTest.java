@@ -15,7 +15,6 @@ import com.github.javaparser.resolution.types.ResolvedArrayType;
 import com.github.javaparser.resolution.types.ResolvedPrimitiveType;
 import com.github.javaparser.resolution.types.ResolvedType;
 import org.javatuples.Pair;
-import org.javatuples.Triplet;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -498,8 +497,16 @@ public class JavaParserUtilsTest {
                     "negate, notify, notifyAll, " +
                     "polynomialDerivative, subtract, toString, " +
                     "value, wait]";
+            // other possible output when running locally.
+            String otherExpected = "[add, clone, degree, " +
+                    "derivative, differentiate, equals, " +
+                    "evaluate, finalize, getClass, " +
+                    "getCoefficients, hashCode, multiply, " +
+                    "negate, notify, notifyAll, " +
+                    "polynomialDerivative, subtract, toString, " +
+                    "value, wait, wait0]";
             String actual = availableMethodList.toString();
-            assertEquals(expected, actual);
+            assertTrue(actual.equals(expected) || actual.equals(otherExpected));
         } catch (JPClassNotFoundException e) {
             fail();
         }

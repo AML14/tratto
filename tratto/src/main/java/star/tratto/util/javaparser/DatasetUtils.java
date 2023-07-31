@@ -30,9 +30,9 @@ import star.tratto.data.JPClassNotFoundException;
 import star.tratto.data.PackageDeclarationNotFoundException;
 import star.tratto.data.ResolvedTypeNotFound;
 import star.tratto.data.TrattoPath;
-import star.tratto.data.oracles.JDoctorCondition.Operation;
 import star.tratto.data.records.AttributeTokens;
 import star.tratto.data.records.ClassTokens;
+import star.tratto.data.records.JDoctorCondition.Operation;
 import star.tratto.data.records.JavadocTagTokens;
 import star.tratto.data.records.ValueTokens;
 import star.tratto.data.records.MethodArgumentTokens;
@@ -1205,7 +1205,7 @@ public class DatasetUtils {
             Operation operation,
             String sourcePath
     ) {
-        return Paths.get(sourcePath, operation.getClassName().replace(".", "/") + ".java");
+        return Paths.get(sourcePath, operation.className().replace(".", "/") + ".java");
     }
 
     /**
@@ -1249,7 +1249,7 @@ public class DatasetUtils {
     public static String getOperationPackageName(
             Operation operation
     ) {
-        List<String> pathList = TypeUtils.getNameSegments(operation.getClassName());
+        List<String> pathList = TypeUtils.getNameSegments(operation.className());
         return TypeUtils.getPackageNameFromNameSegments(pathList);
     }
 
@@ -1259,7 +1259,7 @@ public class DatasetUtils {
     public static String getOperationClassName(
             Operation operation
     ) {
-        List<String> pathList = TypeUtils.getNameSegments(operation.getClassName());
+        List<String> pathList = TypeUtils.getNameSegments(operation.className());
         return TypeUtils.getClassNameFromNameSegments(pathList);
     }
 
@@ -1269,7 +1269,7 @@ public class DatasetUtils {
     public static String getOperationCallableName(
             Operation operation
     ) {
-        List<String> pathList = TypeUtils.getNameSegments(operation.getName());
+        List<String> pathList = TypeUtils.getNameSegments(operation.methodName());
         return TypeUtils.getClassNameFromNameSegments(pathList);
     }
 

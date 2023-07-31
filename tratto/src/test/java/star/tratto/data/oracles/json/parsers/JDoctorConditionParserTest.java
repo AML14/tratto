@@ -2,10 +2,10 @@ package star.tratto.data.oracles.json.parsers;
 
 import org.junit.jupiter.api.Test;
 import star.tratto.data.TrattoPath;
-import star.tratto.data.oracles.JDoctorCondition;
 import star.tratto.data.oracles.Project;
 import star.tratto.data.oracles.JDoctorConditionParser;
 import star.tratto.data.oracles.ProjectParser;
+import star.tratto.data.records.JDoctorCondition;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,11 +25,11 @@ public class JDoctorConditionParserTest {
         assertEquals(36, actual.size());
         // test subset of conditions.
         for (JDoctorCondition condition : actual) {
-            if (condition.getOperation().getClassName().equals("org.graphstream.graph.implementations.AbstractElement")) {
-                assertEquals("oldValue==null", condition.getPreCondition().get(0).getGuard().getCondition());
-            } else if (condition.getOperation().getClassName().equals("org.graphstream.graph.implementations.AdjacencyListGraph")) {
+            if (condition.operation().className().equals("org.graphstream.graph.implementations.AbstractElement")) {
+                assertEquals("oldValue==null", condition.preConditions().get(0).guard().condition());
+            } else if (condition.operation().className().equals("org.graphstream.graph.implementations.AdjacencyListGraph")) {
                 List<Integer> expected = new ArrayList<>(List.of(3, 5));
-                assertTrue(expected.contains(condition.getIdentifiers().getParameters().size()));
+                assertTrue(expected.contains(condition.identifiers().parameters().size()));
             }
         }
     }
