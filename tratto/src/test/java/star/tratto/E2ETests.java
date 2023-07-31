@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import star.tratto.data.OracleDP2TokenDPs;
 import star.tratto.data.TokenDPType;
-import star.tratto.data.IOPath;
+import star.tratto.data.TrattoPath;
 import star.tratto.token.TokenSuggesterTest;
 import star.tratto.util.FileUtils;
 
@@ -42,7 +42,7 @@ public class E2ETests {
         TokensDataset.main(new String[] {});
 
         // Delete datasets and recreate folders
-        Path oraclesDataset = IOPath.ORACLES_DATASET.getPath();
+        Path oraclesDataset = TrattoPath.ORACLES_DATASET.getPath();
         Path tokensDataset = Paths.get(TokensDataset.TOKENS_DATASET_FOLDER);
         FileUtils.deleteDirectory(oraclesDataset);
         FileUtils.deleteDirectory(tokensDataset);

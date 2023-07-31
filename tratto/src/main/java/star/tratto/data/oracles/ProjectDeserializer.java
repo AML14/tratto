@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import star.tratto.data.TrattoPath;
 import star.tratto.data.oracles.Project;
-import star.tratto.data.IOPath;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -46,7 +46,7 @@ public class ProjectDeserializer extends JsonDeserializer<Project> {
         // source code of the project
         List<String> srcPathList = deserializeList((ArrayNode) node.get("srcPathList"));
         // Transform the lists into string representations of the paths
-        String projectPath = Paths.get(IOPath.RESOURCES.getPath().toString(), projetDirPathList.toArray(new String[0])).toString();
+        String projectPath = Paths.get(TrattoPath.RESOURCES.getPath().toString(), projetDirPathList.toArray(new String[0])).toString();
         String jarPath = Paths.get(projectPath, jarPathList.toArray(new String[0])).toString();
         String jDocConditionsPath = Paths.get(projectPath, jDocConditionsPathList.toArray(new String[0])).toString();
         String srcPath = Paths.get(projectPath, srcPathList.toArray(String[]::new)).toString();

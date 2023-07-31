@@ -5,7 +5,7 @@ import org.javatuples.Quartet;
 import org.javatuples.Triplet;
 import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleType;
-import star.tratto.data.IOPath;
+import star.tratto.data.TrattoPath;
 import star.tratto.util.FileUtils;
 
 import java.nio.file.Path;
@@ -41,7 +41,7 @@ public class OracleDatapointBuilder {
      * Sets default general tokens for symbolic grammar.
      */
     private void setDefaultGrammarTokens() {
-        Path tokensGrammarPath = IOPath.TOKENS_GRAMMAR.getPath();
+        Path tokensGrammarPath = TrattoPath.TOKENS_GRAMMAR.getPath();
         List<String> tokenGrammar = FileUtils.readJSONList(tokensGrammarPath)
                 .stream()
                 .map(e -> (String) e)
@@ -53,7 +53,7 @@ public class OracleDatapointBuilder {
      * Sets default global values for tokens.
      */
     private void setDefaultGeneralValues() {
-        Path tokensGeneralValuesPath = IOPath.TOKENS_GENERAL_VALUES.getPath();
+        Path tokensGeneralValuesPath = TrattoPath.TOKENS_GENERAL_VALUES.getPath();
         List<Pair<String, String>> tokenGeneralValues = FileUtils.readJSONList(tokensGeneralValuesPath)
                 .stream()
                 .map(e -> ((List<?>) e)
