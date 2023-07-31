@@ -337,10 +337,10 @@ public class DatasetUtils {
     }
 
     /**
-     * Reconstructs the original tag in source code from a list of tag
+     * Reconstructs the original tag in source code from a record of tag
      * information.
      *
-     * @param jpTag a sextet of tag information, including: file source code,
+     * @param jpTag a record of tag information, including: file source code,
      *              JavaParser class, JavaParser method/constructor, oracle
      *              type, name, and content.
      * @return the original tag in source code as a String.
