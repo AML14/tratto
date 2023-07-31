@@ -1,6 +1,5 @@
 package star.tratto.data;
 
-import org.javatuples.Pair;
 import star.tratto.data.records.AttributeTokens;
 import star.tratto.data.records.ClassTokens;
 import star.tratto.data.records.ValueTokens;
