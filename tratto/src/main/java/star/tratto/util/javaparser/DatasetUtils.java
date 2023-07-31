@@ -75,15 +75,14 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets a list of each class name and corresponding package names for all
-     * classes in a compilation unit.
+     * Gets a list of class tokens for each class in a java file.
      *
-     * @param cu the compilation unit of a Java file
-     * @return a list of (className, packageName) records
+     * @param cu the compilation unit of a java file
+     * @return a list of class tokens, (className, packageName)
      * @throws PackageDeclarationNotFoundException if the package cannot be
      * retrieved
      */
-    private static List<ClassTokens> getClassNameAndPackage(
+    private static List<ClassTokens> getClassTokens(
             CompilationUnit cu
     ) throws PackageDeclarationNotFoundException {
         List<ClassTokens> classList = new ArrayList<>();
@@ -148,13 +147,11 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets all numeric values in a JavaDoc comment represented as a pair of
-     * strings.
+     * Gets all numeric value tokens in a Javadoc comment.
      *
      * @param javadocComment the string representation of a JavaDoc comment
-     * @return a list of pairs of strings representing all numeric values
-     * in the JavaDoc comment. The first element is the numeric value, and the
-     * second element is the type of numeric value ("int" or "double").
+     * @return a list of value tokens. The first element is the numeric value,
+     * and the second element is the type of numeric value ("int" or "double").
      */
     private static List<ValueTokens> findAllNumericValuesInJavadoc(
             String javadocComment
@@ -188,14 +185,13 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets all string values in a JavaDoc comment represented as a pair of
-     * strings. The second value may seem redundant, but is added for
-     * consistency with the numeric JavaDoc values.
+     * Gets all string value tokens in a Javadoc comment. The second value may
+     * seem redundant, but is added for consistency with the numeric Javadoc
+     * values when using the XText grammar.
      *
-     * @param jpJavadoc the string representation of a JavaDoc comment
-     * @return a list of pairs of strings representing the string values in
-     * the JavaDoc comment. The first element is the string value, and the
-     * second element is the type of value (always "String").
+     * @param jpJavadoc the string representation of a Javadoc comment
+     * @return a list of value tokens. The first element is the numeric value,
+     * and the second element is the type of value (always "String").
      */
     private static List<ValueTokens> findAllStringValuesInJavadoc(
             String jpJavadoc
@@ -213,11 +209,10 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets all numerical and string values from a given JavaDoc comment via
-     * pattern matching.
+     * Gets all value tokens in a Javadoc comment via pattern matching.
      *
-     * @param jpJavadoc the JavaDoc comment
-     * @return a list of values describing each numerical and string value.
+     * @param jpJavadoc the Javadoc comment
+     * @return a list of records describing each numerical and string value.
      * Each entry has the form:
      *  [value, valueType]
      * For example: [["name", "String"], ["64", "int"]]
@@ -225,10 +220,10 @@ public class DatasetUtils {
     public static List<ValueTokens> getJavadocValues(
             String jpJavadoc
     ) {
-        List<ValueTokens> pairList = new ArrayList<>();
-        pairList.addAll(findAllNumericValuesInJavadoc(jpJavadoc));
-        pairList.addAll(findAllStringValuesInJavadoc(jpJavadoc));
-        return pairList;
+        List<ValueTokens> valueList = new ArrayList<>();
+        valueList.addAll(findAllNumericValuesInJavadoc(jpJavadoc));
+        valueList.addAll(findAllStringValuesInJavadoc(jpJavadoc));
+        return valueList;
     }
 
     /**
@@ -546,7 +541,7 @@ public class DatasetUtils {
      * @param sourcePath the project root directory
      * @return a list of (className, packageName) pairs
      */
-    public static List<ClassTokens> getProjectClassesTokens(
+    public static List<ClassTokens> getProjectClassTokens(
             String sourcePath
     ) {
         List<ClassTokens> projectClasses = new ArrayList<>();
@@ -556,7 +551,7 @@ public class DatasetUtils {
             Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnit(javaFile.toAbsolutePath());
             if (cu.isPresent()) {
                 try {
-                    projectClasses.addAll(getClassNameAndPackage(cu.get()));
+                    projectClasses.addAll(getClassTokens(cu.get()));
                 } catch (PackageDeclarationNotFoundException e) {
                     e.printStackTrace();
                 }

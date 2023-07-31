@@ -60,7 +60,7 @@ public class ProjectOracleGenerator {
     ) {
         this.project = project;
         this.jDoctorConditions = jDoctorConditions;
-        this.projectClassesTokens = DatasetUtils.getProjectClassesTokens(this.project.getSrcPath());
+        this.projectClassesTokens = DatasetUtils.getProjectClassTokens(this.project.getSrcPath());
         this.projectMethodsTokens = DatasetUtils.getProjectNonPrivateStaticNonVoidMethodsTokens(this.project.getSrcPath());
         this.projectAttributesTokens = DatasetUtils.getProjectNonPrivateStaticAttributesTokens(this.project.getSrcPath());
         this.projectTagsTokens = DatasetUtils.getProjectTagsTokens(this.project.getSrcPath());
