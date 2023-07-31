@@ -12,7 +12,7 @@ import star.tratto.data.OracleType;
 import star.tratto.data.JPClassNotFoundException;
 import star.tratto.data.records.AttributeTokens;
 import star.tratto.data.records.JavadocTagTokens;
-import star.tratto.data.records.JavadocValueTokens;
+import star.tratto.data.records.ValueTokens;
 import star.tratto.data.records.MethodArgumentTokens;
 import star.tratto.data.records.MethodTokens;
 
@@ -65,8 +65,8 @@ public class DatasetUtilsTest {
         CallableDeclaration<?> jpCallable = getCallableDeclaration(jpClass, methodName, methodArgs);
         assertNotNull(jpCallable);
         String javadoc = getCallableJavadoc(jpCallable).trim();
-        List<JavadocValueTokens> expected = oracleDatapoint.getTokensMethodJavadocValues();
-        List<JavadocValueTokens> actual = getJavadocValues(javadoc);
+        List<ValueTokens> expected = oracleDatapoint.getTokensMethodJavadocValues();
+        List<ValueTokens> actual = getJavadocValues(javadoc);
         assertEquals(expected, actual);
     }
 

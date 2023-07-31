@@ -5,7 +5,7 @@ import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleType;
 import star.tratto.data.records.AttributeTokens;
 import star.tratto.data.records.ClassTokens;
-import star.tratto.data.records.JavadocValueTokens;
+import star.tratto.data.records.ValueTokens;
 import star.tratto.data.records.MethodArgumentTokens;
 import star.tratto.data.records.MethodTokens;
 import star.tratto.data.TrattoPath;
@@ -195,7 +195,7 @@ public class OracleDatapointBuilder {
         this.datapoint.setTokensProjectClassesNonPrivateStaticAttributes(tokensProjectClassesNonPrivateStaticAttributes);
     }
 
-    public void setTokensMethodJavadocValues(List<JavadocValueTokens> tokensMethodJavadocValues) {
+    public void setTokensMethodJavadocValues(List<ValueTokens> tokensMethodJavadocValues) {
         this.datapoint.setTokensMethodJavadocValues(tokensMethodJavadocValues);
     }
 

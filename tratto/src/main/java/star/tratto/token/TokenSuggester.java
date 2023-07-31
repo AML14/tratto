@@ -1,11 +1,10 @@
 package star.tratto.token;
 
 import org.eclipse.emf.ecore.resource.Resource;
-import org.javatuples.Pair;
 import org.javatuples.Triplet;
 import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleType;
-import star.tratto.data.records.JavadocValueTokens;
+import star.tratto.data.records.ValueTokens;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.token.restrictions.multi.MultiTokenRestriction;
 import star.tratto.token.restrictions.multi.MultiTokenRestrictions;
@@ -260,7 +259,7 @@ public class TokenSuggester {
         List<String> stringTokens =  oracleDatapoint.getTokensMethodJavadocValues()
                 .stream()
                 .filter(value -> value.type().equals("String"))
-                .map(JavadocValueTokens::value).collect(Collectors.toList());
+                .map(ValueTokens::value).collect(Collectors.toList());
         stringTokens.addAll(GLOBAL_DICTIONARY.get("String"));
         return stringTokens;
     }
@@ -269,7 +268,7 @@ public class TokenSuggester {
         List<String> intTokens = oracleDatapoint.getTokensMethodJavadocValues()
                 .stream()
                 .filter(value -> value.type().equals("int"))
-                .map(JavadocValueTokens::value).collect(Collectors.toList());
+                .map(ValueTokens::value).collect(Collectors.toList());
         intTokens.addAll(GLOBAL_DICTIONARY.get("int"));
         return intTokens;
     }
@@ -278,7 +277,7 @@ public class TokenSuggester {
         List<String> doubleTokens = oracleDatapoint.getTokensMethodJavadocValues()
                 .stream()
                 .filter(value -> value.type().equals("double") || value.type().equals("int"))
-                .map(JavadocValueTokens::value).collect(Collectors.toList());
+                .map(ValueTokens::value).collect(Collectors.toList());
         doubleTokens.addAll(GLOBAL_DICTIONARY.get("double"));
         doubleTokens.addAll(GLOBAL_DICTIONARY.get("int"));
         return doubleTokens;

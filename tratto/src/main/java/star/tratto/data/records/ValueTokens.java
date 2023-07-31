@@ -3,16 +3,17 @@ package star.tratto.data.records;
 import java.util.List;
 
 /**
- * This record stores basic information of a Javadoc value. Includes the
- * value (value) and type of value (type). For example,
+ * This record stores basic information of a variable value. Includes the
+ * value (value) and the type of the value (type). For example,
  *  "1"    =>    ("1", "int")
+ * Used for XText grammar.
  *
  * @param value the Javadoc value
  * @param type the type of the Javadoc value
  */
-public record JavadocValueTokens(String value, String type) {
+public record ValueTokens(String value, String type) {
     // Non-canonical constructor using List to read from file
-    public JavadocValueTokens(List<String> tokens) {
+    public ValueTokens(List<String> tokens) {
         this(tokens.get(0), tokens.get(1));
     }
 
