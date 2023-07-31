@@ -182,7 +182,7 @@ class OracleTrainer:
             all_predictions = []
             all_labels = []
             # Define early stopping criteria
-            patience = 10  # Number of epochs to wait for improvement
+            patience = 3  # Number of epochs to wait for improvement
             best_f1_score_micro = 0
             counter = 0
 
@@ -343,8 +343,10 @@ class OracleTrainer:
                     # Save checkpoints
                     self._save_checkpoint(epoch, step, stats)
 
+                    # Round F1-Score to discard minor improvments and speed-up convergence
+                    v_f1_micro = round(v_f1_micro, 2)
                     # Check if validation loss has improved
-                    if v_f1_micro >= best_f1_score_micro:
+                    if v_f1_micro > best_f1_score_micro:
                         counter = 0
                         best_f1_score_micro = v_f1_micro
                     else:

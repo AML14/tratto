@@ -29,6 +29,22 @@ def data_processor(
     return data_processor
 
 @pytest.fixture(scope='function')
+def df_projects(
+        arg_data_dir_ten_datapoints
+):
+    # list of partial dataframes
+    dfs = []
+    # Datasets path
+    oracles_dataset = os.path.join(arg_data_dir_ten_datapoints)
+    # Collects partial dataframes from oracles
+    for file_name in os.listdir(oracles_dataset):
+        df = pd.read_json(os.path.join(oracles_dataset, file_name))
+        dfs.append(df)
+    df_dataset = pd.concat(dfs)
+    df_dataset.reset_index(drop=True, inplace=True)
+    return df_dataset
+
+@pytest.fixture(scope='function')
 def data_processor_single_datapoint(
         arg_data_dir_single_datapoint,
         arg_test_ratio,

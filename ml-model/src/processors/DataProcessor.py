@@ -156,7 +156,7 @@ class DataProcessor:
         The dictionary of labels. The keys strings representing the name of the corresponding target label, while the 
         values are strings representing the name of the corresponding target label.
         """
-        return {i: k for k, i in self.get_encoder_ids_labels().items()}
+        return {k: i for i, k in self.get_encoder_ids_labels().items()}
 
     def get_encoder_ids_labels(
         self
@@ -175,8 +175,7 @@ class DataProcessor:
             tgt_column_name = "tokenClass" if self._tratto_model_type == TrattoModelType.TOKEN_CLASSES else "token"
         else:
             tgt_column_name = "label"
-        unique_values = np.unique(self._df_dataset[tgt_column_name])
-        ids_tgt_labels_dict = {i: k for i, k in enumerate(unique_values)}
+        ids_tgt_labels_dict = {i: str(k) for i, k in enumerate(sorted(list(self._df_dataset[tgt_column_name].unique())))}
         return ids_tgt_labels_dict
 
     def get_num_labels(self):
@@ -202,9 +201,9 @@ class DataProcessor:
         corresponding numeric codification.
         """
         if self._tratto_model_type == TrattoModelType.TOKEN_CLASSES:
-            return {k: i for i, k in enumerate(self._df_dataset["tokenClass"].unique())}
+            return {k: i for i, k in enumerate(sorted(list(self._df_dataset["tokenClass"].unique())))}
         else:
-            return {k: i for i, k in enumerate(self._df_dataset["token"].unique())}
+            return {k: i for i, k in enumerate(sorted(list(self._df_dataset["token"].unique())))}
 
     def get_encoder_ids_classes(self):
         """
@@ -340,8 +339,7 @@ class DataProcessor:
         self._processed_dataset["t_test"] = self._tokenize_dataset(test_dataset)
 
     def pre_processing(
-            self,
-
+            self
     ):
         """
         The method pre-processes the loaded dataset that will be used to train and test the model.
@@ -563,6 +561,7 @@ class DataProcessor:
             df = pd.read_json(os.path.join(oracles_dataset, file_name))
             dfs.append(df)
         df_dataset = pd.concat(dfs)
+        df_dataset.reset_index(drop=True, inplace=True)
         return df_dataset
 
     def _tokenize_dataset(
