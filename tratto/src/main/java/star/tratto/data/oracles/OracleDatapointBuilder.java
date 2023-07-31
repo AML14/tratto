@@ -1,6 +1,5 @@
 package star.tratto.data.oracles;
 
-import org.javatuples.Pair;
 import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleType;
 import star.tratto.data.records.AttributeTokens;
@@ -57,7 +56,7 @@ public class OracleDatapointBuilder {
      */
     private void setDefaultGeneralValues() {
         Path tokensGeneralValuesPath = TrattoPath.TOKENS_GENERAL_VALUES.getPath();
-        List<Pair<String, String>> tokenGeneralValues = FileUtils.readJSONList(tokensGeneralValuesPath)
+        List<ValueTokens> tokenGeneralValues = FileUtils.readJSONList(tokensGeneralValuesPath)
                 .stream()
                 .map(e -> ((List<?>) e)
                         .stream()
@@ -65,7 +64,7 @@ public class OracleDatapointBuilder {
                         .collect(Collectors.toList()))
                 .toList()
                 .stream()
-                .map(tokenList -> new Pair<>(tokenList.get(0), tokenList.get(1)))
+                .map(ValueTokens::new)
                 .collect(Collectors.toList());
         this.setTokensGeneralValuesGlobalDictionary(tokenGeneralValues);
     }
@@ -179,7 +178,7 @@ public class OracleDatapointBuilder {
         this.datapoint.setTokensGeneralGrammar(tokensGeneralGrammar);
     }
 
-    public void setTokensGeneralValuesGlobalDictionary(List<Pair<String, String>> tokensGeneralValuesGlobalDictionary) {
+    public void setTokensGeneralValuesGlobalDictionary(List<ValueTokens> tokensGeneralValuesGlobalDictionary) {
         this.datapoint.setTokensGeneralValuesGlobalDictionary(tokensGeneralValuesGlobalDictionary);
     }
 

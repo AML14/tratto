@@ -29,7 +29,7 @@ public class OracleDatapoint {
     private String classSourceCode;
     private List<String> tokensGeneralGrammar;
     /** A list of pairs (token, type). */
-    private List<Pair<String, String>> tokensGeneralValuesGlobalDictionary;
+    private List<ValueTokens> tokensGeneralValuesGlobalDictionary;
     /** A list of pairs (token, package). */
     private List<ClassTokens> tokensProjectClasses;
     /** A list of quadruples (token, package, class, signature). */
@@ -62,7 +62,7 @@ public class OracleDatapoint {
         this.classJavadoc = (String) oracleDatapointMap.get("classJavadoc");
         this.classSourceCode = (String) oracleDatapointMap.get("classSourceCode");
         this.tokensGeneralGrammar = (List<String>) oracleDatapointMap.get("tokensGeneralGrammar");
-        this.tokensGeneralValuesGlobalDictionary = ((List<List<String>>) oracleDatapointMap.get("tokensGeneralValuesGlobalDictionary")).stream().map(Pair::fromCollection).toList();
+        this.tokensGeneralValuesGlobalDictionary = ((List<List<String>>) oracleDatapointMap.get("tokensGeneralValuesGlobalDictionary")).stream().map(ValueTokens::new).toList();
         this.tokensProjectClasses = ((List<List<String>>) oracleDatapointMap.get("tokensProjectClasses")).stream().map(ClassTokens::new).toList();
         this.tokensProjectClassesNonPrivateStaticNonVoidMethods = ((List<List<String>>) oracleDatapointMap.get("tokensProjectClassesNonPrivateStaticNonVoidMethods")).stream().map(MethodTokens::new).toList();
         this.tokensProjectClassesNonPrivateStaticAttributes = ((List<List<String>>) oracleDatapointMap.get("tokensProjectClassesNonPrivateStaticAttributes")).stream().map(AttributeTokens::new).toList();
@@ -87,7 +87,7 @@ public class OracleDatapoint {
             String classJavadoc,
             String classSourceCode,
             List<String> tokensGeneralGrammar,
-            List<Pair<String, String>> tokensGeneralValuesGlobalDictionary,
+            List<ValueTokens> tokensGeneralValuesGlobalDictionary,
             List<ClassTokens> tokensProjectClasses,
             List<MethodTokens> tokensProjectClassesNonPrivateStaticNonVoidMethods,
             List<AttributeTokens> tokensProjectClassesNonPrivateStaticAttributes,
@@ -141,7 +141,7 @@ public class OracleDatapoint {
         oracleDatapointMap.put("classJavadoc", classJavadoc);
         oracleDatapointMap.put("classSourceCode", classSourceCode);
         oracleDatapointMap.put("tokensGeneralGrammar", tokensGeneralGrammar);
-        oracleDatapointMap.put("tokensGeneralValuesGlobalDictionary", tokensGeneralValuesGlobalDictionary.stream().map(Pair::toList).collect(Collectors.toList()));
+        oracleDatapointMap.put("tokensGeneralValuesGlobalDictionary", tokensGeneralValuesGlobalDictionary.stream().map(ValueTokens::toList).collect(Collectors.toList()));
         oracleDatapointMap.put("tokensProjectClasses", tokensProjectClasses.stream().map(ClassTokens::toList).collect(Collectors.toList()));
         oracleDatapointMap.put("tokensProjectClassesNonPrivateStaticNonVoidMethods", tokensProjectClassesNonPrivateStaticNonVoidMethods.stream().map(MethodTokens::toList).collect(Collectors.toList()));
         oracleDatapointMap.put("tokensProjectClassesNonPrivateStaticAttributes", tokensProjectClassesNonPrivateStaticAttributes.stream().map(AttributeTokens::toList).collect(Collectors.toList()));
@@ -257,11 +257,11 @@ public class OracleDatapoint {
         this.tokensGeneralGrammar = tokensGeneralGrammar;
     }
 
-    public List<Pair<String, String>> getTokensGeneralValuesGlobalDictionary() {
+    public List<ValueTokens> getTokensGeneralValuesGlobalDictionary() {
         return tokensGeneralValuesGlobalDictionary;
     }
 
-    public void setTokensGeneralValuesGlobalDictionary(List<Pair<String, String>> tokensGeneralValuesGlobalDictionary) {
+    public void setTokensGeneralValuesGlobalDictionary(List<ValueTokens> tokensGeneralValuesGlobalDictionary) {
         this.tokensGeneralValuesGlobalDictionary = tokensGeneralValuesGlobalDictionary;
     }
 
