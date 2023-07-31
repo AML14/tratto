@@ -1,4 +1,4 @@
-package star.tratto.data.oracles.json;
+package star.tratto.data.oracles;
 
 
 import com.fasterxml.jackson.core.type.TypeReference;
