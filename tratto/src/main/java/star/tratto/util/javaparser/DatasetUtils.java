@@ -41,7 +41,6 @@ import star.tratto.util.FileUtils;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -521,18 +520,16 @@ public class DatasetUtils {
      * Finds all ".java" files in a given directory. Files are filtered by an
      * ad-hoc list of files to ignore (see dataset/repos/ignore_file.json).
      *
-     * @param sourcePath the path to the project root directory
+     * @param sourceDir the path to the project root directory
      * @return a list of all valid files {@link File}
      */
-    private static List<Path> getValidJavaFiles(String sourcePath) {
-        // Get list of all Java files.
-        Path sourceDir = Path.of(sourcePath);
-        List<Path> allFiles = FileUtils.getAllJavaFilesFromDirectory(sourceDir);
+    private static List<Path> getValidJavaFiles(Path sourceDir) {
+        List<Path> allJavaFiles = FileUtils.getAllJavaFilesFromDirectory(sourceDir);
         // Get list of files to ignore.
         Path ignoreFilePath = TrattoPath.IGNORE_FILE.getPath();
         List<String> ignoreFileList = FileUtils.readJSONList(ignoreFilePath, String.class);
         // filter files.
-        return allFiles
+        return allJavaFiles
                 .stream()
                 .filter(f -> !ignoreFileList.contains(f.getFileName().toString()))
                 .collect(Collectors.toList());
@@ -542,14 +539,14 @@ public class DatasetUtils {
      * Collects information about all classes in a project from a given
      * source path.
      *
-     * @param sourcePath the project root directory
+     * @param sourceDir the project root directory
      * @return a list of (className, packageName) pairs
      */
     public static List<Pair<String, String>> getProjectClassesTokens(
-            String sourcePath
+            Path sourceDir
     ) {
         List<Pair<String, String>> projectClasses = new ArrayList<>();
-        List<Path> javaFiles = getValidJavaFiles(sourcePath);
+        List<Path> javaFiles = getValidJavaFiles(sourceDir);
         // iterate through each file and add class tokens.
         for (Path javaFile : javaFiles) {
             Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnit(javaFile.toAbsolutePath());
@@ -568,16 +565,16 @@ public class DatasetUtils {
      * Collects information about all non-private, static, non-void methods
      * in a project from a given source path.
      *
-     * @param sourcePath the project root directory
+     * @param sourceDir the project root directory
      * @return a list of information about each method. Each entry has the
      * form:
      *  [methodName, packageName, className, methodSignature]
      */
     public static List<Quartet<String, String, String, String>> getProjectNonPrivateStaticNonVoidMethodsTokens(
-            String sourcePath
+            Path sourceDir
     ) {
         List<Quartet<String, String, String, String>> projectMethods = new ArrayList<>();
-        List<Path> javaFiles = getValidJavaFiles(sourcePath);
+        List<Path> javaFiles = getValidJavaFiles(sourceDir);
         // iterate through each file and add method tokens.
         for (Path javaFile : javaFiles) {
             Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnit(javaFile.toAbsolutePath());
@@ -596,16 +593,16 @@ public class DatasetUtils {
      * Collects information about all non-private, static attributes
      * in a project from a given source path.
      *
-     * @param sourcePath the project root directory
+     * @param sourceDir the project root directory
      * @return a list of information about each attribute. Each entry has the
      * form:
      *  [variableName, packageName, className, variableSignature]
      */
     public static List<Quartet<String, String, String, String>> getProjectNonPrivateStaticAttributesTokens(
-            String sourcePath
+            Path sourceDir
     ) {
         List<Quartet<String, String, String, String>> attributeList = new ArrayList<>();
-        List<Path> javaFiles = getValidJavaFiles(sourcePath);
+        List<Path> javaFiles = getValidJavaFiles(sourceDir);
         // iterate through each file and add attribute tokens.
         for (Path javaFile : javaFiles) {
             Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnit(javaFile.toAbsolutePath());
@@ -624,7 +621,7 @@ public class DatasetUtils {
      * Collects information about all JavaDoc tags in a project from a
      * given source path.
      *
-     * @param sourcePath the project root directory
+     * @param sourceDir the project root directory
      * @return a list of information about each tag. Each entry has the form:
      *  [typeDeclaration, callableDeclaration, oracleType, name, content]
      * where a JavaDoc tag is interpreted as:
@@ -632,10 +629,10 @@ public class DatasetUtils {
      * and the value of "@tag" determines "oracleType".
      */
     public static List<Sextet<String, TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> getProjectTagsTokens(
-            String sourcePath
+            Path sourceDir
     ) {
         List<Sextet<String, TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> tagList = new ArrayList<>();
-        List<Path> javaFiles = getValidJavaFiles(sourcePath);
+        List<Path> javaFiles = getValidJavaFiles(sourceDir);
         // iterate through each file and add JavaDoc tags.
         for (Path javaFile : javaFiles) {
             Path absoluteJavaFile = javaFile.toAbsolutePath();
@@ -1202,14 +1199,14 @@ public class DatasetUtils {
 
     /**
      * @param operation an operation of a JDoctor condition
-     * @param sourcePath the source path of the relevant project
+     * @param sourceDir the source path of the relevant project
      * @return the path of the class in the JDoctor condition
      */
     private static Path getClassPath(
             Operation operation,
-            String sourcePath
+            Path sourceDir
     ) {
-        return Paths.get(sourcePath, operation.getClassName().replace(".", "/") + ".java");
+        return sourceDir.resolve(operation.getClassName().replace(".", "/") + ".java");
     }
 
     /**
@@ -1217,16 +1214,16 @@ public class DatasetUtils {
      * class of a JDoctor condition.
      *
      * @param operation an operation representation of a JDoctor condition
-     * @param sourcePath the source path of the relevant project
+     * @param sourceDir the source path of the relevant project
      * @return an optional JavaParser compilation unit {@link CompilationUnit}
      * corresponding to the class of the JDoctor condition, if it is found.
      * Otherwise, the method returns an empty optional.
      */
     public static Optional<CompilationUnit> getOperationCompilationUnit(
             Operation operation,
-            String sourcePath
+            Path sourceDir
     ) {
-        Path classPath = getClassPath(operation, sourcePath);
+        Path classPath = getClassPath(operation, sourceDir);
         return JavaParserUtils.getCompilationUnit(classPath);
     }
 
@@ -1236,12 +1233,11 @@ public class DatasetUtils {
      */
     public static Optional<String> getOperationClassSource(
             Operation operation,
-            String sourcePath
+            Path sourcePath
     ) {
         try {
             Path classPath = getClassPath(operation, sourcePath);
-            String classSource = FileUtils.readString(classPath);
-            return Optional.of(classSource);
+            return Optional.of(FileUtils.readString(classPath));
         } catch (Error e) {
             return Optional.empty();
         }
