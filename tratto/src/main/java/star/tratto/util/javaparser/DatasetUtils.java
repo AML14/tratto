@@ -41,10 +41,8 @@ import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.oraclegrammar.custom.Splitter;
 import star.tratto.util.FileUtils;
 
-import java.io.File;
 import java.lang.reflect.Field;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -56,18 +54,22 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
- * This class provides core utilities for the generation of the oracles
- * dataset and conversion of JavaParser objects into interpretable inputs.
+ * This class provides a collection of static methods for the generation of
+ * the oracles dataset and conversion of JavaParser objects into interpretable
+ * outputs.
  */
 public class DatasetUtils {
     private static final Logger logger = LoggerFactory.getLogger(DatasetUtils.class);
 
+    // private constructor to avoid creating an instance of this class.
+    private DatasetUtils() {
+        throw new UnsupportedOperationException("This class cannot be instantiated.");
+    }
+
     /**
-     * The method removes all the duplicates from a list.
-     *
-     * @param list the list from which remove the duplicates
-     * @return a new list that does not contain any duplicates elements
-     * @param <T> the generic type of the list.
+     * @param list a list of possibly non-unique elements
+     * @return a list that does not contain any duplicate elements
+     * @param <T> the type of object in the list
      */
     public static <T> List<T> removeDuplicates(List<T> list) {
         Set<T> set = new LinkedHashSet<>(list);
@@ -99,7 +101,7 @@ public class DatasetUtils {
      * Gets the JavaDoc comment of a body declaration using regex patterns.
      * Use ONLY IF JavaDoc comment is not recoverable using JavaParser API.
      *
-     * @param jpBody a member in a Java class {@link BodyDeclaration}
+     * @param jpBody a member in a Java class
      * @return the matched JavaDoc comment (empty string if not found)
      */
     private static String getJavadocByPattern(BodyDeclaration<?> jpBody) {
@@ -119,10 +121,8 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets the Javadoc comment of a class {@link TypeDeclaration}.
-     *
-     * @param jpClass a JavaParser class {@link TypeDeclaration}
-     * @return a string representation of the Javadoc comment
+     * @param jpClass a JavaParser class
+     * @return a string representation of the class Javadoc comment
      */
     public static String getClassJavadoc(
             TypeDeclaration<?> jpClass
@@ -133,10 +133,8 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets the Javadoc comment of a function {@link CallableDeclaration}.
-     *
-     * @param jpCallable a JavaParser function {@link CallableDeclaration}
-     * @return a string representation the Javadoc comment
+     * @param jpCallable a JavaParser function
+     * @return a string representation of the function Javadoc comment
      */
     public static String getCallableJavadoc(
             CallableDeclaration<?> jpCallable
@@ -284,8 +282,8 @@ public class DatasetUtils {
     /**
      * Collects information about each argument of a given method.
      *
-     * @param jpClass the declaring class {@link CallableDeclaration}
-     * @param jpCallable a method {@link TypeDeclaration}
+     * @param jpClass the declaring class
+     * @param jpCallable a method
      * @return a list of information about each argument. Each entry has the
      * form:
      *  [parameterName, packageName, parameterTypeName]
@@ -359,7 +357,7 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets the source code of a given function {@link CallableDeclaration}.
+     * Gets the source code of a given function.
      *
      * @param jpCallable a method or constructor
      * @return a string representation of the source code
@@ -378,7 +376,7 @@ public class DatasetUtils {
      * Collects information about all non-private, static, non-void methods
      * of a given compilation unit.
      *
-     * @param cu a compilation unit {@link CompilationUnit} of a Java file
+     * @param cu a compilation unit of a Java file
      * @return a list of information about each method. Each entry has the
      * form:
      *  [methodName, packageName, className, methodSignature]
@@ -414,7 +412,7 @@ public class DatasetUtils {
      * Collects information about all non-private, static attributes of a
      * given compilation unit.
      *
-     * @param cu a compilation unit {@link CompilationUnit} of a Java file
+     * @param cu a compilation unit of a Java file
      * @return a list of information about each attribute. Each entry has the
      * form:
      *  [variableName, packageName, className, variableSignature]
@@ -456,7 +454,7 @@ public class DatasetUtils {
      * Collects information about all JavaDoc tags in a given compilation
      * unit.
      *
-     * @param cu a compilation unit {@link CompilationUnit} of a Java file
+     * @param cu a compilation unit of a Java file
      * @param fileContent the content of the Java file
      * @return a list of information about each tag. Each entry has the form:
      *  [fileContent, typeDeclaration, callableDeclaration, oracleType, name, content]
@@ -514,21 +512,16 @@ public class DatasetUtils {
      * Finds all ".java" files in a given directory. Files are filtered by an
      * ad-hoc list of files to ignore (see dataset/repos/ignore_file.json).
      *
-     * @param sourcePath the path to the project root directory
-     * @return a list of all valid files {@link File}
+     * @param sourceDir the path to the project root directory
+     * @return a list of all valid files
      */
-    private static List<Path> getValidJavaFiles(String sourcePath) {
-        // Get list of all Java files.
-        Path sourceDir = Path.of(sourcePath);
-        List<Path> allFiles = FileUtils.getAllJavaFilesFromDirectory(sourceDir);
+    private static List<Path> getValidJavaFiles(Path sourceDir) {
+        List<Path> allJavaFiles = FileUtils.getAllJavaFilesFromDirectory(sourceDir);
         // Get list of files to ignore.
         Path ignoreFilePath = TrattoPath.IGNORE_FILE.getPath();
-        List<String> ignoreFileList = FileUtils.readJSONList(ignoreFilePath)
-                .stream()
-                .map(f -> (String) f)
-                .toList();
+        List<String> ignoreFileList = FileUtils.readJSONList(ignoreFilePath, String.class);
         // filter files.
-        return allFiles
+        return allJavaFiles
                 .stream()
                 .filter(f -> !ignoreFileList.contains(f.getFileName().toString()))
                 .collect(Collectors.toList());
@@ -538,14 +531,14 @@ public class DatasetUtils {
      * Collects information about all classes in a project from a given
      * source path.
      *
-     * @param sourcePath the project root directory
+     * @param sourceDir the project root directory
      * @return a list of (className, packageName) pairs
      */
     public static List<ClassTokens> getProjectClassTokens(
-            String sourcePath
+            Path sourceDir
     ) {
         List<ClassTokens> projectClasses = new ArrayList<>();
-        List<Path> javaFiles = getValidJavaFiles(sourcePath);
+        List<Path> javaFiles = getValidJavaFiles(sourceDir);
         // iterate through each file and add class tokens.
         for (Path javaFile : javaFiles) {
             Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnit(javaFile.toAbsolutePath());
@@ -564,16 +557,16 @@ public class DatasetUtils {
      * Collects information about all non-private, static, non-void methods
      * in a project from a given source path.
      *
-     * @param sourcePath the project root directory
+     * @param sourceDir the project root directory
      * @return a list of information about each method. Each entry has the
      * form:
      *  [methodName, packageName, className, methodSignature]
      */
     public static List<MethodTokens> getProjectNonPrivateStaticNonVoidMethodsTokens(
-            String sourcePath
+            Path sourceDir
     ) {
         List<MethodTokens> projectMethods = new ArrayList<>();
-        List<Path> javaFiles = getValidJavaFiles(sourcePath);
+        List<Path> javaFiles = getValidJavaFiles(sourceDir);
         // iterate through each file and add method tokens.
         for (Path javaFile : javaFiles) {
             Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnit(javaFile.toAbsolutePath());
@@ -592,16 +585,16 @@ public class DatasetUtils {
      * Collects information about all non-private, static attributes
      * in a project from a given source path.
      *
-     * @param sourcePath the project root directory
+     * @param sourceDir the project root directory
      * @return a list of information about each attribute. Each entry has the
      * form:
      *  [variableName, packageName, className, variableSignature]
      */
     public static List<AttributeTokens> getProjectNonPrivateStaticAttributesTokens(
-            String sourcePath
+            Path sourceDir
     ) {
         List<AttributeTokens> attributeList = new ArrayList<>();
-        List<Path> javaFiles = getValidJavaFiles(sourcePath);
+        List<Path> javaFiles = getValidJavaFiles(sourceDir);
         // iterate through each file and add attribute tokens.
         for (Path javaFile : javaFiles) {
             Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnit(javaFile.toAbsolutePath());
@@ -620,7 +613,7 @@ public class DatasetUtils {
      * Collects information about all JavaDoc tags in a project from a
      * given source path.
      *
-     * @param sourcePath the project root directory
+     * @param sourceDir the project root directory
      * @return a list of information about each tag. Each entry has the form:
      *  [typeDeclaration, callableDeclaration, oracleType, name, content]
      * where a JavaDoc tag is interpreted as:
@@ -628,10 +621,10 @@ public class DatasetUtils {
      * and the value of "@tag" determines "oracleType".
      */
     public static List<JavadocTagTokens> getProjectTagsTokens(
-            String sourcePath
+            Path sourceDir
     ) {
         List<JavadocTagTokens> tagList = new ArrayList<>();
-        List<Path> javaFiles = getValidJavaFiles(sourcePath);
+        List<Path> javaFiles = getValidJavaFiles(sourceDir);
         // iterate through each file and add JavaDoc tags.
         for (Path javaFile : javaFiles) {
             Path absoluteJavaFile = javaFile.toAbsolutePath();
@@ -649,8 +642,8 @@ public class DatasetUtils {
     }
 
     /**
-     * Converts a list of methods {@link MethodUsage} to a list of string
-     * quartets where each entry has the form:
+     * Converts a list of methods to a list of string quartets where each
+     * entry has the form:
      *  [methodName, packageName, className, methodSignature]
      * where "className" refers to the class in which the method is declared.
      * "methodSignature" includes access specifiers, non-access modifiers,
@@ -676,7 +669,7 @@ public class DatasetUtils {
      * visible to a given type. Handles three cases: base type (e.g. class),
      * generic type, and array type.
      *
-     * @param jpResolvedType the given type {@link ResolvedType}
+     * @param jpResolvedType the given type
      * @return a list of information about each method. Each entry has the
      * form:
      *  [methodName, packageName, className, methodSignature]
@@ -817,7 +810,7 @@ public class DatasetUtils {
      * Collects information for all non-private, non-static attributes visible
      * to a given type.
      *
-     * @param jpResolvedType the given type {@link ResolvedType}
+     * @param jpResolvedType the given type
      * @return a list of information about each attribute. Each entry has the
      * form:
      *  [fieldName, packageName, className, fieldSignature]
@@ -908,8 +901,8 @@ public class DatasetUtils {
      *  (2) the arguments of the method.
      *  (3) the class of the method return type.
      *
-     * @param jpClass the declaring class {@link TypeDeclaration}
-     * @param jpCallable a function {@link CallableDeclaration}
+     * @param jpClass the declaring class
+     * @param jpCallable a function
      * @return a list of information about each method. Each entry has the
      * form:
      *  [methodName, packageName, className, methodSignature]
@@ -952,8 +945,8 @@ public class DatasetUtils {
      *  (2) the arguments of the method.
      *  (3) the class of the method return type.
      *
-     * @param jpClass the declaring class {@link TypeDeclaration}
-     * @param jpCallable a function {@link CallableDeclaration}
+     * @param jpClass the declaring class
+     * @param jpCallable a function
      * @return a list of information about each attribute. Each entry has the
      * form:
      *  [fieldName, packageName, className, fieldSignature]
@@ -986,8 +979,8 @@ public class DatasetUtils {
      * for a given oracle. Includes methods visible to each sub-expression
      * within an oracle.
      *
-     * @param jpClass the declaring class {@link TypeDeclaration}
-     * @param jpCallable a function {@link CallableDeclaration}
+     * @param jpClass the declaring class
+     * @param jpCallable a function
      * @param methodArgs the arguments of the function
      * @param oracle an oracle corresponding to the function
      * @return a list of information about each method. Each entry has the
@@ -1031,8 +1024,8 @@ public class DatasetUtils {
      * given oracle. Includes attributes visible to each sub-expression within
      * an oracle.
      *
-     * @param jpClass the declaring class {@link TypeDeclaration}
-     * @param jpCallable a function {@link CallableDeclaration}
+     * @param jpClass the declaring class
+     * @param jpCallable a function
      * @param methodArgs the arguments of the function
      * @param oracle an oracle corresponding to the function
      * @return a list of information about each attribute. Each entry has the
@@ -1128,8 +1121,8 @@ public class DatasetUtils {
      * class {@link TypeDeclaration} given a specific name and a list of
      * parameters.
      *
-     * @param jpClass the declaring class {@link TypeDeclaration}
-     * @param targetName the name of the method {@link CallableDeclaration}
+     * @param jpClass the declaring class
+     * @param targetName the name of the method
      * @param targetParamList the parameters of the desired method.
      *                        Parameter type names follow JDoctor format.
      * @return the corresponding method (if it exists). Returns null if no
@@ -1198,14 +1191,14 @@ public class DatasetUtils {
 
     /**
      * @param operation an operation of a JDoctor condition
-     * @param sourcePath the source path of the relevant project
+     * @param sourceDir the source path of the relevant project
      * @return the path of the class in the JDoctor condition
      */
     private static Path getClassPath(
             Operation operation,
-            String sourcePath
+            Path sourceDir
     ) {
-        return Paths.get(sourcePath, operation.className().replace(".", "/") + ".java");
+        return sourceDir.resolve(operation.className().replace(".", "/") + ".java");
     }
 
     /**
@@ -1213,16 +1206,16 @@ public class DatasetUtils {
      * class of a JDoctor condition.
      *
      * @param operation an operation representation of a JDoctor condition
-     * @param sourcePath the source path of the relevant project
+     * @param sourceDir the source path of the relevant project
      * @return an optional JavaParser compilation unit {@link CompilationUnit}
      * corresponding to the class of the JDoctor condition, if it is found.
      * Otherwise, the method returns an empty optional.
      */
     public static Optional<CompilationUnit> getOperationCompilationUnit(
             Operation operation,
-            String sourcePath
+            Path sourceDir
     ) {
-        Path classPath = getClassPath(operation, sourcePath);
+        Path classPath = getClassPath(operation, sourceDir);
         return JavaParserUtils.getCompilationUnit(classPath);
     }
 
@@ -1232,12 +1225,11 @@ public class DatasetUtils {
      */
     public static Optional<String> getOperationClassSource(
             Operation operation,
-            String sourcePath
+            Path sourcePath
     ) {
         try {
             Path classPath = getClassPath(operation, sourcePath);
-            String classSource = FileUtils.readString(classPath);
-            return Optional.of(classSource);
+            return Optional.of(FileUtils.readString(classPath));
         } catch (Error e) {
             return Optional.empty();
         }

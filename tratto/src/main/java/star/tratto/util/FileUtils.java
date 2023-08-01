@@ -207,23 +207,45 @@ public class FileUtils {
     }
 
     /**
-     * Reads a list of objects from a JSON file.
+     * Reads a list of objects from a JSON file. If the given type is null,
+     * then returns a list of unknown type (wildcard).
      *
      * @param jsonPath a JSON file
-     * @return the list of objects in the JSON file
-     * @throws Error if unable to process JSON file
+     * @param type the class type of the elements to which the JSON data will
+     *             be deserialized
+     * @return a list of objects of the specified class type. If type is null,
+     * then returns a list of a wildcard type.
+     * @param <T> the generic type parameter representing the class of the
+     *            elements in the list
      */
-    public static List<?> readJSONList(Path jsonPath) {
+    public static <T> List<T> readJSONList(Path jsonPath, Class<T> type) {
         if (!Files.exists(jsonPath)) throw new Error("JSON file " + jsonPath + " not found");
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            return objectMapper.readValue(
-                    jsonPath.toFile(),
-                    new TypeReference<>() {}
-            );
+            return (type == null)
+                    // if type is null, return List<?>
+                    ? objectMapper.readValue(jsonPath.toFile(), new TypeReference<>() {})
+                    // otherwise, return List<T> of the given type
+                    : objectMapper.readValue(
+                            jsonPath.toFile(),
+                            objectMapper.getTypeFactory().constructCollectionType(List.class, type)
+                    );
         } catch (IOException e) {
             throw new Error("Error in processing the JSON file " + jsonPath, e);
         }
+    }
+
+    /**
+     * Reads a list of objects from a JSON file. We use this method rather
+     * than {@link FileUtils#readJSONList(Path, Class)} for parameterized
+     * types, where we cannot retrieve the corresponding class.
+     *
+     * @param jsonPath a JSON file
+     * @return a list of objects without a specified type
+     * @see FileUtils#readJSONList(Path, Class)
+     */
+    public static List<?> readJSONList(Path jsonPath) {
+        return readJSONList(jsonPath, null);
     }
 
     /**

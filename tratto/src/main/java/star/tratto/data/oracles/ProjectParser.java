@@ -13,7 +13,6 @@ import star.tratto.data.records.Project;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -58,7 +57,7 @@ public class ProjectParser {
             return projectList
                     .stream()
                     .filter(p -> {
-                        Path projectDir = Paths.get(p.projectPath());
+                        Path projectDir = p.rootPath();
                         return Files.exists(projectDir) && Files.isDirectory(projectDir);
                     })
                     .collect(Collectors.toList());
