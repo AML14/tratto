@@ -97,17 +97,16 @@ public class OraclesDataset {
     }
 
     public static void main(String[] args) throws IOException {
-        // clean output directories.
+        // clean output directories
         FileUtils.deleteDirectory(TrattoPath.OUTPUT.getPath());
         FileUtils.deleteDirectory(TrattoPath.ORACLES_DATASET.getPath());
-        // load projects.
+        // get oracle datapoints
         List<Project> projects = ProjectInitializer.initialize(TrattoPath.INPUT_PROJECTS.getPath());
         for (Project project : projects) {
-            // get oracle data points.
             List<OracleDatapoint> oracleDPs = getProjectOracleDatapoints(project);
             writeProjectOracleDatapoints(oracleDPs, project);
         }
-        // move oracles dataset from target to resources folder for TokensDataset.
+        // move oracles dataset from target to resources folder for TokensDataset
         FileUtils.move(TrattoPath.OUTPUT_DATASET.getPath(), TrattoPath.ORACLES_DATASET.getPath());
     }
 }

@@ -13,8 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * This class is a builder class for {@link OracleDatapoint}.
+ */
 public class OracleDatapointBuilder {
     private OracleDatapoint datapoint;
+    // a list of feature levels. See build methods for further detail.
     private static final List<String> featureLevels = List.of("default", "project", "class", "method");
 
     public OracleDatapointBuilder() {
