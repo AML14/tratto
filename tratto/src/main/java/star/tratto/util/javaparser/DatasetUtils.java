@@ -187,16 +187,16 @@ public class DatasetUtils {
      * seem redundant, but is added for consistency with the numeric Javadoc
      * values when using the XText grammar.
      *
-     * @param jpJavadoc the string representation of a Javadoc comment
+     * @param javadocComment the string representation of a Javadoc comment
      * @return a list of value tokens. The first element is the numeric value,
      * and the second element is the type of value (always "String").
      */
     private static List<ValueTokens> findAllStringValuesInJavadoc(
-            String jpJavadoc
+            String javadocComment
     ) {
         // Defines regex to match values within a string.
         Pattern pattern = Pattern.compile("\\\"(.*?)\\\"|\\\'(.*?)\\\'");
-        Matcher matcher = pattern.matcher(jpJavadoc);
+        Matcher matcher = pattern.matcher(javadocComment);
         // Iterate through all occurrences.
         List<ValueTokens> stringValues = new ArrayList<>();
         while (matcher.find()) {
@@ -209,18 +209,18 @@ public class DatasetUtils {
     /**
      * Gets all value tokens in a Javadoc comment via pattern matching.
      *
-     * @param jpJavadoc the Javadoc comment
+     * @param javadocComment the Javadoc comment
      * @return a list of records describing each numerical and string value.
      * Each entry has the form:
      *  [value, valueType]
      * For example: [["name", "String"], ["64", "int"]]
      */
     public static List<ValueTokens> getJavadocValues(
-            String jpJavadoc
+            String javadocComment
     ) {
         List<ValueTokens> valueList = new ArrayList<>();
-        valueList.addAll(findAllNumericValuesInJavadoc(jpJavadoc));
-        valueList.addAll(findAllStringValuesInJavadoc(jpJavadoc));
+        valueList.addAll(findAllNumericValuesInJavadoc(javadocComment));
+        valueList.addAll(findAllStringValuesInJavadoc(javadocComment));
         return valueList;
     }
 
