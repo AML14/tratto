@@ -372,28 +372,28 @@ public class JavaParserUtilsTest {
                 Arguments.of("test5", "import star.tratto.dataset.OracleDatapoint; " + classSource.replaceAll("XXX", "synchronized OracleDatapoint " + methodName + "() { return null; }"),
                         className, methodName, "synchronized OracleDatapoint someMethod()"),
                 Arguments.of("test6", "import org.jgrapht.graph.*; " + classSource
-                        .replaceAll("public class", "public abstract class")
-                        .replaceAll("XXX", "\n    // *** Constructors ***\n    // another comment\n    /**\n     * hello\n     */\n    public static <V, E> E addEdgeWithVertices(Graph<V, E> g, V sourceVertex, V targetVertex) {\n" +
-                                "        g.addVertex(sourceVertex);\n" +
-                                "        g.addVertex(targetVertex);\n" +
-                                "        return g.addEdge(sourceVertex, targetVertex);\n" +
-                                "    }\n"),
+                                .replaceAll("public class", "public abstract class")
+                                .replaceAll("XXX", "\n    // *** Constructors ***\n    // another comment\n    /**\n     * hello\n     */\n    public static <V, E> E addEdgeWithVertices(Graph<V, E> g, V sourceVertex, V targetVertex) {\n" +
+                                        "        g.addVertex(sourceVertex);\n" +
+                                        "        g.addVertex(targetVertex);\n" +
+                                        "        return g.addEdge(sourceVertex, targetVertex);\n" +
+                                        "    }\n"),
                         className, "addEdgeWithVertices", "public static <V, E> E addEdgeWithVertices(Graph<V, E> g, V sourceVertex, V targetVertex)"),
                 Arguments.of("test7", "import org.jgrapht.graph.*; " + classSource
-                        .replaceAll("public class", "public abstract class")
-                        .replaceAll("XXX", "\n    /**\n     * hello\n     */\n    // *** Constructors ***\n    // another comment\n    public static <V, E> E addEdgeWithVertices(Graph<V, E> g, V sourceVertex, V targetVertex) {\n" +
-                                "        g.addVertex(sourceVertex);\n" +
-                                "        g.addVertex(targetVertex);\n" +
-                                "        return g.addEdge(sourceVertex, targetVertex);\n" +
-                                "    }"),
+                                .replaceAll("public class", "public abstract class")
+                                .replaceAll("XXX", "\n    /**\n     * hello\n     */\n    // *** Constructors ***\n    // another comment\n    public static <V, E> E addEdgeWithVertices(Graph<V, E> g, V sourceVertex, V targetVertex) {\n" +
+                                        "        g.addVertex(sourceVertex);\n" +
+                                        "        g.addVertex(targetVertex);\n" +
+                                        "        return g.addEdge(sourceVertex, targetVertex);\n" +
+                                        "    }"),
                         className, "addEdgeWithVertices", "public static <V, E> E addEdgeWithVertices(Graph<V, E> g, V sourceVertex, V targetVertex)"),
                 Arguments.of("test8", "import org.jgrapht.graph.*; " + classSource
-                        .replaceAll("public class", "public abstract class")
-                        .replaceAll("XXX", "\n    /**\n     * hello\n     */\n    public static <V, E> E addEdgeWithVertices(Graph<V, E> g, V sourceVertex, V targetVertex) {\n" +
-                                "        g.addVertex(sourceVertex);\n" +
-                                "        g.addVertex(targetVertex);\n" +
-                                "        return g.addEdge(sourceVertex, targetVertex);\n" +
-                                "    }"),
+                                .replaceAll("public class", "public abstract class")
+                                .replaceAll("XXX", "\n    /**\n     * hello\n     */\n    public static <V, E> E addEdgeWithVertices(Graph<V, E> g, V sourceVertex, V targetVertex) {\n" +
+                                        "        g.addVertex(sourceVertex);\n" +
+                                        "        g.addVertex(targetVertex);\n" +
+                                        "        return g.addEdge(sourceVertex, targetVertex);\n" +
+                                        "    }"),
                         className, "addEdgeWithVertices", "public static <V, E> E addEdgeWithVertices(Graph<V, E> g, V sourceVertex, V targetVertex)"),
                 Arguments.of("test9", "import org.jgrapht.graph.*; " + classSource
                                 .replaceAll("public class", "public abstract class")
@@ -416,7 +416,7 @@ public class JavaParserUtilsTest {
                                         "            @Nullable String param1,\n" +
                                         "            /* this is another param: */ int param2\n" +
                                         "    ) { return \"\"; }"
-                                        ),
+                                ),
                         className, "someMethod", "private static String someMethod(@Nullable String param1, int param2)")
         );
     }
