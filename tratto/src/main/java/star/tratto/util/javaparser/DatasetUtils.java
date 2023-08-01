@@ -52,8 +52,9 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
- * This class provides core utilities for the generation of the oracles
- * dataset and conversion of JavaParser objects into interpretable inputs.
+ * This class provides a collection of static methods for the generation of
+ * the oracles dataset and conversion of JavaParser objects into interpretable
+ * outputs.
  */
 public class DatasetUtils {
     private static final Logger logger = LoggerFactory.getLogger(DatasetUtils.class);
@@ -64,11 +65,9 @@ public class DatasetUtils {
     }
 
     /**
-     * The method removes all the duplicates from a list.
-     *
-     * @param list the list from which remove the duplicates
-     * @return a new list that does not contain any duplicates elements
-     * @param <T> the generic type of the list.
+     * @param list a list of possibly non-unique elements
+     * @return a list that does not contain any duplicate elements
+     * @param <T> the type of object in the list
      */
     public static <T> List<T> removeDuplicates(List<T> list) {
         Set<T> set = new LinkedHashSet<>(list);
@@ -101,7 +100,7 @@ public class DatasetUtils {
      * Gets the JavaDoc comment of a body declaration using regex patterns.
      * Use ONLY IF JavaDoc comment is not recoverable using JavaParser API.
      *
-     * @param jpBody a member in a Java class {@link BodyDeclaration}
+     * @param jpBody a member in a Java class
      * @return the matched JavaDoc comment (empty string if not found)
      */
     private static String getJavadocByPattern(BodyDeclaration<?> jpBody) {
@@ -121,10 +120,8 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets the Javadoc comment of a class {@link TypeDeclaration}.
-     *
-     * @param jpClass a JavaParser class {@link TypeDeclaration}
-     * @return a string representation of the Javadoc comment
+     * @param jpClass a JavaParser class
+     * @return a string representation of the class Javadoc comment
      */
     public static String getClassJavadoc(
             TypeDeclaration<?> jpClass
@@ -135,10 +132,8 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets the Javadoc comment of a function {@link CallableDeclaration}.
-     *
-     * @param jpCallable a JavaParser function {@link CallableDeclaration}
-     * @return a string representation the Javadoc comment
+     * @param jpCallable a JavaParser function
+     * @return a string representation of the function Javadoc comment
      */
     public static String getCallableJavadoc(
             CallableDeclaration<?> jpCallable
@@ -193,17 +188,17 @@ public class DatasetUtils {
      * strings. The second value may seem redundant, but is added for
      * consistency with the numeric JavaDoc values.
      *
-     * @param jpJavadoc the string representation of a JavaDoc comment
+     * @param javadocComment the string representation of a JavaDoc comment
      * @return a list of pairs of strings representing the string values in
      * the JavaDoc comment. The first element is the string value, and the
      * second element is the type of value (always "String").
      */
     private static List<Pair<String, String>> findAllStringValuesInJavadoc(
-            String jpJavadoc
+            String javadocComment
     ) {
         // Defines regex to match values within a string.
         Pattern pattern = Pattern.compile("\\\"(.*?)\\\"|\\\'(.*?)\\\'");
-        Matcher matcher = pattern.matcher(jpJavadoc);
+        Matcher matcher = pattern.matcher(javadocComment);
         // Iterate through all occurrences.
         List<Pair<String, String>> stringValues = new ArrayList<>();
         while (matcher.find()) {
@@ -217,18 +212,18 @@ public class DatasetUtils {
      * Gets all numerical and string values from a given JavaDoc comment via
      * pattern matching.
      *
-     * @param jpJavadoc the JavaDoc comment
+     * @param javadocComment the class or function JavaDoc comment
      * @return a list of values describing each numerical and string value.
      * Each entry has the form:
      *  [value, valueType]
      * For example: [["name", "String"], ["64", "int"]]
      */
     public static List<Pair<String, String>> getJavadocValues(
-            String jpJavadoc
+            String javadocComment
     ) {
         List<Pair<String, String>> pairList = new ArrayList<>();
-        pairList.addAll(findAllNumericValuesInJavadoc(jpJavadoc));
-        pairList.addAll(findAllStringValuesInJavadoc(jpJavadoc));
+        pairList.addAll(findAllNumericValuesInJavadoc(javadocComment));
+        pairList.addAll(findAllStringValuesInJavadoc(javadocComment));
         return pairList;
     }
 
@@ -290,8 +285,8 @@ public class DatasetUtils {
     /**
      * Collects information about each argument of a given method.
      *
-     * @param jpClass the declaring class {@link CallableDeclaration}
-     * @param jpCallable a method {@link TypeDeclaration}
+     * @param jpClass the declaring class
+     * @param jpCallable a method
      * @return a list of information about each argument. Each entry has the
      * form:
      *  [parameterName, packageName, parameterTypeName]
@@ -365,7 +360,7 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets the source code of a given function {@link CallableDeclaration}.
+     * Gets the source code of a given function.
      *
      * @param jpCallable a method or constructor
      * @return a string representation of the source code
@@ -384,7 +379,7 @@ public class DatasetUtils {
      * Collects information about all non-private, static, non-void methods
      * of a given compilation unit.
      *
-     * @param cu a compilation unit {@link CompilationUnit} of a Java file
+     * @param cu a compilation unit of a Java file
      * @return a list of information about each method. Each entry has the
      * form:
      *  [methodName, packageName, className, methodSignature]
@@ -420,7 +415,7 @@ public class DatasetUtils {
      * Collects information about all non-private, static attributes of a
      * given compilation unit.
      *
-     * @param cu a compilation unit {@link CompilationUnit} of a Java file
+     * @param cu a compilation unit of a Java file
      * @return a list of information about each attribute. Each entry has the
      * form:
      *  [variableName, packageName, className, variableSignature]
@@ -462,7 +457,7 @@ public class DatasetUtils {
      * Collects information about all JavaDoc tags in a given compilation
      * unit.
      *
-     * @param cu a compilation unit {@link CompilationUnit} of a Java file
+     * @param cu a compilation unit of a Java file
      * @param fileContent the content of the Java file
      * @return a list of information about each tag. Each entry has the form:
      *  [typeDeclaration, callableDeclaration, oracleType, name, content]
@@ -521,7 +516,7 @@ public class DatasetUtils {
      * ad-hoc list of files to ignore (see dataset/repos/ignore_file.json).
      *
      * @param sourceDir the path to the project root directory
-     * @return a list of all valid files {@link File}
+     * @return a list of all valid files
      */
     private static List<Path> getValidJavaFiles(Path sourceDir) {
         List<Path> allJavaFiles = FileUtils.getAllJavaFilesFromDirectory(sourceDir);
@@ -650,8 +645,8 @@ public class DatasetUtils {
     }
 
     /**
-     * Converts a list of methods {@link MethodUsage} to a list of string
-     * quartets where each entry has the form:
+     * Converts a list of methods to a list of string quartets where each
+     * entry has the form:
      *  [methodName, packageName, className, methodSignature]
      * where "className" refers to the class in which the method is declared.
      * "methodSignature" includes access specifiers, non-access modifiers,
@@ -677,7 +672,7 @@ public class DatasetUtils {
      * visible to a given type. Handles three cases: base type (e.g. class),
      * generic type, and array type.
      *
-     * @param jpResolvedType the given type {@link ResolvedType}
+     * @param jpResolvedType the given type
      * @return a list of information about each method. Each entry has the
      * form:
      *  [methodName, packageName, className, methodSignature]
@@ -818,7 +813,7 @@ public class DatasetUtils {
      * Collects information for all non-private, non-static attributes visible
      * to a given type.
      *
-     * @param jpResolvedType the given type {@link ResolvedType}
+     * @param jpResolvedType the given type
      * @return a list of information about each attribute. Each entry has the
      * form:
      *  [fieldName, packageName, className, fieldSignature]
@@ -909,8 +904,8 @@ public class DatasetUtils {
      *  (2) the arguments of the method.
      *  (3) the class of the method return type.
      *
-     * @param jpClass the declaring class {@link TypeDeclaration}
-     * @param jpCallable a function {@link CallableDeclaration}
+     * @param jpClass the declaring class
+     * @param jpCallable a function
      * @return a list of information about each method. Each entry has the
      * form:
      *  [methodName, packageName, className, methodSignature]
@@ -953,8 +948,8 @@ public class DatasetUtils {
      *  (2) the arguments of the method.
      *  (3) the class of the method return type.
      *
-     * @param jpClass the declaring class {@link TypeDeclaration}
-     * @param jpCallable a function {@link CallableDeclaration}
+     * @param jpClass the declaring class
+     * @param jpCallable a function
      * @return a list of information about each attribute. Each entry has the
      * form:
      *  [fieldName, packageName, className, fieldSignature]
@@ -987,8 +982,8 @@ public class DatasetUtils {
      * for a given oracle. Includes methods visible to each sub-expression
      * within an oracle.
      *
-     * @param jpClass the declaring class {@link TypeDeclaration}
-     * @param jpCallable a function {@link CallableDeclaration}
+     * @param jpClass the declaring class
+     * @param jpCallable a function
      * @param methodArgs the arguments of the function
      * @param oracle an oracle corresponding to the function
      * @return a list of information about each method. Each entry has the
@@ -1032,8 +1027,8 @@ public class DatasetUtils {
      * given oracle. Includes attributes visible to each sub-expression within
      * an oracle.
      *
-     * @param jpClass the declaring class {@link TypeDeclaration}
-     * @param jpCallable a function {@link CallableDeclaration}
+     * @param jpClass the declaring class
+     * @param jpCallable a function
      * @param methodArgs the arguments of the function
      * @param oracle an oracle corresponding to the function
      * @return a list of information about each attribute. Each entry has the
@@ -1129,8 +1124,8 @@ public class DatasetUtils {
      * class {@link TypeDeclaration} given a specific name and a list of
      * parameters.
      *
-     * @param jpClass the declaring class {@link TypeDeclaration}
-     * @param targetName the name of the method {@link CallableDeclaration}
+     * @param jpClass the declaring class
+     * @param targetName the name of the method
      * @param targetParamList the parameters of the desired method.
      *                        Parameter type names follow JDoctor format.
      * @return the corresponding method (if it exists). Returns null if no
