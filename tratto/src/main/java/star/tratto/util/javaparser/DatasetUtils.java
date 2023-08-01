@@ -38,7 +38,6 @@ import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.oraclegrammar.custom.Splitter;
 import star.tratto.util.FileUtils;
 
-import java.io.File;
 import java.lang.reflect.Field;
 import java.nio.file.Path;
 import java.util.ArrayList;
