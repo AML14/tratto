@@ -6,10 +6,10 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import star.tratto.data.TrattoPath;
-import star.tratto.data.oracles.Project;
 
 import java.io.IOException;
-import java.nio.file.Paths;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +17,22 @@ import java.util.List;
  * This class deserializes JSON objects into {@link Project} objects.
  */
 public class ProjectDeserializer extends JsonDeserializer<Project> {
+    /**
+     * Gets a Path from a JSON list of strings.
+     *
+     * @param arrayNode the Jackson array node representing the JSON list of
+     *                  strings to deserialize
+     * @return the path corresponding to the joined elements of the JSON list
+     */
+    private Path arrayNodeToPath(ArrayNode arrayNode) {
+        List<String> pathElements = new ArrayList<>();
+        for (JsonNode element : arrayNode) {
+            pathElements.add(element.asText());
+        }
+        String pathString = String.join(FileSystems.getDefault().getSeparator(), pathElements);
+        return FileSystems.getDefault().getPath(pathString);
+    }
+
     /**
      * The method deserializes a JSON project object and generate a corresponding Java Project record {@link Project}.
      * @param jsonParser the json parser used to deserialize the JSON project object
@@ -30,47 +46,18 @@ public class ProjectDeserializer extends JsonDeserializer<Project> {
             JsonParser jsonParser,
             DeserializationContext deserializationContext
     ) throws IOException {
-        // Extract each information from the input project JSON object
         JsonNode node = jsonParser.getCodec().readTree(jsonParser);
-        // Get the project name
         String projectName = node.get("projectName").asText();
-        // Get the list of folder names to navigate from the project root folder to the directory of the project
-        List<String> projetDirPathList = deserializeList((ArrayNode) node.get("dirPathList"));
-        // Get the list of folder names to navigate from the project root folder to the directory that contains the jar
-        // file of the project
-        List<String> jarPathList = deserializeList((ArrayNode) node.get("jarPathList"));
-        // Get the list of folder names to navigate from the project root folder to the directory that contains the
-        // JDoctor conditions of the project
-        List<String> jDocConditionsPathList = deserializeList((ArrayNode) node.get("jDocConditionsPathList"));
-        // Get the list of folder names to navigate from the project root folder to the directory that contains the
-        // source code of the project
-        List<String> srcPathList = deserializeList((ArrayNode) node.get("srcPathList"));
-        // Transform the lists into string representations of the paths
-        String projectPath = Paths.get(TrattoPath.RESOURCES.getPath().toString(), projetDirPathList.toArray(new String[0])).toString();
-        String jarPath = Paths.get(projectPath, jarPathList.toArray(new String[0])).toString();
-        String jDocConditionsPath = Paths.get(projectPath, jDocConditionsPathList.toArray(new String[0])).toString();
-        String srcPath = Paths.get(projectPath, srcPathList.toArray(String[]::new)).toString();
-        // Return the project generated
+        Path projectPath = TrattoPath.RESOURCES.getPath().resolve(arrayNodeToPath((ArrayNode) node.get("dirPathList")));
+        Path jarPath = projectPath.resolve(arrayNodeToPath((ArrayNode) node.get("jarPathList")));
+        Path conditionsPath = projectPath.resolve(arrayNodeToPath((ArrayNode) node.get("jDocConditionsPathList")));
+        Path srcPath = projectPath.resolve(arrayNodeToPath((ArrayNode) node.get("srcPathList")));
         return new Project(
                 projectName,
                 projectPath,
                 jarPath,
-                jDocConditionsPath,
+                conditionsPath,
                 srcPath
         );
-    }
-
-    /**
-     * The method deserializes a JSON list of strings into a Java list of strings.
-     * @param attributeArrayNode the Jackson array node {@link ArrayNode} representing the JSON list of strings
-     *                           to deserialize
-     * @return a Java list of strings representing the deserialization of the JSON list of strings
-     */
-    private List<String> deserializeList(ArrayNode attributeArrayNode) {
-        List<String> attributePath = new ArrayList<>();
-        for (JsonNode element : attributeArrayNode) {
-            attributePath.add(element.asText());
-        }
-        return attributePath;
     }
 }

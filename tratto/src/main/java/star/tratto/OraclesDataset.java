@@ -12,7 +12,6 @@ import star.tratto.util.javaparser.DatasetUtils;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,7 +29,7 @@ public class OraclesDataset {
      * @return a list of conditions, representing the original JSON conditions
      */
     private static List<JDoctorCondition> getProjectConditions(Project project) {
-        Path conditionsDir = Paths.get(project.getjDoctorConditionsPath());
+        Path conditionsDir = project.getConditionsPath();
         try (Stream<Path> walk = Files.walk(conditionsDir)) {
             return walk
                     .filter(path -> path.toString().endsWith(".json"))

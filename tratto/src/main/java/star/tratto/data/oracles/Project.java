@@ -1,58 +1,64 @@
 package star.tratto.data.oracles;
 
+import java.nio.file.Path;
+
 /**
  * Information about a Java project.
  */
 public class Project {
+    // the name of the Java project
     private final String projectName;
-    private final String projectPath;
-    private final String jarPath;
-    private final String jDoctorConditionsPath;
-    private final String srcPath;
+    // the path to the project root folder
+    private final Path rootPath;
+    // the path to the directory with the project jar file
+    private final Path jarPath;
+    // the path to the directory of JDoctor conditions for the project
+    private final Path conditionsPath;
+    // the path to the project source code directory
+    private final Path srcPath;
 
     /**
      * Creates a new {@link Project} object.
      *
      * @param projectName the name of the Java project
-     * @param projectPath the path to the Java project root folder
+     * @param rootPath the path to the Java project root folder
      * @param jarPath the path to the folder that contains the jar file of the Java project
-     * @param jDoctorConditionsPath the path to the folder that contains the JDoctor conditions produced for the
+     * @param conditionsPath the path to the folder that contains the JDoctor conditions produced for the
      *                              Java project
      * @param srcPath the path to the folder that contains the source code of the project
      */
     public Project(
             String projectName,
-            String projectPath,
-            String jarPath,
-            String jDoctorConditionsPath,
-            String srcPath
+            Path rootPath,
+            Path jarPath,
+            Path conditionsPath,
+            Path srcPath
     ) {
         this.projectName = projectName;
-        this.projectPath = projectPath;
+        this.rootPath = rootPath;
         this.jarPath = jarPath;
-        this.jDoctorConditionsPath = jDoctorConditionsPath;
+        this.conditionsPath = conditionsPath;
         this.srcPath = srcPath;
     }
 
-    /** @return the path to the folder that contains the source code of the project */
-    public String getJarPath() {
-        return jarPath;
-    }
-    /** @return the path to the folder that contains the JDoctor conditions */
-    public String getjDoctorConditionsPath() {
-        return jDoctorConditionsPath;
-    }
-    /** @return the name of the Java project */
     public String getProjectName() {
-        return projectName;
+        return this.projectName;
     }
-    /** @return the path to the Java project root folder */
-    public String getProjectPath() {
-        return projectPath;
+
+    public Path getRootPath() {
+        return this.rootPath;
     }
-    /** @return the path to the folder that contains the jar file of the Java project */
-    public String getSrcPath() {
-        return srcPath;
+
+    public Path getJarPath() {
+        return this.jarPath;
+    }
+
+    public Path getConditionsPath() {
+        return this.conditionsPath;
+    }
+
+    public Path getSrcPath() {
+        return this.srcPath;
     }
 }
 

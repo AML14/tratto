@@ -14,6 +14,7 @@ import star.tratto.util.StringUtils;
 import star.tratto.util.javaparser.DatasetUtils;
 import star.tratto.util.javaparser.TypeUtils;
 
+import java.nio.file.Path;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -175,7 +176,7 @@ public class ProjectOracleGenerator {
             OracleType oracleType,
             String javaDocTag
     ) {
-        String sourcePath = this.project.getSrcPath();
+        Path sourcePath = this.project.getSrcPath();
         String className = DatasetUtils.getOperationClassName(operation);
         String callableName = DatasetUtils.getOperationCallableName(operation);
         List<String> parameterTypes = TypeUtils.fieldDescriptorsToSourceFormats(operation.getParameterTypes());
@@ -277,7 +278,7 @@ public class ProjectOracleGenerator {
     private OracleDatapoint getNextDatapoint(JDoctorCondition.Operation operation, Object condition) {
         OracleDatapointBuilder builder = new OracleDatapointBuilder();
         // get basic information of operation.
-        String sourcePath = this.project.getSrcPath();
+        Path sourcePath = this.project.getSrcPath();
         String projectName = this.project.getProjectName();
         String packageName = DatasetUtils.getOperationPackageName(operation);
         String className = DatasetUtils.getOperationClassName(operation);
@@ -289,7 +290,7 @@ public class ProjectOracleGenerator {
           return null;
         }
         CompilationUnit cu = cuOptional.get();
-        String classSourceCode = DatasetUtils.getOperationClassSource(operation, sourcePath).get(); // Can assume is not empty.
+        String classSourceCode = DatasetUtils.getOperationClassSource(operation, sourcePath).orElseThrow();
         // get TypeDeclaration of class in CompilationUnit.
         TypeDeclaration<?> jpClass = DatasetUtils.getTypeDeclaration(cu, className);
         assert jpClass != null;
