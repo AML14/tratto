@@ -1,11 +1,11 @@
 package star.tratto;
 
 import star.tratto.data.OracleDatapoint;
+import star.tratto.data.ProjectInitializer;
 import star.tratto.data.TrattoPath;
 import star.tratto.data.oracles.JDoctorCondition;
 import star.tratto.data.oracles.Project;
 import star.tratto.data.oracles.ProjectOracleGenerator;
-import star.tratto.data.oracles.ProjectParser;
 import star.tratto.util.FileUtils;
 import star.tratto.util.javaparser.DatasetUtils;
 
@@ -101,7 +101,7 @@ public class OraclesDataset {
         FileUtils.deleteDirectory(TrattoPath.OUTPUT.getPath());
         FileUtils.deleteDirectory(TrattoPath.ORACLES_DATASET.getPath());
         // load projects.
-        List<Project> projects = ProjectParser.initialize(TrattoPath.INPUT_PROJECTS.getPath());
+        List<Project> projects = ProjectInitializer.initialize(TrattoPath.INPUT_PROJECTS.getPath());
         for (Project project : projects) {
             // get oracle data points.
             List<OracleDatapoint> oracleDPs = getProjectOracleDatapoints(project);
