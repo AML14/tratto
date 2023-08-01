@@ -525,10 +525,7 @@ public class DatasetUtils {
         List<Path> allFiles = FileUtils.getAllJavaFilesFromDirectory(sourceDir);
         // Get list of files to ignore.
         Path ignoreFilePath = TrattoPath.IGNORE_FILE.getPath();
-        List<String> ignoreFileList = FileUtils.readJSONList(ignoreFilePath)
-                .stream()
-                .map(f -> (String) f)
-                .toList();
+        List<String> ignoreFileList = FileUtils.readJSONList(ignoreFilePath, String.class);
         // filter files.
         return allFiles
                 .stream()

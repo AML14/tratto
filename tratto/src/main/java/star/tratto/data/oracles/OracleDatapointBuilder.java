@@ -42,10 +42,7 @@ public class OracleDatapointBuilder {
      */
     private void setDefaultGrammarTokens() {
         Path tokensGrammarPath = TrattoPath.TOKENS_GRAMMAR.getPath();
-        List<String> tokenGrammar = FileUtils.readJSONList(tokensGrammarPath)
-                .stream()
-                .map(e -> (String) e)
-                .collect(Collectors.toList());
+        List<String> tokenGrammar = FileUtils.readJSONList(tokensGrammarPath, String.class);
         this.setTokensGeneralGrammar(tokenGrammar);
     }
 
