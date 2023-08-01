@@ -57,7 +57,7 @@ public class OracleDatapointBuilder {
                         .stream()
                         .map(o -> (String) o)
                         .collect(Collectors.toList()))
-                .collect(Collectors.toList())
+                .toList()
                 .stream()
                 .map(tokenList -> new Pair<>(tokenList.get(0), tokenList.get(1)))
                 .collect(Collectors.toList());
