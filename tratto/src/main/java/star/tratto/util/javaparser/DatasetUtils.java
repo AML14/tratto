@@ -59,6 +59,11 @@ import java.util.stream.Collectors;
 public class DatasetUtils {
     private static final Logger logger = LoggerFactory.getLogger(DatasetUtils.class);
 
+    // private constructor to avoid creating an instance of this class.
+    private DatasetUtils() {
+        throw new UnsupportedOperationException("This class cannot be instantiated.");
+    }
+
     /**
      * The method removes all the duplicates from a list.
      *
