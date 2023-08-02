@@ -128,8 +128,9 @@ public class DatasetUtils {
             TypeDeclaration<?> jpClass
     ) {
         Optional<JavadocComment> optionalJavadocComment = jpClass.getJavadocComment();
-        if (optionalJavadocComment.isEmpty()) return getJavadocByPattern(jpClass);
-        return "/**" + optionalJavadocComment.get().getContent() + "*/";
+        return optionalJavadocComment
+                .map(javadocComment -> "/**" + javadocComment.getContent() + "*/")
+                .orElseGet(() -> getJavadocByPattern(jpClass));
     }
 
     /**
@@ -140,8 +141,9 @@ public class DatasetUtils {
             CallableDeclaration<?> jpCallable
     ) {
         Optional<JavadocComment> optionalJavadocComment = jpCallable.getJavadocComment();
-        if (optionalJavadocComment.isEmpty()) return getJavadocByPattern(jpCallable);
-        return "    /**" + optionalJavadocComment.get().getContent() + "*/";
+        return optionalJavadocComment
+                .map(javadocComment -> "    /**" + javadocComment.getContent() + "*/")
+                .orElseGet(() -> getJavadocByPattern(jpCallable));
     }
 
     /**
