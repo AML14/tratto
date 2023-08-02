@@ -214,7 +214,7 @@ public class DatasetUtils {
      * @param javadocComment the Javadoc comment
      * @return a list of records describing each numerical and string value.
      * Each entry has the form:
-     *  [value, valueType]
+     *  [value, type]
      * For example: [["name", "String"], ["64", "int"]]
      */
     public static List<ValueTokens> getJavadocValues(
@@ -644,15 +644,15 @@ public class DatasetUtils {
     }
 
     /**
-     * Converts a list of methods to a list of string quartets where each
-     * entry has the form:
+     * Converts a list of methods to a list of records of method tokens,
+     * where each record has the form:
      *  [methodName, packageName, className, methodSignature]
      * where "className" refers to the class in which the method is declared.
      * "methodSignature" includes access specifiers, non-access modifiers,
      * generic type parameters, return type, method signature, parameters,
      * and exceptions (unless otherwise un-recoverable).
      */
-    private static List<MethodTokens> convertMethodUsageToQuartet(
+    private static List<MethodTokens> convertMethodUsageToMethodTokens(
             List<MethodUsage> jpMethods
     ) {
         return new ArrayList<>(jpMethods)
@@ -701,7 +701,7 @@ public class DatasetUtils {
                     .map(MethodUsage::new)
                     .filter(JavaParserUtils::isNonPrivateNonStaticNonVoidMethod)
                     .toList();
-            methodList.addAll(convertMethodUsageToQuartet(genericMethods));
+            methodList.addAll(convertMethodUsageToMethodTokens(genericMethods));
         } else if (jpResolvedType.isReferenceType()) {
             // base type.
             List<MethodUsage> allMethods = jpResolvedType.asReferenceType().getAllMethods()
@@ -709,7 +709,7 @@ public class DatasetUtils {
                     .map(MethodUsage::new)
                     .filter(JavaParserUtils::isNonPrivateNonStaticNonVoidMethod)
                     .toList();
-            methodList.addAll(convertMethodUsageToQuartet(allMethods));
+            methodList.addAll(convertMethodUsageToMethodTokens(allMethods));
         }
         return methodList;
     }
@@ -735,7 +735,7 @@ public class DatasetUtils {
      * Uses methods and fields of JavaParserFieldDeclaration to get a more
      * detailed field signature (includes all modifiers and value).
      */
-    private static List<AttributeTokens> convertJavaParserFieldDeclarationToQuartet(
+    private static List<AttributeTokens> convertJavaParserFieldDeclarationToAttributeTokens(
             JavaParserFieldDeclaration resolvedField
     ) {
         List<AttributeTokens> attributeList = new ArrayList<>();
@@ -755,7 +755,7 @@ public class DatasetUtils {
      * Uses methods and fields of ReflectionFieldDeclaration to get a more
      * detailed field signature (includes all modifiers).
      */
-    private static List<AttributeTokens> convertReflectionFieldDeclarationToQuartet(
+    private static List<AttributeTokens> convertReflectionFieldDeclarationToAttributeTokens(
             ReflectionFieldDeclaration resolvedField
     ) {
         List<AttributeTokens> attributeList = new ArrayList<>();
@@ -778,8 +778,8 @@ public class DatasetUtils {
     }
 
     /**
-     * Converts a list of fields {@link ResolvedFieldDeclaration} to a list
-     * of string quartets where each entry has the form:
+     * Converts a list of fields to a list of records of attribute tokens,
+     * where each record has the form:
      *  [fieldName, packageName, className, fieldSignature]
      * where "className" refers to the name of the field type. If possible,
      * declarations with multiple fields are split into individual quartets.
@@ -791,10 +791,10 @@ public class DatasetUtils {
         for (ResolvedFieldDeclaration resolvedField : resolvedFields) {
             if (resolvedField instanceof JavaParserFieldDeclaration) {
                 // use JavaParserFieldDeclaration to get a more detailed signature.
-                fieldList.addAll(convertJavaParserFieldDeclarationToQuartet((JavaParserFieldDeclaration) resolvedField));
+                fieldList.addAll(convertJavaParserFieldDeclarationToAttributeTokens((JavaParserFieldDeclaration) resolvedField));
             } else if (resolvedField instanceof ReflectionFieldDeclaration) {
                 // use ReflectionFieldDeclaration to get a more detailed signature.
-                fieldList.addAll(convertReflectionFieldDeclarationToQuartet((ReflectionFieldDeclaration) resolvedField));
+                fieldList.addAll(convertReflectionFieldDeclarationToAttributeTokens((ReflectionFieldDeclaration) resolvedField));
             } else {
                 // use default ResolvedFieldDeclaration.
                 fieldList.add(new AttributeTokens(
@@ -920,7 +920,7 @@ public class DatasetUtils {
                 .stream()
                 .filter(JavaParserUtils::isNonPrivateNonStaticNonVoidMethod)
                 .toList();
-        List<MethodTokens> methodList = new ArrayList<>(convertMethodUsageToQuartet(allReceiverMethods));
+        List<MethodTokens> methodList = new ArrayList<>(convertMethodUsageToMethodTokens(allReceiverMethods));
         // add all methods of parameters.
         for (Parameter jpParam : jpCallable.getParameters()) {
             methodList.addAll(getMethodsFromType(jpParam.getType()));
@@ -930,7 +930,7 @@ public class DatasetUtils {
             methodList.addAll(getMethodsFromType(((MethodDeclaration) jpCallable).getType()));
         }
         // add Object methods.
-        methodList.addAll(convertMethodUsageToQuartet(
+        methodList.addAll(convertMethodUsageToMethodTokens(
                 JavaParserUtils.getObjectType().asReferenceType().getAllMethods()
                         .stream()
                         .map(MethodUsage::new)
