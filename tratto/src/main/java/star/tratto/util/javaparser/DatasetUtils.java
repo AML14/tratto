@@ -195,7 +195,7 @@ public class DatasetUtils {
             String javadocComment
     ) {
         // Defines regex to match values within a string.
-        Pattern pattern = Pattern.compile("\\\"(.*?)\\\"|\\\'(.*?)\\\'");
+        Pattern pattern = Pattern.compile("\"(.*?)\"|'(.*?)'");
         Matcher matcher = pattern.matcher(javadocComment);
         // Iterate through all occurrences.
         List<ValueTokens> stringValues = new ArrayList<>();
