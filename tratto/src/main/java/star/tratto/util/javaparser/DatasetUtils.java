@@ -23,9 +23,6 @@ import com.github.javaparser.resolution.types.ResolvedType;
 import com.github.javaparser.symbolsolver.javaparsermodel.declarations.JavaParserFieldDeclaration;
 import com.github.javaparser.symbolsolver.reflectionmodel.ReflectionFieldDeclaration;
 import org.javatuples.Pair;
-import org.javatuples.Quartet;
-import org.javatuples.Sextet;
-import org.javatuples.Triplet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import star.tratto.data.OracleType;
@@ -33,7 +30,13 @@ import star.tratto.data.JPClassNotFoundException;
 import star.tratto.data.PackageDeclarationNotFoundException;
 import star.tratto.data.ResolvedTypeNotFound;
 import star.tratto.data.TrattoPath;
-import star.tratto.data.oracles.JDoctorCondition.Operation;
+import star.tratto.data.records.AttributeTokens;
+import star.tratto.data.records.ClassTokens;
+import star.tratto.data.records.JDoctorCondition.Operation;
+import star.tratto.data.records.JavadocTagTokens;
+import star.tratto.data.records.ValueTokens;
+import star.tratto.data.records.MethodArgumentTokens;
+import star.tratto.data.records.MethodTokens;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.oraclegrammar.custom.Splitter;
 import star.tratto.util.FileUtils;
@@ -74,23 +77,22 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets a list of each class name, and corresponding package, name for all
-     * classes in a compilation unit.
+     * Gets a list of class tokens for each class in a java file.
      *
-     * @param cu the compilation unit of a Java file
-     * @return a list of (className, packageName) pairs
+     * @param cu the compilation unit of a java file
+     * @return a list of class tokens, (className, packageName)
      * @throws PackageDeclarationNotFoundException if the package cannot be
      * retrieved
      */
-    private static List<Pair<String, String>> getClassNameAndPackage(
+    private static List<ClassTokens> getClassTokens(
             CompilationUnit cu
     ) throws PackageDeclarationNotFoundException {
-        List<Pair<String, String>> classList = new ArrayList<>();
+        List<ClassTokens> classList = new ArrayList<>();
         String packageName = JavaParserUtils.getPackageDeclarationFromCompilationUnit(cu).getNameAsString();
         // iterate through each class in the compilation unit.
         List<TypeDeclaration<?>> jpClasses = cu.getTypes();
         for (TypeDeclaration<?> jpClass : jpClasses) {
-            classList.add(new Pair<>(jpClass.getNameAsString(), packageName));
+            classList.add(new ClassTokens(jpClass.getNameAsString(), packageName));
         }
         return classList;
     }
@@ -126,8 +128,9 @@ public class DatasetUtils {
             TypeDeclaration<?> jpClass
     ) {
         Optional<JavadocComment> optionalJavadocComment = jpClass.getJavadocComment();
-        if (optionalJavadocComment.isEmpty()) return getJavadocByPattern(jpClass);
-        return "/**" + optionalJavadocComment.get().getContent() + "*/";
+        return optionalJavadocComment
+                .map(javadocComment -> "/**" + javadocComment.getContent() + "*/")
+                .orElseGet(() -> getJavadocByPattern(jpClass));
     }
 
     /**
@@ -138,34 +141,33 @@ public class DatasetUtils {
             CallableDeclaration<?> jpCallable
     ) {
         Optional<JavadocComment> optionalJavadocComment = jpCallable.getJavadocComment();
-        if (optionalJavadocComment.isEmpty()) return getJavadocByPattern(jpCallable);
-        return "    /**" + optionalJavadocComment.get().getContent() + "*/";
+        return optionalJavadocComment
+                .map(javadocComment -> "    /**" + javadocComment.getContent() + "*/")
+                .orElseGet(() -> getJavadocByPattern(jpCallable));
     }
 
     /**
-     * Gets all numeric values in a JavaDoc comment represented as a pair of
-     * strings.
+     * Gets all numeric value tokens in a Javadoc comment.
      *
      * @param javadocComment the string representation of a JavaDoc comment
-     * @return a list of pairs of strings representing all numeric values
-     * in the JavaDoc comment. The first element is the numeric value, and the
-     * second element is the type of numeric value ("int" or "double").
+     * @return a list of value tokens. The first element is the numeric value,
+     * and the second element is the type of numeric value ("int" or "double").
      */
-    private static List<Pair<String, String>> findAllNumericValuesInJavadoc(
+    private static List<ValueTokens> findAllNumericValuesInJavadoc(
             String javadocComment
     ) {
         // Defines regex to find integers and doubles within a string.
         Pattern pattern = Pattern.compile("-?\\d+(\\.\\d+)?");
         Matcher matcher = pattern.matcher(javadocComment);
         // Iterate through all occurrences.
-        List<Pair<String, String>> numericValues = new ArrayList<>();
+        List<ValueTokens> numericValues = new ArrayList<>();
         while (matcher.find()) {
             String match = matcher.group();
             if (match.contains(".")) {
                 // double (decimal).
                 try {
                     double realValue = Double.parseDouble(match);
-                    numericValues.add(new Pair<>(Double.toString(realValue), "double"));
+                    numericValues.add(new ValueTokens(Double.toString(realValue), "double"));
                 } catch (Exception e) {
                     logger.error(String.format("Number exceed maximum float value: %s%n", match));
                 }
@@ -173,7 +175,7 @@ public class DatasetUtils {
                 // integer (no decimal).
                 try {
                     long longIntValue = Long.parseLong(match);
-                    numericValues.add(new Pair<>(Long.toString(longIntValue), "int"));
+                    numericValues.add(new ValueTokens(Long.toString(longIntValue), "int"));
                 } catch (NumberFormatException e) {
                     logger.error(String.format("Number exceed maximum integer value: %s", match));
                 }
@@ -183,47 +185,45 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets all string values in a JavaDoc comment represented as a pair of
-     * strings. The second value may seem redundant, but is added for
-     * consistency with the numeric JavaDoc values.
+     * Gets all string value tokens in a Javadoc comment. The second value may
+     * seem redundant, but is added for consistency with the numeric Javadoc
+     * values when using the XText grammar.
      *
-     * @param javadocComment the string representation of a JavaDoc comment
-     * @return a list of pairs of strings representing the string values in
-     * the JavaDoc comment. The first element is the string value, and the
-     * second element is the type of value (always "String").
+     * @param javadocComment the string representation of a Javadoc comment
+     * @return a list of value tokens. The first element is the numeric value,
+     * and the second element is the type of value (always "String").
      */
-    private static List<Pair<String, String>> findAllStringValuesInJavadoc(
+    private static List<ValueTokens> findAllStringValuesInJavadoc(
             String javadocComment
     ) {
         // Defines regex to match values within a string.
-        Pattern pattern = Pattern.compile("\\\"(.*?)\\\"|\\\'(.*?)\\\'");
+        Pattern pattern = Pattern.compile("\"(.*?)\"|'(.*?)'");
         Matcher matcher = pattern.matcher(javadocComment);
         // Iterate through all occurrences.
-        List<Pair<String, String>> stringValues = new ArrayList<>();
+        List<ValueTokens> stringValues = new ArrayList<>();
         while (matcher.find()) {
-            String match = String.format("\"%s\"",!(matcher.group(1) == null) ? matcher.group(1) : matcher.group(2));
-            stringValues.add(new Pair<>(match, "String"));
+            String value = String.format("\"%s\"",!(matcher.group(1) == null) ? matcher.group(1) : matcher.group(2));
+            stringValues.add(new ValueTokens(value, "String"));
         }
         return stringValues;
     }
 
     /**
-     * Gets all numerical and string values from a given JavaDoc comment via
-     * pattern matching.
+     * Gets all value tokens in a Javadoc comment via pattern matching.
      *
-     * @param javadocComment the class or function JavaDoc comment
-     * @return a list of values describing each numerical and string value.
+     * @param javadocComment the Javadoc comment
+     * @return a list of records describing each numerical and string value.
      * Each entry has the form:
-     *  [value, valueType]
+     *  [value, type]
      * For example: [["name", "String"], ["64", "int"]]
      */
-    public static List<Pair<String, String>> getJavadocValues(
+    public static List<ValueTokens> getJavadocValues(
             String javadocComment
     ) {
-        List<Pair<String, String>> pairList = new ArrayList<>();
-        pairList.addAll(findAllNumericValuesInJavadoc(javadocComment));
-        pairList.addAll(findAllStringValuesInJavadoc(javadocComment));
-        return pairList;
+        List<ValueTokens> valueList = new ArrayList<>();
+        valueList.addAll(findAllNumericValuesInJavadoc(javadocComment));
+        valueList.addAll(findAllStringValuesInJavadoc(javadocComment));
+        return valueList;
     }
 
     /**
@@ -292,11 +292,11 @@ public class DatasetUtils {
      * where "packageName" refers to the package of the parameter type (empty
      * if the parameter is not a reference type).
      */
-    public static List<Triplet<String, String, String>> getTokensMethodArguments(
+    public static List<MethodArgumentTokens> getTokensMethodArguments(
             TypeDeclaration<?> jpClass,
             CallableDeclaration<?> jpCallable
     ) {
-        List<Triplet<String, String, String>> argumentList = new ArrayList<>();
+        List<MethodArgumentTokens> argumentList = new ArrayList<>();
         List<Parameter> jpParameters = jpCallable.getParameters();
         // iterate through each parameter in the method arguments.
         for (Parameter jpParameter : jpParameters) {
@@ -306,22 +306,22 @@ public class DatasetUtils {
                 try {
                     if (
                             jpParameterType.resolve().isTypeVariable() ||
-                                    jpParameterType.resolve().isPrimitive() ||
-                                    jpParameterType.resolve().isArray()
+                            jpParameterType.resolve().isPrimitive() ||
+                            jpParameterType.resolve().isArray()
                     ) {
                         // if not a reference type, ignore package name (e.g. primitives do not have packages).
-                        argumentList.add(Triplet.with(jpParameter.getNameAsString(), "", jpParameterClassName.get()));
+                        argumentList.add(new MethodArgumentTokens(jpParameter.getNameAsString(), "", jpParameterClassName.get()));
                     } else if (jpParameterType.resolve().isReferenceType()) {
                         String typeName = TypeUtils.getRawTypeName(jpClass, jpCallable, jpParameter);
                         if (JavaParserUtils.isTypeParameter(jpParameterType.resolve())) {
                             // if reference object is a generic type, ignore package name.
-                            argumentList.add(Triplet.with(jpParameter.getNameAsString(), "", typeName));
+                            argumentList.add(new MethodArgumentTokens(jpParameter.getNameAsString(), "", typeName));
                         } else {
                             // otherwise, retrieve necessary package information.
                             String className = JavaParserUtils.getTypeWithoutPackages(jpParameterType.resolve().asReferenceType());
                             String parameterPackageName = jpParameterType.resolve().asReferenceType().getQualifiedName()
                                     .replace(String.format(".%s", className), "");
-                            argumentList.add(Triplet.with(
+                            argumentList.add(new MethodArgumentTokens(
                                     jpParameter.getNameAsString(),
                                     parameterPackageName,
                                     jpParameterClassName.get()
@@ -329,7 +329,7 @@ public class DatasetUtils {
                         }
                     }
                 } catch (UnsolvedSymbolException e) {
-                    logger.error(String.format("Unable to generate triplet for argument %s.", jpParameterType));
+                    logger.error(String.format("Unable to generate MethodArgumentTokens for argument %s.", jpParameterType));
                 }
             }
         }
@@ -337,24 +337,24 @@ public class DatasetUtils {
     }
 
     /**
-     * Reconstructs the original tag in source code from a list of tag
+     * Reconstructs the original tag in source code from a record of tag
      * information.
      *
-     * @param jpTag a sextet of tag information, including: file source code,
+     * @param jpTag a record of tag information, including: file source code,
      *              JavaParser class, JavaParser method/constructor, oracle
      *              type, name, and content.
      * @return the original tag in source code as a String.
      */
     public static String reconstructTag(
-            Sextet<String, TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String> jpTag
+            JavadocTagTokens jpTag
     ) {
-        String tagString = switch (jpTag.getValue3()) {
+        String tagString = switch (jpTag.oracleType()) {
             case PRE -> "@param ";
             case NORMAL_POST -> "@return ";
             case EXCEPT_POST -> "@throws ";
         };
-        tagString += !jpTag.getValue4().equals("") ?  jpTag.getValue4() + " " : "";
-        tagString += jpTag.getValue5();
+        tagString += !jpTag.tagName().equals("") ?  jpTag.tagName() + " " : "";
+        tagString += jpTag.tagBody();
         return tagString;
     }
 
@@ -385,10 +385,10 @@ public class DatasetUtils {
      * @throws PackageDeclarationNotFoundException if the package
      * {@link PackageDeclaration} of the compilation unit is not found
      */
-    private static List<Quartet<String, String, String, String>> getNonPrivateStaticNonVoidMethods(
+    private static List<MethodTokens> getNonPrivateStaticNonVoidMethods(
             CompilationUnit cu
     ) throws PackageDeclarationNotFoundException {
-        List<Quartet<String, String, String, String>> methodList = new ArrayList<>();
+        List<MethodTokens> methodList = new ArrayList<>();
         // get package name.
         String packageName = JavaParserUtils.getPackageDeclarationFromCompilationUnit(cu).getNameAsString();
         // iterate over each class in the compilation unit.
@@ -398,7 +398,7 @@ public class DatasetUtils {
             List<MethodDeclaration> jpMethods = jpClass.findAll(MethodDeclaration.class);
             for (MethodDeclaration jpMethod : jpMethods) {
                 if (!jpMethod.isPrivate() && jpMethod.isStatic() && !jpMethod.getType().isVoidType()) {
-                    methodList.add(Quartet.with(
+                    methodList.add(new MethodTokens(
                             jpMethod.getNameAsString(),
                             packageName,
                             className,
@@ -421,10 +421,10 @@ public class DatasetUtils {
      * @throws PackageDeclarationNotFoundException if the package
      * {@link PackageDeclaration} of the compilation unit is not found
      */
-    private static List<Quartet<String, String, String, String>> getNonPrivateStaticAttributes(
+    private static List<AttributeTokens> getNonPrivateStaticAttributes(
             CompilationUnit cu
     ) throws PackageDeclarationNotFoundException {
-        List<Quartet<String, String, String, String>> attributeList = new ArrayList<>();
+        List<AttributeTokens> attributeList = new ArrayList<>();
         // get package name.
         String packageName = JavaParserUtils.getPackageDeclarationFromCompilationUnit(cu).getNameAsString();
         // get all classes in compilation unit.
@@ -439,7 +439,7 @@ public class DatasetUtils {
                 if (!jpField.isPrivate() && jpField.isStatic()) {
                     // add each variable in declaration.
                     for (VariableDeclarator jpVariable : jpField.getVariables()) {
-                        attributeList.add(Quartet.with(
+                        attributeList.add(new AttributeTokens(
                                 jpVariable.getNameAsString(),
                                 packageName,
                                 className,
@@ -459,18 +459,18 @@ public class DatasetUtils {
      * @param cu a compilation unit of a Java file
      * @param fileContent the content of the Java file
      * @return a list of information about each tag. Each entry has the form:
-     *  [typeDeclaration, callableDeclaration, oracleType, name, content]
+     *  [fileContent, typeDeclaration, callableDeclaration, oracleType, name, content]
      * where a JavaDoc tag is interpreted as:
      *  "@tag name content"
      * and the value of "@tag" determines "oracleType".
      * @throws PackageDeclarationNotFoundException if the package
      * {@link PackageDeclaration} of the compilation unit is not found
      */
-    private static List<Sextet<String, TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> getCuTags(
+    private static List<JavadocTagTokens> getCuTags(
             CompilationUnit cu,
             String fileContent
     ) throws PackageDeclarationNotFoundException {
-        List<Sextet<String, TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> tagList = new ArrayList<>();
+        List<JavadocTagTokens> tagList = new ArrayList<>();
         // iterate through each class.
         List<TypeDeclaration<?>> jpClasses = cu.getTypes();
         for (TypeDeclaration<?> jpClass : jpClasses) {
@@ -495,7 +495,7 @@ public class DatasetUtils {
                         };
                         if (oracleType == null) continue;
                         // add new tag.
-                        tagList.add(Sextet.with(
+                        tagList.add(new JavadocTagTokens(
                                 fileContent,
                                 jpClass,
                                 jpCallable,
@@ -536,17 +536,17 @@ public class DatasetUtils {
      * @param sourceDir the project root directory
      * @return a list of (className, packageName) pairs
      */
-    public static List<Pair<String, String>> getProjectClassesTokens(
+    public static List<ClassTokens> getProjectClassTokens(
             Path sourceDir
     ) {
-        List<Pair<String, String>> projectClasses = new ArrayList<>();
+        List<ClassTokens> projectClasses = new ArrayList<>();
         List<Path> javaFiles = getValidJavaFiles(sourceDir);
         // iterate through each file and add class tokens.
         for (Path javaFile : javaFiles) {
             Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnit(javaFile.toAbsolutePath());
             if (cu.isPresent()) {
                 try {
-                    projectClasses.addAll(getClassNameAndPackage(cu.get()));
+                    projectClasses.addAll(getClassTokens(cu.get()));
                 } catch (PackageDeclarationNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -564,10 +564,10 @@ public class DatasetUtils {
      * form:
      *  [methodName, packageName, className, methodSignature]
      */
-    public static List<Quartet<String, String, String, String>> getProjectNonPrivateStaticNonVoidMethodsTokens(
+    public static List<MethodTokens> getProjectNonPrivateStaticNonVoidMethodsTokens(
             Path sourceDir
     ) {
-        List<Quartet<String, String, String, String>> projectMethods = new ArrayList<>();
+        List<MethodTokens> projectMethods = new ArrayList<>();
         List<Path> javaFiles = getValidJavaFiles(sourceDir);
         // iterate through each file and add method tokens.
         for (Path javaFile : javaFiles) {
@@ -592,10 +592,10 @@ public class DatasetUtils {
      * form:
      *  [variableName, packageName, className, variableSignature]
      */
-    public static List<Quartet<String, String, String, String>> getProjectNonPrivateStaticAttributesTokens(
+    public static List<AttributeTokens> getProjectNonPrivateStaticAttributesTokens(
             Path sourceDir
     ) {
-        List<Quartet<String, String, String, String>> attributeList = new ArrayList<>();
+        List<AttributeTokens> attributeList = new ArrayList<>();
         List<Path> javaFiles = getValidJavaFiles(sourceDir);
         // iterate through each file and add attribute tokens.
         for (Path javaFile : javaFiles) {
@@ -622,10 +622,10 @@ public class DatasetUtils {
      *  "@tag name content"
      * and the value of "@tag" determines "oracleType".
      */
-    public static List<Sextet<String, TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> getProjectTagsTokens(
+    public static List<JavadocTagTokens> getProjectTagsTokens(
             Path sourceDir
     ) {
-        List<Sextet<String, TypeDeclaration<?>, CallableDeclaration<?>, OracleType, String, String>> tagList = new ArrayList<>();
+        List<JavadocTagTokens> tagList = new ArrayList<>();
         List<Path> javaFiles = getValidJavaFiles(sourceDir);
         // iterate through each file and add JavaDoc tags.
         for (Path javaFile : javaFiles) {
@@ -644,20 +644,20 @@ public class DatasetUtils {
     }
 
     /**
-     * Converts a list of methods to a list of string quartets where each
-     * entry has the form:
+     * Converts a list of methods to a list of records of method tokens,
+     * where each record has the form:
      *  [methodName, packageName, className, methodSignature]
      * where "className" refers to the class in which the method is declared.
      * "methodSignature" includes access specifiers, non-access modifiers,
      * generic type parameters, return type, method signature, parameters,
      * and exceptions (unless otherwise un-recoverable).
      */
-    private static List<Quartet<String, String, String, String>> convertMethodUsageToQuartet(
+    private static List<MethodTokens> convertMethodUsageToMethodTokens(
             List<MethodUsage> jpMethods
     ) {
         return new ArrayList<>(jpMethods)
                 .stream()
-                .map(jpMethod -> Quartet.with(
+                .map(jpMethod -> new MethodTokens(
                         jpMethod.getName(),
                         jpMethod.declaringType().getPackageName(),
                         jpMethod.declaringType().getClassName(),
@@ -676,10 +676,10 @@ public class DatasetUtils {
      * form:
      *  [methodName, packageName, className, methodSignature]
      */
-    public static List<Quartet<String, String, String, String>> getMethodsFromType(
+    public static List<MethodTokens> getMethodsFromType(
             ResolvedType jpResolvedType
     ) {
-        List<Quartet<String, String, String, String>> methodList = new ArrayList<>();
+        List<MethodTokens> methodList = new ArrayList<>();
         if (jpResolvedType.isArray()) {
             // array type (see dataset/repose/array_methods.json).
             List<List<String>> arrayMethods;
@@ -692,7 +692,7 @@ public class DatasetUtils {
                     .toList();
             methodList.addAll(arrayMethods
                     .stream()
-                    .map(m -> Quartet.with(m.get(0), "", jpResolvedType.describe(), m.get(1)))
+                    .map(m -> new MethodTokens(m.get(0), "", jpResolvedType.describe(), m.get(1)))
                     .toList());
         } else if (JavaParserUtils.isTypeParameter(jpResolvedType)) {
             // generic type.
@@ -701,7 +701,7 @@ public class DatasetUtils {
                     .map(MethodUsage::new)
                     .filter(JavaParserUtils::isNonPrivateNonStaticNonVoidMethod)
                     .toList();
-            methodList.addAll(convertMethodUsageToQuartet(genericMethods));
+            methodList.addAll(convertMethodUsageToMethodTokens(genericMethods));
         } else if (jpResolvedType.isReferenceType()) {
             // base type.
             List<MethodUsage> allMethods = jpResolvedType.asReferenceType().getAllMethods()
@@ -709,7 +709,7 @@ public class DatasetUtils {
                     .map(MethodUsage::new)
                     .filter(JavaParserUtils::isNonPrivateNonStaticNonVoidMethod)
                     .toList();
-            methodList.addAll(convertMethodUsageToQuartet(allMethods));
+            methodList.addAll(convertMethodUsageToMethodTokens(allMethods));
         }
         return methodList;
     }
@@ -719,7 +719,7 @@ public class DatasetUtils {
      * an empty list if an error occurs. See public "getMethodsFromType()"
      * method above for further detail.
      */
-    private static List<Quartet<String, String, String, String>> getMethodsFromType(
+    private static List<MethodTokens> getMethodsFromType(
             Type jpType
     ) {
         try {
@@ -735,13 +735,13 @@ public class DatasetUtils {
      * Uses methods and fields of JavaParserFieldDeclaration to get a more
      * detailed field signature (includes all modifiers and value).
      */
-    private static List<Quartet<String, String, String, String>> convertJavaParserFieldDeclarationToQuartet(
+    private static List<AttributeTokens> convertJavaParserFieldDeclarationToAttributeTokens(
             JavaParserFieldDeclaration resolvedField
     ) {
-        List<Quartet<String, String, String, String>> attributeList = new ArrayList<>();
+        List<AttributeTokens> attributeList = new ArrayList<>();
         FieldDeclaration jpField = resolvedField.getWrappedNode();
         for (VariableDeclarator jpVariable : jpField.getVariables()) {
-            attributeList.add(Quartet.with(
+            attributeList.add(new AttributeTokens(
                     jpVariable.getNameAsString(),
                     resolvedField.declaringType().getPackageName(),
                     resolvedField.declaringType().getClassName(),
@@ -755,10 +755,10 @@ public class DatasetUtils {
      * Uses methods and fields of ReflectionFieldDeclaration to get a more
      * detailed field signature (includes all modifiers).
      */
-    private static List<Quartet<String, String, String, String>> convertReflectionFieldDeclarationToQuartet(
+    private static List<AttributeTokens> convertReflectionFieldDeclarationToAttributeTokens(
             ReflectionFieldDeclaration resolvedField
     ) {
-        List<Quartet<String, String, String, String>> attributeList = new ArrayList<>();
+        List<AttributeTokens> attributeList = new ArrayList<>();
         String signature;
         try {
             Field f = resolvedField.getClass().getDeclaredField("field");
@@ -768,7 +768,7 @@ public class DatasetUtils {
         } catch (NoSuchFieldException | IllegalAccessException e) {
             signature = JavaParserUtils.getFieldDeclaration(resolvedField);
         }
-        attributeList.add(Quartet.with(
+        attributeList.add(new AttributeTokens(
                 resolvedField.getName(),
                 resolvedField.declaringType().getPackageName(),
                 resolvedField.declaringType().getClassName(),
@@ -778,26 +778,26 @@ public class DatasetUtils {
     }
 
     /**
-     * Converts a list of fields {@link ResolvedFieldDeclaration} to a list
-     * of string quartets where each entry has the form:
+     * Converts a list of fields to a list of records of attribute tokens,
+     * where each record has the form:
      *  [fieldName, packageName, className, fieldSignature]
      * where "className" refers to the name of the field type. If possible,
      * declarations with multiple fields are split into individual quartets.
      */
-    private static List<Quartet<String, String, String, String>> convertFieldDeclarationToQuartet(
+    private static List<AttributeTokens> convertFieldDeclarationToQuartet(
             List<ResolvedFieldDeclaration> resolvedFields
     ) {
-        List<Quartet<String, String, String, String>> fieldList = new ArrayList<>();
+        List<AttributeTokens> fieldList = new ArrayList<>();
         for (ResolvedFieldDeclaration resolvedField : resolvedFields) {
             if (resolvedField instanceof JavaParserFieldDeclaration) {
                 // use JavaParserFieldDeclaration to get a more detailed signature.
-                fieldList.addAll(convertJavaParserFieldDeclarationToQuartet((JavaParserFieldDeclaration) resolvedField));
+                fieldList.addAll(convertJavaParserFieldDeclarationToAttributeTokens((JavaParserFieldDeclaration) resolvedField));
             } else if (resolvedField instanceof ReflectionFieldDeclaration) {
                 // use ReflectionFieldDeclaration to get a more detailed signature.
-                fieldList.addAll(convertReflectionFieldDeclarationToQuartet((ReflectionFieldDeclaration) resolvedField));
+                fieldList.addAll(convertReflectionFieldDeclarationToAttributeTokens((ReflectionFieldDeclaration) resolvedField));
             } else {
                 // use default ResolvedFieldDeclaration.
-                fieldList.add(Quartet.with(
+                fieldList.add(new AttributeTokens(
                         resolvedField.getName(),
                         resolvedField.declaringType().getPackageName(),
                         resolvedField.declaringType().getClassName(),
@@ -819,14 +819,14 @@ public class DatasetUtils {
      * where "className" refers to the name of the field type. If possible,
      * declarations with multiple fields are split into individual quartets.
      */
-    public static List<Quartet<String, String, String, String>> getFieldsFromType(
+    public static List<AttributeTokens> getFieldsFromType(
             ResolvedType jpResolvedType
     ) {
-        List<Quartet<String, String, String, String>> fieldList = new ArrayList<>();
+        List<AttributeTokens> fieldList = new ArrayList<>();
         if (jpResolvedType.isArray()) {
             // add array field (length).
             Pair<String, String> packageAndClass = JavaParserUtils.getTypeFromResolvedType(jpResolvedType);
-            fieldList.add(Quartet.with(
+            fieldList.add(new AttributeTokens(
                     "length",
                     packageAndClass.getValue0(),
                     packageAndClass.getValue1(),
@@ -863,7 +863,7 @@ public class DatasetUtils {
      * an empty list if an error occurs. See public "getFieldsFromType()"
      * method above for further detail.
      */
-    private static List<Quartet<String, String, String, String>> getFieldsFromType(
+    private static List<AttributeTokens> getFieldsFromType(
             Type jpType
     ) {
         try {
@@ -881,12 +881,12 @@ public class DatasetUtils {
      * e.g., {@code foo(String... bar)}. If the method argument is not an array
      * of this kind, the method simply calls the previous method.
      */
-    public static List<Quartet<String, String, String, String>> getFieldsFromParameter(
+    public static List<AttributeTokens> getFieldsFromParameter(
             Parameter jpParameter
     ) {
         if (TypeUtils.hasEllipsis(jpParameter.toString())) {
             Pair<String, String> packageAndClass = JavaParserUtils.getTypeFromResolvedType(jpParameter.getType().resolve());
-            return List.of(Quartet.with(
+            return List.of(new AttributeTokens(
                     "length",
                     packageAndClass.getValue0(),
                     packageAndClass.getValue1() + "[]",
@@ -911,7 +911,7 @@ public class DatasetUtils {
      * @throws JPClassNotFoundException if the declaring class is not
      * resolvable
      */
-    public static List<Quartet<String, String, String, String>> getTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(
+    public static List<MethodTokens> getTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(
             TypeDeclaration<?> jpClass,
             CallableDeclaration<?> jpCallable
     ) throws JPClassNotFoundException {
@@ -920,7 +920,7 @@ public class DatasetUtils {
                 .stream()
                 .filter(JavaParserUtils::isNonPrivateNonStaticNonVoidMethod)
                 .toList();
-        List<Quartet<String, String, String, String>> methodList = new ArrayList<>(convertMethodUsageToQuartet(allReceiverMethods));
+        List<MethodTokens> methodList = new ArrayList<>(convertMethodUsageToMethodTokens(allReceiverMethods));
         // add all methods of parameters.
         for (Parameter jpParam : jpCallable.getParameters()) {
             methodList.addAll(getMethodsFromType(jpParam.getType()));
@@ -930,7 +930,7 @@ public class DatasetUtils {
             methodList.addAll(getMethodsFromType(((MethodDeclaration) jpCallable).getType()));
         }
         // add Object methods.
-        methodList.addAll(convertMethodUsageToQuartet(
+        methodList.addAll(convertMethodUsageToMethodTokens(
                 JavaParserUtils.getObjectType().asReferenceType().getAllMethods()
                         .stream()
                         .map(MethodUsage::new)
@@ -955,7 +955,7 @@ public class DatasetUtils {
      * @throws JPClassNotFoundException if the declaring class is not
      * resolvable
      */
-    public static List<Quartet<String, String, String, String>> getTokensMethodVariablesNonPrivateNonStaticAttributes(
+    public static List<AttributeTokens> getTokensMethodVariablesNonPrivateNonStaticAttributes(
             TypeDeclaration<?> jpClass,
             CallableDeclaration<?> jpCallable
     ) throws JPClassNotFoundException {
@@ -964,7 +964,7 @@ public class DatasetUtils {
                 .stream()
                 .filter(JavaParserUtils::isNonPrivateNonStaticAttribute)
                 .toList();
-        List<Quartet<String, String, String, String>> attributeList = new ArrayList<>(convertFieldDeclarationToQuartet(allReceiverFields));
+        List<AttributeTokens> attributeList = new ArrayList<>(convertFieldDeclarationToQuartet(allReceiverFields));
         // add all fields of parameters.
         for (Parameter jpParam : jpCallable.getParameters()) {
             attributeList.addAll(getFieldsFromParameter(jpParam));
@@ -989,13 +989,13 @@ public class DatasetUtils {
      * form:
      *  [methodName, packageName, className, methodSignature]
      */
-    public static List<Quartet<String, String, String, String>> getTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(
+    public static List<MethodTokens> getTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(
             TypeDeclaration<?> jpClass,
             CallableDeclaration<?> jpCallable,
-            List<Triplet<String, String, String>> methodArgs,
+            List<MethodArgumentTokens> methodArgs,
             String oracle
     ) {
-        List<Quartet<String, String, String, String>> methodList = new ArrayList<>();
+        List<MethodTokens> methodList = new ArrayList<>();
         List<LinkedList<String>> oracleSubExpressions = Parser.getInstance().getAllMethodsAndAttributes(oracle)
                 .stream()
                 .map(e -> new LinkedList<>(Splitter.split(e)))
@@ -1034,13 +1034,13 @@ public class DatasetUtils {
      * form:
      *  [fieldName, packageName, className, fieldSignature]
      */
-    public static List<Quartet<String, String, String, String>> getTokensOracleVariablesNonPrivateNonStaticAttributes(
+    public static List<AttributeTokens> getTokensOracleVariablesNonPrivateNonStaticAttributes(
             TypeDeclaration<?> jpClass,
             CallableDeclaration<?> jpCallable,
-            List<Triplet<String, String, String>> methodArgs,
+            List<MethodArgumentTokens> methodArgs,
             String oracle
     ) {
-        List<Quartet<String, String, String, String>> attributeList = new ArrayList<>();
+        List<AttributeTokens> attributeList = new ArrayList<>();
         List<LinkedList<String>> oracleSubexpressions = Parser.getInstance().getAllMethodsAndAttributes(oracle)
                 .stream()
                 .map(e -> new LinkedList<>(Splitter.split(e)))
@@ -1200,7 +1200,7 @@ public class DatasetUtils {
             Operation operation,
             Path sourceDir
     ) {
-        return sourceDir.resolve(operation.getClassName().replace(".", "/") + ".java");
+        return sourceDir.resolve(operation.className().replace(".", "/") + ".java");
     }
 
     /**
@@ -1243,7 +1243,7 @@ public class DatasetUtils {
     public static String getOperationPackageName(
             Operation operation
     ) {
-        List<String> pathList = TypeUtils.getNameSegments(operation.getClassName());
+        List<String> pathList = TypeUtils.getNameSegments(operation.className());
         return TypeUtils.getPackageNameFromNameSegments(pathList);
     }
 
@@ -1253,7 +1253,7 @@ public class DatasetUtils {
     public static String getOperationClassName(
             Operation operation
     ) {
-        List<String> pathList = TypeUtils.getNameSegments(operation.getClassName());
+        List<String> pathList = TypeUtils.getNameSegments(operation.className());
         return TypeUtils.getClassNameFromNameSegments(pathList);
     }
 
@@ -1263,7 +1263,7 @@ public class DatasetUtils {
     public static String getOperationCallableName(
             Operation operation
     ) {
-        List<String> pathList = TypeUtils.getNameSegments(operation.getName());
+        List<String> pathList = TypeUtils.getNameSegments(operation.methodName());
         return TypeUtils.getClassNameFromNameSegments(pathList);
     }
 

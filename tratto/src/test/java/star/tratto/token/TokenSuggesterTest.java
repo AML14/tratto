@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleDatapointTest;
 import star.tratto.data.OracleType;
+import star.tratto.data.records.MethodArgumentTokens;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.oraclegrammar.trattoGrammar.Oracle;
 import star.tratto.token.restrictions.multi.*;
@@ -310,7 +311,7 @@ public class TokenSuggesterTest {
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("tokenLegalContextRestrictionsPreYesArgumentOrThisParameterizedTestData")
-    public void isTokenLegalBasedOnContextRestrictions_PRE_YES_ARGUMENT_OR_THIS_Case_Legality(String testName, String partialExpression, List<Triplet<String, String, String>> methodArguments, boolean expected) {
+    public void isTokenLegalBasedOnContextRestrictions_PRE_YES_ARGUMENT_OR_THIS_Case_Legality(String testName, String partialExpression, List<MethodArgumentTokens> methodArguments, boolean expected) {
         String token = ";";
         List<String> partialExpressionTokens = split(parser.getPartialOracle(partialExpression));
         OracleDatapoint oracleDatapoint = getEmptyOracleDatapoint();
@@ -328,13 +329,13 @@ public class TokenSuggesterTest {
 
     private static Stream<Arguments> tokenLegalContextRestrictionsPreYesArgumentOrThisParameterizedTestData() {
         return Stream.of(
-                Arguments.of("isTokenLegalBasedOnContextRestrictions_PRE_YES_ARGUMENT_OR_THIS_Default_Legal", "  ", List.of(Triplet.with("arg1", "", "")), true),
-                Arguments.of("isTokenLegalBasedOnContextRestrictions_PRE_YES_ARGUMENT_OR_THIS_Enabled_Illegal", " arg2 ", List.of(Triplet.with("arg1", "", "")), false),
-                Arguments.of("isTokenLegalBasedOnContextRestrictions_PRE_YES_ARGUMENT_OR_THIS_Disabled_Legal", " arg2 ", List.of(Triplet.with("arg1", "", ""), Triplet.with("arg2", "", "")), true),
-//                Arguments.of("isTokenLegalBasedOnContextRestrictions_PRE_YES_ARGUMENT_OR_THIS_Disabled_this_Legal", "this", List.of(Triplet.with("arg1", "", "")), true), // "this" can never evaluate to boolean
-                Arguments.of("isTokenLegalBasedOnContextRestrictions_PRE_YES_ARGUMENT_OR_THIS_Disabled_argument_Legal", "arg1", List.of(Triplet.with("arg1", "", "")), true),
-                Arguments.of("isTokenLegalBasedOnContextRestrictions_PRE_YES_ARGUMENT_OR_THIS_Disabled_argument_this_Legal", "arg1.process(this)", List.of(Triplet.with("arg1", "", "")), true),
-                Arguments.of("isTokenLegalBasedOnContextRestrictions_PRE_YES_ARGUMENT_OR_THIS_Disabled_this_somethingElse_Legal", "this.equals(arg2)", List.of(Triplet.with("arg1", "", "")), true)
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_PRE_YES_ARGUMENT_OR_THIS_Default_Legal", "  ", List.of(new MethodArgumentTokens("arg1", "", "")), true),
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_PRE_YES_ARGUMENT_OR_THIS_Enabled_Illegal", " arg2 ", List.of(new MethodArgumentTokens("arg1", "", "")), false),
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_PRE_YES_ARGUMENT_OR_THIS_Disabled_Legal", " arg2 ", List.of(new MethodArgumentTokens("arg1", "", ""), new MethodArgumentTokens("arg2", "", "")), true),
+//                Arguments.of("isTokenLegalBasedOnContextRestrictions_PRE_YES_ARGUMENT_OR_THIS_Disabled_this_Legal", "this", List.of(new MethodArgumentTokens("arg1", "", "")), true), // "this" can never evaluate to boolean
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_PRE_YES_ARGUMENT_OR_THIS_Disabled_argument_Legal", "arg1", List.of(new MethodArgumentTokens("arg1", "", "")), true),
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_PRE_YES_ARGUMENT_OR_THIS_Disabled_argument_this_Legal", "arg1.process(this)", List.of(new MethodArgumentTokens("arg1", "", "")), true),
+                Arguments.of("isTokenLegalBasedOnContextRestrictions_PRE_YES_ARGUMENT_OR_THIS_Disabled_this_somethingElse_Legal", "this.equals(arg2)", List.of(new MethodArgumentTokens("arg1", "", "")), true)
         );
     }
 
@@ -588,7 +589,7 @@ public class TokenSuggesterTest {
         mockedOracleDatapoint1.setClassName("SomeClass");
         mockedOracleDatapoint1.setMethodSourceCode("public int[] someMethod(ArrayList<Integer> arg1, Integer arg2) { return null; }");
         mockedOracleDatapoint1.setClassSourceCode("import java.util.ArrayList; public class SomeClass { " + mockedOracleDatapoint1.getMethodSourceCode() + " }");
-        mockedOracleDatapoint1.setTokensMethodArguments(List.of(Triplet.with("arg1", "java.util", "ArrayList"), Triplet.with("arg2", "java.lang", "Integer")));
+        mockedOracleDatapoint1.setTokensMethodArguments(List.of(new MethodArgumentTokens("arg1", "java.util", "ArrayList"), new MethodArgumentTokens("arg2", "java.lang", "Integer")));
         mockedOracleDatapoint1.setOracleType(OracleType.NORMAL_POST);
         mockedOracleDatapoint1.setTokensProjectClasses(List.of());
 
@@ -597,7 +598,7 @@ public class TokenSuggesterTest {
         mockedOracleDatapoint2.setClassName("SomeClass");
         mockedOracleDatapoint2.setMethodSourceCode("public void someMethod(ArrayList<Integer> arg1, Integer arg2) { return; }");
         mockedOracleDatapoint2.setClassSourceCode("import java.util.ArrayList; public class SomeClass { " + mockedOracleDatapoint2.getMethodSourceCode() + " }");
-        mockedOracleDatapoint2.setTokensMethodArguments(List.of(Triplet.with("arg1", "java.util", "ArrayList"), Triplet.with("arg2", "java.lang", "Integer")));
+        mockedOracleDatapoint2.setTokensMethodArguments(List.of(new MethodArgumentTokens("arg1", "java.util", "ArrayList"), new MethodArgumentTokens("arg2", "java.lang", "Integer")));
         mockedOracleDatapoint2.setOracleType(OracleType.NORMAL_POST);
         mockedOracleDatapoint2.setTokensProjectClasses(List.of());
 
@@ -783,7 +784,7 @@ public class TokenSuggesterTest {
         mockedOracleDatapoint.setClassName("SomeClass");
         mockedOracleDatapoint.setMethodSourceCode("public List<Integer> someMethod(ArrayList<Integer> arg1, Integer arg2) { return List.of(1, 2, 3); }");
         mockedOracleDatapoint.setClassSourceCode("import java.util.List; import java.util.ArrayList; public class SomeClass { " + mockedOracleDatapoint.getMethodSourceCode() + " }");
-        mockedOracleDatapoint.setTokensMethodArguments(List.of(Triplet.with("arg1", "java.util", "ArrayList"), Triplet.with("arg2", "java.lang", "Integer")));
+        mockedOracleDatapoint.setTokensMethodArguments(List.of(new MethodArgumentTokens("arg1", "java.util", "ArrayList"), new MethodArgumentTokens("arg2", "java.lang", "Integer")));
         mockedOracleDatapoint.setOracleType(OracleType.NORMAL_POST);
         mockedOracleDatapoint.setTokensProjectClasses(List.of());
 

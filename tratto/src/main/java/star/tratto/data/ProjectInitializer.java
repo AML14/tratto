@@ -11,7 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import star.tratto.data.oracles.Project;
+import star.tratto.data.records.Project;
 
 import java.io.IOException;
 import java.nio.file.FileSystems;
@@ -117,7 +117,7 @@ public class ProjectInitializer {
             return projectList
                     .stream()
                     .filter(project -> {
-                        Path rootDir = project.getRootPath();
+                        Path rootDir = project.rootPath();
                         return Files.exists(rootDir) && Files.isDirectory(rootDir);
                     })
                     .collect(Collectors.toList());

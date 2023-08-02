@@ -3,8 +3,8 @@ package star.tratto;
 import star.tratto.data.OracleDatapoint;
 import star.tratto.data.ProjectInitializer;
 import star.tratto.data.TrattoPath;
-import star.tratto.data.oracles.JDoctorCondition;
-import star.tratto.data.oracles.Project;
+import star.tratto.data.records.JDoctorCondition;
+import star.tratto.data.records.Project;
 import star.tratto.data.oracles.ProjectOracleGenerator;
 import star.tratto.util.FileUtils;
 import star.tratto.util.javaparser.DatasetUtils;
@@ -29,7 +29,7 @@ public class OraclesDataset {
      * @return a list of conditions, representing the original JSON conditions
      */
     private static List<JDoctorCondition> getProjectConditions(Project project) {
-        Path conditionsDir = project.getConditionsPath();
+        Path conditionsDir = project.conditionsPath();
         try (Stream<Path> walk = Files.walk(conditionsDir)) {
             return walk
                     .filter(path -> path.toString().endsWith(".json"))
@@ -46,7 +46,7 @@ public class OraclesDataset {
      * @return the corresponding oracle datapoints of the project
      */
     private static List<OracleDatapoint> getProjectOracleDatapoints(Project project) {
-        System.out.println("\nCollecting data from: " + project.getProjectName());
+        System.out.println("\nCollecting data from: " + project.projectName());
         List<JDoctorCondition> jDoctorConditions = getProjectConditions(project);
         oracleDPGenerator.loadProject(project, jDoctorConditions);
         return oracleDPGenerator.generate();
@@ -86,12 +86,12 @@ public class OraclesDataset {
     ) {
         // write raw oracles as separate file
         List<String> oracles = oracleDPs.stream().map(OracleDatapoint::getOracle).toList();
-        String oraclesFileName = String.format("oracles_list_%s.json", project.getProjectName());
-        Path oraclesPath = TrattoPath.OUTPUT.getPath().resolve(project.getProjectName()).resolve(oraclesFileName);
+        String oraclesFileName = String.format("oracles_list_%s.json", project.projectName());
+        Path oraclesPath = TrattoPath.OUTPUT.getPath().resolve(project.projectName()).resolve(oraclesFileName);
         FileUtils.write(oraclesPath, oracles);
         // write oracle datapoints as chunks
         List<List<OracleDatapoint>> oracleDPChunks = DatasetUtils.splitListIntoChunks(oracleDPs, chunkSize);
-        String oracleDPFileName = String.format("oracle_datapoints_%s.json", project.getProjectName());
+        String oracleDPFileName = String.format("oracle_datapoints_%s.json", project.projectName());
         Path oracleDPPath = TrattoPath.OUTPUT_DATASET.getPath().resolve(oracleDPFileName);
         writeChunks(oracleDPPath, oracleDPChunks);
     }

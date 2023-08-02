@@ -30,13 +30,13 @@ import com.github.javaparser.symbolsolver.javaparsermodel.declarations.JavaParse
 import com.github.javaparser.symbolsolver.reflectionmodel.ReflectionMethodDeclaration;
 import com.github.javaparser.symbolsolver.utils.SymbolSolverCollectionStrategy;
 import org.javatuples.Pair;
-import org.javatuples.Triplet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import star.tratto.data.OracleDatapoint;
 import star.tratto.data.JPClassNotFoundException;
 import star.tratto.data.PackageDeclarationNotFoundException;
 import star.tratto.data.ResolvedTypeNotFound;
+import star.tratto.data.records.MethodArgumentTokens;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.util.JavaTypes;
 
@@ -119,7 +119,7 @@ public class JavaParserUtils {
     private static void addSyntheticMethodWithExpression(
             TypeDeclaration<?> jpClass,
             CallableDeclaration<?> jpCallable,
-            List<Triplet<String, String, String>> methodArgs,
+            List<MethodArgumentTokens> methodArgs,
             String expression
     ) throws ResolvedTypeNotFound {
         // throw error when given a constructor due to JavaParser behavior differences
@@ -130,8 +130,8 @@ public class JavaParserUtils {
         BlockStmt methodBody = jpClass.addMethod(SYNTHETIC_METHOD_NAME).getBody()
                 .orElseThrow(() -> new NoSuchElementException("Unable to retrieve synthetic method body."));
         // add method arguments as variable statements in method body (e.g. "ArgType argName;")
-        for (Triplet<String, String, String> methodArg : methodArgs) {
-            methodBody.addStatement(methodArg.getValue2() + " " + methodArg.getValue0() + ";");
+        for (MethodArgumentTokens methodArg : methodArgs) {
+            methodBody.addStatement(methodArg.typeName() + " " + methodArg.argumentName() + ";");
         }
         // add return type (if non-void)
         String returnType = ((MethodDeclaration) jpCallable).getType().asString();
@@ -140,7 +140,7 @@ public class JavaParserUtils {
                     returnType + " methodResultID = " + jpCallable.getNameAsString() + "(" +
                             methodArgs
                                     .stream()
-                                    .map(Triplet::getValue0)
+                                    .map(MethodArgumentTokens::argumentName)
                                     .collect(Collectors.joining(", "))
                     + ");"
             );
@@ -167,7 +167,7 @@ public class JavaParserUtils {
     public static ResolvedType getResolvedTypeOfExpression(
             TypeDeclaration<?> jpClass,
             CallableDeclaration<?> jpCallable,
-            List<Triplet<String, String, String>> methodArgs,
+            List<MethodArgumentTokens> methodArgs,
             String expression
     ) throws ResolvedTypeNotFound {
         if (jpClass instanceof ClassOrInterfaceDeclaration) {
@@ -305,8 +305,8 @@ public class JavaParserUtils {
 
     private static void addImports(CompilationUnit cu, String expression, OracleDatapoint oracleDatapoint) {
         oracleDatapoint.getTokensProjectClasses().forEach(projectClass -> {
-            if (expression.contains(projectClass.getValue0())) {
-                cu.addImport(fullyQualifiedClassName(projectClass.getValue1(), projectClass.getValue0()));
+            if (expression.contains(projectClass.className())) {
+                cu.addImport(fullyQualifiedClassName(projectClass.packageName(), projectClass.className()));
             }
         });
         if (expression.contains("\\bArrays\\.")) {
