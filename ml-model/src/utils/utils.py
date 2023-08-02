@@ -62,7 +62,7 @@ def connect_to_device(device_type: Type[DeviceType] = DeviceType.GPU):
         print(f'        There are {torch.cuda.device_count()} GPU(s) available.')
         # Set the gpu as device to perform the training
         device = torch.device("cuda:0")
-        print(f'        Selected GPU: {torch.cuda.get_device_name(1)}')
+        print(f'        Selected GPU: {torch.cuda.get_device_name(0)}')
     else:
         # Set the cpu as device to perform the training
         device = torch.device("cpu")
