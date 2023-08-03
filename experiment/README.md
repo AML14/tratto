@@ -69,17 +69,3 @@ Intuitively, we hope to maximize True Positives and True Negatives, and minimize
 To analyze the "effectiveness" of the generated oracles, we compute the mutation score of the generated test suite. Consider the previous example, `sum`, and two corresponding oracles: `sum(a, b) == (a + b)` and `sum(a, b) != null`. We say the first assertion (1) is more "effective" than the second assertion (2). We quantify "effective"-ness via mutation score, which indicates how robust the test suite is to changes in source code. Intuitively, because (1) implies (2), we know that (1) will always kill more mutants than (2) and have a better mutation score.
 
 ## Implementation
-
-We provide a brief description of the relevant classes within the `experiment` module.
-- `analysis`: a package for executing analysis on a list of oracle-prefix pairs
-  - `TestGenerator.java`: converts a list of oracle-prefix pairs into a test suite, classifies the generated oracles, and computes the mutation score
-- `generators`: a package for generating oracles and prefixes
-  - `oracle`: a sub-package for generating test oracles
-    - `OracleGenerator.java`: provides an abstract outline of necessary functionality for TOG wrapper classes 
-    - `JDoctor.java`: a TOG wrapper for JDoctor
-    - `TOGA.java`: a TOG wrapper for TOGA
-    - `Tratto.java`: a TOG wrapper for Tratto
-  - `prefix`: a sub-package for generating test prefixes
-    - `PrefixGenerator.java`: uses EvoSuite and provided source code to generate a list of text prefixes
-- `util`: a package for shared utilities between packages
-  - `IOUtils.java`: manages input processing for generation and output processing for analysis
