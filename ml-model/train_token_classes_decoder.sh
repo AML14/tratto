@@ -12,10 +12,10 @@ python scripts/train/run_classifier.py \
 --batch_size 24 \
 --learning_rate 1e-5 \
 --num_epochs 20 \
---save_steps 1000 \
+--save_steps 9000 \
 --accumulation_steps 1 \
 --test_ratio 0.1 \
 --validation_ratio 0.1 \
 --data_dir ./dataset/token-classes-dataset \
 --output_dir ./output_token_classes_decoder \
---classification_type category_prediction
+--classification_type label_prediction

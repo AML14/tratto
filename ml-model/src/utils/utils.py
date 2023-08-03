@@ -9,6 +9,8 @@ from xml.etree.ElementTree import Element
 from typing import Type, Union
 import torch.distributed as dist
 import torch
+from accelerate import accelerator
+
 from src.types.DeviceType import DeviceType
 
 def check_cuda_device():
@@ -56,9 +58,13 @@ def connect_to_device(device_type: Type[DeviceType] = DeviceType.GPU):
         the Pytorch device to use to train and validate the model
     """
     torch.cuda.empty_cache()
-    if not device_type in [DeviceType.GPU, DeviceType.CPU]:
+    if not device_type in [DeviceType.GPU, DeviceType.CPU, DeviceType.ACCELERATOR]:
         raise Exception(f"Unrecognized device type: {device_type}")
-    if device_type == DeviceType.GPU and torch.cuda.is_available():
+    if device_type == DeviceType.ACCELERATOR:
+        print(f'        There are {torch.cuda.device_count()} GPU(s) available.')
+        print(f'        Training distributed on all the GPUs available, with accelerator')
+        device = accelerator.device
+    elif device_type == DeviceType.GPU and torch.cuda.is_available():
         print(f'        There are {torch.cuda.device_count()} GPU(s) available.')
         # Set the gpu as device to perform the training
         device = torch.device("cuda:0")

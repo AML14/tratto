@@ -7,3 +7,4 @@ class DeviceType(str, Enum):
     """
     CPU = "cpu"
     GPU = "gpu"
+    ACCELERATOR = "accelerator"

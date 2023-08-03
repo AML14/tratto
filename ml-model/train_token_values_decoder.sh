@@ -7,12 +7,12 @@ python scripts/train/run_classifier.py \
 --tokenizer_name Salesforce/codet5p-220m \
 --model_name_or_path Salesforce/codet5p-220m \
 --tratto_model_type token_values \
---task_name tokenValues_classifier_encoder \
+--task_name tokenValues_classifier_decoder \
 --max_seq_length 512 \
 --batch_size 24 \
 --learning_rate 1e-5 \
 --num_epochs 20 \
---save_steps 1000 \
+--save_steps 9000 \
 --accumulation_steps 1 \
 --test_ratio 0.1 \
 --validation_ratio 0.1 \
