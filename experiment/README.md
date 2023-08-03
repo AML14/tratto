@@ -78,3 +78,35 @@ Intuitively, we hope to maximize True Positives and True Negatives, and minimize
 To analyze the "effectiveness" of the generated oracles, we compute the mutation score of the generated test suite. Consider the previous example, `sum`, and two corresponding oracles: `sum(a, b) == (a + b)` and `sum(a, b) != null`. We say the first assertion (1) is more "effective" than the second assertion (2). We quantify "effective"-ness via mutation score, which indicates how robust the test suite is to changes in source code. Intuitively, because (1) implies (2), we know that (1) will always kill more mutants than (2) and have a better mutation score.
 
 ## Implementation
+
+The user provides two arguments as input: the TOG and the source path. For reference, we provide an overview of the experimental pipeline.
+
+![experiment pipeline](./doc/experiment-pipeline.png)
+
+We provide a brief description of the relevant files:
+
+- `generator`: this package contains scripts for generating test prefixes and test oracles 
+  - `prefix.sh`: a script that invokes EvoSuite for a given source file
+  - `jdoctor.sh`: a script that invokes JDoctor for a given source file
+  - `toga.sh`: a script that invokes TOGA for a given source file and test prefix
+  - `tratto.sh`: a script that invokes Tratto for a given source file
+- `src/main/java`: this package contains all Java functionality, including mutation testing, file IO, JavaParser utilities, etc.
+  - `FileUtils.java`: a class for reading and writing files
+  - `TestAnalyzer.java`: a class for reporting statistics for a test suite. Includes the number of passing/failing tests and mutation score.
+  - `TestUtils.java`: a class for test utilities, such as removing/adding assertions
+- `experiment.py`: the end-to-end script which performs the experiment
+
+### Prefix
+
+We run `evosuite.sh` to generate a test suite using EvoSuite. These full test cases include both the test prefix and the test oracle, and are saved in `experiment/output/evosuite-test/`. Then, we use `TestUtils.java` to remove the oracles (assertions) using JavaParser. These test prefixes are saved as separate files in `experiment/output/evosuite-prefix`.
+
+### Oracle
+
+We use the EvoSuite prefixes to generate oracles using the specified TOG. Each TOG has a corresponding script invoking the TOG (as a jar file). Then, we use `TestUtils.java` to insert the new oracles, using JavaParser, as assertions in the test prefixes. These new tests are saved as separate files in `experiment/output/tog-test/[tog]/`, where `[tog]` is the specified TOG. 
+
+### Analysis
+
+We use the generated tests in `experiment/output/tog-test/[tog]/` and report statistics using `TestAnalyzer.java`. 
+
+
+
