@@ -106,7 +106,7 @@ We use the EvoSuite prefixes to generate oracles using the specified TOG. Each T
 
 ### Analysis
 
-We use the generated tests in `experiment/output/tog-test/[tog]/` and report statistics using `TestAnalyzer.java`. 
+We use the generated tests in `experiment/output/tog-test/[tog]/` and report statistics using `TestAnalyzer.java`. The class `TestAnalyzer.java` computes the mutation score using PITest, and determines the number of positive/negative sample by the number of failing/passing tests, respectively. 
 
 
 
