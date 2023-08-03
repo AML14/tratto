@@ -14,8 +14,6 @@ assert sum(a, b) == (a + b)
 
 To generate test prefixes, we use [EvoSuite](https://www.evosuite.org/), which generates complete unit tests (including the oracle), and remove the generated oracles (assertions). Then, we generate new oracles using an arbitrary TOG, and add these as assertions in the unit test. We provide a high-level diagram of this process below:
 
-![Experiment Diagram](./media/experiment-diagram.png)
-
 ## Research Questions
 
 As a qualifier, we define an "axiomatic" oracle, as a self-evident and unquestionable oracle (e.g. `methodResult != null`). Axiomatic oracles are very general and typically not specific to individual test prefixes. An example of a non-axiomatic oracle is: `sum(5, 1) == 6`.
