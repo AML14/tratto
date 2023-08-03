@@ -155,7 +155,31 @@ We use the generated tests in `experiment/output/tog-test/[tog]/` and report sta
 
 ## Output
 
-We save the output as a JSON file. 
+We save the output as a JSON file. The output follows the format,
 
+```json lines
+{
+  "tog": "tratto",
+  "source": "path/to/source/File.java",
+  "positive": 10,
+  "negative": 24,
+  "mutation-score": 85.42,
+  "tests": [
+    {
+      "class": "File",
+      "methodSignature": "sum(int a, int b)",
+      "isPositive": false,
+      "test": "int a = 2;\nassert a != null; ..."
+    },
+    ...,
+    {
+      "class": "File",
+      "methodSignature": "sum(int a, int b)",
+      "isPositive": false,
+      "test": "int a = -1;\nassert != null; ..."
+    }
+  ]
+}
+```
 
-
+We report the TOG, the source path, the number of failing tests, the number of passing test, the mutation score, and information for each test case. For each test case, we report the class under test, the method under test, whether the test passes or fails, and the test case as a String.
