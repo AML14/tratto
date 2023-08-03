@@ -53,7 +53,8 @@ public class Tratto {
         String classSourceCode = "TODO";
 
         List<OracleDatapoint> oracleDatapoints = classAnalyzer.getOracleDatapointsFromClass(getClassOrInterface(classSourceCode, className));
-        for (OracleDatapoint oracleDatapoint : oracleDatapoints) { // Update each OracleDatapoint until the oracle is complete (ends with ';')
+        // Update each OracleDatapoint until the oracle is complete (ends with ';')
+        for (OracleDatapoint oracleDatapoint : oracleDatapoints) {
             List<String> oracleSoFarTokens = new ArrayList<>();
             while (!oracleDatapoint.getOracle().endsWith(";")) {
                 // Generate token datapoints and save to file

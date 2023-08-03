@@ -104,7 +104,8 @@ public class Parser {
         if (!auxOracleSuffix.equals("")) {
             EObject auxOracleElement = auxOracleContents.get(auxOracleContents.size() - 1); // Auxiliary suffix is ALWAYS last element
             EList<EStructuralFeature> auxElementFeatures = auxOracleElement.eClass().getEAllStructuralFeatures();
-            for (EStructuralFeature feature : auxElementFeatures) { // If feature is "." or AUX_VAR, and it was included in suffix, remove from auxOracle
+            // If feature is "." or AUX_VAR, and it was included in suffix, remove from auxOracle
+            for (EStructuralFeature feature : auxElementFeatures) {
                 Object featureValue = auxOracleElement.eGet(feature);
                 if (featureValue instanceof String && (featureValue.equals(AUX_VAR) || (featureValue.equals(".") && auxOracleSuffix.contains(".")))) {
                     auxOracleElement.eUnset(feature);

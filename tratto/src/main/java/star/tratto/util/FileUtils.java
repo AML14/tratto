@@ -66,7 +66,9 @@ public class FileUtils {
      * @throws Error if an error occurs while traversing or deleting files
      */
     public static void deleteDirectory(Path dirPath) {
-        if (!Files.exists(dirPath)) return;
+        if (!Files.exists(dirPath)) {
+          return;
+        }
         try (Stream<Path> walk = Files.walk(dirPath)) {
             walk
                     .filter(p -> !p.equals(dirPath))
@@ -119,7 +121,9 @@ public class FileUtils {
      *      relativePath = [destinationPrefix]/[destination]/[suffix]/[fileName]
      */
     private static Path getRelativePath(Path source, Path destination, Path target) {
-        if (source.equals(target)) return destination;
+        if (source.equals(target)) {
+          return destination;
+        }
         Path suffix = getPathSuffix(source, target);
         return destination.resolve(suffix);
     }
@@ -135,8 +139,12 @@ public class FileUtils {
      * while copying a file
      */
     public static void copy(Path source, Path destination) {
-        if (!Files.exists(source)) throw new Error("Directory " + source + " is not found");
-        if (!Files.exists(destination)) createDirectories(destination);
+        if (!Files.exists(source)) {
+          throw new Error("Directory " + source + " is not found");
+        }
+        if (!Files.exists(destination)) {
+          createDirectories(destination);
+        }
         try (Stream<Path> walk = Files.walk(source)) {
             walk
                     .forEach(p -> {
@@ -167,8 +175,12 @@ public class FileUtils {
      * while moving a file
      */
     public static void move(Path source, Path destination) {
-        if (!Files.exists(source)) throw new Error("Directory " + source + " is not found");
-        if (!Files.exists(destination)) createDirectories(destination);
+        if (!Files.exists(source)) {
+          throw new Error("Directory " + source + " is not found");
+        }
+        if (!Files.exists(destination)) {
+          createDirectories(destination);
+        }
         copy(source, destination);
         deleteDirectory(source);
     }
@@ -219,7 +231,9 @@ public class FileUtils {
      *            elements in the list
      */
     public static <T> List<T> readJSONList(Path jsonPath, Class<T> type) {
-        if (!Files.exists(jsonPath)) throw new Error("JSON file " + jsonPath + " not found");
+        if (!Files.exists(jsonPath)) {
+          throw new Error("JSON file " + jsonPath + " not found");
+        }
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             return (type == null)

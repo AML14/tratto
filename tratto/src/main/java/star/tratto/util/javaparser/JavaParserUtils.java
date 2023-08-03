@@ -285,7 +285,7 @@ public class JavaParserUtils {
             return;
         }
         String jdVarArrayElement = parser.getLastJdVarArrayElement(oracleDatapoint.getOracle());
-        if (jdVarArrayElement == null) { // Should never happen, but just in case
+        if (jdVarArrayElement == null) {
             throw new IllegalStateException("Could not find a jdVar clause in the oracle, but the expression contains jdVar. " +
                     "Expression: " + expression + ". Oracle: " + oracleDatapoint.getOracle());
         }
@@ -437,7 +437,8 @@ public class JavaParserUtils {
             resolvedType = getResolvedType(referenceType);
             resolvedReferenceTypeDeclaration = getResolvedReferenceTypeDeclaration(resolvedType);
             methods.addAll(resolvedReferenceTypeDeclaration.getAllMethods());
-            if (!resolvedReferenceTypeDeclaration.isInterface()) { // Interfaces do not always inherit from Object
+            // Interfaces do not always inherit from Object
+            if (!resolvedReferenceTypeDeclaration.isInterface()) {
                 useObjectMethods = false;
             }
         } catch (UnsupportedOperationException e) {
@@ -708,13 +709,16 @@ public class JavaParserUtils {
      */
     public static String getMethodSignature(MethodDeclaration methodDeclaration) {
         String method = methodDeclaration.toString();
-        if (methodDeclaration.getBody().isPresent()) { // Remove body
+        if (methodDeclaration.getBody().isPresent()) {
+            // Remove body
             method = method.replace(methodDeclaration.getBody().get().toString(), "");
         }
-        for (Node comment: methodDeclaration.getAllContainedComments()) { // Remove comments within method signature
+        for (Node comment: methodDeclaration.getAllContainedComments()) {
+            // Remove comments within method signature
             method = method.replace(comment.toString(), "");
         }
-        if (methodDeclaration.getComment().isPresent()) { // At this point, last line is method signature. Remove everything before that
+        if (methodDeclaration.getComment().isPresent()) {
+            // At this point, last line is method signature. Remove everything before that
             method = method.replaceAll("[\\s\\S]*\n", "");
         }
         return method.trim().replaceAll(";$", "");

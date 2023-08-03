@@ -213,7 +213,9 @@ public class StringUtils {
      */
     private static double getCosineSimilarity(RealVector vector1, RealVector vector2) {
         double denominator = vector1.getNorm() * vector2.getNorm();
-        if (denominator == 0.0) return 0.0;
+        if (denominator == 0.0) {
+          return 0.0;
+        }
         return vector1.dotProduct(vector2) / denominator;
     }
 

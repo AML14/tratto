@@ -146,7 +146,8 @@ public class ForbidEndExpressionRestriction extends MultiTokenRestriction {
         // There's a relational operator and '&&' is a next legal token, so can assume that there's a right element in the comparison
         Object leftElement = getLeftVar(clauseWithVars);
         Object rightElement = getRightElementOfComparison(clauseWithVars);
-        if (rightElement instanceof EqIneqComparisonElement) { // Right element might be null or boolean, so comparison would be complete
+        if (rightElement instanceof EqIneqComparisonElement) {
+            // Right element might be null or boolean, so comparison would be complete
             return false;
         }
         Pair<String, String> leftType = getReturnTypeOfExpression(compactExpression(split(leftElement)), oracleDatapoint);
