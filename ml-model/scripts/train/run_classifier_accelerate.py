@@ -111,17 +111,17 @@ def main():
         test_dataset = data_processor.get_tokenized_dataset(DatasetType.TEST)
 
         # Create instance of training, validation, and test dataloaders
-        dl_train = DataLoader(
+        dl_train_cpu = DataLoader(
             train_dataset,
             sampler=RandomSampler(train_dataset),
             batch_size=args.batch_size
         )
-        dl_val = DataLoader(
+        dl_val_cpu = DataLoader(
             val_dataset,
             sampler=RandomSampler(val_dataset),
             batch_size=args.batch_size
         )
-        dl_test = DataLoader(
+        dl_test_cpu = DataLoader(
             test_dataset,
             sampler=RandomSampler(test_dataset),
             batch_size=args.batch_size
@@ -164,10 +164,11 @@ def main():
             f"epochs_{args.num_epochs}"
         )
 
-        optimizer, train_dataloader, eval_dataloader, lr_scheduler = accelerator.prepare(
+        optimizer, dl_train, dl_val, dl_test, lr_scheduler = accelerator.prepare(
             optimizer,
-            dl_train,
-            dl_val,
+            dl_train_cpu,
+            dl_val_cpu,
+            dl_test_cpu,
             scheduler
         )
 
