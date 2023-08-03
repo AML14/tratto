@@ -91,10 +91,10 @@ public class FileUtils {
         }
     }
 
-    /**
-     * @param root a root directory
+    /** Returns the path of {@code extension}, with {@code root} removed.
+@param root a root directory
      * @param extension a file/subdirectory in the given root directory
-     * @return the path of {@code extension}, with {@code root} removed
+     * @return the path of {@code extension}, with {@code root} removed 
      * @throws IllegalArgumentException if {@code extension} is equal to
      * {@code root} or if {@code extension} is not a child of {@code root}
      */
@@ -205,9 +205,9 @@ public class FileUtils {
         }
     }
 
-    /**
-     * @param path a file
-     * @return the file contents as a String
+    /** Returns the file contents as a String.
+@param path a file
+     * @return the file contents as a String 
      * @throws Error if unable to process the file
      */
     public static String readString(Path path) {

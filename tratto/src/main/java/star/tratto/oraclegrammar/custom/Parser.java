@@ -239,9 +239,10 @@ public class Parser {
         return allOracleContents.get(allOracleContents.size() - 1);
     }
 
-    /**
-     * @return null if the oracle contains no "instanceof" token; "this" if that's the preceding
-     * element; or the preceding element as an EObject (CanEvaluateToPrimitive) otherwise
+    /** Returns null if the oracle contains no "instanceof" token; "this" if that's the preceding
+     * element; or the preceding element as an EObject (CanEvaluateToPrimitive) otherwise.
+@return null if the oracle contains no "instanceof" token; "this" if that's the preceding
+     * element; or the preceding element as an EObject (CanEvaluateToPrimitive) otherwise 
      */
     public Object findElementPrecedingLastInstanceOf(String oracle) {
         List<Object> elementsPrecedingInstanceOf = getAllPartialOracleContents(oracle)
@@ -257,9 +258,10 @@ public class Parser {
         return elementsPrecedingInstanceOf.get(elementsPrecedingInstanceOf.size() - 1);
     }
 
-    /**
-     * @return null if the oracle contains no NonEqIneqOp token or the preceding
-     * CanEvaluateToPrimitive element otherwise
+    /** Returns null if the oracle contains no NonEqIneqOp token or the preceding
+     * CanEvaluateToPrimitive element otherwise.
+@return null if the oracle contains no NonEqIneqOp token or the preceding
+     * CanEvaluateToPrimitive element otherwise 
      */
     public CanEvaluateToPrimitive findElementPrecedingLastNonEqIneqOp(String oracle) {
         List<CanEvaluateToPrimitive> elementsPrecedingNonEqIneqOp = getAllCanEvalToPrimInEObject(oracle, ClauseWithVars.class)
@@ -272,8 +274,8 @@ public class Parser {
         return elementsPrecedingNonEqIneqOp.get(elementsPrecedingNonEqIneqOp.size() - 1);
     }
 
-    /**
-     * @return null if the oracle contains no CanEvaluateToPrimitive contained within a ClauseWithVars
+    /** Returns null if the oracle contains no CanEvaluateToPrimitive contained within a ClauseWithVars.
+@return null if the oracle contains no CanEvaluateToPrimitive contained within a ClauseWithVars 
      */
     public CanEvaluateToPrimitive findLastCanEvalToPrimInClauseWithVars(String oracle) {
         List<CanEvaluateToPrimitive> allCanEvalToPrimInClauseWithVars = getAllCanEvalToPrimInEObject(oracle, ClauseWithVars.class);
@@ -283,8 +285,8 @@ public class Parser {
         return allCanEvalToPrimInClauseWithVars.get(allCanEvalToPrimInClauseWithVars.size() - 1);
     }
 
-    /**
-     * @return null if the oracle contains no CanEvaluateToPrimitive contained within an OtherComparisonElement
+    /** Returns null if the oracle contains no CanEvaluateToPrimitive contained within an OtherComparisonElement.
+@return null if the oracle contains no CanEvaluateToPrimitive contained within an OtherComparisonElement 
      */
     public CanEvaluateToPrimitive findLastCanEvalToPrimInOtherCompElem(String oracle) {
         List<CanEvaluateToPrimitive> allCanEvalToPrimInClauseWithVars = getAllCanEvalToPrimInEObject(oracle, OtherComparisonElement.class);
@@ -302,8 +304,8 @@ public class Parser {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * @return null if the oracle contains no ClauseWithVars
+    /** Returns null if the oracle contains no ClauseWithVars.
+@return null if the oracle contains no ClauseWithVars 
      */
     public ClauseWithVars findLastClauseWithVars(String oracle) {
         List<ClauseWithVars> allClausesWithVars = getAllPartialOracleContents(oracle)
@@ -518,10 +520,10 @@ public class Parser {
         return elementClone;
     }
 
-    /**
-     * @param elementWithModifiers must be an element with modifiers, i.e., VarOrClassWithModifiers,
+    /** Returns null if the element has no method modifiers.
+@param elementWithModifiers must be an element with modifiers, i.e., VarOrClassWithModifiers,
      *                             IsolableVarOrClassWithModifiers, or ThisWithMandatoryModifiers
-     * @return null if the element has no method modifiers
+     * @return null if the element has no method modifiers 
      */
     public static MethodCall findLastMethodCall(EObject elementWithModifiers) {
         EList<VarOrClassModifier> modifiers = getVarOrClassModifiers(elementWithModifiers);

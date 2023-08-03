@@ -89,8 +89,8 @@ public class JavaParserUtils {
         return javaParser;
     }
 
-    /**
-     * @return a "java.lang.Object" type
+    /** Returns a "java.lang.Object" type.
+@return a "java.lang.Object" type 
      */
     public static ResolvedType getObjectType() {
         return javaParser.parse(SYNTHETIC_CLASS_SOURCE).getResult().orElseThrow()
@@ -460,11 +460,11 @@ public class JavaParserUtils {
         return methods;
     }
 
-    /**
-     * @param type1 fully qualified type, e.g., "java.util.List"
+    /** Returns true if type1 is an instance of type2, false otherwise.
+@param type1 fully qualified type, e.g., "java.util.List"
      * @param type2 fully qualified type, e.g., "java.lang.Object"
      * @param oracleDatapoint may be null. If not null, it is used to check if some type is generic.
-     * @return true if type1 is an instance of type2, false otherwise
+     * @return true if type1 is an instance of type2, false otherwise 
      */
     public static boolean isInstanceOf(String type1, String type2, OracleDatapoint oracleDatapoint) {
         return isInstanceOf(type1, type2, oracleDatapoint, true);
