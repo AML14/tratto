@@ -12,6 +12,7 @@ import com.github.javaparser.resolution.UnsolvedSymbolException;
 import com.github.javaparser.resolution.declarations.ResolvedReferenceTypeDeclaration;
 import com.github.javaparser.resolution.declarations.ResolvedTypeParameterDeclaration;
 import com.github.javaparser.resolution.types.ResolvedType;
+import com.github.javaparser.resolution.types.ResolvedWildcard;
 import com.github.javaparser.symbolsolver.utils.SymbolSolverCollectionStrategy;
 import org.javatuples.Pair;
 import org.slf4j.Logger;
@@ -25,7 +26,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static star.tratto.util.JavaTypes.isNumeric1AssignableToNumeric2;
+import static star.tratto.util.JavaTypes.isAssignableToNumeric;
 import static star.tratto.util.StringUtils.fullyQualifiedClassName;
 
 public class JavaParserUtils {
@@ -162,7 +163,7 @@ public class JavaParserUtils {
                 cu.addImport(fullyQualifiedClassName(projectClass.getValue1(), projectClass.getValue0()));
             }
         });
-        if (expression.contains("Arrays")) {
+        if (expression.contains("\\bArrays\\.")) {
             cu.addImport("java.util.Arrays");
         }
     }
@@ -186,6 +187,15 @@ public class JavaParserUtils {
                 return Pair.with(arrayElementType.getPackageName(), arrayElementType.getClassName() + suffix);
             } else {
                 return Pair.with("", arrayElement.describe() + suffix);
+            }
+        } else if (resolvedType.isWildcard()) { // e.g., in Collection<? extends String>, "? extends String" is a wildcard
+            ResolvedWildcard type = resolvedType.asWildcard();
+            ResolvedType boundedType = type.getBoundedType();
+            if (boundedType != null) {
+                ResolvedReferenceTypeDeclaration resolvedBoundedType = type.getBoundedType().asReferenceType().getTypeDeclaration().get();
+                return Pair.with(resolvedBoundedType.getPackageName(), resolvedBoundedType.getClassName());
+            } else { // e.g., in Collection<?>, "?" can be anything, so we return Object
+                return Pair.with("java.lang", "Object");
             }
         } else {
             return Pair.with("", resolvedType.describe()); // Primitive type
@@ -268,13 +278,13 @@ public class JavaParserUtils {
      * type is a primitive, throws an IllegalArgumentException.
      * @throws IllegalArgumentException if the type is not a reference type or an array
      */
-    public static Set<MethodUsage> getMethodsOfType(String type) throws IllegalArgumentException {
+    public static Set<MethodUsage> getMethodsOfType(String referenceType) throws IllegalArgumentException {
         ResolvedType resolvedType = null;
         ResolvedReferenceTypeDeclaration resolvedReferenceTypeDeclaration = null;
         Set<MethodUsage> methods = new HashSet<>();
         boolean useObjectMethods = true;
         try {
-            resolvedType = getResolvedType(type);
+            resolvedType = getResolvedType(referenceType);
             resolvedReferenceTypeDeclaration = getResolvedReferenceTypeDeclaration(resolvedType);
             methods.addAll(resolvedReferenceTypeDeclaration.getAllMethods());
             if (!resolvedReferenceTypeDeclaration.isInterface()) { // Interfaces do not always inherit from Object
@@ -283,19 +293,18 @@ public class JavaParserUtils {
         } catch (UnsupportedOperationException e) {
             if (!resolvedType.isArray()) {
                 throw new IllegalArgumentException("Trying to retrieve available methods from a type that is not " +
-                        "a reference type or an array: " + type, e);
+                        "a reference type or an array: " + referenceType, e);
             }
         } catch (UnsolvedSymbolException e) {
-            logger.warn("Unresolvable type: {}", type);
-        } finally {
-            if (useObjectMethods) {
-                Set<MethodUsage> objectMethods = getResolvedReferenceTypeDeclaration("java.lang.Object").getAllMethods();
-                objectMethods.forEach(om -> {
-                    if (methods.stream().noneMatch(m -> m.getName().equals(om.getName()) && m.getParamTypes().equals(om.getParamTypes()))) {
-                        methods.add(om);
-                    }
-                });
-            }
+            logger.warn("Unresolvable type: {}", referenceType);
+        }
+        if (useObjectMethods) {
+            Set<MethodUsage> objectMethods = getResolvedReferenceTypeDeclaration("java.lang.Object").getAllMethods();
+            objectMethods.forEach(om -> {
+                if (methods.stream().noneMatch(m -> m.getName().equals(om.getName()) && m.getParamTypes().equals(om.getParamTypes()))) {
+                    methods.add(om);
+                }
+            });
         }
         return methods;
     }
@@ -306,24 +315,24 @@ public class JavaParserUtils {
      * @param oracleDatapoint may be null. If not null, it is used to check if some type is generic.
      * @return true if type1 is an instance of type2, false otherwise
      */
-    public static boolean isType1InstanceOfType2(String type1, String type2, OracleDatapoint oracleDatapoint) {
-        return isType1InstanceOfType2(type1, type2, oracleDatapoint, true);
+    public static boolean isInstanceOf(String type1, String type2, OracleDatapoint oracleDatapoint) {
+        return isInstanceOf(type1, type2, oracleDatapoint, true);
     }
 
     /**
-     * Compared to {@link #isType1InstanceOfType2(String, String, OracleDatapoint)}, this method returns
+     * Compared to {@link #isInstanceOf(String, String, OracleDatapoint)}, this method returns
      * true if type1 and type2 can be compared using the instanceof operator. To better understand this
      * difference, consider the following use cases:
      * <ul>
-     *     <li>{@code isType1InstanceOfType2("String", "Object", null)} returns {@code true}</li>
-     *     <li>{@code isType1InstanceOfType2("Object", "String", null)} returns {@code false}</li>
-     *     <li>{@code canType1BeInstanceOfType2("String", "Object", null)} returns {@code true}</li>
-     *     <li>{@code canType1BeInstanceOfType2("Object", "String", null)} returns {@code true}</li>
+     *     <li>{@code isInstanceOf("String", "Object", null)} returns {@code true}</li>
+     *     <li>{@code isInstanceOf("Object", "String", null)} returns {@code false}</li>
+     *     <li>{@code doesInstanceofCompile("String", "Object", null)} returns {@code true}</li>
+     *     <li>{@code doesInstanceofCompile("Object", "String", null)} returns {@code true}</li>
      * </ul>
      * In other words, this method returns true if the expression "var1 instanceof type2" would compile,
      * where var1 is a variable of type1.
      */
-    public static boolean canType1BeInstanceOfType2(String type1, String type2, OracleDatapoint oracleDatapoint) {
+    public static boolean doesInstanceofCompile(String type1, String type2, OracleDatapoint oracleDatapoint) {
         ResolvedType resolvedType2 = tryToGetResolvedType(type2);
         if (resolvedType2 == null) {
             return false; // Either type2 is generic, or an unknown class. In both cases, type1 cannot be instanceof it
@@ -335,20 +344,20 @@ public class JavaParserUtils {
                 return true; // Special case: type1 is a generic and a type parameter of type2
             }
         } catch (UnsupportedOperationException|NoSuchElementException|NullPointerException ignored) {}
-        return isType1InstanceOfType2(type1, type2, oracleDatapoint, false) || isType1InstanceOfType2(type2, type1, null, false);
+        return isInstanceOf(type1, type2, oracleDatapoint, false) || isInstanceOf(type2, type1, null, false);
     }
 
     /**
-     * Auxiliary method used both by {@link #isType1InstanceOfType2(String, String, OracleDatapoint)}
-     * and {@link #canType1BeInstanceOfType2}.
+     * Auxiliary method used both by {@link #isInstanceOf(String, String, OracleDatapoint)}
+     * and {@link #doesInstanceofCompile}.
      * @param checkEquality if true, returns true if type1 is equal to type2. If false, this check is
-     *                      not performed at all. Must be true if checking if type1 IS instanceof type2.
-     *                      Must be false if checking if type1 CAN BE instanceof type2. This is because
+     *                      not performed at all. Must be true if checking {@code isInstanceOf}.
+     *                      Must be false if checking {@code doesInstanceofCompile}. This is because
      *                      type1 and type2 may be generics or unresolvable classes, and in those cases
      *                      we cannot use the instanceof operator in a generated oracle, because it
      *                      would not compile.
      */
-    private static boolean isType1InstanceOfType2(String type1, String type2, OracleDatapoint oracleDatapoint, boolean checkEquality) {
+    private static boolean isInstanceOf(String type1, String type2, OracleDatapoint oracleDatapoint, boolean checkEquality) {
         // Preliminary checks
         if (JavaTypes.PRIMITIVE_TYPES.contains(type1) || JavaTypes.PRIMITIVE_TYPES.contains(type2)) {
             return false;
@@ -358,7 +367,7 @@ public class JavaParserUtils {
         }
         ResolvedType resolvedType2 = tryToGetResolvedType(type2);
         if (resolvedType2 == null) {
-            return false; // Either type2 is generic, or an unknown class. In both cases, type1 cannot be instanceof it
+            return false; // Type2 is generic or an unknown class. In both cases, type1 cannot be instanceof it
         }
 
         String classSourceCode;
@@ -387,7 +396,7 @@ public class JavaParserUtils {
                             .asVariableDeclarationExpr().getVariables().get(0)
                             .resolve().getType());
         } catch (UnsolvedSymbolException e) {
-            logger.warn("Failed to evaluate instanceof within method. Expression: \"type1Var instanceof {}\". Method: \n{}", type2, syntheticMethodBody.getParentNode().get());
+            logger.warn("Failed to evaluate instanceof within method. Expression: \"type1Var instanceof {}\". Method: {}", type2, syntheticMethodBody.getParentNode().get());
             return false;
         }
     }
@@ -402,8 +411,11 @@ public class JavaParserUtils {
         return resolvedType2;
     }
 
+    // TODO: The "not the other way around" is true only in a certain sense.  Given variables `b`
+    // and `B` of type boolean and Boolean, both "b = B" and "B = b" will compile, because Java
+    // performs automatic boxing and unboxing.  Please clarify the comment.
     /**
-     * This method is different from {@link #isType1InstanceOfType2} in that it can be used to compare
+     * This method is different from {@link #isInstanceOf} in that it can be used to compare
      * primitive types and primitive wrapper types. For instance, a boolean is assignable to a Boolean,
      * but not the other way around. Note that this method takes as input pairs of package and class
      * name, instead of fully qualified types.
@@ -423,8 +435,8 @@ public class JavaParserUtils {
                 type1.equals(type2) ||
                 (type1.equals(JavaTypes.NULL) && !JavaTypes.PRIMITIVES.contains(type2)) ||
                 (JavaTypes.PRIMITIVES.contains(type1) && JavaTypes.PRIMITIVES_TO_WRAPPERS.get(type1).equals(type2)) ||
-                (JavaTypes.NUMBERS.contains(type1) && JavaTypes.NUMBERS.contains(type2) && isNumeric1AssignableToNumeric2(type1, type2)) ||
-                isType1InstanceOfType2(fullyQualifiedClassName(type1), fullyQualifiedClassName(type2), oracleDatapoint);
+                (JavaTypes.NUMBERS.contains(type1) && JavaTypes.NUMBERS.contains(type2) && isAssignableToNumeric(type1, type2)) ||
+                isInstanceOf(fullyQualifiedClassName(type1), fullyQualifiedClassName(type2), oracleDatapoint);
     }
 
     public static TypeDeclaration<?> getClassOrInterface(CompilationUnit cu, String name) {
@@ -463,7 +475,7 @@ public class JavaParserUtils {
     }
 
     /**
-     * Unfortunately, the MethodUsage class does not provide a function to obtain the method signature
+     * Unfortunately, the MethodUsage class does not provide a method to obtain the method signature
      * as it was written, so the best that we can do is to reconstruct it to a certain extent. This
      * has the following limitations:
      * <ul>
@@ -530,7 +542,7 @@ public class JavaParserUtils {
         try {
             return javaParser.parseBodyDeclaration(methodSourceCode).getResult().get().asMethodDeclaration();
         } catch (NoSuchElementException e) {
-            throw new IllegalArgumentException("The provided methodSourceCode cannot be parsed by JavaParser. Method source code:\n\n" + methodSourceCode, e);
+            throw new IllegalArgumentException("JavaParser cannot parse:" + System.lineSeparator() + methodSourceCode, e);
         } catch (IllegalStateException e) {
             return null; // This happens when the methodSourceCode is actually a constructor
         }
@@ -541,7 +553,7 @@ public class JavaParserUtils {
         if (bodyDeclaration.isMethodDeclaration() || bodyDeclaration.isConstructorDeclaration()) {
             return bodyDeclaration;
         } else {
-            throw new IllegalArgumentException("The provided methodSourceCode is neither a constructor nor a method. Method source code:\n\n" + methodSourceCode);
+            throw new IllegalArgumentException("Not a constructor or method:" + System.lineSeparator() + methodSourceCode);
         }
     }
 
@@ -551,7 +563,7 @@ public class JavaParserUtils {
         } else if (bodyDeclaration.isConstructorDeclaration()) {
             return bodyDeclaration.asConstructorDeclaration().getTypeParameters();
         } else {
-            throw new IllegalArgumentException("The provided bodyDeclaration is neither a constructor nor a method. Body declaration:\n\n" + bodyDeclaration);
+            throw new IllegalArgumentException("Not a constructor or method body:"+ System.lineSeparator() + bodyDeclaration);
         }
     }
 
@@ -561,7 +573,7 @@ public class JavaParserUtils {
         } else if (bodyDeclaration.isConstructorDeclaration()) {
             return bodyDeclaration.asConstructorDeclaration().getParameters();
         } else {
-            throw new IllegalArgumentException("The provided bodyDeclaration is neither a constructor nor a method. Body declaration:\n\n" + bodyDeclaration);
+            throw new IllegalArgumentException("Not a constructor or method body:" + System.lineSeparator() + bodyDeclaration);
         }
     }
 }
