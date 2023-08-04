@@ -1,0 +1,1 @@
+# This script generates a list of non-axiomatic oracles using TOGA.
