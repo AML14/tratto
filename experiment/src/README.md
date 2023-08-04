@@ -47,7 +47,7 @@ public class ExamplePrefix {
 }
 ```
 
-We note that `removeOracles` saves the prefixes as a separate file `ExamplePrefix` in `experiment/output/evosuite-prefix`.
+We note that `removeOracles` saves the prefixes as a separate file `ExamplePrefix.java` in `experiment/output/evosuite-prefix`.
 
 ### `insertOracles`
 
