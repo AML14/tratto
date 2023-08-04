@@ -43,6 +43,7 @@ public class ExamplePrefix {
     @Test
     public void exceptionalTest() {  // an example of an exceptional oracle
         List<String> emptyList = new ArrayList<>();
+        String element = emptyList.get(0);
     }
 }
 ```
