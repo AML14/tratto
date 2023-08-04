@@ -5,7 +5,7 @@
  * @param methodSignature the method under test
  * @param isPositive a boolean value indicating if the test passes using the
  *                   current implementation
- * @param test the generated test case
+ * @param test the generated test case (prefix and oracle)
  */
 public record TestOutput(
         String className,
