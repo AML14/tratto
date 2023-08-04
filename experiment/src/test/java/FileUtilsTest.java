@@ -76,7 +76,7 @@ public class FileUtilsTest {
 
     @Test
     public void writeTest() {
-        Path path = Paths.get("src/test/java/star/tratto/util/temp/tempFile.json");
+        Path path = tempRoot.resolve("tempFile.json");
         try {
             FileUtils.write(path, List.of("input1", "input2", "input3"));
             Files.delete(path);
@@ -89,7 +89,7 @@ public class FileUtilsTest {
 
     @Test
     public void readStringTest() {
-        Path path = Paths.get("src/test/java/star/tratto/util/temp/tempFile.json");
+        Path path = tempRoot.resolve("tempFile.json");
         try {
             FileUtils.write(path, List.of("input1", "input2", "input3"));
             assertEquals("[ \"input1\", \"input2\", \"input3\" ]", FileUtils.readString(path));
