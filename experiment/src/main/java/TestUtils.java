@@ -12,11 +12,33 @@ public class TestUtils {
     }
 
     /**
-     * Removes all assertions from all test files in a given directory. Saves
-     * the modified test cases in output/evosuite-prefix/. Does not override
+     *
+     *
+     * @param dir
+     */
+    private static void removeAssertionOracles(Path dir) {
+
+    }
+
+    /**
+     *
+     *
+     * @param dir
+     */
+    private static void removeExceptionalOracles(Path dir) {
+
+    }
+
+    /**
+     * Removes all assertions from all test files in a given directory. Our
+     * approach for removing oracles depends on whether an oracle is
+     * exceptional (e.g. throws an exception) or a normal assertion. Saves the
+     * modified test cases in output/evosuite-prefix/. Does not override
      * original test files.
      *
      * @param dir a directory with Java test files
+     * @see TestUtils#removeAssertionOracles(Path)
+     * @see TestUtils#removeExceptionalOracles(Path)
      */
     public static void removeOracles(Path dir) {
 
