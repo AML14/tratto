@@ -2,9 +2,14 @@ import java.nio.file.Path;
 import java.util.List;
 
 /**
- * This method provides
+ * This class provides static methods for removing oracles from a test suite,
+ * and inserting oracles into test prefixes.
  */
 public class TestUtils {
+    // private constructor to avoid creating an instance of this class.
+    private TestUtils() {
+        throw new UnsupportedOperationException("This class cannot be instantiated.");
+    }
 
     /**
      * Removes all assertions from all test files in a given directory. Saves
