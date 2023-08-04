@@ -51,7 +51,7 @@ We note that `removeOracles` saves the prefixes as a separate file `ExamplePrefi
 
 ### `insertOracles`
 
-Description
+Our approach for inserting oracles into test prefixes varies based on whether the oracles are [**axiomatic**](../README.md#axiomatic) or [**non-axiomatic**](../README.md#non-axiomatic). See their respective sections in the [top-level README](../README.md) for further detail.
 
 ## `TestAnalyzer.java`
 
