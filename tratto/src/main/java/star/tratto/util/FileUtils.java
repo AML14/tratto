@@ -18,15 +18,14 @@ import java.util.stream.Stream;
  * reading, etc.
  */
 public class FileUtils {
-    // private constructor to avoid creating an instance of this class.
+    /** Private constructor to avoid creating an instance of this class. */
     private FileUtils() {
         throw new UnsupportedOperationException("This class cannot be instantiated.");
     }
 
     /**
-     * Creates an empty directory at a given path. Creates parent directories
-     * if necessary. If the directories already exists, then this method does
-     * nothing.
+     * Creates an empty directory. Creates parent directories if necessary. If
+     * the directory already exists, then this method does nothing.
      *
      * @param path a path
      * @throws Error if an error occurs while creating the directory
@@ -40,8 +39,8 @@ public class FileUtils {
     }
 
     /**
-     * Creates an empty file at a given path. Creates parent directories if
-     * necessary. If the file already exists, then this method does nothing.
+     * Creates an empty file. Creates parent directories if necessary. If the
+     * file already exists, then this method does nothing.
      *
      * @param path a file
      * @throws Error if an error occurs while creating the parent directories
@@ -59,27 +58,28 @@ public class FileUtils {
     }
 
     /**
-     * Recursively deletes all files and subdirectories in a given path. If
-     * the file does not exist, then this method does nothing.
+     * Recursively deletes a directory and its contents. If the file does not
+     * exist, then this method does nothing.
      *
-     * @param dirPath a root directory
+     * @param dirPath a directory
      * @throws Error if an error occurs while traversing or deleting files
      */
     public static void deleteDirectory(Path dirPath) {
-        if (!Files.exists(dirPath)) return;
+        if (!Files.exists(dirPath)) {
+            return;
+        }
         try (Stream<Path> walk = Files.walk(dirPath)) {
             walk
                     .filter(p -> !p.equals(dirPath))
                     .forEach(p -> {
-                        try {
-                            if (Files.isDirectory(p)) {
-                                // empty directory before deleting
-                                deleteDirectory(p);
-                            } else {
+                        if (Files.isDirectory(p)) {
+                            deleteDirectory(p);
+                        } else {
+                            try {
                                 Files.delete(p);
+                            } catch (IOException e) {
+                                throw new Error("Error when trying to delete the file " + p, e);
                             }
-                        } catch (IOException e) {
-                            throw new Error("Error when trying to delete the file " + p, e);
                         }
                     });
             // delete root directory last
