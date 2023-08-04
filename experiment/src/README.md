@@ -55,6 +55,8 @@ Our approach for inserting oracles into test prefixes varies based on whether th
 
 ## `TestAnalyzer.java`
 
-Description
+We use the PITest API to easily calculate the mutation score of a given test suite.
+
+For classification, we invoke each test case and store output as a list of `TestOutput` records.
 
 
