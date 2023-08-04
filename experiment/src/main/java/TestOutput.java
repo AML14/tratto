@@ -1,7 +1,7 @@
 /**
  * This record represents a generated test case and contextual information.
  *
- * @param className the declaring class under test
+ * @param className the binary name of the declaring class under test
  * @param methodSignature the method under test
  * @param isPositive a boolean value indicating if the test passes using the
  *                   current implementation
