@@ -183,3 +183,10 @@ We save the output as a JSON file. The output follows the format,
 ```
 
 We report the TOG, the source path, the number of failing tests (positive), the number of passing test (negative), the mutation score, and information for each test case. For each test case, we report the class under test, the method under test, whether the test passes or fails (`isPositive` is `true` if the test fails), and the test case as a String (see `TestOutput.java` for further detail).
+
+## Related Resources
+
+[`TestAnalyzer` and `TestUtils` README.md](./src/README.md): Further description of how test suites are modified and analyzed
+
+[`generator` README.md](./generator/README.md): Brief descriptions of each shell script involved with generating EvoSuite tests and TOG oracles. 
+
