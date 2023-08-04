@@ -14,16 +14,18 @@ public class TestUtils {
     }
 
     /**
+     * Removes all normal assertion oracles from a given test case.
      *
-     * @param testCase
+     * @param testCase a JavaParser representation of a test case as a method
      */
     private static void removeAssertionOracles(CallableDeclaration<?> testCase) {
 
     }
 
     /**
+     * Removes all exceptional oracles from a given test case.
      *
-     * @param testCase
+     * @param testCase a JavaParser representation of a test case as a method
      */
     private static void removeExceptionalOracles(CallableDeclaration<?> testCase) {
 
@@ -34,7 +36,7 @@ public class TestUtils {
      * approach for removing oracles depends on whether an oracle is
      * exceptional (e.g. throws an exception) or a normal assertion. Saves the
      * modified test cases in output/evosuite-prefix/. Does not override
-     * original test files.
+     * original test files at the given path.
      *
      * @param dir a directory with Java test files
      * @see TestUtils#removeAssertionOracles(CallableDeclaration)
