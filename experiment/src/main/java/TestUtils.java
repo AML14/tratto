@@ -56,7 +56,7 @@ public class TestUtils {
      * @param dir a directory with Java test prefixes
      * @param oracles a list of test oracles made by an axiomatic tog
      */
-    private static void insertAxiomaticOracles(Path dir, List<String> oracles) {
+    private static void insertAxiomaticOracles(Path dir, List<OracleOutput> oracles) {
 
     }
 
@@ -69,7 +69,7 @@ public class TestUtils {
      * @param dir a directory with Java test prefixes
      * @param oracles a list of test oracles made by a non-axiomatic tog
      */
-    private static void insertNonAxiomaticOracles(Path dir, List<String> oracles) {
+    private static void insertNonAxiomaticOracles(Path dir, List<OracleOutput> oracles) {
 
     }
 
@@ -95,7 +95,7 @@ public class TestUtils {
      * @see TestUtils#insertAxiomaticOracles(Path, List)
      * @see TestUtils#insertNonAxiomaticOracles(Path, List)
      */
-    public static void insertOracles(Path dir, String tog, List<String> oracles) {
+    public static void insertOracles(Path dir, String tog, List<OracleOutput> oracles) {
 
     }
 }
