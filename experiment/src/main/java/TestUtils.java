@@ -1,3 +1,5 @@
+import com.github.javaparser.ast.body.CallableDeclaration;
+
 import java.nio.file.Path;
 import java.util.List;
 
@@ -13,19 +15,17 @@ public class TestUtils {
 
     /**
      *
-     *
-     * @param dir
+     * @param testCase
      */
-    private static void removeAssertionOracles(Path dir) {
+    private static void removeAssertionOracles(CallableDeclaration<?> testCase) {
 
     }
 
     /**
      *
-     *
-     * @param dir
+     * @param testCase
      */
-    private static void removeExceptionalOracles(Path dir) {
+    private static void removeExceptionalOracles(CallableDeclaration<?> testCase) {
 
     }
 
@@ -37,8 +37,8 @@ public class TestUtils {
      * original test files.
      *
      * @param dir a directory with Java test files
-     * @see TestUtils#removeAssertionOracles(Path)
-     * @see TestUtils#removeExceptionalOracles(Path)
+     * @see TestUtils#removeAssertionOracles(CallableDeclaration)
+     * @see TestUtils#removeExceptionalOracles(CallableDeclaration)
      */
     public static void removeOracles(Path dir) {
 
@@ -77,15 +77,7 @@ public class TestUtils {
      * a priori)
      */
     private static boolean isAxiomatic(String tog) {
-        switch (tog) {
-            case "jdoctor", "tratto" -> {
-                return true;
-            }
-            case "toga" -> {
-                return false;
-            }
-            default -> throw new IllegalArgumentException("Unrecognized test oracle generator: " + tog);
-        }
+        return false;
     }
 
     /**
@@ -102,10 +94,6 @@ public class TestUtils {
      * @see TestUtils#insertNonAxiomaticOracles(Path, List)
      */
     public static void insertOracles(Path dir, String tog, List<String> oracles) {
-        if (isAxiomatic(tog)) {
-            insertAxiomaticOracles(dir, oracles);
-        } else {
-            insertNonAxiomaticOracles(dir, oracles);
-        }
+
     }
 }
