@@ -90,41 +90,35 @@ public class FileUtils {
     }
 
     /**
-     * Returns the path of {@code extension}, with {@code root} removed.
-     *
-     * @param root a directory
-     * @param extension a file/subdirectory in the given root directory
-     * @return the path of {@code extension}, with {@code root} removed
-     * @throws IllegalArgumentException if {@code extension} is equal to
-     * {@code root} or if {@code extension} is not a child of {@code root}
-     */
-    private static Path getPathSuffix(Path root, Path extension) {
-        if (!extension.startsWith(root)) {
-            throw new IllegalArgumentException(extension + " must be an extension of " + root);
-        }
-        return extension.subpath(root.getNameCount(), extension.getNameCount());
-    }
-
-    /**
-     * Returns the path of the target file when moved from the source
-     * directory to the destination directory.
+     * Returns the path of the target file when hypothetically moved from the
+     * source directory to the destination directory. NOTE: this method does
+     * NOT move any files.
      *
      * @param source the source directory
      * @param destination the destination directory
      * @param target the target file in the source directory
      * @return the relative path of target in the destination directory. For
      * example, let
+     * <pre>
      *      source = [sourcePrefix]/[source]
      *      destination = [destinationPrefix]/[destination]
      *      target = [sourcePrefix]/[source]/[suffix]/[fileName]
+     * </pre>
      * then the method outputs,
+     * <pre>
      *      relativePath = [destinationPrefix]/[destination]/[suffix]/[fileName]
+     * </pre>
      */
     private static Path getRelativePath(Path source, Path destination, Path target) {
         if (source.equals(target)) {
-          return destination;
+            return destination;
         }
-        Path suffix = getPathSuffix(source, target);
+        // remove source prefix
+        if (!target.startsWith(source)) {
+            throw new IllegalArgumentException(target + " must exist under " + source);
+        }
+        Path suffix = target.subpath(source.getNameCount(), target.getNameCount());
+        // add remaining suffix to destination
         return destination.resolve(suffix);
     }
 
