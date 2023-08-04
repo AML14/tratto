@@ -80,7 +80,8 @@ public class RestrictionsUtils {
         // non-private and non-void
         List<MethodUsage> matchingMethods = new ArrayList<>(); // TODO: Don't consider method under test
 
-        if (!precedingExpr.contains(".") && oracleDatapoint.isProjectClass(precedingExpr)) { // Preceding expression is a project class
+        if (!precedingExpr.contains(".") && oracleDatapoint.isProjectClass(precedingExpr)) {
+            // Preceding expression is a project class
             List<Pair<String, String>> matchingClasses = oracleDatapoint.getTokensProjectClasses()
                     .stream()
                     .filter(c -> c.getValue0().equals(precedingExpr))

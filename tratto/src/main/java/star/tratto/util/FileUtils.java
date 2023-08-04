@@ -89,8 +89,8 @@ public class FileUtils {
         }
     }
 
-    /**
-     * @param root a root directory
+    /** Returns the path of {@code extension}, with {@code root} removed.
+@param root a root directory
      * @param extension a file/subdirectory in the given root directory
      * @return the path of {@code extension}, with {@code root} removed
      * @throws IllegalArgumentException if {@code extension} is equal to
@@ -119,7 +119,9 @@ public class FileUtils {
      *      relativePath = [destinationPrefix]/[destination]/[suffix]/[fileName]
      */
     private static Path getRelativePath(Path source, Path destination, Path target) {
-        if (source.equals(target)) return destination;
+        if (source.equals(target)) {
+          return destination;
+        }
         Path suffix = getPathSuffix(source, target);
         return destination.resolve(suffix);
     }
@@ -135,8 +137,12 @@ public class FileUtils {
      * while copying a file
      */
     public static void copy(Path source, Path destination) {
-        if (!Files.exists(source)) throw new Error("Directory " + source + " is not found");
-        if (!Files.exists(destination)) createDirectories(destination);
+        if (!Files.exists(source)) {
+          throw new Error("Directory " + source + " is not found");
+        }
+        if (!Files.exists(destination)) {
+          createDirectories(destination);
+        }
         try (Stream<Path> walk = Files.walk(source)) {
             walk
                     .forEach(p -> {
@@ -167,8 +173,12 @@ public class FileUtils {
      * while moving a file
      */
     public static void move(Path source, Path destination) {
-        if (!Files.exists(source)) throw new Error("Directory " + source + " is not found");
-        if (!Files.exists(destination)) createDirectories(destination);
+        if (!Files.exists(source)) {
+          throw new Error("Directory " + source + " is not found");
+        }
+        if (!Files.exists(destination)) {
+          createDirectories(destination);
+        }
         copy(source, destination);
         deleteDirectory(source);
     }
@@ -193,8 +203,8 @@ public class FileUtils {
         }
     }
 
-    /**
-     * @param path a file
+    /** Returns the file contents as a String.
+@param path a file
      * @return the file contents as a String
      * @throws Error if unable to process the file
      */
@@ -219,7 +229,9 @@ public class FileUtils {
      *            elements in the list
      */
     public static <T> List<T> readJSONList(Path jsonPath, Class<T> type) {
-        if (!Files.exists(jsonPath)) throw new Error("JSON file " + jsonPath + " not found");
+        if (!Files.exists(jsonPath)) {
+          throw new Error("JSON file " + jsonPath + " not found");
+        }
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             return (type == null)
