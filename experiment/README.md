@@ -91,6 +91,7 @@ We provide a brief description of the relevant files:
   - `toga.sh`: a script that invokes TOGA for a given source file and test prefix
   - `tratto.sh`: a script that invokes Tratto for a given source file
 - `src/main/java`: this package contains all Java functionality, including mutation testing, file IO, JavaParser utilities, etc.
+  - `FileUtils.java`: a class with all necessary utilities to read and write to files 
   - `TestAnalyzer.java`: a class for reporting the statistics of a test suite. Includes the number of passing/failing tests and mutation score.
   - `TestUtils.java`: a class for test suite utilities, such as removing/adding assertions
 - `experiment.sh`: the end-to-end script which performs the experiment
