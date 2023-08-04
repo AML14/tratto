@@ -10,3 +10,5 @@ We provide a brief overview of the relevant files:
 - `jdoctor.sh`: Generates a list of oracles using JDoctor
 - `toga.sh`: Generates a list of oracles using TOGA
 - `tratto.sh`: Generates a list of oracles using Tratto
+
+Each script produces oracles as a list of [`OracleOutput`](../src/main/java/OracleOutput.java) objects.
