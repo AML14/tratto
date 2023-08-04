@@ -1,6 +1,7 @@
 import com.github.javaparser.ast.body.CallableDeclaration;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 /**
@@ -8,6 +9,8 @@ import java.util.List;
  * and inserting oracles into test prefixes.
  */
 public class TestUtils {
+    private static final Path output = Paths.get("output");
+
     // private constructor to avoid creating an instance of this class.
     private TestUtils() {
         throw new UnsupportedOperationException("This class cannot be instantiated.");
@@ -43,7 +46,9 @@ public class TestUtils {
      * @see TestUtils#removeExceptionalOracles(CallableDeclaration)
      */
     public static void removeOracles(Path dir) {
-
+        // copy files to separate directory.
+        Path prefixPath = output.resolve("evosuite-prefix");
+        FileUtils.copy(dir, prefixPath);
     }
 
     /**
