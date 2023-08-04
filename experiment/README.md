@@ -18,11 +18,11 @@ To generate test prefixes, we use [EvoSuite](https://www.evosuite.org/), which g
 
 To analyze a TOG, run
 ```agsl
-python3 experiment.py [tog] [source path]
+experiment.sh [tog] [source path]
 ```
 where TOG is "jdoctor", "toga", or "tratto". For example,
 ```agsl
-python3 experiment.py tratto ../path/to/source/File.java
+experiment.sh tratto ../path/to/source/File.java
 ```
 
 ## Research Questions
@@ -94,7 +94,7 @@ We provide a brief description of the relevant files:
   - `FileUtils.java`: a class for reading and writing files
   - `TestAnalyzer.java`: a class for reporting the statistics of a test suite. Includes the number of passing/failing tests and mutation score.
   - `TestUtils.java`: a class for test suite utilities, such as removing/adding assertions
-- `experiment.py`: the end-to-end script which performs the experiment
+- `experiment.sh`: the end-to-end script which performs the experiment
 
 ### Prefix
 
@@ -125,6 +125,7 @@ void sumNegativeTest() {
 ```
 
 For axiomatic oracles, we use JavaParser to insert assertions wherever possible, yielding the following test suite,
+
 ```agsl
 void sumTest() {
     int a = 2;
