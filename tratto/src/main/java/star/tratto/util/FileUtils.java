@@ -89,8 +89,10 @@ public class FileUtils {
         }
     }
 
-    /** Returns the path of {@code extension}, with {@code root} removed.
-@param root a root directory
+    /**
+     * Returns the path of {@code extension}, with {@code root} removed.
+     *
+     * @param root a directory
      * @param extension a file/subdirectory in the given root directory
      * @return the path of {@code extension}, with {@code root} removed
      * @throws IllegalArgumentException if {@code extension} is equal to
@@ -203,8 +205,10 @@ public class FileUtils {
         }
     }
 
-    /** Returns the file contents as a String.
-@param path a file
+    /**
+     * Returns the file contents as a String.
+     *
+     * @param path a file
      * @return the file contents as a String
      * @throws Error if unable to process the file
      */
