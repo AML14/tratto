@@ -14,7 +14,7 @@ from src.types.DatasetType import DatasetType
 from src.types.TransformerType import TransformerType
 from src.types.TrattoModelType import TrattoModelType
 from src.utils import utils
-
+import gc
 
 class DataProcessor:
     """
@@ -324,9 +324,11 @@ class DataProcessor:
             # Tokenize training and validation datasets of the current fold
             t_t_dataset = self._tokenize_dataset(t_dataset)
             t_v_dataset = self._tokenize_dataset(v_dataset)
+            self._src = None
+            self._tgt = None
             # Append datasets of the current fold to the corresponding training and validation processes datasets
-            self._processed_dataset["train"].append(t_dataset)
-            self._processed_dataset["val"].append(v_dataset)
+            #self._processed_dataset["train"].append(t_dataset)
+            #self._processed_dataset["val"].append(v_dataset)
             # Append tokenized datasets of the current fold to the corresponding training and validation processes
             # tokenized datasets
             self._processed_dataset["t_train"].append(t_t_dataset)
@@ -334,9 +336,12 @@ class DataProcessor:
         # Generate test dataset
         test_dataset = (self._src_test, self._tgt_test)
         # Assign the test dataset to the processed datasets
-        self._processed_dataset["test"] = (self._src_test, self._tgt_test)
+        #self._processed_dataset["test"] = (self._src_test, self._tgt_test)
         # Assign the tokenized test dataset to the processed tokenized datasets
         self._processed_dataset["t_test"] = self._tokenize_dataset(test_dataset)
+        self._src_test = None
+        self._tgt_test = None
+        gc.collect()
 
     def pre_processing(
             self

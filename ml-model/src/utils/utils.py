@@ -9,9 +9,11 @@ from xml.etree.ElementTree import Element
 from typing import Type, Union
 import torch.distributed as dist
 import torch
-from accelerate import accelerator
+from accelerate import Accelerator
 
 from src.types.DeviceType import DeviceType
+
+accelerator = Accelerator()
 
 def check_cuda_device():
     device_ids = list(range(torch.cuda.device_count()))
