@@ -277,4 +277,14 @@ public class FileUtils {
     public static List<?> readJSONList(Path jsonPath) {
         return readJSONList(jsonPath, null);
     }
+
+    /**
+     * Checks if a given path corresponds to a Java file
+     *
+     * @param path a file
+     * @return true iff the given file represents a Java file
+     */
+    public static boolean isJavaFile(Path path) {
+        return path.getFileName().toString().endsWith(".java");
+    }
 }
