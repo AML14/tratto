@@ -95,7 +95,7 @@ public class TestUtils {
     public static void removeOracles(Path dir) {
         Path prefixPath = output.resolve("evosuite-prefix");
         FileUtils.copy(dir, prefixPath);
-        try (Stream<Path> walk = Files.walk(dir)) {
+        try (Stream<Path> walk = Files.walk(prefixPath)) {
             walk
                     .filter(FileUtils::isJavaFile)
                     .forEach(testFile -> {
