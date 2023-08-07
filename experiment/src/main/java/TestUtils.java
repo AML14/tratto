@@ -1,6 +1,5 @@
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.body.CallableDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 
@@ -61,22 +60,22 @@ public class TestUtils {
                     .forEach(testFile -> {
                         try {
                             CompilationUnit cu = StaticJavaParser.parse(testFile);
-                            List<MethodDeclaration> allMethods = cu
+                            List<MethodDeclaration> allTestCases = cu
                                     .getTypes()
                                     .stream()
                                     .map(TypeDeclaration::getMethods)
                                     .flatMap(List::stream)
                                     .toList();
-                            for (MethodDeclaration methodDeclaration : allMethods) {
-                                removeAssertionOracles(methodDeclaration);
-                                removeExceptionalOracles(methodDeclaration);
+                            for (MethodDeclaration testCase : allTestCases) {
+                                removeAssertionOracles(testCase);
+                                removeExceptionalOracles(testCase);
                             }
                         } catch (IOException e) {
-                            throw new Error("whoops");
+                            throw new Error("Unable to parse test file " + testFile.getFileName().toString());
                         }
                     });
         } catch (IOException e) {
-            throw new Error("oops");
+            throw new Error("Unable to parse files in directory " + dir.toString());
         }
     }
 
