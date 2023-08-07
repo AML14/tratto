@@ -13,7 +13,8 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class ExampleTest {
     @Test
-    public void assertionTest() {  // an example of an assertion oracle
+    public void assertionTest() {
+        // an example of an assertion oracle
         List<String> nonEmptyList = List.of("example");
         assertEquals("example", nonEmptyList.get(0));
     }
@@ -30,7 +31,8 @@ public class ExampleTest {
     }
 
     @Test
-    public void exceptionalTest() {  // an example of an exceptional oracle
+    public void exceptionalTest() {
+        // an example of an exceptional oracle
         try {
             List<String> emptyList = new ArrayList<>();
             String element = emptyList.get(0);
