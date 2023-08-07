@@ -1,8 +1,15 @@
+import com.github.javaparser.StaticJavaParser;
+import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.CallableDeclaration;
+import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.TypeDeclaration;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * This class provides static methods for removing oracles from a test suite,
@@ -21,7 +28,7 @@ public class TestUtils {
      *
      * @param testCase a JavaParser representation of a test case as a method
      */
-    static void removeAssertionOracles(CallableDeclaration<?> testCase) {
+    static void removeAssertionOracles(MethodDeclaration testCase) {
 
     }
 
@@ -30,7 +37,7 @@ public class TestUtils {
      *
      * @param testCase a JavaParser representation of a test case as a method
      */
-    static void removeExceptionalOracles(CallableDeclaration<?> testCase) {
+    static void removeExceptionalOracles(MethodDeclaration testCase) {
 
     }
 
@@ -42,13 +49,35 @@ public class TestUtils {
      * original test files at the given path.
      *
      * @param dir a directory with Java test files
-     * @see TestUtils#removeAssertionOracles(CallableDeclaration)
-     * @see TestUtils#removeExceptionalOracles(CallableDeclaration)
+     * @see TestUtils#removeAssertionOracles(MethodDeclaration)
+     * @see TestUtils#removeExceptionalOracles(MethodDeclaration)
      */
     public static void removeOracles(Path dir) {
         // copy files to separate directory.
         Path prefixPath = output.resolve("evosuite-prefix");
         FileUtils.copy(dir, prefixPath);
+        try (Stream<Path> walk = Files.walk(dir)) {
+            walk
+                    .forEach(testFile -> {
+                        try {
+                            CompilationUnit cu = StaticJavaParser.parse(testFile);
+                            List<MethodDeclaration> allMethods = cu
+                                    .getTypes()
+                                    .stream()
+                                    .map(TypeDeclaration::getMethods)
+                                    .flatMap(List::stream)
+                                    .toList();
+                            for (MethodDeclaration methodDeclaration : allMethods) {
+                                removeAssertionOracles(methodDeclaration);
+                                removeExceptionalOracles(methodDeclaration);
+                            }
+                        } catch (IOException e) {
+                            throw new Error("whoops");
+                        }
+                    });
+        } catch (IOException e) {
+            throw new Error("oops");
+        }
     }
 
     /**
