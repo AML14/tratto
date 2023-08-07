@@ -40,18 +40,15 @@ public class TestUtils {
     }
 
     /**
-     * Checks if a given statement is an assertion.
+     * Checks if a given statement is a JUnit Assertions assert method call
+     * (e.g. assertEquals). This does NOT include "fail()", which used by
+     * exceptional oracles.
      *
      * @param statement a code statement
-     * @return true iff the statement uses the "assert" keyword or uses a
-     * JUnit assert method (e.g. assertEquals)
+     * @return true iff the statement uses an "assert..." method from the
+     * JUnit Assertions class
      */
-    private static boolean isAssertion(Statement statement) {
-        // check if statement uses "assert" keyword
-        if (statement.isAssertStmt()) {
-            return true;
-        }
-        // check if statement uses JUnit Assertions assert method
+    private static boolean isJUnitAssertion(Statement statement) {
         if (statement.isExpressionStmt()) {
             Expression expression = statement.asExpressionStmt().getExpression();
             if (expression.isMethodCallExpr()) {
@@ -64,10 +61,10 @@ public class TestUtils {
 
     /**
      * Checks if a given statement is a fail statement. These are used in
-     * exceptional oracles to ensure that a given prefix throws an exception.
+     * exceptional oracles to ensure that a prefix throws an exception.
      *
      * @param statement a code statement
-     * @return true iff the statement represents a "fail" method call
+     * @return true iff the statement is a "fail" method call
      */
     private static boolean isFail(Statement statement) {
         if (statement.isExpressionStmt()) {
@@ -81,22 +78,39 @@ public class TestUtils {
     }
 
     /**
-     * Removes all normal assertion oracles from a given test file.
+     * Removes all assertion oracles from a given test file, represented by a
+     * JavaParser compilation unit. Removes both assert statements and JUnit
+     * Assertions methods. This method does not modify the actual source file.
      *
      * @param testFile a JavaParser representation of a test file
      */
     private static void removeAssertionOracles(CompilationUnit testFile) {
         testFile.findAll(Statement.class).forEach(statement -> {
-            if (isAssertion(statement)) {
+            if (isJUnitAssertion(statement) || statement.isAssertStmt()) {
                 statement.remove();
             }
         });
     }
 
     /**
-     * Removes all exceptional oracles from a given test case.
+     * Removes all exceptional oracles from a given test file, represented by
+     * a JavaParser compilation unit. The prefix in the try/catch block is
+     * preserved, but any "fail" calls are removed. For example:
+     * {@code
+     *     int x = 5;
+     *     try {
+     *         int y = 10;
+     *         fail();
+     *     } catch (Exception e) {}
+     * }
+     * becomes,
+     * {@code
+     *     int x = 5;
+     *     int y = 10;
+     * }
+     * This method does not modify the actual source file.
      *
-     * @param testFile a JavaParser representation of a test case as a method
+     * @param testFile a JavaParser representation of a test file
      */
     static void removeExceptionalOracles(CompilationUnit testFile) {
         // remove all try/catch blocks
