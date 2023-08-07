@@ -77,9 +77,9 @@ public class TypeUtils {
         return String.join(".", nameSegments.subList(0, nameSegments.size() - 1));
     }
 
-    /**
-     * @param nameSegments name segments. Must represent a class.
-     * @return innermost class of the name segments
+    /** Returns innermost class of the name segments.
+@param nameSegments name segments. Must represent a class.
+     * @return innermost class of the name segments 
      * @see TypeUtils#getNameSegments(String)
      */
     public static String getClassNameFromNameSegments(
@@ -88,9 +88,9 @@ public class TypeUtils {
         return nameSegments.get(nameSegments.size() - 1);
     }
 
-    /**
-     * @param typeName a field descriptor or source code type representation
-     * @return the array level of the type
+    /** Returns the array level of the type.
+@param typeName a field descriptor or source code type representation
+     * @return the array level of the type 
      */
     private static int getArrayLevel(String typeName) {
         int arrayLevel = 0;
@@ -129,10 +129,11 @@ public class TypeUtils {
         return addArrayLevel(fieldDescriptor.substring(arrayLevel), arrayLevel);
     }
 
-    /**
-     * @param fieldDescriptor a field descriptor of a type (can be an array)
+    /** Returns true iff the field descriptor represents a primitive type or an
+     * array of primitive types.
+@param fieldDescriptor a field descriptor of a type (can be an array)
      * @return true iff the field descriptor represents a primitive type or an
-     * array of primitive types
+     * array of primitive types 
      */
     private static boolean hasPrimitive(String fieldDescriptor) {
         return allPrimitiveFieldDescriptors.contains(fieldDescriptor.replaceAll("[^a-zA-Z]+", ""));
@@ -176,9 +177,9 @@ public class TypeUtils {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * @param typeName a source code format type name
-     * @return true iff the type represents a vararg (e.g. uses "...")
+    /** Returns true iff the type represents a vararg (e.g. uses "...").
+@param typeName a source code format type name
+     * @return true iff the type represents a vararg (e.g. uses "...") 
      */
     public static boolean hasEllipsis(String typeName) {
         return typeName.contains("...");
@@ -230,7 +231,7 @@ public class TypeUtils {
     }
 
     /**
-     * Gets the upper bound of a generic type from the method or class source
+     * Gets the upper bound of a generic type from the method or class source.
      *
      * @param jpDeclaration the declaring class
      * @param jpCallable the method using {@code typeName}

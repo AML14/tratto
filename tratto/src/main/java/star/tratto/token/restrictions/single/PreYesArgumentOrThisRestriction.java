@@ -29,7 +29,8 @@ public class PreYesArgumentOrThisRestriction extends SingleTokenRestriction {
 
     @Override
     public Boolean isEnabled(String nextLegalToken, List<String> partialExpressionTokens, OracleDatapoint oracleDatapoint) {
-        if (!isRestrictedToken(nextLegalToken) || oracleType != oracleDatapoint.getOracleType()) { // Restriction only applicable to PRE oracles
+        if (!isRestrictedToken(nextLegalToken) || oracleType != oracleDatapoint.getOracleType()) {
+            // Restriction only applicable to PRE oracles
             return false;
         }
 

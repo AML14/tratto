@@ -18,15 +18,14 @@ import java.util.stream.Stream;
  * reading, etc.
  */
 public class FileUtils {
-    // private constructor to avoid creating an instance of this class.
+    /** Private constructor to avoid creating an instance of this class. */
     private FileUtils() {
         throw new UnsupportedOperationException("This class cannot be instantiated.");
     }
 
     /**
-     * Creates an empty directory at a given path. Creates parent directories
-     * if necessary. If the directories already exists, then this method does
-     * nothing.
+     * Creates an empty directory. Creates parent directories if necessary. If
+     * the directory already exists, then this method does nothing.
      *
      * @param path a path
      * @throws Error if an error occurs while creating the directory
@@ -40,8 +39,8 @@ public class FileUtils {
     }
 
     /**
-     * Creates an empty file at a given path. Creates parent directories if
-     * necessary. If the file already exists, then this method does nothing.
+     * Creates an empty file. Creates parent directories if necessary. If the
+     * file already exists, then this method does nothing.
      *
      * @param path a file
      * @throws Error if an error occurs while creating the parent directories
@@ -59,27 +58,28 @@ public class FileUtils {
     }
 
     /**
-     * Recursively deletes all files and subdirectories in a given path. If
-     * the file does not exist, then this method does nothing.
+     * Recursively deletes a directory and its contents. If the file does not
+     * exist, then this method does nothing.
      *
-     * @param dirPath a root directory
+     * @param dirPath a directory
      * @throws Error if an error occurs while traversing or deleting files
      */
     public static void deleteDirectory(Path dirPath) {
-        if (!Files.exists(dirPath)) return;
+        if (!Files.exists(dirPath)) {
+            return;
+        }
         try (Stream<Path> walk = Files.walk(dirPath)) {
             walk
                     .filter(p -> !p.equals(dirPath))
                     .forEach(p -> {
-                        try {
-                            if (Files.isDirectory(p)) {
-                                // empty directory before deleting
-                                deleteDirectory(p);
-                            } else {
+                        if (Files.isDirectory(p)) {
+                            deleteDirectory(p);
+                        } else {
+                            try {
                                 Files.delete(p);
+                            } catch (IOException e) {
+                                throw new Error("Error when trying to delete the file " + p, e);
                             }
-                        } catch (IOException e) {
-                            throw new Error("Error when trying to delete the file " + p, e);
                         }
                     });
             // delete root directory last
@@ -90,37 +90,35 @@ public class FileUtils {
     }
 
     /**
-     * @param root a root directory
-     * @param extension a file/subdirectory in the given root directory
-     * @return the path of {@code extension}, with {@code root} removed
-     * @throws IllegalArgumentException if {@code extension} is equal to
-     * {@code root} or if {@code extension} is not a child of {@code root}
-     */
-    private static Path getPathSuffix(Path root, Path extension) {
-        if (!extension.startsWith(root)) {
-            throw new IllegalArgumentException(extension + " must be an extension of " + root);
-        }
-        return extension.subpath(root.getNameCount(), extension.getNameCount());
-    }
-
-    /**
-     * Returns the path of the target file when moved from the source
-     * directory to the destination directory.
+     * Returns the path of the target file when hypothetically moved from the
+     * source directory to the destination directory. NOTE: this method does
+     * NOT move any files.
      *
      * @param source the source directory
      * @param destination the destination directory
      * @param target the target file in the source directory
      * @return the relative path of target in the destination directory. For
      * example, let
+     * <pre>
      *      source = [sourcePrefix]/[source]
      *      destination = [destinationPrefix]/[destination]
      *      target = [sourcePrefix]/[source]/[suffix]/[fileName]
+     * </pre>
      * then the method outputs,
+     * <pre>
      *      relativePath = [destinationPrefix]/[destination]/[suffix]/[fileName]
+     * </pre>
      */
     private static Path getRelativePath(Path source, Path destination, Path target) {
-        if (source.equals(target)) return destination;
-        Path suffix = getPathSuffix(source, target);
+        if (source.equals(target)) {
+            return destination;
+        }
+        // remove source prefix
+        if (!target.startsWith(source)) {
+            throw new IllegalArgumentException(target + " must exist under " + source);
+        }
+        Path suffix = target.subpath(source.getNameCount(), target.getNameCount());
+        // add remaining suffix to destination
         return destination.resolve(suffix);
     }
 
@@ -133,10 +131,15 @@ public class FileUtils {
      * @param destination the directory where the files will be copied to
      * @throws Error if the source directory does not exist or an error occurs
      * while copying a file
+     * @see FileUtils#move(Path, Path)
      */
     public static void copy(Path source, Path destination) {
-        if (!Files.exists(source)) throw new Error("Directory " + source + " is not found");
-        if (!Files.exists(destination)) createDirectories(destination);
+        if (!Files.exists(source)) {
+          throw new Error("Directory " + source + " is not found");
+        }
+        if (!Files.exists(destination)) {
+          createDirectories(destination);
+        }
         try (Stream<Path> walk = Files.walk(source)) {
             walk
                     .forEach(p -> {
@@ -165,10 +168,15 @@ public class FileUtils {
      * @param destination the directory where the files will be moved to
      * @throws Error if the source directory does not exist or an error occurs
      * while moving a file
+     * @see FileUtils#copy
      */
     public static void move(Path source, Path destination) {
-        if (!Files.exists(source)) throw new Error("Directory " + source + " is not found");
-        if (!Files.exists(destination)) createDirectories(destination);
+        if (!Files.exists(source)) {
+          throw new Error("Directory " + source + " is not found");
+        }
+        if (!Files.exists(destination)) {
+          createDirectories(destination);
+        }
         copy(source, destination);
         deleteDirectory(source);
     }
@@ -194,6 +202,8 @@ public class FileUtils {
     }
 
     /**
+     * Returns the file contents as a String.
+     *
      * @param path a file
      * @return the file contents as a String
      * @throws Error if unable to process the file
@@ -219,7 +229,9 @@ public class FileUtils {
      *            elements in the list
      */
     public static <T> List<T> readJSONList(Path jsonPath, Class<T> type) {
-        if (!Files.exists(jsonPath)) throw new Error("JSON file " + jsonPath + " not found");
+        if (!Files.exists(jsonPath)) {
+          throw new Error("JSON file " + jsonPath + " not found");
+        }
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             return (type == null)

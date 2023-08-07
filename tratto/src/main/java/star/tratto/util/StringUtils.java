@@ -90,11 +90,12 @@ public class StringUtils {
         return closingParenthesisIndex;
     }
 
-    /**
-     * @param oracleTokens list of tokens in the (partial) oracle
+    /** Returns the indexes of the oracleTokens list where then tokens are found. Empty if tokens is null.
+     * All indexes if tokens is empty.
+@param oracleTokens list of tokens in the (partial) oracle
      * @param tokens list of tokens to find in the oracle
      * @return the indexes of the oracleTokens list where then tokens are found. Empty if tokens is null.
-     * All indexes if tokens is empty.
+     * All indexes if tokens is empty 
      */
     public static List<Integer> getIndexesOfTokensInOracleTokens(List<String> oracleTokens, List<String> tokens) {
         List<Integer> indexesOfTokensInOracle = new ArrayList<>();
@@ -125,9 +126,10 @@ public class StringUtils {
         return fullyQualifiedClassName(packageClassPair.getValue0(), packageClassPair.getValue1());
     }
 
-    /**
-     * @return removes all non-alphabetic and space characters in a String,
-     * and sets all alphabetic characters to lower case
+    /** Returns removes all non-alphabetic and space characters in a String,
+     * and sets all alphabetic characters to lower case.
+@return removes all non-alphabetic and space characters in a String,
+     * and sets all alphabetic characters to lower case 
      */
     private static String toAllLowerCaseLetters(String s) {
         return s.replaceAll("[^a-zA-Z ]", "").toLowerCase();
@@ -191,10 +193,10 @@ public class StringUtils {
         return new ArrayRealVector(vector);
     }
 
-    /**
-     * @param set1 a set of words
+    /** Returns the words in both sets.
+@param set1 a set of words
      * @param set2 a set of words
-     * @return the words in both sets
+     * @return the words in both sets 
      */
     private static TreeSet<String> getSetIntersection(Set<String> set1, Set<String> set2) {
         TreeSet<String> intersectionKeys = new TreeSet<>(set1);
@@ -213,7 +215,9 @@ public class StringUtils {
      */
     private static double getCosineSimilarity(RealVector vector1, RealVector vector2) {
         double denominator = vector1.getNorm() * vector2.getNorm();
-        if (denominator == 0.0) return 0.0;
+        if (denominator == 0.0) {
+          return 0.0;
+        }
         return vector1.dotProduct(vector2) / denominator;
     }
 
