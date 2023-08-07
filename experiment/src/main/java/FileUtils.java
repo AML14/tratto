@@ -3,6 +3,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
@@ -189,10 +190,30 @@ public class FileUtils {
      * content to file
      */
     public static void writeJSON(Path path, Object content) {
+        createFile(path);
         try {
-            createFile(path);
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.writerWithDefaultPrettyPrinter().writeValue(path.toFile(), content);
+        } catch (IOException e) {
+            throw new Error("Error when writing " + content + " to file " + path, e);
+        }
+    }
+
+    /**
+     * This method is a wrapper for {@link Files#writeString(Path, CharSequence, OpenOption...)}
+     * to avoid unnecessary try/catch blocks. Creates a new file and parent
+     * directories if needed. If file already exists, then this method
+     * overrides any previous content.
+     *
+     * @param path a file
+     * @param content a string to be written to a file
+     * @throws Error if unable to create files/directories or unable to write
+     * content to file
+     */
+    public static void writeString(Path path, String content) {
+        createFile(path);
+        try {
+            Files.writeString(path, content);
         } catch (IOException e) {
             throw new Error("Error when writing " + content + " to file " + path, e);
         }
