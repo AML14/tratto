@@ -97,6 +97,7 @@ public class TestUtils {
         FileUtils.copy(dir, prefixPath);
         try (Stream<Path> walk = Files.walk(dir)) {
             walk
+                    .filter(FileUtils::isJavaFile)
                     .forEach(testFile -> {
                         try {
                             CompilationUnit cu = StaticJavaParser.parse(testFile);
