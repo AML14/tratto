@@ -19,6 +19,6 @@ public class TestUtilsTest {
     @Test
     public void removeOraclesTest() {
         TestUtils.removeOracles(examplePath);
-        FileUtils.deleteDirectory(outputPath.resolve("evosuite-prefix"));
+//        FileUtils.deleteDirectory(outputPath.resolve("evosuite-prefix"));
     }
 }
