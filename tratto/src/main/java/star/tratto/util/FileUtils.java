@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.nio.file.attribute.FileAttribute;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -24,8 +25,11 @@ public class FileUtils {
     }
 
     /**
-     * Creates an empty directory. Creates parent directories if necessary. If
-     * the directory already exists, then this method does nothing.
+     * This method is a wrapper method of {@link Files#createDirectories(Path, FileAttribute[])}
+     * to substitute {@link IOException} with {@link Error} and avoid
+     * superfluous try/catch blocks. Creates an empty directory. Creates
+     * parent directories if necessary. If the directory already exists, then
+     * this method does nothing.
      *
      * @param path a path
      * @throws Error if an error occurs while creating the directory
@@ -135,23 +139,23 @@ public class FileUtils {
      */
     public static void copy(Path source, Path destination) {
         if (!Files.exists(source)) {
-          throw new Error("Directory " + source + " is not found");
+            throw new Error("Directory " + source + " is not found");
         }
         if (!Files.exists(destination)) {
-          createDirectories(destination);
+            createDirectories(destination);
         }
         try (Stream<Path> walk = Files.walk(source)) {
             walk
                     .forEach(p -> {
                         Path relativePath = getRelativePath(source, destination, p);
-                        try {
-                            if (Files.isDirectory(p)) {
-                                createDirectories(relativePath);
-                            } else {
+                        if (Files.isDirectory(p)) {
+                            createDirectories(relativePath);
+                        } else {
+                            try {
                                 Files.copy(p, relativePath, StandardCopyOption.REPLACE_EXISTING);
+                            } catch (IOException e) {
+                                throw new Error("Error when trying to move the file " + p, e);
                             }
-                        } catch (IOException e) {
-                            throw new Error("Error when trying to move the file " + p, e);
                         }
                     });
         } catch (IOException e) {
@@ -172,10 +176,10 @@ public class FileUtils {
      */
     public static void move(Path source, Path destination) {
         if (!Files.exists(source)) {
-          throw new Error("Directory " + source + " is not found");
+            throw new Error("Directory " + source + " is not found");
         }
         if (!Files.exists(destination)) {
-          createDirectories(destination);
+            createDirectories(destination);
         }
         copy(source, destination);
         deleteDirectory(source);
