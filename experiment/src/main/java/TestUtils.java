@@ -1,8 +1,12 @@
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.MethodCallExpr;
+import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.stmt.CatchClause;
 import com.github.javaparser.ast.stmt.Statement;
+import com.github.javaparser.ast.stmt.TryStmt;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -60,6 +64,24 @@ public class TestUtils {
     }
 
     /**
+     * Checks if a given statement is a fail statement. These are used in
+     * exceptional oracles to ensure that a given prefix throws an exception.
+     *
+     * @param statement a code statement
+     * @return true iff the statement represents a "fail" method call
+     */
+    private static boolean isFail(Statement statement) {
+        if (statement.isExpressionStmt()) {
+            Expression expression = statement.asExpressionStmt().getExpression();
+            if (expression.isMethodCallExpr()) {
+                MethodCallExpr methodCallExpr = expression.asMethodCallExpr();
+                return methodCallExpr.getNameAsString().equals("fail");
+            }
+        }
+        return false;
+    }
+
+    /**
      * Removes all normal assertion oracles from a given test file.
      *
      * @param testFile a JavaParser representation of a test file
@@ -78,7 +100,20 @@ public class TestUtils {
      * @param testFile a JavaParser representation of a test case as a method
      */
     static void removeExceptionalOracles(CompilationUnit testFile) {
-
+        // remove all try/catch blocks
+        testFile.findAll(TryStmt.class).forEach(tryStmt -> {
+            BlockStmt testCase = (BlockStmt) tryStmt.getParentNode().orElseThrow();
+            NodeList<Statement> prefix = tryStmt.getTryBlock().getStatements();
+            int prefixLocation = testCase.getStatements().indexOf(tryStmt);
+            testCase.getStatements().addAll(prefixLocation, prefix);
+            tryStmt.remove();
+        });
+        // remove "fail()" statements
+        testFile.findAll(Statement.class).forEach(statement -> {
+            if (isFail(statement)) {
+                statement.remove();
+            }
+        });
     }
 
     /**
