@@ -112,7 +112,7 @@ public class TestUtils {
      *
      * @param testFile a JavaParser representation of a test file
      */
-    static void removeExceptionalOracles(CompilationUnit testFile) {
+    private static void removeExceptionalOracles(CompilationUnit testFile) {
         // remove all try/catch blocks
         testFile.findAll(TryStmt.class).forEach(tryStmt -> {
             BlockStmt testCase = (BlockStmt) tryStmt.getParentNode().orElseThrow();
