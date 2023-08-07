@@ -1,5 +1,4 @@
-import com.github.javaparser.ast.body.CallableDeclaration;
-
+import com.github.javaparser.ast.CompilationUnit;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -14,20 +13,37 @@ public class TestUtils {
     }
 
     /**
-     * Removes all normal assertion oracles from a given test case.
+     * Removes all assertion oracles from a given test file, represented by a
+     * JavaParser compilation unit. Removes both assert statements and JUnit
+     * Assertions methods. This method does not modify the actual source file.
      *
-     * @param testCase a JavaParser representation of a test case as a method
+     * @param testFile a JavaParser representation of a test file
      */
-    private static void removeAssertionOracles(CallableDeclaration<?> testCase) {
+    private static void removeAssertionOracles(CompilationUnit testFile) {
 
     }
 
     /**
-     * Removes all exceptional oracles from a given test case.
+     * Removes all exceptional oracles from a given test file, represented by
+     * a JavaParser compilation unit. The prefix in the try/catch block is
+     * preserved, but any "fail" calls are removed. For example:
+     * {@code
+     *     int x = 5;
+     *     try {
+     *         int y = 10;
+     *         fail();
+     *     } catch (Exception e) {}
+     * }
+     * becomes,
+     * {@code
+     *     int x = 5;
+     *     int y = 10;
+     * }
+     * This method does not modify the actual source file.
      *
-     * @param testCase a JavaParser representation of a test case as a method
+     * @param testFile a JavaParser representation of a test file
      */
-    private static void removeExceptionalOracles(CallableDeclaration<?> testCase) {
+    private static void removeExceptionalOracles(CompilationUnit testFile) {
 
     }
 
@@ -39,8 +55,8 @@ public class TestUtils {
      * original test files at the given path.
      *
      * @param dir a directory with Java test files
-     * @see TestUtils#removeAssertionOracles(CallableDeclaration)
-     * @see TestUtils#removeExceptionalOracles(CallableDeclaration)
+     * @see TestUtils#removeAssertionOracles(CompilationUnit)
+     * @see TestUtils#removeExceptionalOracles(CompilationUnit)
      */
     public static void removeOracles(Path dir) {
 
