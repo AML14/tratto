@@ -21,7 +21,7 @@ public class TestUtils {
      *
      * @param testCase a JavaParser representation of a test case as a method
      */
-    private static void removeAssertionOracles(CallableDeclaration<?> testCase) {
+    static void removeAssertionOracles(CallableDeclaration<?> testCase) {
 
     }
 
@@ -30,7 +30,7 @@ public class TestUtils {
      *
      * @param testCase a JavaParser representation of a test case as a method
      */
-    private static void removeExceptionalOracles(CallableDeclaration<?> testCase) {
+    static void removeExceptionalOracles(CallableDeclaration<?> testCase) {
 
     }
 
