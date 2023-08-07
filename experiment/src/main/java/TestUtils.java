@@ -43,7 +43,7 @@ public class TestUtils {
      * @return true iff the statement uses the "assert" keyword or uses a
      * JUnit assert method
      */
-    private static boolean isAssertStatement(Statement statement) {
+    private static boolean isAssertion(Statement statement) {
         // check if statement uses "assert" keyword
         if (statement.isAssertStmt()) {
             return true;
@@ -66,7 +66,7 @@ public class TestUtils {
      */
     static void removeAssertionOracles(CompilationUnit testFile) {
         testFile.findAll(Statement.class).forEach(statement -> {
-            if (isAssertStatement(statement)) {
+            if (isAssertion(statement)) {
                 System.out.println(statement);
             }
         });
