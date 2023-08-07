@@ -17,12 +17,6 @@ public class TestUtilsTest {
     private static final Path outputPath = Paths.get("output");
 
     @Test
-    public void removeAssertionOraclesTest() throws IOException {
-        CompilationUnit cu = StaticJavaParser.parse(examplePath.resolve("ExampleTest.java"));
-        TestUtils.removeAssertionOracles(cu);
-    }
-
-    @Test
     public void removeOraclesTest() {
         TestUtils.removeOracles(examplePath);
         FileUtils.deleteDirectory(outputPath.resolve("evosuite-prefix"));

@@ -64,7 +64,7 @@ public class TestUtils {
      *
      * @param testFile a JavaParser representation of a test file
      */
-    static void removeAssertionOracles(CompilationUnit testFile) {
+    private static void removeAssertionOracles(CompilationUnit testFile) {
         testFile.findAll(Statement.class).forEach(statement -> {
             if (isAssertion(statement)) {
                 statement.remove();
