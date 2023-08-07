@@ -37,18 +37,18 @@ public class TestUtils {
     }
 
     /**
-     * Checks if a given statement is an assert statement.
+     * Checks if a given statement is an assertion.
      *
      * @param statement a code statement
      * @return true iff the statement uses the "assert" keyword or uses a
-     * JUnit assert method
+     * JUnit assert method (e.g. assertEquals)
      */
     private static boolean isAssertion(Statement statement) {
         // check if statement uses "assert" keyword
         if (statement.isAssertStmt()) {
             return true;
         }
-        // check if statement uses JUnit Assert method
+        // check if statement uses JUnit Assertions assert method
         if (statement.isExpressionStmt()) {
             Expression expression = statement.asExpressionStmt().getExpression();
             if (expression.isMethodCallExpr()) {
@@ -67,7 +67,7 @@ public class TestUtils {
     static void removeAssertionOracles(CompilationUnit testFile) {
         testFile.findAll(Statement.class).forEach(statement -> {
             if (isAssertion(statement)) {
-                System.out.println(statement);
+                statement.remove();
             }
         });
     }
