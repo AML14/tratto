@@ -56,7 +56,8 @@ public class NoPeriodRestriction extends SingleTokenRestriction {
         } else {
             String precedingExpr = compactExpression(precedingExprTokensWithPeriod.subList(0, precedingExprTokensWithPeriod.size() - 1));
             Pair<String, String> returnType = getReturnTypeOfExpression(precedingExpr, oracleDatapoint);
-            if (!JavaTypes.PRIMITIVES.contains(returnType) || returnType.getValue1().contains("[]")) { // Return type has package or type is an array
+            if (!JavaTypes.PRIMITIVES.contains(returnType) || returnType.getValue1().contains("[]")) {
+                // Return type has package or type is an array
                 return false; // Expression preceding period does not evaluate to a primitive type
             }
         }

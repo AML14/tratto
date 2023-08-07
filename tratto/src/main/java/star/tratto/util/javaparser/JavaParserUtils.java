@@ -89,8 +89,8 @@ public class JavaParserUtils {
         return javaParser;
     }
 
-    /**
-     * @return a "java.lang.Object" type
+    /** Returns a "java.lang.Object" type.
+@return a "java.lang.Object" type 
      */
     public static ResolvedType getObjectType() {
         return javaParser.parse(SYNTHETIC_CLASS_SOURCE).getResult().orElseThrow()
@@ -285,7 +285,7 @@ public class JavaParserUtils {
             return;
         }
         String jdVarArrayElement = parser.getLastJdVarArrayElement(oracleDatapoint.getOracle());
-        if (jdVarArrayElement == null) { // Should never happen, but just in case
+        if (jdVarArrayElement == null) {
             throw new IllegalStateException("Could not find a jdVar clause in the oracle, but the expression contains jdVar. " +
                     "Expression: " + expression + ". Oracle: " + oracleDatapoint.getOracle());
         }
@@ -437,7 +437,8 @@ public class JavaParserUtils {
             resolvedType = getResolvedType(referenceType);
             resolvedReferenceTypeDeclaration = getResolvedReferenceTypeDeclaration(resolvedType);
             methods.addAll(resolvedReferenceTypeDeclaration.getAllMethods());
-            if (!resolvedReferenceTypeDeclaration.isInterface()) { // Interfaces do not always inherit from Object
+            // Interfaces do not always inherit from Object
+            if (!resolvedReferenceTypeDeclaration.isInterface()) {
                 useObjectMethods = false;
             }
         } catch (UnsupportedOperationException e) {
@@ -459,11 +460,11 @@ public class JavaParserUtils {
         return methods;
     }
 
-    /**
-     * @param type1 fully qualified type, e.g., "java.util.List"
+    /** Returns true if type1 is an instance of type2, false otherwise.
+@param type1 fully qualified type, e.g., "java.util.List"
      * @param type2 fully qualified type, e.g., "java.lang.Object"
      * @param oracleDatapoint may be null. If not null, it is used to check if some type is generic.
-     * @return true if type1 is an instance of type2, false otherwise
+     * @return true if type1 is an instance of type2, false otherwise 
      */
     public static boolean isInstanceOf(String type1, String type2, OracleDatapoint oracleDatapoint) {
         return isInstanceOf(type1, type2, oracleDatapoint, true);
@@ -708,13 +709,16 @@ public class JavaParserUtils {
      */
     public static String getMethodSignature(MethodDeclaration methodDeclaration) {
         String method = methodDeclaration.toString();
-        if (methodDeclaration.getBody().isPresent()) { // Remove body
+        if (methodDeclaration.getBody().isPresent()) {
+            // Remove body
             method = method.replace(methodDeclaration.getBody().get().toString(), "");
         }
-        for (Node comment: methodDeclaration.getAllContainedComments()) { // Remove comments within method signature
+        for (Node comment: methodDeclaration.getAllContainedComments()) {
+            // Remove comments within method signature
             method = method.replace(comment.toString(), "");
         }
-        if (methodDeclaration.getComment().isPresent()) { // At this point, last line is method signature. Remove everything before that
+        if (methodDeclaration.getComment().isPresent()) {
+            // At this point, last line is method signature. Remove everything before that
             method = method.replaceAll("[\\s\\S]*\n", "");
         }
         return method.trim().replaceAll(";$", "");
