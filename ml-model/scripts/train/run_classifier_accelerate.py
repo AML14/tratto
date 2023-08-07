@@ -8,7 +8,7 @@ from torch.utils.data import DataLoader, RandomSampler
 from torch.optim import AdamW
 from transformers import get_linear_schedule_with_warmup
 
-from src.model.OracleTrainer import OracleTrainer
+from src.model.OracleTrainerAccelerate import OracleTrainerAccelerate
 from src.types.ClassificationType import ClassificationType
 from src.types.DatasetType import DatasetType
 from src.types.DeviceType import DeviceType
@@ -154,7 +154,7 @@ def main():
 
         # Instantiate trainer
         classifier_ids_labels = data_processor.get_encoder_ids_labels()
-        training_steps = len(dl_train) // args.accumulation_steps * args.num_epochs
+        training_steps = len(dl_train_cpu) // args.accumulation_steps * args.num_epochs
         scheduler = get_linear_schedule_with_warmup(optimizer, args.warmup_steps, training_steps)
         checkpoint_path = os.path.join(
             args.output_dir,
@@ -172,7 +172,8 @@ def main():
             scheduler
         )
 
-        oracle_trainer = OracleTrainer(
+        oracle_trainer = OracleTrainerAccelerate(
+            accelerator,
             model,
             optimizer,
             dl_train,

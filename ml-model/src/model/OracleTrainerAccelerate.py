@@ -5,7 +5,7 @@ import numpy as np
 from typing import Type, Union, Tuple, Dict, List
 from collections import Counter
 import torch
-from accelerate import accelerator
+from accelerate import Accelerator
 from torch.optim import AdamW
 from transformers import PreTrainedModel, PreTrainedTokenizer
 from torch.nn import Module
@@ -16,7 +16,7 @@ from src.types.TransformerType import TransformerType
 from src.utils import utils, logger
 
 
-class OracleTrainer:
+class OracleTrainerAccelerate:
     """
     The {@code OracleTrainer} class is a helper class that, given the loss function, the optimizer, the model,
     and the training and validation datasets perform the training of the model, computes the loss and
@@ -81,6 +81,7 @@ class OracleTrainer:
 
     def __init__(
             self,
+            accelerator: Type[Accelerator],
             model: Type[PreTrainedModel],
             optimizer: Type[AdamW],
             dl_train: Type[DataLoader],
@@ -94,6 +95,7 @@ class OracleTrainer:
             tokenizer: PreTrainedTokenizer,
             max_grad_norm: float = 1.0
     ):
+        self._accelerator = accelerator
         self._model = model
         self._dl_train = dl_train
         self._dl_val = dl_val
@@ -217,7 +219,7 @@ class OracleTrainer:
                 #tgt_out_loss = tgt_out[:, 1:].reshape(-1)
                 loss =  outputs.loss
                 loss = loss / accumulation_steps
-                accelerator.backward(loss)
+                self._accelerator.backward(loss)
                 # Gradient clipping. It is used to mitigate the problem of exploding gradients
                 torch.nn.utils.clip_grad_norm_(self._model.parameters(), max_grad_norm)
 

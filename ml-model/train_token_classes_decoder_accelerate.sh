@@ -1,11 +1,11 @@
 export PYTHONPATH="./"
-python scripts/train/run_classifier.py \
+accelerate launch --config_file accelerate_config_deepspeed.json scripts/train/run_classifier_accelerate.py \
 --do_train \
 --do_eval \
 --do_predict \
 --model_type codet5+ \
---tokenizer_name Salesforce/codet5p-220m \
---model_name_or_path Salesforce/codet5p-220m \
+--tokenizer_name Salesforce/codet5p-770m \
+--model_name_or_path Salesforce/codet5p-770m \
 --tratto_model_type token_classes \
 --task_name tokenClasses_classifier_decoder \
 --max_seq_length 512 \
