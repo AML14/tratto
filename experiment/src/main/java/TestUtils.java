@@ -1,7 +1,5 @@
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.body.MethodDeclaration;
-import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.stmt.Statement;
@@ -18,13 +16,19 @@ import java.util.stream.Stream;
  * and inserting oracles into test prefixes.
  */
 public class TestUtils {
+    /** The path to the output directory */
     private static final Path output = Paths.get("output");
+    /** A list of all JUnit Assertions assert methods */
     private static final List<String> allJUnitAssertMethods = List.of(
+            "assertArrayEquals",
             "assertEquals",
-            "assertTrue",
             "assertFalse",
+            "assertNotNull",
+            "assertNotSame",
             "assertNull",
-            "assertNotNull"
+            "assertSame",
+            "assertThat",
+            "assertTrue"
     );
 
     // private constructor to avoid creating an instance of this class.
@@ -56,23 +60,24 @@ public class TestUtils {
     }
 
     /**
-     * Removes all normal assertion oracles from a given test case.
+     * Removes all normal assertion oracles from a given test file.
      *
-     * @param testCase a JavaParser representation of a test case as a method
+     * @param testFile a JavaParser representation of a test file
      */
-    static void removeAssertionOracles(MethodDeclaration testCase) {
-        List<Statement> assertStatements = testCase.getBody().orElseThrow().getStatements()
-                .stream()
-                .filter(TestUtils::isAssertStatement)
-                .toList();
+    static void removeAssertionOracles(CompilationUnit testFile) {
+        testFile.findAll(Statement.class).forEach(statement -> {
+            if (isAssertStatement(statement)) {
+                System.out.println(statement);
+            }
+        });
     }
 
     /**
      * Removes all exceptional oracles from a given test case.
      *
-     * @param testCase a JavaParser representation of a test case as a method
+     * @param testFile a JavaParser representation of a test case as a method
      */
-    static void removeExceptionalOracles(MethodDeclaration testCase) {
+    static void removeExceptionalOracles(CompilationUnit testFile) {
 
     }
 
@@ -84,8 +89,8 @@ public class TestUtils {
      * original test files at the given path.
      *
      * @param dir a directory with Java test files
-     * @see TestUtils#removeAssertionOracles(MethodDeclaration)
-     * @see TestUtils#removeExceptionalOracles(MethodDeclaration)
+     * @see TestUtils#removeAssertionOracles(CompilationUnit)
+     * @see TestUtils#removeExceptionalOracles(CompilationUnit)
      */
     public static void removeOracles(Path dir) {
         Path prefixPath = output.resolve("evosuite-prefix");
@@ -95,16 +100,8 @@ public class TestUtils {
                     .forEach(testFile -> {
                         try {
                             CompilationUnit cu = StaticJavaParser.parse(testFile);
-                            List<MethodDeclaration> allTestCases = cu
-                                    .getTypes()
-                                    .stream()
-                                    .map(TypeDeclaration::getMethods)
-                                    .flatMap(List::stream)
-                                    .toList();
-                            for (MethodDeclaration testCase : allTestCases) {
-                                removeAssertionOracles(testCase);
-                                removeExceptionalOracles(testCase);
-                            }
+                            removeAssertionOracles(cu);
+                            removeExceptionalOracles(cu);
                         } catch (IOException e) {
                             throw new Error("Unable to parse test file " + testFile.getFileName().toString());
                         }
