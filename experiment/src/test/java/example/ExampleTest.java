@@ -8,7 +8,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * This class provides a list of example test cases using JUnit.
+ * This class provides a list of example test cases using JUnit. We use this
+ * test file to validate the behavior of our test modifiers and analyzers.
  */
 public class ExampleTest {
     @Test
