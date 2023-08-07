@@ -2,6 +2,9 @@ import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
+import com.github.javaparser.ast.expr.Expression;
+import com.github.javaparser.ast.expr.MethodCallExpr;
+import com.github.javaparser.ast.stmt.Statement;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -16,10 +19,40 @@ import java.util.stream.Stream;
  */
 public class TestUtils {
     private static final Path output = Paths.get("output");
+    private static final List<String> allJUnitAssertMethods = List.of(
+            "assertEquals",
+            "assertTrue",
+            "assertFalse",
+            "assertNull",
+            "assertNotNull"
+    );
 
     // private constructor to avoid creating an instance of this class.
     private TestUtils() {
         throw new UnsupportedOperationException("This class cannot be instantiated.");
+    }
+
+    /**
+     * Checks if a given statement is an assert statement.
+     *
+     * @param statement a code statement
+     * @return true iff the statement uses the "assert" keyword or uses a
+     * JUnit assert method
+     */
+    private static boolean isAssertStatement(Statement statement) {
+        // check if statement uses "assert" keyword
+        if (statement.isAssertStmt()) {
+            return true;
+        }
+        // check if statement uses JUnit Assert method
+        if (statement.isExpressionStmt()) {
+            Expression expression = statement.asExpressionStmt().getExpression();
+            if (expression.isMethodCallExpr()) {
+                MethodCallExpr methodCallExpr = expression.asMethodCallExpr();
+                return allJUnitAssertMethods.contains(methodCallExpr.getNameAsString());
+            }
+        }
+        return false;
     }
 
     /**
@@ -28,7 +61,10 @@ public class TestUtils {
      * @param testCase a JavaParser representation of a test case as a method
      */
     static void removeAssertionOracles(MethodDeclaration testCase) {
-
+        List<Statement> assertStatements = testCase.getBody().orElseThrow().getStatements()
+                .stream()
+                .filter(TestUtils::isAssertStatement)
+                .toList();
     }
 
     /**
@@ -52,7 +88,6 @@ public class TestUtils {
      * @see TestUtils#removeExceptionalOracles(MethodDeclaration)
      */
     public static void removeOracles(Path dir) {
-        // copy files to separate directory.
         Path prefixPath = output.resolve("evosuite-prefix");
         FileUtils.copy(dir, prefixPath);
         try (Stream<Path> walk = Files.walk(dir)) {
