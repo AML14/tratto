@@ -78,7 +78,7 @@ public class FileUtilsTest {
     public void writeTest() {
         Path path = tempRoot.resolve("tempFile.json");
         try {
-            FileUtils.write(path, List.of("input1", "input2", "input3"));
+            FileUtils.writeJSON(path, List.of("input1", "input2", "input3"));
             Files.delete(path);
             Files.delete(path.getParent());
         } catch (IOException e) {
@@ -91,7 +91,7 @@ public class FileUtilsTest {
     public void readStringTest() {
         Path path = tempRoot.resolve("tempFile.json");
         try {
-            FileUtils.write(path, List.of("input1", "input2", "input3"));
+            FileUtils.writeJSON(path, List.of("input1", "input2", "input3"));
             assertEquals("[ \"input1\", \"input2\", \"input3\" ]", FileUtils.readString(path));
             Files.delete(path);
             Files.delete(path.getParent());

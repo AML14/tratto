@@ -188,7 +188,7 @@ public class FileUtils {
      * @throws Error if unable to create files/directories or unable to write
      * content to file
      */
-    public static void write(Path path, Object content) {
+    public static void writeJSON(Path path, Object content) {
         try {
             createFile(path);
             ObjectMapper objectMapper = new ObjectMapper();
