@@ -220,7 +220,7 @@ public class StringUtils {
      * @param vector2 a vector
      * @return the cosine similarity of the two vectors
      */
-    private static double getCosineSimilarity(RealVector vector1, RealVector vector2) {
+    private static double cosineSimilarity(RealVector vector1, RealVector vector2) {
         double denominator = vector1.getNorm() * vector2.getNorm();
         if (denominator == 0.0) {
           return 0.0;
@@ -241,7 +241,7 @@ public class StringUtils {
         TreeSet<String> intersectionKeys = getSetIntersection(wordsFreq1.keySet(), wordsFreq2.keySet());
         RealVector wordVector1 = wordFrequencyToVector(wordsFreq1, intersectionKeys);
         RealVector wordVector2 = wordFrequencyToVector(wordsFreq2, intersectionKeys);
-        return getCosineSimilarity(wordVector1, wordVector2);
+        return cosineSimilarity(wordVector1, wordVector2);
     }
 
     /**
