@@ -305,10 +305,7 @@ public class TypeUtils {
     }
 
     /**
-     * We define a "standard" type as a type which implements either the
-     * "Object" or "Comparable" interfaces, which require extra consideration
-     * when comparing arguments to check equality.
-     * See `jpParamEqualsJDoctorParam` in DatasetUtils for elaboration.
+     * Checks if a given type is an Object or Comparable object.
      *
      * @param typeName name of the JDoctor or JavaParser type
      * @return true iff the given type name is "Object" or "Comparable"
@@ -318,9 +315,7 @@ public class TypeUtils {
     }
 
     /**
-     * Checks if a given type name is a "standard" array. By definition, this
-     * includes the "Object[]" and "Comparable[]" types.
-     * See above method {@code isStandardType} for further elaboration.
+     * Checks if a given type is an array of Object or Comparable objects.
      *
      * @param typeName name of the JDoctor or JavaParser type
      * @return true iff the given type name is "Object[]" or "Comparable[]"
