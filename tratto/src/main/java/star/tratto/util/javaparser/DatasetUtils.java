@@ -825,7 +825,7 @@ public class DatasetUtils {
         List<AttributeTokens> fieldList = new ArrayList<>();
         if (jpResolvedType.isArray()) {
             // add array field (length).
-            Pair<String, String> packageAndClass = JavaParserUtils.getTypeFromResolvedType(jpResolvedType);
+            Pair<String, String> packageAndClass = JavaParserUtils.getTypePairFromResolvedType(jpResolvedType);
             fieldList.add(new AttributeTokens(
                     "length",
                     packageAndClass.getValue0(),
@@ -885,7 +885,7 @@ public class DatasetUtils {
             Parameter jpParameter
     ) {
         if (TypeUtils.hasEllipsis(jpParameter.toString())) {
-            Pair<String, String> packageAndClass = JavaParserUtils.getTypeFromResolvedType(jpParameter.getType().resolve());
+            Pair<String, String> packageAndClass = JavaParserUtils.getTypePairFromResolvedType(jpParameter.getType().resolve());
             return List.of(new AttributeTokens(
                     "length",
                     packageAndClass.getValue0(),

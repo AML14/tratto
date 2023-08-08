@@ -139,8 +139,10 @@ public class StringUtils {
      * Transforms a String of words to a list of the corresponding lemmas. A
      * lemma is a dictionary-defined canonical form of a word. StanfordCoreNLP
      * uses WordNet to determine the canonical forms. For example:
+     * <pre>
      *  "running"   ->  "run"
      *  "better"    ->  "good"
+     * </pre>
      * When calculating semantic similarity, we use lemmas (rather than words)
      * to avoid treating similar words as entirely separate.
      *

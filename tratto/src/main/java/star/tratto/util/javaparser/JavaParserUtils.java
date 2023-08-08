@@ -249,7 +249,7 @@ public class JavaParserUtils {
             returnType = getReturnTypeOfLastStatementInSyntheticMethod(cu, className);
         }
 
-        return getTypeFromResolvedType(returnType);
+        return getTypePairFromResolvedType(returnType);
     }
 
     /**
@@ -317,7 +317,7 @@ public class JavaParserUtils {
     /**
      * Note: if the class is something like "{@code List<String>}", this method will return "List" as the class name.
      */
-    public static Pair<String, String> getTypeFromResolvedType(ResolvedType resolvedType) {
+    public static Pair<String, String> getTypePairFromResolvedType(ResolvedType resolvedType) {
         if (resolvedType.isReferenceType()) {
             ResolvedReferenceTypeDeclaration type = resolvedType.asReferenceType().getTypeDeclaration().get();
             return Pair.with(type.getPackageName(), type.getClassName());
