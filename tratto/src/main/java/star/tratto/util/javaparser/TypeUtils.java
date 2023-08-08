@@ -185,8 +185,10 @@ public class TypeUtils {
                 .collect(Collectors.toList());
     }
 
-    /** Returns true iff the type represents a vararg (e.g. uses "...").
-@param typeName a source code format type name
+    /**
+     * Returns true iff the type represents a vararg (e.g. uses "...").
+     *
+     * @param typeName a source code format type name
      * @return true iff the type represents a vararg (e.g. uses "...") 
      */
     public static boolean hasEllipsis(String typeName) {
