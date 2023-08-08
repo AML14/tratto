@@ -34,6 +34,7 @@ public class TypeUtils {
      *
      * @param parameterizedType a field descriptor or source code
      *                          representation of a type
+     *                          (they are equivalent for parameterized objects)
      * @return the raw type without type arguments
      */
     public static String removeTypeArgumentsAndSemicolon(String parameterizedType) {
