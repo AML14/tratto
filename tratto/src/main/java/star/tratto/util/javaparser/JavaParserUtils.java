@@ -27,6 +27,7 @@ import com.github.javaparser.resolution.declarations.ResolvedTypeParameterDeclar
 import com.github.javaparser.resolution.types.ResolvedType;
 import com.github.javaparser.resolution.types.ResolvedWildcard;
 import com.github.javaparser.symbolsolver.javaparsermodel.declarations.JavaParserMethodDeclaration;
+import com.github.javaparser.symbolsolver.javassistmodel.JavassistMethodDeclaration;
 import com.github.javaparser.symbolsolver.reflectionmodel.ReflectionMethodDeclaration;
 import com.github.javaparser.symbolsolver.utils.SymbolSolverCollectionStrategy;
 import org.javatuples.Pair;
@@ -64,8 +65,10 @@ public class JavaParserUtils {
     private static final String SYNTHETIC_CLASS_NAME = "Tratto__AuxiliaryClass";
     private static final String SYNTHETIC_CLASS_SOURCE = "public class " + SYNTHETIC_CLASS_NAME + " {}";
     private static final String SYNTHETIC_METHOD_NAME = "__tratto__auxiliaryMethod";
-    // matches the signature from either a ReflectionMethodDeclaration or JavassistMethodDeclaration
-    // (both implementations of ResolvedMethodDeclaration)
+    /**
+     * Matches the signature from the "toString" of either {@link ReflectionMethodDeclaration} or
+     * {@link JavassistMethodDeclaration} (both implementations of {@link ResolvedMethodDeclaration})
+     */
     private static final Pattern METHOD_SIGNATURE = Pattern.compile(
             "^ReflectionMethodDeclaration\\{method=((.*) )?\\S+ \\S+\\(.*\\}$|" +
                     "^JavassistMethodDeclaration\\{ctMethod\\=.*\\[((.*) )?\\S+ \\(.*\\).*\\]}$"
