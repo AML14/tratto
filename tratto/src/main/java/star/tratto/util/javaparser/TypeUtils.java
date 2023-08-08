@@ -108,8 +108,8 @@ public class TypeUtils {
     }
 
     /**
-     * Adds pairs of square brackets to a given type name, increasing the
-     * array level by a given amount.
+     * Adds pairs of square brackets to a given type name in source code
+     * format, increasing the array level by a given amount.
      *
      * @param typeName a type name
      * @param arrayLevel the number of array levels to add
