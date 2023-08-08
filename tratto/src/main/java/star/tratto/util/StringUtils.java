@@ -149,7 +149,7 @@ public class StringUtils {
      * to avoid treating similar words as entirely separate.
      *
      * @param words lowercase alphabetic characters separated by spaces
-     * @return lemma corresponding to words in the original String
+     * @return lemmas corresponding to words in the original String
      */
     private static List<String> toLemmas(String words) {
         Annotation processedText = new Annotation(words);
@@ -162,20 +162,20 @@ public class StringUtils {
     }
 
     /**
-     * Creates a map from each word to its corresponding frequency in a given
-     * list of words.
+     * Creates a map from each String to its corresponding frequency in a
+     * given list of Strings.
      *
-     * @param words a list of words
-     * @return a map of word frequencies, where the keys are unique words and
-     * the values are the number of occurrences in {@code words}
+     * @param Strings a list of Strings
+     * @return string frequencies, where the keys are unique strings and
+     * the values are the number of occurrences in {@code strings}
      */
-    private static Map<String, Integer> getWordFrequencies(List<String> words) {
-        Map<String, Integer> wordFrequencies = new HashMap<>();
-        for (String word : words) {
-            int currentCount = wordFrequencies.getOrDefault(word, 0);
-            wordFrequencies.put(word, currentCount + 1);
+    private static Map<String, Integer> getHistogram(List<String> Strings) {
+        Map<String, Integer> histogram = new HashMap<>();
+        for (String string : Strings) {
+            int currentCount = histogram.getOrDefault(string, 0);
+            histogram.put(string, currentCount + 1);
         }
-        return wordFrequencies;
+        return histogram;
     }
 
     /**
@@ -233,8 +233,8 @@ public class StringUtils {
      * @return the cosine similarity (double between 0.0 and 1.0)
      */
     private static double lemmasToCosineSimilarity(List<String> lemmas1, List<String> lemmas2) {
-        Map<String, Integer> wordsFreq1 = getWordFrequencies(lemmas1);
-        Map<String, Integer> wordsFreq2 = getWordFrequencies(lemmas2);
+        Map<String, Integer> wordsFreq1 = getHistogram(lemmas1);
+        Map<String, Integer> wordsFreq2 = getHistogram(lemmas2);
         TreeSet<String> intersectionKeys = getSetIntersection(wordsFreq1.keySet(), wordsFreq2.keySet());
         RealVector wordVector1 = wordFrequencyToVector(wordsFreq1, intersectionKeys);
         RealVector wordVector2 = wordFrequencyToVector(wordsFreq2, intersectionKeys);
