@@ -38,7 +38,7 @@ public class TypeUtilsTest {
 
     @Test
     public void getClassNameFromNameSegmentsTest() {
-        assertEquals("Class", TypeUtils.getClassNameFromNameSegments(List.of("normal", "package", "setup", "for", "a", "Class")));
+        assertEquals("Class", TypeUtils.getInnermostClassNameFromNameSegments(List.of("normal", "package", "setup", "for", "a", "Class")));
     }
 
     @Test

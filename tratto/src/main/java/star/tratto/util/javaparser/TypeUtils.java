@@ -78,12 +78,14 @@ public class TypeUtils {
         return String.join(".", nameSegments.subList(0, nameSegments.size() - 1));
     }
 
-    /** Returns innermost class of the name segments.
-@param nameSegments name segments. Must represent a class.
+    /**
+     * Returns innermost class of the name segments.
+     *
+     * @param nameSegments name segments. Must represent a class.
      * @return innermost class of the name segments 
      * @see TypeUtils#getNameSegments(String)
      */
-    public static String getClassNameFromNameSegments(
+    public static String getInnermostClassNameFromNameSegments(
             List<String> nameSegments
     ) {
         return nameSegments.get(nameSegments.size() - 1);
@@ -157,7 +159,7 @@ public class TypeUtils {
         } else {
             // manually convert array and then get class name
             fieldDescriptor = fieldDescriptorArrayToSourceFormatArray(fieldDescriptor);
-            fieldDescriptor = getClassNameFromNameSegments(getNameSegments(fieldDescriptor));
+            fieldDescriptor = getInnermostClassNameFromNameSegments(getNameSegments(fieldDescriptor));
         }
         return fieldDescriptor;
     }
