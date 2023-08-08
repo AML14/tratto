@@ -264,20 +264,20 @@ public class FileUtils {
     }
 
     /**
-     * Gets all Java files in a given directory (and subdirectories).
+     * Gets all Java files under a given directory (including in
+     * subdirectories).
      *
      * @param dir a directory
      * @return all Java files (as Path objects) in {@code dir}
      * @throws Error if unable to collect files from {@code dir}
      */
-    public static List<Path> getAllJavaFilesFromDirectory(Path dir) {
+    public static List<Path> getAllJavaFilesUnderDirectory(Path dir) {
         try (Stream<Path> walk = Files.walk(dir)) {
             return walk
                     .filter(p -> p.getFileName().toString().endsWith(".java"))
                     .collect(Collectors.toList());
         } catch (IOException e) {
-            // catch exception to avoid resource leak.
-            throw new Error("Error in collecting all files from " + dir, e);
+            throw new Error("Error when collecting all files from " + dir, e);
         }
     }
 }
