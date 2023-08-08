@@ -59,7 +59,7 @@ public class RestrictionsUtils {
                 return true;
             } else {
                 Pair<String, String> currentArgType = getReturnTypeOfExpression(compactExpression(split(getLastArgument(methodCall))), oracleDatapoint);
-                Pair<String, String> nArgsArgType = getTypeFromResolvedType(m.getParamType(nArgsSoFar-1));
+                Pair<String, String> nArgsArgType = getTypePairFromResolvedType(m.getParamType(nArgsSoFar-1));
                 return !isType1AssignableToType2(currentArgType, nArgsArgType, oracleDatapoint);
             }
         });
