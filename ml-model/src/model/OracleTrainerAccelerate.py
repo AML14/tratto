@@ -125,13 +125,6 @@ class OracleTrainerAccelerate:
         state_filename = os.path.join(model_path, f"state_checkpoint_{str(epoch)}_{str(step)}")
         self._accelerator.save_model(self._model, model_filename, max_shard_size="5GB")
         self._accelerator.save_state(state_filename)
-        torch.save({
-            "stats": stats,
-            "epoch": epoch,
-            "model_state_dict": self._model.state_dict(),
-            "optimizer_state_dict": self._optimizer.state_dict(),
-            "scheduler_state_dict": self._scheduler.state_dict()
-        }, filename)
 
     def train(
             self,
