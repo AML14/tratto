@@ -1,5 +1,5 @@
 export PYTHONPATH="./"
-accelerate launch --config_file accelerate_config_deepspeed.json scripts/train/run_classifier_accelerate.py \
+accelerate launch --config_file accelerate_config_fsdp.yaml scripts/train/run_classifier_accelerate.py \
 --do_train \
 --do_eval \
 --do_predict \
@@ -9,7 +9,7 @@ accelerate launch --config_file accelerate_config_deepspeed.json scripts/train/r
 --tratto_model_type token_classes \
 --task_name tokenClasses_classifier_decoder \
 --max_seq_length 512 \
---batch_size 24 \
+--batch_size 12 \
 --learning_rate 1e-5 \
 --num_epochs 20 \
 --save_steps 9000 \

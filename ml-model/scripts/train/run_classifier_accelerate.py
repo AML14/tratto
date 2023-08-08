@@ -7,6 +7,7 @@ import numpy as np
 from torch.utils.data import DataLoader, RandomSampler
 from torch.optim import AdamW
 from transformers import get_linear_schedule_with_warmup
+from accelerate import init_empty_weights
 
 from src.model.OracleTrainerAccelerate import OracleTrainerAccelerate
 from src.types.ClassificationType import ClassificationType
@@ -220,7 +221,7 @@ def main():
         elif args.do_predict:
             if not os.path.exists(args.resume_checkpoint_filename):
                 raise ValueError(f"Impossible to resume checkpoint - File not found {args.resume_checkpoint_filename} (or argument --resume_checkpoint_filename not provided).")
-            best_checkpoint = utils.resume_checkpoint(args.resume_checkpoint_filename, device)
+            best_checkpoint = utils.resume_checkpoint_accelerate(model, args.resume_checkpoint_filename)
             # Load the model state dict
             model.load_state_dict(best_checkpoint['model_state_dict'])
             # Load the optimizer state dict

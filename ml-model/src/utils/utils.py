@@ -1,15 +1,9 @@
-import sys
 import os
-import csv
 import json
 import gc
-from xml.dom import minidom
-import xml.etree.ElementTree as ET
-from xml.etree.ElementTree import Element
-from typing import Type, Union
-import torch.distributed as dist
+from typing import Type
 import torch
-from accelerate import Accelerator
+from accelerate import Accelerator, load_checkpoint_and_dispatch
 
 from src.types.DeviceType import DeviceType
 
@@ -136,3 +130,8 @@ def release_memory():
 
 def resume_checkpoint(checkpoint_filename: str, device: str):
     return torch.load(checkpoint_filename, map_location=torch.device(device))
+
+def resume_checkpoint_accelerate(model, checkpoint_filename: str):
+    return load_checkpoint_and_dispatch(
+        model, checkpoint_filename, device_map="auto"
+    )
