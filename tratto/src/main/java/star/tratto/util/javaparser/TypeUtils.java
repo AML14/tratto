@@ -134,9 +134,11 @@ public class TypeUtils {
         return addArrayLevel(fieldDescriptor.substring(arrayLevel), arrayLevel);
     }
 
-    /** Returns true iff the field descriptor represents a primitive type or an
+    /**
+     * Returns true iff the field descriptor represents a primitive type or an
      * array of primitive types.
-@param fieldDescriptor a field descriptor of a type (can be an array)
+     *
+     * @param fieldDescriptor a field descriptor of a type (can be an array)
      * @return true iff the field descriptor represents a primitive type or an
      * array of primitive types 
      */
