@@ -32,7 +32,8 @@ public class TypeUtils {
     /**
      * Removes type arguments and semicolons from a parameterized type name.
      *
-     * @param parameterizedType a type name
+     * @param parameterizedType a field descriptor or source code
+     *                          representation of a type
      * @return the raw type without type arguments
      */
     public static String removeTypeArgumentsAndSemicolon(String parameterizedType) {
