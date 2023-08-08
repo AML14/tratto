@@ -32,8 +32,7 @@ public class TypeUtils {
     /**
      * Removes type arguments and semicolons from a parameterized type name.
      *
-     * @param parameterizedType a field descriptor or source code
-     *                          representation of a type
+     * @param parameterizedType a type name
      * @return the raw type without type arguments
      */
     public static String removeTypeArgumentsAndSemicolon(String parameterizedType) {
@@ -49,8 +48,8 @@ public class TypeUtils {
     }
 
     /**
-     * Splits a binary name (of a class or member) into segments. Splits name
-     * based on "." (package) and "$" (member).
+     * Splits a binary name into segments. Splits name based on "." (package)
+     * and "$" (member).
      *
      * @param name a binary method/class name
      * @return name segments. Includes: all outer packages, all outer classes,
