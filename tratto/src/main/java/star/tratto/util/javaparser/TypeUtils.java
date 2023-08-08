@@ -120,16 +120,16 @@ public class TypeUtils {
     }
 
     /**
-     * Converts a field descriptor array to a source code format array. This
-     * method ONLY changes the square brackets, and will not change the
-     * component type name. For example:
+     * Converts a field descriptor array to an FQN format array. This method
+     * ONLY changes the square brackets, and will not change the component
+     * type name. For example:
      *  [Object => Object[]
      *  [[D     => D[][]
      *
      * @param fieldDescriptor a field descriptor array type
      * @return the corresponding source code format array type
      */
-    private static String fieldDescriptorArrayToSourceFormatArray(String fieldDescriptor) {
+    private static String fieldDescriptorArrayToFQNArray(String fieldDescriptor) {
         int arrayLevel = getArrayLevel(fieldDescriptor);
         return addArrayLevel(fieldDescriptor.substring(arrayLevel), arrayLevel);
     }
@@ -160,7 +160,7 @@ public class TypeUtils {
             fieldDescriptor = Signatures.fieldDescriptorToBinaryName(fieldDescriptor);
         } else {
             // manually convert array and then get class name
-            fieldDescriptor = fieldDescriptorArrayToSourceFormatArray(fieldDescriptor);
+            fieldDescriptor = fieldDescriptorArrayToFQNArray(fieldDescriptor);
             fieldDescriptor = getInnermostClassNameFromNameSegments(getNameSegments(fieldDescriptor));
         }
         return fieldDescriptor;
