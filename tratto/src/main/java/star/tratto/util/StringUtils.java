@@ -20,9 +20,9 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
- * This class provides a collection of static methods for manipulating and
- * evaluating strings, such as removing unnecessary spaces or computing the
- * semantic similarity of two inputs.
+ * This class provides static methods for manipulating and evaluating strings,
+ * such as removing unnecessary spaces or computing the semantic similarity
+ * of two inputs.
  */
 public class StringUtils {
     // a suite of NLP tools for pre-processing text inputs
