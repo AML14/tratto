@@ -179,13 +179,14 @@ public class StringUtils {
     }
 
     /**
-     * Converts a map of word frequencies to a vector.
+     * Converts a histogram of word frequencies to a vector.
      *
-     * @param frequencies a map of word frequencies
+     * @param frequencies a histogram of word frequencies
      * @param words the set of all words to be considered in the vector
      * @return a vector representation of the word frequencies. Each entry
      * corresponds to a different word, where the value of the entry
-     * corresponds to the word frequency.
+     * corresponds to the word frequency. If a word does not appear in the
+     * histogram, then it is assigned a value of 0.
      */
     private static RealVector wordFrequencyToVector(Map<String, Integer> frequencies, TreeSet<String> words) {
         double[] vector = new double[words.size()];
@@ -197,7 +198,9 @@ public class StringUtils {
         return new ArrayRealVector(vector);
     }
 
-    /** Returns the words in both sets.
+    /**
+     * Returns the words in both sets.
+     *
      * @param set1 a set of words
      * @param set2 a set of words
      * @return the words in both sets 
