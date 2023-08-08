@@ -60,7 +60,7 @@ import static star.tratto.util.StringUtils.fullyQualifiedClassName;
 public class JavaParserUtils {
     private static final Logger logger = LoggerFactory.getLogger(JavaParserUtils.class);
     private static JavaParser javaParser = getJavaParser();
-    private static final Parser parser = Parser.getInstance();
+    private static final Parser oracleParser = Parser.getInstance();
     // artificial source code used to parse arbitrary source code expressions using JavaParser
     private static final String SYNTHETIC_CLASS_NAME = "Tratto__AuxiliaryClass";
     private static final String SYNTHETIC_CLASS_SOURCE = "public class " + SYNTHETIC_CLASS_NAME + " {}";
@@ -287,7 +287,7 @@ public class JavaParserUtils {
         if (!expression.contains("jdVar")) {
             return;
         }
-        String jdVarArrayElement = parser.getLastJdVarArrayElement(oracleDatapoint.getOracle());
+        String jdVarArrayElement = oracleParser.getLastJdVarArrayElement(oracleDatapoint.getOracle());
         if (jdVarArrayElement == null) {
             throw new IllegalStateException("Could not find a jdVar clause in the oracle, but the expression contains jdVar. " +
                     "Expression: " + expression + ". Oracle: " + oracleDatapoint.getOracle());
