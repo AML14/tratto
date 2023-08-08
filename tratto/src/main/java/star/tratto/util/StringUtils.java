@@ -25,10 +25,10 @@ import java.util.stream.IntStream;
  * of two inputs.
  */
 public class StringUtils {
-    // a suite of NLP tools for pre-processing text inputs
+    /** A suite of NLP tools for pre-processing text inputs */
     private static final StanfordCoreNLP stanfordCoreNLP = getStanfordCoreNLP();
 
-    // private constructor to avoid creating an instance of this class
+    /** Private constructor to avoid creating an instance of this class */
     private StringUtils() {
         throw new UnsupportedOperationException("This class cannot be instantiated.");
     }
