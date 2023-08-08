@@ -91,8 +91,10 @@ public class TypeUtils {
         return nameSegments.get(nameSegments.size() - 1);
     }
 
-    /** Returns the array level of the type.
-@param typeName a field descriptor or source code type representation
+    /**
+     * Returns the array level of the type.
+     *
+     * @param typeName a field descriptor or source code type representation
      * @return the array level of the type 
      */
     private static int getArrayLevel(String typeName) {
