@@ -188,7 +188,8 @@ public class TypeUtils {
     /**
      * Returns true iff the type represents a vararg (e.g. uses "...").
      *
-     * @param typeName a source code format type name
+     * @param typeName a source code format type name. May include
+     *                 variable name (e.g. "Integer someValue").
      * @return true iff the type represents a vararg (e.g. uses "...") 
      */
     public static boolean hasEllipsis(String typeName) {
