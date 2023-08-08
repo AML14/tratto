@@ -126,10 +126,12 @@ public class StringUtils {
         return fullyQualifiedClassName(packageClassPair.getValue0(), packageClassPair.getValue1());
     }
 
-    /** Returns removes all non-alphabetic and space characters in a String,
-     * and sets all alphabetic characters to lower case.
-     * @return removes all non-alphabetic and space characters in a String,
-     * and sets all alphabetic characters to lower case 
+    /**
+     * Returns removes all non-alphabetic and non-space characters in a
+     * String, and sets all alphabetic characters to lower case.
+     *
+     * @return removes all non-alphabetic and non-space characters in a
+     * String, and sets all alphabetic characters to lower case
      */
     private static String toAllLowerCaseLetters(String s) {
         return s.replaceAll("[^a-zA-Z ]", "").toLowerCase();
