@@ -14,19 +14,18 @@ import star.tratto.data.OracleType;
  *  "@param fileContent String representation of the source file"
  * "fileContent" is the tag name, and "String representation of the source
  * file" is the tag content.
- *
- * @param fileContent String representation of the source file
- * @param jpClass the declaring class
- * @param jpCallable the corresponding method
- * @param oracleType the type of JavaDoc tag (e.g. PRE, POST, EXCEPT_POST)
- * @param tagName parameter name or exception type ("" if oracleType is POST)
- * @param tagBody the content of the tag
  */
 public record JavadocTagTokens(
+        /* String representation of the source file */
         String fileContent,
+        /* the declaring class */
         TypeDeclaration<?> jpClass,
+        /* the corresponding method */
         CallableDeclaration<?> jpCallable,
+        /* the type of JavaDoc tag (e.g. PRE, POST, EXCEPT_POST) */
         OracleType oracleType,
+        /* parameter name or exception type ("" if oracleType is POST) */
         String tagName,
+        /* the content of the tag */
         String tagBody
 ) {}

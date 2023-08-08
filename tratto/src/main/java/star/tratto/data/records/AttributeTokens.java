@@ -8,13 +8,17 @@ import java.util.List;
  * declaring class, and the attribute declaration. The attribute declaration
  * follows the format:
  *  "[modifiers] [type] [name][ = initial value];"
- *
- * @param attributeName the name of the attribute
- * @param packageName the name of the package of the declaring class
- * @param className the name of the declaring class
- * @param attributeDeclaration the attribute declaration (as defined above)
  */
-public record AttributeTokens(String attributeName, String packageName, String className, String attributeDeclaration) {
+public record AttributeTokens(
+        /* the name of the attribute */
+        String attributeName,
+        /* the name of the package of the declaring class */
+        String packageName,
+        /* the name of the declaring class */
+        String className,
+        /* the attribute declaration (as defined in the record Javadoc) */
+        String attributeDeclaration
+) {
     // Non-canonical constructor using List to read from file
     public AttributeTokens(List<String> tokens) {
         this(tokens.get(0), tokens.get(1), tokens.get(2), tokens.get(3));

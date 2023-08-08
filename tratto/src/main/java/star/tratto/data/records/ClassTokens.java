@@ -5,11 +5,13 @@ import java.util.List;
 /**
  * This record stores basic information of a Java class. Includes the class
  * name (className) and package name (packageName).
- *
- * @param className the name of a Java class
- * @param packageName the corresponding package of the Java class
  */
-public record ClassTokens(String className, String packageName) {
+public record ClassTokens(
+        /* the name of a Java class */
+        String className,
+        /* the corresponding package of the Java class */
+        String packageName
+) {
     // Non-canonical constructor using List to read from file
     public ClassTokens(List<String> tokens) {
         this(tokens.get(0), tokens.get(1));
