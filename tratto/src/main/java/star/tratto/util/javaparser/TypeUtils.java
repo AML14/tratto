@@ -159,6 +159,7 @@ public class TypeUtils {
         fieldDescriptor = removeTypeArgumentsAndSemicolon(fieldDescriptor);
         if (hasPrimitive(fieldDescriptor)) {
             // use plume-lib to convert between primitive field descriptors and binary names
+            // (equivalent for primitive types)
             fieldDescriptor = Signatures.fieldDescriptorToBinaryName(fieldDescriptor);
         } else {
             // manually convert array and then get class name
