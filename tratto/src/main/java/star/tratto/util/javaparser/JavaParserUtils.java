@@ -92,8 +92,10 @@ public class JavaParserUtils {
         return javaParser;
     }
 
-    /** Returns a "java.lang.Object" type.
-@return a "java.lang.Object" type 
+    /**
+     * Returns a "java.lang.Object" type.
+     *
+     * @return a "java.lang.Object" type
      */
     public static ResolvedType getObjectType() {
         return javaParser.parse(SYNTHETIC_CLASS_SOURCE).getResult().orElseThrow()
