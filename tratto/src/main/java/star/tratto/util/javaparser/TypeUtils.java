@@ -21,10 +21,10 @@ import java.util.stream.Collectors;
  * JavaParser uses the source code format to represent types.
  */
 public class TypeUtils {
-    // all primitive field descriptors.
+    /** All primitive field descriptors. */
     private final static List<String> allPrimitiveFieldDescriptors = List.of("Z", "B", "C", "S", "I", "J", "F", "D");
 
-    // private constructor to avoid creating an instance of this class.
+    /** Private constructor to avoid creating an instance of this class. */
     private TypeUtils() {
         throw new UnsupportedOperationException("This class cannot be instantiated.");
     }
