@@ -122,7 +122,7 @@ class OracleTrainerAccelerate:
         if not os.path.exists(state_path):
             os.makedirs(state_path)
         model_filename = os.path.join(model_path, f"model_checkpoint_{str(epoch)}_{str(step)}")
-        state_filename = os.path.join(model_path, f"state_checkpoint_{str(epoch)}_{str(step)}")
+        state_filename = os.path.join(state_path, f"state_checkpoint_{str(epoch)}_{str(step)}")
         self._accelerator.save_model(self._model, model_filename, max_shard_size="5GB")
         self._accelerator.save_state(state_filename)
 
