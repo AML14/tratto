@@ -229,13 +229,13 @@ public class StringUtils {
     }
 
     /**
-     * Computes the cosine similarity from two lists of lemmas.
+     * Computes the cosine similarity from two lists.
      *
      * @param lemmas1 list of lemmas
      * @param lemmas2 list of lemmas
      * @return the cosine similarity (double between 0.0 and 1.0)
      */
-    private static double lemmasToCosineSimilarity(List<String> lemmas1, List<String> lemmas2) {
+    private static double cosineSimilarity(List<String> lemmas1, List<String> lemmas2) {
         Map<String, Integer> wordsFreq1 = getHistogram(lemmas1);
         Map<String, Integer> wordsFreq2 = getHistogram(lemmas2);
         TreeSet<String> intersectionKeys = getSetIntersection(wordsFreq1.keySet(), wordsFreq2.keySet());
@@ -260,6 +260,6 @@ public class StringUtils {
         s2 = toAllLowerCaseLetters(s2);
         List<String> lemmas1 = toLemmas(s1);
         List<String> lemmas2 = toLemmas(s2);
-        return lemmasToCosineSimilarity(lemmas1, lemmas2);
+        return cosineSimilarity(lemmas1, lemmas2);
     }
 }
