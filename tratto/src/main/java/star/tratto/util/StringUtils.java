@@ -92,7 +92,7 @@ public class StringUtils {
 
     /** Returns the indexes of the oracleTokens list where then tokens are found. Empty if tokens is null.
      * All indexes if tokens is empty.
-@param oracleTokens list of tokens in the (partial) oracle
+     * @param oracleTokens list of tokens in the (partial) oracle
      * @param tokens list of tokens to find in the oracle
      * @return the indexes of the oracleTokens list where then tokens are found. Empty if tokens is null.
      * All indexes if tokens is empty 
@@ -128,7 +128,7 @@ public class StringUtils {
 
     /** Returns removes all non-alphabetic and space characters in a String,
      * and sets all alphabetic characters to lower case.
-@return removes all non-alphabetic and space characters in a String,
+     * @return removes all non-alphabetic and space characters in a String,
      * and sets all alphabetic characters to lower case 
      */
     private static String toAllLowerCaseLetters(String s) {
@@ -196,7 +196,7 @@ public class StringUtils {
     }
 
     /** Returns the words in both sets.
-@param set1 a set of words
+     * @param set1 a set of words
      * @param set2 a set of words
      * @return the words in both sets 
      */
