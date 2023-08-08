@@ -121,15 +121,15 @@ public class TypeUtilsTest {
 
     @Test
     public void isStandardTypeTest() {
-        assertTrue(TypeUtils.isStandardType("Comparable"));
-        assertFalse(TypeUtils.isStandardType("Other"));
+        assertTrue(TypeUtils.isObjectOrComparable("Comparable"));
+        assertFalse(TypeUtils.isObjectOrComparable("Other"));
     }
 
     @Test
     public void isStandardTypeArrayTest() {
-        assertTrue(TypeUtils.isStandardTypeArray("Object[]"));
-        assertFalse(TypeUtils.isStandardTypeArray("Object"));
-        assertFalse(TypeUtils.isStandardTypeArray("AnyOtherObject"));
-        assertFalse(TypeUtils.isStandardTypeArray("AnyOtherObjectArray[]"));
+        assertTrue(TypeUtils.isObjectOrComparableArray("Object[]"));
+        assertFalse(TypeUtils.isObjectOrComparableArray("Object"));
+        assertFalse(TypeUtils.isObjectOrComparableArray("AnyOtherObject"));
+        assertFalse(TypeUtils.isObjectOrComparableArray("AnyOtherObjectArray[]"));
     }
 }

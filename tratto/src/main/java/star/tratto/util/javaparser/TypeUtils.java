@@ -313,7 +313,7 @@ public class TypeUtils {
      * @param typeName name of the JDoctor or JavaParser type
      * @return true iff the given type name is "Object" or "Comparable"
      */
-    public static boolean isStandardType(String typeName) {
+    public static boolean isObjectOrComparable(String typeName) {
         return typeName.equals("Object") || typeName.equals("Comparable");
     }
 
@@ -324,9 +324,9 @@ public class TypeUtils {
      *
      * @param typeName name of the JDoctor or JavaParser type
      * @return true iff the given type name is "Object[]" or "Comparable[]"
-     * @see TypeUtils#isStandardType(String)
+     * @see TypeUtils#isObjectOrComparable(String)
      */
-    public static boolean isStandardTypeArray(String typeName) {
+    public static boolean isObjectOrComparableArray(String typeName) {
         return typeName.equals("Object[]") || typeName.equals("Comparable[]");
     }
 }
