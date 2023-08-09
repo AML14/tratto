@@ -137,8 +137,6 @@ def pre_processing(
         tratto_model_type,
         transformer_type
 ):
-    # Drop column id (it is not relevant for training the model)
-    df_dataset = df_dataset.drop(['id'], axis=1)
     # Map empty cells to empty strings
     df_dataset.fillna('', inplace=True)
     # Specify the type of each column in the dataset
@@ -146,14 +144,11 @@ def pre_processing(
         'label': 'str',
         'oracleId': 'int64',
         'oracleType': 'string',
-        'projectName': 'string',
         'packageName': 'string',
         'className': 'string',
         'javadocTag': 'string',
         'methodJavadoc': 'string',
         'methodSourceCode': 'string',
-        'classJavadoc': 'string',
-        'classSourceCode': 'string',
         'oracleSoFar': 'string',
         'token': 'string',
         'tokenClass': 'string',
@@ -210,7 +205,7 @@ def pre_processing(
         new_columns_order = [
             'token', 'tokenInfo', 'tokenClass', 'oracleSoFar', 'tokenClassesSoFar', 'eligibleTokenClasses',
             'javadocTag', 'oracleType', 'packageName', 'className', 'methodSourceCode', 'methodJavadoc',
-            'classJavadoc', 'classSourceCode', 'projectName', 'oracleId', 'label'
+            'oracleId', 'label'
         ]
         # Reindex the DataFrame with the new order
         df_dataset = df_dataset.reindex(columns=new_columns_order)
@@ -225,8 +220,7 @@ def pre_processing(
         # Define the new order of columns
         new_columns_order = [
             'token', 'oracleSoFar', 'eligibleTokens', 'tokenInfo', 'tokenClass', 'javadocTag', 'oracleType',
-            'projectName', 'packageName', 'className', 'methodSourceCode', 'methodJavadoc', 'classJavadoc',
-            'classSourceCode', 'oracleId', 'label'
+            'packageName', 'className', 'methodSourceCode', 'methodJavadoc', 'oracleId', 'label'
         ]
         # Reindex the DataFrame with the new order
         df_dataset = df_dataset.reindex(columns=new_columns_order)
@@ -255,7 +249,7 @@ def pre_processing(
     # Iterate through the groups and assign them to separate datasets
     for identifier, group_data in df_grouped:
         # Delete the tgt labels from the input dataset, and others less relevant columns
-        src_group_data = group_data.drop(['label', 'oracleId', 'projectName', 'classJavadoc', 'classSourceCode'], axis=1)
+        src_group_data = group_data.drop(['label', 'oracleId'], axis=1)
         # If the model predicts token classes, remove the token values from the input, else remove
         # the token classes from the input
         if tratto_model_type == TrattoModelType.TOKEN_CLASSES:
