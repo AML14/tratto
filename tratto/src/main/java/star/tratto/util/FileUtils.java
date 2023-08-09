@@ -14,9 +14,8 @@ import java.util.stream.Stream;
 
 
 /**
- * This class provides a collection of static methods for a variety of file
- * input and output utilities, such as: creating, copying, moving, writing,
- * reading, etc.
+ * This class provides static methods for a variety of file input and output
+ * utilities, such as: creating, copying, moving, writing, reading, etc.
  */
 public class FileUtils {
     /** Private constructor to avoid creating an instance of this class. */
@@ -94,9 +93,9 @@ public class FileUtils {
     }
 
     /**
-     * Returns the path of the target file when hypothetically moved from the
-     * source directory to the destination directory. NOTE: this method does
-     * NOT move any files.
+     * Returns the path of the target file when (hypothetically) moved from
+     * the source directory to the destination directory.
+     * NOTE: This method does NOT perform the move.
      *
      * @param source the source directory
      * @param destination the destination directory
@@ -154,7 +153,7 @@ public class FileUtils {
                             try {
                                 Files.copy(p, relativePath, StandardCopyOption.REPLACE_EXISTING);
                             } catch (IOException e) {
-                                throw new Error("Error when trying to move the file " + p, e);
+                                throw new Error("Error when trying to copy the file " + p + " to " + relativePath, e);
                             }
                         }
                     });
@@ -172,7 +171,7 @@ public class FileUtils {
      * @param destination the directory where the files will be moved to
      * @throws Error if the source directory does not exist or an error occurs
      * while moving a file
-     * @see FileUtils#copy
+     * @see FileUtils#copy(Path, Path)
      */
     public static void move(Path source, Path destination) {
         if (!Files.exists(source)) {
@@ -238,47 +237,46 @@ public class FileUtils {
         }
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            return (type == null)
-                    // if type is null, return List<?>
-                    ? objectMapper.readValue(jsonPath.toFile(), new TypeReference<>() {})
-                    // otherwise, return List<T> of the given type
-                    : objectMapper.readValue(
-                            jsonPath.toFile(),
-                            objectMapper.getTypeFactory().constructCollectionType(List.class, type)
-                    );
+            if (type == null) {
+                return objectMapper.readValue(jsonPath.toFile(), new TypeReference<>() {});
+            } else {
+                return objectMapper.readValue(
+                        jsonPath.toFile(),
+                        objectMapper.getTypeFactory().constructCollectionType(List.class, type)
+                );
+            }
         } catch (IOException e) {
             throw new Error("Error in processing the JSON file " + jsonPath, e);
         }
     }
 
     /**
-     * Reads a list of objects from a JSON file. We use this method rather
-     * than {@link FileUtils#readJSONList(Path, Class)} for parameterized
-     * types, where we cannot retrieve the corresponding class.
+     * Reads a list of objects from a JSON file. This method is used instead
+     * of {@link FileUtils#readJSONList(Path, Class)} for parameterized types,
+     * where it is not possible to retrieve the corresponding class.
      *
      * @param jsonPath a JSON file
      * @return a list of objects without a specified type
-     * @see FileUtils#readJSONList(Path, Class)
      */
     public static List<?> readJSONList(Path jsonPath) {
         return readJSONList(jsonPath, null);
     }
 
     /**
-     * Gets all Java files in a given directory (and subdirectories).
+     * Gets all Java files under a given directory (including in
+     * subdirectories).
      *
      * @param dir a directory
      * @return all Java files (as Path objects) in {@code dir}
      * @throws Error if unable to collect files from {@code dir}
      */
-    public static List<Path> getAllJavaFilesFromDirectory(Path dir) {
+    public static List<Path> getAllJavaFilesUnderDirectory(Path dir) {
         try (Stream<Path> walk = Files.walk(dir)) {
             return walk
                     .filter(p -> p.getFileName().toString().endsWith(".java"))
                     .collect(Collectors.toList());
         } catch (IOException e) {
-            // catch exception to avoid resource leak.
-            throw new Error("Error in collecting all files from " + dir, e);
+            throw new Error("Error when collecting all files from " + dir, e);
         }
     }
 }

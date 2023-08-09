@@ -20,15 +20,15 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
- * This class provides a collection of static methods for manipulating and
- * evaluating strings, such as removing unnecessary spaces or computing the
- * semantic similarity of two inputs.
+ * This class provides static methods for manipulating and evaluating strings,
+ * such as removing unnecessary spaces or computing the semantic similarity
+ * of two inputs.
  */
 public class StringUtils {
-    // a suite of NLP tools for pre-processing text inputs
+    /** A suite of NLP tools for pre-processing text inputs */
     private static final StanfordCoreNLP stanfordCoreNLP = getStanfordCoreNLP();
 
-    // private constructor to avoid creating an instance of this class
+    /** Private constructor to avoid creating an instance of this class */
     private StringUtils() {
         throw new UnsupportedOperationException("This class cannot be instantiated.");
     }
@@ -37,9 +37,11 @@ public class StringUtils {
      * @return a new StanfordCoreNLP object with the necessary properties for
      * preprocessing two strings for semantic comparison. We use the following
      * modifiers:
-     *  - tokenize: splits input into tokens (e.g. words, punctuation)
-     *  - pos: assigns a part-of-speech to each token
-     *  - lemma: converts each word to its base root (e.g. "running" -> "run")
+     * <ul>
+     *     <li>tokenize: splits input into tokens (e.g. words, punctuation)</li>
+     *     <li>pos: assigns a part-of-speech to each token</li>
+     *     <li>lemma: converts each word to its base root (e.g. "running" -> "run")</li>
+     * </ul>
      */
     private static StanfordCoreNLP getStanfordCoreNLP() {
         Properties properties = new Properties();
@@ -92,7 +94,7 @@ public class StringUtils {
 
     /** Returns the indexes of the oracleTokens list where then tokens are found. Empty if tokens is null.
      * All indexes if tokens is empty.
-@param oracleTokens list of tokens in the (partial) oracle
+     * @param oracleTokens list of tokens in the (partial) oracle
      * @param tokens list of tokens to find in the oracle
      * @return the indexes of the oracleTokens list where then tokens are found. Empty if tokens is null.
      * All indexes if tokens is empty 
@@ -126,10 +128,13 @@ public class StringUtils {
         return fullyQualifiedClassName(packageClassPair.getValue0(), packageClassPair.getValue1());
     }
 
-    /** Returns removes all non-alphabetic and space characters in a String,
-     * and sets all alphabetic characters to lower case.
-@return removes all non-alphabetic and space characters in a String,
-     * and sets all alphabetic characters to lower case 
+    /**
+     * Removes all non-alphabetic and non-space characters in a String, and
+     * sets all alphabetic characters to lower case.
+     *
+     * @param s an input string
+     * @return removes all non-alphabetic and non-space characters from the
+     * input, and sets all alphabetic characters to lower case
      */
     private static String toAllLowerCaseLetters(String s) {
         return s.replaceAll("[^a-zA-Z ]", "").toLowerCase();
@@ -147,7 +152,7 @@ public class StringUtils {
      * to avoid treating similar words as entirely separate.
      *
      * @param words lowercase alphabetic characters separated by spaces
-     * @return lemma corresponding to words in the original String
+     * @return lemmas corresponding to words in the original String
      */
     private static List<String> toLemmas(String words) {
         Annotation processedText = new Annotation(words);
@@ -160,30 +165,31 @@ public class StringUtils {
     }
 
     /**
-     * Creates a map from each word to its corresponding frequency in a given
-     * list of words.
+     * Creates a map from each String to its corresponding frequency in a
+     * given list of Strings.
      *
-     * @param words a list of words
-     * @return a map of word frequencies, where the keys are unique words and
-     * the values are the number of occurrences in {@code words}
+     * @param strings a list of Strings
+     * @return string frequencies, where the keys are unique strings and
+     * the values are the number of occurrences in {@code strings}
      */
-    private static Map<String, Integer> getWordFrequencies(List<String> words) {
-        Map<String, Integer> wordFrequencies = new HashMap<>();
-        for (String word : words) {
-            int currentCount = wordFrequencies.getOrDefault(word, 0);
-            wordFrequencies.put(word, currentCount + 1);
+    private static Map<String, Integer> getHistogram(List<String> strings) {
+        Map<String, Integer> histogram = new HashMap<>();
+        for (String string : strings) {
+            int currentCount = histogram.getOrDefault(string, 0);
+            histogram.put(string, currentCount + 1);
         }
-        return wordFrequencies;
+        return histogram;
     }
 
     /**
-     * Converts a map of word frequencies to a vector.
+     * Converts a histogram of word frequencies to a vector.
      *
      * @param frequencies a map of word frequencies
      * @param words the set of all words to be considered in the vector
      * @return a vector representation of the word frequencies. Each entry
      * corresponds to a different word, where the value of the entry
-     * corresponds to the word frequency.
+     * corresponds to the word frequency. If a word does not appear in the
+     * histogram, then it is assigned a value of 0.
      */
     private static RealVector wordFrequencyToVector(Map<String, Integer> frequencies, TreeSet<String> words) {
         double[] vector = new double[words.size()];
@@ -195,8 +201,10 @@ public class StringUtils {
         return new ArrayRealVector(vector);
     }
 
-    /** Returns the words in both sets.
-@param set1 a set of words
+    /**
+     * Returns the words in both sets.
+     *
+     * @param set1 a set of words
      * @param set2 a set of words
      * @return the words in both sets 
      */
@@ -215,28 +223,28 @@ public class StringUtils {
      * @param vector2 a vector
      * @return the cosine similarity of the two vectors
      */
-    private static double getCosineSimilarity(RealVector vector1, RealVector vector2) {
+    private static double cosineSimilarity(RealVector vector1, RealVector vector2) {
         double denominator = vector1.getNorm() * vector2.getNorm();
         if (denominator == 0.0) {
-          return 0.0;
+            return 0.0;
         }
         return vector1.dotProduct(vector2) / denominator;
     }
 
     /**
-     * Computes the cosine similarity from two lists of lemmas.
+     * Computes the cosine similarity from two lists.
      *
-     * @param lemmas1 list of lemmas
-     * @param lemmas2 list of lemmas
+     * @param strings1 list of strings
+     * @param strings2 list of strings
      * @return the cosine similarity (double between 0.0 and 1.0)
      */
-    private static double lemmasToCosineSimilarity(List<String> lemmas1, List<String> lemmas2) {
-        Map<String, Integer> wordsFreq1 = getWordFrequencies(lemmas1);
-        Map<String, Integer> wordsFreq2 = getWordFrequencies(lemmas2);
+    private static double cosineSimilarity(List<String> strings1, List<String> strings2) {
+        Map<String, Integer> wordsFreq1 = getHistogram(strings1);
+        Map<String, Integer> wordsFreq2 = getHistogram(strings2);
         TreeSet<String> intersectionKeys = getSetIntersection(wordsFreq1.keySet(), wordsFreq2.keySet());
         RealVector wordVector1 = wordFrequencyToVector(wordsFreq1, intersectionKeys);
         RealVector wordVector2 = wordFrequencyToVector(wordsFreq2, intersectionKeys);
-        return getCosineSimilarity(wordVector1, wordVector2);
+        return cosineSimilarity(wordVector1, wordVector2);
     }
 
     /**
@@ -255,6 +263,6 @@ public class StringUtils {
         s2 = toAllLowerCaseLetters(s2);
         List<String> lemmas1 = toLemmas(s1);
         List<String> lemmas2 = toLemmas(s2);
-        return lemmasToCosineSimilarity(lemmas1, lemmas2);
+        return cosineSimilarity(lemmas1, lemmas2);
     }
 }

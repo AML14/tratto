@@ -27,31 +27,20 @@ public class TypeUtilsTest {
     }
 
     @Test
-    public void getNameSegmentsTest() {
-        assertEquals(List.of("normal", "package", "setup", "for", "a", "Class"), TypeUtils.getNameSegments("normal.package.setup.for.a.Class"));
-        assertEquals(List.of("spicy", "example", "that", "uses", "Many", "Inner", "Classes"), TypeUtils.getNameSegments("spicy.example.that.uses.Many$Inner$Classes"));
-        assertEquals(List.of("even", "spicier", "with", "Inner", "Class", "andMethods"), TypeUtils.getNameSegments("even.spicier.with.Inner$Class$andMethods"));
-    }
-
-    @Test
     public void getPackageNameFromNameSegmentsTest() {
-        assertEquals("normal.package.setup.for.a", TypeUtils.getPackageNameFromNameSegments(List.of("normal", "package", "setup", "for", "a", "Class")));
+        assertEquals("normal.package.setup.for.a", TypeUtils.getPackageNameFromClassGetName("normal.package.setup.for.a.Class$InnerClass"));
     }
 
     @Test
-    public void getClassNameFromNameSegmentsTest() {
-        assertEquals("Class", TypeUtils.getClassNameFromNameSegments(List.of("normal", "package", "setup", "for", "a", "Class")));
-    }
-
-    @Test
-    public void fieldDescriptorsToSourceFormatsTest() {
-        assertEquals(List.of("boolean", "byte", "char", "short", "int", "long", "float", "double"), TypeUtils.fieldDescriptorsToSourceFormats(List.of("Z", "B", "C", "S", "I", "J", "F", "D")));
-        assertEquals(List.of("RandomObject"), TypeUtils.fieldDescriptorsToSourceFormats(List.of("some.weird.RandomObject")));
-        assertEquals(List.of("byte[]", "int"), TypeUtils.fieldDescriptorsToSourceFormats(List.of("[B", "I")));
-        assertEquals(List.of("char[][]"), TypeUtils.fieldDescriptorsToSourceFormats(List.of("[[C")));
-        assertEquals(List.of("SuperCoolClass[][]"), TypeUtils.fieldDescriptorsToSourceFormats(List.of("[[com.google.SuperCoolClass")));
-        assertEquals(List.of("Type"), TypeUtils.fieldDescriptorsToSourceFormats(List.of("Type<with parameters>")));
-        assertEquals(List.of("SuperCoolParameterizedType[]", "double"), TypeUtils.fieldDescriptorsToSourceFormats(List.of("[com.amazon.coretta.SuperCoolParameterizedType<with parameters<T>, Integer>", "D")));
+    public void classGetNameToClassGetSimpleNameTest() {
+        assertEquals(List.of("int"), TypeUtils.classGetNameToClassGetSimpleName(List.of("int")));
+        assertEquals(List.of("int[][]"), TypeUtils.classGetNameToClassGetSimpleName(List.of("[[I")));
+        assertEquals(List.of("MyClass"), TypeUtils.classGetNameToClassGetSimpleName(List.of("MyClass")));
+        assertEquals(List.of("MyClass[]"), TypeUtils.classGetNameToClassGetSimpleName(List.of("[LMyClass;")));
+        assertEquals(List.of("Integer"), TypeUtils.classGetNameToClassGetSimpleName(List.of("java.lang.Integer")));
+        assertEquals(List.of("Integer[]"), TypeUtils.classGetNameToClassGetSimpleName(List.of("[Ljava.lang.Integer;")));
+        assertEquals(List.of("Inner"), TypeUtils.classGetNameToClassGetSimpleName(List.of("pkg.Outer$Inner")));
+        assertEquals(List.of("Inner[]"), TypeUtils.classGetNameToClassGetSimpleName(List.of("[Lpkg.Outer$Inner;")));
     }
 
     @Test
@@ -123,15 +112,15 @@ public class TypeUtilsTest {
 
     @Test
     public void isStandardTypeTest() {
-        assertTrue(TypeUtils.isStandardType("Comparable"));
-        assertFalse(TypeUtils.isStandardType("Other"));
+        assertTrue(TypeUtils.isObjectOrComparable("Comparable"));
+        assertFalse(TypeUtils.isObjectOrComparable("Other"));
     }
 
     @Test
     public void isStandardTypeArrayTest() {
-        assertTrue(TypeUtils.isStandardTypeArray("Object[]"));
-        assertFalse(TypeUtils.isStandardTypeArray("Object"));
-        assertFalse(TypeUtils.isStandardTypeArray("AnyOtherObject"));
-        assertFalse(TypeUtils.isStandardTypeArray("AnyOtherObjectArray[]"));
+        assertTrue(TypeUtils.isObjectOrComparableArray("Object[]"));
+        assertFalse(TypeUtils.isObjectOrComparableArray("Object"));
+        assertFalse(TypeUtils.isObjectOrComparableArray("AnyOtherObject"));
+        assertFalse(TypeUtils.isObjectOrComparableArray("AnyOtherObjectArray[]"));
     }
 }

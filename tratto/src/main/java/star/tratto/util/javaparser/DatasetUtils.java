@@ -518,7 +518,7 @@ public class DatasetUtils {
      * @return a list of all valid files
      */
     private static List<Path> getValidJavaFiles(Path sourceDir) {
-        List<Path> allJavaFiles = FileUtils.getAllJavaFilesFromDirectory(sourceDir);
+        List<Path> allJavaFiles = FileUtils.getAllJavaFilesUnderDirectory(sourceDir);
         // Get list of files to ignore.
         Path ignoreFilePath = TrattoPath.IGNORE_FILE.getPath();
         List<String> ignoreFileList = FileUtils.readJSONList(ignoreFilePath, String.class);
@@ -1082,9 +1082,9 @@ public class DatasetUtils {
             TypeDeclaration<?> jpClass
     ) {
         if (jDoctorParam.equals(jpParam)) return true;
-        boolean jDoctorParamIsStandard = TypeUtils.isStandardType(jDoctorParam);
-        boolean jDoctorParamIsStandardArray = TypeUtils.isStandardTypeArray(jDoctorParam);
-        boolean jpParamIsStandard = TypeUtils.isStandardType(jpParam);
+        boolean jDoctorParamIsStandard = TypeUtils.isObjectOrComparable(jDoctorParam);
+        boolean jDoctorParamIsStandardArray = TypeUtils.isObjectOrComparableArray(jDoctorParam);
+        boolean jpParamIsStandard = TypeUtils.isObjectOrComparable(jpParam);
         boolean jpParamIsArray = jpParam.endsWith("[]");
         boolean jpParamIsGeneric = JavaParserUtils.isTypeParameter(jpParam, jpCallable, jpClass);
         return (jDoctorParamIsStandard && jpParamIsStandard) ||
@@ -1243,8 +1243,7 @@ public class DatasetUtils {
     public static String getOperationPackageName(
             Operation operation
     ) {
-        List<String> pathList = TypeUtils.getNameSegments(operation.className());
-        return TypeUtils.getPackageNameFromNameSegments(pathList);
+        return TypeUtils.getPackageNameFromClassGetName(operation.className());
     }
 
     /**
@@ -1253,8 +1252,7 @@ public class DatasetUtils {
     public static String getOperationClassName(
             Operation operation
     ) {
-        List<String> pathList = TypeUtils.getNameSegments(operation.className());
-        return TypeUtils.getClassNameFromNameSegments(pathList);
+        return TypeUtils.getInnermostClassNameFromClassGetName(operation.className());
     }
 
     /**
@@ -1263,8 +1261,7 @@ public class DatasetUtils {
     public static String getOperationCallableName(
             Operation operation
     ) {
-        List<String> pathList = TypeUtils.getNameSegments(operation.methodName());
-        return TypeUtils.getClassNameFromNameSegments(pathList);
+        return TypeUtils.getInnermostClassNameFromClassGetName(operation.methodName());
     }
 
     /**

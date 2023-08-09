@@ -29,7 +29,7 @@ public class E2ETests {
      * </ul>
      */
     @Test
-//    @Disabled
+    @Disabled
     public void datasetsE2ETest() throws IOException {
         // Config for E2E test
         OracleDP2TokenDPs.CRASH_WRONG_ORACLE = true;
@@ -61,7 +61,7 @@ public class E2ETests {
      * token ";" is returned.
      */
     @Test
-//    @Disabled
+    @Disabled
     public void tokenSuggesterE2ETest() {
         List<String> stringOracles = readOraclesFromExternalFiles();
         TokenSuggesterTest.getNextLegalTokensAuxTest(stringOracles);

@@ -188,7 +188,7 @@ public class ProjectOracleGenerator {
         Path sourcePath = this.project.srcPath();
         String className = DatasetUtils.getOperationClassName(operation);
         String callableName = DatasetUtils.getOperationCallableName(operation);
-        List<String> parameterTypes = TypeUtils.fieldDescriptorsToSourceFormats(operation.parameterTypes());
+        List<String> parameterTypes = TypeUtils.classGetNameToClassGetSimpleName(operation.parameterTypes());
         Optional<CompilationUnit> cuOptional = DatasetUtils.getOperationCompilationUnit(operation, sourcePath);
         if (cuOptional.isPresent()) {
             TypeDeclaration<?> jpClass = DatasetUtils.getTypeDeclaration(cuOptional.get(), className);
@@ -292,7 +292,7 @@ public class ProjectOracleGenerator {
         String packageName = DatasetUtils.getOperationPackageName(operation);
         String className = DatasetUtils.getOperationClassName(operation);
         String callableName = DatasetUtils.getOperationCallableName(operation);
-        List<String> parameterTypes = TypeUtils.fieldDescriptorsToSourceFormats(operation.parameterTypes());
+        List<String> parameterTypes = TypeUtils.classGetNameToClassGetSimpleName(operation.parameterTypes());
         // get CompilationUnit of operation class.
         Optional<CompilationUnit> cuOptional = DatasetUtils.getOperationCompilationUnit(operation, sourcePath);
         if (cuOptional.isEmpty()) {

@@ -15,26 +15,29 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
- * This class provides a collection of static methods to convert between the
- * field descriptor and source code formats of Java types. For our purposes,
- * we note that JDoctor uses field descriptors to represent types, whereas
- * JavaParser uses the source code format to represent types.
+ * This class provides static methods to convert between the ClassGetName and
+ * ClassGetSimpleName forms of Java types, as well as other utilities for
+ * analyzing various type representations.
  */
 public class TypeUtils {
-    // all primitive field descriptors.
+    /**
+     * All primitive field descriptors. The ClassGetName form of a type uses
+     * field descriptor for arrays of primitive types.
+     */
     private final static List<String> allPrimitiveFieldDescriptors = List.of("Z", "B", "C", "S", "I", "J", "F", "D");
 
-    // private constructor to avoid creating an instance of this class.
+    /** Private constructor to avoid creating an instance of this class. */
     private TypeUtils() {
         throw new UnsupportedOperationException("This class cannot be instantiated.");
     }
 
     /**
      * Removes type arguments and semicolons from a parameterized type name.
+     * The given type name should originate from source code, as neither
+     * ClassGetSimpleName nor ClassGetName forms include type parameters.
      *
-     * @param parameterizedType a field descriptor or source code
-     *                          representation of a type
-     * @return the raw type without type arguments
+     * @param parameterizedType a type name from source code
+     * @return the base type without type arguments
      */
     public static String removeTypeArgumentsAndSemicolon(String parameterizedType) {
         String regex = "<[^<>]*>|;";
@@ -49,48 +52,33 @@ public class TypeUtils {
     }
 
     /**
-     * Splits a binary name (of a class or member) into segments. Splits name
-     * based on "." (package) and "$" (member).
+     * Gets the package name from a ClassGetName form of a type.
      *
-     * @param name a binary method/class name
-     * @return name segments. Includes: all outer packages, all outer classes,
-     * the innermost class, and the member name (if {@code name} is a member).
+     * @param classGetName a ClassGetName form of a type
+     * @return the package name of the class
      */
-    public static List<String> getNameSegments(
-            String name
-    ) {
-        String regex = "[.$]";
-        return Arrays.asList(name.split(regex));
+    public static String getPackageNameFromClassGetName(String classGetName) {
+        List<String> nameSegments = Arrays.asList(classGetName.split("\\."));
+        List<String> packageSegments = nameSegments.subList(0, nameSegments.size() - 1);
+        return String.join(".", packageSegments);
     }
 
     /**
-     * @param nameSegments name segments. Must represent a class.
-     * @return name segments joined by ".", representing the package name.
-     * NOTE: For inner classes, we represent the package name as:
-     *  [outerClass package].[outerClass(es)]
-     * for compatibility with the XText grammar.
-     * @see TypeUtils#getNameSegments(String)
+     * Gets the innermost class from a ClassGetName form of a type.
+     *
+     * @param classGetName a ClassGetName form of a type
+     * @return the innermost class of the type
      */
-    public static String getPackageNameFromNameSegments(
-            List<String> nameSegments
-    ) {
-        return String.join(".", nameSegments.subList(0, nameSegments.size() - 1));
-    }
-
-    /** Returns innermost class of the name segments.
-@param nameSegments name segments. Must represent a class.
-     * @return innermost class of the name segments 
-     * @see TypeUtils#getNameSegments(String)
-     */
-    public static String getClassNameFromNameSegments(
-            List<String> nameSegments
-    ) {
+    public static String getInnermostClassNameFromClassGetName(String classGetName) {
+        List<String> nameSegments = Arrays.asList(classGetName.split("[.$]"));
         return nameSegments.get(nameSegments.size() - 1);
     }
 
-    /** Returns the array level of the type.
-@param typeName a field descriptor or source code type representation
-     * @return the array level of the type 
+    /**
+     * Returns the array level of the type.
+     *
+     * @param typeName a ClassGetName or ClassGetSimpleName form of a type
+     * @return the array level of the type
      */
     private static int getArrayLevel(String typeName) {
         int arrayLevel = 0;
@@ -103,82 +91,92 @@ public class TypeUtils {
     }
 
     /**
-     * Adds pairs of square brackets to a given type name, increasing the
-     * array level by a given amount.
+     * Adds pairs of square brackets to a given ClassGetSimpleName type.
      *
-     * @param typeName a type name
-     * @param arrayLevel the number of array levels to add
-     * @return the new type name with the added number of array levels
+     * @param classGetSimpleName a ClassGetSimpleName form of a type
+     * @param arrayLevel number of array levels to add
+     * @return the simple type name with the added number of array levels
      */
-    private static String addArrayLevel(String typeName, int arrayLevel) {
-        return typeName + ("[]").repeat(arrayLevel);
+    private static String addArrayLevel(String classGetSimpleName, int arrayLevel) {
+        return classGetSimpleName + ("[]").repeat(arrayLevel);
     }
 
     /**
-     * Converts a field descriptor array to a source code format array. This
-     * method ONLY changes the square brackets, and will not change the
-     * component type name. For example:
-     *  [Object => Object[]
-     *  [[D     => D[][]
+     * Returns true iff the ClassGetName component type is a primitive type.
+     * The ClassGetName form of a type uses field descriptors for arrays of
+     * primitive types.
      *
-     * @param fieldDescriptor a field descriptor array type
-     * @return the corresponding source code format array type
+     * @param classGetNameComponent a ClassGetName component type
+     * @return true iff the ClassGetName component is a field descriptor
+     * @see TypeUtils#allPrimitiveFieldDescriptors
      */
-    private static String fieldDescriptorArrayToSourceFormatArray(String fieldDescriptor) {
-        int arrayLevel = getArrayLevel(fieldDescriptor);
-        return addArrayLevel(fieldDescriptor.substring(arrayLevel), arrayLevel);
-    }
-
-    /** Returns true iff the field descriptor represents a primitive type or an
-     * array of primitive types.
-@param fieldDescriptor a field descriptor of a type (can be an array)
-     * @return true iff the field descriptor represents a primitive type or an
-     * array of primitive types 
-     */
-    private static boolean hasPrimitive(String fieldDescriptor) {
-        return allPrimitiveFieldDescriptors.contains(fieldDescriptor.replaceAll("[^a-zA-Z]+", ""));
+    private static boolean isPrimitiveFieldDescriptor(String classGetNameComponent) {
+        return allPrimitiveFieldDescriptors.contains(classGetNameComponent);
     }
 
     /**
-     * Converts a field descriptor representation of a type name to its
-     * corresponding source code format representation.
+     * Gets the ClassGetName form of the component type for a given
+     * ClassGetName array type.
      *
-     * @param fieldDescriptor a field descriptor representation of a type
-     * @return the corresponding source code format representation of the type
+     * @param classGetNameArray a ClassGetName form of an array type
+     * @return the ClassGetName form of the component type
      */
-    private static String fieldDescriptorToSourceFormat(
-            String fieldDescriptor
-    ) {
-        fieldDescriptor = removeTypeArgumentsAndSemicolon(fieldDescriptor);
-        if (hasPrimitive(fieldDescriptor)) {
-            // use plume-lib to convert between primitive field descriptors and binary names
-            fieldDescriptor = Signatures.fieldDescriptorToBinaryName(fieldDescriptor);
-        } else {
-            // manually convert array and then get class name
-            fieldDescriptor = fieldDescriptorArrayToSourceFormatArray(fieldDescriptor);
-            fieldDescriptor = getClassNameFromNameSegments(getNameSegments(fieldDescriptor));
+    private static String classGetNameComponentType(String classGetNameArray) {
+        int arrayLevel = getArrayLevel(classGetNameArray);
+        if (arrayLevel == 0) {
+            return classGetNameArray;
         }
-        return fieldDescriptor;
+        String classGetNameComponent = classGetNameArray.replaceAll("\\[", "");
+        if (isPrimitiveFieldDescriptor(classGetNameComponent)) {
+            return classGetNameComponent;
+        } else {
+            classGetNameComponent = classGetNameComponent.replaceAll(";", "");
+            // for arrays of Objects, remove "L" prefix
+            return classGetNameComponent.substring(1);
+        }
     }
 
     /**
-     * Converts a list of field descriptors {@code fieldDescriptors} to a list
-     * of source code format type names.
+     * Converts a ClassGetName form of a type to its corresponding
+     * ClassGetSimpleName form.
      *
-     * @param fieldDescriptors field descriptors to convert
-     * @return the corresponding source code format type names
+     * @param classGetName a ClassGetName form of a type
+     * @return the corresponding ClassGetSimpleName form of a type
      */
-    public static List<String> fieldDescriptorsToSourceFormats(
-            List<String> fieldDescriptors
+    private static String classGetNameToClassGetSimpleName(
+            String classGetName
     ) {
-        return fieldDescriptors
+        int arrayLevel = getArrayLevel(classGetName);
+        classGetName = classGetNameComponentType(classGetName);
+        if (isPrimitiveFieldDescriptor(classGetName)) {
+            classGetName = Signatures.fieldDescriptorToBinaryName(classGetName);
+        } else {
+            classGetName = getInnermostClassNameFromClassGetName(classGetName);
+        }
+        return addArrayLevel(classGetName, arrayLevel);
+    }
+
+    /**
+     * Converts a list of ClassGetName forms of types to their corresponding
+     * ClassGetSimpleName forms.
+     *
+     * @param classGetNames ClassGetName forms of types
+     * @return the corresponding ClassGetSimpleName forms of types
+     */
+    public static List<String> classGetNameToClassGetSimpleName(
+            List<String> classGetNames
+    ) {
+        return classGetNames
                 .stream()
-                .map(TypeUtils::fieldDescriptorToSourceFormat)
+                .map(TypeUtils::classGetNameToClassGetSimpleName)
                 .collect(Collectors.toList());
     }
 
-    /** Returns true iff the type represents a vararg (e.g. uses "...").
-@param typeName a source code format type name
+    /**
+     * Returns true iff the type represents a vararg (e.g. uses "...").
+     *
+     * @param typeName a source code format type name. May include
+     *                 variable name (e.g. "Integer someValue").
      * @return true iff the type represents a vararg (e.g. uses "...") 
      */
     public static boolean hasEllipsis(String typeName) {
@@ -294,28 +292,23 @@ public class TypeUtils {
     }
 
     /**
-     * We define a "standard" type as a type which implements either the
-     * "Object" or "Comparable" interfaces, which require extra consideration
-     * when comparing arguments to check equality.
-     * See `jpParamEqualsJDoctorParam` in DatasetUtils for elaboration.
+     * Checks if a given type is an Object or Comparable object.
      *
      * @param typeName name of the JDoctor or JavaParser type
      * @return true iff the given type name is "Object" or "Comparable"
      */
-    public static boolean isStandardType(String typeName) {
+    public static boolean isObjectOrComparable(String typeName) {
         return typeName.equals("Object") || typeName.equals("Comparable");
     }
 
     /**
-     * Checks if a given type name is a "standard" array. By definition, this
-     * includes the "Object[]" and "Comparable[]" types.
-     * See above method {@code isStandardType} for further elaboration.
+     * Checks if a given type is an array of Object or Comparable objects.
      *
      * @param typeName name of the JDoctor or JavaParser type
      * @return true iff the given type name is "Object[]" or "Comparable[]"
-     * @see TypeUtils#isStandardType(String)
+     * @see TypeUtils#isObjectOrComparable(String)
      */
-    public static boolean isStandardTypeArray(String typeName) {
+    public static boolean isObjectOrComparableArray(String typeName) {
         return typeName.equals("Object[]") || typeName.equals("Comparable[]");
     }
 }
