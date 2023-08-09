@@ -46,9 +46,9 @@ public class TypeUtilsTest {
         String normalType = "int";
         String almost = "How..";
         String varArg = "int...";
-        assertFalse(TypeUtils.hasEllipsis(normalType));
-        assertFalse(TypeUtils.hasEllipsis(almost));
-        assertTrue(TypeUtils.hasEllipsis(varArg));
+        assertFalse(TypeUtils.isVarArg(normalType));
+        assertFalse(TypeUtils.isVarArg(almost));
+        assertTrue(TypeUtils.isVarArg(varArg));
     }
 
     @Test
@@ -61,7 +61,7 @@ public class TypeUtilsTest {
                 .setName("printElements")
                 .addModifier(Modifier.Keyword.PUBLIC)
                 .addParameter(integerType, "arg0");
-        assertEquals("int", TypeUtils.getRawTypeName(jpClass, jpCallable, jpCallable.getParameter(0)));
+        assertEquals("int", TypeUtils.getJDoctorSimpleNameFromSourceCode(jpClass, jpCallable, jpCallable.getParameter(0)));
     }
 
     @Test
@@ -76,7 +76,7 @@ public class TypeUtilsTest {
                 .setName("printElements")
                 .addModifier(Modifier.Keyword.PUBLIC)
                 .addParameter(parameter);
-        assertEquals("int[]", TypeUtils.getRawTypeName(jpClass, jpCallable, jpCallable.getParameter(0)));
+        assertEquals("int[]", TypeUtils.getJDoctorSimpleNameFromSourceCode(jpClass, jpCallable, jpCallable.getParameter(0)));
     }
 
     @Test
@@ -88,7 +88,7 @@ public class TypeUtilsTest {
                 .addModifier(Modifier.Keyword.PUBLIC)
                 .addTypeParameter(new TypeParameter("T"))
                 .addParameter("T", "arg0");
-        assertEquals("T", TypeUtils.getRawTypeName(jpClass, jpCallable, jpCallable.getParameter(0)));
+        assertEquals("T", TypeUtils.getJDoctorSimpleNameFromSourceCode(jpClass, jpCallable, jpCallable.getParameter(0)));
     }
 
     @Test
@@ -105,7 +105,7 @@ public class TypeUtilsTest {
         MethodDeclaration jpCallable = jpClass.addMethod("printElements")
                 .addModifier(Modifier.Keyword.PUBLIC)
                 .addParameter("U", "arg0");
-        assertEquals("Integer", TypeUtils.getRawTypeName(jpClass, jpCallable, jpCallable.getParameter(0)));
+        assertEquals("Integer", TypeUtils.getJDoctorSimpleNameFromSourceCode(jpClass, jpCallable, jpCallable.getParameter(0)));
     }
 
     @Test

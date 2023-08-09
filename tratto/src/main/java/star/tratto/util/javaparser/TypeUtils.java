@@ -173,17 +173,6 @@ public class TypeUtils {
     }
 
     /**
-     * Returns true iff the type represents a vararg (e.g. uses "...").
-     *
-     * @param typeName a source code format type name. May include
-     *                 variable name (e.g. "Integer someValue").
-     * @return true iff the type represents a vararg (e.g. uses "...") 
-     */
-    public static boolean hasEllipsis(String typeName) {
-        return typeName.contains("...");
-    }
-
-    /**
      * Checks if a given type extends a supertype in source code (e.g. has an
      * upper bound).
      * NOTE: We only check "extends" and not "implements" for parameterized
@@ -194,7 +183,7 @@ public class TypeUtils {
      * @param typeName a source code format type name
      * @return true iff the given type name extends another type
      */
-    private static boolean hasSupertype(String sourceCode, String typeName) {
+    private static boolean hasUpperBound(String sourceCode, String typeName) {
         String regex = String.format("%s\\s+extends\\s+([A-Za-z0-9_]+)[<[A-Za-z0-9_,]+]*", typeName.replaceAll("\\[]",""));
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(sourceCode);
@@ -202,8 +191,7 @@ public class TypeUtils {
     }
 
     /**
-     * Finds the supertype of a given type name in source code. The given
-     * type name must use the source code format representation.
+     * Finds the upper bound of a type parameter from source code.
      *
      * @param sourceCode the method or class source code in which
      * {@code typeName} is used
@@ -212,7 +200,7 @@ public class TypeUtils {
      * @throws IllegalArgumentException if {@code typeName} does not extend
      * a type
      */
-    private static String getSupertype(String sourceCode, String typeName) {
+    private static String getUpperBound(String sourceCode, String typeName) {
         String regex = String.format("%s\\s+extends\\s+([A-Za-z0-9_]+)[<[A-Za-z0-9_,]+]*", typeName.replaceAll("\\[]",""));
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(sourceCode);
@@ -244,15 +232,15 @@ public class TypeUtils {
     ) {
         // get upper bound from method/constructor declaration
         Optional<TokenRange> callableTokenRange = jpCallable.getTokenRange();
-        if (callableTokenRange.isPresent() && hasSupertype(callableTokenRange.get().toString(), typeName)) {
-            typeName = getSupertype(callableTokenRange.get().toString(), typeName);
+        if (callableTokenRange.isPresent() && hasUpperBound(callableTokenRange.get().toString(), typeName)) {
+            typeName = getUpperBound(callableTokenRange.get().toString(), typeName);
         }
         // get upper bound from class declaration
         if (jpDeclaration.isClassOrInterfaceDeclaration()) {
             for (TypeParameter jpGeneric : jpDeclaration.asClassOrInterfaceDeclaration().getTypeParameters()) {
                 if (jpGeneric.getNameAsString().equals(typeName.replaceAll("\\[]", ""))) {
-                    if (hasSupertype(jpGeneric.toString(), typeName)) {
-                        typeName = getSupertype(jpGeneric.toString(), typeName);
+                    if (hasUpperBound(jpGeneric.toString(), typeName)) {
+                        typeName = getUpperBound(jpGeneric.toString(), typeName);
                     }
                 }
             }
@@ -270,23 +258,23 @@ public class TypeUtils {
      * @param jpParam a parameter
      * @return the raw name of the parameter in source code
      */
-    public static String getRawTypeName(
+    public static String getJDoctorSimpleNameFromSourceCode(
             TypeDeclaration<?> jpDeclaration,
             CallableDeclaration<?> jpCallable,
             Parameter jpParam
     ) {
-        // get type name
+        // pre-process base type name
         String typeName;
         if (jpParam.getType().isClassOrInterfaceType()) {
             typeName = removeTypeArgumentsAndSemicolon(jpParam.getType().asClassOrInterfaceType().getNameAsString());
         } else {
             typeName = removeTypeArgumentsAndSemicolon(jpParam.getType().asString());
         }
-        // add array level for varargs
-        if (hasEllipsis(jpParam.toString())) {
+        // represent varargs as an array
+        if (jpParam.isVarArgs()) {
             typeName = addArrayLevel(typeName, 1);
         }
-        // use upper bound, if possible
+        // use upper bound (if possible)
         typeName = getGenericUpperBound(jpDeclaration, jpCallable, typeName);
         return typeName;
     }
