@@ -64,10 +64,10 @@ public class TypeUtils {
     }
 
     /**
-     * Gets innermost class of a ClassGetName form of a type.
+     * Gets the innermost class from a ClassGetName form of a type.
      *
      * @param classGetName a ClassGetName form of a type
-     * @return innermost class of a type
+     * @return the innermost class of the type
      */
     public static String getInnermostClassNameFromClassGetName(String classGetName) {
         List<String> nameSegments = Arrays.asList(classGetName.split("[.$]"));
@@ -102,13 +102,16 @@ public class TypeUtils {
     }
 
     /**
-     * Returns true iff the ClassGetName type is a primitive type.
+     * Returns true iff the ClassGetName component type is a primitive type.
+     * The ClassGetName form of a type uses field descriptors for arrays of
+     * primitive types.
      *
-     * @param classGetName a ClassGetName form of a type
-     * @return true iff the ClassGetName type represents a primitive type
+     * @param classGetNameComponent a ClassGetName component type
+     * @return true iff the ClassGetName component is a field descriptor
+     * @see TypeUtils#allPrimitiveFieldDescriptors
      */
-    private static boolean isPrimitiveFieldDescriptor(String classGetName) {
-        return allPrimitiveFieldDescriptors.contains(classGetName);
+    private static boolean isPrimitiveFieldDescriptor(String classGetNameComponent) {
+        return allPrimitiveFieldDescriptors.contains(classGetNameComponent);
     }
 
     /**
