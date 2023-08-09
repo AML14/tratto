@@ -49,10 +49,10 @@ def predict(
         for batch_id, batch in enumerate(dl_data, 1):
             print(f"            Processing batch {batch_id} of {len(dl_data)}")
             # Extract the inputs, the attention masks and the targets from the batch
-            src_input = batch[0].to(device)
-            src_masks = batch[1].to(device)
-            tgt_out = batch[2].to(device)
-            javadoc_tags = batch[3].to(device)
+            src_input = batch[0]
+            src_masks = batch[1]
+            tgt_out = batch[2]
+            javadoc_tags = batch[3]
 
             if transformer_type == TransformerType.DECODER:
                 # Generate output from trained model
@@ -98,7 +98,7 @@ def predict(
             if classification_type == ClassificationType.LABEL_PREDICTION:
                 class_out = np.array(
                     tokenizer.batch_decode(
-                        batch[4].to(device),
+                        batch[4],
                         skip_special_tokens=True
                     )
                 )
@@ -413,8 +413,6 @@ def main(
         config=config
     )
     model.resize_token_embeddings(len(tokenizer))
-    model = accelerator.prepare(model)
-
 
     # Load checkpoint
     model = utils.resume_checkpoint_accelerate(model, args.checkpoint_path)

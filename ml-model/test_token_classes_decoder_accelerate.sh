@@ -1,5 +1,5 @@
 export PYTHONPATH="./"
-accelerate launch --config_file accelerate_config_fsdp.yaml scripts/test/test_single_project.py \
+accelerate launch --config_file accelerate_config_fsdp.yaml scripts/test/test_single_project_accelerate.py \
 --model_type codet5+ \
 --tokenizer_name Salesforce/codet5p-770m \
 --model_name_or_path Salesforce/codet5p-770m \
