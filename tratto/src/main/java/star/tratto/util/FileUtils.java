@@ -171,7 +171,7 @@ public class FileUtils {
      * @param destination the directory where the files will be moved to
      * @throws Error if the source directory does not exist or an error occurs
      * while moving a file
-     * @see FileUtils#copy
+     * @see FileUtils#copy(Path, Path)
      */
     public static void move(Path source, Path destination) {
         if (!Files.exists(source)) {
