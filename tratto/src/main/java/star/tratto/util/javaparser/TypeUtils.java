@@ -17,10 +17,13 @@ import java.util.stream.Collectors;
 /**
  * This class provides static methods to convert between the ClassGetName and
  * ClassGetSimpleName forms of Java types, as well as other utilities for
- * analyzing both forms.
+ * analyzing various type representations.
  */
 public class TypeUtils {
-    /** All primitive field descriptors. */
+    /**
+     * All primitive field descriptors. The ClassGetName form of a type uses
+     * field descriptor for arrays of primitive types.
+     */
     private final static List<String> allPrimitiveFieldDescriptors = List.of("Z", "B", "C", "S", "I", "J", "F", "D");
 
     /** Private constructor to avoid creating an instance of this class. */
@@ -30,11 +33,11 @@ public class TypeUtils {
 
     /**
      * Removes type arguments and semicolons from a parameterized type name.
+     * The given type name should originate from source code, as neither
+     * ClassGetSimpleName nor ClassGetName forms include type parameters.
      *
-     * @param parameterizedType a field descriptor or source code
-     *                          representation of a type
-     *                          (they are equivalent for parameterized objects)
-     * @return the raw type without type arguments
+     * @param parameterizedType a type name from source code
+     * @return the base type without type arguments
      */
     public static String removeTypeArgumentsAndSemicolon(String parameterizedType) {
         String regex = "<[^<>]*>|;";
