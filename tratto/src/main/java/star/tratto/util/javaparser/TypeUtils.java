@@ -126,6 +126,13 @@ public class TypeUtils {
         return allPrimitiveFieldDescriptors.contains(classGetName);
     }
 
+    /**
+     * Gets the ClassGetName form of the component type for a given
+     * ClassGetName array type.
+     *
+     * @param classGetNameArray a ClassGetName form of an array type
+     * @return the ClassGetName form of the array component type
+     */
     private static String classGetNameComponentType(String classGetNameArray) {
         int arrayLevel = getArrayLevel(classGetNameArray);
         if (arrayLevel == 0) {
