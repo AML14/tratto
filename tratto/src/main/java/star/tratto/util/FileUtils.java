@@ -153,7 +153,7 @@ public class FileUtils {
                             try {
                                 Files.copy(p, relativePath, StandardCopyOption.REPLACE_EXISTING);
                             } catch (IOException e) {
-                                throw new Error("Error when trying to move the file " + p, e);
+                                throw new Error("Error when trying to copy the file " + p + " to " + relativePath, e);
                             }
                         }
                     });
