@@ -224,7 +224,7 @@ public class StringUtils {
     private static double cosineSimilarity(RealVector vector1, RealVector vector2) {
         double denominator = vector1.getNorm() * vector2.getNorm();
         if (denominator == 0.0) {
-          return 0.0;
+            return 0.0;
         }
         return vector1.dotProduct(vector2) / denominator;
     }
@@ -232,13 +232,13 @@ public class StringUtils {
     /**
      * Computes the cosine similarity from two lists.
      *
-     * @param lemmas1 list of lemmas
-     * @param lemmas2 list of lemmas
+     * @param strings1 list of strings
+     * @param strings2 list of strings
      * @return the cosine similarity (double between 0.0 and 1.0)
      */
-    private static double cosineSimilarity(List<String> lemmas1, List<String> lemmas2) {
-        Map<String, Integer> wordsFreq1 = getHistogram(lemmas1);
-        Map<String, Integer> wordsFreq2 = getHistogram(lemmas2);
+    private static double cosineSimilarity(List<String> strings1, List<String> strings2) {
+        Map<String, Integer> wordsFreq1 = getHistogram(strings1);
+        Map<String, Integer> wordsFreq2 = getHistogram(strings2);
         TreeSet<String> intersectionKeys = getSetIntersection(wordsFreq1.keySet(), wordsFreq2.keySet());
         RealVector wordVector1 = wordFrequencyToVector(wordsFreq1, intersectionKeys);
         RealVector wordVector2 = wordFrequencyToVector(wordsFreq2, intersectionKeys);
