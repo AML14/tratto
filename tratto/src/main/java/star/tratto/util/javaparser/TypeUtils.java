@@ -49,21 +49,6 @@ public class TypeUtils {
     }
 
     /**
-     * Splits a ClassGetName into segments. Splits name based on "." (package)
-     * and "$" (member).
-     *
-     * @param name a binary method/class name
-     * @return name segments. Includes: all outer packages, all outer classes,
-     * the innermost class, and the member name (if {@code name} is a member).
-     */
-    public static List<String> getNameSegments(
-            String name
-    ) {
-        String regex = "[.$]";
-        return Arrays.asList(name.split(regex));
-    }
-
-    /**
      * Gets the package name from a ClassGetName form of a type.
      *
      * @param classGetName a ClassGetName form of a type
@@ -76,15 +61,13 @@ public class TypeUtils {
     }
 
     /**
-     * Returns innermost class of the name segments.
+     * Gets innermost class of a ClassGetName form of a type.
      *
-     * @param nameSegments name segments. Must represent a class.
-     * @return innermost class of the name segments 
-     * @see TypeUtils#getNameSegments(String)
+     * @param classGetName a ClassGetName form of a type
+     * @return innermost class of a type
      */
-    public static String getInnermostClassNameFromNameSegments(
-            List<String> nameSegments
-    ) {
+    public static String getInnermostClassNameFromClassGetName(String classGetName) {
+        List<String> nameSegments = Arrays.asList(classGetName.split("[.$]"));
         return nameSegments.get(nameSegments.size() - 1);
     }
 
@@ -121,7 +104,7 @@ public class TypeUtils {
      * @param classGetName a ClassGetName form of a type
      * @return true iff the ClassGetName type represents a primitive type
      */
-    private static boolean isPrimitive(String classGetName) {
+    private static boolean isPrimitiveFieldDescriptor(String classGetName) {
         return allPrimitiveFieldDescriptors.contains(classGetName);
     }
 
@@ -138,7 +121,7 @@ public class TypeUtils {
             return classGetNameArray;
         }
         String classGetNameComponent = classGetNameArray.replaceAll("\\[", "");
-        if (isPrimitive(classGetNameComponent)) {
+        if (isPrimitiveFieldDescriptor(classGetNameComponent)) {
             return classGetNameComponent;
         } else {
             classGetNameComponent = classGetNameComponent.replaceAll(";", "");
@@ -159,10 +142,10 @@ public class TypeUtils {
     ) {
         int arrayLevel = getArrayLevel(classGetName);
         classGetName = classGetNameComponentType(classGetName);
-        if (isPrimitive(classGetName)) {
+        if (isPrimitiveFieldDescriptor(classGetName)) {
             classGetName = Signatures.fieldDescriptorToBinaryName(classGetName);
         } else {
-            classGetName = getInnermostClassNameFromNameSegments(getNameSegments(classGetName));
+            classGetName = getInnermostClassNameFromClassGetName(classGetName);
         }
         return addArrayLevel(classGetName, arrayLevel);
     }
