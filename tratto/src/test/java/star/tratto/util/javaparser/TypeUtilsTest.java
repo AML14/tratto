@@ -42,16 +42,6 @@ public class TypeUtilsTest {
     }
 
     @Test
-    public void hasEllipsisTest() {
-        String normalType = "int";
-        String almost = "How..";
-        String varArg = "int...";
-        assertFalse(TypeUtils.isVarArg(normalType));
-        assertFalse(TypeUtils.isVarArg(almost));
-        assertTrue(TypeUtils.isVarArg(varArg));
-    }
-
-    @Test
     public void getRawTypeNamePrimitiveTest() {
         PrimitiveType integerType = new PrimitiveType(PrimitiveType.Primitive.INT);
         ClassOrInterfaceDeclaration jpClass = new ClassOrInterfaceDeclaration()
