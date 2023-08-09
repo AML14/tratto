@@ -17,6 +17,7 @@ from accelerate import Accelerator
 
 
 def predict(
+        device,
         model,
         dl_data,
         tokenizer,
@@ -367,8 +368,12 @@ def main(
     unseen project.
     """
 
+    # Initialize accelerator for model distribution on multiple GPUs
+    accelerator = Accelerator()
+
     # Connect to device
     print("Connect to device")
+    device = utils.connect_to_device(DeviceType.ACCELERATOR)
 
     # List of partial dataframes
     dfs = []
@@ -427,13 +432,14 @@ def main(
         identifier, t_data = t_dataset
         print(f"Parsing oracle group {idx} of  {len(t_datasets)}")
         t_t_data = TensorDataset(*t_data)
-        dl_data = DataLoader(
+        dl_data_cpu = DataLoader(
             t_t_data,
             batch_size=32
         )
+        dl_data = accelerator.prepare(dl_data_cpu)
         if not str(identifier[0]) in predictions_stats:
             predictions_stats[str(identifier[0])] = {}
-        p_stats = predict(model, dl_data, tokenizer, classification_type, transformer_type, classificator_converter_out)
+        p_stats = predict(device, model, dl_data, tokenizer, classification_type, transformer_type, classificator_converter_out)
         oracle_so_far = identifier[1] if not identifier[1] == "" else f"_{empty_counter}"
         if identifier[1] == "":
             empty_counter += 1
