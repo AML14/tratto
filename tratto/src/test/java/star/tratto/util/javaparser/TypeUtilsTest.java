@@ -33,7 +33,7 @@ public class TypeUtilsTest {
 
     @Test
     public void getPackageNameFromNameSegmentsTest() {
-        assertEquals("normal.package.setup.for.a", TypeUtils.getPackageNameFromNameSegments(List.of("normal", "package", "setup", "for", "a", "Class")));
+        assertEquals("normal.package.setup.for.a", TypeUtils.getPackageNameFromClassGetName("normal.package.setup.for.a.Class$InnerClass"));
     }
 
     @Test

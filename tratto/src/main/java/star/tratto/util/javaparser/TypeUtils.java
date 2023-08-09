@@ -16,7 +16,8 @@ import java.util.stream.Collectors;
 
 /**
  * This class provides static methods to convert between the ClassGetName and
- * ClassGetSimpleName forms of Java types.
+ * ClassGetSimpleName forms of Java types, as well as other utilities for
+ * analyzing both forms.
  */
 public class TypeUtils {
     /** All primitive field descriptors. */
@@ -48,7 +49,7 @@ public class TypeUtils {
     }
 
     /**
-     * Splits a binary name into segments. Splits name based on "." (package)
+     * Splits a ClassGetName into segments. Splits name based on "." (package)
      * and "$" (member).
      *
      * @param name a binary method/class name
@@ -63,17 +64,15 @@ public class TypeUtils {
     }
 
     /**
-     * @param nameSegments name segments. Must represent a class.
-     * @return name segments joined by ".", representing the package name.
-     * NOTE: For inner classes, we represent the package name as:
-     *  [outerClass package].[outerClass(es)]
-     * for compatibility with the XText grammar.
-     * @see TypeUtils#getNameSegments(String)
+     * Gets the package name from a ClassGetName form of a type.
+     *
+     * @param classGetName a ClassGetName form of a type
+     * @return the package name of the class
      */
-    public static String getPackageNameFromNameSegments(
-            List<String> nameSegments
-    ) {
-        return String.join(".", nameSegments.subList(0, nameSegments.size() - 1));
+    public static String getPackageNameFromClassGetName(String classGetName) {
+        List<String> nameSegments = Arrays.asList(classGetName.split("\\."));
+        List<String> packageSegments = nameSegments.subList(0, nameSegments.size() - 1);
+        return String.join(".", packageSegments);
     }
 
     /**
