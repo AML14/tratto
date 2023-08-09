@@ -166,13 +166,13 @@ public class StringUtils {
      * Creates a map from each String to its corresponding frequency in a
      * given list of Strings.
      *
-     * @param Strings a list of Strings
+     * @param strings a list of Strings
      * @return string frequencies, where the keys are unique strings and
      * the values are the number of occurrences in {@code strings}
      */
-    private static Map<String, Integer> getHistogram(List<String> Strings) {
+    private static Map<String, Integer> getHistogram(List<String> strings) {
         Map<String, Integer> histogram = new HashMap<>();
-        for (String string : Strings) {
+        for (String string : strings) {
             int currentCount = histogram.getOrDefault(string, 0);
             histogram.put(string, currentCount + 1);
         }
