@@ -119,7 +119,7 @@ public class TypeUtils {
      * ClassGetName array type.
      *
      * @param classGetNameArray a ClassGetName form of an array type
-     * @return the ClassGetName form of the array component type
+     * @return the ClassGetName form of the component type
      */
     private static String classGetNameComponentType(String classGetNameArray) {
         int arrayLevel = getArrayLevel(classGetNameArray);
