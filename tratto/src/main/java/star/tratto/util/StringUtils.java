@@ -182,7 +182,7 @@ public class StringUtils {
     /**
      * Converts a histogram of word frequencies to a vector.
      *
-     * @param frequencies a histogram of word frequencies
+     * @param frequencies a map of word frequencies
      * @param words the set of all words to be considered in the vector
      * @return a vector representation of the word frequencies. Each entry
      * corresponds to a different word, where the value of the entry
