@@ -1,6 +1,23 @@
 {
     "train_batch_size": 32,
     "train_micro_batch_size_per_gpu": 8,
+    "optimizer": {
+      "type": "AdamW",
+      "params": {
+        "lr": 1e-5,
+        "eps": 1e-8,
+        "weight_decay": 0.0,
+        "torch_adam": true
+      }
+    },
+    "scheduler": {
+      "type": "WarmupLR",
+      "params": {
+          "warmup_min_lr": 0,
+          "warmup_max_lr": 0.001,
+          "warmup_num_steps": 1000
+      }
+    },
     "fp16": {
       "enabled": true,
       "auto_cast": false,
@@ -12,6 +29,17 @@
       "min_loss_scale": 1
   },
   "zero_optimization": {
-    "stage": 3
+    "stage": 3,
+    "offload_param": {
+      "device": "cpu",
+      "buffer_count": 5,
+      "buffer_size": 1e8,
+      "max_in_cpu": 1e9
+    },
+    "offload_optimizer": {
+      "device": "cpu",
+      "buffer_count": 4,
+      "fast_init": false
+    }
   }
 }

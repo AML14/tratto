@@ -1,4 +1,3 @@
-
 import os
 from typing import Type, Dict, List, Tuple
 import pandas as pd
@@ -350,6 +349,8 @@ class DataProcessor:
         """
         The method pre-processes the loaded dataset that will be used to train and test the model.
         """
+        # Drop column id (it is not relevant for training the model)
+        self._df_dataset = self._df_dataset.drop(['id'], axis=1)
         # Map empty cells to empty strings
         self._df_dataset.fillna('', inplace=True)
         # Specify the type of each column in the dataset
@@ -357,11 +358,14 @@ class DataProcessor:
             'label': 'str',
             'oracleId': 'int64',
             'oracleType': 'string',
+            'projectName': 'string',
             'packageName': 'string',
             'className': 'string',
             'javadocTag': 'string',
             'methodJavadoc': 'string',
             'methodSourceCode': 'string',
+            'classJavadoc': 'string',
+            'classSourceCode': 'string',
             'oracleSoFar': 'string',
             'token': 'string',
             'tokenClass': 'string',
@@ -431,7 +435,7 @@ class DataProcessor:
             new_columns_order = [
                 'token', 'tokenInfo', 'tokenClass', 'oracleSoFar', 'tokenClassesSoFar', 'eligibleTokenClasses',
                 'javadocTag', 'oracleType', 'packageName', 'className', 'methodSourceCode', 'methodJavadoc',
-                'oracleId', 'label'
+                'classJavadoc', 'classSourceCode', 'projectName', 'oracleId', 'label'
             ]
             # Reindex the DataFrame with the new order
             self._df_dataset = self._df_dataset.reindex(columns=new_columns_order)
@@ -446,8 +450,8 @@ class DataProcessor:
             # Define the new order of columns
             new_columns_order = [
                 'token', 'oracleSoFar', 'eligibleTokens', 'tokenInfo', 'tokenClass', 'javadocTag', 'oracleType',
-                'packageName', 'className', 'methodSourceCode', 'methodJavadoc',
-                'oracleId', 'label'
+                'projectName', 'packageName', 'className', 'methodSourceCode', 'methodJavadoc', 'classJavadoc',
+                'classSourceCode', 'oracleId', 'label'
             ]
             # Reindex the DataFrame with the new order
             self._df_dataset = self._df_dataset.reindex(columns=new_columns_order)
@@ -456,8 +460,11 @@ class DataProcessor:
             # Keep only a single instance for each combination of oracleId and oracleSoFar
             self._df_dataset = self._df_dataset[self._df_dataset['label'] == 'True']
 
+        # Remove method source code (keep only signature)
+        self._df_dataset['methodSourceCode'] = self._df_dataset['methodSourceCode'].str.split('{').str[0]
+
         # Delete the tgt labels from the input dataset, and others less relevant columns
-        df_src = self._df_dataset.drop(['label', 'oracleId'], axis=1)
+        df_src = self._df_dataset.drop(['label', 'oracleId', 'projectName', 'classJavadoc', 'classSourceCode'], axis=1)
         # If the model predicts token classes, remove the token values from the input, else remove
         # the token classes from the input
         if self._tratto_model_type == TrattoModelType.TOKEN_CLASSES:
