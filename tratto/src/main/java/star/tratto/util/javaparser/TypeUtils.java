@@ -15,10 +15,8 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
- * This class provides a collection of static methods to convert between the
- * field descriptor and source code formats of Java types. For our purposes,
- * we note that JDoctor uses field descriptors to represent types, whereas
- * JavaParser uses the source code format to represent types.
+ * This class provides static methods to convert between the ClassGetName and
+ * ClassGetSimpleName forms of Java types.
  */
 public class TypeUtils {
     /** All primitive field descriptors. */
@@ -125,7 +123,22 @@ public class TypeUtils {
      * @return true iff the ClassGetName type represents a primitive type
      */
     private static boolean isPrimitive(String classGetName) {
-        return allPrimitiveFieldDescriptors.contains(classGetName.replaceAll("[^a-zA-Z]+", ""));
+        return allPrimitiveFieldDescriptors.contains(classGetName);
+    }
+
+    private static String classGetNameComponentType(String classGetNameArray) {
+        int arrayLevel = getArrayLevel(classGetNameArray);
+        if (arrayLevel == 0) {
+            return classGetNameArray;
+        }
+        String classGetNameComponent = classGetNameArray.replaceAll("\\[", "");
+        if (isPrimitive(classGetNameComponent)) {
+            return classGetNameComponent;
+        } else {
+            classGetNameComponent = classGetNameComponent.replaceAll(";", "");
+            // for arrays of Objects, remove "L" prefix
+            return classGetNameComponent.substring(1);
+        }
     }
 
     /**
@@ -139,15 +152,10 @@ public class TypeUtils {
             String classGetName
     ) {
         int arrayLevel = getArrayLevel(classGetName);
-        System.out.println(classGetName);
-        classGetName = classGetName.replaceAll("\\[", "");
-        classGetName = classGetName.replaceAll(";", "");
+        classGetName = classGetNameComponentType(classGetName);
         if (isPrimitive(classGetName)) {
             classGetName = Signatures.fieldDescriptorToBinaryName(classGetName);
         } else {
-            if (arrayLevel > 0) {
-                classGetName = classGetName.substring(1);
-            }
             classGetName = getInnermostClassNameFromNameSegments(getNameSegments(classGetName));
         }
         return addArrayLevel(classGetName, arrayLevel);
