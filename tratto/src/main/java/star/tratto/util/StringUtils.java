@@ -37,9 +37,11 @@ public class StringUtils {
      * @return a new StanfordCoreNLP object with the necessary properties for
      * preprocessing two strings for semantic comparison. We use the following
      * modifiers:
-     *  - tokenize: splits input into tokens (e.g. words, punctuation)
-     *  - pos: assigns a part-of-speech to each token
-     *  - lemma: converts each word to its base root (e.g. "running" -> "run")
+     * <ul>
+     *     <li>tokenize: splits input into tokens (e.g. words, punctuation)</li>
+     *     <li>pos: assigns a part-of-speech to each token</li>
+     *     <li>lemma: converts each word to its base root (e.g. "running" -> "run")</li>
+     * </ul>
      */
     private static StanfordCoreNLP getStanfordCoreNLP() {
         Properties properties = new Properties();
