@@ -94,8 +94,8 @@ public class TypeUtils {
     /**
      * Returns the array level of the type.
      *
-     * @param typeName a field descriptor or source code type representation
-     * @return the array level of the type 
+     * @param typeName a ClassGetName or ClassGetSimpleName form of a type
+     * @return the array level of the type
      */
     private static int getArrayLevel(String typeName) {
         int arrayLevel = 0;
@@ -108,80 +108,64 @@ public class TypeUtils {
     }
 
     /**
-     * Adds pairs of square brackets to a given type name in source code
-     * format, increasing the array level by a given amount.
+     * Adds pairs of square brackets to a given ClassGetSimpleName type.
      *
-     * @param typeName a type name
-     * @param arrayLevel the number of array levels to add
-     * @return the new type name with the added number of array levels
+     * @param classGetSimpleName a ClassGetSimpleName form of a type
+     * @param arrayLevel number of array levels to add
+     * @return the simple type name with the added number of array levels
      */
-    private static String addArrayLevel(String typeName, int arrayLevel) {
-        return typeName + ("[]").repeat(arrayLevel);
+    private static String addArrayLevel(String classGetSimpleName, int arrayLevel) {
+        return classGetSimpleName + ("[]").repeat(arrayLevel);
     }
 
     /**
-     * Converts a field descriptor array to an FQN format array. This method
-     * ONLY changes the square brackets, and will not change the component
-     * type name. For example:
-     *  [Object => Object[]
-     *  [[D     => D[][]
+     * Returns true iff the ClassGetName type is a primitive type.
      *
-     * @param fieldDescriptor a field descriptor array type
-     * @return the corresponding source code format array type
+     * @param classGetName a ClassGetName form of a type
+     * @return true iff the ClassGetName type represents a primitive type
      */
-    private static String fieldDescriptorArrayToFQNArray(String fieldDescriptor) {
-        int arrayLevel = getArrayLevel(fieldDescriptor);
-        return addArrayLevel(fieldDescriptor.substring(arrayLevel), arrayLevel);
+    private static boolean isPrimitive(String classGetName) {
+        return allPrimitiveFieldDescriptors.contains(classGetName.replaceAll("[^a-zA-Z]+", ""));
     }
 
     /**
-     * Returns true iff the field descriptor represents a primitive type or an
-     * array of primitive types.
+     * Converts a ClassGetName form of a type to its corresponding
+     * ClassGetSimpleName form.
      *
-     * @param fieldDescriptor a field descriptor of a type (can be an array)
-     * @return true iff the field descriptor represents a primitive type or an
-     * array of primitive types 
+     * @param classGetName a ClassGetName form of a type
+     * @return the corresponding ClassGetSimpleName form of a type
      */
-    private static boolean hasPrimitive(String fieldDescriptor) {
-        return allPrimitiveFieldDescriptors.contains(fieldDescriptor.replaceAll("[^a-zA-Z]+", ""));
-    }
-
-    /**
-     * Converts a field descriptor representation of a type name to its
-     * corresponding source code format representation.
-     *
-     * @param fieldDescriptor a field descriptor representation of a type
-     * @return the corresponding source code format representation of the type
-     */
-    private static String fieldDescriptorToSourceFormat(
-            String fieldDescriptor
+    private static String classGetNameToClassGetSimpleName(
+            String classGetName
     ) {
-        fieldDescriptor = removeTypeArgumentsAndSemicolon(fieldDescriptor);
-        if (hasPrimitive(fieldDescriptor)) {
-            // use plume-lib to convert between primitive field descriptors and binary names
-            // (equivalent for primitive types)
-            fieldDescriptor = Signatures.fieldDescriptorToBinaryName(fieldDescriptor);
+        int arrayLevel = getArrayLevel(classGetName);
+        System.out.println(classGetName);
+        classGetName = classGetName.replaceAll("\\[", "");
+        classGetName = classGetName.replaceAll(";", "");
+        if (isPrimitive(classGetName)) {
+            classGetName = Signatures.fieldDescriptorToBinaryName(classGetName);
         } else {
-            // manually convert array and then get class name
-            fieldDescriptor = fieldDescriptorArrayToFQNArray(fieldDescriptor);
-            fieldDescriptor = getInnermostClassNameFromNameSegments(getNameSegments(fieldDescriptor));
+            if (arrayLevel > 0) {
+                classGetName = classGetName.substring(1);
+            }
+            classGetName = getInnermostClassNameFromNameSegments(getNameSegments(classGetName));
         }
-        return fieldDescriptor;
+        return addArrayLevel(classGetName, arrayLevel);
     }
 
     /**
-     * Converts a list of field descriptors {@code fieldDescriptors} to a list
-     * of source code format type names.
+     * Converts a list of ClassGetName forms of types to their corresponding
+     * ClassGetSimpleName forms.
      *
-     * @param fieldDescriptors field descriptors to convert
-     * @return the corresponding source code format type names
+     * @param classGetNames ClassGetName forms of types
+     * @return the corresponding ClassGetSimpleName forms of types
      */
-    public static List<String> fieldDescriptorsToSourceFormats(
-            List<String> fieldDescriptors
+    public static List<String> classGetNameToClassGetSimpleName(
+            List<String> classGetNames
     ) {
-        return fieldDescriptors
+        return classGetNames
                 .stream()
-                .map(TypeUtils::fieldDescriptorToSourceFormat)
+                .map(TypeUtils::classGetNameToClassGetSimpleName)
                 .collect(Collectors.toList());
     }
 

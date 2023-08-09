@@ -42,14 +42,15 @@ public class TypeUtilsTest {
     }
 
     @Test
-    public void fieldDescriptorsToSourceFormatsTest() {
-        assertEquals(List.of("boolean", "byte", "char", "short", "int", "long", "float", "double"), TypeUtils.fieldDescriptorsToSourceFormats(List.of("Z", "B", "C", "S", "I", "J", "F", "D")));
-        assertEquals(List.of("RandomObject"), TypeUtils.fieldDescriptorsToSourceFormats(List.of("some.weird.RandomObject")));
-        assertEquals(List.of("byte[]", "int"), TypeUtils.fieldDescriptorsToSourceFormats(List.of("[B", "I")));
-        assertEquals(List.of("char[][]"), TypeUtils.fieldDescriptorsToSourceFormats(List.of("[[C")));
-        assertEquals(List.of("SuperCoolClass[][]"), TypeUtils.fieldDescriptorsToSourceFormats(List.of("[[com.google.SuperCoolClass")));
-        assertEquals(List.of("Type"), TypeUtils.fieldDescriptorsToSourceFormats(List.of("Type<with parameters>")));
-        assertEquals(List.of("SuperCoolParameterizedType[]", "double"), TypeUtils.fieldDescriptorsToSourceFormats(List.of("[com.amazon.coretta.SuperCoolParameterizedType<with parameters<T>, Integer>", "D")));
+    public void classGetNameToClassGetSimpleNameTest() {
+        assertEquals(List.of("int"), TypeUtils.classGetNameToClassGetSimpleName(List.of("int")));
+        assertEquals(List.of("int[][]"), TypeUtils.classGetNameToClassGetSimpleName(List.of("[[I")));
+        assertEquals(List.of("MyClass"), TypeUtils.classGetNameToClassGetSimpleName(List.of("MyClass")));
+        assertEquals(List.of("MyClass[]"), TypeUtils.classGetNameToClassGetSimpleName(List.of("[LMyClass;")));
+        assertEquals(List.of("Integer"), TypeUtils.classGetNameToClassGetSimpleName(List.of("java.lang.Integer")));
+        assertEquals(List.of("Integer[]"), TypeUtils.classGetNameToClassGetSimpleName(List.of("[Ljava.lang.Integer;")));
+        assertEquals(List.of("Inner"), TypeUtils.classGetNameToClassGetSimpleName(List.of("pkg.Outer$Inner")));
+        assertEquals(List.of("Inner[]"), TypeUtils.classGetNameToClassGetSimpleName(List.of("[Lpkg.Outer$Inner;")));
     }
 
     @Test
