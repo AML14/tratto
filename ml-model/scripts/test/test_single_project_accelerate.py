@@ -417,7 +417,7 @@ def main(
 
 
     # Load checkpoint
-    model = utils.resume_checkpoint_accelerate(model, args.resume_checkpoint_filename)
+    model = utils.resume_checkpoint_accelerate(model, args.checkpoint_path)
 
     print("Start predictions")
     predictions_stats = {}
