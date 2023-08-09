@@ -93,9 +93,9 @@ public class FileUtils {
     }
 
     /**
-     * Returns the path of the target file when hypothetically moved from the
-     * source directory to the destination directory. NOTE: this method does
-     * NOT move any files.
+     * Returns the path of the target file when (hypothetically) moved from
+     * the source directory to the destination directory.
+     * NOTE: This method does NOT perform the move.
      *
      * @param source the source directory
      * @param destination the destination directory
