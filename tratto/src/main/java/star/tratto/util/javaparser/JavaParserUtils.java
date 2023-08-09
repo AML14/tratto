@@ -27,6 +27,7 @@ import com.github.javaparser.resolution.declarations.ResolvedTypeParameterDeclar
 import com.github.javaparser.resolution.types.ResolvedType;
 import com.github.javaparser.resolution.types.ResolvedWildcard;
 import com.github.javaparser.symbolsolver.javaparsermodel.declarations.JavaParserMethodDeclaration;
+import com.github.javaparser.symbolsolver.javassistmodel.JavassistMethodDeclaration;
 import com.github.javaparser.symbolsolver.reflectionmodel.ReflectionMethodDeclaration;
 import com.github.javaparser.symbolsolver.utils.SymbolSolverCollectionStrategy;
 import org.javatuples.Pair;
@@ -59,13 +60,15 @@ import static star.tratto.util.StringUtils.fullyQualifiedClassName;
 public class JavaParserUtils {
     private static final Logger logger = LoggerFactory.getLogger(JavaParserUtils.class);
     private static JavaParser javaParser = getJavaParser();
-    private static final Parser parser = Parser.getInstance();
+    private static final Parser oracleParser = Parser.getInstance();
     // artificial source code used to parse arbitrary source code expressions using JavaParser
     private static final String SYNTHETIC_CLASS_NAME = "Tratto__AuxiliaryClass";
     private static final String SYNTHETIC_CLASS_SOURCE = "public class " + SYNTHETIC_CLASS_NAME + " {}";
     private static final String SYNTHETIC_METHOD_NAME = "__tratto__auxiliaryMethod";
-    // matches the signature from either a ReflectionMethodDeclaration or JavassistMethodDeclaration
-    // (both implementations of ResolvedMethodDeclaration)
+    /**
+     * Matches the signature from the "toString" of either {@link ReflectionMethodDeclaration} or
+     * {@link JavassistMethodDeclaration} (both implementations of {@link ResolvedMethodDeclaration})
+     */
     private static final Pattern METHOD_SIGNATURE = Pattern.compile(
             "^ReflectionMethodDeclaration\\{method=((.*) )?\\S+ \\S+\\(.*\\}$|" +
                     "^JavassistMethodDeclaration\\{ctMethod\\=.*\\[((.*) )?\\S+ \\(.*\\).*\\]}$"
@@ -73,7 +76,7 @@ public class JavaParserUtils {
     // matches the binary name of a class (e.g. "package.submodule.InnerClass$OuterClass")
     private static final Pattern PACKAGE_CLASS = Pattern.compile("[a-zA-Z_][a-zA-Z\\d_]*(\\.[a-zA-Z_][a-zA-Z\\d_]*)*");
 
-    // private constructor to avoid creating an instance of this class.
+    /** Private constructor to avoid creating an instance of this class. */
     private JavaParserUtils() {
         throw new UnsupportedOperationException("This class cannot be instantiated.");
     }
@@ -89,8 +92,10 @@ public class JavaParserUtils {
         return javaParser;
     }
 
-    /** Returns a "java.lang.Object" type.
-@return a "java.lang.Object" type 
+    /**
+     * Returns a "java.lang.Object" type.
+     *
+     * @return a "java.lang.Object" type
      */
     public static ResolvedType getObjectType() {
         return javaParser.parse(SYNTHETIC_CLASS_SOURCE).getResult().orElseThrow()
@@ -284,7 +289,7 @@ public class JavaParserUtils {
         if (!expression.contains("jdVar")) {
             return;
         }
-        String jdVarArrayElement = parser.getLastJdVarArrayElement(oracleDatapoint.getOracle());
+        String jdVarArrayElement = oracleParser.getLastJdVarArrayElement(oracleDatapoint.getOracle());
         if (jdVarArrayElement == null) {
             throw new IllegalStateException("Could not find a jdVar clause in the oracle, but the expression contains jdVar. " +
                     "Expression: " + expression + ". Oracle: " + oracleDatapoint.getOracle());

@@ -123,7 +123,7 @@ public class FileUtilsTest {
     public void getAllJavaFilesFromDirectoryTest() {
         Path dir = Paths.get("src/test/java/star/tratto/oraclegrammar/custom");
         try {
-            List<String> fileNames = FileUtils.getAllJavaFilesFromDirectory(dir)
+            List<String> fileNames = FileUtils.getAllJavaFilesUnderDirectory(dir)
                     .stream()
                     .map(p -> p.getFileName().toString())
                     .toList();
