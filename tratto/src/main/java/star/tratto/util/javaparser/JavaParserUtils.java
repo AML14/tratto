@@ -354,7 +354,8 @@ public class JavaParserUtils {
     }
 
     /**
-     * Removes the package name from a fully qualified name of a type.
+     * Removes the package name from a fully qualified name of a type. Also
+     * removes package from type parameters.
      *
      * @param fullyQualifiedName a fully qualified name of a type
      * @return the type name without packages. Includes outer classes, e.g.,
@@ -375,21 +376,24 @@ public class JavaParserUtils {
     }
 
     /**
-     * A resolved type may be void, primitive, an array, or a reference type
+     * A resolved type may be void, primitive, an array, a reference type, etc.
      * (including arrays of reference types). If the type involves a reference
-     * type, this method returns the binary name without packages.
+     * type, this method returns the fully qualified name without packages.
      *
-     * @param resolvedType JavaParser ResolvedType
-     * @return string representation of the type without packages
+     * @param resolvedType JavaParser resolved type
+     * @return the fully qualified name of the type without packages. If the
+     * resolved type is an array of reference types, removes the packages from
+     * the fully qualified name of the component type.
      */
     public static String getTypeWithoutPackages(ResolvedType resolvedType) {
         String typeName = resolvedType.describe();
         ResolvedType componentType = removeArray(resolvedType);
         if (componentType.isReferenceType()) {
-            // we use the original type name to avoid removing the array
-            typeName = getTypeWithoutPackages(typeName);
+            // we use the original type name to avoid removing arrays
+            return getTypeWithoutPackages(typeName);
+        } else {
+            return typeName;
         }
-        return typeName;
     }
 
     /**
