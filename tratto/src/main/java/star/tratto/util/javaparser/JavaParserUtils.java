@@ -847,9 +847,11 @@ public class JavaParserUtils {
     }
 
     /**
+     * Checks if a type is a type parameter.
+     *
      * @param resolvedType a JavaParser resolved type
-     * @return true iff a given type represents a type parameter of a generic
-     * class. If the given type is an array, then the method analyzes the base
+     * @return true iff a given type is a type parameter of a generic class or
+     * method. If the given type is an array, then this method checks the base
      * component type.
      */
     public static boolean isTypeParameter(
