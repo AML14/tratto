@@ -658,7 +658,9 @@ public class JavaParserUtils {
         return (String.join("", field.getModifiers().stream().map(Node::toString).toList()) +
                 variable.getTypeAsString() + " " +
                 variable.getNameAsString() +
-                (variable.getInitializer().isPresent() ? " = " + variable.getInitializer().get() : "") +
+                (variable.getInitializer().isPresent()
+                        ? " = " + variable.getInitializer().get()
+                        : "") +
                 ";").trim();
     }
 
