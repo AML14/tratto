@@ -707,29 +707,36 @@ public class JavaParserUtils {
     }
 
     /**
-     * Returns the signature of a JavaParser callable declaration.
+     * Returns the signature of a JavaParser callable declaration. Uses the
+     * method source code and removes method body, contained comments, the
+     * Javadoc comment, and other special characters (e.g. "\n").
      *
      * @param jpCallable a JavaParser callable declaration
-     * @return a string representation of the signature. Signature follows the
-     * format:
-     *  "[modifiers] [type] [methodName]([parameters]) throws [exceptions]"
+     * @return a string representation of the signature. A signature follows
+     * the format:
+     *     "[modifiers] [typeParameters] [type] [methodName]([parameters]) throws [exceptions]"
      */
     public static String getCallableSignature(
             CallableDeclaration<?> jpCallable
     ) {
+        // get method source as a string
         String methodSignature = jpCallable.toString();
         Optional<BlockStmt> methodBody = jpCallable instanceof MethodDeclaration ?
                 ((MethodDeclaration) jpCallable).getBody() :
                 Optional.ofNullable(((ConstructorDeclaration) jpCallable).getBody());
+        // remove method body
         if (methodBody.isPresent()) {
             methodSignature = methodSignature.replace(methodBody.get().toString(), "");
         }
+        // remove all comments
         for (Node comment: jpCallable.getAllContainedComments()) {
             methodSignature = methodSignature.replace(comment.toString(), "");
         }
+        // remove Javadoc comment
         if (jpCallable.getComment().isPresent()) {
             methodSignature = methodSignature.replaceAll("[\\s\\S]*\n", "");
         }
+        // remove special characters
         methodSignature = methodSignature.replaceAll("/\\*\\*([\\s\\S]*?)\\*/(\\n|\\r|\\t)*", "");
         return methodSignature.trim().replaceAll(";$", "");
     }
