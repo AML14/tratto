@@ -88,7 +88,7 @@ public class DatasetUtils {
             CompilationUnit cu
     ) throws PackageDeclarationNotFoundException {
         List<ClassTokens> classList = new ArrayList<>();
-        String packageName = JavaParserUtils.getPackageDeclarationFromCompilationUnit(cu).getNameAsString();
+        String packageName = JavaParserUtils.getPackageDeclaration(cu).getNameAsString();
         // iterate through each class in the compilation unit.
         List<TypeDeclaration<?>> jpClasses = cu.getTypes();
         for (TypeDeclaration<?> jpClass : jpClasses) {
@@ -389,7 +389,7 @@ public class DatasetUtils {
     ) throws PackageDeclarationNotFoundException {
         List<MethodTokens> methodList = new ArrayList<>();
         // get package name.
-        String packageName = JavaParserUtils.getPackageDeclarationFromCompilationUnit(cu).getNameAsString();
+        String packageName = JavaParserUtils.getPackageDeclaration(cu).getNameAsString();
         // iterate over each class in the compilation unit.
         List<TypeDeclaration<?>> jpClasses = cu.getTypes();
         for (TypeDeclaration<?> jpClass : jpClasses) {
@@ -425,7 +425,7 @@ public class DatasetUtils {
     ) throws PackageDeclarationNotFoundException {
         List<AttributeTokens> attributeList = new ArrayList<>();
         // get package name.
-        String packageName = JavaParserUtils.getPackageDeclarationFromCompilationUnit(cu).getNameAsString();
+        String packageName = JavaParserUtils.getPackageDeclaration(cu).getNameAsString();
         // get all classes in compilation unit.
         List<TypeDeclaration<?>> jpClasses = cu.getTypes();
         // iterate over all classes.
@@ -915,7 +915,7 @@ public class DatasetUtils {
             CallableDeclaration<?> jpCallable
     ) throws JPClassNotFoundException {
         // add all methods of the base class (receiverObjectID -> this).
-        List<MethodUsage> allReceiverMethods = JavaParserUtils.getAllAvailableMethodUsages(jpClass)
+        List<MethodUsage> allReceiverMethods = JavaParserUtils.getMethodsOfType(jpClass)
                 .stream()
                 .filter(JavaParserUtils::isNonPrivateNonStaticNonVoidMethod)
                 .toList();
@@ -959,7 +959,7 @@ public class DatasetUtils {
             CallableDeclaration<?> jpCallable
     ) throws JPClassNotFoundException {
         // add all fields of the base class (receiverObjectID -> this).
-        List<ResolvedFieldDeclaration> allReceiverFields = JavaParserUtils.getAllAvailableResolvedFields(jpClass)
+        List<ResolvedFieldDeclaration> allReceiverFields = JavaParserUtils.getFieldsOfType(jpClass)
                 .stream()
                 .filter(JavaParserUtils::isNonPrivateNonStaticAttribute)
                 .toList();
