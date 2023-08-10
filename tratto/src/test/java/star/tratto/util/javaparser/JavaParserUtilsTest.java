@@ -456,7 +456,7 @@ public class JavaParserUtilsTest {
         OracleDatapoint oracleDatapoint = oracleDatapoints.get(1);
         CompilationUnit cu = javaParser.parse(oracleDatapoint.getClassSourceCode()).getResult().get();
         try {
-            PackageDeclaration packageDeclaration = getPackageDeclarationFromCompilationUnit(cu);
+            PackageDeclaration packageDeclaration = getPackageDeclaration(cu);
             assertEquals("org.apache.commons.math3.analysis.polynomials", packageDeclaration.getNameAsString());
         } catch (PackageDeclarationNotFoundException e) {
             fail();
@@ -485,7 +485,7 @@ public class JavaParserUtilsTest {
         OracleDatapoint oracleDatapoint = oracleDatapoints.get(1);
         TypeDeclaration<?> jpClass = getClassOrInterface(oracleDatapoint.getClassSourceCode(), oracleDatapoint.getClassName());
         try {
-            List<String> availableMethodList = getAllAvailableMethodUsages(jpClass)
+            List<String> availableMethodList = JavaParserUtils.getMethodsOfType(jpClass)
                     .stream()
                     .map(MethodUsage::getName)
                     .collect(Collectors.toList());
@@ -517,7 +517,7 @@ public class JavaParserUtilsTest {
         OracleDatapoint oracleDatapoint = oracleDatapoints.get(1);
         TypeDeclaration<?> jpClass = getClassOrInterface(oracleDatapoint.getClassSourceCode(), oracleDatapoint.getClassName());
         try {
-            List<String> availableFieldsList = getAllAvailableResolvedFields(jpClass)
+            List<String> availableFieldsList = getFieldsOfType(jpClass)
                     .stream()
                     .map(ResolvedDeclaration::getName)
                     .collect(Collectors.toList());
@@ -537,7 +537,7 @@ public class JavaParserUtilsTest {
         assertTrue(optionalCu.isPresent());
         CompilationUnit cu = optionalCu.get();
         try {
-            PackageDeclaration packageDeclaration = getPackageDeclarationFromCompilationUnit(cu);
+            PackageDeclaration packageDeclaration = getPackageDeclaration(cu);
             String packageName = packageDeclaration.getNameAsString();
             assertEquals("star.tratto.data", packageName);
         } catch (PackageDeclarationNotFoundException e) {

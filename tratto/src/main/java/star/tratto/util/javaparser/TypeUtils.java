@@ -129,6 +129,7 @@ public class TypeUtils {
         int arrayLevel = getArrayLevel(classGetName);
         classGetName = classGetNameComponentType(classGetName);
         if (isPrimitiveFieldDescriptor(classGetName)) {
+            // ClassGetName uses field descriptors for arrays of primitive types
             classGetName = Signatures.fieldDescriptorToBinaryName(classGetName);
         } else {
             classGetName = getInnermostClassNameFromClassGetName(classGetName);
