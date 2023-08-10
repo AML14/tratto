@@ -918,7 +918,7 @@ public class JavaParserUtils {
      * @return list of ResolvedFieldDeclaration objects
      * @throws JPClassNotFoundException if jpClass is not resolvable
      */
-    public static List<ResolvedFieldDeclaration> getAllAvailableResolvedFields(
+    public static List<ResolvedFieldDeclaration> getAllAvailableFields(
             TypeDeclaration<?> jpClass
     ) throws JPClassNotFoundException {
         try {

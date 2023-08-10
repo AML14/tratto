@@ -509,7 +509,7 @@ public class JavaParserUtilsTest {
         OracleDatapoint oracleDatapoint = oracleDatapoints.get(1);
         TypeDeclaration<?> jpClass = getClassOrInterface(oracleDatapoint.getClassSourceCode(), oracleDatapoint.getClassName());
         try {
-            List<String> availableFieldsList = getAllAvailableResolvedFields(jpClass)
+            List<String> availableFieldsList = getAllAvailableFields(jpClass)
                     .stream()
                     .map(ResolvedDeclaration::getName)
                     .collect(Collectors.toList());
