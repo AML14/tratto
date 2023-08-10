@@ -934,9 +934,9 @@ public class JavaParserUtils {
     }
 
     /**
-     * Creates a compilation unit from a Java file.
+     * Gets a compilation unit from a Java file path.
      *
-     * @param path an absolute file path
+     * @param path a Java file
      * @return the corresponding JavaParser compilation unit. Returns
      * {@code Optional.empty()} if an error occurs while attempting to parse
      * the file.
