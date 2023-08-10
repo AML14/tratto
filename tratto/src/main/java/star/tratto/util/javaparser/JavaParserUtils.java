@@ -354,23 +354,24 @@ public class JavaParserUtils {
     }
 
     /**
-     * @param typeName a binary name of a type
-     * @return the simple name of a type (without packages for classes).
-     * Includes outer classes when given an inner class, e.g.
-     *     package.Outer$Inner    =>    Outer$Inner
+     * Removes the package name from a fully qualified name of a type.
+     *
+     * @param fullyQualifiedName a fully qualified name of a type
+     * @return the type name without packages. Includes outer classes, e.g.,
+     *     package.Outer.Inner    =>    Outer.Inner
      */
-    private static String getTypeWithoutPackages(String typeName) {
-        Matcher matcher = PACKAGE_CLASS.matcher(typeName);
-        // remove package for reference types
+    private static String getTypeWithoutPackages(String fullyQualifiedName) {
+        Matcher matcher = PACKAGE_CLASS.matcher(fullyQualifiedName);
         while (matcher.find()) {
             if (matcher.group().contains(".")) {
-                typeName = typeName.replaceAll(
+                fullyQualifiedName = fullyQualifiedName.replaceAll(
                         matcher.group(),
+                        // removes packages but keeps outer classes
                         getResolvedReferenceTypeDeclaration(matcher.group()).getClassName()
                 );
             }
         }
-        return typeName;
+        return fullyQualifiedName;
     }
 
     /**
