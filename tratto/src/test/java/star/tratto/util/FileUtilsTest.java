@@ -120,7 +120,7 @@ public class FileUtilsTest {
     }
 
     @Test
-    public void getAllJavaFilesFromDirectoryTest() {
+    public void getAllJavaFilesUnderDirectoryTest() {
         Path dir = Paths.get("src/test/java/star/tratto/oraclegrammar/custom");
         try {
             List<String> fileNames = FileUtils.getAllJavaFilesUnderDirectory(dir)
