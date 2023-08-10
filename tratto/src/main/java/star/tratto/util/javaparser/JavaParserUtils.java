@@ -760,9 +760,9 @@ public class JavaParserUtils {
     }
 
     /**
-     * Get all type parameters of a given method.
+     * Gets all type parameters of a given method.
      */
-    private static List<String> getMethodUsageTypeParameters(MethodUsage methodUsage) {
+    private static List<String> getTypeParameters(MethodUsage methodUsage) {
         return methodUsage.getDeclaration().getTypeParameters()
                 .stream()
                 .map(ResolvedTypeParameterDeclaration::getName)
@@ -770,9 +770,9 @@ public class JavaParserUtils {
     }
 
     /**
-     * Get all formal parameters in the method arguments.
+     * Gets all formal parameters in the method definition.
      */
-    private static List<String> getMethodUsageParameters(MethodUsage methodUsage) {
+    private static List<String> getParameters(MethodUsage methodUsage) {
         ResolvedMethodDeclaration methodDeclaration = methodUsage.getDeclaration();
         // iterate through each parameter in the method declaration.
         List<String> methodParameters = new ArrayList<>();
@@ -783,9 +783,9 @@ public class JavaParserUtils {
     }
 
     /**
-     * Get all exceptions that can be thrown by a given method.
+     * Gets all exceptions that can be thrown by a given method.
      */
-    private static List<String> getMethodUsageExceptions(MethodUsage methodUsage) {
+    private static List<String> getExceptions(MethodUsage methodUsage) {
         return methodUsage.getDeclaration().getSpecifiedExceptions()
                 .stream()
                 .map(JavaParserUtils::getTypeWithoutPackages)
@@ -824,9 +824,9 @@ public class JavaParserUtils {
         if (methodModifiers == null) {
             methodModifiers = "";
         }
-        List<String> typeParameterList = getMethodUsageTypeParameters(methodUsage);
-        List<String> formalParameterList = getMethodUsageParameters(methodUsage);
-        List<String> exceptionList = getMethodUsageExceptions(methodUsage);
+        List<String> typeParameterList = getTypeParameters(methodUsage);
+        List<String> formalParameterList = getParameters(methodUsage);
+        List<String> exceptionList = getExceptions(methodUsage);
         return (methodModifiers + " " + (typeParameterList.isEmpty() ? "" : "<" + String.join(", ", typeParameterList) + ">") +
                 " " + getTypeWithoutPackages(methodDeclaration.getReturnType()) +
                 " " + methodDeclaration.getName() +
