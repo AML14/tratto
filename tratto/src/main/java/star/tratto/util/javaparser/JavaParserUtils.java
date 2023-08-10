@@ -108,6 +108,7 @@ public class JavaParserUtils {
     /**
      * Adds a synthetic empty method block to a given class.
      *
+     * @param typeDeclaration the class to add a method to
      * @return an empty JavaParser method block in the given class
      */
     private static BlockStmt getSyntheticBlockStmt(TypeDeclaration<?> typeDeclaration) {
@@ -206,8 +207,7 @@ public class JavaParserUtils {
                     expression
             );
             // find expression in synthetic method and resolve return type
-            return jpClass.asClassOrInterfaceDeclaration()
-                    .getMethodsByName(SYNTHETIC_METHOD_NAME).get(0)
+            return jpClass.getMethodsByName(SYNTHETIC_METHOD_NAME).get(0)
                     .getBody().orElseThrow()
                     .getStatements().getLast().orElseThrow()
                     .asExpressionStmt().getExpression()
