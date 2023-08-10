@@ -832,17 +832,16 @@ public class JavaParserUtils {
     }
 
     /**
-     * Returns the base component type of the resolved type
-     * {@code resolvedType}. Recursively strips all array variables.
-     * For example:
-     *  Object[][] => Object
+     * Returns the base component type of a resolved type. Recursively strips
+     * all array variables. For example:
+     *     Object[][] => Object
      *
      * @param resolvedType a type
      * @return the base component type
      */
     public static ResolvedType removeArray(ResolvedType resolvedType) {
-        if (resolvedType.isArray()) {
-            return removeArray(resolvedType.asArrayType().getComponentType());
+        while (resolvedType.isArray()) {
+            resolvedType = resolvedType.asArrayType().getComponentType();
         }
         return resolvedType;
     }
