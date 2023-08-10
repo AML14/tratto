@@ -66,14 +66,14 @@ public class JavaParserUtils {
     private static final String SYNTHETIC_CLASS_SOURCE = "public class " + SYNTHETIC_CLASS_NAME + " {}";
     private static final String SYNTHETIC_METHOD_NAME = "__tratto__auxiliaryMethod";
     /**
-     * Matches the signature from the "toString" of either {@link ReflectionMethodDeclaration} or
+     * Regex to match the signature from the "toString" of either {@link ReflectionMethodDeclaration} or
      * {@link JavassistMethodDeclaration} (both implementations of {@link ResolvedMethodDeclaration})
      */
     private static final Pattern METHOD_SIGNATURE = Pattern.compile(
             "^ReflectionMethodDeclaration\\{method=((.*) )?\\S+ \\S+\\(.*\\}$|" +
                     "^JavassistMethodDeclaration\\{ctMethod\\=.*\\[((.*) )?\\S+ \\(.*\\).*\\]}$"
     );
-    // matches the binary name of a class (e.g. "package.submodule.InnerClass$OuterClass")
+    /** Regex to match the binary name of a class (e.g. "package.submodule.InnerClass$OuterClass") */
     private static final Pattern PACKAGE_CLASS = Pattern.compile("[a-zA-Z_][a-zA-Z\\d_]*(\\.[a-zA-Z_][a-zA-Z\\d_]*)*");
 
     /** Private constructor to avoid creating an instance of this class. */
