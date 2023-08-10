@@ -186,7 +186,7 @@ public class ProjectOracleGenerator {
             String javaDocTag
     ) {
         Path sourcePath = this.project.srcPath();
-        String className = DatasetUtils.getOperationClassName(operation);
+        String className = TypeUtils.getInnermostClassNameFromClassGetName(operation.className());
         String callableName = DatasetUtils.getOperationCallableName(operation);
         List<String> parameterTypes = TypeUtils.classGetNameToClassGetSimpleName(operation.parameterTypes());
         Optional<CompilationUnit> cuOptional = DatasetUtils.getOperationCompilationUnit(operation, sourcePath);
@@ -289,8 +289,8 @@ public class ProjectOracleGenerator {
         // get basic information of operation.
         Path sourcePath = this.project.srcPath();
         String projectName = this.project.projectName();
-        String packageName = DatasetUtils.getOperationPackageName(operation);
-        String className = DatasetUtils.getOperationClassName(operation);
+        String packageName = TypeUtils.getPackageNameFromClassGetName(operation.className());
+        String className = TypeUtils.getInnermostClassNameFromClassGetName(operation.className());
         String callableName = DatasetUtils.getOperationCallableName(operation);
         List<String> parameterTypes = TypeUtils.classGetNameToClassGetSimpleName(operation.parameterTypes());
         // get CompilationUnit of operation class.

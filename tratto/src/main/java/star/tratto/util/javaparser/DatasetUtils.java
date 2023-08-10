@@ -241,7 +241,6 @@ public class DatasetUtils {
             Parameter jpParameter
     ) {
         Type jpParameterType = jpParameter.getType();
-        boolean hasEllipsis = TypeUtils.hasEllipsis(jpParameter.toString());
         try {
             ResolvedType jpResolvedParameterType = jpParameterType.resolve();
             String className = "";
@@ -253,7 +252,7 @@ public class DatasetUtils {
             } else if (jpResolvedParameterType.isReferenceType()) {
                 // if object is generic, use generic name.
                 if (JavaParserUtils.isTypeParameter(jpResolvedParameterType)) {
-                    className = TypeUtils.getRawTypeName(jpClass, jpCallable, jpParameter);
+                    className = TypeUtils.getJDoctorSimpleNameFromSourceCode(jpClass, jpCallable, jpParameter);
                 } else {
                     className = JavaParserUtils.getTypeWithoutPackages(jpResolvedParameterType.asReferenceType());
                 }
@@ -266,7 +265,7 @@ public class DatasetUtils {
                 logger.error(String.format("Unexpected type when evaluating %s parameter type.", jpParameterType));
             }
             // check if type is an array.
-            if (hasEllipsis) {
+            if (jpParameter.isVarArgs()) {
                 className += "[]";
             }
             // return class name.
@@ -274,7 +273,7 @@ public class DatasetUtils {
         } catch (UnsolvedSymbolException e) {
             logger.error(String.format("UnsolvedSymbolException when evaluating %s parameter type.", jpParameterType));
             String className = jpParameterType.asClassOrInterfaceType().getNameAsString();
-            if (hasEllipsis) {
+            if (jpParameter.isVarArgs()) {
                 className += "[]";
             }
             return Optional.of(className);
@@ -312,7 +311,7 @@ public class DatasetUtils {
                         // if not a reference type, ignore package name (e.g. primitives do not have packages).
                         argumentList.add(new MethodArgumentTokens(jpParameter.getNameAsString(), "", jpParameterClassName.get()));
                     } else if (jpParameterType.resolve().isReferenceType()) {
-                        String typeName = TypeUtils.getRawTypeName(jpClass, jpCallable, jpParameter);
+                        String typeName = TypeUtils.getJDoctorSimpleNameFromSourceCode(jpClass, jpCallable, jpParameter);
                         if (JavaParserUtils.isTypeParameter(jpParameterType.resolve())) {
                             // if reference object is a generic type, ignore package name.
                             argumentList.add(new MethodArgumentTokens(jpParameter.getNameAsString(), "", typeName));
@@ -884,7 +883,7 @@ public class DatasetUtils {
     public static List<AttributeTokens> getFieldsFromParameter(
             Parameter jpParameter
     ) {
-        if (TypeUtils.hasEllipsis(jpParameter.toString())) {
+        if (jpParameter.isVarArgs()) {
             Pair<String, String> packageAndClass = JavaParserUtils.getTypePairFromResolvedType(jpParameter.getType().resolve());
             return List.of(new AttributeTokens(
                     "length",
@@ -1145,7 +1144,7 @@ public class DatasetUtils {
                     // check if parameters are equal.
                     List<String> currentParamList = currentCallable.getParameters()
                             .stream()
-                            .map(p -> TypeUtils.getRawTypeName(jpClass, currentCallable, p))
+                            .map(p -> TypeUtils.getJDoctorSimpleNameFromSourceCode(jpClass, currentCallable, p))
                             .toList();
                     if (jpParamListEqualsJDoctorParamList(
                             targetParamList,
@@ -1238,30 +1237,15 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets the package name of an operation.
-     */
-    public static String getOperationPackageName(
-            Operation operation
-    ) {
-        return TypeUtils.getPackageNameFromClassGetName(operation.className());
-    }
-
-    /**
-     * Gets the class name of an operation.
-     */
-    public static String getOperationClassName(
-            Operation operation
-    ) {
-        return TypeUtils.getInnermostClassNameFromClassGetName(operation.className());
-    }
-
-    /**
      * Gets the method/constructor name of an operation.
      */
     public static String getOperationCallableName(
             Operation operation
     ) {
-        return TypeUtils.getInnermostClassNameFromClassGetName(operation.methodName());
+        if (operation.methodName().equals(operation.className())) {
+            return TypeUtils.getInnermostClassNameFromClassGetName(operation.methodName());
+        }
+        return operation.methodName();
     }
 
     /**

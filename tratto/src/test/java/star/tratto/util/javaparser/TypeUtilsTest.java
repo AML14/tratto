@@ -1,7 +1,5 @@
 package star.tratto.util.javaparser;
 
-import com.github.javaparser.JavaToken;
-import com.github.javaparser.TokenRange;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.NodeList;
@@ -19,16 +17,23 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TypeUtilsTest {
     @Test
-    public void removeTypeArgumentsTest() {
+    public void getPackageNameFromClassGetNameTest() {
+        assertEquals("normal.package.setup.for.a", TypeUtils.getPackageNameFromClassGetName("normal.package.setup.for.a.Class"));
+        assertEquals("normal.package.setup.for.a", TypeUtils.getPackageNameFromClassGetName("normal.package.setup.for.a.Class$InnerClass"));
+    }
+
+    @Test
+    public void getInnermostClassNameFromClassGetNameTest() {
+        assertEquals("Class", TypeUtils.getInnermostClassNameFromClassGetName("normal.package.setup.for.a.Class"));
+        assertEquals("InnerClass", TypeUtils.getInnermostClassNameFromClassGetName("normal.package.setup.for.a.Class$InnerClass"));
+    }
+
+    @Test
+    public void removeTypeArgumentsAndSemicolonTest() {
         assertEquals("List", TypeUtils.removeTypeArgumentsAndSemicolon("List<? extends Integer>"));
         assertEquals("ArrayList", TypeUtils.removeTypeArgumentsAndSemicolon("ArrayList<? super Number>"));
         assertEquals("Oversuperstition", TypeUtils.removeTypeArgumentsAndSemicolon("Oversuperstition"));
         assertEquals("Foo", TypeUtils.removeTypeArgumentsAndSemicolon("Foo<? super Collection<T>, T>"));
-    }
-
-    @Test
-    public void getPackageNameFromNameSegmentsTest() {
-        assertEquals("normal.package.setup.for.a", TypeUtils.getPackageNameFromClassGetName("normal.package.setup.for.a.Class$InnerClass"));
     }
 
     @Test
@@ -44,17 +49,7 @@ public class TypeUtilsTest {
     }
 
     @Test
-    public void hasEllipsisTest() {
-        String normalType = "int";
-        String almost = "How..";
-        String varArg = "int...";
-        assertFalse(TypeUtils.hasEllipsis(normalType));
-        assertFalse(TypeUtils.hasEllipsis(almost));
-        assertTrue(TypeUtils.hasEllipsis(varArg));
-    }
-
-    @Test
-    public void getRawTypeNamePrimitiveTest() {
+    public void getJDoctorSimpleNameFromSourceCodePrimitiveTest() {
         PrimitiveType integerType = new PrimitiveType(PrimitiveType.Primitive.INT);
         ClassOrInterfaceDeclaration jpClass = new ClassOrInterfaceDeclaration()
                 .setName("Foo")
@@ -63,11 +58,11 @@ public class TypeUtilsTest {
                 .setName("printElements")
                 .addModifier(Modifier.Keyword.PUBLIC)
                 .addParameter(integerType, "arg0");
-        assertEquals("int", TypeUtils.getRawTypeName(jpClass, jpCallable, jpCallable.getParameter(0)));
+        assertEquals("int", TypeUtils.getJDoctorSimpleNameFromSourceCode(jpClass, jpCallable, jpCallable.getParameter(0)));
     }
 
     @Test
-    public void getRawTypeNameVarArgTest() {
+    public void getJDoctorSimpleNameFromSourceCodeVarArgTest() {
         PrimitiveType integerType = new PrimitiveType(PrimitiveType.Primitive.INT);
         Parameter parameter = new Parameter(integerType, "arg0")
                 .setVarArgs(true);
@@ -78,11 +73,11 @@ public class TypeUtilsTest {
                 .setName("printElements")
                 .addModifier(Modifier.Keyword.PUBLIC)
                 .addParameter(parameter);
-        assertEquals("int[]", TypeUtils.getRawTypeName(jpClass, jpCallable, jpCallable.getParameter(0)));
+        assertEquals("int[]", TypeUtils.getJDoctorSimpleNameFromSourceCode(jpClass, jpCallable, jpCallable.getParameter(0)));
     }
 
     @Test
-    public void getRawTypeNameWithoutGenericUpperBoundTest() {
+    public void getJDoctorSimpleNameFromSourceCodeGenericTest() {
         ClassOrInterfaceDeclaration jpClass = new ClassOrInterfaceDeclaration()
                 .setName("Foo")
                 .addModifier(Modifier.Keyword.PUBLIC);
@@ -90,11 +85,11 @@ public class TypeUtilsTest {
                 .addModifier(Modifier.Keyword.PUBLIC)
                 .addTypeParameter(new TypeParameter("T"))
                 .addParameter("T", "arg0");
-        assertEquals("T", TypeUtils.getRawTypeName(jpClass, jpCallable, jpCallable.getParameter(0)));
+        assertEquals("T", TypeUtils.getJDoctorSimpleNameFromSourceCode(jpClass, jpCallable, jpCallable.getParameter(0)));
     }
 
     @Test
-    public void getRawTypeNameWithGenericUpperBoundTest() {
+    public void getJDoctorSimpleNameFromSourceCodeGenericUpperBoundTest() {
         // create generic type with upper bound
         ClassOrInterfaceType upperBound = new ClassOrInterfaceType()
                 .setName("Integer");
@@ -107,17 +102,17 @@ public class TypeUtilsTest {
         MethodDeclaration jpCallable = jpClass.addMethod("printElements")
                 .addModifier(Modifier.Keyword.PUBLIC)
                 .addParameter("U", "arg0");
-        assertEquals("Integer", TypeUtils.getRawTypeName(jpClass, jpCallable, jpCallable.getParameter(0)));
+        assertEquals("Integer", TypeUtils.getJDoctorSimpleNameFromSourceCode(jpClass, jpCallable, jpCallable.getParameter(0)));
     }
 
     @Test
-    public void isStandardTypeTest() {
+    public void isObjectOrComparableTest() {
         assertTrue(TypeUtils.isObjectOrComparable("Comparable"));
         assertFalse(TypeUtils.isObjectOrComparable("Other"));
     }
 
     @Test
-    public void isStandardTypeArrayTest() {
+    public void isObjectOrComparableArrayTest() {
         assertTrue(TypeUtils.isObjectOrComparableArray("Object[]"));
         assertFalse(TypeUtils.isObjectOrComparableArray("Object"));
         assertFalse(TypeUtils.isObjectOrComparableArray("AnyOtherObject"));
