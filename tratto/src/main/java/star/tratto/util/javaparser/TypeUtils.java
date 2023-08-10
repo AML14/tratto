@@ -173,15 +173,12 @@ public class TypeUtils {
     }
 
     /**
-     * Checks if a given type extends a supertype in source code (e.g. has an
-     * upper bound).
-     * NOTE: We only check "extends" and not "implements" for parameterized
-     * types.
+     * Checks if a type parameter has an upper bound in source code.
      *
-     * @param sourceCode the method or class source code in which
-     * {@code typeName} is used
-     * @param typeName a source code format type name
-     * @return true iff the given type name extends another type
+     * @param sourceCode the source of the method or class in which the type
+     *                   parameter is declared
+     * @param typeName a type parameter (e.g. "T", "E")
+     * @return true iff the given type parameter has na upper bound
      */
     private static boolean hasUpperBound(String sourceCode, String typeName) {
         String regex = String.format("%s\\s+extends\\s+([A-Za-z0-9_]+)[<[A-Za-z0-9_,]+]*", typeName.replaceAll("\\[]",""));
@@ -191,14 +188,14 @@ public class TypeUtils {
     }
 
     /**
-     * Finds the upper bound of a type parameter from source code.
+     * Gets the upper bound of a type parameter using the source code.
      *
-     * @param sourceCode the method or class source code in which
-     * {@code typeName} is used
-     * @param typeName a source code format type name
-     * @return the name of the supertype of {@code typeName}
-     * @throws IllegalArgumentException if {@code typeName} does not extend
-     * a type
+     * @param sourceCode the source of the method or class in which the type
+     *                   parameter is declared
+     * @param typeName a type parameter (e.g. "T", "E")
+     * @return the type name of the upper bound of {@code typeName}
+     * @throws IllegalArgumentException if {@code typeName} does not have an
+     * upper bound
      */
     private static String getUpperBound(String sourceCode, String typeName) {
         String regex = String.format("%s\\s+extends\\s+([A-Za-z0-9_]+)[<[A-Za-z0-9_,]+]*", typeName.replaceAll("\\[]",""));
@@ -217,13 +214,16 @@ public class TypeUtils {
     }
 
     /**
-     * Gets the upper bound of a generic type from the method or class source.
+     * Gets the upper bound of a type parameter from the method or class
+     * source. A type parameter may be declared in either the class or method
+     * signature. This method checks both the method using a type and its
+     * declaring class to find a possible upper bound.
      *
      * @param jpDeclaration the declaring class
      * @param jpCallable the method using {@code typeName}
-     * @param typeName a type name represented in source code format
-     * @return the upper bound (if it exists) from either the relevant method
-     * or declaring class
+     * @param typeName a type parameter (e.g. "T", "E")
+     * @return the type name of the upper bound of {@code typeName}. Returns
+     * {@code typeName} if no upper bound exists.
      */
     private static String getGenericUpperBound(
             TypeDeclaration<?> jpDeclaration,
@@ -249,21 +249,25 @@ public class TypeUtils {
     }
 
     /**
-     * Gets the raw name of a type in source code. Used to manage edge cases
-     * with generic types in source code. Also ensures name is consistent with
-     * the field descriptor format for direct comparison.
+     * Gets the pre-processed JDoctor parameter type name from source code.
+     * JDoctor applies several pre-processing steps for parameter type names.
+     * In general, JDoctor uses the ClassGetSimpleName form of a type. If a
+     * parameter is a vararg, then it is represented by an array. For example,
+     *     "int... numbers" => "int[]"
+     * Additionally, if a parameter is a type parameter with an upper bound,
+     * then it is represented by its upper bound.
      *
-     * @param jpDeclaration the declaring type (e.g. class, enum, etc.)
-     * @param jpCallable the method using {@code jpParam}
+     * @param jpDeclaration the declaring type (e.g. class, enum)
+     * @param jpCallable the method with the parameter {@code jpParam}
      * @param jpParam a parameter
-     * @return the raw name of the parameter in source code
+     * @return the pre-processed JDoctor simple name
      */
     public static String getJDoctorSimpleNameFromSourceCode(
             TypeDeclaration<?> jpDeclaration,
             CallableDeclaration<?> jpCallable,
             Parameter jpParam
     ) {
-        // pre-process base type name
+        // get simple name
         String typeName;
         if (jpParam.getType().isClassOrInterfaceType()) {
             typeName = removeTypeArgumentsAndSemicolon(jpParam.getType().asClassOrInterfaceType().getNameAsString());
@@ -280,9 +284,9 @@ public class TypeUtils {
     }
 
     /**
-     * Checks if a given type is an Object or Comparable object.
+     * Checks if a ClassGetSimpleName is "Object" or "Comparable".
      *
-     * @param typeName name of the JDoctor or JavaParser type
+     * @param typeName a simple type name
      * @return true iff the given type name is "Object" or "Comparable"
      */
     public static boolean isObjectOrComparable(String typeName) {
@@ -290,7 +294,7 @@ public class TypeUtils {
     }
 
     /**
-     * Checks if a given type is an array of Object or Comparable objects.
+     * Checks if a ClassGetSimpleName is "Object[]" or "Comparable[]".
      *
      * @param typeName name of the JDoctor or JavaParser type
      * @return true iff the given type name is "Object[]" or "Comparable[]"
