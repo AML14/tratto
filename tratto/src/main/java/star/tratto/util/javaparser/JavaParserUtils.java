@@ -679,7 +679,7 @@ public class JavaParserUtils {
         boolean hasAccessSpecifier = !resolvedField.accessSpecifier().asString().equals("");
         boolean isStatic = resolvedField.isStatic();
         return ((hasAccessSpecifier ? resolvedField.accessSpecifier().asString() + " " : "") +
-                (isStatic ? "static" + " " : "") +
+                (isStatic ? "static " : "") +
                 getTypeWithoutPackages(resolvedField.getType().describe()) + " " +
                 resolvedField.getName() +
                 ";");
