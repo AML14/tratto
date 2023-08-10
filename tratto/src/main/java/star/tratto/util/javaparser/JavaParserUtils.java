@@ -96,14 +96,22 @@ public class JavaParserUtils {
     }
 
     /**
-     * Gets a synthetic empty method block in an artificial empty class.
+     * Gets a synthetic empty JavaParser class.
      *
-     * @return an empty JavaParser method block
+     * @return an empty JavaParser class
      */
-    private static BlockStmt getSyntheticBlockStmt() {
+    private static TypeDeclaration<?> getSyntheticClass() {
         return javaParser.parse(SYNTHETIC_CLASS_SOURCE).getResult().orElseThrow()
-                .getLocalDeclarationFromClassname(SYNTHETIC_CLASS_NAME).get(0)
-                .addMethod(SYNTHETIC_METHOD_NAME).getBody().orElseThrow();
+                .getLocalDeclarationFromClassname(SYNTHETIC_CLASS_NAME).get(0);
+    }
+
+    /**
+     * Adds a synthetic empty method block to a given class.
+     *
+     * @return an empty JavaParser method block in the given class
+     */
+    private static BlockStmt getSyntheticBlockStmt(TypeDeclaration<?> typeDeclaration) {
+        return typeDeclaration.addMethod(SYNTHETIC_METHOD_NAME).getBody().orElseThrow();
     }
 
     /**
@@ -112,7 +120,9 @@ public class JavaParserUtils {
      * @return a "java.lang.Object" type
      */
     public static ResolvedType getObjectType() {
-        return getSyntheticBlockStmt()
+        TypeDeclaration<?> syntheticClass = getSyntheticClass();
+        BlockStmt syntheticMethod = getSyntheticBlockStmt(syntheticClass);
+        return syntheticMethod
                 .addStatement("java.lang.Object objectVar;")
                 .getStatements().getLast().orElseThrow()
                 .asExpressionStmt().getExpression()
@@ -146,8 +156,7 @@ public class JavaParserUtils {
             throw new ResolvedTypeNotFound("Unable to generate synthetic constructor for class " + jpClass.getNameAsString());
         }
         // create synthetic method
-        BlockStmt methodBody = jpClass.addMethod(SYNTHETIC_METHOD_NAME).getBody()
-                .orElseThrow(() -> new NoSuchElementException("Unable to retrieve synthetic method body."));
+        BlockStmt methodBody = getSyntheticBlockStmt(jpClass);
         // add method arguments as variable statements in method body (e.g. "ArgType argName;")
         for (Triplet<String, String, String> methodArg : methodArgs) {
             methodBody.addStatement(methodArg.getValue2() + " " + methodArg.getValue0() + ";");
