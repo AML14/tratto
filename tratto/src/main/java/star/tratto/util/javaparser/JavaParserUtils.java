@@ -62,8 +62,11 @@ public class JavaParserUtils {
     private static JavaParser javaParser = getJavaParser();
     private static final Parser oracleParser = Parser.getInstance();
     // artificial source code used to parse arbitrary source code expressions using JavaParser
+    /** Artificial class name */
     private static final String SYNTHETIC_CLASS_NAME = "Tratto__AuxiliaryClass";
+    /** Artificial class source code */
     private static final String SYNTHETIC_CLASS_SOURCE = "public class " + SYNTHETIC_CLASS_NAME + " {}";
+    /** Artificial method name */
     private static final String SYNTHETIC_METHOD_NAME = "__tratto__auxiliaryMethod";
     /**
      * Regex to match the signature from the "toString" of either {@link ReflectionMethodDeclaration} or
@@ -93,14 +96,23 @@ public class JavaParserUtils {
     }
 
     /**
-     * Returns a "java.lang.Object" type.
+     * Gets a synthetic empty method block in an artificial empty class.
+     *
+     * @return an empty JavaParser method block
+     */
+    private static BlockStmt getSyntheticBlockStmt() {
+        return javaParser.parse(SYNTHETIC_CLASS_SOURCE).getResult().orElseThrow()
+                .getLocalDeclarationFromClassname(SYNTHETIC_CLASS_NAME).get(0)
+                .addMethod(SYNTHETIC_METHOD_NAME).getBody().orElseThrow();
+    }
+
+    /**
+     * Creates a "java.lang.Object" type.
      *
      * @return a "java.lang.Object" type
      */
     public static ResolvedType getObjectType() {
-        return javaParser.parse(SYNTHETIC_CLASS_SOURCE).getResult().orElseThrow()
-                .getLocalDeclarationFromClassname(SYNTHETIC_CLASS_NAME).get(0)
-                .addMethod(SYNTHETIC_METHOD_NAME).getBody().orElseThrow()
+        return getSyntheticBlockStmt()
                 .addStatement("java.lang.Object objectVar;")
                 .getStatements().getLast().orElseThrow()
                 .asExpressionStmt().getExpression()
