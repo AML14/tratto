@@ -1237,30 +1237,15 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets the package name of an operation.
-     */
-    public static String getOperationPackageName(
-            Operation operation
-    ) {
-        return TypeUtils.getPackageNameFromClassGetName(operation.getClassName());
-    }
-
-    /**
-     * Gets the class name of an operation.
-     */
-    public static String getOperationClassName(
-            Operation operation
-    ) {
-        return TypeUtils.getInnermostClassNameFromClassGetName(operation.getClassName());
-    }
-
-    /**
      * Gets the method/constructor name of an operation.
      */
     public static String getOperationCallableName(
             Operation operation
     ) {
-        return TypeUtils.getInnermostClassNameFromClassGetName(operation.getName());
+        if (operation.getName().equals(operation.getClassName())) {
+            return TypeUtils.getInnermostClassNameFromClassGetName(operation.getName());
+        }
+        return operation.getName();
     }
 
     /**
