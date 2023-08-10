@@ -819,7 +819,7 @@ public class JavaParserUtils {
      * @throws PackageDeclarationNotFoundException if the JavaParser package
      * declaration {@link PackageDeclaration} cannot be found or is unnamed
      */
-    public static PackageDeclaration getPackageDeclarationFromCompilationUnit(
+    public static PackageDeclaration getPackageDeclaration(
             CompilationUnit cu
     ) throws PackageDeclarationNotFoundException {
         Optional<PackageDeclaration> jpPackage = cu.getPackageDeclaration();
