@@ -485,7 +485,7 @@ public class JavaParserUtilsTest {
         OracleDatapoint oracleDatapoint = oracleDatapoints.get(1);
         TypeDeclaration<?> jpClass = getClassOrInterface(oracleDatapoint.getClassSourceCode(), oracleDatapoint.getClassName());
         try {
-            List<String> availableMethodList = getAllAvailableMethodUsages(jpClass)
+            List<String> availableMethodList = JavaParserUtils.getMethodsOfType(jpClass)
                     .stream()
                     .map(MethodUsage::getName)
                     .collect(Collectors.toList());
@@ -509,7 +509,7 @@ public class JavaParserUtilsTest {
         OracleDatapoint oracleDatapoint = oracleDatapoints.get(1);
         TypeDeclaration<?> jpClass = getClassOrInterface(oracleDatapoint.getClassSourceCode(), oracleDatapoint.getClassName());
         try {
-            List<String> availableFieldsList = getAllAvailableFields(jpClass)
+            List<String> availableFieldsList = getFieldsOfType(jpClass)
                     .stream()
                     .map(ResolvedDeclaration::getName)
                     .collect(Collectors.toList());

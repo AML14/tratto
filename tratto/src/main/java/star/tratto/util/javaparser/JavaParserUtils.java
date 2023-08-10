@@ -935,19 +935,20 @@ public class JavaParserUtils {
      * Get all methods available to a given class (including those defined in
      * superclasses).
      *
-     * @param jpClass object class
+     * @param typeDeclaration object class
      * @return list of MethodUsage objects
-     * @throws JPClassNotFoundException if jpClass is not resolvable
+     * @throws JPClassNotFoundException if {@code typeDeclaration} is not
+     * resolvable
      */
-    public static List<MethodUsage> getAllAvailableMethodUsages(
-            TypeDeclaration<?> jpClass
+    public static List<MethodUsage> getMethodsOfType(
+            TypeDeclaration<?> typeDeclaration
     ) throws JPClassNotFoundException {
         try {
-            return new ArrayList<>(jpClass.resolve().getAllMethods());
+            return new ArrayList<>(typeDeclaration.resolve().getAllMethods());
         } catch (UnsolvedSymbolException | IllegalArgumentException e) {
             String errMsg = String.format(
                     "Impossible to get all the methods of the class %s.%n%s.",
-                    jpClass.getNameAsString(), e
+                    typeDeclaration.getNameAsString(), e
             );
             logger.error(errMsg);
             throw new JPClassNotFoundException(errMsg);
@@ -958,19 +959,20 @@ public class JavaParserUtils {
      * Get all fields available to a given class (including those defined in
      * superclasses).
      *
-     * @param jpClass object class
+     * @param typeDeclaration object class
      * @return list of ResolvedFieldDeclaration objects
-     * @throws JPClassNotFoundException if jpClass is not resolvable
+     * @throws JPClassNotFoundException if {@code typeDeclaration} is not
+     * resolvable
      */
-    public static List<ResolvedFieldDeclaration> getAllAvailableFields(
-            TypeDeclaration<?> jpClass
+    public static List<ResolvedFieldDeclaration> getFieldsOfType(
+            TypeDeclaration<?> typeDeclaration
     ) throws JPClassNotFoundException {
         try {
-            return jpClass.resolve().getAllFields();
+            return typeDeclaration.resolve().getAllFields();
         } catch (UnsolvedSymbolException | IllegalArgumentException e) {
             String errMsg = String.format(
                     "Impossible to get all the methods of class %s.%n%s.",
-                    jpClass.getNameAsString(), e
+                    typeDeclaration.getNameAsString(), e
             );
             logger.error(errMsg);
             throw new JPClassNotFoundException(errMsg);
