@@ -123,14 +123,16 @@ public class JavaParserUtils {
     /**
      * Injects a synthetic method into a class given a method under test,
      * including:
-     *  - variable declaration for each method argument
-     *  - variable declaration for return type of analyzed method
-     *  - variable declaration (of unknown type) using given expression
+     * <ul>
+     *     <li>variable declaration for each method argument</li>
+     *     <li>variable declaration for return type of analyzed method</li>
+     *     <li>variable declaration (of unknown type) using given expression</li>
+     * </ul>
      *
-     * @param jpClass the class in which to insert the synthetic method
-     * @param jpCallable the method being analyzed
-     * @param methodArgs information about the arguments of {@code jpCallable}
-     * @param expression an expression to add at the end of the method
+     * @param jpClass the declaring class in which to insert a synthetic method
+     * @param jpCallable the method under analysis
+     * @param methodArgs tokens for arguments of {@code jpCallable}
+     * @param expression an expression to add to the synthetic method
      * @throws ResolvedTypeNotFound if {@code jpCallable} is a constructor
      */
     private static void addSyntheticMethodWithExpression(
