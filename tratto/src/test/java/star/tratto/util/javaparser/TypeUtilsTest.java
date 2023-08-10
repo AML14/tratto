@@ -17,14 +17,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TypeUtilsTest {
     @Test
-    public void removeTypeArgumentsAndSemicolonTest() {
-        assertEquals("List", TypeUtils.removeTypeArgumentsAndSemicolon("List<? extends Integer>"));
-        assertEquals("ArrayList", TypeUtils.removeTypeArgumentsAndSemicolon("ArrayList<? super Number>"));
-        assertEquals("Oversuperstition", TypeUtils.removeTypeArgumentsAndSemicolon("Oversuperstition"));
-        assertEquals("Foo", TypeUtils.removeTypeArgumentsAndSemicolon("Foo<? super Collection<T>, T>"));
-    }
-
-    @Test
     public void getPackageNameFromClassGetNameTest() {
         assertEquals("normal.package.setup.for.a", TypeUtils.getPackageNameFromClassGetName("normal.package.setup.for.a.Class"));
         assertEquals("normal.package.setup.for.a", TypeUtils.getPackageNameFromClassGetName("normal.package.setup.for.a.Class$InnerClass"));
@@ -34,6 +26,14 @@ public class TypeUtilsTest {
     public void getInnermostClassNameFromClassGetNameTest() {
         assertEquals("Class", TypeUtils.getInnermostClassNameFromClassGetName("normal.package.setup.for.a.Class"));
         assertEquals("InnerClass", TypeUtils.getInnermostClassNameFromClassGetName("normal.package.setup.for.a.Class$InnerClass"));
+    }
+
+    @Test
+    public void removeTypeArgumentsAndSemicolonTest() {
+        assertEquals("List", TypeUtils.removeTypeArgumentsAndSemicolon("List<? extends Integer>"));
+        assertEquals("ArrayList", TypeUtils.removeTypeArgumentsAndSemicolon("ArrayList<? super Number>"));
+        assertEquals("Oversuperstition", TypeUtils.removeTypeArgumentsAndSemicolon("Oversuperstition"));
+        assertEquals("Foo", TypeUtils.removeTypeArgumentsAndSemicolon("Foo<? super Collection<T>, T>"));
     }
 
     @Test
@@ -49,7 +49,7 @@ public class TypeUtilsTest {
     }
 
     @Test
-    public void getRawTypeNamePrimitiveTest() {
+    public void getJDoctorSimpleNameFromSourceCodePrimitiveTest() {
         PrimitiveType integerType = new PrimitiveType(PrimitiveType.Primitive.INT);
         ClassOrInterfaceDeclaration jpClass = new ClassOrInterfaceDeclaration()
                 .setName("Foo")
@@ -62,7 +62,7 @@ public class TypeUtilsTest {
     }
 
     @Test
-    public void getRawTypeNameVarArgTest() {
+    public void getJDoctorSimpleNameFromSourceCodeVarArgTest() {
         PrimitiveType integerType = new PrimitiveType(PrimitiveType.Primitive.INT);
         Parameter parameter = new Parameter(integerType, "arg0")
                 .setVarArgs(true);
@@ -77,7 +77,7 @@ public class TypeUtilsTest {
     }
 
     @Test
-    public void getRawTypeNameWithoutGenericUpperBoundTest() {
+    public void getJDoctorSimpleNameFromSourceCodeGenericTest() {
         ClassOrInterfaceDeclaration jpClass = new ClassOrInterfaceDeclaration()
                 .setName("Foo")
                 .addModifier(Modifier.Keyword.PUBLIC);
@@ -89,7 +89,7 @@ public class TypeUtilsTest {
     }
 
     @Test
-    public void getRawTypeNameWithGenericUpperBoundTest() {
+    public void getJDoctorSimpleNameFromSourceCodeGenericUpperBoundTest() {
         // create generic type with upper bound
         ClassOrInterfaceType upperBound = new ClassOrInterfaceType()
                 .setName("Integer");
@@ -106,13 +106,13 @@ public class TypeUtilsTest {
     }
 
     @Test
-    public void isStandardTypeTest() {
+    public void isObjectOrComparableTest() {
         assertTrue(TypeUtils.isObjectOrComparable("Comparable"));
         assertFalse(TypeUtils.isObjectOrComparable("Other"));
     }
 
     @Test
-    public void isStandardTypeArrayTest() {
+    public void isObjectOrComparableArrayTest() {
         assertTrue(TypeUtils.isObjectOrComparableArray("Object[]"));
         assertFalse(TypeUtils.isObjectOrComparableArray("Object"));
         assertFalse(TypeUtils.isObjectOrComparableArray("AnyOtherObject"));
