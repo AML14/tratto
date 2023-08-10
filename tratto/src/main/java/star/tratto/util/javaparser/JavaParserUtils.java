@@ -862,14 +862,17 @@ public class JavaParserUtils {
     }
 
     /**
-     * Returns true iff a given type name represents a type parameter of a
-     * generic class.
+     * Checks if a type name represents a type parameter. A type parameter may
+     * be declared in either the class or method signature. This method checks
+     * both the class where the type is found and its declaring class to
+     * determine if the type is a type parameter.
      *
-     * @param typeName the name of a type
+     * @param typeName a type name
      * @param jpCallable the method using {@code typeName}
      * @param jpClass the declaring class of {@code jpCallable}
-     * @return true iff a given type is a type parameter. If the given type is
-     * an array, then this method analyzes the base component type.
+     * @return true iff a given type is a type parameter of a generic class or
+     * method. If the given type is an array, then this method checks the base
+     * component type.
      */
     public static boolean isTypeParameter(
             String typeName,
