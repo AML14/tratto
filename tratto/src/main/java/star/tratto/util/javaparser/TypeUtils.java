@@ -32,26 +32,6 @@ public class TypeUtils {
     }
 
     /**
-     * Removes type arguments and semicolons from a parameterized type name.
-     * The given type name should originate from source code, as neither
-     * ClassGetSimpleName nor ClassGetName forms include type parameters.
-     *
-     * @param parameterizedType a type name from source code
-     * @return the base type without type arguments
-     */
-    public static String removeTypeArgumentsAndSemicolon(String parameterizedType) {
-        String regex = "<[^<>]*>|;";
-        // repeatedly remove all type arguments.
-        String previous;
-        String current = parameterizedType;
-        do {
-            previous = current;
-            current = previous.replaceAll(regex, "");
-        } while (!current.equals(previous));
-        return current;
-    }
-
-    /**
      * Gets the package name from a ClassGetName form of a type.
      *
      * @param classGetName a ClassGetName form of a type
@@ -170,6 +150,26 @@ public class TypeUtils {
                 .stream()
                 .map(TypeUtils::classGetNameToClassGetSimpleName)
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * Removes type arguments and semicolons from a parameterized type name.
+     * The given type name should originate from source code, as neither
+     * ClassGetSimpleName nor ClassGetName forms include type parameters.
+     *
+     * @param parameterizedType a type name from source code
+     * @return the base type without type arguments
+     */
+    public static String removeTypeArgumentsAndSemicolon(String parameterizedType) {
+        String regex = "<[^<>]*>|;";
+        // repeatedly remove all type arguments.
+        String previous;
+        String current = parameterizedType;
+        do {
+            previous = current;
+            current = previous.replaceAll(regex, "");
+        } while (!current.equals(previous));
+        return current;
     }
 
     /**
