@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TypeUtilsTest {
     @Test
-    public void removeTypeArgumentsTest() {
+    public void removeTypeArgumentsAndSemicolonTest() {
         assertEquals("List", TypeUtils.removeTypeArgumentsAndSemicolon("List<? extends Integer>"));
         assertEquals("ArrayList", TypeUtils.removeTypeArgumentsAndSemicolon("ArrayList<? super Number>"));
         assertEquals("Oversuperstition", TypeUtils.removeTypeArgumentsAndSemicolon("Oversuperstition"));
@@ -25,8 +25,15 @@ public class TypeUtilsTest {
     }
 
     @Test
-    public void getPackageNameFromNameSegmentsTest() {
+    public void getPackageNameFromClassGetNameTest() {
+        assertEquals("normal.package.setup.for.a", TypeUtils.getPackageNameFromClassGetName("normal.package.setup.for.a.Class"));
         assertEquals("normal.package.setup.for.a", TypeUtils.getPackageNameFromClassGetName("normal.package.setup.for.a.Class$InnerClass"));
+    }
+
+    @Test
+    public void getInnermostClassNameFromClassGetNameTest() {
+        assertEquals("Class", TypeUtils.getInnermostClassNameFromClassGetName("normal.package.setup.for.a.Class"));
+        assertEquals("InnerClass", TypeUtils.getInnermostClassNameFromClassGetName("normal.package.setup.for.a.Class$InnerClass"));
     }
 
     @Test
