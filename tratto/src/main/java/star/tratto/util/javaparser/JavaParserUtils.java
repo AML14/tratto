@@ -793,17 +793,20 @@ public class JavaParserUtils {
     }
 
     /**
-     * Unfortunately, the MethodUsage class does not provide a method to obtain the method signature
-     * as it was written, so the best that we can do is to reconstruct it to a certain extent. This
-     * has the following limitations:
+     * Gets the method signature from a JavaParser MethodUsage and its
+     * corresponding ResolvedMethodDeclaration. Unfortunately, depending on
+     * the implementation of the ResolvedMethodDeclaration, it is not possible
+     * to recover specific features, such as:
      * <ul>
-     *     <li>We lose modifiers and annotations before parameters, e.g., the "final" and "@NotNull" in
-     *     the signature {@code "... addAll(@NotNull final T[] elements)"}</li>
-     *     <li>We lose parameter names, which are replaced by "arg0", "arg1", etc.</li>
+     *     <li>Modifiers</li>
+     *     <li>Annotations</li>
+     *     <li>Parameter names</li>
      * </ul>
-     * We consider three types of ResolvedMethodDeclaration's: JavaParserMethodDeclaration,
-     * ReflectionMethodDeclaration, and JavassistMethodDeclaration. A signature follows the format:
-     *  "[modifiers] [type] [methodName]([parameters]) throws [exceptions]"
+     * This method considers three implementations of
+     * ResolvedMethodDeclaration: JavaParserMethodDeclaration,
+     * ReflectionMethodDeclaration, and JavassistMethodDeclaration. A
+     * signature follows the format:
+     *     "[modifiers] [typeParameters] [type] [methodName]([parameters]) throws [exceptions]"
      */
     public static String getMethodSignature(
             MethodUsage methodUsage
