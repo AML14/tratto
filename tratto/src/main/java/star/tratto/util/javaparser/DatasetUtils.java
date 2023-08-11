@@ -264,7 +264,7 @@ public class DatasetUtils {
                 }
             } else if (jpResolvedParameterType.isArray()) {
                 // special case: return early if type is an array to avoid redundant brackets.
-                return Optional.of(JavaParserUtils.getTypeWithoutPackages(jpResolvedParameterType.asArrayType()));
+                className = JavaParserUtils.getTypeWithoutPackages(jpResolvedParameterType.asArrayType());
             } else {
                 // unknown type.
                 assert false;
