@@ -17,6 +17,7 @@ import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
 import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.type.Type;
 import com.github.javaparser.ast.type.TypeParameter;
 import com.github.javaparser.resolution.MethodUsage;
 import com.github.javaparser.resolution.UnsolvedSymbolException;
@@ -497,7 +498,7 @@ public class JavaParserUtils {
 @param type1 fully qualified type, e.g., "java.util.List"
      * @param type2 fully qualified type, e.g., "java.lang.Object"
      * @param oracleDatapoint may be null. If not null, it is used to check if some type is generic.
-     * @return true if type1 is an instance of type2, false otherwise 
+     * @return true if type1 is an instance of type2, false otherwise
      */
     public static boolean isInstanceOf(String type1, String type2, OracleDatapoint oracleDatapoint) {
         return isInstanceOf(type1, type2, oracleDatapoint, true);
@@ -879,6 +880,23 @@ public class JavaParserUtils {
             resolvedType = resolvedType.asArrayType().getComponentType();
         }
         return resolvedType;
+    }
+
+    /**
+     * Returns the base component type of a type. Recursively strips all array
+     * variables. For example:
+     *     Object[][] => Object
+     * This method is similar to {@link JavaParserUtils#removeArray(ResolvedType)},
+     * but uses a different type representation.
+     *
+     * @param type a type
+     * @return the base component type
+     */
+    public static Type removeArray(Type type) {
+        while (type.isArrayType()) {
+            type = type.asArrayType().getComponentType();
+        }
+        return type;
     }
 
     /**
