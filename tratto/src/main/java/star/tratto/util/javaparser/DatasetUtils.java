@@ -241,7 +241,7 @@ public class DatasetUtils {
      * @param jpParameter the given type
      * @return the type name of the given parameter
      */
-    private static Optional<String> getParameterTypeName(
+    private static String getParameterTypeName(
             TypeDeclaration<?> jpClass,
             CallableDeclaration<?> jpCallable,
             Parameter jpParameter
@@ -250,9 +250,9 @@ public class DatasetUtils {
         try {
             StringBuilder className = new StringBuilder();
             ResolvedType resolvedType = parameterType.resolve();
-            if (resolvedType.isPrimitive()) {
+            if (parameterType.isPrimitiveType()) {
                 className.append(parameterType.asPrimitiveType().asString());
-            } else if (resolvedType.isReferenceType()) {
+            } else if (parameterType.isReferenceType()) {
                 if (JavaParserUtils.isTypeParameter(resolvedType)) {
                     className.append(TypeUtils.getJDoctorSimpleNameFromSourceCode(jpClass, jpCallable, jpParameter));
                 } else {
@@ -264,7 +264,7 @@ public class DatasetUtils {
             if (jpParameter.isVarArgs()) {
                 className.append("[]");
             }
-            return Optional.of(className.toString());
+            return className.toString();
         } catch (UnsolvedSymbolException e) {
             logger.error(String.format("UnsolvedSymbolException when evaluating %s parameter type.", parameterType));
             StringBuilder className = new StringBuilder();
@@ -272,7 +272,7 @@ public class DatasetUtils {
             if (jpParameter.isVarArgs()) {
                 className.append("[]");
             }
-            return Optional.of(className.toString());
+            return className.toString();
         }
     }
 
@@ -292,40 +292,38 @@ public class DatasetUtils {
             CallableDeclaration<?> jpCallable
     ) {
         List<MethodArgumentTokens> argumentList = new ArrayList<>();
-        List<Parameter> jpParameters = jpCallable.getParameters();
+        List<Parameter> parameters = jpCallable.getParameters();
         // iterate through each parameter in the method arguments.
-        for (Parameter jpParameter : jpParameters) {
-            Type jpParameterType = jpParameter.getType();
-            Optional<String> jpParameterClassName = getParameterTypeName(jpClass, jpCallable, jpParameter);
-            if (jpParameterClassName.isPresent()) {
-                try {
-                    if (
-                            jpParameterType.resolve().isTypeVariable() ||
-                            jpParameterType.resolve().isPrimitive() ||
-                            jpParameterType.resolve().isArray()
-                    ) {
-                        // if not a reference type, ignore package name (e.g. primitives do not have packages).
-                        argumentList.add(new MethodArgumentTokens(jpParameter.getNameAsString(), "", jpParameterClassName.get()));
-                    } else if (jpParameterType.resolve().isReferenceType()) {
-                        String typeName = TypeUtils.getJDoctorSimpleNameFromSourceCode(jpClass, jpCallable, jpParameter);
-                        if (JavaParserUtils.isTypeParameter(jpParameterType.resolve())) {
-                            // if reference object is a generic type, ignore package name.
-                            argumentList.add(new MethodArgumentTokens(jpParameter.getNameAsString(), "", typeName));
-                        } else {
-                            // otherwise, retrieve necessary package information.
-                            String className = JavaParserUtils.getTypeWithoutPackages(jpParameterType.resolve().asReferenceType());
-                            String parameterPackageName = jpParameterType.resolve().asReferenceType().getQualifiedName()
-                                    .replace(String.format(".%s", className), "");
-                            argumentList.add(new MethodArgumentTokens(
-                                    jpParameter.getNameAsString(),
-                                    parameterPackageName,
-                                    jpParameterClassName.get()
-                            ));
-                        }
+        for (Parameter parameter : parameters) {
+            Type parameterType = parameter.getType();
+            String parameterTypeName = getParameterTypeName(jpClass, jpCallable, parameter);
+            try {
+                if (
+                        parameterType.resolve().isTypeVariable() ||
+                        parameterType.resolve().isPrimitive() ||
+                        parameterType.resolve().isArray()
+                ) {
+                    // if not a reference type, ignore package name (e.g. primitives do not have packages).
+                    argumentList.add(new MethodArgumentTokens(parameter.getNameAsString(), "", parameterTypeName));
+                } else if (parameterType.resolve().isReferenceType()) {
+                    String typeName = TypeUtils.getJDoctorSimpleNameFromSourceCode(jpClass, jpCallable, parameter);
+                    if (JavaParserUtils.isTypeParameter(parameterType.resolve())) {
+                        // if reference object is a generic type, ignore package name.
+                        argumentList.add(new MethodArgumentTokens(parameter.getNameAsString(), "", typeName));
+                    } else {
+                        // otherwise, retrieve necessary package information.
+                        String className = JavaParserUtils.getTypeWithoutPackages(parameterType.resolve().asReferenceType());
+                        String parameterPackageName = parameterType.resolve().asReferenceType().getQualifiedName()
+                                .replace(String.format(".%s", className), "");
+                        argumentList.add(new MethodArgumentTokens(
+                                parameter.getNameAsString(),
+                                parameterPackageName,
+                                parameterTypeName
+                        ));
                     }
-                } catch (UnsolvedSymbolException e) {
-                    logger.error(String.format("Unable to generate MethodArgumentTokens for argument %s.", jpParameterType));
                 }
+            } catch (UnsolvedSymbolException e) {
+                logger.error(String.format("Unable to generate MethodArgumentTokens for argument %s.", parameterType));
             }
         }
         return argumentList;
