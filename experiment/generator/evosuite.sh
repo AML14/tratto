@@ -6,17 +6,14 @@
 JAVA8_HOME="$(pwd)/resources/jdk1.8.0_381.jdk/Contents/Home"
 
 
-# argument checker
+# argument and setup check
 if [ ! $# -eq 2 ]; then
   echo -e "Incorrect number of arguments. Expected 2 arguments, but got $#".
   exit 1
-fi
-if [ ! -d "$2" ]; then
+elif [ ! -d "$2" ]; then
   echo -e "The system binaries path \"$2\" does not exist."
   exit 1
-fi
-# jdk8 checker
-if [ ! -d "$JAVA8_HOME" ]; then
+elif [ ! -d "$JAVA8_HOME" ]; then
   echo -e "Error: JDK8 Home directory \"$JAVA8_HOME\" does not exist."
   exit 1
 fi
