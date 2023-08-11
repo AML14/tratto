@@ -2,34 +2,31 @@
 # experiment/output/evosuite-test.
 
 # ----- SETUP -----
-# Set this path to the "Home" directory in the local JDK8.
+# Set this path to the "Home" directory in a local JDK8.
 JAVA8_HOME="$(pwd)/resources/jdk1.8.0_381.jdk/Contents/Home"
 
 
 # argument checker
-if [ ! $# -eq 1 ]; then
-  echo -e "Incorrect number of arguments to use EvoSuite (must specify input path)."
+if [ ! $# -eq 2 ]; then
+  echo -e "Incorrect number of arguments. Expected 2 arguments, but got $#".
   exit 1
 fi
-if [ ! -d "$1" ]; then
-  echo -e "Input path \"$1\" does not exist."
+if [ ! -d "$2" ]; then
+  echo -e "The system binaries path \"$2\" does not exist."
   exit 1
 fi
-# check if jdk8 is configured
+# jdk8 checker
 if [ ! -d "$JAVA8_HOME" ]; then
-  echo -e "Error: JDK8 directory \"$JAVA8_HOME\" does not exist.
-See \"Setup\" in the experiment README.md for further details."
+  echo -e "Error: JDK8 Home directory \"$JAVA8_HOME\" does not exist."
   exit 1
 fi
 
 
-# setup output path
-INPUT_PATH=$1
-EXPERIMENT_PATH=$(dirname "$(pwd)")
-OUTPUT_PATH="$EXPERIMENT_PATH/output/evosuite-test"
-mkdir -p "$OUTPUT_PATH"
-
-# setup evosuite commands
-EVOSUITE="java -jar $(pwd)/resources/evosuite-1.0.6.jar"
-# run evosuite with given source path
-#(export JAVA_HOME=$JAVA8_HOME ; $EVOSUITE)
+# setup variables
+TARGET_CLASS="$1"  # fully-qualified name of target class
+TARGET_DIR="$2"  # directory of binary files of the system under test
+OUTPUT_DIR="$(pwd)/../output/evosuite-test"
+EVOSUITE="java -jar $(pwd)/evosuite-1.0.6.jar"
+mkdir -p "$OUTPUT_DIR"
+# use EvoSuite to generate tests
+(export JAVA_HOME=$JAVA8_HOME ; $EVOSUITE -class "$TARGET_CLASS" -projectCP "$TARGET_DIR")
