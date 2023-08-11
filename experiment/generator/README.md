@@ -18,3 +18,18 @@ We provide a brief overview of the relevant scripts:
 - `tratto.sh`: generates oracles using Tratto
 
 Each TOG outputs oracles as a list of [`OracleOutput`](../src/main/java/OracleOutput.java) objects.
+
+### EvoSuite
+
+To use `evosuite.sh`, run
+
+```shell
+bash evosuite.sh [fully qualified name] [path to binaries]
+```
+
+For example,
+```shell
+bash evosuite.sh tutorial.Stack ~/EvoSuite-Tutorial/Tutorial_Stack/target/classes
+```
+
+For further detail about the EvoSuite calls abstracted by this script, see the [EvoSuite Tutorial](https://www.evosuite.org/documentation/tutorial-part-1/) 
