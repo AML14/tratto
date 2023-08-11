@@ -246,39 +246,39 @@ public class DatasetUtils {
             CallableDeclaration<?> jpCallable,
             Parameter jpParameter
     ) {
-        Type jpParameterType = jpParameter.getType();
+        Type parameterType = jpParameter.getType();
         try {
-            ResolvedType jpResolvedParameterType = jpParameterType.resolve();
-            String className = "";
+            ResolvedType resolvedType = parameterType.resolve();
+            StringBuilder className = new StringBuilder();
             // get base type.
-            if (jpResolvedParameterType.isTypeVariable()) {
-                className = jpParameterType.asClassOrInterfaceType().getNameAsString();
-            } else if (jpResolvedParameterType.isPrimitive()) {
-                className = jpParameterType.asPrimitiveType().asString();
-            } else if (jpResolvedParameterType.isReferenceType()) {
+            if (resolvedType.isTypeVariable()) {
+                className.append(parameterType.asClassOrInterfaceType().getNameAsString());
+            } else if (resolvedType.isPrimitive()) {
+                className.append(parameterType.asPrimitiveType().asString());
+            } else if (resolvedType.isReferenceType()) {
                 // if object is generic, use generic name.
-                if (JavaParserUtils.isTypeParameter(jpResolvedParameterType)) {
-                    className = TypeUtils.getJDoctorSimpleNameFromSourceCode(jpClass, jpCallable, jpParameter);
+                if (JavaParserUtils.isTypeParameter(resolvedType)) {
+                    className.append(TypeUtils.getJDoctorSimpleNameFromSourceCode(jpClass, jpCallable, jpParameter));
                 } else {
-                    className = JavaParserUtils.getTypeWithoutPackages(jpResolvedParameterType.asReferenceType());
+                    className.append(JavaParserUtils.getTypeWithoutPackages(resolvedType.asReferenceType()));
                 }
-            } else if (jpResolvedParameterType.isArray()) {
+            } else if (resolvedType.isArray()) {
                 // special case: return early if type is an array to avoid redundant brackets.
-                className = JavaParserUtils.getTypeWithoutPackages(jpResolvedParameterType.asArrayType());
+                className.append(JavaParserUtils.getTypeWithoutPackages(resolvedType.asArrayType()));
             } else {
                 // unknown type.
                 assert false;
-                logger.error(String.format("Unexpected type when evaluating %s parameter type.", jpParameterType));
+                logger.error(String.format("Unexpected type when evaluating %s parameter type.", parameterType));
             }
             // check if type is an array.
             if (jpParameter.isVarArgs()) {
-                className += "[]";
+                className.append("[]");
             }
             // return class name.
-            return Optional.of(className);
+            return Optional.of(className.toString());
         } catch (UnsolvedSymbolException e) {
-            logger.error(String.format("UnsolvedSymbolException when evaluating %s parameter type.", jpParameterType));
-            String className = jpParameterType.asClassOrInterfaceType().getNameAsString();
+            logger.error(String.format("UnsolvedSymbolException when evaluating %s parameter type.", parameterType));
+            String className = parameterType.asClassOrInterfaceType().getNameAsString();
             if (jpParameter.isVarArgs()) {
                 className += "[]";
             }
