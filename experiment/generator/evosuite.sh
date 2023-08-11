@@ -3,7 +3,7 @@
 
 # SETUP
 # Set this path to the "Home" directory in the local JDK8.
-JAVA8_HOME="$(pwd)/resources/jdk1.8.0_3281.jdk/Contents/Home"
+JAVA8_HOME="$(pwd)/resources/jdk1.8.0_381.jdk/Contents/Home"
 
 # setup output path
 EXPERIMENT_PATH=$(dirname "$(pwd)")
@@ -11,7 +11,7 @@ TEST_OUTPUT_PATH="$EXPERIMENT_PATH/output/evosuite-test"
 mkdir -p "$TEST_OUTPUT_PATH"
 # check if jdk8 is configured
 if [ ! -d "$JAVA8_HOME" ]; then
-  echo -e "Error: JDK8 directory does not exist. See \"Setup\" in."
+  echo -e "Error: JDK8 directory \"$JAVA8_HOME\" does not exist.\nSee \"Setup\" in the experiment README.md for further details."
   exit 1
 fi
 
