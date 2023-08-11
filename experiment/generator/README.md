@@ -15,4 +15,6 @@ Each TOG outputs oracles as a list of [`OracleOutput`](../src/main/java/OracleOu
 
 ## Setup
 
+### EvoSuite
+
 To use EvoSuite (which is written in Java 8), the user must set a path to a home directory for JDK 8 in [`evosuite.sh`](evosuite.sh). See [Oracle](https://www.oracle.com/java/technologies/downloads/#java8-linux) for JDK downloads.
