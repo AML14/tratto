@@ -3,7 +3,7 @@
 
 # SETUP
 # Set this path to the "Home" directory in the local JDK8.
-JAVA8_HOME="$(pwd)/resources/jdk1.8.0_3821.jdk/Contents/Home"
+JAVA8_HOME="$(pwd)/resources/jdk1.8.0_381.jdk/Contents/Home"
 
 # setup output path
 EXPERIMENT_PATH=$(dirname "$(pwd)")
