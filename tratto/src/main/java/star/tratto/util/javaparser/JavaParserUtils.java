@@ -17,6 +17,7 @@ import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
 import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.type.Type;
 import com.github.javaparser.ast.type.TypeParameter;
 import com.github.javaparser.resolution.MethodUsage;
 import com.github.javaparser.resolution.UnsolvedSymbolException;
@@ -870,6 +871,8 @@ public class JavaParserUtils {
      * Returns the base component type of a resolved type. Recursively strips
      * all array variables. For example:
      *     Object[][] => Object
+     * This method is similar to {@link JavaParserUtils#removeArray(Type)},
+     * but uses a different type representation.
      *
      * @param resolvedType a type
      * @return the base component type
@@ -879,6 +882,23 @@ public class JavaParserUtils {
             resolvedType = resolvedType.asArrayType().getComponentType();
         }
         return resolvedType;
+    }
+
+    /**
+     * Returns the base component type of a type. Recursively strips all array
+     * variables. For example:
+     *     Object[][] => Object
+     * This method is similar to {@link JavaParserUtils#removeArray(ResolvedType)},
+     * but uses a different type representation.
+     *
+     * @param type a type
+     * @return the base component type
+     */
+    public static Type removeArray(Type type) {
+        while (type.isArrayType()) {
+            type = type.asArrayType().getComponentType();
+        }
+        return type;
     }
 
     /**
