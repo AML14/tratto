@@ -54,21 +54,23 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
- * This class provides a collection of static methods for the generation of
- * the oracles dataset and conversion of JavaParser objects into interpretable
+ * This class provides static methods for generating features of the oracles
+ * dataset, and the conversion of JavaParser objects into interpretable 
  * outputs.
  */
 public class DatasetUtils {
     private static final Logger logger = LoggerFactory.getLogger(DatasetUtils.class);
 
-    // private constructor to avoid creating an instance of this class.
+    /** Private constructor to avoid creating an instance of this class. */
     private DatasetUtils() {
         throw new UnsupportedOperationException("This class cannot be instantiated.");
     }
 
     /**
-     * @param list a list of possibly non-unique elements
-     * @return a list that does not contain any duplicate elements
+     * Removes all duplicate elements from a list. 
+     * 
+     * @param list a list of elements 
+     * @return the same list with all duplicates removed
      * @param <T> the type of object in the list
      */
     public static <T> List<T> removeDuplicates(List<T> list) {
@@ -89,7 +91,6 @@ public class DatasetUtils {
     ) throws PackageDeclarationNotFoundException {
         List<ClassTokens> classList = new ArrayList<>();
         String packageName = JavaParserUtils.getPackageDeclaration(cu).getNameAsString();
-        // iterate through each class in the compilation unit.
         List<TypeDeclaration<?>> jpClasses = cu.getTypes();
         for (TypeDeclaration<?> jpClass : jpClasses) {
             classList.add(new ClassTokens(jpClass.getNameAsString(), packageName));
@@ -98,11 +99,11 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets the JavaDoc comment of a body declaration using regex patterns.
-     * Use ONLY IF JavaDoc comment is not recoverable using JavaParser API.
+     * Gets the Javadoc comment of a body declaration using regex patterns.
+     * Use ONLY IF Javadoc comment is not recoverable using JavaParser API.
      *
      * @param jpBody a member in a Java class
-     * @return the matched JavaDoc comment (empty string if not found)
+     * @return the matched Javadoc comment (empty string if not found)
      */
     private static String getJavadocByPattern(BodyDeclaration<?> jpBody) {
         String input = jpBody.toString();
@@ -110,10 +111,11 @@ public class DatasetUtils {
         Matcher matcher = pattern.matcher(input);
         if (matcher.find()) {
             String content = matcher.group(1);
-            // change prefix/suffix depending on the type of the member.
             if (jpBody instanceof TypeDeclaration<?>) {
+                // class javadoc format
                 return "/**" + content + "*/";
             } else {
+                // method javadoc format
                 return "    /**" + content + "*/";
             }
         }
@@ -121,8 +123,10 @@ public class DatasetUtils {
     }
 
     /**
+     * Gets the Javadoc comment of a given class.
+     * 
      * @param jpClass a JavaParser class
-     * @return a string representation of the class Javadoc comment
+     * @return the class Javadoc comment
      */
     public static String getClassJavadoc(
             TypeDeclaration<?> jpClass
@@ -134,8 +138,10 @@ public class DatasetUtils {
     }
 
     /**
+     * Gets the Javadoc comment of a given function.
+     *
      * @param jpCallable a JavaParser function
-     * @return a string representation of the function Javadoc comment
+     * @return the method/constructor Javadoc comment
      */
     public static String getCallableJavadoc(
             CallableDeclaration<?> jpCallable
@@ -149,7 +155,7 @@ public class DatasetUtils {
     /**
      * Gets all numeric value tokens in a Javadoc comment.
      *
-     * @param javadocComment the string representation of a JavaDoc comment
+     * @param javadocComment a Javadoc comment
      * @return a list of value tokens. The first element is the numeric value,
      * and the second element is the type of numeric value ("int" or "double").
      */
@@ -189,7 +195,7 @@ public class DatasetUtils {
      * seem redundant, but is added for consistency with the numeric Javadoc
      * values when using the XText grammar.
      *
-     * @param javadocComment the string representation of a Javadoc comment
+     * @param javadocComment a Javadoc comment
      * @return a list of value tokens. The first element is the numeric value,
      * and the second element is the type of value (always "String").
      */
@@ -211,7 +217,7 @@ public class DatasetUtils {
     /**
      * Gets all value tokens in a Javadoc comment via pattern matching.
      *
-     * @param javadocComment the Javadoc comment
+     * @param javadocComment a Javadoc comment
      * @return a list of records describing each numerical and string value.
      * Each entry has the form:
      *  [value, type]
@@ -452,14 +458,14 @@ public class DatasetUtils {
     }
 
     /**
-     * Collects information about all JavaDoc tags in a given compilation
+     * Collects information about all Javadoc tags in a given compilation
      * unit.
      *
      * @param cu a compilation unit of a Java file
      * @param fileContent the content of the Java file
      * @return a list of information about each tag. Each entry has the form:
      *  [fileContent, typeDeclaration, callableDeclaration, oracleType, name, content]
-     * where a JavaDoc tag is interpreted as:
+     * where a Javadoc tag is interpreted as:
      *  "@tag name content"
      * and the value of "@tag" determines "oracleType".
      * @throws PackageDeclarationNotFoundException if the package
@@ -478,12 +484,12 @@ public class DatasetUtils {
             jpCallables.addAll(jpClass.getMethods());
             jpCallables.addAll(jpClass.getConstructors());
             for (CallableDeclaration<?> jpCallable : jpCallables) {
-                // iterate through each JavaDoc tag.
+                // iterate through each Javadoc tag.
                 Optional<Javadoc> optionalJavadoc = jpCallable.getJavadoc();
                 if (optionalJavadoc.isPresent()) {
                     List<JavadocBlockTag> blockTags = optionalJavadoc.get().getBlockTags();
                     for (JavadocBlockTag blockTag : blockTags) {
-                        // get info for each JavaDoc tag.
+                        // get info for each Javadoc tag.
                         String name = blockTag.getName().orElse("");
                         String content = blockTag.getContent().toText();
                         OracleType oracleType = switch (blockTag.getTagName()) {
@@ -611,13 +617,13 @@ public class DatasetUtils {
     }
 
     /**
-     * Collects information about all JavaDoc tags in a project from a
+     * Collects information about all Javadoc tags in a project from a
      * given source path.
      *
      * @param sourceDir the project root directory
      * @return a list of information about each tag. Each entry has the form:
      *  [typeDeclaration, callableDeclaration, oracleType, name, content]
-     * where a JavaDoc tag is interpreted as:
+     * where a Javadoc tag is interpreted as:
      *  "@tag name content"
      * and the value of "@tag" determines "oracleType".
      */
@@ -626,7 +632,7 @@ public class DatasetUtils {
     ) {
         List<JavadocTagTokens> tagList = new ArrayList<>();
         List<Path> javaFiles = getValidJavaFiles(sourceDir);
-        // iterate through each file and add JavaDoc tags.
+        // iterate through each file and add Javadoc tags.
         for (Path javaFile : javaFiles) {
             Path absoluteJavaFile = javaFile.toAbsolutePath();
             String fileContent = FileUtils.readString(absoluteJavaFile);
