@@ -248,41 +248,31 @@ public class DatasetUtils {
     ) {
         Type parameterType = jpParameter.getType();
         try {
-            ResolvedType resolvedType = parameterType.resolve();
             StringBuilder className = new StringBuilder();
-            // get base type.
-            if (resolvedType.isTypeVariable()) {
-                className.append(parameterType.asClassOrInterfaceType().getNameAsString());
-            } else if (resolvedType.isPrimitive()) {
+            ResolvedType resolvedType = parameterType.resolve();
+            if (resolvedType.isPrimitive()) {
                 className.append(parameterType.asPrimitiveType().asString());
             } else if (resolvedType.isReferenceType()) {
-                // if object is generic, use generic name.
                 if (JavaParserUtils.isTypeParameter(resolvedType)) {
                     className.append(TypeUtils.getJDoctorSimpleNameFromSourceCode(jpClass, jpCallable, jpParameter));
                 } else {
-                    className.append(JavaParserUtils.getTypeWithoutPackages(resolvedType.asReferenceType()));
+                    className.append(JavaParserUtils.getTypeWithoutPackages(resolvedType));
                 }
-            } else if (resolvedType.isArray()) {
-                // special case: return early if type is an array to avoid redundant brackets.
-                className.append(JavaParserUtils.getTypeWithoutPackages(resolvedType.asArrayType()));
             } else {
-                // unknown type.
-                assert false;
-                logger.error(String.format("Unexpected type when evaluating %s parameter type.", parameterType));
+                throw new IllegalArgumentException(String.format("Unexpected type when evaluating %s parameter type.", parameterType));
             }
-            // check if type is an array.
             if (jpParameter.isVarArgs()) {
                 className.append("[]");
             }
-            // return class name.
             return Optional.of(className.toString());
         } catch (UnsolvedSymbolException e) {
             logger.error(String.format("UnsolvedSymbolException when evaluating %s parameter type.", parameterType));
-            String className = parameterType.asClassOrInterfaceType().getNameAsString();
+            StringBuilder className = new StringBuilder();
+            className.append(parameterType.asClassOrInterfaceType().getNameAsString());
             if (jpParameter.isVarArgs()) {
-                className += "[]";
+                className.append("[]");
             }
-            return Optional.of(className);
+            return Optional.of(className.toString());
         }
     }
 
