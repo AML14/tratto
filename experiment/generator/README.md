@@ -30,7 +30,7 @@ bash evosuite.sh [fully qualified name] [path to binaries]
 For example,
 
 ```shell
-bash evosuite.sh tutorial.Stack ~/EvoSuite-Tutorial/Tutorial_Stack/target/classes
+bash evosuite.sh tutorial.Stack ../src/test/resources/project/target/classes
 ```
 
 For further detail about the EvoSuite calls abstracted by this script, see the [EvoSuite Tutorial](https://www.evosuite.org/documentation/tutorial-part-1/).
