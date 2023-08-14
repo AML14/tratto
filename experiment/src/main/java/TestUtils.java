@@ -166,6 +166,25 @@ public class TestUtils {
     }
 
     /**
+     * Adds an assertion to a given test case, at a specific line number.
+     * Represents a normal assertion oracle.
+     *
+     * @param testCase a JavaParser representation of a test case
+     * @param oracle an assertion
+     * @param lineNumber the index to insert the assertion
+     */
+    private static void insertAssertionOracle(
+            MethodDeclaration testCase,
+            String oracle,
+            int lineNumber
+    ) {
+        Statement assertion = StaticJavaParser.parseStatement(oracle);
+        testCase.asMethodDeclaration()
+                .getBody().orElseThrow()
+                .addStatement(lineNumber, assertion);
+    }
+
+    /**
      * Adds a try/catch block to a given test case, representing an
      * exceptional oracle.
      *
