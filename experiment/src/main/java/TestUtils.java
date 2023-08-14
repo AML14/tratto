@@ -1,11 +1,15 @@
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.NodeList;
+import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.stmt.CatchClause;
 import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.stmt.TryStmt;
+import com.github.javaparser.ast.type.ClassOrInterfaceType;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -159,6 +163,29 @@ public class TestUtils {
         } catch (IOException e) {
             throw new Error("Unable to parse files in directory " + dir.toString());
         }
+    }
+
+    /**
+     * Adds a try/catch block to a given test case, representing an
+     * exceptional oracle.
+     *
+     * @param testCase a JavaParser representation of a test case
+     * @param exception the exception class in the catch clause
+     */
+    private static void insertExceptionalOracle(
+            MethodDeclaration testCase,
+            String exception
+    ) {
+        ClassOrInterfaceType exceptionType = StaticJavaParser.parseClassOrInterfaceType(exception);
+        CatchClause catchClause = new CatchClause()
+                .setParameter(new Parameter(exceptionType, "e"));
+        BlockStmt methodBody = testCase.getBody().orElseThrow();
+        TryStmt tryCatchStatement = new TryStmt();
+        tryCatchStatement.setTryBlock(methodBody);
+        tryCatchStatement.getCatchClauses().add(catchClause);
+        tryCatchStatement.getTryBlock().addStatement(StaticJavaParser.parseStatement("fail();"));
+        testCase.setBody(new BlockStmt());
+        testCase.getBody().get().addStatement(tryCatchStatement);
     }
 
     /**
