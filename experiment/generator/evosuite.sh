@@ -8,13 +8,13 @@ JAVA8_HOME="$(pwd)/resources/jdk1.8.0_381.jdk/Contents/Home"
 
 # argument and setup check
 if [ ! $# -eq 2 ]; then
-  echo -e "Incorrect number of arguments. Expected 2 arguments, but got $#".
+  echo -e "(EVOSUITE) Incorrect number of arguments. Expected 2 arguments, but got $#".
   exit 1
 elif [ ! -d "$2" ]; then
-  echo -e "The system binaries path \"$2\" does not exist."
+  echo -e "(EVOSUITE) The system binaries path \"$2\" does not exist."
   exit 1
 elif [ ! -d "$JAVA8_HOME" ]; then
-  echo -e "Error: JDK8 Home directory \"$JAVA8_HOME\" does not exist."
+  echo -e "(EVOSUITE) Error: JDK8 Home directory \"$JAVA8_HOME\" does not exist."
   exit 1
 fi
 
