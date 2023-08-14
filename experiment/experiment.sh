@@ -29,7 +29,7 @@ for option in "${VALID_TOG[@]}"; do
   fi
 done
 if [ ! $found -eq 1 ]; then
-  echo -e "The given TOG is not supported. Must be one of: \"jdoctor\", \"toga\", or \"tratto\"."
+  echo -e "The given TOG \"$1\" is not supported. Must be one of: \"jdoctor\", \"toga\", or \"tratto\"."
   exit 1
 fi
 
