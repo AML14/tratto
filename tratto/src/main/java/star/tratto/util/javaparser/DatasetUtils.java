@@ -719,7 +719,7 @@ public class DatasetUtils {
             ResolvedType jpResolvedType = jpType.resolve();
             return getMethodsFromType(jpResolvedType);
         } catch (UnsolvedSymbolException e) {
-            logger.error(String.format("Unable to generate method quartet list from type %s", jpType));
+            logger.error(String.format("Unable to generate method tokens from type %s", jpType));
             return new ArrayList<>();
         }
     }
@@ -775,9 +775,10 @@ public class DatasetUtils {
      * where each record has the form:
      *  [fieldName, packageName, className, fieldSignature]
      * where "className" refers to the name of the field type. If possible,
-     * declarations with multiple fields are split into individual quartets.
+     * declarations with multiple fields are split into individual attribute
+     * tokens.
      */
-    private static List<AttributeTokens> convertFieldDeclarationToQuartet(
+    private static List<AttributeTokens> convertFieldDeclarationToAttributeTokens(
             List<ResolvedFieldDeclaration> resolvedFields
     ) {
         List<AttributeTokens> fieldList = new ArrayList<>();
@@ -810,7 +811,8 @@ public class DatasetUtils {
      * form:
      *  [fieldName, packageName, className, fieldSignature]
      * where "className" refers to the name of the field type. If possible,
-     * declarations with multiple fields are split into individual quartets.
+     * declarations with multiple fields are split into individual attribute
+     * tokens.
      */
     public static List<AttributeTokens> getFieldsFromType(
             ResolvedType jpResolvedType
@@ -833,7 +835,7 @@ public class DatasetUtils {
                         .stream()
                         .filter(JavaParserUtils::isNonPrivateNonStaticAttribute)
                         .toList();
-                fieldList.addAll(convertFieldDeclarationToQuartet(jpResolvedFields));
+                fieldList.addAll(convertFieldDeclarationToAttributeTokens(jpResolvedFields));
             } else {
                 // unable to recover type declaration.
                 logger.error(String.format(
@@ -863,7 +865,7 @@ public class DatasetUtils {
             ResolvedType jpResolvedType = jpType.resolve();
             return getFieldsFromType(jpResolvedType);
         } catch (UnsolvedSymbolException e) {
-            logger.error(String.format("Unable to generate attribute quartet list from type %s", jpType));
+            logger.error(String.format("Unable to generate attribute tokens from type %s", jpType));
             return new ArrayList<>();
         }
     }
@@ -957,7 +959,7 @@ public class DatasetUtils {
                 .stream()
                 .filter(JavaParserUtils::isNonPrivateNonStaticAttribute)
                 .toList();
-        List<AttributeTokens> attributeList = new ArrayList<>(convertFieldDeclarationToQuartet(allReceiverFields));
+        List<AttributeTokens> attributeList = new ArrayList<>(convertFieldDeclarationToAttributeTokens(allReceiverFields));
         // add all fields of parameters.
         for (Parameter jpParam : jpCallable.getParameters()) {
             attributeList.addAll(getFieldsFromParameter(jpParam));
