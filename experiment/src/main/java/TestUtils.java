@@ -1,15 +1,80 @@
+import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.NodeList;
+import com.github.javaparser.ast.expr.Expression;
+import com.github.javaparser.ast.expr.MethodCallExpr;
+import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.stmt.Statement;
+import com.github.javaparser.ast.stmt.TryStmt;
+
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * This class provides static methods for removing oracles from a test suite,
  * and inserting oracles into test prefixes.
  */
 public class TestUtils {
+    /** The path to the output directory */
+    private static final Path output = Paths.get("output");
+    /** A list of all JUnit Assertions assert methods */
+    private static final List<String> allJUnitAssertMethods = List.of(
+            "assertArrayEquals",
+            "assertEquals",
+            "assertFalse",
+            "assertNotNull",
+            "assertNotSame",
+            "assertNull",
+            "assertSame",
+            "assertThat",
+            "assertTrue"
+    );
+
     // private constructor to avoid creating an instance of this class.
     private TestUtils() {
         throw new UnsupportedOperationException("This class cannot be instantiated.");
+    }
+
+    /**
+     * Checks if a given statement is a JUnit Assertions assert method call
+     * (e.g. assertEquals). This does NOT include "fail()", which used by
+     * exceptional oracles.
+     *
+     * @param statement a code statement
+     * @return true iff the statement uses an "assert..." method from the
+     * JUnit Assertions class
+     */
+    private static boolean isJUnitAssertion(Statement statement) {
+        if (statement.isExpressionStmt()) {
+            Expression expression = statement.asExpressionStmt().getExpression();
+            if (expression.isMethodCallExpr()) {
+                MethodCallExpr methodCallExpr = expression.asMethodCallExpr();
+                return allJUnitAssertMethods.contains(methodCallExpr.getNameAsString());
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks if a given statement is a fail statement. These are used in
+     * exceptional oracles to ensure that a prefix throws an exception.
+     *
+     * @param statement a code statement
+     * @return true iff the statement is a "fail" method call
+     */
+    private static boolean isFail(Statement statement) {
+        if (statement.isExpressionStmt()) {
+            Expression expression = statement.asExpressionStmt().getExpression();
+            if (expression.isMethodCallExpr()) {
+                MethodCallExpr methodCallExpr = expression.asMethodCallExpr();
+                return methodCallExpr.getNameAsString().equals("fail");
+            }
+        }
+        return false;
     }
 
     /**
@@ -20,7 +85,11 @@ public class TestUtils {
      * @param testFile a JavaParser representation of a test file
      */
     private static void removeAssertionOracles(CompilationUnit testFile) {
-
+        testFile.findAll(Statement.class).forEach(statement -> {
+            if (isJUnitAssertion(statement) || statement.isAssertStmt()) {
+                statement.remove();
+            }
+        });
     }
 
     /**
@@ -44,7 +113,20 @@ public class TestUtils {
      * @param testFile a JavaParser representation of a test file
      */
     private static void removeExceptionalOracles(CompilationUnit testFile) {
-
+        // remove all try/catch blocks
+        testFile.findAll(TryStmt.class).forEach(tryStmt -> {
+            BlockStmt testCase = (BlockStmt) tryStmt.getParentNode().orElseThrow();
+            NodeList<Statement> prefix = tryStmt.getTryBlock().getStatements();
+            int prefixLocation = testCase.getStatements().indexOf(tryStmt);
+            testCase.getStatements().addAll(prefixLocation, prefix);
+            tryStmt.remove();
+        });
+        // remove "fail()" statements
+        testFile.findAll(Statement.class).forEach(statement -> {
+            if (isFail(statement)) {
+                statement.remove();
+            }
+        });
     }
 
     /**
@@ -59,7 +141,24 @@ public class TestUtils {
      * @see TestUtils#removeExceptionalOracles(CompilationUnit)
      */
     public static void removeOracles(Path dir) {
-
+        Path prefixPath = output.resolve("evosuite-prefix");
+        FileUtils.copy(dir, prefixPath);
+        try (Stream<Path> walk = Files.walk(prefixPath)) {
+            walk
+                    .filter(FileUtils::isJavaFile)
+                    .forEach(testFile -> {
+                        try {
+                            CompilationUnit cu = StaticJavaParser.parse(testFile);
+                            removeAssertionOracles(cu);
+                            removeExceptionalOracles(cu);
+                            FileUtils.writeString(testFile, cu.toString());
+                        } catch (IOException e) {
+                            throw new Error("Unable to parse test file " + testFile.getFileName().toString());
+                        }
+                    });
+        } catch (IOException e) {
+            throw new Error("Unable to parse files in directory " + dir.toString());
+        }
     }
 
     /**
