@@ -6,6 +6,10 @@
 
 We use EvoSuite to generate test prefixes, which is written in Java 8. However, the experiment module uses Java 17, such that the user must configure a home directory for a local JDK 8. See [Oracle](https://www.oracle.com/java/technologies/downloads/#java8-linux) for JDK downloads. Afterward, configure the path to the JDK Home directory in [`evosuite.sh`](generator/evosuite.sh). By default, this path is set to the `resources` subdirectory in the `generator` directory.
 
+### JDoctor
+
+To set up JDoctor for analysis, visit the [ToRaDoCu](https://github.com/albertogoffi/toradocu) GitHub page, and follow instructions to build the `toradocu-1.0-all.jar` file. Then, add the file to the `experiment/generator/resources` directory.
+
 ## Overview
 
 This module automates the experimental analysis of a test oracle generator (TOG) for the task of automated test generation. 
