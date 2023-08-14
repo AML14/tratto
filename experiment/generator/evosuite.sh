@@ -1,9 +1,10 @@
 # This script generates a test suite using EvoSuite and saves the output to
 # experiment/output/evosuite-test.
+RESOURCES_DIR="$(dirname "$0")/resources"
 
 # ----- SETUP -----
 # Set this path to the "Home" directory in a local JDK8.
-JAVA8_HOME="$(pwd)/resources/jdk1.8.0_381.jdk/Contents/Home"
+JAVA8_HOME="$RESOURCES_DIR/jdk1.8.0_381.jdk/Contents/Home"
 
 
 # argument and setup check
@@ -22,8 +23,8 @@ fi
 # setup variables
 TARGET_CLASS="$1"  # fully-qualified name of target class
 TARGET_DIR="$2"  # directory of binary files of the system under test
-OUTPUT_DIR="$(pwd)/../output"
-EVOSUITE="java -jar $(pwd)/resources/evosuite-1.0.6.jar"
+OUTPUT_DIR="$RESOURCES_DIR/../../output"
+EVOSUITE="java -jar $RESOURCES_DIR/evosuite-1.0.6.jar"
 mkdir -p "$OUTPUT_DIR"
 # use EvoSuite to generate tests
 (export JAVA_HOME=$JAVA8_HOME ; $EVOSUITE -class "$TARGET_CLASS" -projectCP "$TARGET_DIR")
