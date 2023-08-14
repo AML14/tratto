@@ -33,4 +33,6 @@ if [ ! $found -eq 1 ]; then
   exit 1
 fi
 
-echo "$TARGET_CLASS"
+
+# generate EvoSuite tests
+bash ../../generator/evosuite.sh "$TARGET_CLASS" "$BIN_DIR"
