@@ -37,6 +37,11 @@ public class TestUtils {
             "assertThat",
             "assertTrue"
     );
+    /** A list of all supported axiomatic TOGs */
+    private static final List<String> allAxiomaticTogs = List.of(
+            "jdoctor",
+            "tratto"
+    );
 
     // private constructor to avoid creating an instance of this class.
     private TestUtils() {
@@ -235,12 +240,15 @@ public class TestUtils {
     }
 
     /**
+     * Checks if a given TOG is axiomatic.
+     *
      * @param tog a test oracle generator
      * @return true iff the given tog generates axiomatic test oracles (known
      * a priori)
+     * @see TestUtils#allAxiomaticTogs
      */
     private static boolean isAxiomatic(String tog) {
-        return false;
+        return allAxiomaticTogs.contains(tog);
     }
 
     /**
