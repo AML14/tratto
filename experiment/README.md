@@ -1,5 +1,11 @@
 # Experiment
 
+## Setup
+
+### JDoctor
+
+To set up JDoctor for analysis, visit the [ToRaDoCu](https://github.com/albertogoffi/toradocu) GitHub page, and follow instructions to build the `toradocu-1.0-all.jar` file. Then, add the file to the `experiment/generator/resources` directory.
+
 ## Overview
 
 This module automates the experimental analysis of a test oracle generator (TOG) for the task of automated test generation. 
