@@ -9,7 +9,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class FileUtilsTest {
-    private static final Path tempRoot = Paths.get("src/test/java/temp");
+    private static final Path tempRoot = Paths.get("src/test/resources/temp");
 
     private Path setupFileEnvironment() {
         FileUtils.createDirectories(tempRoot);
