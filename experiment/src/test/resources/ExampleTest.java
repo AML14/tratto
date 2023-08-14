@@ -1,17 +1,11 @@
-package example.test;
+package example;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * This class provides a list of example test cases using JUnit. We use this
@@ -19,7 +13,6 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 public class ExampleTest {
     @Test
-    @Disabled
     public void assertionTest() {
         // an example of an assertion oracle
         List<String> nonEmptyList = List.of("example");
@@ -27,7 +20,6 @@ public class ExampleTest {
     }
 
     @Test
-    @Disabled
     public void multipleAssertionTest() {
         List<String> nonEmptyList = new ArrayList<>(List.of("example"));
         assertEquals("example", nonEmptyList.get(0));
@@ -39,7 +31,6 @@ public class ExampleTest {
     }
 
     @Test
-    @Disabled
     public void exceptionalTest() {
         // an example of an exceptional oracle
         try {
@@ -52,7 +43,6 @@ public class ExampleTest {
     }
 
     @Test
-    @Disabled
     public void assertionAndExceptionalTest() {
         // assertion prefix.
         List<String> emptyList = new ArrayList<>();
