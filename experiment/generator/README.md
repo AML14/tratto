@@ -1,14 +1,36 @@
 # Generator
 
+## Setup
+
+### EvoSuite
+
+To use EvoSuite (which is written in Java 8), the user must set a path to a home directory for JDK 8 in [`evosuite.sh`](evosuite.sh). See [Oracle](https://www.oracle.com/java/technologies/downloads/#java8-linux) for JDK downloads.
+
 ## Overview
 
-This module uses shell scripts to generate test oracles using a test oracle generator (TOG), and also generate a full test suite using EvoSuite. Each TOG has an individual shell script, named after the TOG, to generate oracles based on its implementation (e.g. `tratto.sh`). The `evosuite.sh` script generates a full test suite using EvoSuite, and saves the output to `experiment/output/evosuite-test/`.
+This module uses shell scripts to generate oracles using a test oracle generator (TOG), and also generate a full test suite using EvoSuite. Each TOG has an individual shell script, named accordingly, to generate oracles catered to its specific implementation (e.g. `tratto.sh`). The `evosuite.sh` script generates a full test suite using EvoSuite, and saves the output to `experiment/output/evosuite-tests`.
 
 We provide a brief overview of the relevant scripts:
 
-- `evosuite.sh`: Generates a test suite using EvoSuite 
-- `jdoctor.sh`: Generates oracles using JDoctor
-- `toga.sh`: Generates oracles using TOGA
-- `tratto.sh`: Generates oracles using Tratto
+- `evosuite.sh`: generates a test suite using EvoSuite 
+- `jdoctor.sh`: generates oracles using JDoctor
+- `toga.sh`: generates oracles using TOGA
+- `tratto.sh`: generates oracles using Tratto
 
-Each TOG script produces oracles as a list of [`OracleOutput`](../src/main/java/OracleOutput.java)'s.
+Each TOG outputs oracles as a list of [`OracleOutput`](../src/main/java/OracleOutput.java) objects.
+
+### EvoSuite
+
+To use `evosuite.sh`, run
+
+```shell
+bash evosuite.sh [fully qualified name] [path to binaries]
+```
+
+For example,
+
+```shell
+bash evosuite.sh tutorial.Stack ../src/test/resources/project/target/classes
+```
+
+For further detail about the EvoSuite calls abstracted by this script, see the [EvoSuite Tutorial](https://www.evosuite.org/documentation/tutorial-part-1/).
