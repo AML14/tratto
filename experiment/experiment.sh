@@ -1,2 +1,36 @@
 # This script manages the end-to-end experimental analysis.
 # To run the experiment, the user provides a specific TOG and a source file.
+
+# check if the number of arguments is correct
+if [ ! $# -eq 4 ]; then
+  echo -e "Incorrect number of arguments. Expected 4 arguments, but got $#."
+  exit 1
+fi
+TOG=$1
+TARGET_CLASS=$2
+SRC_DIR=$3
+BIN_DIR=$4
+
+# check if given directories exist
+if [ ! -d "$SRC_DIR" ]; then
+  echo -e "The project source directory \"$SRC_DIR\" does not exist."
+  exit 1
+elif [ ! -d "$BIN_DIR" ]; then
+  echo -e "The system binaries path \"$BIN_DIR\" does not exist."
+  exit 1
+fi
+# check if given TOG is supported
+found=0
+VALID_TOG=("jdoctor" "toga" "tratto")
+for option in "${VALID_TOG[@]}"; do
+  if [ "$option" = "$TOG" ]; then
+    found=1
+    break
+  fi
+done
+if [ ! $found -eq 1 ]; then
+  echo -e "The given TOG is not supported. Must be one of: \"jdoctor\", \"toga\", or \"tratto\"."
+  exit 1
+fi
+
+echo "$TARGET_CLASS"
