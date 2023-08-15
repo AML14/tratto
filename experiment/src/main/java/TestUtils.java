@@ -194,14 +194,6 @@ public class TestUtils {
     }
 
     /**
-     * @param oracleOutput an oracle record
-     * @return true iff the given record represents an exceptional oracle
-     */
-    private static boolean isExceptional(OracleOutput oracleOutput) {
-        return !oracleOutput.exception().equals("");
-    }
-
-    /**
      * @param tog a test oracle generator
      * @return true iff the given tog generates axiomatic test oracles (known
      * a priori)
