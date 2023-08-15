@@ -1,6 +1,7 @@
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.NodeList;
+import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
@@ -166,6 +167,14 @@ public class TestUtils {
         }
     }
 
+    private static void insertAxiomaticOracle(MethodDeclaration testCase, OracleOutput oracle) {
+
+    }
+
+    private static void insertAxiomaticOracles(CompilationUnit cu, List<OracleOutput> oracles) {
+
+    }
+
     /**
      * Adds axiomatic oracles to test prefixes in a given directory. Axiomatic
      * oracles are not specific to a given test prefix. Therefore, we insert
@@ -177,7 +186,21 @@ public class TestUtils {
      * @param oracles a list of test oracles made by an axiomatic tog
      */
     private static void insertAxiomaticOracles(Path dir, List<OracleOutput> oracles) {
-
+        try (Stream<Path> walk = Files.walk(dir)) {
+            walk
+                    .filter(FileUtils::isJavaFile)
+                    .forEach(testFile -> {
+                        try {
+                            CompilationUnit cu = StaticJavaParser.parse(testFile);
+                            insertAxiomaticOracles(cu, oracles);
+//                            FileUtils.writeString(testFile, cu.toString());
+                        } catch (IOException e) {
+                            throw new Error("Unable to parse test file " + testFile.getFileName().toString());
+                        }
+                    });
+        } catch (IOException e) {
+            throw new Error("Error when parsing files in directory " + dir, e);
+        }
     }
 
     /**
