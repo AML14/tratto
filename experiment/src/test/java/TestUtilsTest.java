@@ -55,4 +55,29 @@ public class TestUtilsTest {
         }
         FileUtils.deleteDirectory(outputPath.resolve("evosuite-prefix"));
     }
+
+    private List<OracleOutput> getAxiomaticOracles() {
+        return List.of(
+                new OracleOutput(
+                        "tutorial.Stack",
+                        "push(T item)",
+                        "PRE",
+                        "(item == null) == false",
+                        ""
+                ),
+                new OracleOutput(
+                        "tutorial.Stack",
+                        "pop()",
+                        "EXCEPT_POST",
+                        "receiverObjectID.isEmpty()",
+                        "EmptyStackException"
+                )
+        );
+    }
+
+    @Test
+    public void insertAxiomaticOraclesTest() {
+        List<OracleOutput> axiomaticOracles = getAxiomaticOracles();
+        TestUtils.insertOracles(testPath.resolve("prefix"), "jdoctor", axiomaticOracles);
+    }
 }
