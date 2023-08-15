@@ -194,6 +194,14 @@ public class TestUtils {
     }
 
     /**
+     * @param oracleOutput an oracle record
+     * @return true iff the given record represents an exceptional oracle
+     */
+    private static boolean isExceptional(OracleOutput oracleOutput) {
+        return !oracleOutput.exception().equals("");
+    }
+
+    /**
      * @param tog a test oracle generator
      * @return true iff the given tog generates axiomatic test oracles (known
      * a priori)
@@ -216,6 +224,12 @@ public class TestUtils {
      * @see TestUtils#insertNonAxiomaticOracles(Path, List)
      */
     public static void insertOracles(Path dir, String tog, List<OracleOutput> oracles) {
-
+        Path testPath = output.resolve("tog-tests/" + tog);
+        FileUtils.copy(dir, testPath);
+        if (isAxiomatic(tog)) {
+            insertAxiomaticOracles(testPath, oracles);
+        } else {
+            insertNonAxiomaticOracles(testPath, oracles);
+        }
     }
 }
