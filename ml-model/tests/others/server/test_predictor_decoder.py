@@ -1,6 +1,6 @@
 import copy
 
-from scripts.server.predictor_decoder import get_input_model_classes, pre_process_dataset, get_input_model_values
+from scripts.server.predictor import get_input_model_classes, pre_process_dataset, get_input_model_values
 from src.types.ClassificationType import ClassificationType
 from src.types.TransformerType import TransformerType
 from src.types.TrattoModelType import TrattoModelType
@@ -36,14 +36,14 @@ def test_get_input(
     next_tokenClass_server = value_mappings[next_tokenClass_server]
     df_dataset_server_after_pre_process = pre_process_dataset(df_dataset_server, tokenizer)
     if arg_tratto_model_type == TrattoModelType.TOKEN_CLASSES:
-        src_predictor, eligible_token_classes = get_input_model_classes(
+        src_predictor, tgt_predictor, eligible_token_classes = get_input_model_classes(
             df_dataset_server_after_pre_process,
             tokenizer,
             arg_classification_type,
             arg_transformer_type
         )
     elif arg_tratto_model_type == TrattoModelType.TOKEN_VALUES:
-        src_predictor, eligible_token_values = get_input_model_values(
+        src_predictor, tgt_predictor, eligible_token_values = get_input_model_values(
             df_dataset_server_after_pre_process,
             next_tokenClass_server,
             tokenizer,

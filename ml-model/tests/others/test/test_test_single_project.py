@@ -1,9 +1,11 @@
 import copy
+import os
 
 from scripts.test.test_single_project import pre_processing
 from src.types.ClassificationType import ClassificationType
 from src.types.TransformerType import TransformerType
 from src.types.TrattoModelType import TrattoModelType
+from src.utils import utils
 from tests.utils import generate_src_input, generate_equivalent_eligibles, generate_equivalent_tokenClassesSoFar
 
 
@@ -66,7 +68,16 @@ def test_pre_processing(
             expected_src_tgt.append((equivalent_src_inputs,str(row_copy.label)))
 
     if arg_tratto_model_type == TrattoModelType.TOKEN_CLASSES:
-        ids_classes_dict = {i: k for i, k in enumerate(sorted(list(df_projects_before["tokenClass"].unique())))}
+        _, classes_ids_dict = utils.import_json(
+            os.path.join(
+                os.path.dirname(os.path.abspath(__file__)),
+                '../../..',
+                'src',
+                'resources',
+                'classificator_converter_in_category_token_classes.json'
+            )
+        )
+        ids_classes_dict = {i: k for k, i in classes_ids_dict.items()}
     elif arg_tratto_model_type == TrattoModelType.TOKEN_VALUES:
         ids_classes_dict = {i: k for i, k in enumerate(sorted(list(df_projects_before["token"].unique())))}
     ids_labels_dict = {i: str(k) for i, k in enumerate(sorted(list(df_projects_before["label"].unique())))}

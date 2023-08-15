@@ -456,6 +456,9 @@ class DataProcessor:
             # Keep only a single instance for each combination of oracleId and oracleSoFar
             self._df_dataset = self._df_dataset[self._df_dataset['label'] == 'True']
 
+        # Remove method source code (keep only signature)
+        self._df_dataset['methodSourceCode'] = self._df_dataset['methodSourceCode'].str.split('{').str[0]
+
         # Delete the tgt labels from the input dataset, and others less relevant columns
         df_src = self._df_dataset.drop(['label', 'oracleId'], axis=1)
         # If the model predicts token classes, remove the token values from the input, else remove
@@ -555,7 +558,7 @@ class DataProcessor:
         # Datasets path
         oracles_dataset = os.path.join(d_path)
         # Collects partial dataframes from oracles
-        for file_name in os.listdir(oracles_dataset):
+        for file_name in os.listdir(oracles_dataset)[:10]:
             df = pd.read_json(os.path.join(oracles_dataset, file_name))
             dfs.append(df)
         df_dataset = pd.concat(dfs)

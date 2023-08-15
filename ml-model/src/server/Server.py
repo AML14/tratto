@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request, make_response
-from scripts.server import predictor_decoder
+from scripts.server import predictor
 
 
 class Server:

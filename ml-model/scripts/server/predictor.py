@@ -26,45 +26,109 @@ _, value_mappings = utils.import_json(
     )
 )
 
+# Classificator converter
+_, classificator_converter_in_category = utils.import_json(
+    os.path.join(
+        os.path.dirname(os.path.abspath(__file__)),
+        '..',
+        '..',
+        'src',
+        'resources',
+        'classificator_converter_in_category_token_classes.json'
+    )
+)
+_, classificator_converter_in_label = utils.import_json(
+    os.path.join(
+        os.path.dirname(os.path.abspath(__file__)),
+        '..',
+        '..',
+        'src',
+        'resources',
+        'classificator_converter_in_label.json'
+    )
+)
+classificator_converter_out_category = {k: i for i, k in classificator_converter_in_category.items()}
+classificator_converter_out_label = {k: i for i, k in classificator_converter_in_label.items()}
+
 def predict_next(
         device,
         model,
         dl_src,
         tokenizer,
         eligible_tokens,
-        model_type
+        classification_type,
+        transformer_type,
+        tratto_model_type
 ):
     # Model in evaluation mode
     model.eval()
     num_beams = 1
+    predictions = []
     # The prediction is performed without accumulating the gradient descent and without updating the weights of the model
     with torch.no_grad():
         for batch_id, batch in enumerate(dl_src, 1):
             # Extract the inputs, the attention masks and the targets from the batch
             src_input = batch[0].to(device)
             src_masks = batch[1].to(device)
-            # Model predictions with beam-search model
-            outputs_generate = model.generate(
-                input_ids=src_input,
-                attention_mask=src_masks,
-                num_beams=num_beams,
-                num_return_sequences=num_beams,
-                do_sample=False
-            )
-            predicted_generate = np.array(
-                tokenizer.batch_decode(
-                    outputs_generate,
-                    skip_special_tokens=True
-                )
-            )
-            assert len(predicted_generate) == num_beams
-            # First-choice beam search
-            predicted_1 = predicted_generate[0]
+            tgt = batch[2].to(device)
 
+            if transformer_type == TransformerType.DECODER:
+                # Model predictions with beam-search
+                outputs_generate = model.generate(
+                    input_ids=src_input,
+                    attention_mask=src_masks,
+                    num_beams=num_beams,
+                    num_return_sequences=num_beams,
+                    do_sample=False
+                )
+                predicted_generate = np.array(
+                    tokenizer.batch_decode(
+                        outputs_generate,
+                        skip_special_tokens=True
+                    )
+                )
+                assert len(predicted_generate) == num_beams
+                # First-choice beam search
+                predictions.append((predicted_generate[0],1.0))
+            else:
+                # Model predictions with ranking
+                outputs_generate = model(
+                    input_ids=src_input,
+                    attention_mask=src_masks
+                )
+                tgt_decoded = list(map(lambda t: t.replace(" ",""), np.array(
+                    tokenizer.batch_decode(
+                        tgt,
+                        skip_special_tokens=True
+                    )
+                )))
+                logits = outputs_generate.logits
+                probabilities = torch.softmax(logits, dim=1)
+                predicted_generate_encoded = torch.argmax(probabilities, dim=1)
+
+                for i, p in enumerate(predicted_generate_encoded):
+                    if classification_type == ClassificationType.CATEGORY_PREDICTION:
+                        predicted_generate = classificator_converter_out_category[p.item()]
+                        predictions.append((
+                            probabilities[i][p.item()].item(),
+                            predicted_generate
+                        ))
+                    elif classification_type == ClassificationType.LABEL_PREDICTION:
+                        if classificator_converter_out_label[predicted_generate_encoded[p.item()]] == 'True':
+                            predicted_generate = tgt_decoded[i]
+                            predictions.append((
+                                probabilities[i][p.item()].item(),
+                                predicted_generate
+                            ))
+
+        sorted_predictions = sorted(predictions, key=lambda p: p[0], reverse=True)
+        first_choice = sorted_predictions[0]
+
+        if classification_type == ClassificationType.CATEGORY_PREDICTION:
             # Heuristics to mitigate knowns prediction errors
-            if model_type == TrattoModelType.TOKEN_CLASSES:
-                if predicted_1 not in list(value_mappings.values()):
-                    subwordSplit = predicted_1.split("_")
+            if tratto_model_type == TrattoModelType.TOKEN_CLASSES:
+                if first_choice not in list(value_mappings.values()):
+                    subwordSplit = first_choice.split("_")
                     # Iterate over the list of possible token classes
                     for eligible in value_mappings.values():
                         # Check if last subword of predicted token matches the end of the current eligible token class
@@ -84,16 +148,20 @@ def predict_next(
                         if eligible.endswith(camelCaseSplit[-1]):
                             return eligible
             else:
-                return predicted_1
-            # If no token has been found, compute the Levenshtein distance among the eligible token classes
-            best_distance = float('inf')
-            most_probable_token = None
-            for eligible in eligible_tokens:
-                distance = Levenshtein.distance(predicted_1, eligible)
-                if distance < best_distance and eligible in eligible_tokens:
-                    best_distance = distance
-                    most_probable_token = eligible
-            return most_probable_token
+                return first_choice
+        elif classification_type == ClassificationType.LABEL_PREDICTION:
+            if first_choice in value_mappings.values():
+                return first_choice
+        # If no token has been found, compute the Levenshtein distance among the eligible token classes
+        best_distance = float('inf')
+        most_probable_token = None
+        for eligible in eligible_tokens:
+            distance = Levenshtein.distance(first_choice, eligible)
+            if distance < best_distance and eligible in eligible_tokens:
+                best_distance = distance
+                most_probable_token = eligible
+        return most_probable_token
+
 
 
 def update_tokenizer_vocab(
@@ -175,6 +243,9 @@ def get_input_model_classes(
     if classification_type == ClassificationType.CATEGORY_PREDICTION:
         # Remove category to predict
         df_dataset = df_dataset.drop(['tokenClass'], axis=1)
+        tgt = []
+    else:
+        tgt = df_dataset["tokenClass"].values.tolist()
     if transformer_type == TransformerType.DECODER and classification_type == ClassificationType.CATEGORY_PREDICTION:
         # Delete duplicates
         df_dataset = df_dataset.drop_duplicates()
@@ -183,10 +254,11 @@ def get_input_model_classes(
     df_src_concat = df_dataset.apply(lambda row: tokenizer.sep_token.join(row.values), axis=1)
     # The pandas dataframe is transformed in a list of strings: each string is an input to the model
     src = df_src_concat.to_numpy().tolist()
+
     # Extract eligible token classes as list
     eligible_token_classes = df_dataset['eligibleTokenClasses'][0].strip("[]").split()
     # Return source input and token classes dictionary
-    return src, eligible_token_classes
+    return src, tgt, eligible_token_classes
 
 def get_input_model_values(
         df_dataset,
@@ -217,6 +289,9 @@ def get_input_model_values(
     if classification_type == ClassificationType.CATEGORY_PREDICTION:
         # Remove category to predict
         df_dataset = df_dataset.drop(['token'], axis=1)
+        tgt = []
+    else:
+        tgt = df_dataset["token"].values.tolist()
     if transformer_type == TransformerType.DECODER and classification_type == ClassificationType.CATEGORY_PREDICTION:
         df_dataset = df_dataset.drop(['tokenInfo'], axis=1)
         # Delete duplicates
@@ -229,11 +304,12 @@ def get_input_model_values(
     # Extract eligible token classes as list
     eligible_token_values = df_dataset['eligibleTokens'][0].strip("[]").split()
     # Return source input and token classes dictionary
-    return src, eligible_token_values
+    return src, tgt, eligible_token_values
 
 
 def tokenize_input(
         src,
+        tgt,
         tokenizer
 ):
     # Tokenize the inputs datapoints
@@ -244,11 +320,19 @@ def tokenize_input(
         truncation=True,
         return_tensors="pt"
     )
+    tgt_dict = tokenizer.batch_encode_plus(
+        tgt,
+        max_length=8,
+        padding=True,
+        truncation=True,
+        return_tensors="pt"
+    )
     # Transform the list into a tensor stack
-    t_inputs = torch.stack([torch.tensor(ids) for ids in inputs_dict['input_ids']])
-    t_attention_masks = torch.stack([torch.tensor(mask) for mask in inputs_dict['attention_mask']])
+    t_inputs = torch.stack([ids.clone().detach() for ids in inputs_dict['input_ids']])
+    t_attention_masks = torch.stack([mask.clone().detach() for mask in inputs_dict['attention_mask']])
+    t_tgt = torch.stack([ids.clone().detach() for ids in tgt_dict['input_ids']])
     # Return tuple of inputs and attention masks
-    return (t_inputs, t_attention_masks)
+    return (t_inputs, t_attention_masks, t_tgt)
 
 
 def next_token(
@@ -293,7 +377,7 @@ def next_token(
     )
     # Predict next token class
     print("Predict next token class")
-    next_token_class = predict_next(device, model_classes, dl_src_token_classes, tokenizer_token_classes, eligible_token_classes, TrattoModelType.TOKEN_CLASSES)
+    next_token_class = predict_next(device, model_classes, dl_src_token_classes, tokenizer_token_classes, eligible_token_classes, classification_type_token_classes, transformer_type_token_classes, TrattoModelType.TOKEN_CLASSES)
     # Get model token values input
     print("Get model token values input")
     src_token_values, eligible_token_values = get_input_model_values(

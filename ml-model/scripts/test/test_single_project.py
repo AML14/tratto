@@ -244,7 +244,16 @@ def pre_processing(
 
     if classification_type == ClassificationType.CATEGORY_PREDICTION:
         if tratto_model_type == TrattoModelType.TOKEN_CLASSES:
-            classificator_converter_in = {k: i for i, k in enumerate(sorted(list(df_dataset["tokenClass"].unique())))}
+            _, classificator_converter_in = utils.import_json(
+                os.path.join(
+                    os.path.dirname(os.path.abspath(__file__)),
+                    '..',
+                    '..',
+                    'src',
+                    'resources',
+                    'classificator_converter_in_category_token_classes.json'
+                )
+            )
         else:
             classificator_converter_in = {k: i for i, k in enumerate(sorted(list(df_dataset["token"].unique())))}
     elif classification_type == ClassificationType.LABEL_PREDICTION:
@@ -418,8 +427,11 @@ def main(
     model.to(device)
 
     # Load checkpoint
-    checkpoint = torch.load(checkpoint_path, map_location=torch.device(device))
-    model.load_state_dict(checkpoint['model_state_dict'])
+    if checkpoint_path.endswith(".bin"):
+        model.load_state_dict(torch.load(checkpoint_path, map_location=torch.device(device)))
+    elif checkpoint_path.endswith(".pt"):
+        checkpoint = torch.load(checkpoint_path, map_location=torch.device(device))
+        model.load_state_dict(checkpoint['model_state_dict'])
 
     print("Start predictions")
     predictions_stats = {}
@@ -544,10 +556,10 @@ if __name__ == "__main__":
         )
     # Check if the input path exists
     if not os.path.exists(args.input_path):
-        raise ValueError("The input path argument contains a value that does not point to an existing folder.")
+        raise ValueError(f"The input path argument contains a value that does not point to an existing folder: {args.input_path}")
     # Check if the checkpoint path exists
     if not os.path.exists(args.checkpoint_path):
-        raise ValueError("The checkpoint path argument contains a value that does not point to an existing checkpoint.")
+        raise ValueError(f"The checkpoint path argument contains a value that does not point to an existing checkpoint: {args.checkpoint_path}")
     main(
         args.project_name,
         args.checkpoint_path,

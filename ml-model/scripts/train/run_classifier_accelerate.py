@@ -7,7 +7,6 @@ import numpy as np
 from torch.utils.data import DataLoader, RandomSampler
 from torch.optim import AdamW
 from transformers import get_linear_schedule_with_warmup
-from accelerate import init_empty_weights
 
 from src.model.OracleTrainerAccelerate import OracleTrainerAccelerate
 from src.types.ClassificationType import ClassificationType
@@ -82,6 +81,7 @@ def main():
     config_class, model_class, tokenizer_class, transformer_type = ModelClasses.getModelClass(args.model_type)
     # Setup tokenizer
     tokenizer = tokenizer_class.from_pretrained(args.tokenizer_name)
+    tokenizer.sep_token = "</s>"
 
     logger.print_load_dataset(args.data_dir)
     # Create DataProcessor instance

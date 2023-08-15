@@ -1,18 +1,15 @@
-import json
 import os
 import timeit
 import numpy as np
-from typing import Type, Union, Tuple, Dict, List
-from collections import Counter
+from typing import Type, Union, Dict
 import torch
 from torch.optim import AdamW
 from transformers import PreTrainedModel, PreTrainedTokenizer
-from torch.nn import Module
 from torch.utils.data import DataLoader
 from sklearn.metrics import f1_score, accuracy_score, precision_score, recall_score
 from src.types.ClassificationType import ClassificationType
 from src.types.TransformerType import TransformerType
-from src.utils import utils, logger
+from src.utils import logger
 
 
 class OracleTrainer:
