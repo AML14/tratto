@@ -531,6 +531,7 @@ class DataProcessor:
             elif self._classification_type == ClassificationType.LABEL_PREDICTION:
                 labels_ids_dict =  self.get_encoder_labels_ids()
                 tgt = list(map(lambda t: labels_ids_dict[t], self._df_dataset["label"].values.tolist()))
+        print(f"After preprocessing: {len(src)}")
         # Split the dataset into training and test sets with stratified sampling (given imbalanced dataset), based on target classes
         self._src, self._src_test, self._tgt, self._tgt_test = train_test_split(src, tgt, test_size=self._test_ratio)  # stratify=tgt)
 
@@ -563,6 +564,7 @@ class DataProcessor:
             dfs.append(df)
         df_dataset = pd.concat(dfs)
         df_dataset.reset_index(drop=True, inplace=True)
+        print(f"Before processing: {len(df_dataset)}")
         return df_dataset
 
     def _tokenize_dataset(
