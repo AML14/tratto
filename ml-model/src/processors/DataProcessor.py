@@ -558,7 +558,7 @@ class DataProcessor:
         # Datasets path
         oracles_dataset = os.path.join(d_path)
         # Collects partial dataframes from oracles
-        for file_name in os.listdir(oracles_dataset)[:10]:
+        for file_name in os.listdir(oracles_dataset):
             df = pd.read_json(os.path.join(oracles_dataset, file_name))
             dfs.append(df)
         df_dataset = pd.concat(dfs)
