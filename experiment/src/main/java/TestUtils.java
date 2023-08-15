@@ -33,6 +33,11 @@ public class TestUtils {
             "assertThat",
             "assertTrue"
     );
+    /** A list of all supported axiomatic test oracle generators */
+    private static final List<String> allAxiomaticTogs = List.of(
+            "jdoctor",
+            "tratto"
+    );
 
     // private constructor to avoid creating an instance of this class.
     private TestUtils() {
@@ -194,7 +199,7 @@ public class TestUtils {
      * a priori)
      */
     private static boolean isAxiomatic(String tog) {
-        return false;
+        return allAxiomaticTogs.contains(tog);
     }
 
     /**
