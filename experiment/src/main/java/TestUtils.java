@@ -180,10 +180,10 @@ public class TestUtils {
      */
     private static void insertAssertionOracle(
             MethodDeclaration testCase,
-            String oracle,
+            OracleOutput oracle,
             int lineNumber
     ) {
-        Statement assertion = StaticJavaParser.parseStatement(oracle);
+        Statement assertion = StaticJavaParser.parseStatement(oracle.oracle());
         testCase.asMethodDeclaration()
                 .getBody().orElseThrow()
                 .addStatement(lineNumber, assertion);
@@ -194,13 +194,13 @@ public class TestUtils {
      * exceptional oracle.
      *
      * @param testCase a JavaParser representation of a test case
-     * @param exception the exception class in the catch clause
+     * @param oracle the exception class in the catch clause
      */
     private static void insertExceptionalOracle(
             MethodDeclaration testCase,
-            String exception
+            OracleOutput oracle
     ) {
-        ClassOrInterfaceType exceptionType = StaticJavaParser.parseClassOrInterfaceType(exception);
+        ClassOrInterfaceType exceptionType = StaticJavaParser.parseClassOrInterfaceType(oracle.oracle());
         CatchClause catchClause = new CatchClause()
                 .setParameter(new Parameter(exceptionType, "e"));
         BlockStmt methodBody = testCase.getBody().orElseThrow();
@@ -265,6 +265,10 @@ public class TestUtils {
      * @see TestUtils#insertNonAxiomaticOracles(Path, List)
      */
     public static void insertOracles(Path dir, String tog, List<OracleOutput> oracles) {
-
+        if (isAxiomatic(tog)) {
+            insertAxiomaticOracles(dir, oracles);
+        } else {
+            insertNonAxiomaticOracles(dir, oracles);
+        }
     }
 }
