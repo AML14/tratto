@@ -59,20 +59,20 @@ public class TestUtilsTest {
     private List<OracleOutput> getAxiomaticOracles() {
         return List.of(
                 new OracleOutput(
-                        "tutorial.Stack",
-                        "push(T item)",
+                        "java.lang.Integer",
+                        "valueOf(int i)",
                         "PRE",
                         "",
-                        "(item == null) == false",
+                        "(i == null) == false",
                         ""
                 ),
                 new OracleOutput(
-                        "tutorial.Stack",
-                        "pop()",
+                        "java.lang.Integer",
+                        "parseInt(java.lang.String s)",
                         "EXCEPT_POST",
                         "",
-                        "receiverObjectID.isEmpty()",
-                        "EmptyStackException"
+                        "(s == null) == false",
+                        "java.lang.NumberFormatException"
                 )
         );
     }
