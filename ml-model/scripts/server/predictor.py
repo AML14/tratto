@@ -78,19 +78,33 @@ def predict_next(
                     input_ids=src_input,
                     attention_mask=src_masks,
                     num_beams=num_beams,
-                    num_return_sequences=num_beams,
-                    do_sample=False
+                    output_scores=True,
+                    return_dict_in_generate=True
                 )
                 predicted_generate = np.array(
                     tokenizer.batch_decode(
-                        outputs_generate,
+                        outputs_generate['sequences'],
                         skip_special_tokens=True
                     )
                 )
 
-                for p in predicted_generate:
+                if classification_type == ClassificationType.CATEGORY_PREDICTION:
                     # First-choice beam search
-                    predictions.append((p,1.0))
+                    predictions.append((predicted_generate[0], 1.0))
+                else:
+                    assert len(outputs_generate['scores']) == 3
+                    ids_max_logits_predicted = [
+                        torch.argmax(outputs_generate['scores'][1][i], dim=-1).item()
+                        for i in range(len(outputs_generate['scores'][0]))
+                    ]
+                    max_logits_predicted = [
+                        outputs_generate['scores'][1][i][k].item()
+                        for i, k in enumerate(ids_max_logits_predicted)
+                    ]
+                    for i, p in enumerate(predicted_generate):
+                        if p == 'True':
+                            tgt_decoded = tokenizer.decode(tgt[i],skip_special_tokens=True)
+                            predictions.append((tgt_decoded, max_logits_predicted[i]))
             else:
                 # Model predictions with ranking
                 outputs_generate = model(
@@ -122,7 +136,7 @@ def predict_next(
                                 predicted_generate
                             ))
 
-        sorted_predictions = sorted(predictions, key=lambda p: p[0], reverse=True)
+        sorted_predictions = sorted(predictions, key=lambda p: p[0])
         first_choice = sorted_predictions[0][0]
 
         if classification_type == ClassificationType.CATEGORY_PREDICTION:
