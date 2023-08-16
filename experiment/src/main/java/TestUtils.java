@@ -3,8 +3,10 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
+import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.MethodCallExpr;
+import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.CatchClause;
 import com.github.javaparser.ast.stmt.ExpressionStmt;
@@ -15,8 +17,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
 import java.util.stream.Stream;
 
 /**
@@ -171,37 +176,98 @@ public class TestUtils {
         }
     }
 
-    private static Statement addPreCondition(Statement statement, List<OracleOutput> preConditions) {
-        return null;
+    /**
+     * Gets the type name of a variable represented by a {@link NameExpr}.
+     *
+     * @param nameExpr a variable name
+     * @param testBody all statements in a method
+     * @return the type name of the given variable
+     */
+    private static String getTypeOfName(
+            NameExpr nameExpr,
+            List<Statement> testBody
+    ) {
+        String argumentName = nameExpr.getNameAsString();
+        for (Statement statement : testBody) {
+            if (!statement.isExpressionStmt()) {
+                continue;
+            }
+            Expression expression = statement.asExpressionStmt().getExpression();
+            if (!expression.isVariableDeclarationExpr()) {
+                continue;
+            }
+            for (VariableDeclarator variableDeclarator : expression.asVariableDeclarationExpr().getVariables()) {
+                if (argumentName.equals(variableDeclarator.getNameAsString())) {
+                    return variableDeclarator.getTypeAsString();
+                }
+            }
+        }
+        throw new IllegalArgumentException("Unable to find type of variable " + nameExpr.getNameAsString());
     }
 
-    private static Statement addPostCondition(Statement statement, List<OracleOutput> postConditions) {
-        return null;
+    /**
+     * Gets the method signature from a given method call.
+     *
+     * @param methodCallExpr a method call
+     * @param testBody all statements in a method
+     * @return the method signature of the method call
+     */
+    private static String getMethodSignature(
+            MethodCallExpr methodCallExpr,
+            List<Statement> testBody
+    ) {
+        StringBuilder sb = new StringBuilder();
+        List<Expression> arguments = methodCallExpr.getArguments();
+        sb.append(methodCallExpr.getName()).append("(");
+        for (int i = 0; i < arguments.size(); i++) {
+            sb.append(getTypeOfName(arguments.get(i).asNameExpr(), testBody));
+            if (i < arguments.size() - 1) {
+                sb.append(", ");
+            }
+        }
+        sb.append(")");
+        return sb.toString();
     }
 
-    private static Statement addThrowsCondition(Statement statement, List<OracleOutput> throwsConditions) {
-        return null;
-    }
-
-    private static Statement buildOracleStatement(Statement original, List<OracleOutput> oracles) {
-        Statement oracleStatement = original.clone();
-        List<OracleOutput> preConditions = oracles.stream().filter(o -> o.oracleType().equals("PRE")).toList();
-        List<OracleOutput> postConditions = oracles.stream().filter(o -> o.oracleType().equals("NORMAL_POST")).toList();
-        List<OracleOutput> throwsConditions = oracles.stream().filter(o -> o.oracleType().equals("EXCEPT_POST")).toList();
-        return oracleStatement;
-    }
-
-    private static List<OracleOutput> getRelatedOracles(Statement statement, List<OracleOutput> allOracles) {
-        return allOracles;
+    /**
+     * Gets all oracles applicable to a Java statement.
+     *
+     * @param statement a Java statement
+     * @param methodStatements all statements in a method
+     * @param allOracles all possible oracle records
+     * @return all oracles involving method calls in the given statement
+     */
+    private static List<OracleOutput> getRelatedOracles(
+            Statement statement,
+            List<Statement> methodStatements,
+            List<OracleOutput> allOracles
+    ) {
+        if (!statement.isExpressionStmt()) {
+            return new ArrayList<>();
+        }
+        Expression expression = statement.asExpressionStmt().getExpression();
+        List<MethodCallExpr> methodCalls = new ArrayList<>();
+        expression.walk(MethodCallExpr.class, methodCalls::add);
+        Set<OracleOutput> relatedOracles = new HashSet<>();
+        for (MethodCallExpr methodCallExpr : methodCalls) {
+            String methodSignature = getMethodSignature(methodCallExpr, methodStatements);
+            relatedOracles.addAll(allOracles
+                    .stream()
+                    .filter(o -> o.methodSignature().equals(methodSignature))
+                    .toList()
+            );
+        }
+        return relatedOracles.stream().toList();
     }
 
     private static void insertAxiomaticOracles(MethodDeclaration testCase, List<OracleOutput> oracles) {
         List<Statement> statements = testCase.getBody().orElseThrow().getStatements();
         for (int i = 0; i < statements.size(); i++) {
-            List<OracleOutput> relatedOracles = getRelatedOracles(statements.get(i), oracles);
+            List<OracleOutput> relatedOracles = getRelatedOracles(statements.get(i), statements, oracles);
             if (relatedOracles.size() != 0) {
-                Statement oracleStatement = buildOracleStatement(statements.get(i), relatedOracles);
-                statements.set(i, oracleStatement);
+                System.out.println(relatedOracles);
+//                Statement oracleStatement = buildOracleStatement(statements.get(i), relatedOracles);
+//                statements.set(i, oracleStatement);
             }
         }
     }
