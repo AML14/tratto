@@ -82,4 +82,31 @@ public class TestUtilsTest {
         List<OracleOutput> axiomaticOracles = getAxiomaticOracles();
         TestUtils.insertOracles(testPath.resolve("prefix"), "jdoctor", axiomaticOracles);
     }
+
+    private List<OracleOutput> getNonAxiomaticOracles() {
+        return List.of(
+                new OracleOutput(
+                        "java.lang.Integer",
+                        "valueOf(int i)",
+                        "NORMAL_POST",
+                        "int primitiveInt = 5;\nInteger objectInt = Integer.valueOf(primitiveInt);",
+                        "primitiveInt == objectInt.intValue()",
+                        ""
+                ),
+                new OracleOutput(
+                        "java.lang.Integer",
+                        "parseInt(java.lang.String s)",
+                        "",
+                        "String integerToParse = null;\nint correspondingInteger = Integer.parseInt(integerToParse);",
+                        "",
+                        "java.lang.NumberFormatException"
+                )
+        );
+    }
+
+    @Test
+    public void insertNonAxiomaticOraclesTest() {
+        List<OracleOutput> nonAxiomaticOracles = getNonAxiomaticOracles();
+        TestUtils.insertOracles(testPath.resolve("prefix"), "toga", nonAxiomaticOracles);
+    }
 }
