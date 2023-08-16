@@ -2,9 +2,11 @@ import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.stmt.CatchClause;
 import com.github.javaparser.ast.stmt.ExpressionStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.stmt.TryStmt;
@@ -210,8 +212,30 @@ public class TestUtils {
                 .getStatements().add(statement);
     }
 
+    /**
+     * Wraps a given test case in a try/catch block where the catch block
+     * expects a given exception class.
+     *
+     * @param testCase a test case
+     * @param exception the exception to catch
+     */
     private static void insertNonAxiomaticException(MethodDeclaration testCase, String exception) {
-
+        // create catch block
+        Parameter exceptionType = new Parameter()
+                .setName("e")
+                .setType(StaticJavaParser.parseType(exception));
+        CatchClause catchClause = new CatchClause()
+                .setParameter(exceptionType);
+        // create try block
+        BlockStmt testPrefix = testCase
+                .getBody().orElseThrow()
+                .clone();
+        ExpressionStmt failStatement = StaticJavaParser.parseStatement("fail();").asExpressionStmt();
+        TryStmt tryStatement = new TryStmt()
+                .setTryBlock(testPrefix.addStatement(failStatement));
+        tryStatement.getCatchClauses().add(catchClause);
+        // set new test body to wrapped try/catch block
+        testCase.setBody(new BlockStmt(NodeList.nodeList(tryStatement)));
     }
 
     /**
