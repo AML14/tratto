@@ -61,7 +61,7 @@ public class TestUtilsTest {
         return List.of(
                 new OracleOutput(
                         "java.lang.Integer",
-                        "valueOf(int i)",
+                        "valueOf(int)",
                         "PRE",
                         "",
                         "assertTrue((i == null) == false)",
@@ -69,7 +69,7 @@ public class TestUtilsTest {
                 ),
                 new OracleOutput(
                         "java.lang.Integer",
-                        "parseInt(String s)",
+                        "parseInt(String)",
                         "EXCEPT_POST",
                         "",
                         "assertTrue((s == null) == false)",
@@ -88,7 +88,7 @@ public class TestUtilsTest {
         return List.of(
                 new OracleOutput(
                         "java.lang.Integer",
-                        "valueOf(int i)",
+                        "valueOf(int)",
                         "",
                         """
                                 @Test
@@ -102,7 +102,7 @@ public class TestUtilsTest {
                 ),
                 new OracleOutput(
                         "java.lang.Integer",
-                        "parseInt(String s)",
+                        "parseInt(String)",
                         "",
                         """
                                 @Test
