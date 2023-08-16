@@ -1,6 +1,7 @@
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.NodeList;
+import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
@@ -12,6 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Stream;
 
 /**
@@ -194,6 +196,44 @@ public class TestUtils {
         }
     }
 
+    private static void insertNonAxiomaticAssertion(MethodDeclaration testCase, String assertion) {
+
+    }
+
+    private static void insertNonAxiomaticException(MethodDeclaration testCase, String exception) {
+
+    }
+
+    private static boolean isExceptional(OracleOutput oracle) {
+        return !oracle.exception().equals("");
+    }
+
+    private static OracleOutput getOracleWithPrefix(String prefix, List<OracleOutput> oracles) {
+        List<String> allPrefix = oracles
+                .stream()
+                .map(OracleOutput::prefix)
+                .map(String::trim)
+                .toList();
+        int indexOfOracle = allPrefix.indexOf(prefix.trim());
+        if (indexOfOracle == -1) {
+            throw new NoSuchElementException("Unable to find an oracle with the prefix " + prefix);
+        }
+        return oracles.get(indexOfOracle);
+    }
+
+    private static void insertNonAxiomaticOracles(CompilationUnit testFile, List<OracleOutput> oracles) {
+        testFile.findAll(MethodDeclaration.class)
+                .forEach(testCase -> {
+                    String prefix = testCase.toString();
+                    OracleOutput oracle = getOracleWithPrefix(prefix, oracles);
+                    if (isExceptional(oracle)) {
+                        insertNonAxiomaticException(testCase, oracle.exception());
+                    } else {
+                        insertNonAxiomaticAssertion(testCase, oracle.oracle());
+                    }
+                });
+    }
+
     /**
      * Adds non-axiomatic oracles to test prefixes in a given directory.
      * Non-axiomatic oracles are specific to a given test prefix. We assume
@@ -204,7 +244,21 @@ public class TestUtils {
      * @param oracles a list of test oracles made by a non-axiomatic tog
      */
     private static void insertNonAxiomaticOracles(Path dir, List<OracleOutput> oracles) {
-
+        try (Stream<Path> walk = Files.walk(dir)) {
+            walk
+                    .filter(FileUtils::isJavaFile)
+                    .forEach(testFile -> {
+                        try {
+                            CompilationUnit cu = StaticJavaParser.parse(testFile);
+                            insertNonAxiomaticOracles(cu, oracles);
+                            FileUtils.writeString(testFile, cu.toString());
+                        } catch (IOException e) {
+                            throw new Error("Unable to parse test file " + testFile.getFileName().toString());
+                        }
+                    });
+        } catch (IOException e) {
+            throw new Error("Error when parsing files in directory " + dir, e);
+        }
     }
 
     /**
