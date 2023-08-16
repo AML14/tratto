@@ -221,6 +221,15 @@ public class TestUtils {
         return oracles.get(indexOfOracle);
     }
 
+    /**
+     * Adds non-axiomatic oracles to test prefixes in a given test file.
+     * Non-axiomatic oracles are specific to a given test prefix. Each oracle
+     * is matched to its corresponding prefix using the
+     * {@link OracleOutput#prefix()} value.
+     *
+     * @param testFile a Java file of test prefixes
+     * @param oracles a list of test oracles made by a non-axiomatic tog
+     */
     private static void insertNonAxiomaticOracles(CompilationUnit testFile, List<OracleOutput> oracles) {
         testFile.findAll(MethodDeclaration.class)
                 .forEach(testCase -> {
