@@ -5,6 +5,7 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.stmt.ExpressionStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.stmt.TryStmt;
 
@@ -196,8 +197,17 @@ public class TestUtils {
         }
     }
 
+    /**
+     * Adds an assertion to a given test case.
+     *
+     * @param testCase a method representation of a test case
+     * @param assertion the string representation of the assertion to add
+     */
     private static void insertNonAxiomaticAssertion(MethodDeclaration testCase, String assertion) {
-
+        ExpressionStmt statement = StaticJavaParser.parseStatement(assertion).asExpressionStmt();
+        testCase
+                .getBody().orElseThrow()
+                .getStatements().add(statement);
     }
 
     private static void insertNonAxiomaticException(MethodDeclaration testCase, String exception) {
