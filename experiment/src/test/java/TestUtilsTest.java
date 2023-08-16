@@ -150,5 +150,6 @@ public class TestUtilsTest {
         } catch (IOException e) {
             fail();
         }
+        FileUtils.deleteDirectory(outputPath.resolve("tog-tests"));
     }
 }
