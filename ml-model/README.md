@@ -124,6 +124,14 @@ The script reads the `accelerate_config_fsdp.yaml` configuration file to split t
 the configuration file that we set up to finetune the model on Google Cloud Platform instance equipped with **340GB** of 
 system RAM and 4 GPUs **Tesla A-100** with **40GB**. The configuration file can be generated running the accelerate plugin.
 The reader can find more information on the FSDP accelerate documentation webpage ([link](https://huggingface.co/docs/accelerate/usage_guides/fsdp)).
+If the system fail to run the script with accelerate try to upgrade the torch and torchvision versions with the following
+command ([reference](https://github.com/huggingface/accelerate/issues/1473)):
+
+```shell
+pip install light-the-torch; ltt install torch torchvision -U
+```
+
+
 **Important Note**: The bash scripts contain a list of different arguments that can be changed to fine-tune the model using
 different values of the hyperparameters or classification types (**category** or **label**).
 
