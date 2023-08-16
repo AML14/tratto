@@ -171,8 +171,43 @@ public class TestUtils {
         }
     }
 
-    private static void insertAxiomaticOracles(CompilationUnit testFile, List<OracleOutput> oracles) {
+    private static Statement addPreCondition(Statement statement, List<OracleOutput> preConditions) {
+        return null;
+    }
 
+    private static Statement addPostCondition(Statement statement, List<OracleOutput> postConditions) {
+        return null;
+    }
+
+    private static Statement addThrowsCondition(Statement statement, List<OracleOutput> throwsConditions) {
+        return null;
+    }
+
+    private static Statement buildOracleStatement(Statement original, List<OracleOutput> oracles) {
+        Statement oracleStatement = original.clone();
+        List<OracleOutput> preConditions = oracles.stream().filter(o -> o.oracleType().equals("PRE")).toList();
+        List<OracleOutput> postConditions = oracles.stream().filter(o -> o.oracleType().equals("NORMAL_POST")).toList();
+        List<OracleOutput> throwsConditions = oracles.stream().filter(o -> o.oracleType().equals("EXCEPT_POST")).toList();
+        return oracleStatement;
+    }
+
+    private static List<OracleOutput> getRelatedOracles(Statement statement, List<OracleOutput> allOracles) {
+        return allOracles;
+    }
+
+    private static void insertAxiomaticOracles(MethodDeclaration testCase, List<OracleOutput> oracles) {
+        List<Statement> statements = testCase.getBody().orElseThrow().getStatements();
+        for (int i = 0; i < statements.size(); i++) {
+            List<OracleOutput> relatedOracles = getRelatedOracles(statements.get(i), oracles);
+            if (relatedOracles.size() != 0) {
+                Statement oracleStatement = buildOracleStatement(statements.get(i), relatedOracles);
+                statements.set(i, oracleStatement);
+            }
+        }
+    }
+
+    private static void insertAxiomaticOracles(CompilationUnit testFile, List<OracleOutput> oracles) {
+        testFile.findAll(MethodDeclaration.class).forEach(testCase -> insertAxiomaticOracles(testCase, oracles));
     }
 
     /**
