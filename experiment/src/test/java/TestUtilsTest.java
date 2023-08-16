@@ -96,7 +96,7 @@ public class TestUtilsTest {
                                     int primitiveInt = 5;
                                     Integer objectInt = Integer.valueOf(primitiveInt);
                                 }""",
-                        "primitiveInt == objectInt.intValue()",
+                        "assertTrue(primitiveInt == objectInt.intValue());",
                         ""
                 ),
                 new OracleOutput(
