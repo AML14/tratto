@@ -1,9 +1,10 @@
 import os
 import shutil
 from io import BytesIO
-
+import argparse
 import requests
 import zipfile
+from src.parser.ArgumentParser import ArgumentParser
 from src.utils import utils
 
 def clean_dir(path):
@@ -56,6 +57,13 @@ _, checkpoints = utils.import_json(
     )
 )
 
-extract_zip_from_url(datasets)
-#extract_zip_from_url(checkpoints)
-
+if __name__ == '__main__':
+    # Parse arguments
+    parser = argparse.ArgumentParser()
+    ArgumentParser.add_init_arguments(parser)
+    args = parser.parse_args()
+    if args.datasets:
+        extract_zip_from_url(datasets)
+    if args.checkpoints:
+        extract_zip_from_url(checkpoints)
+    print("Initialization completed.")

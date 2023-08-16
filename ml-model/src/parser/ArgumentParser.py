@@ -109,6 +109,27 @@ class ArgumentParser:
         )
 
     @staticmethod
+    def add_init_arguments(parser: Type[ArgumentParser]):
+        """
+        Set up the arguments to parse from the command line.
+
+        Parameters
+        ----------
+        parser: Type[ArgumentParser]
+            The parser that extract the values of the parameters from the command line
+        """
+        parser.add_argument(
+            "--datasets",
+            action='store_true',
+            help="If provided as argument, the script will download the training datasets."
+        )
+        parser.add_argument(
+            "--checkpoints",
+            action='store_true',
+            help="If provided as argument, the script will download the checkpoints of the finetuned models."
+        )
+
+    @staticmethod
     def add_training_arguments(parser: Type[ArgumentParser]):
         """
         Set up the arguments to parse from the command line.

@@ -1,2 +1,4 @@
 export PYTHONPATH="./"
-python3 scripts/setup/init.py
+python3 scripts/setup/init.py \
+--datasets \
+--checkpoints

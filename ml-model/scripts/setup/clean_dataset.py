@@ -4,12 +4,12 @@ import torch
 import pandas as pd
 
 d_paths = [
-    os.path.join("dataset", "token-classes-dataset"),
-    os.path.join("dataset", "token-values-dataset")
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "dataset", "token-classes-dataset"),
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "dataset", "token-values-dataset")
 ]
 c_paths = [
-    os.path.join("dataset", "token-classes-dataset-cleaned"),
-    os.path.join("dataset", "token-values-dataset-cleaned")
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "dataset", "token-classes-dataset-cleaned"),
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "dataset", "token-values-dataset-cleaned")
 ]
 
 for c_path in c_paths:
