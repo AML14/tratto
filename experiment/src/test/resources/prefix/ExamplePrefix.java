@@ -7,14 +7,15 @@ public class ExamplePrefix {
     @Test
     @Disabled
     public void assertionTest() {
-        Integer a = 5;
-        Integer b = 6;
+        int a = 5;
+        int b = 6;
+        int sum = Integer.sum(6, sum);
     }
 
     @Test
     @Disabled
     public void exceptionalTest() {
         String integerToParse = null;
-        Integer.parseInt(integerToParse);
+        int correspondingInteger = Integer.parseInt(integerToParse);
     }
 }
