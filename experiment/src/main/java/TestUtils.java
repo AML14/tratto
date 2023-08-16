@@ -204,6 +204,14 @@ public class TestUtils {
 
     }
 
+    /**
+     * Checks if an oracle record represents an exceptional oracle.
+     *
+     * @param oracle an oracle record
+     * @return true iff the oracle represents an exceptional oracle. This
+     * corresponds to an empty string in the {@link OracleOutput#exception()}
+     * value.
+     */
     private static boolean isExceptional(OracleOutput oracle) {
         return !oracle.exception().equals("");
     }
