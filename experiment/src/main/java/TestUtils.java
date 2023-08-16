@@ -236,9 +236,9 @@ public class TestUtils {
 
     /**
      * Adds non-axiomatic oracles to test prefixes in a given directory.
-     * Non-axiomatic oracles are specific to a given test prefix. We assume
-     * the tests in the directory appear in the same order as the oracles.
-     * Each oracle is added as an assertion at the end of the test prefix.
+     * Non-axiomatic oracles are specific to a given test prefix. Each oracle
+     * is matched to its corresponding prefix using the
+     * {@link OracleOutput#prefix()} value.
      *
      * @param dir a directory with Java test prefixes
      * @param oracles a list of test oracles made by a non-axiomatic tog
