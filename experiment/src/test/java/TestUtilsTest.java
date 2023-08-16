@@ -89,7 +89,13 @@ public class TestUtilsTest {
                         "java.lang.Integer",
                         "valueOf(int i)",
                         "NORMAL_POST",
-                        "int primitiveInt = 5;\nInteger objectInt = Integer.valueOf(primitiveInt);",
+                        """
+                                @Test
+                                @Disabled
+                                public void assertionTest() {
+                                    int primitiveInt = 5;
+                                    Integer objectInt = Integer.valueOf(primitiveInt);
+                                }""",
                         "primitiveInt == objectInt.intValue()",
                         ""
                 ),
@@ -97,7 +103,13 @@ public class TestUtilsTest {
                         "java.lang.Integer",
                         "parseInt(java.lang.String s)",
                         "",
-                        "String integerToParse = null;\nint correspondingInteger = Integer.parseInt(integerToParse);",
+                        """
+                                @Test
+                                @Disabled
+                                public void exceptionalTest() {
+                                    String integerToParse = null;
+                                    int correspondingInteger = Integer.parseInt(integerToParse);
+                                }""",
                         "",
                         "java.lang.NumberFormatException"
                 )
