@@ -1,5 +1,6 @@
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.stmt.Statement;
@@ -120,5 +121,34 @@ public class TestUtilsTest {
     public void insertNonAxiomaticOraclesTest() {
         List<OracleOutput> nonAxiomaticOracles = getNonAxiomaticOracles();
         TestUtils.insertOracles(testPath.resolve("prefix"), "toga", nonAxiomaticOracles);
+        String expectedAssertionTest = """
+                                @Test
+                                @Disabled
+                                public void assertionTest() {
+                                    int primitiveInt = 5;
+                                    Integer objectInt = Integer.valueOf(primitiveInt);
+                                    assertTrue(primitiveInt == objectInt.intValue());
+                                }""";
+        String expectedExceptionTest = """
+                                @Test
+                                @Disabled
+                                public void exceptionalTest() {
+                                    try {
+                                        String integerToParse = null;
+                                        int correspondingInteger = Integer.parseInt(integerToParse);
+                                        fail();
+                                    } catch (java.lang.NumberFormatException e) {
+                                    }
+                                }""";
+        try {
+            CompilationUnit cu = StaticJavaParser.parse(outputPath.resolve("tog-tests/toga/ExamplePrefix.java"));
+            List<MethodDeclaration> testCases = cu.findAll(MethodDeclaration.class);
+            MethodDeclaration assertionTest = testCases.get(0);
+            assertEquals(expectedAssertionTest, assertionTest.toString());
+            MethodDeclaration exceptionTest = testCases.get(1);
+            assertEquals(expectedExceptionTest, exceptionTest.toString());
+        } catch (IOException e) {
+            fail();
+        }
     }
 }
