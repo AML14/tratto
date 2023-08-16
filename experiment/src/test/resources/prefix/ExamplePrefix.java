@@ -7,9 +7,8 @@ public class ExamplePrefix {
     @Test
     @Disabled
     public void assertionTest() {
-        int a = 5;
-        int b = 6;
-        int sum = Integer.sum(6, sum);
+        int primitiveInt = 5;
+        Integer objectInt = Integer.valueOf(primitive);
     }
 
     @Test
