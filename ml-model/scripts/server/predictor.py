@@ -87,9 +87,10 @@ def predict_next(
                         skip_special_tokens=True
                     )
                 )
-                assert len(predicted_generate) == num_beams
-                # First-choice beam search
-                predictions.append((predicted_generate[0],1.0))
+
+                for p in predicted_generate:
+                    # First-choice beam search
+                    predictions.append((p,1.0))
             else:
                 # Model predictions with ranking
                 outputs_generate = model(
@@ -122,7 +123,7 @@ def predict_next(
                             ))
 
         sorted_predictions = sorted(predictions, key=lambda p: p[0], reverse=True)
-        first_choice = sorted_predictions[0]
+        first_choice = sorted_predictions[0][0]
 
         if classification_type == ClassificationType.CATEGORY_PREDICTION:
             # Heuristics to mitigate knowns prediction errors
@@ -147,6 +148,8 @@ def predict_next(
                         # Check if last subword of predicted token matches the end of the current eligible token class
                         if eligible.endswith(camelCaseSplit[-1]):
                             return eligible
+                else:
+                    return first_choice
             else:
                 return first_choice
         elif classification_type == ClassificationType.LABEL_PREDICTION:
@@ -243,13 +246,15 @@ def get_input_model_classes(
     if classification_type == ClassificationType.CATEGORY_PREDICTION:
         # Remove category to predict
         df_dataset = df_dataset.drop(['tokenClass'], axis=1)
+    if transformer_type == TransformerType.DECODER:
+        # Delete duplicates
+        df_dataset = df_dataset.drop_duplicates()
+        if classification_type == ClassificationType.CATEGORY_PREDICTION:
+            assert len(df_dataset) == 1
+    if classification_type == ClassificationType.CATEGORY_PREDICTION:
         tgt = []
     else:
         tgt = df_dataset["tokenClass"].values.tolist()
-    if transformer_type == TransformerType.DECODER and classification_type == ClassificationType.CATEGORY_PREDICTION:
-        # Delete duplicates
-        df_dataset = df_dataset.drop_duplicates()
-        assert len(df_dataset) == 1
     # Generate string datapoints concatenating the fields of each column and separating them with a special token
     df_src_concat = df_dataset.apply(lambda row: tokenizer.sep_token.join(row.values), axis=1)
     # The pandas dataframe is transformed in a list of strings: each string is an input to the model
@@ -269,6 +274,12 @@ def get_input_model_values(
 ):
     # Filter datapoints
     df_dataset = df_dataset[df_dataset['tokenClass'] == next_token_class]
+
+    if len(df_dataset) == 1:
+        df_dataset.reset_index(level=0,inplace=True)
+        return_token = df_dataset.loc[0]['token']
+        return None, None, None, return_token
+
     # Compute eligible token values
     df_eligibleTokens = df_dataset.groupby(['oracleId', 'oracleSoFar'])['token'].unique().to_frame()
     df_eligibleTokens = df_eligibleTokens.rename(columns={'token': 'eligibleTokens'})
@@ -304,13 +315,14 @@ def get_input_model_values(
     # Extract eligible token classes as list
     eligible_token_values = df_dataset['eligibleTokens'][0].strip("[]").split()
     # Return source input and token classes dictionary
-    return src, tgt, eligible_token_values
+    return src, tgt, eligible_token_values, None
 
 
 def tokenize_input(
         src,
         tgt,
-        tokenizer
+        tokenizer,
+        classification_type
 ):
     # Tokenize the inputs datapoints
     inputs_dict = tokenizer.batch_encode_plus(
@@ -320,17 +332,20 @@ def tokenize_input(
         truncation=True,
         return_tensors="pt"
     )
-    tgt_dict = tokenizer.batch_encode_plus(
-        tgt,
-        max_length=8,
-        padding=True,
-        truncation=True,
-        return_tensors="pt"
-    )
     # Transform the list into a tensor stack
     t_inputs = torch.stack([ids.clone().detach() for ids in inputs_dict['input_ids']])
     t_attention_masks = torch.stack([mask.clone().detach() for mask in inputs_dict['attention_mask']])
-    t_tgt = torch.stack([ids.clone().detach() for ids in tgt_dict['input_ids']])
+    if classification_type == ClassificationType.CATEGORY_PREDICTION:
+        t_tgt = torch.stack([torch.empty((0,1)) for i in range(len(src))])
+    elif classification_type == ClassificationType.LABEL_PREDICTION:
+        tgt_dict = tokenizer.batch_encode_plus(
+            tgt,
+            max_length=8,
+            padding=True,
+            truncation=True,
+            return_tensors="pt"
+        )
+        t_tgt = torch.stack([ids.clone().detach() for ids in tgt_dict['input_ids']])
     # Return tuple of inputs and attention masks
     return (t_inputs, t_attention_masks, t_tgt)
 
@@ -360,7 +375,7 @@ def next_token(
 
     # Get model token classes input
     print("Get model token classes input")
-    src_token_classes, eligible_token_classes = get_input_model_classes(
+    src_token_classes, tgt_token_classes, eligible_token_classes = get_input_model_classes(
         df_dataset,
         tokenizer_token_classes,
         classification_type_token_classes,
@@ -368,7 +383,12 @@ def next_token(
     )
     # Tokenize input
     print("Tokenize model token classes input")
-    t_src_token_classes = tokenize_input(src_token_classes, tokenizer_token_classes)
+    t_src_token_classes = tokenize_input(
+        src_token_classes,
+        tgt_token_classes,
+        tokenizer_token_classes,
+        classification_type_token_classes
+    )
     # Generate data loader
     t_t_src_token_classes = TensorDataset(*t_src_token_classes)
     dl_src_token_classes = DataLoader(
@@ -377,19 +397,38 @@ def next_token(
     )
     # Predict next token class
     print("Predict next token class")
-    next_token_class = predict_next(device, model_classes, dl_src_token_classes, tokenizer_token_classes, eligible_token_classes, classification_type_token_classes, transformer_type_token_classes, TrattoModelType.TOKEN_CLASSES)
+    next_token_class = predict_next(
+        device,
+        model_classes,
+        dl_src_token_classes,
+        tokenizer_token_classes,
+        eligible_token_classes,
+        classification_type_token_classes,
+        transformer_type_token_classes,
+        TrattoModelType.TOKEN_CLASSES
+    )
     # Get model token values input
     print("Get model token values input")
-    src_token_values, eligible_token_values = get_input_model_values(
+    src_token_values, tgt_token_values, eligible_token_values, next_token_value = get_input_model_values(
         df_dataset,
         next_token_class,
         tokenizer_token_values,
         classification_type_token_values,
         transformer_type_token_values
     )
+
+    if not next_token_value is None:
+        original_next_token_class = next((key for key, val in value_mappings.items() if val == next_token_class), None)
+        return next_token_value + "\n" + original_next_token_class
+
     # Tokenize input
     print("Tokenize model token values input")
-    t_src_token_values = tokenize_input(src_token_values, tokenizer_token_values)
+    t_src_token_values = tokenize_input(
+        src_token_values,
+        tgt_token_values,
+        tokenizer_token_values,
+        classification_type_token_values
+    )
     # Generate data loader
     t_t_src_token_values = TensorDataset(*t_src_token_values)
     dl_src_token_values = DataLoader(
@@ -398,7 +437,16 @@ def next_token(
     )
     # Predict next token value
     print("Predict next token value")
-    next_token_value = predict_next(device, model_values, dl_src_token_values, tokenizer_token_values, eligible_token_values, TrattoModelType.TOKEN_VALUES)
+    next_token_value = predict_next(
+        device,
+        model_values,
+        dl_src_token_values,
+        tokenizer_token_values,
+        eligible_token_values,
+        classification_type_token_values,
+        transformer_type_token_values,
+        TrattoModelType.TOKEN_VALUES
+    )
     # Return next token
     original_next_token_class = next((key for key, val in value_mappings.items() if val == next_token_class), None)
     return next_token_value + "\n" + original_next_token_class

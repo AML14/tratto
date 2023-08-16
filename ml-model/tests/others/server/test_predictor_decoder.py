@@ -43,7 +43,7 @@ def test_get_input(
             arg_transformer_type
         )
     elif arg_tratto_model_type == TrattoModelType.TOKEN_VALUES:
-        src_predictor, tgt_predictor, eligible_token_values = get_input_model_values(
+        src_predictor, tgt_predictor, eligible_token_values, next_token_value = get_input_model_values(
             df_dataset_server_after_pre_process,
             next_tokenClass_server,
             tokenizer,
@@ -78,6 +78,8 @@ def test_get_input(
                 arg_tratto_model_type
             )
             expected_src.append(row_input)
+    if arg_transformer_type == TransformerType.DECODER:
+        expected_src = list(set(expected_src))
     if arg_transformer_type == TransformerType.DECODER and arg_classification_type == ClassificationType.CATEGORY_PREDICTION:
         expected_src = list(dict.fromkeys(expected_src))
         assert len(expected_src) == 1

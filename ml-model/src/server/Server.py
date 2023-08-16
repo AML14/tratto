@@ -30,7 +30,7 @@ class Server:
     def next_token(self):
         filename = request.args.get('filename')
         if filename:
-            token = predictor_decoder.next_token(
+            token = predictor.next_token(
                 self._device,
                 filename,
                 self._classification_type_token_classes,

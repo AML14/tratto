@@ -18,8 +18,11 @@ def resume_checkpoint(
         checkpoint_path: str,
         device
 ):
-    checkpoint = torch.load(checkpoint_path, map_location=torch.device(device))
-    pt_model.load_state_dict(checkpoint['model_state_dict'])
+    if checkpoint_path.endswith(".bin"):
+        pt_model.load_state_dict(torch.load(checkpoint_path, map_location=torch.device(device)))
+    elif checkpoint_path.endswith(".pt"):
+        checkpoint = torch.load(checkpoint_path, map_location=torch.device(device))
+        pt_model.load_state_dict(checkpoint['model_state_dict'])
 
 
 def setup_model(
@@ -35,28 +38,43 @@ def setup_model(
     # Setup tokenizer
     tokenizer = tokenizer_class.from_pretrained(tokenizer_name)
 
-    if tratto_model_type == TrattoModelType.TOKEN_CLASSES:
-        # Map token class names
-        _, value_mappings = utils.import_json(
+    # Map token class names
+    _, value_mappings = utils.import_json(
+        os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            '..',
+            '..',
+            'src',
+            'resources',
+            'tokenClassesValuesMapping.json'
+        )
+    )
+    # If the model is for the token values consider only a subset of words
+    # (the other ones will never appear whitin the dataset)
+    if tratto_model_type == TrattoModelType.TOKEN_VALUES:
+        _, ignore_values = utils.import_json(
             os.path.join(
                 os.path.dirname(os.path.abspath(__file__)),
                 '..',
                 '..',
                 'src',
                 'resources',
-                'tokenClassesValuesMapping.json'
+                'model_values_ignore_value_mappings.json'
             )
         )
-        vocab = tokenizer.get_vocab()
-        for new_word in value_mappings.values():
-            for new_sub_word in new_word.split("_"):
-                if not new_sub_word in vocab.keys():
-                    tokenizer.add_tokens([new_sub_word])
+    vocab = tokenizer.get_vocab()
+    for old_word, new_word in value_mappings.items():
+        if tratto_model_type == TrattoModelType.TOKEN_VALUES and old_word in ignore_values:
+            continue
+        for new_sub_word in new_word.split("_"):
+            if not new_sub_word in vocab.keys():
+                tokenizer.add_tokens([new_sub_word])
+
+
     # Setup model
     config = config_class.from_pretrained(config_name if config_name else model_name_or_path)
     pt_model = model_class.from_pretrained(model_name_or_path, config=config)
-    if tratto_model_type == TrattoModelType.TOKEN_CLASSES:
-        pt_model.resize_token_embeddings(len(tokenizer))
+    pt_model.resize_token_embeddings(len(tokenizer))
     pt_model.to(device)
     abs_checkpoint_path = os.path.join(
         os.path.dirname(os.path.abspath(__file__)),
