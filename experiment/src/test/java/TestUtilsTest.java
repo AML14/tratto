@@ -89,7 +89,7 @@ public class TestUtilsTest {
                 new OracleOutput(
                         "java.lang.Integer",
                         "valueOf(int i)",
-                        "NORMAL_POST",
+                        "",
                         """
                                 @Test
                                 @Disabled
