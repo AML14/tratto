@@ -62,6 +62,7 @@ public class TestUtilsTest {
                         "tutorial.Stack",
                         "push(T item)",
                         "PRE",
+                        "",
                         "(item == null) == false",
                         ""
                 ),
@@ -69,6 +70,7 @@ public class TestUtilsTest {
                         "tutorial.Stack",
                         "pop()",
                         "EXCEPT_POST",
+                        "",
                         "receiverObjectID.isEmpty()",
                         "EmptyStackException"
                 )
