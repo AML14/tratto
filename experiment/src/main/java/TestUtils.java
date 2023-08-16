@@ -208,6 +208,14 @@ public class TestUtils {
         return !oracle.exception().equals("");
     }
 
+    /**
+     * Gets the oracle corresponding to a given prefix from a list of oracles.
+     *
+     * @param prefix a test prefix
+     * @param oracles a list of oracle records
+     * @return the oracle record with the given prefix
+     * @throws NoSuchElementException if no such oracle exists in the list
+     */
     private static OracleOutput getOracleWithPrefix(String prefix, List<OracleOutput> oracles) {
         List<String> allPrefix = oracles
                 .stream()
