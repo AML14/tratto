@@ -171,6 +171,10 @@ public class TestUtils {
         }
     }
 
+    private static void insertAxiomaticOracles(CompilationUnit testFile, List<OracleOutput> oracles) {
+
+    }
+
     /**
      * Adds axiomatic oracles to test prefixes in a given directory. Axiomatic
      * oracles are not specific to a given test prefix. Therefore, we insert
@@ -188,7 +192,7 @@ public class TestUtils {
                     .forEach(testFile -> {
                         try {
                             CompilationUnit cu = StaticJavaParser.parse(testFile);
-//                            insertAxiomaticOracles(cu, oracles);
+                            insertAxiomaticOracles(cu, oracles);
 //                            FileUtils.writeString(testFile, cu.toString());
                         } catch (IOException e) {
                             throw new Error("Unable to parse test file " + testFile.getFileName().toString());
