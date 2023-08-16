@@ -8,7 +8,7 @@ public class ExamplePrefix {
     @Disabled
     public void assertionTest() {
         int primitiveInt = 5;
-        Integer objectInt = Integer.valueOf(primitive);
+        Integer objectInt = Integer.valueOf(primitiveInt);
     }
 
     @Test
