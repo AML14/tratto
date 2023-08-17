@@ -98,8 +98,10 @@ public class TestUtils {
      * the condition does not have a method call. For example,
      *     "{@code assertEquals(stack.isEmpty())}" =>
      *     "{@code stack.isEmpty()}".
+     * This method assumes that a JUnit assertion only has a single method
+     * call in its condition.
      *
-     * @param jUnitAssertion a JUnit assertion method call
+     * @param jUnitAssertion a JUnit assertion
      * @return the method call in a given JUnit assertion. Returns null if the
      * JUnit condition does not have a method call.
      * @throws IllegalArgumentException if the given statement is not a JUnit
