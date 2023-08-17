@@ -124,16 +124,16 @@ public class TestUtils {
 
     /**
      * Removes all assertion oracles from a given test file, represented by a
-     * JavaParser compilation unit. Removes both assert statements and JUnit
-     * Assertions methods. This method does not modify the actual source file.
+     * JavaParser compilation unit. Removes JUnit Assertions methods (e.g.
+     * assertEquals). This method does not modify the actual source file.
      *
      * @param testFile a JavaParser representation of a test file
      */
     private static void removeAssertionOracles(CompilationUnit testFile) {
         testFile.findAll(MethodDeclaration.class).forEach(testCase -> {
             NodeList<Statement> newBody = new NodeList<>();
-            List<Statement> originalBody = testCase.getBody().orElseThrow().getStatements();
-            for (Statement statement : originalBody) {
+            List<Statement> statements = testCase.getBody().orElseThrow().getStatements();
+            for (Statement statement : statements) {
                 if (isJUnitAssertion(statement)) {
                     MethodCallExpr conditionMethodCall = getMethodCallOfJUnitAssertion(statement);
                     if (conditionMethodCall != null) {
