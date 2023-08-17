@@ -1,9 +1,11 @@
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.NodeList;
+import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.stmt.ExpressionStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.stmt.TryStmt;
 
@@ -11,6 +13,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -77,6 +80,46 @@ public class TestUtils {
         return false;
     }
 
+
+    /**
+     * Gets all method calls of a Java statement.
+     *
+     * @param statement a Java statement
+     * @return a list of all methods referenced by the statement
+     */
+    private static List<MethodCallExpr> getAllMethodCallsOfStatement(Statement statement) {
+        List<MethodCallExpr> methodCallExprs = new ArrayList<>();
+        statement.walk(MethodCallExpr.class, methodCallExprs::add);
+        return methodCallExprs;
+    }
+
+    /**
+     * Returns the method call in a JUnit assertion condition. Returns null if
+     * the condition does not have a method call. For example,
+     *     "{@code assertEquals(stack.isEmpty())}" =>
+     *     "{@code stack.isEmpty()}".
+     *
+     * @param jUnitAssertion a JUnit assertion method call
+     * @return the method call in a given JUnit assertion. Returns null if the
+     * JUnit condition does not have a method call.
+     * @throws IllegalArgumentException if the given statement is not a JUnit
+     * assertion
+     */
+    private static MethodCallExpr getMethodCallOfJUnitAssertion(Statement jUnitAssertion) {
+        if (!isJUnitAssertion(jUnitAssertion)) {
+            throw new IllegalArgumentException(jUnitAssertion + " is not a statement.");
+        }
+        List<MethodCallExpr> nonJUnitMethods = getAllMethodCallsOfStatement(jUnitAssertion)
+                .stream()
+                .filter(methodCallExpr -> !allJUnitAssertMethods.contains(methodCallExpr.getNameAsString()))
+                .toList();
+        if (nonJUnitMethods.isEmpty()) {
+            return null;
+        } else {
+            return nonJUnitMethods.get(0);
+        }
+    }
+
     /**
      * Removes all assertion oracles from a given test file, represented by a
      * JavaParser compilation unit. Removes both assert statements and JUnit
@@ -85,10 +128,20 @@ public class TestUtils {
      * @param testFile a JavaParser representation of a test file
      */
     private static void removeAssertionOracles(CompilationUnit testFile) {
-        testFile.findAll(Statement.class).forEach(statement -> {
-            if (isJUnitAssertion(statement) || statement.isAssertStmt()) {
-                statement.remove();
+        testFile.findAll(MethodDeclaration.class).forEach(testCase -> {
+            NodeList<Statement> newBody = new NodeList<>();
+            List<Statement> originalBody = testCase.getBody().orElseThrow().getStatements();
+            for (Statement statement : originalBody) {
+                if (isJUnitAssertion(statement)) {
+                    MethodCallExpr conditionMethodCall = getMethodCallOfJUnitAssertion(statement);
+                    if (conditionMethodCall != null) {
+                        newBody.add(new ExpressionStmt(conditionMethodCall));
+                    }
+                } else {
+                    newBody.add(statement);
+                }
             }
+            testCase.setBody(new BlockStmt(newBody));
         });
     }
 
