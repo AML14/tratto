@@ -17,12 +17,19 @@ assert sum(a, b) == (a + b)
 To generate test prefixes, we use [EvoSuite](https://www.evosuite.org/), which generates complete unit tests (including the oracle), and remove the generated oracles (assertions) using [JavaParser](https://javaparser.org/). Then, we generate new oracles using an arbitrary TOG, and add these assertions to the test prefixes. Finally, we use [PITest](https://pitest.org/) to report mutation score of the generated tests, and also record the number of positive/negative (failing/passing) test cases.
 
 To analyze a TOG, run
-```agsl
-experiment.sh [tog] [source path]
 ```
-where TOG is "jdoctor", "toga", or "tratto". For example,
-```agsl
-experiment.sh tratto ../path/to/source/File.java
+experiment.sh [tog] [target-class] [source-dir] [bin-dir]
+```
+where,
+
+- `[tog]` is a test oracle generator
+- `[target-class]` is the fully qualified name of the class under test
+- `[source-dir]` is the path to the project source directory 
+- `[bin-dir]` is the path to the project binary files
+
+For example,
+```
+experiment.sh tratto example.Stack ../path/to/src ../path/to/target/classes
 ```
 
 ## Research Questions
@@ -99,7 +106,7 @@ We provide a brief description of the relevant files:
 
 ### Prefix
 
-We run `evosuite.sh` to generate a test suite using EvoSuite. These full test cases include both the test prefix and the test oracle, and are saved in `experiment/output/evosuite-test/`. Then, we use `TestUtils.java` to remove the oracles (assertions) using JavaParser. These test prefixes are saved as separate files in `experiment/output/evosuite-prefix/`.
+We run `evosuite.sh` to generate a test suite using EvoSuite. These full test cases include both the test prefix and the test oracle, and are saved in `experiment/output/evosuite-tests/`. Then, we use `TestUtils.java` to remove the oracles (assertions) using JavaParser. These test prefixes are saved as separate files in `experiment/output/evosuite-prefixes/`.
 
 ### Oracle
 

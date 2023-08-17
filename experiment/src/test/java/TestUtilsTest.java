@@ -14,7 +14,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestUtilsTest {
-    private static final Path testPath = Paths.get("src/test/resources");
+    private static final Path resourcesPath = Paths.get("src/test/resources");
     private static final Path outputPath = Paths.get("output");
     private static final List<String> allJUnitTestMethods = List.of(
             "assertArrayEquals",
@@ -31,7 +31,7 @@ public class TestUtilsTest {
 
     @Test
     public void removeOraclesTest() {
-        TestUtils.removeOracles(testPath);
+        TestUtils.removeOracles(resourcesPath.resolve("test"));
         try {
             CompilationUnit cu = StaticJavaParser.parse(outputPath.resolve("evosuite-prefix/ExampleTest.java"));
             cu.findAll(Statement.class)
@@ -81,7 +81,7 @@ public class TestUtilsTest {
     @Test
     public void insertAxiomaticOraclesTest() {
         List<OracleOutput> axiomaticOracles = getAxiomaticOracles();
-        TestUtils.insertOracles(testPath.resolve("prefix"), "jdoctor", axiomaticOracles);
+        TestUtils.insertOracles(resourcesPath.resolve("prefix"), "jdoctor", axiomaticOracles);
     }
 
     private List<OracleOutput> getNonAxiomaticOracles() {
@@ -120,7 +120,7 @@ public class TestUtilsTest {
     @Test
     public void insertNonAxiomaticOraclesTest() {
         List<OracleOutput> nonAxiomaticOracles = getNonAxiomaticOracles();
-        TestUtils.insertOracles(testPath.resolve("prefix"), "toga", nonAxiomaticOracles);
+        TestUtils.insertOracles(resourcesPath.resolve("prefix"), "toga", nonAxiomaticOracles);
         String expectedAssertionTest = """
                                 @Test
                                 @Disabled
