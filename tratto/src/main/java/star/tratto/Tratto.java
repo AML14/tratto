@@ -37,7 +37,7 @@ public class Tratto {
     private static final JavaParser javaParser = JavaParserUtils.getJavaParser();
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private static final String ML_MODEL_API_URL = String.format("http://127.0.0.1:5000/api/next_token?filename=%s/src/main/resources/token_datapoints.json", System.getProperty("user.dir"));
-    public static String CLASS_PATH = "src/main/resources/projects-source/commons-collections4-4.1/raw/src/main/java/org/apache/commons/collections4/IterableUtils.java";
+    public static String CLASS_PATH = "src/main/resources/projects-source/commons-collections4-4.1/raw/src/main/java/org/apache/commons/collections4/BagUtils.java";
     public static String PROJECT_SOURCE_PATH = "src/main/resources/projects-source/commons-collections4-4.1/raw/src/main/java/";
     public static String PROJECT_JAR_PATH = "src/main/resources/projects-packaged/commons-collections4-4.1-jar-with-dependencies.jar";
     public static String TOKEN_DATAPOINTS_PATH = "src/main/resources/token_datapoints.json";
@@ -65,7 +65,7 @@ public class Tratto {
             List<String> oracleSoFarTokens = new ArrayList<>();
             List<String> tokenClassesSoFar = new ArrayList<>();
 
-            if (!(oracleDatapoint.getOracleType().equals(OracleType.EXCEPT_POST)) || !(oracleDatapoint.getMethodSourceCode().contains("toString")) || !(oracleDatapoint.getTokensMethodArguments().size() == 5)) {
+            if (!(oracleDatapoint.getOracleType().equals(OracleType.NORMAL_POST)) || !(oracleDatapoint.getJavadocTag().contains("@return an empty Bag"))) {
                 continue;
             }
 

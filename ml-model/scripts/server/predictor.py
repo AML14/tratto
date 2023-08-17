@@ -136,48 +136,50 @@ def predict_next(
                                 predicted_generate
                             ))
 
-        sorted_predictions = sorted(predictions, key=lambda p: p[0])
-        first_choice = sorted_predictions[0][0]
+        if len(predictions) > 0:
+            sorted_predictions = sorted(predictions, key=lambda p: p[0])
+            first_choice = sorted_predictions[0][0]
 
-        if classification_type == ClassificationType.CATEGORY_PREDICTION:
-            # Heuristics to mitigate knowns prediction errors
-            if tratto_model_type == TrattoModelType.TOKEN_CLASSES:
-                if first_choice not in list(value_mappings.values()):
-                    subwordSplit = first_choice.split("_")
-                    # Iterate over the list of possible token classes
-                    for eligible in value_mappings.values():
-                        # Check if last subword of predicted token matches the end of the current eligible token class
-                        if eligible.endswith(subwordSplit[-1]):
-                            return eligible
-                    # Iterate over the list of the other alternatives in the beam-search model
-                    for alternative_choice in predicted_generate[1:]:
+            if classification_type == ClassificationType.CATEGORY_PREDICTION:
+                # Heuristics to mitigate knowns prediction errors
+                if tratto_model_type == TrattoModelType.TOKEN_CLASSES:
+                    if first_choice not in list(value_mappings.values()):
+                        subwordSplit = first_choice.split("_")
+                        # Iterate over the list of possible token classes
                         for eligible in value_mappings.values():
-                            # Check if current alternative choice matches eligible token class
-                            if eligible == alternative_choice:
+                            # Check if last subword of predicted token matches the end of the current eligible token class
+                            if eligible.endswith(subwordSplit[-1]):
                                 return eligible
-                    # Analyze subwords of the last camel-cased subword
-                    camelCaseSplit = re.split(r"(?=[A-Z])", subwordSplit[-1])
-                    # Iterate over the list of possible token classes
-                    for eligible in value_mappings.values():
-                        # Check if last subword of predicted token matches the end of the current eligible token class
-                        if eligible.endswith(camelCaseSplit[-1]):
-                            return eligible
+                        # Iterate over the list of the other alternatives in the beam-search model
+                        for alternative_choice in predicted_generate[1:]:
+                            for eligible in value_mappings.values():
+                                # Check if current alternative choice matches eligible token class
+                                if eligible == alternative_choice:
+                                    return eligible
+                        # Analyze subwords of the last camel-cased subword
+                        camelCaseSplit = re.split(r"(?=[A-Z])", subwordSplit[-1])
+                        # Iterate over the list of possible token classes
+                        for eligible in value_mappings.values():
+                            # Check if last subword of predicted token matches the end of the current eligible token class
+                            if eligible.endswith(camelCaseSplit[-1]):
+                                return eligible
+                    else:
+                        return first_choice
                 else:
                     return first_choice
-            else:
-                return first_choice
-        elif classification_type == ClassificationType.LABEL_PREDICTION:
-            if first_choice in value_mappings.values():
-                return first_choice
-        # If no token has been found, compute the Levenshtein distance among the eligible token classes
-        best_distance = float('inf')
-        most_probable_token = None
-        for eligible in eligible_tokens:
-            distance = Levenshtein.distance(first_choice, eligible)
-            if distance < best_distance and eligible in eligible_tokens:
-                best_distance = distance
-                most_probable_token = eligible
-        return most_probable_token
+            elif classification_type == ClassificationType.LABEL_PREDICTION:
+                if first_choice in value_mappings.values():
+                    return first_choice
+            # If no token has been found, compute the Levenshtein distance among the eligible token classes
+            best_distance = float('inf')
+            most_probable_token = None
+            for eligible in eligible_tokens:
+                distance = Levenshtein.distance(first_choice, eligible)
+                if distance < best_distance and eligible in eligible_tokens:
+                    best_distance = distance
+                    most_probable_token = eligible
+            return most_probable_token
+        return ""
 
 
 

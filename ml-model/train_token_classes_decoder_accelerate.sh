@@ -9,13 +9,13 @@ accelerate launch --config_file accelerate_config_fsdp.yaml scripts/train/run_cl
 --tratto_model_type token_classes \
 --task_name tokenClasses_classifier_decoder \
 --max_seq_length 512 \
---batch_size 4 \
+--batch_size 16 \
 --learning_rate 1e-5 \
---num_epochs 10 \
---save_steps 25000 \
+--num_epochs 5 \
+--save_steps 10000 \
 --accumulation_steps 1 \
 --test_ratio 0.1 \
 --validation_ratio 0.1 \
 --data_dir ./dataset/token-classes-dataset-cleaned \
---output_dir ./output_token_classes_decoder_label_770 \
+--output_dir ./output_token_classes_decoder_label_770_msc \
 --classification_type label_prediction
