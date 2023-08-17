@@ -44,7 +44,7 @@ public class TestUtils {
 
     /**
      * Checks if a given statement is a JUnit Assertions assert method call
-     * (e.g. assertEquals). This does NOT include "fail()", which used by
+     * (e.g. assertEquals). This does NOT include "fail()", which is used by
      * exceptional oracles.
      *
      * @param statement a code statement
