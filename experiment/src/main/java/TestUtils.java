@@ -260,20 +260,16 @@ public class TestUtils {
         return relatedOracles.stream().toList();
     }
 
-    private static void insertAxiomaticOracles(MethodDeclaration testCase, List<OracleOutput> oracles) {
-        List<Statement> statements = testCase.getBody().orElseThrow().getStatements();
-        for (int i = 0; i < statements.size(); i++) {
-            List<OracleOutput> relatedOracles = getRelatedOracles(statements.get(i), statements, oracles);
-            if (relatedOracles.size() != 0) {
-                System.out.println(relatedOracles);
-//                Statement oracleStatement = buildOracleStatement(statements.get(i), relatedOracles);
-//                statements.set(i, oracleStatement);
-            }
-        }
-    }
-
     private static void insertAxiomaticOracles(CompilationUnit testFile, List<OracleOutput> oracles) {
-        testFile.findAll(MethodDeclaration.class).forEach(testCase -> insertAxiomaticOracles(testCase, oracles));
+        testFile.findAll(MethodDeclaration.class).forEach(testCase -> {
+            List<Statement> statements = testCase.getBody().orElseThrow().getStatements();
+            for (int i = 0; i < statements.size(); i++) {
+                List<OracleOutput> relatedOracles = getRelatedOracles(statements.get(i), statements, oracles);
+                if (relatedOracles.size() != 0) {
+                    System.out.println(relatedOracles);
+                }
+            }
+        });
     }
 
     /**
