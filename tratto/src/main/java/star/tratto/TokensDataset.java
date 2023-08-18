@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import star.tratto.data.*;
+import star.tratto.util.FileUtils;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -29,7 +30,7 @@ public class TokensDataset {
         validateArgs(args);
         logger.info("Dataset type: {}", DATASET_TYPE);
         Path tokensDatasetFolder = Paths.get(TOKENS_DATASET_FOLDER);
-        deleteDirectory(TOKENS_DATASET_FOLDER);
+        FileUtils.deleteDirectory(tokensDatasetFolder);
         Files.createDirectories(tokensDatasetFolder);
         Path oraclesDatasetPath = Path.of(ORACLES_DATASET_FOLDER);
         DirectoryStream<Path> oraclesDatasetStream = Files.newDirectoryStream(oraclesDatasetPath);
@@ -82,14 +83,16 @@ public class TokensDataset {
     private static void validateArgs(String[] args) {
         if (args.length == 0 && DATASET_TYPE == null) {
             logger.error("DATASET_TYPE not set. Pass one argument, which must be one of TOKENS, TOKEN_CLASSES or TOKEN_VALUES.");
+            System.exit(1);
         } else if (args.length > 1) {
             logger.error("Wrong number of arguments. Expected 0 or 1, got {}", args.length);
+            System.exit(1);
         } else if (args.length == 1 && !Arrays.stream(TokenDPType.values()).map(Enum::name).toList().contains(args[0])) {
             logger.error("Wrong argument. Expected TOKENS or TOKEN_CLASSES or TOKEN_VALUES, got {}", args[0]);
-        } else {
-            if (args.length == 1) DATASET_TYPE = TokenDPType.valueOf(args[0]);
-            return;
+            System.exit(1);
         }
-        System.exit(1);
+        if (args.length == 1) {
+            DATASET_TYPE = TokenDPType.valueOf(args[0]);
+        }
     }
 }

@@ -1,8 +1,8 @@
 package star.tratto.token.restrictions.single;
 
-import org.javatuples.Triplet;
 import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleType;
+import star.tratto.data.records.MethodArgumentTokens;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,11 +29,12 @@ public class PreYesArgumentOrThisRestriction extends SingleTokenRestriction {
 
     @Override
     public Boolean isEnabled(String nextLegalToken, List<String> partialExpressionTokens, OracleDatapoint oracleDatapoint) {
-        if (!isRestrictedToken(nextLegalToken) || oracleType != oracleDatapoint.getOracleType()) { // Restriction only applicable to PRE oracles
+        if (!isRestrictedToken(nextLegalToken) || oracleType != oracleDatapoint.getOracleType()) {
+            // Restriction only applicable to PRE oracles
             return false;
         }
 
-        List<String> disablerTokens = oracleDatapoint.getTokensMethodArguments().stream().map(Triplet::getValue0).collect(Collectors.toList());
+        List<String> disablerTokens = oracleDatapoint.getTokensMethodArguments().stream().map(MethodArgumentTokens::argumentName).collect(Collectors.toList());
         disablerTokens.add("this");
 
         // This ContextRestriction can be treated as a standard ContextRestriction by including the method argument and "this" as disabler tokens

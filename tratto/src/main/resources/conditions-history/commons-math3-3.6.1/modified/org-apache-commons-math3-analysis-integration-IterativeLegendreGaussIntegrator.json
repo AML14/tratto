@@ -60,11 +60,63 @@
         }
       },
       {
+        "exception": "org.apache.commons.math3.exception.NumberIsTooSmallException",
+        "description": "@throws org.apache.commons.math3.exception.NumberIsTooSmallException if maximal number of iterations is smaller than or equal to the minimal number of iterations.",
+        "guard": {
+          "condition": "maximalIterationCount <= minimalIterationCount",
+          "description": "if maximal number of iterations is smaller than or equal to the minimal number of iterations."
+        }
+      },
+      {
         "exception": "org.apache.commons.math3.exception.NotStrictlyPositiveException",
         "description": "@throws org.apache.commons.math3.exception.NotStrictlyPositiveException n < 1.",
         "guard": {
           "condition": "n<1",
           "description": "n < 1."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.analysis.integration.IterativeLegendreGaussIntegrator",
+      "name": "org.apache.commons.math3.analysis.integration.IterativeLegendreGaussIntegrator",
+      "parameterTypes": [
+        "int",
+        "double",
+        "double",
+        "int",
+        "int"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "n",
+        "relativeAccuracy",
+        "absoluteAccuracy",
+        "minimalIterationCount",
+        "maximalIterationCount"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NotStrictlyPositiveException",
+        "description": "@throws org.apache.commons.math3.exception.NotStrictlyPositiveException if minimal number of iterations or number of points are not strictly positive.",
+        "guard": {
+          "condition": "n <= 0 || minimalIterationCount <= 0",
+          "description": "if minimal number of iterations or number of points are not strictly positive."
+        }
+      },
+      {
+        "exception": "org.apache.commons.math3.exception.NumberIsTooSmallException",
+        "description": "@throws org.apache.commons.math3.exception.NumberIsTooSmallException if maximal number of iterations is smaller than or equal to the minimal number of iterations.",
+        "guard": {
+          "condition": "maximalIterationCount <= minimalIterationCount",
+          "description": "if maximal number of iterations is smaller than or equal to the minimal number of iterations."
         }
       }
     ],

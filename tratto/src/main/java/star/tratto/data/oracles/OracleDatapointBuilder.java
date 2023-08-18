@@ -1,21 +1,31 @@
 package star.tratto.data.oracles;
 
-import org.javatuples.Pair;
-import org.javatuples.Quartet;
-import org.javatuples.Triplet;
 import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleType;
-import star.tratto.identifiers.FileFormat;
-import star.tratto.identifiers.FileName;
-import star.tratto.identifiers.IOPath;
+import star.tratto.data.records.AttributeTokens;
+import star.tratto.data.records.ClassTokens;
+import star.tratto.data.records.JDoctorCondition.Guard;
+import star.tratto.data.records.JDoctorCondition.PostCondition;
+import star.tratto.data.records.JDoctorCondition.PreCondition;
+import star.tratto.data.records.JDoctorCondition.Property;
+import star.tratto.data.records.JDoctorCondition.ThrowsCondition;
+import star.tratto.data.records.ValueTokens;
+import star.tratto.data.records.MethodArgumentTokens;
+import star.tratto.data.records.MethodTokens;
+import star.tratto.data.TrattoPath;
 import star.tratto.util.FileUtils;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * This class is a builder class for {@link OracleDatapoint}.
+ */
 public class OracleDatapointBuilder {
     private OracleDatapoint datapoint;
+    // a list of feature levels. See build methods for further detail.
     private static final List<String> featureLevels = List.of("default", "project", "class", "method");
 
     public OracleDatapointBuilder() {
@@ -81,15 +91,8 @@ public class OracleDatapointBuilder {
      * Sets default general tokens for symbolic grammar.
      */
     private void setDefaultGrammarTokens() {
-        String tokensGrammarPath = FileUtils.getAbsolutePathToFile(
-                IOPath.REPOS.getValue(),
-                FileName.TOKENS_GRAMMAR,
-                FileFormat.JSON
-        );
-        List<String> tokenGrammar = FileUtils.readJSONList(tokensGrammarPath)
-                .stream()
-                .map(e -> (String) e)
-                .collect(Collectors.toList());
+        Path tokensGrammarPath = TrattoPath.TOKENS_GRAMMAR.getPath();
+        List<String> tokenGrammar = FileUtils.readJSONList(tokensGrammarPath, String.class);
         this.setTokensGeneralGrammar(tokenGrammar);
     }
 
@@ -97,52 +100,48 @@ public class OracleDatapointBuilder {
      * Sets default global values for tokens.
      */
     private void setDefaultGeneralValues() {
-        String tokenGeneralValuesPath = FileUtils.getAbsolutePathToFile(
-                IOPath.REPOS.getValue(),
-                FileName.TOKENS_GENERAL_VALUES,
-                FileFormat.JSON
-        );
-        List<Pair<String, String>> tokenGeneralValues = FileUtils.readJSONList(tokenGeneralValuesPath)
+        Path tokensGeneralValuesPath = TrattoPath.TOKENS_GENERAL_VALUES.getPath();
+        List<ValueTokens> tokenGeneralValues = FileUtils.readJSONList(tokensGeneralValuesPath)
                 .stream()
                 .map(e -> ((List<?>) e)
                         .stream()
                         .map(o -> (String) o)
                         .collect(Collectors.toList()))
-                .collect(Collectors.toList())
+                .toList()
                 .stream()
-                .map(tokenList -> new Pair<>(tokenList.get(0), tokenList.get(1)))
+                .map(ValueTokens::new)
                 .collect(Collectors.toList());
         this.setTokensGeneralValuesGlobalDictionary(tokenGeneralValues);
     }
 
-    private void setThrowsConditionInfo(JDoctorCondition.ThrowsCondition condition) {
+    private void setThrowsConditionInfo(ThrowsCondition condition) {
         this.setOracleType(OracleType.EXCEPT_POST);
-        this.setJavadocTag(condition.getDescription());
-        this.setOracle(String.format("%s;", condition.getGuard().getCondition()).replaceAll("receiverObjectID", "this"));
+        this.setJavadocTag(condition.description());
+        this.setOracle(String.format("%s;", condition.guard().condition()).replaceAll("receiverObjectID", "this"));
     }
 
-    private void setPreConditionInfo(JDoctorCondition.PreCondition condition) {
+    private void setPreConditionInfo(PreCondition condition) {
         this.setOracleType(OracleType.PRE);
-        this.setJavadocTag(condition.getDescription());
-        this.setOracle(String.format("%s;", condition.getGuard().getCondition()).replaceAll("receiverObjectID", "this"));
+        this.setJavadocTag(condition.description());
+        this.setOracle(String.format("%s;", condition.guard().condition()).replaceAll("receiverObjectID", "this"));
     }
 
-    private void setPostConditionInfo(List<JDoctorCondition.PostCondition> conditionList) {
+    private void setPostConditionInfo(List<PostCondition> conditionList) {
         assert conditionList.size() <= 2;
         // get base information from first post-condition.
-        JDoctorCondition.PostCondition mainCondition = conditionList.get(0);
-        String mainTag = mainCondition.getDescription();
-        JDoctorCondition.Guard mainGuard = mainCondition.getGuard();
-        JDoctorCondition.Property mainProperty = mainCondition.getProperty();
+        PostCondition mainCondition = conditionList.get(0);
+        String mainTag = mainCondition.description();
+        Guard mainGuard = mainCondition.guard();
+        Property mainProperty = mainCondition.property();
         // start building oracle.
-        String oracle = String.format("%s ? %s : ", mainGuard.getCondition(), mainProperty.getCondition());
+        String oracle = String.format("%s ? %s : ", mainGuard.condition(), mainProperty.condition());
         // add to oracle.
         if (conditionList.size() == 2) {
-            JDoctorCondition.PostCondition secondCondition = conditionList.get(1);
-            String secondTag = secondCondition.getDescription();
+            PostCondition secondCondition = conditionList.get(1);
+            String secondTag = secondCondition.description();
             assert mainTag.equals(secondTag);
-            JDoctorCondition.Property secondProperty = secondCondition.getProperty();
-            oracle += String.format("%s;", secondProperty.getCondition());
+            Property secondProperty = secondCondition.property();
+            oracle += String.format("%s;", secondProperty.condition());
         } else {
             oracle += "true;";
         }
@@ -161,14 +160,14 @@ public class OracleDatapointBuilder {
      * @param condition a JDoctor condition
      */
     public void setConditionInfo(Object condition) {
-        if (condition instanceof JDoctorCondition.ThrowsCondition) {
-            this.setThrowsConditionInfo((JDoctorCondition.ThrowsCondition) condition);
-        } else if (condition instanceof JDoctorCondition.PreCondition) {
-            this.setPreConditionInfo((JDoctorCondition.PreCondition) condition);
+        if (condition instanceof ThrowsCondition) {
+            this.setThrowsConditionInfo((ThrowsCondition) condition);
+        } else if (condition instanceof PreCondition) {
+            this.setPreConditionInfo((PreCondition) condition);
         } else if (condition instanceof List<?>) {
-            List<JDoctorCondition.PostCondition> conditionList = ((List<?>) condition)
+            List<PostCondition> conditionList = ((List<?>) condition)
                     .stream()
-                    .map(e -> (JDoctorCondition.PostCondition) e)
+                    .map(e -> (PostCondition) e)
                     .collect(Collectors.toList());
             if (conditionList.size() > 0) {
                 this.setPostConditionInfo(conditionList);
@@ -224,43 +223,43 @@ public class OracleDatapointBuilder {
         this.datapoint.setTokensGeneralGrammar(tokensGeneralGrammar);
     }
 
-    public void setTokensGeneralValuesGlobalDictionary(List<Pair<String, String>> tokensGeneralValuesGlobalDictionary) {
+    public void setTokensGeneralValuesGlobalDictionary(List<ValueTokens> tokensGeneralValuesGlobalDictionary) {
         this.datapoint.setTokensGeneralValuesGlobalDictionary(tokensGeneralValuesGlobalDictionary);
     }
 
-    public void setTokensProjectClasses(List<Pair<String, String>> tokensProjectClasses) {
+    public void setTokensProjectClasses(List<ClassTokens> tokensProjectClasses) {
         this.datapoint.setTokensProjectClasses(tokensProjectClasses);
     }
 
-    public void setTokensProjectClassesNonPrivateStaticNonVoidMethods(List<Quartet<String, String, String, String>> tokensProjectClassesNonPrivateStaticNonVoidMethods) {
+    public void setTokensProjectClassesNonPrivateStaticNonVoidMethods(List<MethodTokens> tokensProjectClassesNonPrivateStaticNonVoidMethods) {
         this.datapoint.setTokensProjectClassesNonPrivateStaticNonVoidMethods(tokensProjectClassesNonPrivateStaticNonVoidMethods);
     }
 
-    public void setTokensProjectClassesNonPrivateStaticAttributes(List<Quartet<String, String, String, String>> tokensProjectClassesNonPrivateStaticAttributes) {
+    public void setTokensProjectClassesNonPrivateStaticAttributes(List<AttributeTokens> tokensProjectClassesNonPrivateStaticAttributes) {
         this.datapoint.setTokensProjectClassesNonPrivateStaticAttributes(tokensProjectClassesNonPrivateStaticAttributes);
     }
 
-    public void setTokensMethodJavadocValues(List<Pair<String, String>> tokensMethodJavadocValues) {
+    public void setTokensMethodJavadocValues(List<ValueTokens> tokensMethodJavadocValues) {
         this.datapoint.setTokensMethodJavadocValues(tokensMethodJavadocValues);
     }
 
-    public void setTokensMethodArguments(List<Triplet<String, String, String>> tokensMethodArguments) {
+    public void setTokensMethodArguments(List<MethodArgumentTokens> tokensMethodArguments) {
         this.datapoint.setTokensMethodArguments(tokensMethodArguments);
     }
 
-    public void setTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(List<Quartet<String, String, String, String>> tokensMethodVariablesNonPrivateNonStaticNonVoidMethods) {
+    public void setTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(List<MethodTokens> tokensMethodVariablesNonPrivateNonStaticNonVoidMethods) {
         this.datapoint.setTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(tokensMethodVariablesNonPrivateNonStaticNonVoidMethods);
     }
 
-    public void setTokensMethodVariablesNonPrivateNonStaticAttributes(List<Quartet<String, String, String, String>> tokensMethodVariablesNonPrivateNonStaticAttributes) {
+    public void setTokensMethodVariablesNonPrivateNonStaticAttributes(List<AttributeTokens> tokensMethodVariablesNonPrivateNonStaticAttributes) {
         this.datapoint.setTokensMethodVariablesNonPrivateNonStaticAttributes(tokensMethodVariablesNonPrivateNonStaticAttributes);
     }
 
-    public void setTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(List<Quartet<String, String, String, String>> tokensOracleVariablesNonPrivateNonStaticNonVoidMethods) {
+    public void setTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(List<MethodTokens> tokensOracleVariablesNonPrivateNonStaticNonVoidMethods) {
         this.datapoint.setTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(tokensOracleVariablesNonPrivateNonStaticNonVoidMethods);
     }
 
-    public void setTokensOracleVariablesNonPrivateNonStaticAttributes(List<Quartet<String, String, String, String>> tokensOracleVariablesNonPrivateNonStaticAttributes) {
+    public void setTokensOracleVariablesNonPrivateNonStaticAttributes(List<AttributeTokens> tokensOracleVariablesNonPrivateNonStaticAttributes) {
         this.datapoint.setTokensOracleVariablesNonPrivateNonStaticAttributes(tokensOracleVariablesNonPrivateNonStaticAttributes);
     }
 

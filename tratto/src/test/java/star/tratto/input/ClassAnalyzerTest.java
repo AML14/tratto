@@ -9,22 +9,23 @@ import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.javadoc.Javadoc;
 import com.github.javaparser.resolution.UnsolvedSymbolException;
 import org.javatuples.Pair;
-import org.javatuples.Quartet;
 import org.javatuples.Triplet;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import star.tratto.data.TrattoPath;
 import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleType;
-import star.tratto.identifiers.FileFormat;
-import star.tratto.identifiers.FileName;
-import star.tratto.identifiers.IOPath;
+import star.tratto.data.records.AttributeTokens;
+import star.tratto.data.records.ClassTokens;
+import star.tratto.data.records.MethodTokens;
 import star.tratto.util.FileUtils;
 import star.tratto.util.javaparser.JavaParserUtils;
 
-import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -32,7 +33,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static star.tratto.util.FileUtils.readFile;
+import static star.tratto.util.FileUtils.readString;
 import static star.tratto.util.StringUtils.getClassNameFromPath;
 import static star.tratto.util.javaparser.DatasetUtils.getValidJavaFiles;
 import static star.tratto.util.javaparser.JavaParserUtils.getClassOrInterface;
@@ -48,7 +49,7 @@ public class ClassAnalyzerTest {
     private static final String SOURCE = ROOT + "projects-source/commons-collections4-4.1/src/main/java/";
     private static final String CLASS = SOURCE + "org/apache/commons/collections4/BagUtils.java";
     private static final String CLASS_NAME = getClassNameFromPath(CLASS);
-    private static final String CLASS_SOURCE = readFile(CLASS);
+    private static final String CLASS_SOURCE = readString(Paths.get(CLASS));
     static { JavaParserUtils.updateSymbolSolver(JAR); }
     private static final CompilationUnit CLASS_CU = javaParser.parse(CLASS_SOURCE).getResult().get();
     private static final TypeDeclaration<?> CLASS_TD = getClassOrInterface(CLASS_CU, CLASS_NAME);
@@ -77,8 +78,8 @@ public class ClassAnalyzerTest {
         classAnalyzer.setProjectPath(SOURCE);
         oracleDatapoint = classAnalyzer.getOracleDPBuilder().copy();
         assertEquals(2, oracleDatapoint.getTokensProjectClasses().size());
-        assertTrue(oracleDatapoint.getTokensProjectClasses().contains(Pair.with("Bag", "org.apache.commons.collections4")));
-        assertTrue(oracleDatapoint.getTokensProjectClasses().contains(Pair.with("BagUtils", "org.apache.commons.collections4")));
+        assertTrue(oracleDatapoint.getTokensProjectClasses().contains(new ClassTokens("Bag", "org.apache.commons.collections4")));
+        assertTrue(oracleDatapoint.getTokensProjectClasses().contains(new ClassTokens("BagUtils", "org.apache.commons.collections4")));
         assertEquals(13, oracleDatapoint.getTokensProjectClassesNonPrivateStaticNonVoidMethods().size());
         assertEquals(3, oracleDatapoint.getTokensProjectClassesNonPrivateStaticAttributes().size());
     }
@@ -112,8 +113,8 @@ public class ClassAnalyzerTest {
 
         classAnalyzer.setMethodFeatures(method);
         oracleDatapoint = classAnalyzer.getOracleDPBuilder().copy();
-        List<String> attributeTokens = oracleDatapoint.getTokensMethodVariablesNonPrivateNonStaticAttributes().stream().map(Quartet::getValue0).toList();
-        List<String> methodTokens = oracleDatapoint.getTokensMethodVariablesNonPrivateNonStaticNonVoidMethods().stream().map(Quartet::getValue0).toList();
+        List<String> attributeTokens = oracleDatapoint.getTokensMethodVariablesNonPrivateNonStaticAttributes().stream().map(AttributeTokens::attributeName).toList();
+        List<String> methodTokens = oracleDatapoint.getTokensMethodVariablesNonPrivateNonStaticNonVoidMethods().stream().map(MethodTokens::methodName).toList();
         assertTrue(oracleDatapoint.getMethodSourceCode().startsWith("public static Bag methodWithoutJavadoc(Integer param1, double... param2)"));
         assertTrue(attributeTokens.contains("length")); // from double... param2
         assertTrue(methodTokens.contains("uniqueSet")); // from Bag
@@ -247,12 +248,11 @@ public class ClassAnalyzerTest {
         List<OracleDatapoint> oracleDatapoints = new ArrayList<>();
 
         // General variables for later assertions
-        List<String> tokensGeneralGrammar = FileUtils.readJSONList(FileUtils.getAbsolutePathToFile(IOPath.REPOS.getValue(), FileName.TOKENS_GRAMMAR, FileFormat.JSON))
+        List<String> tokensGeneralGrammar = FileUtils.readJSONList(TrattoPath.TOKENS_GRAMMAR.getPath())
                 .stream()
                 .map(e -> (String) e)
                 .toList();
-        List<Pair<String, String>> tokensGeneralValues = FileUtils.readJSONList(FileUtils.getAbsolutePathToFile(IOPath.REPOS.getValue(), FileName.TOKENS_GENERAL_VALUES, FileFormat.JSON
-                ))
+        List<Pair<String, String>> tokensGeneralValues = FileUtils.readJSONList(TrattoPath.TOKENS_GENERAL_VALUES.getPath())
                 .stream()
                 .map(e -> ((List<?>) e)
                         .stream()
@@ -303,8 +303,8 @@ public class ClassAnalyzerTest {
             logger.info("------------------------------------------------------------");
 
             JavaParserUtils.updateSymbolSolver(projectPathAndJar.getValue2());
-            List<File> javaFiles = getValidJavaFiles(projectPathAndJar.getValue1()).stream().filter(jf -> {
-                    String jfPath = jf.getPath();
+            List<Path> javaFiles = getValidJavaFiles(Path.of(projectPathAndJar.getValue1())).stream().filter(jf -> {
+                    String jfPath = jf.toString();
                     return
                             !jfPath.contains("/test/") &&
                             !jfPath.contains("/test-super/") &&
@@ -314,12 +314,12 @@ public class ClassAnalyzerTest {
                             !jfPath.contains("/target/");
 
             }).toList();
-            for (File javaFile : javaFiles) {
-                logger.info("Processing file: {}", javaFile.getPath());
+            for (Path javaFile : javaFiles) {
+                logger.info("Processing file: {}", javaFile);
 
-                String classPath = javaFile.getPath();
+                String classPath = javaFile.toString();
                 String className = getClassNameFromPath(classPath);
-                String classSource = readFile(classPath);
+                String classSource = readString(javaFile);
 
                 CompilationUnit classCu;
                 try {
