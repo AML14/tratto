@@ -9,9 +9,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import star.tratto.data.OracleDP2TokenDPs;
 import star.tratto.data.TokenDPType;
-import star.tratto.data.IOPath;
 import star.tratto.input.ClassAnalyzerTest;
 import star.tratto.oraclegrammar.custom.Parser;
+import star.tratto.data.TrattoPath;
 import star.tratto.token.TokenSuggesterTest;
 import star.tratto.util.FileUtils;
 
@@ -84,7 +84,7 @@ public class E2ETests {
         }
 
         // Delete datasets and recreate folders
-        Path oraclesDataset = IOPath.ORACLES_DATASET.getPath();
+        Path oraclesDataset = TrattoPath.ORACLES_DATASET.getPath();
         Path tokensDataset = Paths.get(TokensDataset.TOKENS_DATASET_FOLDER);
         FileUtils.deleteDirectory(oraclesDataset);
         FileUtils.deleteDirectory(tokensDataset);

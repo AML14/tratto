@@ -14,7 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
-import static star.tratto.data.IOPath.ORACLES_DATASET;
+import static star.tratto.data.TrattoPath.ORACLES_DATASET;
 import static star.tratto.util.StringUtils.compactExpression;
 
 /**

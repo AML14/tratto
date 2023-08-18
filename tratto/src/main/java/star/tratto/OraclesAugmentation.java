@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static star.tratto.data.IOPath.ORACLES_DATASET;
+import static star.tratto.data.TrattoPath.ORACLES_DATASET;
 import static star.tratto.oraclegrammar.custom.OracleAlternatesGenerator.*;
 import static star.tratto.util.StringUtils.compactExpression;
 

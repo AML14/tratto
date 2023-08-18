@@ -11,9 +11,10 @@ import org.slf4j.LoggerFactory;
 import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleType;
 import star.tratto.data.oracles.OracleDatapointBuilder;
-import star.tratto.exceptions.JPClassNotFoundException;
+import star.tratto.data.JPClassNotFoundException;
 import star.tratto.util.javaparser.DatasetUtils;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -78,9 +79,10 @@ public class ClassAnalyzer {
     }
 
     private void updateOracleDPBuilderWithNewProject() {
-        oracleDPBuilder.setTokensProjectClasses(DatasetUtils.getProjectClassesTokens(projectPath));
-        oracleDPBuilder.setTokensProjectClassesNonPrivateStaticNonVoidMethods(DatasetUtils.getProjectNonPrivateStaticNonVoidMethodsTokens(projectPath));
-        oracleDPBuilder.setTokensProjectClassesNonPrivateStaticAttributes(DatasetUtils.getProjectNonPrivateStaticAttributesTokens(projectPath));
+        Path projectPathPath = Path.of(projectPath);
+        oracleDPBuilder.setTokensProjectClasses(DatasetUtils.getProjectClassTokens(projectPathPath));
+        oracleDPBuilder.setTokensProjectClassesNonPrivateStaticNonVoidMethods(DatasetUtils.getProjectNonPrivateStaticNonVoidMethodsTokens(projectPathPath));
+        oracleDPBuilder.setTokensProjectClassesNonPrivateStaticAttributes(DatasetUtils.getProjectNonPrivateStaticAttributesTokens(projectPathPath));
         oracleDPBuilder.reset("project", true);
     }
 

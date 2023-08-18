@@ -1,10 +1,10 @@
 package star.tratto.token;
 
 import org.eclipse.emf.ecore.resource.Resource;
-import org.javatuples.Pair;
 import org.javatuples.Triplet;
 import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleType;
+import star.tratto.data.records.ValueTokens;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.token.restrictions.multi.MultiTokenRestriction;
 import star.tratto.token.restrictions.multi.MultiTokenRestrictions;
@@ -258,8 +258,8 @@ public class TokenSuggester {
     private static List<String> getStringTokens(OracleDatapoint oracleDatapoint) {
         List<String> stringTokens =  oracleDatapoint.getTokensMethodJavadocValues()
                 .stream()
-                .filter(value -> value.getValue1().equals("String"))
-                .map(Pair::getValue0).collect(Collectors.toList());
+                .filter(value -> value.type().equals("String"))
+                .map(ValueTokens::value).collect(Collectors.toList());
         stringTokens.addAll(GLOBAL_DICTIONARY.get("String"));
         return stringTokens;
     }
@@ -267,8 +267,8 @@ public class TokenSuggester {
     private static List<String> getIntTokens(OracleDatapoint oracleDatapoint) {
         List<String> intTokens = oracleDatapoint.getTokensMethodJavadocValues()
                 .stream()
-                .filter(value -> value.getValue1().equals("int"))
-                .map(Pair::getValue0).collect(Collectors.toList());
+                .filter(value -> value.type().equals("int"))
+                .map(ValueTokens::value).collect(Collectors.toList());
         intTokens.addAll(GLOBAL_DICTIONARY.get("int"));
         return intTokens;
     }
@@ -276,8 +276,8 @@ public class TokenSuggester {
     private static List<String> getDoubleTokens(OracleDatapoint oracleDatapoint) {
         List<String> doubleTokens = oracleDatapoint.getTokensMethodJavadocValues()
                 .stream()
-                .filter(value -> value.getValue1().equals("double") || value.getValue1().equals("int"))
-                .map(Pair::getValue0).collect(Collectors.toList());
+                .filter(value -> value.type().equals("double") || value.type().equals("int"))
+                .map(ValueTokens::value).collect(Collectors.toList());
         doubleTokens.addAll(GLOBAL_DICTIONARY.get("double"));
         doubleTokens.addAll(GLOBAL_DICTIONARY.get("int"));
         return doubleTokens;

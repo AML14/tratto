@@ -78,7 +78,7 @@ public class LiteralValuesRestriction extends MultiTokenRestriction {
                 List<MethodUsage> matchingMethods = getApplicableMethodsOfPrecedingExpr(lastElementWithUnfinishedMethod, methodName, oracleDatapoint);
                 matchingMethods.forEach(m -> {
                     if (m.getNoParams() > nextArgIndex) {
-                        Pair<String, String> nextArgType = getTypeFromResolvedType(m.getParamType(nextArgIndex));
+                        Pair<String, String> nextArgType = getTypePairFromResolvedType(m.getParamType(nextArgIndex));
                         updateAllowedTokens(allowedTokens, nextArgType, true, oracleDatapoint);
                     }
                 });

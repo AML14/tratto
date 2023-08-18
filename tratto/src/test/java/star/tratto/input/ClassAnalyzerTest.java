@@ -9,16 +9,18 @@ import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.javadoc.Javadoc;
 import com.github.javaparser.resolution.UnsolvedSymbolException;
 import org.javatuples.Pair;
-import org.javatuples.Quartet;
 import org.javatuples.Triplet;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import star.tratto.data.IOPath;
+import star.tratto.data.TrattoPath;
 import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleType;
+import star.tratto.data.records.AttributeTokens;
+import star.tratto.data.records.ClassTokens;
+import star.tratto.data.records.MethodTokens;
 import star.tratto.util.FileUtils;
 import star.tratto.util.javaparser.JavaParserUtils;
 
@@ -76,8 +78,8 @@ public class ClassAnalyzerTest {
         classAnalyzer.setProjectPath(SOURCE);
         oracleDatapoint = classAnalyzer.getOracleDPBuilder().copy();
         assertEquals(2, oracleDatapoint.getTokensProjectClasses().size());
-        assertTrue(oracleDatapoint.getTokensProjectClasses().contains(Pair.with("Bag", "org.apache.commons.collections4")));
-        assertTrue(oracleDatapoint.getTokensProjectClasses().contains(Pair.with("BagUtils", "org.apache.commons.collections4")));
+        assertTrue(oracleDatapoint.getTokensProjectClasses().contains(new ClassTokens("Bag", "org.apache.commons.collections4")));
+        assertTrue(oracleDatapoint.getTokensProjectClasses().contains(new ClassTokens("BagUtils", "org.apache.commons.collections4")));
         assertEquals(13, oracleDatapoint.getTokensProjectClassesNonPrivateStaticNonVoidMethods().size());
         assertEquals(3, oracleDatapoint.getTokensProjectClassesNonPrivateStaticAttributes().size());
     }
@@ -111,8 +113,8 @@ public class ClassAnalyzerTest {
 
         classAnalyzer.setMethodFeatures(method);
         oracleDatapoint = classAnalyzer.getOracleDPBuilder().copy();
-        List<String> attributeTokens = oracleDatapoint.getTokensMethodVariablesNonPrivateNonStaticAttributes().stream().map(Quartet::getValue0).toList();
-        List<String> methodTokens = oracleDatapoint.getTokensMethodVariablesNonPrivateNonStaticNonVoidMethods().stream().map(Quartet::getValue0).toList();
+        List<String> attributeTokens = oracleDatapoint.getTokensMethodVariablesNonPrivateNonStaticAttributes().stream().map(AttributeTokens::attributeName).toList();
+        List<String> methodTokens = oracleDatapoint.getTokensMethodVariablesNonPrivateNonStaticNonVoidMethods().stream().map(MethodTokens::methodName).toList();
         assertTrue(oracleDatapoint.getMethodSourceCode().startsWith("public static Bag methodWithoutJavadoc(Integer param1, double... param2)"));
         assertTrue(attributeTokens.contains("length")); // from double... param2
         assertTrue(methodTokens.contains("uniqueSet")); // from Bag
@@ -246,11 +248,11 @@ public class ClassAnalyzerTest {
         List<OracleDatapoint> oracleDatapoints = new ArrayList<>();
 
         // General variables for later assertions
-        List<String> tokensGeneralGrammar = FileUtils.readJSONList(IOPath.TOKENS_GRAMMAR.getPath())
+        List<String> tokensGeneralGrammar = FileUtils.readJSONList(TrattoPath.TOKENS_GRAMMAR.getPath())
                 .stream()
                 .map(e -> (String) e)
                 .toList();
-        List<Pair<String, String>> tokensGeneralValues = FileUtils.readJSONList(IOPath.TOKENS_GENERAL_VALUES.getPath())
+        List<Pair<String, String>> tokensGeneralValues = FileUtils.readJSONList(TrattoPath.TOKENS_GENERAL_VALUES.getPath())
                 .stream()
                 .map(e -> ((List<?>) e)
                         .stream()
@@ -301,7 +303,7 @@ public class ClassAnalyzerTest {
             logger.info("------------------------------------------------------------");
 
             JavaParserUtils.updateSymbolSolver(projectPathAndJar.getValue2());
-            List<Path> javaFiles = getValidJavaFiles(projectPathAndJar.getValue1()).stream().filter(jf -> {
+            List<Path> javaFiles = getValidJavaFiles(Path.of(projectPathAndJar.getValue1())).stream().filter(jf -> {
                     String jfPath = jf.toString();
                     return
                             !jfPath.contains("/test/") &&

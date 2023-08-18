@@ -62,7 +62,8 @@ public class Tratto {
         classAnalyzer.setClassFeatures(className, classSourceCode, classCu, classTd);
 
         List<OracleDatapoint> oracleDatapoints = classAnalyzer.getOracleDatapointsFromClass();
-        for (OracleDatapoint oracleDatapoint : oracleDatapoints) { // Update each OracleDatapoint until the oracle is complete (ends with ';')
+        // Update each OracleDatapoint until the oracle is complete (ends with ';')
+        for (OracleDatapoint oracleDatapoint : oracleDatapoints) {
             List<String> oracleSoFarTokens = new ArrayList<>();
             List<String> tokenClassesSoFar = new ArrayList<>();
 

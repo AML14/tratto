@@ -1,96 +1,63 @@
 package star.tratto.util.javaparser;
 
+import com.github.javaparser.TokenRange;
 import com.github.javaparser.ast.body.CallableDeclaration;
-import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.type.TypeParameter;
+import org.plumelib.reflection.Signatures;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
- * This class provides a collection of static methods to convert between the
- * field descriptor and source code formats of all Java types. This class
- * builds upon the functionality of {@link PrimitiveTypeUtils} with methods
- * that convert between Object and array types, as well as other utilities
- * for both representations. For our purposes, we note that JDoctor uses
- * field descriptors to represent types, whereas JavaParser uses source code
- * format to represent types.
+ * This class provides static methods to convert between the ClassGetName and
+ * ClassGetSimpleName forms of Java types, as well as other utilities for
+ * analyzing various type representations.
  */
 public class TypeUtils {
-    // private constructor to avoid creating an instance of this class.
+    /**
+     * All primitive field descriptors. The ClassGetName form of a type uses
+     * field descriptor for arrays of primitive types.
+     */
+    private final static List<String> allPrimitiveFieldDescriptors = List.of("Z", "B", "C", "S", "I", "J", "F", "D");
+
+    /** Private constructor to avoid creating an instance of this class. */
     private TypeUtils() {
         throw new UnsupportedOperationException("This class cannot be instantiated.");
     }
 
     /**
-     * Removes any type arguments from a parameterized type name. Also removes
-     * semicolons, since this method is used when transforming field descriptors
-     * to source code format.
+     * Gets the package name from a ClassGetName form of a type.
      *
-     * @param parameterizedType a field descriptor or source code type
-     *                          representation
-     * @return the same type representation without type arguments
+     * @param classGetName a ClassGetName form of a type
+     * @return the package name of the class
      */
-    public static String removeTypeArgumentsAndSemicolon(String parameterizedType) {
-        // regex to match type arguments in angle brackets.
-        String regex = "<[^<>]*>|;";
-        // repeatedly remove all type arguments.
-        String previous;
-        String current = parameterizedType;
-        do {
-            previous = current;
-            current = previous.replaceAll(regex, "");
-        } while (!current.equals(previous));
-        return current;
+    public static String getPackageNameFromClassGetName(String classGetName) {
+        List<String> nameSegments = Arrays.asList(classGetName.split("\\."));
+        List<String> packageSegments = nameSegments.subList(0, nameSegments.size() - 1);
+        return String.join(".", packageSegments);
     }
 
     /**
-     * Splits a binary name (of a class or method) into segments. Splits name
-     * based on "." (package name) and "$" (inner class).
+     * Gets the innermost class from a ClassGetName form of a type.
      *
-     * @param name a binary method/class name
-     * @return name segments. Includes: all outer packages, all outer classes,
-     * and the innermost class.
+     * @param classGetName a ClassGetName form of a type
+     * @return the innermost class of the type
      */
-    public static List<String> getNameSegments(
-            String name
-    ) {
-        String regex = "[.$]";
-        return Arrays.asList(name.split(regex));
-    }
-
-    /**
-     * @param nameSegments name segments. Must represent a class.
-     * @return name segments joined by ".", representing the package name.
-     * NOTE: For inner classes, we represent the package name as:
-     *  [outerClass package].[outerClass]
-     * for compatibility with the XText grammar.
-     * @see TypeUtils#getNameSegments(String)
-     */
-    public static String getPackageNameFromNameSegments(
-            List<String> nameSegments
-    ) {
-        return String.join(".", nameSegments.subList(0, nameSegments.size() - 1));
-    }
-
-    /**
-     * @param nameSegments name segments. Must represent a class.
-     * @return innermost class of the name segments
-     * @see TypeUtils#getNameSegments(String)
-     */
-    public static String getClassNameFromNameSegments(
-            List<String> nameSegments
-    ) {
+    public static String getInnermostClassNameFromClassGetName(String classGetName) {
+        List<String> nameSegments = Arrays.asList(classGetName.split("[.$]"));
         return nameSegments.get(nameSegments.size() - 1);
     }
 
     /**
-     * @param typeName a field descriptor or source code type representation
+     * Returns the array level of the type.
+     *
+     * @param typeName a ClassGetName or ClassGetSimpleName form of a type
      * @return the array level of the type
      */
     private static int getArrayLevel(String typeName) {
@@ -104,164 +71,140 @@ public class TypeUtils {
     }
 
     /**
-     * Adds pairs of square brackets to a given type name, increasing the
-     * array level by a specified amount.
+     * Adds pairs of square brackets to a given ClassGetSimpleName type.
      *
-     * @param typeName a type name
-     * @param arrayLevel the number of array levels to add
-     * @return the new type name with the added number of array levels
-     * (in source code format)
+     * @param classGetSimpleName a ClassGetSimpleName form of a type
+     * @param arrayLevel number of array levels to add
+     * @return the simple type name with the added number of array levels
      */
-    private static String addSourceCodeArrayLevel(String typeName, int arrayLevel) {
-        return typeName + ("[]").repeat(arrayLevel);
+    private static String addArrayLevel(String classGetSimpleName, int arrayLevel) {
+        return classGetSimpleName + ("[]").repeat(arrayLevel);
     }
 
     /**
-     * Converts a field descriptor array to a source code format array. This
-     * method ONLY changes the square brackets, and will not change the
-     * component type name. For example:
-     *  [Object => Object[]
-     *  [[D     => D[][]
+     * Returns true iff the ClassGetName component type is a primitive type.
+     * The ClassGetName form of a type uses field descriptors for arrays of
+     * primitive types.
      *
-     * @param fieldDescriptor a field descriptor array type
-     * @return the corresponding source code format array type
+     * @param classGetNameComponent a ClassGetName component type
+     * @return true iff the ClassGetName component is a field descriptor
+     * @see TypeUtils#allPrimitiveFieldDescriptors
      */
-    private static String fieldDescriptorArrayToSourceCodeArray(String fieldDescriptor) {
-        int arrayLevel = getArrayLevel(fieldDescriptor);
-        return addSourceCodeArrayLevel(fieldDescriptor.substring(arrayLevel), arrayLevel);
+    private static boolean isPrimitiveFieldDescriptor(String classGetNameComponent) {
+        return allPrimitiveFieldDescriptors.contains(classGetNameComponent);
     }
 
     /**
-     * Converts a field descriptor representation of a primitive type to a
-     * source code format representation of a primitive type.
+     * Gets the ClassGetName form of the component type for a given
+     * ClassGetName array type.
      *
-     * @param fieldDescriptor a field descriptor primitive type name
-     * @return the corresponding source code format primitive type name
-     * @throws IllegalArgumentException if {@code fieldDescriptor} does not
-     * match a known field descriptor primitive representation
+     * @param classGetNameArray a ClassGetName form of an array type
+     * @return the ClassGetName form of the component type
      */
-    private static String fieldDescriptorPrimitiveToSourceCodePrimitive(String fieldDescriptor) {
-        // check that given field descriptor represents a primitive type.
-        List<String> allPrimitiveFieldDescriptors = PrimitiveTypeUtils.getAllPrimitiveFieldDescriptors();
-        if (!allPrimitiveFieldDescriptors.contains(fieldDescriptor.replaceAll("[^a-zA-Z]+", ""))) {
-            throw new IllegalArgumentException(String.format(
-                    "The string passed to the function (%s) does not represent a primitive type",
-                    fieldDescriptor
-            ));
+    private static String classGetNameComponentType(String classGetNameArray) {
+        int arrayLevel = getArrayLevel(classGetNameArray);
+        if (arrayLevel == 0) {
+            return classGetNameArray;
         }
-        // match `fieldDescriptor` to a known primitive field descriptor.
-        String fieldDescriptorRegex = PrimitiveTypeUtils.getAllPrimitiveFieldDescriptorsRegex();
-        String regex = String.format(
-                "[^A-Za-z0-9_]*(%s)[^A-Za-z0-9_]*",
-                fieldDescriptorRegex
-        );
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(fieldDescriptor);
-        if (matcher.find()) {
-            String rawFieldDescriptor = matcher.group(1);
-            String sourceCodePrimitiveType = PrimitiveTypeUtils.fieldDescriptorToPrimitiveType(rawFieldDescriptor);
-            return fieldDescriptor.replaceAll(fieldDescriptorRegex, sourceCodePrimitiveType);
+        String classGetNameComponent = classGetNameArray.replaceAll("\\[", "");
+        if (isPrimitiveFieldDescriptor(classGetNameComponent)) {
+            return classGetNameComponent;
         } else {
-            // `fieldDescriptor` does not match any known field descriptor.
-            throw new IllegalArgumentException(String.format(
-                    "The condition parameter does not match any primitive type: %s",
-                    fieldDescriptor
-            ));
+            classGetNameComponent = classGetNameComponent.replaceAll(";", "");
+            // for arrays of Objects, remove "L" prefix
+            return classGetNameComponent.substring(1);
         }
     }
 
     /**
-     * Converts a field descriptor representation of a type name to its
-     * corresponding source code format representation of a type name.
+     * Converts a ClassGetName form of a type to its corresponding
+     * ClassGetSimpleName form.
      *
-     * @param fieldDescriptor a field descriptor representation of a type
-     * @return the corresponding source code format representation of a type
+     * @param classGetName a ClassGetName form of a type
+     * @return the corresponding ClassGetSimpleName form of a type
      */
-    private static String fieldDescriptorNameToSourceCodeName(String fieldDescriptor) {
-        fieldDescriptor = removeTypeArgumentsAndSemicolon(fieldDescriptor);
-        // converts primitive type.
-        List<String> primitiveJDoctorValues = PrimitiveTypeUtils.getAllPrimitiveFieldDescriptors();
-        if (primitiveJDoctorValues.contains(fieldDescriptor.replaceAll("[^a-zA-Z]+", ""))) {
-            fieldDescriptor = fieldDescriptorPrimitiveToSourceCodePrimitive(fieldDescriptor);
-        }
-        // converts array type.
-        if (fieldDescriptor.startsWith("[")) {
-            fieldDescriptor = fieldDescriptorArrayToSourceCodeArray(fieldDescriptor);
-        }
-        // gets innermost class.
-        return getClassNameFromNameSegments(getNameSegments(fieldDescriptor));
-    }
-
-    /**
-     * Converts a list of field descriptors {@code fieldDescriptors} to a list
-     * of source code format type names.
-     *
-     * @param fieldDescriptors field descriptors to convert
-     * @return the corresponding source code format type names
-     */
-    public static List<String> fieldDescriptorNamesToSourceCodeNames(
-            List<String> fieldDescriptors
+    private static String classGetNameToClassGetSimpleName(
+            String classGetName
     ) {
-        return fieldDescriptors
+        int arrayLevel = getArrayLevel(classGetName);
+        classGetName = classGetNameComponentType(classGetName);
+        if (isPrimitiveFieldDescriptor(classGetName)) {
+            // ClassGetName uses field descriptors for arrays of primitive types
+            classGetName = Signatures.fieldDescriptorToBinaryName(classGetName);
+        } else {
+            classGetName = getInnermostClassNameFromClassGetName(classGetName);
+        }
+        return addArrayLevel(classGetName, arrayLevel);
+    }
+
+    /**
+     * Converts a list of ClassGetName forms of types to their corresponding
+     * ClassGetSimpleName forms.
+     *
+     * @param classGetNames ClassGetName forms of types
+     * @return the corresponding ClassGetSimpleName forms of types
+     */
+    public static List<String> classGetNameToClassGetSimpleName(
+            List<String> classGetNames
+    ) {
+        return classGetNames
                 .stream()
-                .map(TypeUtils::fieldDescriptorNameToSourceCodeName)
+                .map(TypeUtils::classGetNameToClassGetSimpleName)
                 .collect(Collectors.toList());
     }
 
     /**
-     * @param jpClass a JavaParser class or interface declaration
-     * @return true iff the given class or interface uses generic types
-     */
-    public static boolean hasGenerics(ClassOrInterfaceDeclaration jpClass) {
-        return jpClass.getTypeParameters().size() > 0;
-    }
-
-    /**
-     * @param typeName a source code format type name
-     * @return true iff the parameter name includes "..."
-     */
-    public static boolean hasEllipsis(String typeName) {
-        return typeName.contains("...");
-    }
-
-    /**
-     * Checks if a given type extends a supertype in source code.
-     * NOTE: We only check "extends" and not "implements" for parameterized
-     * types.
+     * Removes type arguments and semicolons from a parameterized type name.
+     * The given type name should originate from source code, as neither
+     * ClassGetSimpleName nor ClassGetName forms include type parameters.
      *
-     * @param sourceCode the method or class source code in which
-     * {@code typeName} is used
-     * @param typeName a source code format type name
-     * @return true iff the type name extends another type
+     * @param parameterizedType a type name from source code
+     * @return the base type without type arguments
      */
-    public static boolean hasSupertype(String sourceCode, String typeName) {
+    public static String removeTypeArgumentsAndSemicolon(String parameterizedType) {
+        String regex = "<[^<>]*>|;";
+        // repeatedly remove all type arguments.
+        String previous;
+        String current = parameterizedType;
+        do {
+            previous = current;
+            current = previous.replaceAll(regex, "");
+        } while (!current.equals(previous));
+        return current;
+    }
+
+    /**
+     * Checks if a type parameter has an upper bound in source code.
+     *
+     * @param sourceCode the source of the method or class in which the type
+     *                   parameter is declared
+     * @param typeName a type parameter (e.g. "T", "E")
+     * @return true iff the given type parameter has na upper bound
+     */
+    private static boolean hasUpperBound(String sourceCode, String typeName) {
         String regex = String.format("%s\\s+extends\\s+([A-Za-z0-9_]+)[<[A-Za-z0-9_,]+]*", typeName.replaceAll("\\[]",""));
-        // Using the Pattern and Matcher classes
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(sourceCode);
         return matcher.find();
     }
 
     /**
-     * Finds the supertype of a given type name in source code. We analyze
-     * source code using JavaParser, such that the given type name must use
-     * the source code format representation.
+     * Gets the upper bound of a type parameter using the source code.
      *
-     * @param sourceCode the method or class source code in which
-     * {@code typeName} is used
-     * @param typeName a source code format type name
-     * @return the name of the supertype of {@code typeName}
-     * @throws IllegalArgumentException if {@code typeName} does not extend
-     * a type
+     * @param sourceCode the source of the method or class in which the type
+     *                   parameter is declared
+     * @param typeName a type parameter (e.g. "T", "E")
+     * @return the type name of the upper bound of {@code typeName}
+     * @throws IllegalArgumentException if {@code typeName} does not have an
+     * upper bound
      */
-    private static String getSupertype(String sourceCode, String typeName) {
-        int arrayLevel = getArrayLevel(typeName);
-        // finds the supertype.
-        String regex = String.format("%s\\s+extends\\s+([A-Za-z0-9_]+)[<[A-Za-z0-9_,]+]*", typeName.replaceAll("\\[]", ""));
+    private static String getUpperBound(String sourceCode, String typeName) {
+        String regex = String.format("%s\\s+extends\\s+([A-Za-z0-9_]+)[<[A-Za-z0-9_,]+]*", typeName.replaceAll("\\[]",""));
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(sourceCode);
         if (matcher.find()) {
-            return removeTypeArgumentsAndSemicolon(matcher.group(1)) + ("[]").repeat(arrayLevel);
+            String typeBound = removeTypeArgumentsAndSemicolon(matcher.group(1));
+            return addArrayLevel(typeBound, getArrayLevel(typeName));
         } else {
             throw new IllegalArgumentException(String.format(
                     "The JavaParser source code %s does not match the regex built with the JavaParser type name %s.",
@@ -272,71 +215,93 @@ public class TypeUtils {
     }
 
     /**
-     * Gets the raw name of a type in source code. Used to manage edge cases
-     * with generic types in source code. Also ensures name is consistent with
-     * the field descriptor format for direct comparison.
+     * Gets the upper bound of a type parameter from the method or class
+     * source. A type parameter may be declared in either the class or method
+     * signature. This method checks both the method using a type and its
+     * declaring class to find a possible upper bound.
      *
-     * @param jpClass the declaring class
-     * @param jpCallable the method using {@code jpParam}
-     * @param jpParam a parameter
-     * @return the raw name of the parameter in source code
+     * @param jpDeclaration the declaring class
+     * @param jpCallable the method using {@code typeName}
+     * @param typeName a type parameter (e.g. "T", "E")
+     * @return the type name of the upper bound of {@code typeName}. Returns
+     * {@code typeName} if no upper bound exists.
      */
-    public static String getRawTypeName(
-            TypeDeclaration<?> jpClass,
+    private static String getGenericUpperBound(
+            TypeDeclaration<?> jpDeclaration,
             CallableDeclaration<?> jpCallable,
-            Parameter jpParam
+            String typeName
     ) {
-        String jpTypeName = removeTypeArgumentsAndSemicolon(jpParam.getType().asString());
-        // get class name.
-        if (jpParam.getType().isClassOrInterfaceType()) {
-            jpTypeName = removeTypeArgumentsAndSemicolon(jpParam.getType().asClassOrInterfaceType().getNameAsString());
+        // get upper bound from method/constructor declaration
+        Optional<TokenRange> callableTokenRange = jpCallable.getTokenRange();
+        if (callableTokenRange.isPresent() && hasUpperBound(callableTokenRange.get().toString(), typeName)) {
+            typeName = getUpperBound(callableTokenRange.get().toString(), typeName);
         }
-        // handle ellipsis.
-        if (hasEllipsis(jpParam.toString())) {
-            jpTypeName = addSourceCodeArrayLevel(jpTypeName, 1);
-        }
-        // use upper bound if possible.
-        if (hasSupertype(jpCallable.getTokenRange().get().toString(), jpTypeName)) {
-            jpTypeName = getSupertype(jpCallable.getTokenRange().get().toString(), jpTypeName);
-        }
-        // handle generic upper bound separately due to naming.
-        if (jpClass.isClassOrInterfaceDeclaration()) {
-            ClassOrInterfaceDeclaration jpClassDeclaration =  jpClass.asClassOrInterfaceDeclaration();
-            if (hasGenerics(jpClassDeclaration)) {
-                for (TypeParameter jpGeneric : jpClassDeclaration.getTypeParameters()) {
-                    if (jpGeneric.getNameAsString().equals(jpTypeName.replaceAll("\\[]", ""))) {
-                        if (hasSupertype(jpGeneric.toString(), jpTypeName)) {
-                            jpTypeName = getSupertype(jpGeneric.toString(), jpTypeName);
-                        }
+        // get upper bound from class declaration
+        if (jpDeclaration.isClassOrInterfaceDeclaration()) {
+            for (TypeParameter jpGeneric : jpDeclaration.asClassOrInterfaceDeclaration().getTypeParameters()) {
+                if (jpGeneric.getNameAsString().equals(typeName.replaceAll("\\[]", ""))) {
+                    if (hasUpperBound(jpGeneric.toString(), typeName)) {
+                        typeName = getUpperBound(jpGeneric.toString(), typeName);
                     }
                 }
             }
         }
-        return jpTypeName;
+        return typeName;
     }
 
     /**
-     * We define a "standard" type as a type which implements either the
-     * "Object" or "Comparable" interfaces, which require extra consideration
-     * when comparing arguments to check equality.
-     * See `jpParamEqualsJDoctorParam` in DatasetUtils for elaboration.
+     * Gets the pre-processed JDoctor parameter type name from source code.
+     * JDoctor applies several pre-processing steps for parameter type names.
+     * In general, JDoctor uses the ClassGetSimpleName form of a type. If a
+     * parameter is a vararg, then it is represented by an array. For example,
+     *     "int... numbers" => "int[]"
+     * Additionally, if a parameter is a type parameter with an upper bound,
+     * then it is represented by its upper bound.
      *
-     * @param typeName name of the JDoctor or JavaParser type
+     * @param jpDeclaration the declaring type (e.g. class, enum)
+     * @param jpCallable the method with the parameter {@code jpParam}
+     * @param jpParam a parameter
+     * @return the pre-processed JDoctor simple name
+     */
+    public static String getJDoctorSimpleNameFromSourceCode(
+            TypeDeclaration<?> jpDeclaration,
+            CallableDeclaration<?> jpCallable,
+            Parameter jpParam
+    ) {
+        // get simple name
+        String typeName;
+        if (jpParam.getType().isClassOrInterfaceType()) {
+            typeName = removeTypeArgumentsAndSemicolon(jpParam.getType().asClassOrInterfaceType().getNameAsString());
+        } else {
+            typeName = removeTypeArgumentsAndSemicolon(jpParam.getType().asString());
+        }
+        // represent varargs as an array
+        if (jpParam.isVarArgs()) {
+            typeName = addArrayLevel(typeName, 1);
+        }
+        // use upper bound (if possible)
+        typeName = getGenericUpperBound(jpDeclaration, jpCallable, typeName);
+        return typeName;
+    }
+
+    /**
+     * Checks if a ClassGetSimpleName is "Object" or "Comparable".
+     *
+     * @param typeName a simple type name
      * @return true iff the given type name is "Object" or "Comparable"
      */
-    public static boolean isStandardType(String typeName) {
+    public static boolean isObjectOrComparable(String typeName) {
         return typeName.equals("Object") || typeName.equals("Comparable");
     }
 
     /**
-     * Checks if a given type name is a "standard" array. By definition, this
-     * includes the "Object[]" and "Comparable[]" types.
-     * See above method {@code isStandardType} for further elaboration.
+     * Checks if a ClassGetSimpleName is "Object[]" or "Comparable[]".
      *
      * @param typeName name of the JDoctor or JavaParser type
      * @return true iff the given type name is "Object[]" or "Comparable[]"
+     * @see TypeUtils#isObjectOrComparable(String)
      */
-    public static boolean isStandardTypeArray(String typeName) {
+    public static boolean isObjectOrComparableArray(String typeName) {
         return typeName.equals("Object[]") || typeName.equals("Comparable[]");
     }
 }

@@ -138,7 +138,8 @@ public class OracleDP2TokenDPs {
     }
 
     private static void assertTokenLegal(boolean nextTokenActuallyLegal, String token, List<String> oracleSoFarTokens) {
-        if (!nextTokenActuallyLegal && !token.equals("")) { // If token is "", this is oracle-generation time, so the next token is not known a priori.
+        // If token is "", this is oracle-generation time, so the next token is not known a priori.
+        if (!nextTokenActuallyLegal && !token.equals("")) {
             String message = "Token '" + token + "' is not legal after partial oracle '" + compactExpression(oracleSoFarTokens) + "'";
             if (CRASH_WRONG_ORACLE) {
                 throw new RuntimeException(message);
