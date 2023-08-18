@@ -392,7 +392,30 @@
       "returnName": "methodResultID"
     },
     "throws": [],
-    "post": [],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID == true",
+          "description": "true if a is a proper sub-collection of b, false otherwise."
+        },
+        "description": "true if a is a proper sub-collection of b, false otherwise.",
+        "guard": {
+          "condition": "CollectionUtils.isSubCollection(a,b)",
+          "description": "true if a is a proper sub-collection of b, false otherwise."
+        }
+      },
+      {
+        "property": {
+          "condition": "methodResultID == false",
+          "description": "true if a is a proper sub-collection of b, false otherwise."
+        },
+        "description": "true if a is a proper sub-collection of b, false otherwise.",
+        "guard": {
+          "condition": "(CollectionUtils.isSubCollection(a,b))==false",
+          "description": "true if a is a proper sub-collection of b, false otherwise."
+        }
+      }
+    ],
     "pre": [
       {
         "description": "@param a the first (sub?) collection. a is not null.",
