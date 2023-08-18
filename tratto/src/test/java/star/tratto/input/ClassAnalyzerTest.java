@@ -21,6 +21,7 @@ import star.tratto.data.OracleType;
 import star.tratto.data.records.AttributeTokens;
 import star.tratto.data.records.ClassTokens;
 import star.tratto.data.records.MethodTokens;
+import star.tratto.data.records.ValueTokens;
 import star.tratto.util.FileUtils;
 import star.tratto.util.javaparser.JavaParserUtils;
 
@@ -252,7 +253,7 @@ public class ClassAnalyzerTest {
                 .stream()
                 .map(e -> (String) e)
                 .toList();
-        List<Pair<String, String>> tokensGeneralValues = FileUtils.readJSONList(TrattoPath.TOKENS_GENERAL_VALUES.getPath())
+        List<ValueTokens> tokensGeneralValues = FileUtils.readJSONList(TrattoPath.TOKENS_GENERAL_VALUES.getPath())
                 .stream()
                 .map(e -> ((List<?>) e)
                         .stream()
@@ -260,7 +261,7 @@ public class ClassAnalyzerTest {
                         .collect(Collectors.toList()))
                 .toList()
                 .stream()
-                .map(tokenList -> new Pair<>(tokenList.get(0), tokenList.get(1)))
+                .map(tokenList -> new ValueTokens(tokenList.get(0), tokenList.get(1)))
                 .collect(Collectors.toList());
 
         // Projects for which to generate oracle datapoints
