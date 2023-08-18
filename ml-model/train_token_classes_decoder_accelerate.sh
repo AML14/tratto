@@ -17,5 +17,5 @@ accelerate launch --config_file accelerate_config_fsdp.yaml scripts/train/run_cl
 --test_ratio 0.1 \
 --validation_ratio 0.1 \
 --data_dir ./dataset/token-classes-dataset-cleaned \
---output_dir ./output_token_classes_decoder_label_770_msc \
+--output_dir ./output_token_classes_decoder_label_770 \
 --classification_type label_prediction
