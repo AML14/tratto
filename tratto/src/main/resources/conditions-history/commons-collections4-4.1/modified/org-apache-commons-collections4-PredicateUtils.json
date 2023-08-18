@@ -671,7 +671,7 @@
     "post": [
       {
         "property": {
-          "condition": "methodResultID.equals(predicate)",
+          "condition": "methodResultID.equals(NotPredicate.notPredicate(predicate))",
           "description": "the not predicate."
         },
         "description": "the not predicate.",
@@ -744,19 +744,7 @@
         }
       }
     ],
-    "post": [
-      {
-        "property": {
-          "condition": "methodResultID.equals(predicate)",
-          "description": "the predicate."
-        },
-        "description": "the predicate.",
-        "guard": {
-          "condition": "true",
-          "description": "the predicate."
-        }
-      }
-    ],
+    "post": [],
     "pre": [
       {
         "description": "@param predicate the predicate to wrap. predicate is not null.",
@@ -795,7 +783,7 @@
     "post": [
       {
         "property": {
-          "condition": "methodResultID.equals(predicate)",
+          "condition": "methodResultID.equals(NullIsFalsePredicate.nullIsFalsePredicate(predicate))",
           "description": "the predicate."
         },
         "description": "the predicate.",
@@ -843,7 +831,7 @@
     "post": [
       {
         "property": {
-          "condition": "methodResultID.equals(predicate)",
+          "condition": "methodResultID.equals(NullIsTruePredicate.nullIsTruePredicate(predicate))",
           "description": "the predicate."
         },
         "description": "the predicate.",
@@ -893,7 +881,7 @@
     "post": [
       {
         "property": {
-          "condition": "methodResultID.equals(predicate)",
+          "condition": "methodResultID.equals(TransformedPredicate.transformedPredicate(transformer, predicate))",
           "description": "the predicate."
         },
         "description": "the predicate.",
