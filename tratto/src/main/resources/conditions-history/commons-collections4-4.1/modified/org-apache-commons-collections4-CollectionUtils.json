@@ -400,7 +400,7 @@
         },
         "description": "true if a is a proper sub-collection of b, false otherwise.",
         "guard": {
-          "condition": "CollectionUtils.isSubCollection(a,b)",
+          "condition": "a.size() < b.size() && CollectionUtils.isSubCollection(a,b)",
           "description": "true if a is a proper sub-collection of b, false otherwise."
         }
       },
@@ -411,7 +411,7 @@
         },
         "description": "true if a is a proper sub-collection of b, false otherwise.",
         "guard": {
-          "condition": "(CollectionUtils.isSubCollection(a,b))==false",
+          "condition": "a.size() >= b.size() || (CollectionUtils.isSubCollection(a,b))==false",
           "description": "true if a is a proper sub-collection of b, false otherwise."
         }
       }
