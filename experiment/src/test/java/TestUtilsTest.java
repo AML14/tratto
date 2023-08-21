@@ -64,7 +64,7 @@ public class TestUtilsTest {
                         "valueOf(int)",
                         OracleType.PRE,
                         "",
-                        "assertTrue((i == null) == false)",
+                        "assertTrue((i == null) == false);",
                         ""
                 ),
                 new OracleOutput(
@@ -72,7 +72,7 @@ public class TestUtilsTest {
                         "parseInt(java.lang.String)",
                         OracleType.EXCEPT_POST,
                         "",
-                        "assertTrue((s == null) == false)",
+                        "assertTrue((s == null) == false);",
                         "java.lang.NumberFormatException"
                 )
         );
