@@ -11,6 +11,7 @@ import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.CatchClause;
 import com.github.javaparser.ast.stmt.ExpressionStmt;
+import com.github.javaparser.ast.stmt.IfStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.stmt.TryStmt;
 import com.github.javaparser.ast.type.Type;
@@ -421,10 +422,10 @@ public class TestUtils {
         return preConditions;
     }
 
-    private static NodeList<Statement> addThrowsConditions(
+    private static IfStmt addThrowsConditions(
             List<OracleOutput> oracles
     ) {
-        return new NodeList<>();
+        return new IfStmt();
     }
 
     private static NodeList<Statement> addPostConditions(
@@ -442,7 +443,7 @@ public class TestUtils {
         conditionStatements.addAll(addPreConditions(
                 oracles.stream().filter(o -> o.oracleType().equals(OracleType.PRE)).toList()
         ));
-        conditionStatements.addAll(addThrowsConditions(
+        conditionStatements.add(addThrowsConditions(
                 oracles.stream().filter(o -> o.oracleType().equals(OracleType.EXCEPT_POST)).toList()
         ));
         conditionStatements.addAll(addPostConditions(
@@ -470,7 +471,6 @@ public class TestUtils {
                             statements.get(i),
                             relatedOracles
                     );
-                    System.out.println(conditionStatement);
                 }
             }
         });
