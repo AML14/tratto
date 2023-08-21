@@ -62,7 +62,7 @@ public class TestUtilsTest {
                 new OracleOutput(
                         "java.lang.Integer",
                         "valueOf(int)",
-                        "PRE",
+                        OracleType.PRE,
                         "",
                         "assertTrue((i == null) == false)",
                         ""
@@ -70,7 +70,7 @@ public class TestUtilsTest {
                 new OracleOutput(
                         "java.lang.Integer",
                         "parseInt(java.lang.String)",
-                        "EXCEPT_POST",
+                        OracleType.EXCEPT_POST,
                         "",
                         "assertTrue((s == null) == false)",
                         "java.lang.NumberFormatException"
@@ -89,7 +89,7 @@ public class TestUtilsTest {
                 new OracleOutput(
                         "java.lang.Integer",
                         "valueOf(int)",
-                        "",
+                        OracleType.NON_AXIOMATIC,
                         """
                                 @Test
                                 @Disabled
@@ -103,7 +103,7 @@ public class TestUtilsTest {
                 new OracleOutput(
                         "java.lang.Integer",
                         "parseInt(java.lang.String)",
-                        "",
+                        OracleType.NON_AXIOMATIC,
                         """
                                 @Test
                                 @Disabled
