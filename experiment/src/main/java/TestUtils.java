@@ -315,22 +315,32 @@ public class TestUtils {
         throw new IllegalArgumentException("Unable to find type of variable " + variableName);
     }
 
-    private static boolean isMatchingSignature(
+    /**
+     * Checks if a given method call in a test file matches an expected method
+     * signature.
+     *
+     * @param testFile a Java test file
+     * @param testBody a test case in the test file
+     * @param methodCall a method call in the test case
+     * @param expectedSignature an expected method signature
+     * @return true iff the given method call matches the method signature
+     */
+    private static boolean isMatchingMethodCall(
             CompilationUnit testFile,
             List<Statement> testBody,
-            String methodSignature,
-            MethodCallExpr expectedMethod
+            MethodCallExpr methodCall,
+            String expectedSignature
     ) {
-        String methodName = getMethodName(methodSignature);
-        if (!methodName.equals(expectedMethod.getName().asString())) {
+        String methodName = getMethodName(expectedSignature);
+        if (!methodName.equals(methodCall.getName().asString())) {
             return false;
         }
-        List<String> parameterTypes = getParameterTypeNames(methodSignature);
-        List<String> expectedTypes = expectedMethod.getArguments()
+        List<String> methodArgTypes = methodCall.getArguments()
                 .stream()
                 .map(arg -> getTypeOfName(testFile, testBody, arg.asNameExpr().getNameAsString()))
                 .toList();
-        return expectedTypes.equals(parameterTypes);
+        List<String> expectedTypes = getParameterTypeNames(expectedSignature);
+        return methodArgTypes.equals(expectedTypes);
     }
 
     /**
@@ -352,7 +362,7 @@ public class TestUtils {
         for (MethodCallExpr methodCall : methodCalls) {
             relatedOracles.addAll(allOracles
                     .stream()
-                    .filter(o -> isMatchingSignature(testFile, testBody, o.methodSignature(), methodCall))
+                    .filter(o -> isMatchingMethodCall(testFile, testBody, methodCall, o.methodSignature()))
                     .toList()
             );
         }
