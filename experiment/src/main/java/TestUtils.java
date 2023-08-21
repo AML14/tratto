@@ -464,6 +464,7 @@ public class TestUtils {
     }
 
     private static NodeList<Statement> getOracleStatements(
+            CompilationUnit testFile,
             List<Statement> testBody,
             Statement statement,
             List<OracleOutput> oracles
@@ -486,7 +487,7 @@ public class TestUtils {
             for (Statement testStatement : originalBody) {
                 List<OracleOutput> relatedOracles = getRelatedOracles(testFile, originalBody, testStatement, oracles);
                 if (relatedOracles.size() != 0) {
-                    newBody.addAll(getOracleStatements(originalBody, testStatement, relatedOracles));
+                    newBody.addAll(getOracleStatements(testFile, originalBody, testStatement, relatedOracles));
                 } else {
                     newBody.add(testStatement);
                 }
