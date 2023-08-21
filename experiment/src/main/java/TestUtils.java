@@ -332,6 +332,48 @@ public class TestUtils {
         return relatedOracles.stream().toList();
     }
 
+    private static Statement addInitialization(
+            Statement statement
+    ) {
+        return null;
+    }
+
+    private static NodeList<Statement> addPreConditions(
+            List<OracleOutput> oracles
+    ) {
+        return null;
+    }
+
+    private static NodeList<Statement> addThrowsConditions(
+            List<OracleOutput> oracles
+    ) {
+        return null;
+    }
+
+    private static NodeList<Statement> addPostConditions(
+            List<OracleOutput> oracles
+    ) {
+        return null;
+    }
+
+    private static NodeList<Statement> buildConditionStatements(
+            List<Statement> testBody,
+            Statement statement,
+            List<OracleOutput> oracles
+    ) {
+        NodeList<Statement> conditionStatements = new NodeList<>();
+        conditionStatements.addAll(addPreConditions(
+                oracles
+        ));
+        conditionStatements.addAll(addThrowsConditions(
+                oracles
+        ));
+        conditionStatements.addAll(addPostConditions(
+                oracles
+        ));
+        return conditionStatements;
+    }
+
     private static void insertAxiomaticOracles(CompilationUnit testFile, List<OracleOutput> oracles) {
         testFile.findAll(MethodDeclaration.class).forEach(testCase -> {
             List<Statement> statements = testCase.getBody().orElseThrow().getStatements();
@@ -343,7 +385,12 @@ public class TestUtils {
                         oracles
                 );
                 if (relatedOracles.size() != 0) {
-//                    System.out.println(relatedOracles);
+                    NodeList<Statement> conditionStatement = buildConditionStatements(
+                            statements,
+                            statements.get(i),
+                            relatedOracles
+                    );
+                    System.out.println(conditionStatement);
                 }
             }
         });
