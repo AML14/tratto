@@ -16,6 +16,7 @@ import com.github.javaparser.ast.stmt.TryStmt;
 import com.github.javaparser.ast.type.Type;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -330,6 +331,78 @@ public class TestUtils {
             );
         }
         return relatedOracles.stream().toList();
+    }
+
+    private static Class<?> getPrimitiveClass(String primitiveName) {
+        switch (primitiveName) {
+            case "boolean" -> {
+                return boolean.class;
+            }
+            case "byte" -> {
+                return byte.class;
+            }
+            case "char" -> {
+                return char.class;
+            }
+            case "short" -> {
+                return short.class;
+            }
+            case "int" -> {
+                return int.class;
+            }
+            case "long" -> {
+                return long.class;
+            }
+            case "float" -> {
+                return float.class;
+            }
+            case "double" -> {
+                return double.class;
+            }
+            default -> throw new IllegalArgumentException("Unrecognized primitive type " + primitiveName);
+        }
+    }
+
+    private static Class<?> getClassOfName(String className) {
+        List<String> allPrimitiveTypes = List.of("boolean", "byte", "char", "short", "int", "long", "float", "double");
+        if (allPrimitiveTypes.contains(className)) {
+            return getPrimitiveClass(className);
+        } else {
+            try {
+                return Class.forName(className);
+            } catch (ClassNotFoundException e) {
+                throw new Error("Unable to find class " + className);
+            }
+        }
+    }
+
+    private static List<Class<?>> getParameterTypes(String methodSignature) {
+        String parameters = methodSignature.substring(methodSignature.indexOf('(') + 1, methodSignature.indexOf(')'));
+        if (parameters.length() == 0) {
+            return new ArrayList<>();
+        }
+        List<Class<?>> parameterTypes = new ArrayList<>();
+        for (String parameterName : parameters.split(",")) {
+            parameterName = parameterName.trim();
+            parameterTypes.add(getClassOfName(parameterName));
+        }
+        return parameterTypes;
+    }
+
+    private static Type getReturnType(
+            String className,
+            String methodSignature
+    ) {
+        String methodName = methodSignature.substring(0, methodSignature.indexOf('('));
+        List<Class<?>> parameterTypes = getParameterTypes(methodSignature);
+        Class<?> receiverObjectID = getClassOfName(className);
+        try {
+            Method method = receiverObjectID.getMethod(methodName, parameterTypes.toArray(Class[]::new));
+            Class<?> returnType = method.getReturnType();
+            return StaticJavaParser.parseType(returnType.getName());
+        } catch (NoSuchMethodException e) {
+            throw new Error("");
+        }
     }
 
     private static Statement addInitialization(
