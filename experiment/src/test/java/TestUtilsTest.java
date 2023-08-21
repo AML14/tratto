@@ -69,7 +69,7 @@ public class TestUtilsTest {
                 ),
                 new OracleOutput(
                         "java.lang.Integer",
-                        "parseInt(String)",
+                        "parseInt(java.lang.String)",
                         "EXCEPT_POST",
                         "",
                         "assertTrue((s == null) == false)",
@@ -102,7 +102,7 @@ public class TestUtilsTest {
                 ),
                 new OracleOutput(
                         "java.lang.Integer",
-                        "parseInt(String)",
+                        "parseInt(java.lang.String)",
                         "",
                         """
                                 @Test
