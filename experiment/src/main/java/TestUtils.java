@@ -7,7 +7,6 @@ import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.MethodCallExpr;
-import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.CatchClause;
 import com.github.javaparser.ast.stmt.ExpressionStmt;
@@ -232,6 +231,39 @@ public class TestUtils {
         }
     }
 
+    /**
+     * Gets the name of a method from the method signature.
+     *
+     * @param methodSignature a method signature
+     * @return the method name
+     */
+    private static String getMethodName(String methodSignature) {
+        return methodSignature.substring(0, methodSignature.indexOf('('));
+    }
+
+    /**
+     * Gets the name of all parameter types from the method signature.
+     *
+     * @param methodSignature a method signature
+     * @return the name of all types in the method parameters
+     */
+    private static List<String> getParameterTypeNames(String methodSignature) {
+        String parameters = methodSignature.substring(methodSignature.indexOf('(') + 1, methodSignature.indexOf(')'));
+        if (parameters.length() == 0) {
+            return new ArrayList<>();
+        }
+        return Stream.of(parameters.split(","))
+                .map(p -> p.split(" ")[0].trim())
+                .toList();
+    }
+
+    /**
+     * Gets the fully qualified name of a given simple type name.
+     *
+     * @param cu the test file using type
+     * @param type a simple type name
+     * @return the fully qualified name of the type name
+     */
     private static String getFullyQualifiedName(
             CompilationUnit cu,
             Type type
@@ -243,25 +275,24 @@ public class TestUtils {
         for (ImportDeclaration importDeclaration : importDeclarations) {
             String packageName = importDeclaration.getName().asString();
             if (packageName.endsWith(type.asString())) {
-                return packageName;
+                return packageName + "." + type.asString();
             }
         }
         return "java.lang." + type.asString();
     }
 
     /**
-     * Gets the type name of a variable represented by a {@link NameExpr}.
+     * Gets the fully qualified type name of a given variable name.
      *
-     * @param nameExpr a variable name
+     * @param variableName a variable name
      * @param testBody all statements in a method
      * @return the type name of the given variable
      */
     private static String getTypeOfName(
             CompilationUnit testFile,
             List<Statement> testBody,
-            NameExpr nameExpr
+            String variableName
     ) {
-        String argumentName = nameExpr.getNameAsString();
         for (Statement statement : testBody) {
             if (!statement.isExpressionStmt()) {
                 continue;
@@ -271,7 +302,7 @@ public class TestUtils {
                 continue;
             }
             for (VariableDeclarator variableDeclarator : expression.asVariableDeclarationExpr().getVariables()) {
-                if (argumentName.equals(variableDeclarator.getNameAsString())) {
+                if (variableName.equals(variableDeclarator.getNameAsString())) {
                     Type variableType = variableDeclarator.getType();
                     if (variableType.isReferenceType()) {
                         return getFullyQualifiedName(testFile, variableDeclarator.getType());
@@ -281,32 +312,31 @@ public class TestUtils {
                 }
             }
         }
-        throw new IllegalArgumentException("Unable to find type of variable " + nameExpr.getNameAsString());
+        throw new IllegalArgumentException("Unable to find type of variable " + variableName);
     }
 
-    private static String getMethodSignature(
+    private static boolean isMatchingSignature(
             CompilationUnit testFile,
             List<Statement> testBody,
-            MethodCallExpr methodCallExpr
+            String methodSignature,
+            MethodCallExpr expectedMethod
     ) {
-        StringBuilder sb = new StringBuilder();
-        List<Expression> arguments = methodCallExpr.getArguments();
-        sb.append(methodCallExpr.getName()).append("(");
-        for (int i = 0; i < arguments.size(); i++) {
-            NameExpr argumentName = arguments.get(i).asNameExpr();
-            sb.append(getTypeOfName(testFile, testBody, argumentName));
-            if (i < arguments.size() - 1) {
-                sb.append(", ");
-            }
+        String methodName = getMethodName(methodSignature);
+        if (!methodName.equals(expectedMethod.getName().asString())) {
+            return false;
         }
-        sb.append(")");
-        return sb.toString();
+        List<String> parameterTypes = getParameterTypeNames(methodSignature);
+        List<String> expectedTypes = expectedMethod.getArguments()
+                .stream()
+                .map(arg -> getTypeOfName(testFile, testBody, arg.asNameExpr().getNameAsString()))
+                .toList();
+        return expectedTypes.equals(parameterTypes);
     }
 
     /**
      * Gets all oracles applicable to a Java statement.
      *
-     * @param statement a Java statement
+     * @param testStatement a Java statement
      * @param testBody all statements in a method
      * @param allOracles all possible oracle records
      * @return all oracles involving method calls in the given statement
@@ -314,20 +344,15 @@ public class TestUtils {
     private static List<OracleOutput> getRelatedOracles(
             CompilationUnit testFile,
             List<Statement> testBody,
-            Statement statement,
+            Statement testStatement,
             List<OracleOutput> allOracles
     ) {
-        List<MethodCallExpr> methodCalls = getAllMethodCallsOfStatement(statement);
+        List<MethodCallExpr> methodCalls = getAllMethodCallsOfStatement(testStatement);
         Set<OracleOutput> relatedOracles = new HashSet<>();
-        for (MethodCallExpr methodCallExpr : methodCalls) {
-            String methodSignature = getMethodSignature(
-                    testFile,
-                    testBody,
-                    methodCallExpr
-            );
+        for (MethodCallExpr methodCall : methodCalls) {
             relatedOracles.addAll(allOracles
                     .stream()
-                    .filter(o -> o.methodSignature().equals(methodSignature))
+                    .filter(o -> isMatchingSignature(testFile, testBody, o.methodSignature(), methodCall))
                     .toList()
             );
         }
@@ -377,16 +402,6 @@ public class TestUtils {
         }
     }
 
-    private static List<String> getParameterTypeNames(String methodSignature) {
-        String parameters = methodSignature.substring(methodSignature.indexOf('(') + 1, methodSignature.indexOf(')'));
-        if (parameters.length() == 0) {
-            return new ArrayList<>();
-        }
-        return Stream.of(parameters.split(","))
-                .map(p -> p.split(" ")[0].trim())
-                .toList();
-    }
-
     private static Type getReturnType(
             String className,
             String methodSignature
@@ -401,12 +416,6 @@ public class TestUtils {
         } catch (NoSuchMethodException e) {
             throw new Error("");
         }
-    }
-
-    private static Statement addInitialization(
-            Statement statement
-    ) {
-        return new ExpressionStmt();
     }
 
     private static NodeList<Statement> addPreConditions(
@@ -465,9 +474,9 @@ public class TestUtils {
             for (Statement testStatement : originalBody) {
                 List<OracleOutput> relatedOracles = getRelatedOracles(testFile, originalBody, testStatement, oracles);
                 if (relatedOracles.size() != 0) {
-                    newBody.addAll(getOracleStatements(originalBody, testStatement, relatedOracles));
+//                    newBody.addAll(getOracleStatements(originalBody, testStatement, relatedOracles));
                 } else {
-                    newBody.add(testStatement);
+//                    newBody.add(testStatement);
                 }
             }
             testCase.setBody(new BlockStmt(newBody));
