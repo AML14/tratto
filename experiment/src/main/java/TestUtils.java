@@ -285,14 +285,13 @@ public class TestUtils {
     }
 
     /**
-     * Gets the fully qualified type name of a given variable name.
+     * Gets the type of a given variable name.
      *
      * @param variableName a variable name
      * @param testBody all statements in a method
-     * @return the type name of the given variable
+     * @return the type of a given variable name
      */
-    private static String getTypeOfName(
-            CompilationUnit testFile,
+    private static Type getTypeOfName(
             List<Statement> testBody,
             String variableName
     ) {
@@ -306,8 +305,7 @@ public class TestUtils {
             }
             for (VariableDeclarator variableDeclarator : expression.asVariableDeclarationExpr().getVariables()) {
                 if (variableName.equals(variableDeclarator.getNameAsString())) {
-                    Type variableType = variableDeclarator.getType();
-                    return getFullyQualifiedName(testFile, variableType);
+                    return variableDeclarator.getType();
                 }
             }
         }
@@ -336,7 +334,10 @@ public class TestUtils {
         }
         List<String> methodArgTypes = methodCall.getArguments()
                 .stream()
-                .map(arg -> getTypeOfName(testFile, testBody, arg.asNameExpr().getNameAsString()))
+                .map(arg -> {
+                    Type argType = getTypeOfName(testBody, arg.asNameExpr().getNameAsString());
+                    return getFullyQualifiedName(testFile, argType);
+                })
                 .toList();
         List<String> expectedTypes = getParameterTypeNames(expectedSignature);
         return methodArgTypes.equals(expectedTypes);
