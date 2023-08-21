@@ -1,5 +1,6 @@
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.ImportDeclaration;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
@@ -12,6 +13,7 @@ import com.github.javaparser.ast.stmt.CatchClause;
 import com.github.javaparser.ast.stmt.ExpressionStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.stmt.TryStmt;
+import com.github.javaparser.ast.type.Type;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -228,6 +230,23 @@ public class TestUtils {
         }
     }
 
+    private static String getFullyQualifiedName(
+            CompilationUnit cu,
+            Type type
+    ) {
+        List<ImportDeclaration> importDeclarations = cu.getImports()
+                .stream()
+                .filter(id -> !id.isStatic())
+                .toList();
+        for (ImportDeclaration importDeclaration : importDeclarations) {
+            String packageName = importDeclaration.getName().asString();
+            if (packageName.endsWith(type.asString())) {
+                return packageName;
+            }
+        }
+        return "java.lang." + type.asString();
+    }
+
     /**
      * Gets the type name of a variable represented by a {@link NameExpr}.
      *
@@ -236,8 +255,9 @@ public class TestUtils {
      * @return the type name of the given variable
      */
     private static String getTypeOfName(
-            NameExpr nameExpr,
-            List<Statement> testBody
+            CompilationUnit testFile,
+            List<Statement> testBody,
+            NameExpr nameExpr
     ) {
         String argumentName = nameExpr.getNameAsString();
         for (Statement statement : testBody) {
@@ -250,29 +270,29 @@ public class TestUtils {
             }
             for (VariableDeclarator variableDeclarator : expression.asVariableDeclarationExpr().getVariables()) {
                 if (argumentName.equals(variableDeclarator.getNameAsString())) {
-                    return variableDeclarator.getTypeAsString();
+                    Type variableType = variableDeclarator.getType();
+                    if (variableType.isReferenceType()) {
+                        return getFullyQualifiedName(testFile, variableDeclarator.getType());
+                    } else {
+                        return variableType.asString();
+                    }
                 }
             }
         }
         throw new IllegalArgumentException("Unable to find type of variable " + nameExpr.getNameAsString());
     }
 
-    /**
-     * Gets the method signature from a given method call.
-     *
-     * @param methodCallExpr a method call
-     * @param testBody all statements in a method
-     * @return the method signature of the method call
-     */
     private static String getMethodSignature(
-            MethodCallExpr methodCallExpr,
-            List<Statement> testBody
+            CompilationUnit testFile,
+            List<Statement> testBody,
+            MethodCallExpr methodCallExpr
     ) {
         StringBuilder sb = new StringBuilder();
         List<Expression> arguments = methodCallExpr.getArguments();
         sb.append(methodCallExpr.getName()).append("(");
         for (int i = 0; i < arguments.size(); i++) {
-            sb.append(getTypeOfName(arguments.get(i).asNameExpr(), testBody));
+            NameExpr argumentName = arguments.get(i).asNameExpr();
+            sb.append(getTypeOfName(testFile, testBody, argumentName));
             if (i < arguments.size() - 1) {
                 sb.append(", ");
             }
@@ -285,24 +305,24 @@ public class TestUtils {
      * Gets all oracles applicable to a Java statement.
      *
      * @param statement a Java statement
-     * @param methodStatements all statements in a method
+     * @param testBody all statements in a method
      * @param allOracles all possible oracle records
      * @return all oracles involving method calls in the given statement
      */
     private static List<OracleOutput> getRelatedOracles(
+            CompilationUnit testFile,
+            List<Statement> testBody,
             Statement statement,
-            List<Statement> methodStatements,
             List<OracleOutput> allOracles
     ) {
-        if (!statement.isExpressionStmt()) {
-            return new ArrayList<>();
-        }
-        Expression expression = statement.asExpressionStmt().getExpression();
-        List<MethodCallExpr> methodCalls = new ArrayList<>();
-        expression.walk(MethodCallExpr.class, methodCalls::add);
+        List<MethodCallExpr> methodCalls = getAllMethodCallsOfStatement(statement);
         Set<OracleOutput> relatedOracles = new HashSet<>();
         for (MethodCallExpr methodCallExpr : methodCalls) {
-            String methodSignature = getMethodSignature(methodCallExpr, methodStatements);
+            String methodSignature = getMethodSignature(
+                    testFile,
+                    testBody,
+                    methodCallExpr
+            );
             relatedOracles.addAll(allOracles
                     .stream()
                     .filter(o -> o.methodSignature().equals(methodSignature))
@@ -316,9 +336,14 @@ public class TestUtils {
         testFile.findAll(MethodDeclaration.class).forEach(testCase -> {
             List<Statement> statements = testCase.getBody().orElseThrow().getStatements();
             for (int i = 0; i < statements.size(); i++) {
-                List<OracleOutput> relatedOracles = getRelatedOracles(statements.get(i), statements, oracles);
+                List<OracleOutput> relatedOracles = getRelatedOracles(
+                        testFile,
+                        statements,
+                        statements.get(i),
+                        oracles
+                );
                 if (relatedOracles.size() != 0) {
-                    System.out.println(relatedOracles);
+//                    System.out.println(relatedOracles);
                 }
             }
         });
