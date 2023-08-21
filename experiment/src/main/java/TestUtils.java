@@ -335,25 +335,25 @@ public class TestUtils {
     private static Statement addInitialization(
             Statement statement
     ) {
-        return null;
+        return new ExpressionStmt();
     }
 
     private static NodeList<Statement> addPreConditions(
             List<OracleOutput> oracles
     ) {
-        return null;
+        return new NodeList<>();
     }
 
     private static NodeList<Statement> addThrowsConditions(
             List<OracleOutput> oracles
     ) {
-        return null;
+        return new NodeList<>();
     }
 
     private static NodeList<Statement> addPostConditions(
             List<OracleOutput> oracles
     ) {
-        return null;
+        return new NodeList<>();
     }
 
     private static NodeList<Statement> buildConditionStatements(
