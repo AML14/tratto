@@ -377,17 +377,14 @@ public class TestUtils {
         }
     }
 
-    private static List<Class<?>> getParameterTypes(String methodSignature) {
+    private static List<String> getParameterTypeNames(String methodSignature) {
         String parameters = methodSignature.substring(methodSignature.indexOf('(') + 1, methodSignature.indexOf(')'));
         if (parameters.length() == 0) {
             return new ArrayList<>();
         }
-        List<Class<?>> parameterTypes = new ArrayList<>();
-        for (String parameterName : parameters.split(",")) {
-            parameterName = parameterName.trim();
-            parameterTypes.add(getClassOfName(parameterName));
-        }
-        return parameterTypes;
+        return Stream.of(parameters.split(","))
+                .map(p -> p.split(" ")[0].trim())
+                .toList();
     }
 
     private static Type getReturnType(
@@ -395,7 +392,7 @@ public class TestUtils {
             String methodSignature
     ) {
         String methodName = methodSignature.substring(0, methodSignature.indexOf('('));
-        List<Class<?>> parameterTypes = getParameterTypes(methodSignature);
+        List<String> parameterTypes = getParameterTypeNames(methodSignature);
         Class<?> receiverObjectID = getClassOfName(className);
         try {
             Method method = receiverObjectID.getMethod(methodName, parameterTypes.toArray(Class[]::new));
@@ -417,7 +414,9 @@ public class TestUtils {
     ) {
         NodeList<Statement> preConditions = new NodeList<>();
         for (OracleOutput oracle : oracles) {
-            preConditions.add(StaticJavaParser.parseStatement(oracle.oracle()));
+            System.out.println(getReturnType(oracle.className(), oracle.methodSignature()));
+            String assertion = "assertTrue(" + oracle.oracle() + ");";
+            preConditions.add(StaticJavaParser.parseStatement(assertion));
         }
         return preConditions;
     }
@@ -434,45 +433,44 @@ public class TestUtils {
         return new NodeList<>();
     }
 
-    private static NodeList<Statement> buildConditionStatements(
+    private static NodeList<Statement> getOracleStatements(
             List<Statement> testBody,
             Statement statement,
             List<OracleOutput> oracles
     ) {
         NodeList<Statement> conditionStatements = new NodeList<>();
-        conditionStatements.addAll(addPreConditions(
-                oracles.stream().filter(o -> o.oracleType().equals(OracleType.PRE)).toList()
-        ));
-        conditionStatements.add(addThrowsConditions(
-                oracles.stream().filter(o -> o.oracleType().equals(OracleType.EXCEPT_POST)).toList()
-        ));
-        conditionStatements.addAll(addPostConditions(
-                oracles.stream().filter(o -> o.oracleType().equals(OracleType.NORMAL_POST)).toList()
-        ));
+        List<OracleOutput> preConditions = oracles.stream().filter(o -> o.oracleType().equals(OracleType.PRE)).toList();
+        System.out.println(preConditions);
+        List<OracleOutput> throwsConditions = oracles.stream().filter(o -> o.oracleType().equals(OracleType.EXCEPT_POST)).toList();
+        List<OracleOutput> postConditions = oracles.stream().filter(o -> o.oracleType().equals(OracleType.NORMAL_POST)).toList();
+        conditionStatements.addAll(addPreConditions(preConditions));
         for (Statement line : conditionStatements) {
             System.out.println(line);
         }
         return conditionStatements;
     }
 
+    /**
+     * Adds axiomatic oracles to test prefixes in a given Java file. Axiomatic
+     * oracles are not specific to a given test prefix. This method iterates
+     * through each line in each test case, and adds all applicable oracles.
+     *
+     * @param testFile a Java test file
+     * @param oracles a list of test oracles made by an axiomatic tog
+     */
     private static void insertAxiomaticOracles(CompilationUnit testFile, List<OracleOutput> oracles) {
         testFile.findAll(MethodDeclaration.class).forEach(testCase -> {
-            List<Statement> statements = testCase.getBody().orElseThrow().getStatements();
-            for (int i = 0; i < statements.size(); i++) {
-                List<OracleOutput> relatedOracles = getRelatedOracles(
-                        testFile,
-                        statements,
-                        statements.get(i),
-                        oracles
-                );
+            NodeList<Statement> newBody = new NodeList<>();
+            NodeList<Statement> originalBody = testCase.getBody().orElseThrow().getStatements();
+            for (Statement testStatement : originalBody) {
+                List<OracleOutput> relatedOracles = getRelatedOracles(testFile, originalBody, testStatement, oracles);
                 if (relatedOracles.size() != 0) {
-                    NodeList<Statement> conditionStatement = buildConditionStatements(
-                            statements,
-                            statements.get(i),
-                            relatedOracles
-                    );
+                    newBody.addAll(getOracleStatements(originalBody, testStatement, relatedOracles));
+                } else {
+                    newBody.add(testStatement);
                 }
             }
+            testCase.setBody(new BlockStmt(newBody));
         });
     }
 
