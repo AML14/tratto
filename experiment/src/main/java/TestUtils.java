@@ -414,6 +414,13 @@ public class TestUtils {
     private static NodeList<Statement> addPreConditions(
             List<OracleOutput> oracles
     ) {
+        NodeList<Statement> preConditions = new NodeList<>();
+        for (OracleOutput oracle : oracles) {
+            String assertion = String.format(
+                    "assertTrue(%s)", oracle.oracle()
+            );
+            System.out.println(assertion);
+        }
         return new NodeList<>();
     }
 
@@ -436,13 +443,13 @@ public class TestUtils {
     ) {
         NodeList<Statement> conditionStatements = new NodeList<>();
         conditionStatements.addAll(addPreConditions(
-                oracles
+                oracles.stream().filter(o -> o.oracleType().equals(OracleType.PRE)).toList()
         ));
         conditionStatements.addAll(addThrowsConditions(
-                oracles
+                oracles.stream().filter(o -> o.oracleType().equals(OracleType.EXCEPT_POST)).toList()
         ));
         conditionStatements.addAll(addPostConditions(
-                oracles
+                oracles.stream().filter(o -> o.oracleType().equals(OracleType.NORMAL_POST)).toList()
         ));
         return conditionStatements;
     }
