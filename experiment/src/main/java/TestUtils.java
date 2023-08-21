@@ -431,13 +431,7 @@ public class TestUtils {
     private static NodeList<Statement> addPreConditions(
             List<OracleOutput> oracles
     ) {
-        NodeList<Statement> preConditions = new NodeList<>();
-        for (OracleOutput oracle : oracles) {
-            System.out.println(getReturnType(oracle.className(), oracle.methodSignature()));
-            String assertion = "assertTrue(" + oracle.oracle() + ");";
-            preConditions.add(StaticJavaParser.parseStatement(assertion));
-        }
-        return preConditions;
+        return new NodeList<>();
     }
 
     private static IfStmt addThrowsConditions(
@@ -457,16 +451,7 @@ public class TestUtils {
             Statement statement,
             List<OracleOutput> oracles
     ) {
-        NodeList<Statement> conditionStatements = new NodeList<>();
-        List<OracleOutput> preConditions = oracles.stream().filter(o -> o.oracleType().equals(OracleType.PRE)).toList();
-        System.out.println(preConditions);
-        List<OracleOutput> throwsConditions = oracles.stream().filter(o -> o.oracleType().equals(OracleType.EXCEPT_POST)).toList();
-        List<OracleOutput> postConditions = oracles.stream().filter(o -> o.oracleType().equals(OracleType.NORMAL_POST)).toList();
-        conditionStatements.addAll(addPreConditions(preConditions));
-        for (Statement line : conditionStatements) {
-            System.out.println(line);
-        }
-        return conditionStatements;
+        return new NodeList<>();
     }
 
     /**
@@ -484,12 +469,13 @@ public class TestUtils {
             for (Statement testStatement : originalBody) {
                 List<OracleOutput> relatedOracles = getRelatedOracles(testFile, originalBody, testStatement, oracles);
                 if (relatedOracles.size() != 0) {
-//                    newBody.addAll(getOracleStatements(originalBody, testStatement, relatedOracles));
+                    newBody.addAll(getOracleStatements(originalBody, testStatement, relatedOracles));
                 } else {
-//                    newBody.add(testStatement);
+                    newBody.add(testStatement);
                 }
             }
             testCase.setBody(new BlockStmt(newBody));
+            System.out.println(testCase);
         });
     }
 
