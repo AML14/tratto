@@ -267,17 +267,21 @@ public class TestUtils {
             CompilationUnit cu,
             Type type
     ) {
-        List<ImportDeclaration> importDeclarations = cu.getImports()
-                .stream()
-                .filter(id -> !id.isStatic())
-                .toList();
-        for (ImportDeclaration importDeclaration : importDeclarations) {
-            String packageName = importDeclaration.getName().asString();
-            if (packageName.endsWith(type.asString())) {
-                return packageName + "." + type.asString();
+        if (type.isReferenceType()) {
+            List<ImportDeclaration> importDeclarations = cu.getImports()
+                    .stream()
+                    .filter(id -> !id.isStatic())
+                    .toList();
+            for (ImportDeclaration importDeclaration : importDeclarations) {
+                String packageName = importDeclaration.getName().asString();
+                if (packageName.endsWith(type.asString())) {
+                    return packageName + "." + type.asString();
+                }
             }
+            return "java.lang." + type.asString();
+        } else {
+            return type.asString();
         }
-        return "java.lang." + type.asString();
     }
 
     /**
@@ -303,11 +307,7 @@ public class TestUtils {
             for (VariableDeclarator variableDeclarator : expression.asVariableDeclarationExpr().getVariables()) {
                 if (variableName.equals(variableDeclarator.getNameAsString())) {
                     Type variableType = variableDeclarator.getType();
-                    if (variableType.isReferenceType()) {
-                        return getFullyQualifiedName(testFile, variableDeclarator.getType());
-                    } else {
-                        return variableType.asString();
-                    }
+                    return getFullyQualifiedName(testFile, variableType);
                 }
             }
         }
