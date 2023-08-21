@@ -61,18 +61,18 @@ public class TestUtilsTest {
         return List.of(
                 new OracleOutput(
                         "java.lang.Integer",
-                        "valueOf(int)",
+                        "valueOf(int i)",
                         OracleType.PRE,
                         "",
-                        "assertTrue((i == null) == false);",
+                        "(i == null) == false",
                         ""
                 ),
                 new OracleOutput(
                         "java.lang.Integer",
-                        "parseInt(java.lang.String)",
+                        "parseInt(java.lang.String s)",
                         OracleType.EXCEPT_POST,
                         "",
-                        "assertTrue((s == null) == false);",
+                        "(s == null) == false",
                         "java.lang.NumberFormatException"
                 )
         );
