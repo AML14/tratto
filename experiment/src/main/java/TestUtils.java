@@ -10,7 +10,6 @@ import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.CatchClause;
 import com.github.javaparser.ast.stmt.ExpressionStmt;
-import com.github.javaparser.ast.stmt.IfStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.stmt.TryStmt;
 import com.github.javaparser.ast.type.Type;
@@ -369,6 +368,14 @@ public class TestUtils {
         return relatedOracles.stream().toList();
     }
 
+    /**
+     * Gets the Class of a given primitive type name.
+     *
+     * @param primitiveName a primitive type name
+     * @return the Class corresponding to the primitive type
+     * @throws IllegalArgumentException if the given type name does not
+     * correspond to a known primitive type
+     */
     private static Class<?> getPrimitiveClass(String primitiveName) {
         switch (primitiveName) {
             case "boolean" -> {
@@ -399,6 +406,12 @@ public class TestUtils {
         }
     }
 
+    /**
+     * Gets the Class of a given type name.
+     *
+     * @param className a fully qualified type name
+     * @return the Class corresponding to a type name
+     */
     private static Class<?> getClassOfName(String className) {
         List<String> allPrimitiveTypes = List.of("boolean", "byte", "char", "short", "int", "long", "float", "double");
         if (allPrimitiveTypes.contains(className)) {
@@ -412,12 +425,33 @@ public class TestUtils {
         }
     }
 
+    /**
+     * Gets all Class objects of a given list of types.
+     *
+     * @param classNames a list of fully qualified type names
+     * @return the Classes corresponding to the type names
+     */
+    private static List<Class<?>> getClassOfName(List<String> classNames) {
+        List<Class<?>> classes = new ArrayList<>();
+        for (String className : classNames) {
+            classes.add(getClassOfName(className));
+        }
+        return classes;
+    }
+
+    /**
+     * Gets the return type of a method.
+     *
+     * @param className the fully qualified name of the declaring class
+     * @param methodSignature the method signature
+     * @return the return type of the given method
+     */
     private static Type getReturnType(
             String className,
             String methodSignature
     ) {
-        String methodName = methodSignature.substring(0, methodSignature.indexOf('('));
-        List<String> parameterTypes = getParameterTypeNames(methodSignature);
+        String methodName = getMethodName(methodSignature);
+        List<Class<?>> parameterTypes = getClassOfName(getParameterTypeNames(methodSignature));
         Class<?> receiverObjectID = getClassOfName(className);
         try {
             Method method = receiverObjectID.getMethod(methodName, parameterTypes.toArray(Class[]::new));
@@ -426,24 +460,6 @@ public class TestUtils {
         } catch (NoSuchMethodException e) {
             throw new Error("");
         }
-    }
-
-    private static NodeList<Statement> addPreConditions(
-            List<OracleOutput> oracles
-    ) {
-        return new NodeList<>();
-    }
-
-    private static IfStmt addThrowsConditions(
-            List<OracleOutput> oracles
-    ) {
-        return new IfStmt();
-    }
-
-    private static NodeList<Statement> addPostConditions(
-            List<OracleOutput> oracles
-    ) {
-        return new NodeList<>();
     }
 
     private static NodeList<Statement> getOracleStatements(
