@@ -2,7 +2,9 @@
  * This record represents a generated oracle and contextual information.
  *
  * @param className the fully qualified name of the declaring class under test
- * @param methodSignature the method under test
+ * @param methodSignature the method under test. The method signature is
+ *                        follows the format:
+ *                            {@code [methodName]([paramType] [paramName], ...)}
  * @param oracleType the type of oracle
  * @param prefix the test prefix corresponding to a non-axiomatic oracle
  * @param oracle a generated oracle
