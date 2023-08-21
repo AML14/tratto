@@ -7,14 +7,14 @@ public class ExamplePrefix {
     @Test
     @Disabled
     public void assertionTest() {
-        Integer a = 5;
-        Integer b = 6;
+        int primitiveInt = 5;
+        Integer objectInt = Integer.valueOf(primitiveInt);
     }
 
     @Test
     @Disabled
     public void exceptionalTest() {
         String integerToParse = null;
-        Integer.parseInt(integerToParse);
+        int correspondingInteger = Integer.parseInt(integerToParse);
     }
 }
