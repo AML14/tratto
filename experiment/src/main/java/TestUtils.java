@@ -209,7 +209,10 @@ public class TestUtils {
                 MethodDeclaration prefix = getNextPrefix(testCase, i);
                 testClass.addMember(prefix);
             }
-            testCase.remove();
+            if (numAssertions != 0) {
+                // remove original test case if adding duplicates.
+                testCase.remove();
+            }
         });
     }
 
