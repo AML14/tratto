@@ -210,7 +210,7 @@ public class StringUtils {
      * @param set2 a set of words
      * @return the words in both sets 
      */
-    private static TreeSet<String> getSetIntersection(Set<String> set1, Set<String> set2) {
+    private static SortedSet<String> setIntersection(Set<String> set1, Set<String> set2) {
         TreeSet<String> intersectionKeys = new TreeSet<>(set1);
         intersectionKeys.retainAll(set2);
         return intersectionKeys;
@@ -234,7 +234,7 @@ public class StringUtils {
     }
 
     /**
-     * Computes the cosine similarity from two lists.
+     * Computes the cosine similarity of two lists of Strings.
      *
      * @param strings1 list of strings
      * @param strings2 list of strings
@@ -243,7 +243,7 @@ public class StringUtils {
     private static double cosineSimilarity(List<String> strings1, List<String> strings2) {
         Map<String, Integer> wordsFreq1 = getHistogram(strings1);
         Map<String, Integer> wordsFreq2 = getHistogram(strings2);
-        TreeSet<String> intersectionKeys = getSetIntersection(wordsFreq1.keySet(), wordsFreq2.keySet());
+        SortedSet<String> intersectionKeys = setIntersection(wordsFreq1.keySet(), wordsFreq2.keySet());
         RealVector wordVector1 = wordFrequencyToVector(wordsFreq1, intersectionKeys);
         RealVector wordVector2 = wordFrequencyToVector(wordsFreq2, intersectionKeys);
         return cosineSimilarity(wordVector1, wordVector2);
