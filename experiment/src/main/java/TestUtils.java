@@ -528,7 +528,7 @@ public class TestUtils {
             Class<?> returnType = method.getReturnType();
             return StaticJavaParser.parseType(returnType.getName());
         } catch (NoSuchMethodException e) {
-            throw new Error("");
+            throw new Error("Unable to parse return type of " + methodSignature + " in " + className);
         }
     }
 
