@@ -24,11 +24,11 @@ public class FileUtils {
     }
 
     /**
-     * This method is a wrapper method of {@link Files#createDirectories(Path, FileAttribute[])}
+     * Creates an empty directory. Creates parent directories if necessary. If
+     * the directory already exists, then this method does nothing. This
+     * method is a wrapper method of {@link Files#createDirectories(Path, FileAttribute[])}
      * to substitute {@link IOException} with {@link Error} and avoid
-     * superfluous try/catch blocks. Creates an empty directory. Creates
-     * parent directories if necessary. If the directory already exists, then
-     * this method does nothing.
+     * superfluous try/catch blocks.
      *
      * @param path a path
      * @throws Error if an error occurs while creating the directory
