@@ -463,13 +463,46 @@ public class TestUtils {
         }
     }
 
+    private static String getDeclaringClass(
+            CompilationUnit testFile,
+            MethodCallExpr methodCall
+    ) {
+        String methodName = getMethodName(methodCall.toString());
+        if (methodName.contains(".")) {
+            String declaringClass = methodName.substring(0, methodName.lastIndexOf('.'));
+            Type type = StaticJavaParser.parseType(declaringClass);
+            return getFullyQualifiedName(testFile, type);
+        }
+        List<ImportDeclaration> importDeclarations = testFile.getImports();
+        for (ImportDeclaration importDeclaration : importDeclarations) {
+            String packageName = importDeclaration.getNameAsString();
+            System.out.println(packageName);
+        }
+        throw new Error("");
+    }
+
+    private static Statement getInitialization(
+            Statement statement,
+            List<OracleOutput> oracles
+    ) {
+        String className = oracles.get(0).className();
+        String methodSignature = oracles.get(0).methodSignature();
+        Type returnType = getReturnType(className, methodSignature);
+        Expression expression = statement.asExpressionStmt().getExpression();
+        return new ExpressionStmt();
+    }
+
     private static NodeList<Statement> getOracleStatements(
             CompilationUnit testFile,
             List<Statement> testBody,
             Statement statement,
             List<OracleOutput> oracles
     ) {
-        return new NodeList<>();
+        NodeList<Statement> oracleStatements = new NodeList<>();
+
+        List<MethodCallExpr> methodCalls = getAllMethodCallsOfStatement(statement);
+        oracleStatements.add(getInitialization(statement, oracles));
+        return oracleStatements;
     }
 
     /**
@@ -493,7 +526,6 @@ public class TestUtils {
                 }
             }
             testCase.setBody(new BlockStmt(newBody));
-            System.out.println(testCase);
         });
     }
 
