@@ -209,8 +209,8 @@ public class TestUtils {
                 MethodDeclaration prefix = getNextPrefix(testCase, i);
                 testClass.addMember(prefix);
             }
+            // do not remove exceptional oracles.
             if (numAssertions != 0) {
-                // remove original test case if adding duplicates.
                 testCase.remove();
             }
         });
