@@ -329,6 +329,22 @@ public class TestUtils {
     }
 
     /**
+     * Gets the name of all parameters from the method signature.
+     *
+     * @param methodSignature a method signature
+     * @return the name of all parameters in the method signature
+     */
+    private static List<String> getParameterNames(String methodSignature) {
+        String parameters = methodSignature.substring(methodSignature.indexOf('(') + 1, methodSignature.indexOf(')'));
+        if (parameters.length() == 0) {
+            return new ArrayList<>();
+        }
+        return Stream.of(parameters.split(","))
+                .map(p -> p.split(" ")[1].trim())
+                .toList();
+    }
+
+    /**
      * Gets the fully qualified name of a given simple type name.
      *
      * @param cu the test file using type
@@ -535,6 +551,51 @@ public class TestUtils {
         }
     }
 
+    private static String getReceiverObjectID(
+            CompilationUnit testFile,
+            List<Statement> testBody,
+            Statement testStatement,
+            OracleOutput oracleOutput
+    ) {
+        // get name of object.
+
+        // search import statements.
+        return "";
+    }
+
+    private static String getMethodResultID(
+            List<Statement> testBody,
+            Statement testStatement,
+            OracleOutput oracleOutput
+    ) {
+        return "";
+    }
+
+    private static String getParameterID(
+            List<Statement> testBody,
+            Statement testStatement,
+            OracleOutput oracleOutput
+    ) {
+        return "";
+    }
+
+    /**
+     * Substitutes contextual variable names into an oracle.
+     *
+     * @param testBody a list of statements in a test case
+     * @param oracleOutput an oracle
+     * @return the same oracle with names from the test body
+     */
+    private static OracleOutput contextualizeOracle(
+            CompilationUnit testFile,
+            List<Statement> testBody,
+            Statement testStatement,
+            OracleOutput oracleOutput
+    )  {
+
+        return oracleOutput;
+    }
+
     /**
      * Gets a variable declaration for each variable in an expression. If the
      * expression is not a variable declaration, then a placeholder variable
@@ -588,14 +649,23 @@ public class TestUtils {
         return getExpressionInitialization(expression, returnType);
     }
 
-    private static NodeList<Statement> getOracleStatements(
-            CompilationUnit testFile,
+    private static NodeList<Statement> getPreConditions(
             List<Statement> testBody,
             Statement statement,
             List<OracleOutput> oracles
     ) {
+        return new NodeList<>();
+    }
+
+    private static NodeList<Statement> getOracleStatements(
+            CompilationUnit testFile,
+            List<Statement> testBody,
+            Statement testStatement,
+            List<OracleOutput> oracles
+    ) {
         NodeList<Statement> oracleStatements = new NodeList<>();
-        oracleStatements.addAll(getInitialization(statement, oracles));
+        oracles = oracles.stream().map(o -> contextualizeOracle(testFile, testBody, testStatement, o)).toList();
+        oracleStatements.addAll(getInitialization(testStatement, oracles));
         return oracleStatements;
     }
 
