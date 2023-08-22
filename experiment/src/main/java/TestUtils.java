@@ -535,6 +535,15 @@ public class TestUtils {
         }
     }
 
+    /**
+     * Gets a variable declaration for each variable in an expression. If the
+     * expression is not a variable declaration, then a placeholder variable
+     * is created.
+     *
+     * @param expression a Java expression
+     * @param returnType the return type of the expression
+     * @return a list of variable declarations
+     */
     private static NodeList<Statement> getExpressionInitialization(
             Expression expression,
             Type returnType
@@ -556,6 +565,15 @@ public class TestUtils {
         return initializations;
     }
 
+    /**
+     * Gets a variable declaration for each variable in a statement. If the
+     * statement does not declare a variable and the method has a non-void
+     * return type, then a placeholder variable is added.
+     *
+     * @param statement a Java statement
+     * @param oracles a list of oracles corresponding to the given statement
+     * @return a list of variable declarations
+     */
     private static NodeList<Statement> getInitialization(
             Statement statement,
             List<OracleOutput> oracles
@@ -563,7 +581,7 @@ public class TestUtils {
         String className = oracles.get(0).className();
         String methodSignature = oracles.get(0).methodSignature();
         Type returnType = getReturnType(className, methodSignature);
-        if (!statement.isExpressionStmt()) {
+        if (returnType.isVoidType() || !statement.isExpressionStmt()) {
             return new NodeList<>();
         }
         Expression expression = statement.asExpressionStmt().getExpression();
