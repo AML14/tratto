@@ -8,6 +8,7 @@ import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.MethodCallExpr;
+import com.github.javaparser.ast.expr.VariableDeclarationExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.CatchClause;
 import com.github.javaparser.ast.stmt.ExpressionStmt;
@@ -32,6 +33,8 @@ import java.util.stream.Stream;
  * and inserting oracles into test prefixes.
  */
 public class TestUtils {
+    /** A unique id for placeholder variable names */
+    private static int variableID = 0;
     /** The path to the output directory */
     private static final Path output = Paths.get("output");
     /** A list of all JUnit Assertions assert methods */
@@ -532,33 +535,39 @@ public class TestUtils {
         }
     }
 
-    private static String getDeclaringClass(
-            CompilationUnit testFile,
-            MethodCallExpr methodCall
+    private static NodeList<Statement> getExpressionInitialization(
+            Expression expression,
+            Type returnType
     ) {
-        String methodName = getMethodName(methodCall.toString());
-        if (methodName.contains(".")) {
-            String declaringClass = methodName.substring(0, methodName.lastIndexOf('.'));
-            Type type = StaticJavaParser.parseType(declaringClass);
-            return getFullyQualifiedName(testFile, type);
+        NodeList<Statement> initializations = new NodeList<>();
+        if (expression.isVariableDeclarationExpr()) {
+            for (VariableDeclarator declarator : expression.asVariableDeclarationExpr().getVariables()) {
+                VariableDeclarationExpr declarationExpr = new VariableDeclarationExpr(returnType, declarator.getNameAsString());
+                initializations.add(new ExpressionStmt(declarationExpr));
+            }
+        } else if (expression.isMethodCallExpr()) {
+            String placeholderName = "default" + variableID;
+            VariableDeclarationExpr declarationExpr = new VariableDeclarationExpr(returnType, placeholderName);
+            initializations.add(new ExpressionStmt(declarationExpr));
+            variableID++;
+        } else {
+            return new NodeList<>();
         }
-        List<ImportDeclaration> importDeclarations = testFile.getImports();
-        for (ImportDeclaration importDeclaration : importDeclarations) {
-            String packageName = importDeclaration.getNameAsString();
-            System.out.println(packageName);
-        }
-        throw new Error("");
+        return initializations;
     }
 
-    private static Statement getInitialization(
+    private static NodeList<Statement> getInitialization(
             Statement statement,
             List<OracleOutput> oracles
     ) {
         String className = oracles.get(0).className();
         String methodSignature = oracles.get(0).methodSignature();
         Type returnType = getReturnType(className, methodSignature);
+        if (!statement.isExpressionStmt()) {
+            return new NodeList<>();
+        }
         Expression expression = statement.asExpressionStmt().getExpression();
-        return new ExpressionStmt();
+        return getExpressionInitialization(expression, returnType);
     }
 
     private static NodeList<Statement> getOracleStatements(
@@ -568,9 +577,7 @@ public class TestUtils {
             List<OracleOutput> oracles
     ) {
         NodeList<Statement> oracleStatements = new NodeList<>();
-
-        List<MethodCallExpr> methodCalls = getAllMethodCallsOfStatement(statement);
-        oracleStatements.add(getInitialization(statement, oracles));
+        oracleStatements.addAll(getInitialization(statement, oracles));
         return oracleStatements;
     }
 
@@ -589,7 +596,8 @@ public class TestUtils {
             for (Statement testStatement : originalBody) {
                 List<OracleOutput> relatedOracles = getRelatedOracles(testFile, originalBody, testStatement, oracles);
                 if (relatedOracles.size() != 0) {
-                    newBody.addAll(getOracleStatements(testFile, originalBody, testStatement, relatedOracles));
+                    System.out.println(getOracleStatements(testFile, originalBody, testStatement, relatedOracles));
+//                    newBody.addAll(getOracleStatements(testFile, originalBody, testStatement, relatedOracles));
                 } else {
                     newBody.add(testStatement);
                 }
