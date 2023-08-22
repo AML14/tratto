@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -189,9 +190,10 @@ public class StringUtils {
      * @return a vector representation of the word frequencies. Each entry
      * corresponds to a different word, where the value of the entry
      * corresponds to the word frequency. If a word does not appear in the
-     * histogram, then it is assigned a value of 0.
+     * histogram, then it is assigned a value of 0. The length of the vector
+     * is equal to the number of words, {@code words.size()}.
      */
-    private static RealVector wordFrequencyToVector(Map<String, Integer> frequencies, TreeSet<String> words) {
+    private static RealVector wordFrequencyToVector(Map<String, Integer> frequencies, SortedSet<String> words) {
         double[] vector = new double[words.size()];
         int i = 0;
         for (String word : words) {
