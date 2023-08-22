@@ -51,6 +51,8 @@ public class TestUtilsTest {
                             }
                         }
                     });
+            List<MethodDeclaration> testCases = cu.getType(0).getMethods();
+            assertEquals(7, testCases.size());
         } catch (IOException e) {
             fail();
         }
