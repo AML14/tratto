@@ -204,8 +204,8 @@ public class TestUtils {
                     .forEach(testFile -> {
                         try {
                             CompilationUnit cu = StaticJavaParser.parse(testFile);
-                            removeAssertionOracles(cu);
                             removeExceptionalOracles(cu);
+                            removeAssertionOracles(cu);
                             FileUtils.writeString(testFile, cu.toString());
                         } catch (IOException e) {
                             throw new Error("Unable to parse test file " + testFile.getFileName().toString());
