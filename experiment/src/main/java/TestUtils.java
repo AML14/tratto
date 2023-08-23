@@ -869,9 +869,12 @@ public class TestUtils {
 
     private static NodeList<Statement> getPostConditions(
             IfStmt base,
+            Statement postStmt,
             List<OracleOutput> oracles
     ) {
-        NodeList<Statement> postConditions = new NodeList<>(oracles
+        NodeList<Statement> postConditions = new NodeList<>();
+        postConditions.add(postStmt);
+        postConditions.addAll(oracles
                 .stream()
                 .map(o -> StaticJavaParser.parseStatement("assertTrue(" + o.oracle() + ");"))
                 .toList());
@@ -907,7 +910,7 @@ public class TestUtils {
                 .toList();
         NodeList<Statement> preBlock = getPreConditions(preConditions);
         IfStmt throwsBlock = getThrowsConditions(postStmt, throwsConditions);
-        NodeList<Statement> postBlock = getPostConditions(throwsBlock, postConditions);
+        NodeList<Statement> postBlock = getPostConditions(throwsBlock, postStmt, postConditions);
         oracleStatements.addAll(preBlock);
         oracleStatements.add(initStmt);
         oracleStatements.addAll(postBlock);
@@ -956,7 +959,7 @@ public class TestUtils {
                         try {
                             CompilationUnit cu = StaticJavaParser.parse(testFile);
                             insertAxiomaticOracles(cu, oracles);
-//                            FileUtils.writeString(testFile, cu.toString());
+                            FileUtils.writeString(testFile, cu.toString());
                         } catch (IOException e) {
                             throw new Error("Unable to parse test file " + testFile.getFileName().toString());
                         }
