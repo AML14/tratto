@@ -567,6 +567,13 @@ public class TestUtils {
         return classes;
     }
 
+    /**
+     * Gets the reflection Method representation of a method.
+     *
+     * @param className the fully qualified name of the declaring class
+     * @param methodSignature the method signature
+     * @return the reflection representation of the method
+     */
     private static Method getReflectionMethod(String className, String methodSignature) {
         String methodName = getMethodName(methodSignature);
         List<Class<?>> parameterTypes = getClassesOfNames(getParameterTypeNames(methodSignature));
