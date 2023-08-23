@@ -394,17 +394,14 @@ public class TestUtils {
     }
 
     /**
-     * Gets the type of a given variable name.
+     * Gets the type of a given variable.
      *
-     * @param variableName a variable name
-     * @param testBody all statements in a method
+     * @param varName a variable name
+     * @param body all statements in a method body
      * @return the type of a given variable name
      */
-    private static Type getTypeOfName(
-            List<Statement> testBody,
-            String variableName
-    ) {
-        for (Statement statement : testBody) {
+    private static Type getTypeOfName(List<Statement> body, String varName) {
+        for (Statement statement : body) {
             if (!statement.isExpressionStmt()) {
                 continue;
             }
@@ -413,12 +410,12 @@ public class TestUtils {
                 continue;
             }
             for (VariableDeclarator variableDeclarator : expression.asVariableDeclarationExpr().getVariables()) {
-                if (variableName.equals(variableDeclarator.getNameAsString())) {
+                if (varName.equals(variableDeclarator.getNameAsString())) {
                     return variableDeclarator.getType();
                 }
             }
         }
-        throw new IllegalArgumentException("Unable to find type of variable " + variableName);
+        throw new IllegalArgumentException("Unable to find the type of the variable " + varName);
     }
 
     /**
