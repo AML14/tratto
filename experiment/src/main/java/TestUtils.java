@@ -575,9 +575,22 @@ public class TestUtils {
         }
     }
 
+    private static String replaceName(
+            List<String> originalNames,
+            List<String> contextNames,
+            String oracle
+    ) {
+        Expression oracleExpression = StaticJavaParser.parseExpression(oracle);
+        oracleExpression.walk(NameExpr.class, name -> {
+            int originalIdx = originalNames.indexOf(name.getNameAsString());
+            if (originalIdx != -1) {
+                name.replace(new NameExpr(contextNames.get(originalIdx)));
+            }
+        });
+        return oracleExpression.toString();
+    }
+
     private static OracleOutput getReceiverObjectID(
-            CompilationUnit testFile,
-            List<Statement> testBody,
             Statement testStatement,
             OracleOutput oracleOutput
     ) {
@@ -587,7 +600,18 @@ public class TestUtils {
             // if the method is static, then the receiverObjectID is not necessary.
             return oracleOutput;
         }
-        return null;
+        String originalName = "receiverObjectID";
+        String contextName = getAllMethodCallsOfStatement(testStatement).get(0)
+                .getScope().orElseThrow().toString();
+        String contextOracle = replaceName(List.of(originalName), List.of(contextName), oracleOutput.oracle());
+        return new OracleOutput(
+                oracleOutput.className(),
+                oracleOutput.methodSignature(),
+                oracleOutput.oracleType(),
+                oracleOutput.prefix(),
+                contextOracle,
+                oracleOutput.exception()
+        );
     }
 
     private static OracleOutput getMethodResultID(
@@ -615,19 +639,13 @@ public class TestUtils {
                 .stream()
                 .map(expression -> expression.asNameExpr().getNameAsString())
                 .toList();
-        Expression oracleExpression = StaticJavaParser.parseExpression(oracleOutput.oracle());
-        oracleExpression.walk(NameExpr.class, name -> {
-            int originalIdx = originalNames.indexOf(name.getNameAsString());
-            if (originalIdx != -1) {
-                name.replace(new NameExpr(contextNames.get(originalIdx)));
-            }
-        });
+        String contextOracle = replaceName(originalNames, contextNames, oracleOutput.oracle());
         return new OracleOutput(
                 oracleOutput.className(),
                 oracleOutput.methodSignature(),
                 oracleOutput.oracleType(),
                 oracleOutput.prefix(),
-                oracleExpression.toString(),
+                contextOracle,
                 oracleOutput.exception()
         );
     }
@@ -646,7 +664,7 @@ public class TestUtils {
             OracleOutput oracleOutput
     )  {
         oracleOutput = getParameterID(testStatement, oracleOutput);
-        oracleOutput = getReceiverObjectID(testFile, testBody, testStatement, oracleOutput);
+        oracleOutput = getReceiverObjectID(testStatement, oracleOutput);
         return oracleOutput;
     }
 
@@ -723,7 +741,6 @@ public class TestUtils {
                 .stream()
                 .map(o -> contextualizeOracle(testFile, testBody, testStatement, o))
                 .toList();
-
         return oracleStatements;
     }
 
