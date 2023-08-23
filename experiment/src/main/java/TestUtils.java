@@ -8,6 +8,7 @@ import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.MethodCallExpr;
+import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.expr.VariableDeclarationExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.CatchClause;
@@ -345,6 +346,16 @@ public class TestUtils {
     }
 
     /**
+     *
+     *
+     * @param methodCallExpr
+     * @return
+     */
+    private static List<String> getParameterNames(MethodCallExpr methodCallExpr) {
+        return new ArrayList<>();
+    }
+
+    /**
      * Gets the fully qualified name of a given simple type name.
      *
      * @param cu the test file using type
@@ -551,7 +562,7 @@ public class TestUtils {
         }
     }
 
-    private static String getReceiverObjectID(
+    private static OracleOutput getReceiverObjectID(
             CompilationUnit testFile,
             List<Statement> testBody,
             Statement testStatement,
@@ -560,23 +571,49 @@ public class TestUtils {
         // get name of object.
 
         // search import statements.
-        return "";
+        return oracleOutput;
     }
 
-    private static String getMethodResultID(
+    private static OracleOutput getMethodResultID(
             List<Statement> testBody,
             Statement testStatement,
             OracleOutput oracleOutput
     ) {
-        return "";
+        return oracleOutput;
     }
 
-    private static String getParameterID(
-            List<Statement> testBody,
+    /**
+     * Replaces all variable names in the original oracle with the names from
+     * the test case.
+     *
+     * @param testStatement a Java statement
+     * @param oracleOutput an oracle record
+     * @return an oracle record with contextual parameter names
+     */
+    private static OracleOutput getParameterID(
             Statement testStatement,
             OracleOutput oracleOutput
     ) {
-        return "";
+        List<String> originalNames = getParameterNames(oracleOutput.methodSignature());
+        List<String> contextNames = getAllMethodCallsOfStatement(testStatement).get(0).getArguments()
+                .stream()
+                .map(expression -> expression.asNameExpr().getNameAsString())
+                .toList();
+        Expression oracleExpression = StaticJavaParser.parseExpression(oracleOutput.oracle());
+        oracleExpression.walk(NameExpr.class, name -> {
+            int originalIdx = originalNames.indexOf(name.getNameAsString());
+            if (originalIdx != -1) {
+                name.replace(new NameExpr(contextNames.get(originalIdx)));
+            }
+        });
+        return new OracleOutput(
+                oracleOutput.className(),
+                oracleOutput.methodSignature(),
+                oracleOutput.oracleType(),
+                oracleOutput.prefix(),
+                oracleExpression.toString(),
+                oracleOutput.exception()
+        );
     }
 
     /**
@@ -592,7 +629,7 @@ public class TestUtils {
             Statement testStatement,
             OracleOutput oracleOutput
     )  {
-
+        oracleOutput = getParameterID(testStatement, oracleOutput);
         return oracleOutput;
     }
 
@@ -665,6 +702,7 @@ public class TestUtils {
     ) {
         NodeList<Statement> oracleStatements = new NodeList<>();
         oracles = oracles.stream().map(o -> contextualizeOracle(testFile, testBody, testStatement, o)).toList();
+        System.out.println(oracles);
         oracleStatements.addAll(getInitialization(testStatement, oracles));
         return oracleStatements;
     }
