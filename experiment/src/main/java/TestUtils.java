@@ -12,7 +12,9 @@ import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.expr.VariableDeclarationExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.CatchClause;
+import com.github.javaparser.ast.stmt.EmptyStmt;
 import com.github.javaparser.ast.stmt.ExpressionStmt;
+import com.github.javaparser.ast.stmt.IfStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.stmt.TryStmt;
 import com.github.javaparser.ast.type.Type;
@@ -712,46 +714,31 @@ public class TestUtils {
         return oracleOutput;
     }
 
-    /**
-     * Gets a variable declaration for each variable in an expression. If the
-     * expression is not a variable declaration, then a placeholder variable
-     * is created.
-     *
-     * @param expression a Java expression
-     * @param returnType the return type of the expression
-     * @return a list of variable declarations
-     */
-    private static NodeList<Statement> getExpressionInitialization(
+    private static Statement getInitialization(
             Expression expression,
             Type returnType
     ) {
-        NodeList<Statement> initializations = new NodeList<>();
         if (expression.isVariableDeclarationExpr()) {
-            for (VariableDeclarator declarator : expression.asVariableDeclarationExpr().getVariables()) {
-                VariableDeclarationExpr declarationExpr = new VariableDeclarationExpr(returnType, declarator.getNameAsString());
-                initializations.add(new ExpressionStmt(declarationExpr));
-            }
+            VariableDeclarator variableDeclarator = expression.asVariableDeclarationExpr().getVariable(0);
+            VariableDeclarationExpr variableDeclarationExpr = new VariableDeclarationExpr(
+                    returnType,
+                    variableDeclarator.getNameAsString()
+            );
+            return new ExpressionStmt(variableDeclarationExpr);
         } else if (expression.isMethodCallExpr()) {
             String placeholderName = "default" + variableID;
-            VariableDeclarationExpr declarationExpr = new VariableDeclarationExpr(returnType, placeholderName);
-            initializations.add(new ExpressionStmt(declarationExpr));
+            VariableDeclarationExpr variableDeclarationExpr = new VariableDeclarationExpr(
+                    returnType,
+                    placeholderName
+            );
             variableID++;
+            return new ExpressionStmt(variableDeclarationExpr);
         } else {
-            return new NodeList<>();
+            return new EmptyStmt();
         }
-        return initializations;
     }
 
-    /**
-     * Gets a variable declaration for each variable in a statement. If the
-     * statement does not declare a variable and the method has a non-void
-     * return type, then a placeholder variable is added.
-     *
-     * @param statement a Java statement
-     * @param oracles a list of oracles corresponding to the given statement
-     * @return a list of variable declarations
-     */
-    private static NodeList<Statement> getInitialization(
+    private static Statement getInitialization(
             Statement statement,
             List<OracleOutput> oracles
     ) {
@@ -759,10 +746,10 @@ public class TestUtils {
         String methodSignature = oracles.get(0).methodSignature();
         Type returnType = getReturnType(className, methodSignature);
         if (returnType.isVoidType() || !statement.isExpressionStmt()) {
-            return new NodeList<>();
+            return new EmptyStmt();
         }
         Expression expression = statement.asExpressionStmt().getExpression();
-        return getExpressionInitialization(expression, returnType);
+        return getInitialization(expression, returnType);
     }
 
     private static NodeList<Statement> getPreConditions(
@@ -774,6 +761,42 @@ public class TestUtils {
                 .toList());
     }
 
+    private static TryStmt getTryCatchBlock(
+            Statement statement,
+            OracleOutput oracleOutput
+    ) {
+        Type exceptionType = StaticJavaParser.parseType(oracleOutput.exception());
+        Parameter exceptionParameter = new Parameter(exceptionType, "e");
+        CatchClause catchClause = new CatchClause(exceptionParameter, new BlockStmt());
+        return new TryStmt();
+    }
+
+    private static IfStmt getThrowsConditions(
+            Statement postStatement,
+            List<OracleOutput> oracles
+    ) {
+        if (oracles.size() == 0) {
+            return null;
+        }
+        List<Expression> conditions = oracles
+                .stream()
+                .map(o -> (Expression) StaticJavaParser.parseExpression(o.oracle()))
+                .toList();
+        List<TryStmt> tryStmts = oracles
+                .stream()
+                .map(o -> getTryCatchBlock(postStatement, o))
+                .toList();
+        System.out.println("UH OH " + conditions);
+        return new IfStmt();
+    }
+
+    private static Statement getPostConditions(
+            IfStmt base,
+            boolean condition
+    ) {
+        return base;
+    }
+
     private static NodeList<Statement> getOracleStatements(
             CompilationUnit testFile,
             List<Statement> testBody,
@@ -781,7 +804,7 @@ public class TestUtils {
             List<OracleOutput> oracles
     ) {
         NodeList<Statement> oracleStatements = new NodeList<>();
-        oracleStatements.addAll(getInitialization(testStatement, oracles));
+        Statement initStmt = getInitialization(testStatement, oracles);
         oracles = oracles
                 .stream()
                 .map(o -> contextualizeOracle(oracleStatements.get(0), testStatement, o))
@@ -799,6 +822,8 @@ public class TestUtils {
                 .filter(o -> o.oracleType().equals(OracleType.NORMAL_POST))
                 .toList();
         oracleStatements.addAll(getPreConditions(preConditions));
+//        Statement postStatement = getPostStatement(testStatement, initialization);
+//        Statement postConditionStatement = getThrowsConditions(testStatement, throwsConditions);
         return oracleStatements;
     }
 
