@@ -851,11 +851,20 @@ public class TestUtils {
                 .stream()
                 .map(o -> (Expression) StaticJavaParser.parseExpression(o.oracle()))
                 .toList();
-        List<TryStmt> tryStmts = oracles
+        List<BlockStmt> tryStmts = oracles
                 .stream()
-                .map(o -> getTryCatchBlock(postStmt, o))
+                .map(o -> new BlockStmt().addStatement(getTryCatchBlock(postStmt, o)))
                 .toList();
-        return new IfStmt();
+        assert conditions.size() == tryStmts.size();
+        assert conditions.size() > 0;
+        IfStmt ifStmt = new IfStmt(conditions.get(0), tryStmts.get(0), new BlockStmt());
+        IfStmt currentIfStmt = ifStmt;
+        for (int i = 1; i < conditions.size(); i++) {
+            IfStmt nextIfStmt = new IfStmt(conditions.get(i), tryStmts.get(1), new BlockStmt());
+            currentIfStmt.setElseStmt(nextIfStmt);
+            currentIfStmt = new IfStmt();
+        }
+        return ifStmt;
     }
 
     private static Statement getPostConditions(
@@ -892,6 +901,7 @@ public class TestUtils {
                 .toList();
         oracleStatements.addAll(getPreConditions(preConditions));
         IfStmt throwsBlock = getThrowsConditions(postStmt, throwsConditions);
+        System.out.println(throwsBlock);
         return oracleStatements;
     }
 
