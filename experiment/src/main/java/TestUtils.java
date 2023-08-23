@@ -766,11 +766,12 @@ public class TestUtils {
     }
 
     private static NodeList<Statement> getPreConditions(
-            List<Statement> testBody,
-            Statement statement,
             List<OracleOutput> oracles
     ) {
-        return new NodeList<>();
+        return new NodeList<>(oracles
+                .stream()
+                .map(o -> StaticJavaParser.parseStatement("assertTrue(" + o.oracle() + ");"))
+                .toList());
     }
 
     private static NodeList<Statement> getOracleStatements(
@@ -785,6 +786,19 @@ public class TestUtils {
                 .stream()
                 .map(o -> contextualizeOracle(oracleStatements.get(0), testStatement, o))
                 .toList();
+        List<OracleOutput> preConditions = oracles
+                .stream()
+                .filter(o -> o.oracleType().equals(OracleType.PRE))
+                .toList();
+        List<OracleOutput> throwsConditions = oracles
+                .stream()
+                .filter(o -> o.oracleType().equals(OracleType.EXCEPT_POST))
+                .toList();
+        List<OracleOutput> postConditions = oracles
+                .stream()
+                .filter(o -> o.oracleType().equals(OracleType.NORMAL_POST))
+                .toList();
+        oracleStatements.addAll(getPreConditions(preConditions));
         return oracleStatements;
     }
 
