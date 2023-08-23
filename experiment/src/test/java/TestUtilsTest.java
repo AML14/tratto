@@ -120,7 +120,7 @@ public class TestUtilsTest {
                 new OracleOutput(
                         "java.lang.Class",
                         "getMethod(java.lang.String name, java.lang.Class<?>[] parameterTypes)",
-                        OracleType.EXCEPT_POST,
+                        OracleType.NORMAL_POST,
                         "",
                         "(methodResultID == null) == false",
                         ""
@@ -128,7 +128,7 @@ public class TestUtilsTest {
                 new OracleOutput(
                         "java.lang.Class",
                         "getMethod(java.lang.String name, java.lang.Class<?>[] parameterTypes)",
-                        OracleType.EXCEPT_POST,
+                        OracleType.NORMAL_POST,
                         "",
                         "methodResultID.getDeclaringClass() == receiverObjectID",
                         ""
