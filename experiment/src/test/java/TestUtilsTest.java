@@ -76,6 +76,14 @@ public class TestUtilsTest {
                         "",
                         "(s == null) == false",
                         "java.lang.NumberFormatException"
+                ),
+                new OracleOutput(
+                        "java.lang.Integer",
+                        "intValue()",
+                        OracleType.NORMAL_POST,
+                        "",
+                        "(methodResultID == null) == false",
+                        ""
                 )
         );
     }

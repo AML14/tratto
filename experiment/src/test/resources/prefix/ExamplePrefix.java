@@ -13,6 +13,13 @@ public class ExamplePrefix {
 
     @Test
     @Disabled
+    public void assertionNonStaticTest() {
+        Integer objectInt = 5;
+        int primitiveInt = objectInt.intValue();
+    }
+
+    @Test
+    @Disabled
     public void exceptionalTest() {
         String integerToParse = null;
         int correspondingInteger = Integer.parseInt(integerToParse);
