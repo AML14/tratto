@@ -346,16 +346,6 @@ public class TestUtils {
     }
 
     /**
-     *
-     *
-     * @param methodCallExpr
-     * @return
-     */
-    private static List<String> getParameterNames(MethodCallExpr methodCallExpr) {
-        return new ArrayList<>();
-    }
-
-    /**
      * Gets the fully qualified name of a given simple type name.
      *
      * @param cu the test file using type
@@ -630,6 +620,7 @@ public class TestUtils {
             OracleOutput oracleOutput
     )  {
         oracleOutput = getParameterID(testStatement, oracleOutput);
+        oracleOutput = getReceiverObjectID(testFile, testBody, testStatement, oracleOutput);
         return oracleOutput;
     }
 
