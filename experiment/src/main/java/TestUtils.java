@@ -802,7 +802,10 @@ public class TestUtils {
         Expression initExpression = initStmt
                 .asExpressionStmt()
                 .getExpression();
-        String varName = initExpression.asVariableDeclarationExpr().getVariable(0).getNameAsString();
+        String varName = initExpression
+                .asVariableDeclarationExpr()
+                .getVariable(0)
+                .getNameAsString();
         Expression methodCall = getAllMethodCallsOfStatement(testStmt).get(0);
         AssignExpr assignExpr = new AssignExpr(
                 new NameExpr(varName),
