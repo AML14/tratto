@@ -19,6 +19,7 @@ import com.github.javaparser.ast.type.Type;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -552,16 +553,41 @@ public class TestUtils {
         }
     }
 
+    /**
+     * Checks if a given method is static.
+     *
+     * @param className the fully qualified name of the declaring class
+     * @param methodSignature the method signature
+     * @return true iff the given method is static
+     */
+    private static boolean isStatic(
+            String className,
+            String methodSignature
+    ) {
+        String methodName = getMethodName(methodSignature);
+        List<Class<?>> parameterTypes = getClassOfName(getParameterTypeNames(methodSignature));
+        Class<?> receiverObjectID = getClassOfName(className);
+        try {
+            Method method = receiverObjectID.getMethod(methodName, parameterTypes.toArray(Class[]::new));
+            return Modifier.isStatic(method.getModifiers());
+        } catch (NoSuchMethodException e) {
+            throw new Error("Unable to parse method " + methodSignature + " of " + className);
+        }
+    }
+
     private static OracleOutput getReceiverObjectID(
             CompilationUnit testFile,
             List<Statement> testBody,
             Statement testStatement,
             OracleOutput oracleOutput
     ) {
-        // get name of object.
-
-        // search import statements.
-        return oracleOutput;
+        String className = oracleOutput.className();
+        String methodSignature = oracleOutput.methodSignature();
+        if (isStatic(className, methodSignature)) {
+            // if the method is static, then the receiverObjectID is not necessary.
+            return oracleOutput;
+        }
+        return null;
     }
 
     private static OracleOutput getMethodResultID(
@@ -692,9 +718,12 @@ public class TestUtils {
             List<OracleOutput> oracles
     ) {
         NodeList<Statement> oracleStatements = new NodeList<>();
-        oracles = oracles.stream().map(o -> contextualizeOracle(testFile, testBody, testStatement, o)).toList();
-        System.out.println(oracles);
         oracleStatements.addAll(getInitialization(testStatement, oracles));
+        oracles = oracles
+                .stream()
+                .map(o -> contextualizeOracle(testFile, testBody, testStatement, o))
+                .toList();
+
         return oracleStatements;
     }
 
