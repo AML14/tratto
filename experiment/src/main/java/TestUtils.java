@@ -500,8 +500,8 @@ public class TestUtils {
      *
      * @param primitiveName a primitive type name
      * @return the Class corresponding to the primitive type
-     * @throws IllegalArgumentException if the given type name does not
-     * correspond to a known primitive type
+     * @throws IllegalArgumentException if the given type name is not a
+     * primitive type
      */
     private static Class<?> getPrimitiveClass(String primitiveName) {
         switch (primitiveName) {
@@ -537,7 +537,7 @@ public class TestUtils {
      * Gets the Class of a given type name.
      *
      * @param className a fully qualified type name
-     * @return the Class corresponding to a type name
+     * @return the Class corresponding to the type name
      */
     private static Class<?> getClassOfName(String className) {
         List<String> allPrimitiveTypes = List.of("boolean", "byte", "char", "short", "int", "long", "float", "double");
