@@ -112,7 +112,7 @@ public class TestUtils {
      */
     private static List<MethodCallExpr> getAllMethodCallsOfStatement(Statement statement) {
         List<MethodCallExpr> methodCallExprs = new ArrayList<>();
-        statement.walk(MethodCallExpr.class, methodCallExprs::add);
+        statement.clone().walk(MethodCallExpr.class, methodCallExprs::add);
         return methodCallExprs;
     }
 
@@ -796,7 +796,6 @@ public class TestUtils {
         Expression testExpression = testStmt
                 .asExpressionStmt()
                 .getExpression();
-
         if (!testExpression.isVariableDeclarationExpr() && !testExpression.isMethodCallExpr()) {
             return testStmt;
         }
@@ -864,8 +863,8 @@ public class TestUtils {
             List<OracleOutput> oracles
     ) {
         NodeList<Statement> oracleStatements = new NodeList<>();
-        Statement initStmt = getInitialization(testStmt.clone(), oracles);
-        Statement postStmt = getPostStatement(initStmt.clone(), testStmt.clone());
+        Statement initStmt = getInitialization(testStmt, oracles);
+        Statement postStmt = getPostStatement(initStmt, testStmt);
         oracles = oracles
                 .stream()
                 .map(o -> contextualizeOracle(initStmt, testStmt, o))
