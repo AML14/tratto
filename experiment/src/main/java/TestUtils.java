@@ -6,6 +6,7 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.body.TypeDeclaration;
+import com.github.javaparser.ast.expr.AssignExpr;
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.NameExpr;
@@ -372,7 +373,7 @@ public class TestUtils {
                     return packageName;
                 }
             }
-            return "java.lang." + type.asString();
+            return "java.lang";
         } else {
             return "";
         }
@@ -785,6 +786,33 @@ public class TestUtils {
         return getInitialization(expression, returnType);
     }
 
+    private static Statement getPostStatement(
+            Statement initStmt,
+            Statement testStmt
+    ) {
+        if (initStmt.isEmptyStmt() || !testStmt.isExpressionStmt()) {
+            return testStmt;
+        }
+        Expression testExpression = testStmt
+                .asExpressionStmt()
+                .getExpression();
+
+        if (!testExpression.isVariableDeclarationExpr() && !testExpression.isMethodCallExpr()) {
+            return testStmt;
+        }
+        Expression initExpression = initStmt
+                .asExpressionStmt()
+                .getExpression();
+        String varName = initExpression.asVariableDeclarationExpr().getVariable(0).getNameAsString();
+        Expression methodCall = getAllMethodCallsOfStatement(testStmt).get(0);
+        AssignExpr assignExpr = new AssignExpr(
+                new NameExpr(varName),
+                methodCall,
+                AssignExpr.Operator.ASSIGN
+        );
+        return new ExpressionStmt(assignExpr);
+    }
+
     private static NodeList<Statement> getPreConditions(
             List<OracleOutput> oracles
     ) {
@@ -819,7 +847,6 @@ public class TestUtils {
                 .stream()
                 .map(o -> getTryCatchBlock(postStatement, o))
                 .toList();
-        System.out.println("UH OH " + conditions);
         return new IfStmt();
     }
 
@@ -837,7 +864,8 @@ public class TestUtils {
             List<OracleOutput> oracles
     ) {
         NodeList<Statement> oracleStatements = new NodeList<>();
-        Statement initStmt = getInitialization(testStmt, oracles);
+        Statement initStmt = getInitialization(testStmt.clone(), oracles);
+        Statement postStmt = getPostStatement(initStmt.clone(), testStmt.clone());
         oracles = oracles
                 .stream()
                 .map(o -> contextualizeOracle(initStmt, testStmt, o))
@@ -855,8 +883,6 @@ public class TestUtils {
                 .filter(o -> o.oracleType().equals(OracleType.NORMAL_POST))
                 .toList();
         oracleStatements.addAll(getPreConditions(preConditions));
-//        Statement postStatement = getPostStatement(testStmt, initialization);
-//        Statement postConditionStatement = getThrowsConditions(testStmt, throwsConditions);
         return oracleStatements;
     }
 
@@ -875,7 +901,8 @@ public class TestUtils {
             for (Statement testStatement : originalBody) {
                 List<OracleOutput> relatedOracles = getRelatedOracles(testFile, originalBody, testStatement, oracles);
                 if (relatedOracles.size() != 0) {
-                    System.out.println(getOracleStatements(testFile, originalBody, testStatement, relatedOracles));
+                    NodeList<Statement> otherStatements = getOracleStatements(testFile, originalBody, testStatement, relatedOracles);
+                    System.out.println(otherStatements);
 //                    newBody.addAll(getOracleStatements(testFile, originalBody, testStatement, relatedOracles));
                 } else {
                     newBody.add(testStatement);
