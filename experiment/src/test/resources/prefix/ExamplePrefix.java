@@ -15,7 +15,7 @@ public class ExamplePrefix {
     @Disabled
     public void assertionNonStaticTest() {
         Integer objectInt = 5;
-        int primitiveInt = objectInt.intValue();
+        objectInt.intValue();
     }
 
     @Test
