@@ -82,7 +82,7 @@ public class TestUtilsTest {
                         "intValue()",
                         OracleType.NORMAL_POST,
                         "",
-                        "(methodResultID == null) == false",
+                        "(receiverObjectID == null) == false",
                         ""
                 )
         );
