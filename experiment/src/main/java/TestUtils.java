@@ -605,12 +605,12 @@ public class TestUtils {
      * Replaces all instances of "receiverObjectID" in a given oracle, with
      * the corresponding object name in source code.
      *
-     * @param testStatement the contextual test statement
+     * @param testStmt the contextual test statement
      * @param oracleOutput the original oracle
      * @return the axiomatic oracle with names replaced
      */
     private static OracleOutput getReceiverObjectID(
-            Statement testStatement,
+            Statement testStmt,
             OracleOutput oracleOutput
     ) {
         String className = oracleOutput.className();
@@ -620,7 +620,7 @@ public class TestUtils {
             return oracleOutput;
         }
         String originalName = "receiverObjectID";
-        String contextName = getAllMethodCallsOfStatement(testStatement).get(0)
+        String contextName = getAllMethodCallsOfStatement(testStmt).get(0)
                 .getScope().orElseThrow().toString();
         String contextOracle = replaceName(List.of(originalName), List.of(contextName), oracleOutput.oracle());
         return new OracleOutput(
@@ -637,12 +637,12 @@ public class TestUtils {
      * Replaces all instances of "methodResultID" in a given oracle with
      * the corresponding object name in source code.
      *
-     * @param initializationStatement the initialization of the method result
+     * @param initStmt the initialization of the method result
      * @param oracleOutput the original oracle
      * @return the axiomatic oracle with names replaced
      */
     private static OracleOutput getMethodResultID(
-            Statement initializationStatement,
+            Statement initStmt,
             OracleOutput oracleOutput
     ) {
         String className = oracleOutput.className();
@@ -653,7 +653,7 @@ public class TestUtils {
             return oracleOutput;
         }
         String originalName = "methodResultID";
-        String contextName = initializationStatement
+        String contextName = initStmt
                 .asExpressionStmt().getExpression()
                 .asVariableDeclarationExpr().getVariables().get(0)
                 .getNameAsString();
@@ -672,16 +672,16 @@ public class TestUtils {
      * Replaces all variable names in the original oracle with the names from
      * the test case.
      *
-     * @param testStatement a Java statement
+     * @param testStmt a Java statement
      * @param oracleOutput an oracle record
      * @return an oracle record with contextual parameter names
      */
     private static OracleOutput getParameterID(
-            Statement testStatement,
+            Statement testStmt,
             OracleOutput oracleOutput
     ) {
         List<String> originalNames = getParameterNames(oracleOutput.methodSignature());
-        List<String> contextNames = getAllMethodCallsOfStatement(testStatement).get(0).getArguments()
+        List<String> contextNames = getAllMethodCallsOfStatement(testStmt).get(0).getArguments()
                 .stream()
                 .map(expression -> expression.asNameExpr().getNameAsString())
                 .toList();
@@ -699,18 +699,18 @@ public class TestUtils {
     /**
      * Substitutes contextual variable names into an oracle.
      *
-     * @param initialization a list of statements in a test case
+     * @param initStmt a list of statements in a test case
      * @param oracleOutput an oracle
      * @return the same oracle with names from the test body
      */
     private static OracleOutput contextualizeOracle(
-            Statement initialization,
-            Statement testStatement,
+            Statement initStmt,
+            Statement testStmt,
             OracleOutput oracleOutput
     )  {
-        oracleOutput = getParameterID(testStatement, oracleOutput);
-        oracleOutput = getReceiverObjectID(testStatement, oracleOutput);
-        oracleOutput = getMethodResultID(initialization, oracleOutput);
+        oracleOutput = getParameterID(testStmt, oracleOutput);
+        oracleOutput = getReceiverObjectID(testStmt, oracleOutput);
+        oracleOutput = getMethodResultID(initStmt, oracleOutput);
         return oracleOutput;
     }
 
@@ -800,14 +800,14 @@ public class TestUtils {
     private static NodeList<Statement> getOracleStatements(
             CompilationUnit testFile,
             List<Statement> testBody,
-            Statement testStatement,
+            Statement testStmt,
             List<OracleOutput> oracles
     ) {
         NodeList<Statement> oracleStatements = new NodeList<>();
-        Statement initStmt = getInitialization(testStatement, oracles);
+        Statement initStmt = getInitialization(testStmt, oracles);
         oracles = oracles
                 .stream()
-                .map(o -> contextualizeOracle(oracleStatements.get(0), testStatement, o))
+                .map(o -> contextualizeOracle(initStmt, testStmt, o))
                 .toList();
         List<OracleOutput> preConditions = oracles
                 .stream()
@@ -822,8 +822,8 @@ public class TestUtils {
                 .filter(o -> o.oracleType().equals(OracleType.NORMAL_POST))
                 .toList();
         oracleStatements.addAll(getPreConditions(preConditions));
-//        Statement postStatement = getPostStatement(testStatement, initialization);
-//        Statement postConditionStatement = getThrowsConditions(testStatement, throwsConditions);
+//        Statement postStatement = getPostStatement(testStmt, initialization);
+//        Statement postConditionStatement = getThrowsConditions(testStmt, throwsConditions);
         return oracleStatements;
     }
 
