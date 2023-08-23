@@ -831,11 +831,17 @@ public class TestUtils {
         Type exceptionType = StaticJavaParser.parseType(oracleOutput.exception());
         Parameter exceptionParameter = new Parameter(exceptionType, "e");
         CatchClause catchClause = new CatchClause(exceptionParameter, new BlockStmt());
-        return new TryStmt();
+        NodeList<Statement> tryBody = new NodeList<>(
+                statement,
+                StaticJavaParser.parseStatement("fail();")
+        );
+        return new TryStmt()
+                .setTryBlock(new BlockStmt(tryBody))
+                .setCatchClauses(new NodeList<>(catchClause));
     }
 
     private static IfStmt getThrowsConditions(
-            Statement postStatement,
+            Statement postStmt,
             List<OracleOutput> oracles
     ) {
         if (oracles.size() == 0) {
@@ -847,7 +853,7 @@ public class TestUtils {
                 .toList();
         List<TryStmt> tryStmts = oracles
                 .stream()
-                .map(o -> getTryCatchBlock(postStatement, o))
+                .map(o -> getTryCatchBlock(postStmt, o))
                 .toList();
         return new IfStmt();
     }
@@ -885,6 +891,7 @@ public class TestUtils {
                 .filter(o -> o.oracleType().equals(OracleType.NORMAL_POST))
                 .toList();
         oracleStatements.addAll(getPreConditions(preConditions));
+        IfStmt throwsBlock = getThrowsConditions(postStmt, throwsConditions);
         return oracleStatements;
     }
 
