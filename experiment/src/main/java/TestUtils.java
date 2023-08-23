@@ -350,6 +350,34 @@ public class TestUtils {
     }
 
     /**
+     * Removes arrays from an array type name.
+     *
+     * @param arrayType an array type
+     * @return the base component type
+     */
+    private static String removeArray(String arrayType) {
+        return arrayType.replaceAll("\\[]", "");
+    }
+
+    /**
+     * Removes type arguments from a parameterized type name.
+     *
+     * @param parameterizedType a type name
+     * @return the base type without type arguments
+     */
+    private static String removeTypeParameters(String parameterizedType) {
+        String regex = "<[^<>]*>";
+        // repeatedly remove all type arguments.
+        String previous;
+        String current = parameterizedType;
+        do {
+            previous = current;
+            current = previous.replaceAll(regex, "");
+        } while (!current.equals(previous));
+        return current;
+    }
+
+    /**
      * Gets the package name of a given JavaParser type. This method assumes
      * that all types (including types from the same package) have
      * corresponding import statements in the compilation unit. This is TRUE
