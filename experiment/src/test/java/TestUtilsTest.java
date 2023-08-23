@@ -74,7 +74,7 @@ public class TestUtilsTest {
                         "parseInt(java.lang.String s)",
                         OracleType.EXCEPT_POST,
                         "",
-                        "(s == null) == false",
+                        "s == null",
                         "java.lang.NumberFormatException"
                 ),
                 new OracleOutput(
