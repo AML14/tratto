@@ -84,6 +84,54 @@ public class TestUtilsTest {
                         "",
                         "(receiverObjectID == null) == false",
                         ""
+                ),
+                new OracleOutput(
+                        "java.lang.Class",
+                        "getMethod(java.lang.String name, java.lang.Class<?>[] parameterTypes)",
+                        OracleType.PRE,
+                        "",
+                        "(name == null) == false",
+                        ""
+                ),
+                new OracleOutput(
+                        "java.lang.Class",
+                        "getMethod(java.lang.String name, java.lang.Class<?>[] parameterTypes)",
+                        OracleType.PRE,
+                        "",
+                        "(parameterTypes == null) == false",
+                        ""
+                ),
+                new OracleOutput(
+                        "java.lang.Class",
+                        "getMethod(java.lang.String name, java.lang.Class<?>[] parameterTypes)",
+                        OracleType.EXCEPT_POST,
+                        "",
+                        "name == null",
+                        "java.lang.IllegalArgumentException"
+                ),
+                new OracleOutput(
+                        "java.lang.Class",
+                        "getMethod(java.lang.String name, java.lang.Class<?>[] parameterTypes)",
+                        OracleType.EXCEPT_POST,
+                        "",
+                        "parameterTypes == null",
+                        "java.lang.IllegalArgumentException"
+                ),
+                new OracleOutput(
+                        "java.lang.Class",
+                        "getMethod(java.lang.String name, java.lang.Class<?>[] parameterTypes)",
+                        OracleType.EXCEPT_POST,
+                        "",
+                        "(methodResultID == null) == false",
+                        ""
+                ),
+                new OracleOutput(
+                        "java.lang.Class",
+                        "getMethod(java.lang.String name, java.lang.Class<?>[] parameterTypes)",
+                        OracleType.EXCEPT_POST,
+                        "",
+                        "methodResultID.getDeclaringClass() == receiverObjectID",
+                        ""
                 )
         );
     }
