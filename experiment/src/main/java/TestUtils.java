@@ -419,60 +419,80 @@ public class TestUtils {
     }
 
     /**
-     * Checks if a given method call in a test file matches an expected method
-     * signature.
+     * Gets the type names of all parameters in a JavaParser method call.
      *
-     * @param testFile a Java test file
-     * @param testBody a test case in the test file
-     * @param methodCall a method call in the test case
-     * @param expectedSignature an expected method signature
-     * @return true iff the given method call matches the method signature
+     * @param cu a Java file declaring the method corresponding to
+     *           {@code body}
+     * @param body a list of statements in a method body
+     * @param methodCallExpr a method call in the given method
+     * @return a list of all parameter type names in the given method
      */
-    private static boolean isMatchingMethodCall(
-            CompilationUnit testFile,
-            List<Statement> testBody,
-            MethodCallExpr methodCall,
-            String expectedSignature
+    private static List<String> getParameterTypeNames(
+            CompilationUnit cu,
+            List<Statement> body,
+            MethodCallExpr methodCallExpr
     ) {
-        String methodName = getMethodName(expectedSignature);
-        if (!methodName.equals(methodCall.getName().asString())) {
-            return false;
-        }
-        List<String> methodArgTypes = methodCall.getArguments()
+        return methodCallExpr.getArguments()
                 .stream()
                 .map(arg -> {
-                    Type argType = getTypeOfName(testBody, arg.asNameExpr().getNameAsString());
-                    return getFullyQualifiedName(testFile, argType);
+                    Type type = getTypeOfName(body, arg.asNameExpr().getNameAsString());
+                    return getFullyQualifiedName(cu, type);
                 })
                 .toList();
-        List<String> expectedTypes = getParameterTypeNames(expectedSignature);
-        return methodArgTypes.equals(expectedTypes);
     }
 
     /**
-     * Gets all oracles applicable to a Java statement.
+     * Checks if a given JavaParser method call corresponds to the same method
+     * as a given signature.
      *
-     * @param testStatement a Java statement
-     * @param testBody all statements in a method
-     * @param allOracles all possible oracle records
-     * @return all oracles involving method calls in the given statement
+     * @param jpFile the Java file declaring
+     * @param jpBody a test case in the test file
+     * @param jpMethodCall a method call in the test case
+     * @param expectedSignature an expected method signature
+     * @return true iff the given method call matches the method signature
+     */
+    private static boolean isMatchingMethod(
+            CompilationUnit jpFile,
+            List<Statement> jpBody,
+            MethodCallExpr jpMethodCall,
+            String expectedSignature
+    ) {
+        String expectedName = getMethodName(expectedSignature);
+        List<String> expectedTypes = getParameterTypeNames(expectedSignature);
+        String jpName = jpMethodCall.getNameAsString();
+        List<String> jpTypes = getParameterTypeNames(jpFile, jpBody, jpMethodCall);
+        return expectedName.equals(jpName) && expectedTypes.equals(jpTypes);
+    }
+
+    /**
+     * Gets all oracles applicable to a Java statement. An oracle is
+     * applicable to a statement if it corresponds to a method call in the
+     * given statement.
+     *
+     * @param stmt a Java statement
+     * @param body all statements in the parent method
+     * @param allOracles all possible oracles
+     * @return all oracles corresponding to methods calls in the given
+     * statement
      */
     private static List<OracleOutput> getRelatedOracles(
-            CompilationUnit testFile,
-            List<Statement> testBody,
-            Statement testStatement,
+            CompilationUnit cu,
+            List<Statement> body,
+            Statement stmt,
             List<OracleOutput> allOracles
     ) {
-        List<MethodCallExpr> methodCalls = getAllMethodCallsOfStatement(testStatement);
+        List<MethodCallExpr> methodCalls = getAllMethodCallsOfStatement(stmt);
         Set<OracleOutput> relatedOracles = new HashSet<>();
         for (MethodCallExpr methodCall : methodCalls) {
             relatedOracles.addAll(allOracles
                     .stream()
-                    .filter(o -> isMatchingMethodCall(testFile, testBody, methodCall, o.methodSignature()))
+                    .filter(o -> isMatchingMethod(cu, body, methodCall, o.methodSignature()))
                     .toList()
             );
         }
-        return relatedOracles.stream().toList();
+        return relatedOracles
+                .stream()
+                .toList();
     }
 
     /**
