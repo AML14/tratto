@@ -867,16 +867,22 @@ public class TestUtils {
         return ifStmt;
     }
 
-    private static Statement getPostConditions(
+    private static NodeList<Statement> getPostConditions(
             IfStmt base,
-            boolean condition
+            List<OracleOutput> oracles
     ) {
-        return base;
+        NodeList<Statement> postConditions = new NodeList<>(oracles
+                .stream()
+                .map(o -> StaticJavaParser.parseStatement("assertTrue(" + o.oracle() + ");"))
+                .toList());
+        if (base == null) {
+            return postConditions;
+        }
+        base.setElseStmt(new BlockStmt(postConditions));
+        return new NodeList<>(base);
     }
 
     private static NodeList<Statement> getOracleStatements(
-            CompilationUnit testFile,
-            List<Statement> testBody,
             Statement testStmt,
             List<OracleOutput> oracles
     ) {
@@ -899,9 +905,12 @@ public class TestUtils {
                 .stream()
                 .filter(o -> o.oracleType().equals(OracleType.NORMAL_POST))
                 .toList();
-        oracleStatements.addAll(getPreConditions(preConditions));
+        NodeList<Statement> preBlock = getPreConditions(preConditions);
         IfStmt throwsBlock = getThrowsConditions(postStmt, throwsConditions);
-        System.out.println(throwsBlock);
+        NodeList<Statement> postBlock = getPostConditions(throwsBlock, postConditions);
+        oracleStatements.addAll(preBlock);
+        oracleStatements.add(initStmt);
+        oracleStatements.addAll(postBlock);
         return oracleStatements;
     }
 
@@ -920,9 +929,7 @@ public class TestUtils {
             for (Statement testStatement : originalBody) {
                 List<OracleOutput> relatedOracles = getRelatedOracles(testFile, originalBody, testStatement, oracles);
                 if (relatedOracles.size() != 0) {
-                    NodeList<Statement> otherStatements = getOracleStatements(testFile, originalBody, testStatement, relatedOracles);
-                    System.out.println(otherStatements);
-//                    newBody.addAll(getOracleStatements(testFile, originalBody, testStatement, relatedOracles));
+                    newBody.addAll(getOracleStatements(testStatement, relatedOracles));
                 } else {
                     newBody.add(testStatement);
                 }
