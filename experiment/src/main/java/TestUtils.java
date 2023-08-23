@@ -317,10 +317,10 @@ public class TestUtils {
     }
 
     /**
-     * Gets the name of all parameter types from the method signature.
+     * Gets the type names of all parameters from the method signature.
      *
      * @param methodSignature a method signature
-     * @return the name of all types in the method parameters
+     * @return a list of all parameter type names in the method signature
      */
     private static List<String> getParameterTypeNames(String methodSignature) {
         String parameters = methodSignature.substring(methodSignature.indexOf('(') + 1, methodSignature.indexOf(')'));
@@ -333,10 +333,10 @@ public class TestUtils {
     }
 
     /**
-     * Gets the name of all parameters from the method signature.
+     * Gets the variable names of all parameters from the method signature.
      *
      * @param methodSignature a method signature
-     * @return the name of all parameters in the method signature
+     * @return a list of all variable parameter names in the method signature
      */
     private static List<String> getParameterNames(String methodSignature) {
         String parameters = methodSignature.substring(methodSignature.indexOf('(') + 1, methodSignature.indexOf(')'));
