@@ -523,13 +523,25 @@ public class TestUtils {
      *
      * @param classNames a list of fully qualified type names
      * @return the Classes corresponding to the type names
+     * @see TestUtils#getClassOfName(String)
      */
-    private static List<Class<?>> getClassOfName(List<String> classNames) {
+    private static List<Class<?>> getClassesOfNames(List<String> classNames) {
         List<Class<?>> classes = new ArrayList<>();
         for (String className : classNames) {
             classes.add(getClassOfName(className));
         }
         return classes;
+    }
+
+    private static Method getReflectionMethod(String className, String methodSignature) {
+        String methodName = getMethodName(methodSignature);
+        List<Class<?>> parameterTypes = getClassesOfNames(getParameterTypeNames(methodSignature));
+        Class<?> receiverObjectID = getClassOfName(className);
+        try {
+            return receiverObjectID.getMethod(methodName, parameterTypes.toArray(Class[]::new));
+        } catch (NoSuchMethodException e) {
+            throw new Error("Unable to find method " + methodSignature + " in " + className);
+        }
     }
 
     /**
@@ -539,20 +551,10 @@ public class TestUtils {
      * @param methodSignature the method signature
      * @return the return type of the given method
      */
-    private static Type getReturnType(
-            String className,
-            String methodSignature
-    ) {
-        String methodName = getMethodName(methodSignature);
-        List<Class<?>> parameterTypes = getClassOfName(getParameterTypeNames(methodSignature));
-        Class<?> receiverObjectID = getClassOfName(className);
-        try {
-            Method method = receiverObjectID.getMethod(methodName, parameterTypes.toArray(Class[]::new));
-            Class<?> returnType = method.getReturnType();
-            return StaticJavaParser.parseType(returnType.getName());
-        } catch (NoSuchMethodException e) {
-            throw new Error("Unable to parse return type of " + methodSignature + " in " + className);
-        }
+    private static Type getReturnType(String className, String methodSignature) {
+        Method method = getReflectionMethod(className, methodSignature);
+        Class<?> returnType = method.getReturnType();
+        return StaticJavaParser.parseType(returnType.getName());
     }
 
     /**
@@ -562,19 +564,9 @@ public class TestUtils {
      * @param methodSignature the method signature
      * @return true iff the given method is static
      */
-    private static boolean isStatic(
-            String className,
-            String methodSignature
-    ) {
-        String methodName = getMethodName(methodSignature);
-        List<Class<?>> parameterTypes = getClassOfName(getParameterTypeNames(methodSignature));
-        Class<?> receiverObjectID = getClassOfName(className);
-        try {
-            Method method = receiverObjectID.getMethod(methodName, parameterTypes.toArray(Class[]::new));
-            return Modifier.isStatic(method.getModifiers());
-        } catch (NoSuchMethodException e) {
-            throw new Error("Unable to parse method " + methodSignature + " of " + className);
-        }
+    private static boolean isStatic(String className, String methodSignature) {
+        Method method = getReflectionMethod(className, methodSignature);
+        return Modifier.isStatic(method.getModifiers());
     }
 
     /**
