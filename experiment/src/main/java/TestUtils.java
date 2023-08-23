@@ -575,6 +575,15 @@ public class TestUtils {
         }
     }
 
+    /**
+     * Replaces all instances of an original name in a given oracle with their
+     * corresponding context names. The original names
+     *
+     * @param originalNames the original axiomatic names
+     * @param contextNames the contextual names
+     * @param oracle the original axiomatic oracle
+     * @return the contextualized oracle
+     */
     private static String replaceName(
             List<String> originalNames,
             List<String> contextNames,
@@ -590,6 +599,14 @@ public class TestUtils {
         return oracleExpression.toString();
     }
 
+    /**
+     * Replaces all instances of "receiverObjectID" in a given oracle, with
+     * the corresponding object name in source code.
+     *
+     * @param testStatement the contextual test statement
+     * @param oracleOutput the original oracle
+     * @return the axiomatic oracle with names replaced
+     */
     private static OracleOutput getReceiverObjectID(
             Statement testStatement,
             OracleOutput oracleOutput
@@ -614,6 +631,14 @@ public class TestUtils {
         );
     }
 
+    /**
+     * Replaces all instances of "methodResultID" in a given oracle with
+     * the corresponding object name in source code.
+     *
+     * @param initializationStatement the initialization of the method result
+     * @param oracleOutput the original oracle
+     * @return the axiomatic oracle with names replaced
+     */
     private static OracleOutput getMethodResultID(
             Statement initializationStatement,
             OracleOutput oracleOutput
