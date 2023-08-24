@@ -437,6 +437,7 @@ public class TestUtils {
      * @param cu the Java file importing the given type
      * @param type a type
      * @return the fully qualified name of the given type
+     * @see TestUtils#getPackageName(CompilationUnit, Type)
      */
     private static String getFullyQualifiedName(CompilationUnit cu, Type type) {
         if (type.isReferenceType()) {
