@@ -275,7 +275,7 @@ public class TestUtils {
     }
 
     /**
-     * Removes all assertions from all test files in a given directory. Our
+     * Removes all oracles from all test files in a given directory. Our
      * approach for removing oracles depends on whether an oracle is
      * exceptional (e.g. throws an exception) or a normal assertion. Saves the
      * modified test cases in "output/evosuite-prefix/". Does not override
