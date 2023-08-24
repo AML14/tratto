@@ -29,7 +29,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -1104,8 +1103,8 @@ public class TestUtils {
      *
      * @param prefix a test prefix
      * @param oracles a list of oracle records
-     * @return the oracle record with the given prefix
-     * @throws NoSuchElementException if no such oracle exists in the list
+     * @return the oracle record with the given prefix. Returns null if no
+     * such oracle exists.
      */
     private static OracleOutput getOracleWithPrefix(String prefix, List<OracleOutput> oracles) {
         List<String> allPrefix = oracles
@@ -1115,7 +1114,7 @@ public class TestUtils {
                 .toList();
         int indexOfOracle = allPrefix.indexOf(prefix.trim());
         if (indexOfOracle == -1) {
-            throw new NoSuchElementException("Unable to find an oracle with the prefix " + prefix);
+            return null;
         }
         return oracles.get(indexOfOracle);
     }
@@ -1134,10 +1133,12 @@ public class TestUtils {
                 .forEach(testCase -> {
                     String prefix = testCase.toString();
                     OracleOutput oracle = getOracleWithPrefix(prefix, oracles);
-                    if (isExceptional(oracle)) {
-                        insertNonAxiomaticException(testCase, oracle.exception());
-                    } else {
-                        insertNonAxiomaticAssertion(testCase, oracle.oracle());
+                    if (oracle != null) {
+                        if (isExceptional(oracle)) {
+                            insertNonAxiomaticException(testCase, oracle.exception());
+                        } else {
+                            insertNonAxiomaticAssertion(testCase, oracle.oracle());
+                        }
                     }
                 });
     }
