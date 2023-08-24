@@ -24,7 +24,7 @@ public class TypeUtils {
      * All primitive field descriptors. The ClassGetName form of a type uses
      * field descriptor for arrays of primitive types.
      */
-    private final static List<String> allPrimitiveFieldDescriptors = List.of("Z", "B", "C", "S", "I", "J", "F", "D");
+    private final static List<String> primitiveFieldDescriptors = List.of("Z", "B", "C", "S", "I", "J", "F", "D");
 
     /** Private constructor to avoid creating an instance of this class. */
     private TypeUtils() {
@@ -88,10 +88,10 @@ public class TypeUtils {
      *
      * @param classGetNameComponent a ClassGetName component type
      * @return true iff the ClassGetName component is a field descriptor
-     * @see TypeUtils#allPrimitiveFieldDescriptors
+     * @see TypeUtils#primitiveFieldDescriptors
      */
     private static boolean isPrimitiveFieldDescriptor(String classGetNameComponent) {
-        return allPrimitiveFieldDescriptors.contains(classGetNameComponent);
+        return primitiveFieldDescriptors.contains(classGetNameComponent);
     }
 
     /**
