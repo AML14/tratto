@@ -194,13 +194,13 @@ public class TestUtilsTest {
                         assertTrue((methodName == null) == false);
                         assertTrue((parameters == null) == false);
                         java.lang.reflect.Method method;
-                        if (methodName == null) {
+                        if (parameters == null) {
                             try {
                                 method = clazz.getMethod(methodName, parameters);
                                 fail();
                             } catch (java.lang.IllegalArgumentException e) {
                             }
-                        } else if (parameters == null) {
+                        } else if (methodName == null) {
                             try {
                                 method = clazz.getMethod(methodName, parameters);
                                 fail();
