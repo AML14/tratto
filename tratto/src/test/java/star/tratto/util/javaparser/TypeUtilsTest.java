@@ -20,6 +20,7 @@ public class TypeUtilsTest {
     public void getPackageNameFromClassGetNameTest() {
         assertEquals("normal.package.setup.for.a", TypeUtils.getPackageNameFromClassGetName("normal.package.setup.for.a.Class"));
         assertEquals("normal.package.setup.for.a", TypeUtils.getPackageNameFromClassGetName("normal.package.setup.for.a.Class$InnerClass"));
+        assertEquals("", TypeUtils.getPackageNameFromClassGetName("int"));
     }
 
     @Test

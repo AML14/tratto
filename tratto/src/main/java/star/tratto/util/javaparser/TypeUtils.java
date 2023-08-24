@@ -32,7 +32,9 @@ public class TypeUtils {
     }
 
     /**
-     * Gets the package name from a ClassGetName form of a type.
+     * Gets the package name from a ClassGetName form of a type. If the
+     * package does not exist (e.g. default or primitive), then the method
+     * returns an empty string.
      *
      * @param classGetName a ClassGetName form of a type
      * @return the package name of the class
