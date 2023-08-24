@@ -740,7 +740,7 @@ public class TestUtils {
      * @param oracle the original axiomatic oracle
      * @return the contextualized oracle
      */
-    private static String replaceName(
+    private static String replaceNames(
             List<String> originalNames,
             List<String> contextNames,
             String oracle
@@ -772,7 +772,7 @@ public class TestUtils {
                 .stream()
                 .map(expression -> expression.asNameExpr().getNameAsString())
                 .toList();
-        String contextOracle = replaceName(originalNames, contextNames, oracleOutput.oracle());
+        String contextOracle = replaceNames(originalNames, contextNames, oracleOutput.oracle());
         return new OracleOutput(
                 oracleOutput.className(),
                 oracleOutput.methodSignature(),
@@ -804,7 +804,7 @@ public class TestUtils {
         String originalName = "receiverObjectID";
         String contextName = getAllMethodCallsOfStatement(testStmt).get(0)
                 .getScope().orElseThrow().toString();
-        String contextOracle = replaceName(List.of(originalName), List.of(contextName), oracleOutput.oracle());
+        String contextOracle = replaceNames(List.of(originalName), List.of(contextName), oracleOutput.oracle());
         return new OracleOutput(
                 oracleOutput.className(),
                 oracleOutput.methodSignature(),
@@ -836,7 +836,7 @@ public class TestUtils {
                 .asExpressionStmt().getExpression()
                 .asVariableDeclarationExpr().getVariables().get(0)
                 .getNameAsString();
-        String contextOracle = replaceName(List.of(originalName), List.of(contextName), oracleOutput.oracle());
+        String contextOracle = replaceNames(List.of(originalName), List.of(contextName), oracleOutput.oracle());
         return new OracleOutput(
                 oracleOutput.className(),
                 oracleOutput.methodSignature(),
