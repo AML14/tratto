@@ -161,6 +161,11 @@ public class TypeUtils {
      * Removes type arguments and semicolons from a parameterized type name.
      * The given type name should originate from source code, as neither
      * ClassGetSimpleName nor ClassGetName forms include type parameters.
+     * These names may include semicolons due to source code format. For
+     * example,
+     *     "private final static Map&lt;String, Integer&gt;;"
+     * includes a semicolon at the end of its declaration, which is removed
+     * by this method.
      *
      * @param parameterizedType a type name from source code
      * @return the base type without type arguments
