@@ -996,10 +996,23 @@ public class JavaParserUtils {
         }
     }
 
+    /**
+     * Checks if a method is non-private and non-static.
+     *
+     * @param methodUsage a method
+     * @return true iff the method is non-private non-static.
+     */
     private static boolean isNonPrivateNonVoidMethod(MethodUsage methodUsage) {
         return !methodUsage.getDeclaration().getReturnType().isVoid() && !methodUsage.getDeclaration().accessSpecifier().equals(AccessSpecifier.PRIVATE);
     }
 
+    /**
+     * Checks if an attribute is non-private and non-static. An attribute
+     * is any class field.
+     *
+     * @param fieldDeclaration a class field
+     * @return true iff the field is non-private and non-static.
+     */
     public static boolean isNonPrivateNonStaticAttribute(ResolvedFieldDeclaration fieldDeclaration) {
         return !fieldDeclaration.accessSpecifier().equals(AccessSpecifier.PRIVATE) && !fieldDeclaration.isStatic();
     }
