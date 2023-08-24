@@ -668,6 +668,73 @@ public class TestUtils {
         return Modifier.isStatic(method.getModifiers());
     }
 
+    private static Statement getInitialization(
+            Expression expression,
+            Type returnType
+    ) {
+        if (expression.isVariableDeclarationExpr()) {
+            VariableDeclarator variableDeclarator = expression.asVariableDeclarationExpr().getVariable(0);
+            VariableDeclarationExpr variableDeclarationExpr = new VariableDeclarationExpr(
+                    returnType,
+                    variableDeclarator.getNameAsString()
+            );
+            return new ExpressionStmt(variableDeclarationExpr);
+        } else if (expression.isMethodCallExpr()) {
+            String placeholderName = "default" + variableID;
+            VariableDeclarationExpr variableDeclarationExpr = new VariableDeclarationExpr(
+                    returnType,
+                    placeholderName
+            );
+            variableID++;
+            return new ExpressionStmt(variableDeclarationExpr);
+        } else {
+            return new EmptyStmt();
+        }
+    }
+
+    private static Statement getInitialization(
+            Statement statement,
+            List<OracleOutput> oracles
+    ) {
+        String className = oracles.get(0).className();
+        String methodSignature = oracles.get(0).methodSignature();
+        Type returnType = getReturnType(className, methodSignature);
+        if (returnType.isVoidType() || !statement.isExpressionStmt()) {
+            return new EmptyStmt();
+        }
+        Expression expression = statement.asExpressionStmt().getExpression();
+        return getInitialization(expression, returnType);
+    }
+
+    private static Statement getPostStatement(
+            Statement initStmt,
+            Statement testStmt
+    ) {
+        if (initStmt.isEmptyStmt() || !testStmt.isExpressionStmt()) {
+            return testStmt;
+        }
+        Expression testExpression = testStmt
+                .asExpressionStmt()
+                .getExpression();
+        if (!testExpression.isVariableDeclarationExpr() && !testExpression.isMethodCallExpr()) {
+            return testStmt;
+        }
+        Expression initExpression = initStmt
+                .asExpressionStmt()
+                .getExpression();
+        String varName = initExpression
+                .asVariableDeclarationExpr()
+                .getVariable(0)
+                .getNameAsString();
+        Expression methodCall = getAllMethodCallsOfStatement(testStmt).get(0);
+        AssignExpr assignExpr = new AssignExpr(
+                new NameExpr(varName),
+                methodCall,
+                AssignExpr.Operator.ASSIGN
+        );
+        return new ExpressionStmt(assignExpr);
+    }
+
     /**
      * Replaces all instances of an original name in a given oracle with their
      * corresponding context names. The original names
@@ -800,73 +867,6 @@ public class TestUtils {
         oracleOutput = getReceiverObjectID(testStmt, oracleOutput);
         oracleOutput = getMethodResultID(initStmt, oracleOutput);
         return oracleOutput;
-    }
-
-    private static Statement getInitialization(
-            Expression expression,
-            Type returnType
-    ) {
-        if (expression.isVariableDeclarationExpr()) {
-            VariableDeclarator variableDeclarator = expression.asVariableDeclarationExpr().getVariable(0);
-            VariableDeclarationExpr variableDeclarationExpr = new VariableDeclarationExpr(
-                    returnType,
-                    variableDeclarator.getNameAsString()
-            );
-            return new ExpressionStmt(variableDeclarationExpr);
-        } else if (expression.isMethodCallExpr()) {
-            String placeholderName = "default" + variableID;
-            VariableDeclarationExpr variableDeclarationExpr = new VariableDeclarationExpr(
-                    returnType,
-                    placeholderName
-            );
-            variableID++;
-            return new ExpressionStmt(variableDeclarationExpr);
-        } else {
-            return new EmptyStmt();
-        }
-    }
-
-    private static Statement getInitialization(
-            Statement statement,
-            List<OracleOutput> oracles
-    ) {
-        String className = oracles.get(0).className();
-        String methodSignature = oracles.get(0).methodSignature();
-        Type returnType = getReturnType(className, methodSignature);
-        if (returnType.isVoidType() || !statement.isExpressionStmt()) {
-            return new EmptyStmt();
-        }
-        Expression expression = statement.asExpressionStmt().getExpression();
-        return getInitialization(expression, returnType);
-    }
-
-    private static Statement getPostStatement(
-            Statement initStmt,
-            Statement testStmt
-    ) {
-        if (initStmt.isEmptyStmt() || !testStmt.isExpressionStmt()) {
-            return testStmt;
-        }
-        Expression testExpression = testStmt
-                .asExpressionStmt()
-                .getExpression();
-        if (!testExpression.isVariableDeclarationExpr() && !testExpression.isMethodCallExpr()) {
-            return testStmt;
-        }
-        Expression initExpression = initStmt
-                .asExpressionStmt()
-                .getExpression();
-        String varName = initExpression
-                .asVariableDeclarationExpr()
-                .getVariable(0)
-                .getNameAsString();
-        Expression methodCall = getAllMethodCallsOfStatement(testStmt).get(0);
-        AssignExpr assignExpr = new AssignExpr(
-                new NameExpr(varName),
-                methodCall,
-                AssignExpr.Operator.ASSIGN
-        );
-        return new ExpressionStmt(assignExpr);
     }
 
     private static NodeList<Statement> getPreConditions(
