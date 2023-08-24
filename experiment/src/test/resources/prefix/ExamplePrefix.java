@@ -32,7 +32,7 @@ public class ExamplePrefix {
     public void everythingTest() throws Throwable {
         Class<?> clazz = Integer.class;
         String methodName = "compare";
-        Class<?>[] parameters = {int.class, int.class};
+        Class<?>[] parameters = { int.class, int.class };
         Method method = clazz.getMethod(methodName, parameters);
     }
 }
