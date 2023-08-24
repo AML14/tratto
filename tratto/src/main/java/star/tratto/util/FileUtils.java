@@ -93,9 +93,11 @@ public class FileUtils {
     }
 
     /**
-     * Returns the path of the target file when (hypothetically) moved from
-     * the source directory to the destination directory.
-     * NOTE: This method does NOT perform the move.
+     * Returns the path of the target file or directory when (hypothetically)
+     * moved from the source directory to the destination directory.
+     * NOTE: This method does NOT perform the move. This method is different
+     * from {@link Path#relativize(Path)}, which gives a path to the
+     * destination, relative to the source.
      *
      * @param source the source directory
      * @param destination the destination directory
@@ -104,7 +106,7 @@ public class FileUtils {
      * example, let
      * <pre>
      *      source = [sourcePrefix]/[source]
-     *      destination = [destinationPrefix]/[destination]
+     *      destination = [destinationPath]
      *      target = [sourcePrefix]/[source]/[suffix]/[fileName]
      * </pre>
      * then the method outputs,
