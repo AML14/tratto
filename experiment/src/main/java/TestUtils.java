@@ -42,7 +42,7 @@ public class TestUtils {
     /** The path to the output directory */
     private static final Path output = Paths.get("output");
     /** A list of all JUnit Assertions assert methods */
-    private static final List<String> allJUnitAssertMethods = List.of(
+    private static final List<String> jUnitAssertMethods = List.of(
             "assertArrayEquals",
             "assertEquals",
             "assertFalse",
@@ -78,7 +78,7 @@ public class TestUtils {
             Expression expression = statement.asExpressionStmt().getExpression();
             if (expression.isMethodCallExpr()) {
                 MethodCallExpr methodCallExpr = expression.asMethodCallExpr();
-                return allJUnitAssertMethods.contains(methodCallExpr.getNameAsString());
+                return jUnitAssertMethods.contains(methodCallExpr.getNameAsString());
             }
         }
         return false;
@@ -135,7 +135,7 @@ public class TestUtils {
         }
         List<MethodCallExpr> nonJUnitMethods = getAllMethodCallsOfStatement(jUnitAssertion)
                 .stream()
-                .filter(methodCallExpr -> !allJUnitAssertMethods.contains(methodCallExpr.getNameAsString()))
+                .filter(methodCallExpr -> !jUnitAssertMethods.contains(methodCallExpr.getNameAsString()))
                 .toList();
         if (nonJUnitMethods.isEmpty()) {
             return null;
