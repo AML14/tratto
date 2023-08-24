@@ -88,7 +88,7 @@ public class TypeUtils {
      * The ClassGetName form of a type uses field descriptors for arrays of
      * primitive types.
      *
-     * @param classGetNameComponent a ClassGetName component type
+     * @param classGetNameComponent a ClassGetName type
      * @return true iff the ClassGetName component is a field descriptor
      * @see TypeUtils#primitiveFieldDescriptors
      */
