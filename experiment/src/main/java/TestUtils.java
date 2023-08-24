@@ -500,9 +500,9 @@ public class TestUtils {
      * Checks if a given JavaParser method call corresponds to the same method
      * as a given signature.
      *
-     * @param jpFile the Java file declaring
-     * @param jpBody a test case in the test file
-     * @param jpMethodCall a method call in the test case
+     * @param jpFile the Java file declaring the given method
+     * @param jpBody a method in the Java file
+     * @param jpMethodCall a method call in the given method
      * @param expectedSignature an expected method signature
      * @return true iff the given method call matches the method signature
      */
