@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -25,10 +26,10 @@ import java.util.stream.IntStream;
  * of two inputs.
  */
 public class StringUtils {
-    /** A suite of NLP tools for pre-processing text inputs */
+    /** A suite of NLP tools for pre-processing text inputs. */
     private static final StanfordCoreNLP stanfordCoreNLP = getStanfordCoreNLP();
 
-    /** Private constructor to avoid creating an instance of this class */
+    /** Private constructor to avoid creating an instance of this class. */
     private StringUtils() {
         throw new UnsupportedOperationException("This class cannot be instantiated.");
     }
@@ -189,9 +190,10 @@ public class StringUtils {
      * @return a vector representation of the word frequencies. Each entry
      * corresponds to a different word, where the value of the entry
      * corresponds to the word frequency. If a word does not appear in the
-     * histogram, then it is assigned a value of 0.
+     * histogram, then it is assigned a value of 0. The length of the vector
+     * is equal to the number of words, {@code words.size()}.
      */
-    private static RealVector wordFrequencyToVector(Map<String, Integer> frequencies, TreeSet<String> words) {
+    private static RealVector wordFrequencyToVector(Map<String, Integer> frequencies, SortedSet<String> words) {
         double[] vector = new double[words.size()];
         int i = 0;
         for (String word : words) {
@@ -208,7 +210,7 @@ public class StringUtils {
      * @param set2 a set of words
      * @return the words in both sets 
      */
-    private static TreeSet<String> getSetIntersection(Set<String> set1, Set<String> set2) {
+    private static SortedSet<String> setIntersection(Set<String> set1, Set<String> set2) {
         TreeSet<String> intersectionKeys = new TreeSet<>(set1);
         intersectionKeys.retainAll(set2);
         return intersectionKeys;
@@ -232,7 +234,7 @@ public class StringUtils {
     }
 
     /**
-     * Computes the cosine similarity from two lists.
+     * Computes the cosine similarity of two lists of Strings.
      *
      * @param strings1 list of strings
      * @param strings2 list of strings
@@ -241,7 +243,7 @@ public class StringUtils {
     private static double cosineSimilarity(List<String> strings1, List<String> strings2) {
         Map<String, Integer> wordsFreq1 = getHistogram(strings1);
         Map<String, Integer> wordsFreq2 = getHistogram(strings2);
-        TreeSet<String> intersectionKeys = getSetIntersection(wordsFreq1.keySet(), wordsFreq2.keySet());
+        SortedSet<String> intersectionKeys = setIntersection(wordsFreq1.keySet(), wordsFreq2.keySet());
         RealVector wordVector1 = wordFrequencyToVector(wordsFreq1, intersectionKeys);
         RealVector wordVector2 = wordFrequencyToVector(wordsFreq2, intersectionKeys);
         return cosineSimilarity(wordVector1, wordVector2);

@@ -24,7 +24,7 @@ public class TypeUtils {
      * All primitive field descriptors. The ClassGetName form of a type uses
      * field descriptor for arrays of primitive types.
      */
-    private final static List<String> allPrimitiveFieldDescriptors = List.of("Z", "B", "C", "S", "I", "J", "F", "D");
+    private final static List<String> primitiveFieldDescriptors = List.of("Z", "B", "C", "S", "I", "J", "F", "D");
 
     /** Private constructor to avoid creating an instance of this class. */
     private TypeUtils() {
@@ -32,7 +32,9 @@ public class TypeUtils {
     }
 
     /**
-     * Gets the package name from a ClassGetName form of a type.
+     * Gets the package name from a ClassGetName form of a type. If the
+     * package does not exist (e.g. default or primitive), then the method
+     * returns an empty string.
      *
      * @param classGetName a ClassGetName form of a type
      * @return the package name of the class
@@ -62,8 +64,8 @@ public class TypeUtils {
      */
     private static int getArrayLevel(String typeName) {
         int arrayLevel = 0;
-        for (char c : typeName.toCharArray()) {
-            if (c == '[') {
+        for (int i = 0; i < typeName.length(); i++) {
+            if (typeName.charAt(i) == '[') {
                 arrayLevel++;
             }
         }
@@ -78,7 +80,7 @@ public class TypeUtils {
      * @return the simple type name with the added number of array levels
      */
     private static String addArrayLevel(String classGetSimpleName, int arrayLevel) {
-        return classGetSimpleName + ("[]").repeat(arrayLevel);
+        return classGetSimpleName + "[]".repeat(arrayLevel);
     }
 
     /**
@@ -86,20 +88,22 @@ public class TypeUtils {
      * The ClassGetName form of a type uses field descriptors for arrays of
      * primitive types.
      *
-     * @param classGetNameComponent a ClassGetName component type
+     * @param classGetNameComponent a ClassGetName type
      * @return true iff the ClassGetName component is a field descriptor
-     * @see TypeUtils#allPrimitiveFieldDescriptors
+     * @see TypeUtils#primitiveFieldDescriptors
      */
     private static boolean isPrimitiveFieldDescriptor(String classGetNameComponent) {
-        return allPrimitiveFieldDescriptors.contains(classGetNameComponent);
+        return primitiveFieldDescriptors.contains(classGetNameComponent);
     }
 
     /**
-     * Gets the ClassGetName form of the component type for a given
-     * ClassGetName array type.
+     * Gets the ClassGetName form of the base component type for a given
+     * ClassGetName array type. For example,
+     *     "[[I"    =>    "I"
+     *     "[Ljava.lang.String;"    =>    "java.lang.String"
      *
      * @param classGetNameArray a ClassGetName form of an array type
-     * @return the ClassGetName form of the component type
+     * @return the ClassGetName form of the component type without arrays
      */
     private static String classGetNameComponentType(String classGetNameArray) {
         int arrayLevel = getArrayLevel(classGetNameArray);
@@ -157,6 +161,11 @@ public class TypeUtils {
      * Removes type arguments and semicolons from a parameterized type name.
      * The given type name should originate from source code, as neither
      * ClassGetSimpleName nor ClassGetName forms include type parameters.
+     * These names may include semicolons due to source code format. For
+     * example,
+     *     "private final static Map&lt;String, Integer&gt;;"
+     * includes a semicolon at the end of its declaration, which is removed
+     * by this method.
      *
      * @param parameterizedType a type name from source code
      * @return the base type without type arguments
@@ -174,43 +183,24 @@ public class TypeUtils {
     }
 
     /**
-     * Checks if a type parameter has an upper bound in source code.
+     * Gets the upper bound of a type parameter using a method signature or
+     * class type parameter from JavaParser. If no such upper bound exists,
+     * then the method returns the original type name.
      *
-     * @param sourceCode the source of the method or class in which the type
-     *                   parameter is declared
+     * @param sourceCode the class or method signature where a type
+     *                   parameter may be declared
      * @param typeName a type parameter (e.g. "T", "E")
-     * @return true iff the given type parameter has na upper bound
-     */
-    private static boolean hasUpperBound(String sourceCode, String typeName) {
-        String regex = String.format("%s\\s+extends\\s+([A-Za-z0-9_]+)[<[A-Za-z0-9_,]+]*", typeName.replaceAll("\\[]",""));
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(sourceCode);
-        return matcher.find();
-    }
-
-    /**
-     * Gets the upper bound of a type parameter using the source code.
-     *
-     * @param sourceCode the source of the method or class in which the type
-     *                   parameter is declared
-     * @param typeName a type parameter (e.g. "T", "E")
-     * @return the type name of the upper bound of {@code typeName}
-     * @throws IllegalArgumentException if {@code typeName} does not have an
-     * upper bound
+     * @return the name of the upper bound of {@code typeName}
      */
     private static String getUpperBound(String sourceCode, String typeName) {
-        String regex = String.format("%s\\s+extends\\s+([A-Za-z0-9_]+)[<[A-Za-z0-9_,]+]*", typeName.replaceAll("\\[]",""));
+        String regex = String.format("%s\\s+extends\\s+([A-Za-z0-9_]+)[<>[A-Za-z0-9_,]+]*", typeName.replaceAll("\\[]",""));
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(sourceCode);
         if (matcher.find()) {
             String typeBound = removeTypeArgumentsAndSemicolon(matcher.group(1));
             return addArrayLevel(typeBound, getArrayLevel(typeName));
         } else {
-            throw new IllegalArgumentException(String.format(
-                    "The JavaParser source code %s does not match the regex built with the JavaParser type name %s.",
-                    sourceCode,
-                    typeName
-            ));
+            return typeName;
         }
     }
 
@@ -233,16 +223,14 @@ public class TypeUtils {
     ) {
         // get upper bound from method/constructor declaration
         Optional<TokenRange> callableTokenRange = jpCallable.getTokenRange();
-        if (callableTokenRange.isPresent() && hasUpperBound(callableTokenRange.get().toString(), typeName)) {
+        if (callableTokenRange.isPresent()) {
             typeName = getUpperBound(callableTokenRange.get().toString(), typeName);
         }
         // get upper bound from class declaration
         if (jpDeclaration.isClassOrInterfaceDeclaration()) {
             for (TypeParameter jpGeneric : jpDeclaration.asClassOrInterfaceDeclaration().getTypeParameters()) {
                 if (jpGeneric.getNameAsString().equals(typeName.replaceAll("\\[]", ""))) {
-                    if (hasUpperBound(jpGeneric.toString(), typeName)) {
-                        typeName = getUpperBound(jpGeneric.toString(), typeName);
-                    }
+                    typeName = getUpperBound(jpGeneric.toString(), typeName);
                 }
             }
         }

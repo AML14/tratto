@@ -24,11 +24,11 @@ public class FileUtils {
     }
 
     /**
-     * This method is a wrapper method of {@link Files#createDirectories(Path, FileAttribute[])}
+     * Creates an empty directory. Creates parent directories if necessary. If
+     * the directory already exists, then this method does nothing. This
+     * method is a wrapper method of {@link Files#createDirectories(Path, FileAttribute[])}
      * to substitute {@link IOException} with {@link Error} and avoid
-     * superfluous try/catch blocks. Creates an empty directory. Creates
-     * parent directories if necessary. If the directory already exists, then
-     * this method does nothing.
+     * superfluous try/catch blocks.
      *
      * @param path a path
      * @throws Error if an error occurs while creating the directory
@@ -93,9 +93,11 @@ public class FileUtils {
     }
 
     /**
-     * Returns the path of the target file when (hypothetically) moved from
-     * the source directory to the destination directory.
-     * NOTE: This method does NOT perform the move.
+     * Returns the path of the target file or directory when (hypothetically)
+     * moved from the source directory to the destination directory.
+     * NOTE: This method does NOT perform the move. This method is different
+     * from {@link Path#relativize(Path)}, which gives a path to the
+     * destination, relative to the source.
      *
      * @param source the source directory
      * @param destination the destination directory
@@ -103,13 +105,13 @@ public class FileUtils {
      * @return the relative path of target in the destination directory. For
      * example, let
      * <pre>
-     *      source = [sourcePrefix]/[source]
-     *      destination = [destinationPrefix]/[destination]
-     *      target = [sourcePrefix]/[source]/[suffix]/[fileName]
+     *     source = [...]/[source]
+     *     destination = [...]/[destination]
+     *     target = [...]/[source]/[...]/[fileName]
      * </pre>
      * then the method outputs,
      * <pre>
-     *      relativePath = [destinationPrefix]/[destination]/[suffix]/[fileName]
+     *     relativePath = [...]/[destination]/[...]/[fileName]
      * </pre>
      */
     private static Path getRelativePath(Path source, Path destination, Path target) {
@@ -126,9 +128,10 @@ public class FileUtils {
     }
 
     /**
-     * Recursively copies all files from the source directory to the
-     * destination directory. If a file in the source directory already exists
-     * in the destination directory, then the original file will be overridden.
+     * Recursively copies all files and directories from the source directory
+     * to the destination directory. If a file in the source directory already
+     * exists in the destination directory, then the original file will be
+     * overwritten.
      *
      * @param source the directory where the files are located
      * @param destination the directory where the files will be copied to
@@ -143,6 +146,7 @@ public class FileUtils {
         if (!Files.exists(destination)) {
             createDirectories(destination);
         }
+        // walk is used to iterate over files in subdirectories
         try (Stream<Path> walk = Files.walk(source)) {
             walk
                     .forEach(p -> {
@@ -165,7 +169,8 @@ public class FileUtils {
     /**
      * Recursively moves all files from the source directory to the
      * destination directory. If a file in the source directory already exists
-     * in the destination directory, then the original file will be overridden.
+     * in the destination directory, then the original file will be
+     * overwritten.
      *
      * @param source the directory where the files are located
      * @param destination the directory where the files will be moved to
