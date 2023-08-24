@@ -105,13 +105,13 @@ public class FileUtils {
      * @return the relative path of target in the destination directory. For
      * example, let
      * <pre>
-     *      source = [sourcePrefix]/[source]
-     *      destination = [destinationPath]
-     *      target = [sourcePrefix]/[source]/[suffix]/[fileName]
+     *     source = [...]/[source]
+     *     destination = [...]/[destination]
+     *     target = [...]/[source]/[...]/[fileName]
      * </pre>
      * then the method outputs,
      * <pre>
-     *      relativePath = [destinationPrefix]/[destination]/[suffix]/[fileName]
+     *     relativePath = [...]/[destination]/[...]/[fileName]
      * </pre>
      */
     private static Path getRelativePath(Path source, Path destination, Path target) {
