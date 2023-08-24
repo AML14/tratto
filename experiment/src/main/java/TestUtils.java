@@ -37,7 +37,7 @@ import java.util.stream.Stream;
  * and inserting oracles into test prefixes.
  */
 public class TestUtils {
-    /** A unique id for placeholder variable names when inserting oracles. */
+    /** A unique id for placeholder variable names when inserting oracles */
     private static int variableID = 0;
     /** The path to the output directory */
     private static final Path output = Paths.get("output");
