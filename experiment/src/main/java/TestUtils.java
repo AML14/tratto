@@ -125,7 +125,7 @@ public class TestUtils {
      * call in its condition.
      *
      * @param jUnitAssertion a JUnit assertion
-     * @return the method call in a given JUnit assertion. Returns null if the
+     * @return the method call in the JUnit assertion. Returns null if the
      * JUnit condition does not have a method call.
      * @throws IllegalArgumentException if the given statement is not a JUnit
      * assertion
