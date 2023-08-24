@@ -64,8 +64,8 @@ public class TypeUtils {
      */
     private static int getArrayLevel(String typeName) {
         int arrayLevel = 0;
-        for (char c : typeName.toCharArray()) {
-            if (c == '[') {
+        for (int i = 0; i < typeName.length(); i++) {
+            if (typeName.charAt(i) == '[') {
                 arrayLevel++;
             }
         }
