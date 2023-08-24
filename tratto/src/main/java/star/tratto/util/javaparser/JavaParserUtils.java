@@ -385,6 +385,7 @@ public class JavaParserUtils {
      *     package.Outer.Inner    =>    Outer.Inner
      */
     private static String getTypeWithoutPackages(String fullyQualifiedName) {
+        // regex is used instead of String.lastIndexOf to avoid removing outer classes
         Matcher matcher = PACKAGE_CLASS.matcher(fullyQualifiedName);
         while (matcher.find()) {
             if (matcher.group().contains(".")) {
