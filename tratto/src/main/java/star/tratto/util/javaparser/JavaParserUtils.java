@@ -948,7 +948,7 @@ public class JavaParserUtils {
             return new ArrayList<>(typeDeclaration.resolve().getAllMethods());
         } catch (UnsolvedSymbolException | IllegalArgumentException e) {
             String errMsg = String.format(
-                    "Impossible to get all the methods of the class %s.%n%s.",
+                    "Unable to get all the methods of the class %s.%n%s.",
                     typeDeclaration.getNameAsString(), e
             );
             logger.error(errMsg);
