@@ -764,11 +764,8 @@ public class TestUtils {
             Statement initStmt,
             OracleOutput oracleOutput
     ) {
-        String className = oracleOutput.className();
-        String methodSignature = oracleOutput.methodSignature();
-        Type returnType = getReturnType(className, methodSignature);
-        if (returnType.isVoidType()) {
-            // if the method has a void type, then the methodResultID is not necessary.
+        if (initStmt.isEmptyStmt()) {
+            // if there is no return type, then the methodResultID is not necessary
             return oracleOutput;
         }
         String originalName = "methodResultID";
