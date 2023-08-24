@@ -57,6 +57,10 @@ import java.util.stream.Collectors;
 import static star.tratto.util.JavaTypes.isAssignableToNumeric;
 import static star.tratto.util.StringUtils.fullyQualifiedClassName;
 
+/**
+ * This class provides static methods for a variety of common JavaParser
+ * utilities to avoid duplicate code.
+ */
 public class JavaParserUtils {
     private static final Logger logger = LoggerFactory.getLogger(JavaParserUtils.class);
     private static JavaParser javaParser = getJavaParser();
