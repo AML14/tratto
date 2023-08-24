@@ -367,16 +367,6 @@ public class TestUtils {
     }
 
     /**
-     * Checks if a class name is an array type.
-     *
-     * @param fullyQualifiedName a fully qualified name
-     * @return true iff the fully qualified name is an array type
-     */
-    private static boolean isArray(String fullyQualifiedName) {
-        return fullyQualifiedName.contains("[]");
-    }
-
-    /**
      * Gets the array level of a fully qualified name.
      *
      * @param fullyQualifiedName a fully qualified name
@@ -399,8 +389,8 @@ public class TestUtils {
      * @return the Class.getName form of a type
      */
     private static String fqnToClassGetName(String fullyQualifiedName) {
-        if (isArray(fullyQualifiedName)) {
-            int arrayLevel = getArrayLevel(fullyQualifiedName);
+        int arrayLevel = getArrayLevel(fullyQualifiedName);
+        if (arrayLevel != 0) {
             StringBuilder sb = new StringBuilder(fullyQualifiedName.replaceAll("\\[]", ""));
             sb.insert(0, "L");
             sb.insert(0, ("[").repeat(arrayLevel));
