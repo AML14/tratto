@@ -790,7 +790,7 @@ public class JavaParserUtils {
     }
 
     /**
-     * Gets all exceptions that can be thrown by a given method.
+     * Gets the types of all exceptions that can be thrown by a given method.
      */
     private static List<String> getExceptions(MethodUsage methodUsage) {
         return methodUsage.getDeclaration().getSpecifiedExceptions()
