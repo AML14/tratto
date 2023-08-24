@@ -38,7 +38,7 @@ import java.util.stream.Stream;
  * and inserting oracles into test prefixes.
  */
 public class TestUtils {
-    /** A unique id for placeholder variable names */
+    /** A unique id for placeholder variable names when inserting oracles. */
     private static int variableID = 0;
     /** The path to the output directory */
     private static final Path output = Paths.get("output");
@@ -132,7 +132,7 @@ public class TestUtils {
      */
     private static MethodCallExpr getMethodCallOfJUnitAssertion(Statement jUnitAssertion) {
         if (!isJUnitAssertion(jUnitAssertion)) {
-            throw new IllegalArgumentException(jUnitAssertion + " is not a statement.");
+            throw new IllegalArgumentException(jUnitAssertion + " is not a JUnit assertion.");
         }
         List<MethodCallExpr> nonJUnitMethods = getAllMethodCallsOfStatement(jUnitAssertion)
                 .stream()
