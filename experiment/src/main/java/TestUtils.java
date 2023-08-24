@@ -147,24 +147,23 @@ public class TestUtils {
 
     /**
      * Creates a duplicate method based on a given original method. The
-     * original method is given a new body, and a new name, corresponding
-     * to the given index.
+     * original method is given a new body with a new name. The duplicate
+     * index is added to the original name to avoid duplicate signatures.
      *
      * @param original the original method
      * @param newBody the new method body
-     * @param assertionIdx the duplicate index
-     * @return a duplicate method test case
+     * @param duplicateIdx the duplicate index
+     * @return a modified duplicate method
      */
     private static MethodDeclaration createMethodDuplicate(
             MethodDeclaration original,
             NodeList<Statement> newBody,
-            int assertionIdx
+            int duplicateIdx
     ) {
-        String duplicateName = original.getNameAsString() + "_" + assertionIdx;
-        MethodDeclaration duplicate = original.clone();
-        duplicate.setBody(new BlockStmt(newBody));
-        duplicate.setName(duplicateName);
-        return duplicate;
+        String duplicateName = original.getNameAsString() + "_" + duplicateIdx;
+        return original.clone()
+                .setBody(new BlockStmt(newBody))
+                .setName(duplicateName);
     }
 
     /**
