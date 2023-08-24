@@ -183,9 +183,9 @@ public class TypeUtils {
     }
 
     /**
-     * Gets the upper bound of a type parameter using a class or method
-     * signature (if applicable). If no such upper bound exists, then the
-     * method returns the original type name.
+     * Gets the upper bound of a type parameter using a method signature or
+     * class type parameter from JavaParser. If no such upper bound exists,
+     * then the method returns the original type name.
      *
      * @param sourceCode the class or method signature where a type
      *                   parameter may be declared
