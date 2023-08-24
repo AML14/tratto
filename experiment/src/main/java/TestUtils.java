@@ -668,18 +668,18 @@ public class TestUtils {
         return Modifier.isStatic(method.getModifiers());
     }
 
-    private static Statement getInitialization(
-            Expression expression,
+    private static Statement getInitStmt(
+            Expression testExpr,
             Type returnType
     ) {
-        if (expression.isVariableDeclarationExpr()) {
-            VariableDeclarator variableDeclarator = expression.asVariableDeclarationExpr().getVariable(0);
+        if (testExpr.isVariableDeclarationExpr()) {
+            VariableDeclarator variableDeclarator = testExpr.asVariableDeclarationExpr().getVariable(0);
             VariableDeclarationExpr variableDeclarationExpr = new VariableDeclarationExpr(
                     returnType,
                     variableDeclarator.getNameAsString()
             );
             return new ExpressionStmt(variableDeclarationExpr);
-        } else if (expression.isMethodCallExpr()) {
+        } else if (testExpr.isMethodCallExpr()) {
             String placeholderName = "default" + variableID;
             VariableDeclarationExpr variableDeclarationExpr = new VariableDeclarationExpr(
                     returnType,
@@ -692,44 +692,40 @@ public class TestUtils {
         }
     }
 
-    private static Statement getInitialization(
-            Statement statement,
+    private static Statement getInitStmt(
+            Statement testStmt,
             List<OracleOutput> oracles
     ) {
         String className = oracles.get(0).className();
         String methodSignature = oracles.get(0).methodSignature();
         Type returnType = getReturnType(className, methodSignature);
-        if (returnType.isVoidType() || !statement.isExpressionStmt()) {
+        if (returnType.isVoidType() || !testStmt.isExpressionStmt()) {
             return new EmptyStmt();
         }
-        Expression expression = statement.asExpressionStmt().getExpression();
-        return getInitialization(expression, returnType);
+        Expression testExpr = testStmt.asExpressionStmt().getExpression();
+        return getInitStmt(testExpr, returnType);
     }
 
-    private static Statement getPostStatement(
+    private static Statement getPostStmt(
             Statement initStmt,
             Statement testStmt
     ) {
         if (initStmt.isEmptyStmt() || !testStmt.isExpressionStmt()) {
+            // if method is void (e.g., no initialization), then use original statement.
             return testStmt;
         }
-        Expression testExpression = testStmt
+        Expression initExpr = initStmt
                 .asExpressionStmt()
                 .getExpression();
-        if (!testExpression.isVariableDeclarationExpr() && !testExpression.isMethodCallExpr()) {
-            return testStmt;
-        }
-        Expression initExpression = initStmt
-                .asExpressionStmt()
-                .getExpression();
-        String varName = initExpression
+        Expression testExpr = getAllMethodCallsOfStatement(testStmt)
+                .get(0);
+        String name = initExpr
                 .asVariableDeclarationExpr()
                 .getVariable(0)
                 .getNameAsString();
-        Expression methodCall = getAllMethodCallsOfStatement(testStmt).get(0);
         AssignExpr assignExpr = new AssignExpr(
-                new NameExpr(varName),
-                methodCall,
+                new NameExpr(name),
+                testExpr,
                 AssignExpr.Operator.ASSIGN
         );
         return new ExpressionStmt(assignExpr);
@@ -958,8 +954,8 @@ public class TestUtils {
             List<OracleOutput> oracles
     ) {
         NodeList<Statement> oracleStatements = new NodeList<>();
-        Statement initStmt = getInitialization(testStmt, oracles);
-        Statement postStmt = getPostStatement(initStmt, testStmt);
+        Statement initStmt = getInitStmt(testStmt, oracles);
+        Statement postStmt = getPostStmt(initStmt, testStmt);
         oracles = oracles
                 .stream()
                 .map(o -> contextualizeOracle(initStmt, testStmt, o))
