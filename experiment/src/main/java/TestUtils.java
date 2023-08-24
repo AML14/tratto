@@ -54,7 +54,7 @@ public class TestUtils {
             "assertTrue"
     );
     /** A list of all supported axiomatic test oracle generators */
-    private static final List<String> allAxiomaticTogs = List.of(
+    private static final List<String> axiomaticTogs = List.of(
             "jdoctor",
             "tratto"
     );
@@ -1168,7 +1168,7 @@ public class TestUtils {
      * a priori)
      */
     private static boolean isAxiomatic(String tog) {
-        return allAxiomaticTogs.contains(tog);
+        return axiomaticTogs.contains(tog);
     }
 
     /**
