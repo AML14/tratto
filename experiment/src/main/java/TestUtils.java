@@ -105,15 +105,15 @@ public class TestUtils {
 
 
     /**
-     * Gets all method calls of a Java statement.
+     * Gets all method calls in a Java statement.
      *
      * @param statement a Java statement
-     * @return a list of all methods referenced by the statement
+     * @return all method calls present in the statement
      */
     private static List<MethodCallExpr> getAllMethodCallsOfStatement(Statement statement) {
-        List<MethodCallExpr> methodCallExprs = new ArrayList<>();
-        statement.clone().walk(MethodCallExpr.class, methodCallExprs::add);
-        return methodCallExprs;
+        List<MethodCallExpr> methodCalls = new ArrayList<>();
+        statement.clone().walk(MethodCallExpr.class, methodCalls::add);
+        return methodCalls;
     }
 
     /**
