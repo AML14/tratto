@@ -27,9 +27,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Stream;
 
 /**
@@ -538,16 +536,12 @@ public class TestUtils {
             List<OracleOutput> allOracles
     ) {
         List<MethodCallExpr> methodCalls = getAllMethodCallsOfStatement(stmt);
-        Set<OracleOutput> relatedOracles = new HashSet<>();
-        for (MethodCallExpr methodCall : methodCalls) {
-            relatedOracles.addAll(allOracles
-                    .stream()
-                    .filter(o -> isMatchingMethod(cu, body, methodCall, o.methodSignature()))
-                    .toList()
-            );
+        if (methodCalls.isEmpty()) {
+            return new ArrayList<>();
         }
-        return relatedOracles
+        return allOracles
                 .stream()
+                .filter(o -> isMatchingMethod(cu, body, methodCalls.get(0), o.methodSignature()))
                 .toList();
     }
 
@@ -885,6 +879,7 @@ public class TestUtils {
                 postStmt,
                 StaticJavaParser.parseStatement("fail();")
         );
+        // TODO: add comment
         return new TryStmt()
                 .setTryBlock(new BlockStmt(tryBody))
                 .setCatchClauses(new NodeList<>(catchClause));
