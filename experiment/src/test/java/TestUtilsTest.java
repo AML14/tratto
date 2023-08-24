@@ -177,6 +177,7 @@ public class TestUtilsTest {
                                 correspondingInteger = Integer.parseInt(integerToParse);
                                 fail();
                             } catch (java.lang.NumberFormatException e) {
+                                // Successfully thrown exception
                             }
                         } else {
                             correspondingInteger = Integer.parseInt(integerToParse);
@@ -199,12 +200,14 @@ public class TestUtilsTest {
                                 method = clazz.getMethod(methodName, parameters);
                                 fail();
                             } catch (java.lang.IllegalArgumentException e) {
+                                // Successfully thrown exception
                             }
                         } else if (parameters == null) {
                             try {
                                 method = clazz.getMethod(methodName, parameters);
                                 fail();
                             } catch (java.lang.IllegalArgumentException e) {
+                                // Successfully thrown exception
                             }
                         } else {
                             method = clazz.getMethod(methodName, parameters);

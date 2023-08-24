@@ -6,6 +6,8 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.body.TypeDeclaration;
+import com.github.javaparser.ast.comments.Comment;
+import com.github.javaparser.ast.comments.LineComment;
 import com.github.javaparser.ast.expr.AssignExpr;
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.MethodCallExpr;
@@ -874,12 +876,14 @@ public class TestUtils {
     ) {
         Type exceptionType = StaticJavaParser.parseType(oracleOutput.exception());
         Parameter exceptionParameter = new Parameter(exceptionType, "e");
-        CatchClause catchClause = new CatchClause(exceptionParameter, new BlockStmt());
+        Comment comment = new LineComment(" Successfully thrown exception");
+        BlockStmt catchBody = new BlockStmt();
+        catchBody.addOrphanComment(comment);
+        CatchClause catchClause = new CatchClause(exceptionParameter, catchBody);
         NodeList<Statement> tryBody = new NodeList<>(
                 postStmt,
                 StaticJavaParser.parseStatement("fail();")
         );
-        // TODO: add comment
         return new TryStmt()
                 .setTryBlock(new BlockStmt(tryBody))
                 .setCatchClauses(new NodeList<>(catchClause));
