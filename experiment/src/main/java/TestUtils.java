@@ -875,14 +875,14 @@ public class TestUtils {
     }
 
     private static TryStmt getTryCatchBlock(
-            Statement statement,
+            Statement postStmt,
             OracleOutput oracleOutput
     ) {
         Type exceptionType = StaticJavaParser.parseType(oracleOutput.exception());
         Parameter exceptionParameter = new Parameter(exceptionType, "e");
         CatchClause catchClause = new CatchClause(exceptionParameter, new BlockStmt());
         NodeList<Statement> tryBody = new NodeList<>(
-                statement,
+                postStmt,
                 StaticJavaParser.parseStatement("fail();")
         );
         return new TryStmt()
