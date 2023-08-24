@@ -646,7 +646,9 @@ public class JavaParserUtils {
 
     /**
      * Returns the String variable declaration represented by a JavaParser
-     * VariableDeclarator.
+     * VariableDeclarator. Recall that a JavaParser field declaration may
+     * declare multiple variables. Each variable is separated into individual
+     * declarations.
      *
      * @param field the JavaParser field declaration
      * @param variable the JavaParser variable declaration
@@ -666,9 +668,9 @@ public class JavaParserUtils {
 
     /**
      * Returns the String field declaration represented by a JavaParser
-     * {@link ResolvedFieldDeclaration}.
+     * {@link ResolvedFieldDeclaration} as it would appear in source code.
      *
-     * @param resolvedField a resolved field declaration
+     * @param resolvedField a field declaration
      * @return a string representation of the declaration of
      * {@code resolvedField}. The declaration follows the format:
      *  "(access-specifier) (static) (type) (name);"
@@ -689,7 +691,7 @@ public class JavaParserUtils {
      * Gets the String field declaration represented by a JavaParser
      * {@link ResolvedFieldDeclaration}.
      *
-     * @param resolvedField resolved field declaration
+     * @param resolvedField a field declaration
      * @param modifier an integer representing the field modifiers
      * @return a string representation of the declaration. The declaration
      * follows the format:
