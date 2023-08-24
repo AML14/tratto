@@ -97,11 +97,13 @@ public class TypeUtils {
     }
 
     /**
-     * Gets the ClassGetName form of the component type for a given
-     * ClassGetName array type.
+     * Gets the ClassGetName form of the base component type for a given
+     * ClassGetName array type. For example,
+     *     "[[I"    =>    "I"
+     *     "[Ljava.lang.String;"    =>    "java.lang.String"
      *
      * @param classGetNameArray a ClassGetName form of an array type
-     * @return the ClassGetName form of the component type
+     * @return the ClassGetName form of the component type without arrays
      */
     private static String classGetNameComponentType(String classGetNameArray) {
         int arrayLevel = getArrayLevel(classGetNameArray);
