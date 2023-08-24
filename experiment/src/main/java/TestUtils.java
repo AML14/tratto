@@ -174,7 +174,7 @@ public class TestUtils {
      *
      * @param testCase a test case
      * @param assertionIdx the assertion number
-     * @return a test prefix corresponding to the "assertionIdx"-th assertion
+     * @return a test prefix corresponding to the given assertion number
      */
     private static MethodDeclaration getNextPrefix(MethodDeclaration testCase, int assertionIdx) {
         NodeList<Statement> originalBody = testCase.getBody().orElseThrow().getStatements();
@@ -187,6 +187,7 @@ public class TestUtils {
                     if (conditionMethodCall != null) {
                         newBody.add(new ExpressionStmt(conditionMethodCall));
                     }
+                    // do not add statements after target assertion.
                     break;
                 }
                 currentIdx++;
@@ -278,7 +279,7 @@ public class TestUtils {
      * Removes all assertions from all test files in a given directory. Our
      * approach for removing oracles depends on whether an oracle is
      * exceptional (e.g. throws an exception) or a normal assertion. Saves the
-     * modified test cases in output/evosuite-prefix/. Does not override
+     * modified test cases in "output/evosuite-prefix/". Does not override
      * original test files at the given path.
      *
      * @param dir a directory with Java test files
