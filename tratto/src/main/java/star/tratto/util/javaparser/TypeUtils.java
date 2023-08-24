@@ -183,43 +183,24 @@ public class TypeUtils {
     }
 
     /**
-     * Checks if a type parameter has an upper bound in source code.
+     * Gets the upper bound of a type parameter using a class or method
+     * signature (if applicable). If no such upper bound exists, then the
+     * method returns the original type name.
      *
-     * @param sourceCode the source of the method or class in which the type
-     *                   parameter is declared
+     * @param sourceCode the class or method signature where a type
+     *                   parameter may be declared
      * @param typeName a type parameter (e.g. "T", "E")
-     * @return true iff the given type parameter has na upper bound
-     */
-    private static boolean hasUpperBound(String sourceCode, String typeName) {
-        String regex = String.format("%s\\s+extends\\s+([A-Za-z0-9_]+)[<[A-Za-z0-9_,]+]*", typeName.replaceAll("\\[]",""));
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(sourceCode);
-        return matcher.find();
-    }
-
-    /**
-     * Gets the upper bound of a type parameter using the source code.
-     *
-     * @param sourceCode the source of the method or class in which the type
-     *                   parameter is declared
-     * @param typeName a type parameter (e.g. "T", "E")
-     * @return the type name of the upper bound of {@code typeName}
-     * @throws IllegalArgumentException if {@code typeName} does not have an
-     * upper bound
+     * @return the name of the upper bound of {@code typeName}
      */
     private static String getUpperBound(String sourceCode, String typeName) {
-        String regex = String.format("%s\\s+extends\\s+([A-Za-z0-9_]+)[<[A-Za-z0-9_,]+]*", typeName.replaceAll("\\[]",""));
+        String regex = String.format("%s\\s+extends\\s+([A-Za-z0-9_]+)[<>[A-Za-z0-9_,]+]*", typeName.replaceAll("\\[]",""));
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(sourceCode);
         if (matcher.find()) {
             String typeBound = removeTypeArgumentsAndSemicolon(matcher.group(1));
             return addArrayLevel(typeBound, getArrayLevel(typeName));
         } else {
-            throw new IllegalArgumentException(String.format(
-                    "The JavaParser source code %s does not match the regex built with the JavaParser type name %s.",
-                    sourceCode,
-                    typeName
-            ));
+            return typeName;
         }
     }
 
@@ -242,16 +223,14 @@ public class TypeUtils {
     ) {
         // get upper bound from method/constructor declaration
         Optional<TokenRange> callableTokenRange = jpCallable.getTokenRange();
-        if (callableTokenRange.isPresent() && hasUpperBound(callableTokenRange.get().toString(), typeName)) {
+        if (callableTokenRange.isPresent()) {
             typeName = getUpperBound(callableTokenRange.get().toString(), typeName);
         }
         // get upper bound from class declaration
         if (jpDeclaration.isClassOrInterfaceDeclaration()) {
             for (TypeParameter jpGeneric : jpDeclaration.asClassOrInterfaceDeclaration().getTypeParameters()) {
                 if (jpGeneric.getNameAsString().equals(typeName.replaceAll("\\[]", ""))) {
-                    if (hasUpperBound(jpGeneric.toString(), typeName)) {
-                        typeName = getUpperBound(jpGeneric.toString(), typeName);
-                    }
+                    typeName = getUpperBound(jpGeneric.toString(), typeName);
                 }
             }
         }
