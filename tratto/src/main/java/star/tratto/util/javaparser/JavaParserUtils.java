@@ -69,7 +69,7 @@ public class JavaParserUtils {
     /** Artificial method name */
     private static final String SYNTHETIC_METHOD_NAME = "__tratto__auxiliaryMethod";
     /**
-     * Regex to match the signature from the "toString" of either {@link ReflectionMethodDeclaration} or
+     * Regex to match the "toString" of either {@link ReflectionMethodDeclaration} or
      * {@link JavassistMethodDeclaration} (both implementations of {@link ResolvedMethodDeclaration})
      */
     private static final Pattern METHOD_SIGNATURE = Pattern.compile(
