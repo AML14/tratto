@@ -117,18 +117,18 @@ public class TestUtils {
     }
 
     /**
-     * Returns the method call in a JUnit assertion condition. Returns null if
-     * the condition does not have a method call. For example,
-     *     "{@code assertEquals(stack.isEmpty())}" =>
-     *     "{@code stack.isEmpty()}".
-     * This method assumes that a JUnit assertion only has a single method
-     * call in its condition.
+     * Gets the method call in a JUnit Assert condition. Returns null if the
+     * conditions does not have a method call. For example,
+     *     "{@code assertTrue(stack.isEmpty()}" => "{@code stack.isEmpty()}",
+     *     "{@code assertFalse(boolVar)}" => "null".
+     * This method assumes that a JUnit condition has at most one method call
+     * in its condition.
      *
-     * @param jUnitAssertion a JUnit assertion
-     * @return the method call in the JUnit assertion. Returns null if the
-     * JUnit condition does not have a method call.
+     * @param jUnitAssertion a JUnit Assert assertion
+     * @return the method call in the JUnit Assert condition. Returns null if
+     * the condition does not have a method call.
      * @throws IllegalArgumentException if the given statement is not a JUnit
-     * assertion
+     * Assert method call
      */
     private static MethodCallExpr getMethodCallOfJUnitAssertion(Statement jUnitAssertion) {
         if (!isJUnitAssertion(jUnitAssertion)) {
