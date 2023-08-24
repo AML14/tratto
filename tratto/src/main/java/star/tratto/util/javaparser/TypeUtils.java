@@ -80,7 +80,7 @@ public class TypeUtils {
      * @return the simple type name with the added number of array levels
      */
     private static String addArrayLevel(String classGetSimpleName, int arrayLevel) {
-        return classGetSimpleName + ("[]").repeat(arrayLevel);
+        return classGetSimpleName + "[]".repeat(arrayLevel);
     }
 
     /**
