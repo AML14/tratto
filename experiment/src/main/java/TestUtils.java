@@ -65,20 +65,20 @@ public class TestUtils {
     }
 
     /**
-     * Checks if a given statement is a JUnit Assertions assert method call
-     * (e.g. assertEquals). This does NOT include "fail()", which is used by
-     * exceptional oracles.
+     * Checks if a given statement represents a method call to a JUnit Assert
+     * method (e.g. {@code assertEquals}). This does NOT include {@code fail},
+     * which is used by exceptional oracles.
      *
-     * @param statement a code statement
-     * @return true iff the statement uses an "assert..." method from the
-     * JUnit Assertions class
+     * @param statement a Java statement
+     * @return true iff the statement is a JUnit Assert method call
+     * @see TestUtils#isFail(Statement)
      */
     private static boolean isJUnitAssertion(Statement statement) {
         if (statement.isExpressionStmt()) {
             Expression expression = statement.asExpressionStmt().getExpression();
             if (expression.isMethodCallExpr()) {
-                MethodCallExpr methodCallExpr = expression.asMethodCallExpr();
-                return jUnitAssertMethods.contains(methodCallExpr.getNameAsString());
+                MethodCallExpr methodCall = expression.asMethodCallExpr();
+                return jUnitAssertMethods.contains(methodCall.getNameAsString());
             }
         }
         return false;
