@@ -228,7 +228,7 @@ public class TestUtilsTest {
                         """
                                 @Test
                                 @Disabled
-                                public void assertionTest() {
+                                public void assertionTest() throws Throwable {
                                     int primitiveInt = 5;
                                     Integer objectInt = Integer.valueOf(primitiveInt);
                                 }""",
@@ -242,7 +242,7 @@ public class TestUtilsTest {
                         """
                                 @Test
                                 @Disabled
-                                public void exceptionalTest() {
+                                public void exceptionalTest() throws Throwable {
                                     String integerToParse = null;
                                     int correspondingInteger = Integer.parseInt(integerToParse);
                                 }""",
@@ -259,7 +259,7 @@ public class TestUtilsTest {
         String expectedAssertionTest = """
                                 @Test
                                 @Disabled
-                                public void assertionTest() {
+                                public void assertionTest() throws Throwable {
                                     int primitiveInt = 5;
                                     Integer objectInt = Integer.valueOf(primitiveInt);
                                     assertTrue(primitiveInt == objectInt.intValue());
@@ -267,7 +267,7 @@ public class TestUtilsTest {
         String expectedExceptionTest = """
                                 @Test
                                 @Disabled
-                                public void exceptionalTest() {
+                                public void exceptionalTest() throws Throwable {
                                     try {
                                         String integerToParse = null;
                                         int correspondingInteger = Integer.parseInt(integerToParse);
@@ -280,7 +280,7 @@ public class TestUtilsTest {
             List<MethodDeclaration> testCases = cu.findAll(MethodDeclaration.class);
             MethodDeclaration assertionTest = testCases.get(0);
             assertEquals(expectedAssertionTest, assertionTest.toString());
-            MethodDeclaration exceptionTest = testCases.get(1);
+            MethodDeclaration exceptionTest = testCases.get(2);
             assertEquals(expectedExceptionTest, exceptionTest.toString());
         } catch (IOException e) {
             fail();
