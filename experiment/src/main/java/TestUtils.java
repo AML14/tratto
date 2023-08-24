@@ -59,7 +59,7 @@ public class TestUtils {
             "tratto"
     );
 
-    /** Private constructor to avoid creating an instance of this class. */
+    /** Private constructor to avoid creating an instance of this class */
     private TestUtils() {
         throw new UnsupportedOperationException("This class cannot be instantiated.");
     }
