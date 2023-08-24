@@ -687,8 +687,7 @@ public class JavaParserUtils {
 
     /**
      * Gets the String field declaration represented by a JavaParser
-     * {@link ResolvedFieldDeclaration}. Uses a given modifier value to
-     * determine the modifiers.
+     * {@link ResolvedFieldDeclaration}.
      *
      * @param resolvedField resolved field declaration
      * @param modifier an integer representing the field modifiers
