@@ -777,7 +777,10 @@ public class JavaParserUtils {
     }
 
     /**
-     * Gets all formal parameters in the method definition.
+     * Gets all formal parameters in the method definition. This method gets
+     * the type of each parameter, followed by an artificial name. For
+     * example,
+     *     "MethodUsage[get(int i)]"    => "List.of("int arg0")"
      */
     private static List<String> getParameters(MethodUsage methodUsage) {
         ResolvedMethodDeclaration methodDeclaration = methodUsage.getDeclaration();
