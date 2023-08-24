@@ -800,10 +800,9 @@ public class JavaParserUtils {
     }
 
     /**
-     * Gets the method signature from a JavaParser MethodUsage and its
-     * corresponding ResolvedMethodDeclaration. Unfortunately, depending on
-     * the implementation of the ResolvedMethodDeclaration, it is not possible
-     * to recover specific features, such as:
+     * Gets the method signature from a JavaParser MethodUsage. Unfortunately,
+     * depending on the implementation of the ResolvedMethodDeclaration, it is
+     * not possible to recover specific features, such as:
      * <ul>
      *     <li>Modifiers</li>
      *     <li>Annotations</li>
