@@ -85,18 +85,19 @@ public class TestUtils {
     }
 
     /**
-     * Checks if a given statement is a fail statement. These are used in
-     * exceptional oracles to ensure that a prefix throws an exception.
+     * Checks if a given statement represents a method call to the JUnit
+     * {@code Assert.fail} method. The fail method is used in exceptional
+     * oracles to ensure that a prefix throws the expected exception.
      *
-     * @param statement a code statement
-     * @return true iff the statement is a "fail" method call
+     * @param statement a Java statement
+     * @return true iff the statement is a JUnit Assert fail method call
      */
     private static boolean isFail(Statement statement) {
         if (statement.isExpressionStmt()) {
             Expression expression = statement.asExpressionStmt().getExpression();
             if (expression.isMethodCallExpr()) {
-                MethodCallExpr methodCallExpr = expression.asMethodCallExpr();
-                return methodCallExpr.getNameAsString().equals("fail");
+                MethodCallExpr methodCall = expression.asMethodCallExpr();
+                return methodCall.getNameAsString().equals("fail");
             }
         }
         return false;
