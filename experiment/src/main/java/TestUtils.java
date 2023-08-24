@@ -345,7 +345,7 @@ public class TestUtils {
             return new ArrayList<>();
         }
         return Stream.of(parameters.split(","))
-                .map(p -> p.split(" ")[1].trim())
+                .map(p -> p.trim().split(" ")[1].trim())
                 .toList();
     }
 
