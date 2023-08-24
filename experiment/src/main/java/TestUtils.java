@@ -932,6 +932,20 @@ public class TestUtils {
         return ifStmt;
     }
 
+    /**
+     * Sets the last else statement in an if-block.
+     *
+     * @param ifStmt an if-block
+     * @param postConditions the else branch code
+     */
+    private static void setLastElseBranch(IfStmt ifStmt, NodeList<Statement> postConditions) {
+        IfStmt currentStatement = ifStmt;
+        while (currentStatement.getElseStmt().orElseThrow() instanceof IfStmt) {
+            currentStatement = (IfStmt) currentStatement.getElseStmt().orElseThrow();
+        }
+        currentStatement.setElseStmt(new BlockStmt(postConditions));
+    }
+
     private static NodeList<Statement> getPostConditions(
             IfStmt base,
             Statement postStmt,
@@ -946,7 +960,7 @@ public class TestUtils {
         if (base == null) {
             return postConditions;
         }
-        base.setElseStmt(new BlockStmt(postConditions));
+        setLastElseBranch(base, postConditions);
         return new NodeList<>(base);
     }
 
