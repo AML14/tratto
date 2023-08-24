@@ -194,13 +194,13 @@ public class TestUtilsTest {
                         assertTrue((methodName == null) == false);
                         assertTrue((parameters == null) == false);
                         java.lang.reflect.Method method;
-                        if (parameters == null) {
+                        if (methodName == null) {
                             try {
                                 method = clazz.getMethod(methodName, parameters);
                                 fail();
                             } catch (java.lang.IllegalArgumentException e) {
                             }
-                        } else if (methodName == null) {
+                        } else if (parameters == null) {
                             try {
                                 method = clazz.getMethod(methodName, parameters);
                                 fail();
@@ -208,15 +208,15 @@ public class TestUtilsTest {
                             }
                         } else {
                             method = clazz.getMethod(methodName, parameters);
-                            assertTrue(method.getDeclaringClass() == clazz);
                             assertTrue((method == null) == false);
+                            assertTrue(method.getDeclaringClass() == clazz);
                         }
                     }""";
             assertEquals(expectedEverythingTest, everythingTest.toString());
         } catch (IOException e) {
             fail();
         }
-        FileUtils.deleteDirectory(outputPath.resolve("tog-tests"));
+//        FileUtils.deleteDirectory(outputPath.resolve("tog-tests"));
     }
 
     private List<OracleOutput> getNonAxiomaticOracles() {
