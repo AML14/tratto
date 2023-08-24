@@ -861,6 +861,13 @@ public class TestUtils {
         return oracleOutput;
     }
 
+    /**
+     * Creates precondition assertions by wrapping oracles with an
+     * "assertTrue" method call.
+     *
+     * @param oracles a list of oracle preconditions
+     * @return a list of JavaParser representations of JUnit assertions
+     */
     private static NodeList<Statement> getPreConditions(
             List<OracleOutput> oracles
     ) {
