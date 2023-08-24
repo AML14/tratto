@@ -132,11 +132,11 @@ public class JavaParserUtils {
     }
 
     /**
-     * Injects a synthetic method into a class given a method under test,
-     * including:
+     * Injects a new synthetic method declaration into a class given an
+     * original method under test, including:
      * <ul>
-     *     <li>variable declaration for each method argument</li>
-     *     <li>variable declaration for return type of analyzed method</li>
+     *     <li>variable declaration for each method argument in the original method</li>
+     *     <li>variable declaration for the return type of the original method</li>
      *     <li>variable declaration (of unknown type) using given expression</li>
      * </ul>
      *
