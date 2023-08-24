@@ -378,6 +378,41 @@ public class TestUtils {
     }
 
     /**
+     * Gets the array level of a fully qualified name.
+     *
+     * @param fullyQualifiedName a fully qualified name
+     * @return the array level of the fully qualified name
+     */
+    private static int getArrayLevel(String fullyQualifiedName) {
+        int arrayLevel = 0;
+        for (int i = 0; i < fullyQualifiedName.length(); i++) {
+            if (fullyQualifiedName.charAt(i) == '[') {
+                arrayLevel++;
+            }
+        }
+        return arrayLevel;
+    }
+
+    /**
+     * Converts a fully qualified name to the Class.getName form of a name.
+     *
+     * @param fullyQualifiedName a fully qualified name
+     * @return the Class.getName form of a type
+     */
+    private static String fqnToClassGetName(String fullyQualifiedName) {
+        if (isArray(fullyQualifiedName)) {
+            int arrayLevel = getArrayLevel(fullyQualifiedName);
+            StringBuilder sb = new StringBuilder(fullyQualifiedName.replaceAll("\\[]", ""));
+            sb.insert(0, "L");
+            sb.insert(0, ("[").repeat(arrayLevel));
+            sb.append(";");
+            return sb.toString();
+        } else {
+            return fullyQualifiedName;
+        }
+    }
+
+    /**
      * Gets the package name of a given JavaParser type. This method assumes
      * that all types (including types from the same package) have
      * corresponding import statements in the compilation unit. This is TRUE
@@ -574,6 +609,8 @@ public class TestUtils {
             return getPrimitiveClass(className);
         } else {
             try {
+                className = removeTypeParameters(className);
+                className = fqnToClassGetName(className);
                 return Class.forName(className);
             } catch (ClassNotFoundException e) {
                 throw new Error("Unable to find class " + className);
