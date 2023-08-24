@@ -350,16 +350,6 @@ public class TestUtils {
     }
 
     /**
-     * Removes arrays from an array type name.
-     *
-     * @param arrayType an array type
-     * @return the base component type
-     */
-    private static String removeArray(String arrayType) {
-        return arrayType.replaceAll("\\[]", "");
-    }
-
-    /**
      * Removes type arguments from a parameterized type name.
      *
      * @param parameterizedType a type name
@@ -375,6 +365,16 @@ public class TestUtils {
             current = previous.replaceAll(regex, "");
         } while (!current.equals(previous));
         return current;
+    }
+
+    /**
+     * Checks if a class name is an array type.
+     *
+     * @param fullyQualifiedName a fully qualified name
+     * @return true iff the fully qualified name is an array type
+     */
+    private static boolean isArray(String fullyQualifiedName) {
+        return fullyQualifiedName.contains("[]");
     }
 
     /**
