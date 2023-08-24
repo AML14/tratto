@@ -479,15 +479,15 @@ public class TestUtils {
      * @param cu a Java file declaring the method corresponding to
      *           {@code body}
      * @param body a list of statements in a method body
-     * @param methodCallExpr a method call in the given method
+     * @param methodCall a method call in the given method
      * @return a list of all parameter type names in the given method
      */
     private static List<String> getParameterTypeNames(
             CompilationUnit cu,
             List<Statement> body,
-            MethodCallExpr methodCallExpr
+            MethodCallExpr methodCall
     ) {
-        return methodCallExpr.getArguments()
+        return methodCall.getArguments()
                 .stream()
                 .map(arg -> {
                     Type type = getTypeOfName(body, arg.asNameExpr().getNameAsString());
