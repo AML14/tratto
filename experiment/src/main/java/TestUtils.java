@@ -701,6 +701,34 @@ public class TestUtils {
     }
 
     /**
+     * Replaces all variable names in the original oracle with the names from
+     * the test case.
+     *
+     * @param testStmt a Java statement
+     * @param oracleOutput an oracle record
+     * @return an oracle record with contextual parameter names
+     */
+    private static OracleOutput getParameterID(
+            Statement testStmt,
+            OracleOutput oracleOutput
+    ) {
+        List<String> originalNames = getParameterNames(oracleOutput.methodSignature());
+        List<String> contextNames = getAllMethodCallsOfStatement(testStmt).get(0).getArguments()
+                .stream()
+                .map(expression -> expression.asNameExpr().getNameAsString())
+                .toList();
+        String contextOracle = replaceName(originalNames, contextNames, oracleOutput.oracle());
+        return new OracleOutput(
+                oracleOutput.className(),
+                oracleOutput.methodSignature(),
+                oracleOutput.oracleType(),
+                oracleOutput.prefix(),
+                contextOracle,
+                oracleOutput.exception()
+        );
+    }
+
+    /**
      * Replaces all instances of "receiverObjectID" in a given oracle, with
      * the corresponding object name in source code.
      *
@@ -757,34 +785,6 @@ public class TestUtils {
                 .asVariableDeclarationExpr().getVariables().get(0)
                 .getNameAsString();
         String contextOracle = replaceName(List.of(originalName), List.of(contextName), oracleOutput.oracle());
-        return new OracleOutput(
-                oracleOutput.className(),
-                oracleOutput.methodSignature(),
-                oracleOutput.oracleType(),
-                oracleOutput.prefix(),
-                contextOracle,
-                oracleOutput.exception()
-        );
-    }
-
-    /**
-     * Replaces all variable names in the original oracle with the names from
-     * the test case.
-     *
-     * @param testStmt a Java statement
-     * @param oracleOutput an oracle record
-     * @return an oracle record with contextual parameter names
-     */
-    private static OracleOutput getParameterID(
-            Statement testStmt,
-            OracleOutput oracleOutput
-    ) {
-        List<String> originalNames = getParameterNames(oracleOutput.methodSignature());
-        List<String> contextNames = getAllMethodCallsOfStatement(testStmt).get(0).getArguments()
-                .stream()
-                .map(expression -> expression.asNameExpr().getNameAsString())
-                .toList();
-        String contextOracle = replaceName(originalNames, contextNames, oracleOutput.oracle());
         return new OracleOutput(
                 oracleOutput.className(),
                 oracleOutput.methodSignature(),
