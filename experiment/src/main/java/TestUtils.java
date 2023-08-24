@@ -710,7 +710,7 @@ public class TestUtils {
             Statement initStmt,
             Statement testStmt
     ) {
-        if (initStmt.isEmptyStmt() || !testStmt.isExpressionStmt()) {
+        if (initStmt.isEmptyStmt()) {
             // if method is void (e.g., no initialization), then use original statement.
             return testStmt;
         }
@@ -745,14 +745,14 @@ public class TestUtils {
             List<String> contextNames,
             String oracle
     ) {
-        Expression oracleExpression = StaticJavaParser.parseExpression(oracle);
-        oracleExpression.walk(NameExpr.class, name -> {
+        Expression oracleExpr = StaticJavaParser.parseExpression(oracle);
+        oracleExpr.walk(NameExpr.class, name -> {
             int originalIdx = originalNames.indexOf(name.getNameAsString());
             if (originalIdx != -1) {
                 name.replace(new NameExpr(contextNames.get(originalIdx)));
             }
         });
-        return oracleExpression.toString();
+        return oracleExpr.toString();
     }
 
     /**
