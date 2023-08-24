@@ -169,7 +169,8 @@ public class FileUtils {
     /**
      * Recursively moves all files from the source directory to the
      * destination directory. If a file in the source directory already exists
-     * in the destination directory, then the original file will be overridden.
+     * in the destination directory, then the original file will be
+     * overwritten.
      *
      * @param source the directory where the files are located
      * @param destination the directory where the files will be moved to
