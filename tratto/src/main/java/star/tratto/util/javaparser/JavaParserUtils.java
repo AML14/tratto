@@ -142,13 +142,14 @@ public class JavaParserUtils {
      *
      * @param jpClass the declaring class in which to insert a synthetic method
      * @param jpCallable the method under analysis
-     * @param methodArgs tokens for arguments of {@code jpCallable}
+     * @param methodArgs tokens for the parameters of {@code jpCallable}
      * @param expression an expression to add to the synthetic method
      * @throws ResolvedTypeNotFound if {@code jpCallable} is a constructor
      */
     private static void addSyntheticMethodWithExpression(
             TypeDeclaration<?> jpClass,
             CallableDeclaration<?> jpCallable,
+            // NOTE: This is MethodArgumentTokens in the next pull request where records are integrated.
             List<Triplet<String, String, String>> methodArgs,
             String expression
     ) throws ResolvedTypeNotFound {
@@ -180,14 +181,14 @@ public class JavaParserUtils {
 
     /**
      * Gets the type of the given java expression. For example, given the
-     * expression, {@code Integer.MAX_VALUE - Integer.MIN_VALUE}, the method
+     * expression {@code Integer.MAX_VALUE - Integer.MIN_VALUE}, this method
      * returns a JavaParser representation of the type {@code int}.
      *
-     * @param jpClass the declaring class
+     * @param jpClass the declaring class of {@code jpCallable}
      * @param jpCallable the method under analysis
      * @param methodArgs the arguments in the method under analysis
      * @param expression a Java expression
-     * @return the resolved return type of the expression
+     * @return the type of the expression
      * @throws ResolvedTypeNotFound if {@code jpClass} is not a class/interface
      * or if {@code jpCallable} is a constructor
      * @throws NoSuchElementException if an error occurs while parsing the
