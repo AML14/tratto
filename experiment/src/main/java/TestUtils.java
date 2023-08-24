@@ -524,8 +524,9 @@ public class TestUtils {
      * applicable to a statement if it corresponds to a method call in the
      * given statement.
      *
+     * @param cu the parent Java file
+     * @param body the parent method of the statement
      * @param stmt a Java statement
-     * @param body all statements in the parent method
      * @param allOracles all possible oracles
      * @return all oracles corresponding to methods calls in the given
      * statement
