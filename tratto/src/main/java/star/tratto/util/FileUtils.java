@@ -146,6 +146,7 @@ public class FileUtils {
         if (!Files.exists(destination)) {
             createDirectories(destination);
         }
+        // walk is used to iterate over files in subdirectories
         try (Stream<Path> walk = Files.walk(source)) {
             walk
                     .forEach(p -> {
