@@ -17,7 +17,6 @@ import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
 import com.github.javaparser.ast.stmt.BlockStmt;
-import com.github.javaparser.ast.type.Type;
 import com.github.javaparser.ast.type.TypeParameter;
 import com.github.javaparser.resolution.MethodUsage;
 import com.github.javaparser.resolution.UnsolvedSymbolException;
@@ -881,14 +880,14 @@ public class JavaParserUtils {
     }
 
     /**
-     * Checks if a type is a type parameter.
+     * Checks if a type is a type variable.
      *
      * @param resolvedType a JavaParser resolved type
-     * @return true iff a given type is a type parameter of a generic class or
+     * @return true iff a given type is a type variable of a generic class or
      * method. If the given type is an array, then this method checks the base
      * component type.
      */
-    public static boolean isTypeParameter(
+    public static boolean isTypeVariable(
             ResolvedType resolvedType
     ) {
         ResolvedType componentType = removeArray(resolvedType);
@@ -896,19 +895,18 @@ public class JavaParserUtils {
     }
 
     /**
-     * Checks if a type name represents a type parameter. A type parameter may
-     * be declared in either the class or method signature. This method checks
-     * both the class where the type is found and its declaring class to
-     * determine if the type is a type parameter.
+     * Checks if a type name represents a type variable declared in the given
+     * class or method. This method checks both the method where the type is
+     * used and its declaring class.
      *
      * @param typeName a type name
      * @param jpCallable the method using {@code typeName}
      * @param jpClass the declaring class of {@code jpCallable}
-     * @return true iff a given type is a type parameter of a generic class or
-     * method. If the given type is an array, then this method checks the base
-     * component type.
+     * @return true iff a given type is a type variable of the declaring class
+     * or method. If the given type is an array, then this method checks the
+     * base component type.
      */
-    public static boolean isTypeParameter(
+    public static boolean isTypeVariable(
             String typeName,
             CallableDeclaration<?> jpCallable,
             TypeDeclaration<?> jpClass
