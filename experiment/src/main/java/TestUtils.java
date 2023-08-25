@@ -564,7 +564,7 @@ public class TestUtils {
 
     /**
      * Gets the type of a literal expression. For example,
-     *     {@code 0}    ->    {@code PrimitiveType.intType();}
+     *     {@code 0}    ->    {@code int}
      *     {@code "hello"}    ->    {@code java.lang.String}
      * If the literal is "null", then this method returns null, as JavaParser
      * does not have a {@link Type} representation for null types.
