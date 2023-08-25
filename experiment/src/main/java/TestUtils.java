@@ -1176,7 +1176,8 @@ public class TestUtils {
      * @param postStmt a Java statement that calls the method under test and
      *                 assigns its output to a variable
      * @param oracles all relevant exceptional oracles
-     * @return an if-block representing all exceptional oracles
+     * @return an if-block representing all exceptional oracles. Returns null
+     * if there are no exceptional post conditions.
      */
     private static IfStmt getThrowsConditions(
             Statement postStmt,
@@ -1218,6 +1219,28 @@ public class TestUtils {
         currentStatement.setElseStmt(new BlockStmt(postConditions));
     }
 
+    /**
+     * Gets an if-block representing all exceptional axiomatic oracles. Each
+     * condition in an if (or else if) statement corresponds to a program
+     * state in which an exception should be thrown. The body of each if
+     * statement has a try/catch block corresponding to the expected exception
+     * after the post statement is executed.
+     *
+     * @param postStmt a Java statement that calls the method under test and
+     *                 assigns its output to a variable
+     * @param oracles all relevant exceptional oracles
+     * @return an if-block representing all exceptional oracles
+     */
+
+    /**
+     * Gets a list of statements corresponding to all axiomatic post
+     * conditions of a method under test. If
+     *
+     * @param base
+     * @param postStmt
+     * @param oracles
+     * @return
+     */
     private static NodeList<Statement> getPostConditions(
             IfStmt base,
             Statement postStmt,
