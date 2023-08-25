@@ -138,7 +138,7 @@ public class TestUtilsTest {
                         "getChars(int srcBegin, int srcEnd, char[] dst, int dstBegin)",
                         OracleType.NORMAL_POST,
                         "",
-                        "receiverObjectID.charAt(srcBegin) == char[dstBegin]",
+                        "receiverObjectID.charAt(srcBegin) == dst[dstBegin]",
                         ""
                 ),
                 new OracleOutput(
@@ -235,7 +235,7 @@ public class TestUtilsTest {
         } catch (IOException e) {
             fail();
         }
-        FileUtils.deleteDirectory(outputPath.resolve("tog-tests"));
+//        FileUtils.deleteDirectory(outputPath.resolve("tog-tests"));
     }
 
     private List<OracleOutput> getNonAxiomaticOracles() {

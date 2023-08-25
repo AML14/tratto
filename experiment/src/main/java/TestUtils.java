@@ -9,9 +9,18 @@ import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.comments.Comment;
 import com.github.javaparser.ast.comments.LineComment;
 import com.github.javaparser.ast.expr.AssignExpr;
+import com.github.javaparser.ast.expr.BooleanLiteralExpr;
+import com.github.javaparser.ast.expr.CharLiteralExpr;
+import com.github.javaparser.ast.expr.DoubleLiteralExpr;
 import com.github.javaparser.ast.expr.Expression;
+import com.github.javaparser.ast.expr.IntegerLiteralExpr;
+import com.github.javaparser.ast.expr.LiteralExpr;
+import com.github.javaparser.ast.expr.LongLiteralExpr;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.NameExpr;
+import com.github.javaparser.ast.expr.NullLiteralExpr;
+import com.github.javaparser.ast.expr.StringLiteralExpr;
+import com.github.javaparser.ast.expr.TextBlockLiteralExpr;
 import com.github.javaparser.ast.expr.VariableDeclarationExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.CatchClause;
@@ -20,6 +29,7 @@ import com.github.javaparser.ast.stmt.ExpressionStmt;
 import com.github.javaparser.ast.stmt.IfStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.stmt.TryStmt;
+import com.github.javaparser.ast.type.PrimitiveType;
 import com.github.javaparser.ast.type.Type;
 
 import java.io.IOException;
@@ -493,6 +503,24 @@ public class TestUtils {
     }
 
     /**
+     * Gets the component type of a given type. If the type is an array, then
+     * all outer arrays are removed. Otherwise, the type is not modified. For
+     * example,
+     *     "int[][]"    =>    "int"
+     *     "Object"    =>    "Object"
+     *     "T[]"    =>    "T"
+     *
+     * @param type a type
+     * @return the base component type of the given type
+     */
+    private static Type getComponentType(Type type) {
+        while (type.isArrayType()) {
+            type = type.asArrayType().getComponentType();
+        }
+        return type;
+    }
+
+    /**
      * Gets the fully qualified name of a given type.
      *
      * @param cu the Java file importing the given type
@@ -501,7 +529,7 @@ public class TestUtils {
      * @see TestUtils#getPackageName(CompilationUnit, Type)
      */
     private static String getFullyQualifiedName(CompilationUnit cu, Type type) {
-        if (type.isReferenceType()) {
+        if (getComponentType(type).isClassOrInterfaceType()) {
             return getPackageName(cu, type) + "." + type.asString();
         } else {
             return type.asString();
@@ -535,7 +563,60 @@ public class TestUtils {
     }
 
     /**
-     * Gets the type names of all parameters in a JavaParser method call.
+     * Gets the type of a literal expression. For example,
+     *     {@code 0}    =>    {@code PrimitiveType.intType();}
+     *     {@code "hello"}    =>    {@code java.lang.String}
+     * If the literal is "null", then this method returns null, as JavaParser
+     * does not have a {@link Type} representation for null types.
+     *
+     * @param literalExpr a literal value expression
+     * @return the corresponding type of the expression. Returns null if the
+     * literal is a null expression.
+     * @throws IllegalArgumentException if the literal expression is an
+     * unknown type
+     */
+    private static Type getTypeOfLiteral(LiteralExpr literalExpr) {
+        if (literalExpr instanceof BooleanLiteralExpr) {
+            return PrimitiveType.booleanType();
+        } else if (literalExpr instanceof NullLiteralExpr) {
+            return null;
+        } else if (literalExpr instanceof CharLiteralExpr) {
+            return PrimitiveType.charType();
+        } else if (literalExpr instanceof DoubleLiteralExpr) {
+            return PrimitiveType.doubleType();
+        } else if (literalExpr instanceof IntegerLiteralExpr) {
+            return PrimitiveType.intType();
+        } else if (literalExpr instanceof LongLiteralExpr) {
+            return PrimitiveType.longType();
+        } else if (
+                literalExpr instanceof StringLiteralExpr ||
+                literalExpr instanceof TextBlockLiteralExpr
+        ) {
+            return StaticJavaParser.parseType("java.lang.String");
+        } else {
+            throw new IllegalArgumentException("Unknown literal expression type " + literalExpr);
+        }
+    }
+
+    /**
+     * Gets the type of a given expression.
+     *
+     * @param body all statements in the parent method
+     * @param expr a Java expression
+     * @return the type of the given expression
+     */
+    private static Type getTypeOfExpression(List<Statement> body, Expression expr) {
+        if (expr.isNameExpr()) {
+            return getTypeOfName(body, expr.asNameExpr().getNameAsString());
+        } else {
+            return getTypeOfLiteral(expr.asLiteralExpr());
+        }
+    }
+
+    /**
+     * Gets the type names of all parameters in a JavaParser method call. If
+     * the method call uses a null literal expression as an argument, then the
+     * corresponding entry in the returned list is null.
      *
      * @param cu the parent Java file of {@code body}
      * @param body a list of statements in a method body
@@ -550,10 +631,46 @@ public class TestUtils {
         return methodCall.getArguments()
                 .stream()
                 .map(arg -> {
-                    Type type = getTypeOfName(body, arg.asNameExpr().getNameAsString());
+                    Type type = getTypeOfExpression(body, arg);
+                    if (type == null) {
+                        return null;
+                    }
                     return getFullyQualifiedName(cu, type);
                 })
                 .toList();
+    }
+
+    /**
+     * Checks if a list of parameter types from a method signature is
+     * equivalent to a list of parameters from a method call. These two lists
+     * cannot be directly compared (e.g.
+     * {@code methodSignatureTypes.equals(methodCallTypes)}) because the
+     * method call may use null literal expressions, which may apply to all
+     * object types.
+     *
+     * @param methodSignatureTypes all parameter types from a method signature
+     * @param methodCallTypes all parameter types from a method call. May
+     *                        contain null values.
+     * @return true iff the two lists represent equivalent types
+     */
+    private static boolean isEqualParameterTypes(
+            List<String> methodSignatureTypes,
+            List<String> methodCallTypes
+    ) {
+        if (methodSignatureTypes.size() != methodCallTypes.size()) {
+            return false;
+        }
+        for (int i = 0; i < methodSignatureTypes.size(); i++) {
+            String signatureType = methodSignatureTypes.get(i);
+            String callType = methodCallTypes.get(i);
+            if (callType == null && !primitiveTypes.contains(signatureType)) {
+                continue;
+            }
+            if (!signatureType.equals(callType)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -577,7 +694,7 @@ public class TestUtils {
         List<String> expectedTypes = getParameterTypeNames(expectedSignature);
         String jpName = jpMethodCall.getNameAsString();
         List<String> jpTypes = getParameterTypeNames(jpFile, jpBody, jpMethodCall);
-        return expectedName.equals(jpName) && expectedTypes.equals(jpTypes);
+        return expectedName.equals(jpName) && isEqualParameterTypes(expectedTypes, jpTypes);
     }
 
     /**
@@ -886,7 +1003,7 @@ public class TestUtils {
         List<String> originalNames = getParameterNames(oracleOutput.methodSignature());
         List<String> contextNames = getAllMethodCallsOfStatement(testStmt).get(0).getArguments()
                 .stream()
-                .map(expression -> expression.asNameExpr().getNameAsString())
+                .map(Expression::toString)
                 .toList();
         String contextOracle = replaceNames(originalNames, contextNames, oracleOutput.oracle());
         return new OracleOutput(
@@ -1135,7 +1252,10 @@ public class TestUtils {
         oracleStatements.addAll(preBlock);
         oracleStatements.add(initStmt);
         oracleStatements.addAll(postBlock);
-        return oracleStatements;
+        return new NodeList<>(oracleStatements
+                .stream()
+                .filter(stmt -> !stmt.isEmptyStmt())
+                .toList());
     }
 
     /**
