@@ -1017,6 +1017,17 @@ public class TestUtils {
                 .toList());
     }
 
+    /**
+     * Gets a try/catch block corresponding to the body of an exceptional
+     * axiomatic oracle. The try/catch block calls {@code postStmt} and
+     * catches the expected exception. If the expected exception is not
+     * thrown, then the test fails.
+     *
+     * @param postStmt a Java statement that calls the method under test
+     *                 and assigns its output to a variable
+     * @param oracleOutput an exceptional oracle
+     * @return a try/catch block corresponding to the exceptional oracle
+     */
     private static TryStmt getTryCatchBlock(
             Statement postStmt,
             OracleOutput oracleOutput
