@@ -799,12 +799,27 @@ public class TestUtils {
         return getInitStmt(testExpr, returnType);
     }
 
+    /**
+     * Gets a statement that assigns the value returned by the method call
+     * in a given statement under test, to the variable initialized in a given
+     * Java initialization statement. The return type of the method call in
+     * the test statement is equal to the type of the variable in the
+     * initialization statement.
+     *
+     * @param initStmt a Java statement that initializes a variable for the
+     *                 return type of the method call in {@code testStmt}
+     * @param testStmt a Java statement with a method call
+     * @return a Java statement that assigns the return type of the method
+     * call in {@code testStmt} to the variable initialized by
+     * {@code initStmt}. Returns {@code testStmt} if {@code initStmt} is
+     * empty (e.g. void method).
+     */
     private static Statement getPostStmt(
             Statement initStmt,
             Statement testStmt
     ) {
         if (initStmt.isEmptyStmt()) {
-            // if method is void (e.g., no initialization), then use original statement.
+            // if no variable is initialized, then use original statement.
             return testStmt;
         }
         Expression initExpr = initStmt
