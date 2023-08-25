@@ -537,11 +537,10 @@ public class TestUtils {
     /**
      * Gets the type names of all parameters in a JavaParser method call.
      *
-     * @param cu a Java file declaring the method corresponding to
-     *           {@code body}
+     * @param cu the parent Java file of {@code body}
      * @param body a list of statements in a method body
-     * @param methodCall a method call in the given method
-     * @return a list of all parameter type names in the given method
+     * @param methodCall a method call in the given method body
+     * @return all parameter type names in the given method
      */
     private static List<String> getParameterTypeNames(
             CompilationUnit cu,
@@ -559,11 +558,12 @@ public class TestUtils {
 
     /**
      * Checks if a given JavaParser method call corresponds to the same method
-     * as a given signature.
+     * as a given signature. This method only checks the method signatures and
+     * does not consider the declaring classes.
      *
-     * @param jpFile the Java file declaring the given method
-     * @param jpBody a method in the Java file
-     * @param jpMethodCall a method call in the given method
+     * @param jpFile the parent Java file of {@code jpBody}
+     * @param jpBody a list of statements in a method body
+     * @param jpMethodCall a method call in the given method body
      * @param expectedSignature an expected method signature
      * @return true iff the given method call matches the method signature
      */
