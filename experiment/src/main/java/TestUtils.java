@@ -1205,10 +1205,10 @@ public class TestUtils {
     }
 
     /**
-     * Sets the last else statement in an if-block.
+     * Sets the body of the last "else" statement in an if-block.
      *
      * @param ifStmt an if-block
-     * @param postConditions the else branch code
+     * @param postConditions a list of Java statements
      */
     private static void setLastElseBranch(IfStmt ifStmt, NodeList<Statement> postConditions) {
         IfStmt currentStatement = ifStmt;
