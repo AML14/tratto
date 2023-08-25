@@ -1002,11 +1002,11 @@ public class TestUtils {
     }
 
     /**
-     * Creates precondition assertions by wrapping oracles with an
-     * "assertTrue" method call.
+     * Gets all assertions corresponding to preconditions by wrapping oracles
+     * as the condition of an {@code assertTrue} method call.
      *
-     * @param oracles a list of oracle preconditions
-     * @return a list of JavaParser representations of JUnit assertions
+     * @param oracles all relevant precondition oracles
+     * @return all Java statements of JUnit assertions for the given oracles
      */
     private static NodeList<Statement> getPreConditions(
             List<OracleOutput> oracles
