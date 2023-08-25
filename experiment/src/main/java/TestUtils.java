@@ -596,8 +596,8 @@ public class TestUtils {
      * @return the Class corresponding to the type name
      */
     private static Class<?> getClassOfName(String className) {
-        List<String> allPrimitiveTypes = List.of("boolean", "byte", "char", "short", "int", "long", "float", "double");
-        if (allPrimitiveTypes.contains(className)) {
+        List<String> primitiveTypes = List.of("boolean", "byte", "char", "short", "int", "long", "float", "double");
+        if (primitiveTypes.contains(className)) {
             return getPrimitiveClass(className);
         } else {
             try {
