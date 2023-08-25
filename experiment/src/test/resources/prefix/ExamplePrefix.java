@@ -36,4 +36,19 @@ public class ExamplePrefix {
         Class<?>[] parameters = { int.class, int.class };
         Method method = clazz.getMethod(methodName, parameters);
     }
+
+    @Test
+    @Disabled
+    public void assertionVoidTest() throws Throwable {
+        String input = "input";
+        char[] dst = new char[5];
+        input.getChars(0, 2, dst, 0);
+    }
+
+    @Test
+    @Disabled
+    public void assertionPreInitializedTest() throws Throwable {
+        String input = "input";
+        input = input.substring(0, 2);
+    }
 }
