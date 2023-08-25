@@ -840,27 +840,35 @@ public class TestUtils {
     }
 
     /**
-     * Replaces all instances of an original name in a given oracle with their
-     * corresponding context names. The original names
+     * Replaces all instances of original names in a given Java expression
+     * with corresponding new names. Each entry in {@code originalNames} has a
+     * corresponding entry in {@code newNames} at the same index. If a
+     * variable name in {@code stringExpression} does not appear in
+     * {@code originalNames}, then it is not modified.
      *
-     * @param originalNames the original axiomatic names
-     * @param contextNames the contextual names
-     * @param oracle the original axiomatic oracle
-     * @return the contextualized oracle
+     * @param originalNames the original names
+     * @param newNames the new names
+     * @param stringExpression a Java expression
+     * @return an equivalent Java expression String with new names
+     * @throws IllegalArgumentException if {@code originalNames} and
+     * {@code newNames} do not have equal sizes
      */
     private static String replaceNames(
             List<String> originalNames,
-            List<String> contextNames,
-            String oracle
+            List<String> newNames,
+            String stringExpression
     ) {
-        Expression oracleExpr = StaticJavaParser.parseExpression(oracle);
-        oracleExpr.walk(NameExpr.class, name -> {
-            int originalIdx = originalNames.indexOf(name.getNameAsString());
-            if (originalIdx != -1) {
-                name.replace(new NameExpr(contextNames.get(originalIdx)));
+        if (originalNames.size() != newNames.size()) {
+            throw new IllegalArgumentException(originalNames + " and " + newNames + " are not equal sizes");
+        }
+        Expression jpExpression = StaticJavaParser.parseExpression(stringExpression);
+        jpExpression.walk(NameExpr.class, name -> {
+            int idx = originalNames.indexOf(name.getNameAsString());
+            if (idx != -1) {
+                name.replace(new NameExpr(newNames.get(idx)));
             }
         });
-        return oracleExpr.toString();
+        return jpExpression.toString();
     }
 
     /**
