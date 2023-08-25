@@ -39,6 +39,17 @@ import java.util.stream.Stream;
 public class TestUtils {
     /** A unique id for placeholder variable names when inserting oracles */
     private static int variableID = 0;
+    /** All primitive fully qualified type names  */
+    private static final List<String> primitiveTypes = List.of(
+            "boolean",
+            "byte",
+            "char",
+            "short",
+            "int",
+            "long",
+            "float",
+            "double"
+    );
     /** The path to the output directory */
     private static final Path output = Paths.get("output");
     /** A list of all JUnit Assertions assert methods */
@@ -596,7 +607,6 @@ public class TestUtils {
      * @return the Class corresponding to the type name
      */
     private static Class<?> getClassOfName(String className) {
-        List<String> primitiveTypes = List.of("boolean", "byte", "char", "short", "int", "long", "float", "double");
         if (primitiveTypes.contains(className)) {
             return getPrimitiveClass(className);
         } else {
