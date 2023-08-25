@@ -66,7 +66,7 @@ public class TestUtilsTest {
                         "valueOf(int i)",
                         OracleType.PRE,
                         "",
-                        "(i == null) == false",
+                        "i > 0",
                         ""
                 ),
                 new OracleOutput(
