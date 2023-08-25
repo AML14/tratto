@@ -232,10 +232,31 @@ public class TestUtilsTest {
                         }
                     }""";
             assertEquals(expectedEverythingTest, everythingTest.toString());
+            MethodDeclaration assertionVoidTest = testCases.get(4);
+            String expectedAssertionVoidTest = """
+                    @Test
+                    @Disabled
+                    public void assertionVoidTest() throws Throwable {
+                        String input = "input";
+                        char[] dst = new char[5];
+                        input.getChars(0, 2, dst, 0);
+                        assertTrue(input.charAt(0) == dst[0]);
+                    }""";
+            assertEquals(expectedAssertionVoidTest, assertionVoidTest.toString());
+            MethodDeclaration assertionPreInitializedTest = testCases.get(5);
+            String expectedAssertionPreInitializedTest = """
+                    @Test
+                    @Disabled
+                    public void assertionPreInitializedTest() throws Throwable {
+                        String input = "input";
+                        input = input.substring(0, 2);
+                        assertTrue((input == null) == false);
+                    }""";
+            assertEquals(expectedAssertionPreInitializedTest, assertionPreInitializedTest.toString());
         } catch (IOException e) {
             fail();
         }
-//        FileUtils.deleteDirectory(outputPath.resolve("tog-tests"));
+        FileUtils.deleteDirectory(outputPath.resolve("tog-tests"));
     }
 
     private List<OracleOutput> getNonAxiomaticOracles() {
