@@ -155,7 +155,7 @@ public class TestUtils {
      * @param duplicateIdx the duplicate index
      * @return a modified duplicate method
      */
-    private static MethodDeclaration createMethodDuplicate(
+    private static MethodDeclaration getMethodDuplicate(
             MethodDeclaration original,
             NodeList<Statement> newBody,
             int duplicateIdx
@@ -176,7 +176,7 @@ public class TestUtils {
      * @param assertionIdx the assertion number
      * @return a test prefix corresponding to the given assertion number
      */
-    private static MethodDeclaration getNextPrefix(MethodDeclaration testCase, int assertionIdx) {
+    private static MethodDeclaration getPrefix(MethodDeclaration testCase, int assertionIdx) {
         NodeList<Statement> originalBody = testCase.getBody().orElseThrow().getStatements();
         NodeList<Statement> newBody = new NodeList<>();
         int currentIdx = 0;
@@ -195,7 +195,7 @@ public class TestUtils {
                 newBody.add(statement);
             }
         }
-        return createMethodDuplicate(testCase, newBody, assertionIdx);
+        return getMethodDuplicate(testCase, newBody, assertionIdx);
     }
 
     /**
@@ -228,7 +228,7 @@ public class TestUtils {
             TypeDeclaration<?> testClass = testFile.getType(0);
             int numAssertions = getNumberOfAssertions(testCase);
             for (int i = 0; i < numAssertions; i++) {
-                MethodDeclaration prefix = getNextPrefix(testCase, i);
+                MethodDeclaration prefix = getPrefix(testCase, i);
                 testClass.addMember(prefix);
             }
             // do not remove exceptional oracles.
