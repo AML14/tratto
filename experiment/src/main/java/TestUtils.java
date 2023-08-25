@@ -646,8 +646,8 @@ public class TestUtils {
      * equivalent to a list of parameters from a method call. These two lists
      * cannot be directly compared (e.g.
      * {@code methodSignatureTypes.equals(methodCallTypes)}) because the
-     * method call may use null literal expressions, which may apply to all
-     * object types.
+     * method call may use null literal expressions, which may apply to any
+     * object type.
      *
      * @param methodSignatureTypes all parameter types from a method signature
      * @param methodCallTypes all parameter types from a method call. May
