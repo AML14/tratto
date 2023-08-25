@@ -54,12 +54,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static org.plumelib.util.CollectionsPlume.mapList;
 import static star.tratto.util.JavaTypes.isAssignableToNumeric;
 import static star.tratto.util.StringUtils.fullyQualifiedClassName;
 
 /**
- * This class provides static methods for a variety of common JavaParser
- * utilities to avoid duplicate code.
+ * This class provides static methods for JavaParser
+ * utilities.
  */
 public class JavaParserUtils {
     private static final Logger logger = LoggerFactory.getLogger(JavaParserUtils.class);
@@ -100,7 +101,7 @@ public class JavaParserUtils {
     }
 
     /**
-     * Gets a synthetic empty JavaParser class.
+     * Returns a new, empty JavaParser class.
      *
      * @return an empty JavaParser class
      */
@@ -110,10 +111,10 @@ public class JavaParserUtils {
     }
 
     /**
-     * Adds a synthetic empty method block to a given class.
+     * Adds a new, empty method to a given class.
      *
      * @param typeDeclaration the class to add a method to
-     * @return an empty JavaParser method block in the given class
+     * @return the body of the new method
      */
     private static BlockStmt getSyntheticBlockStmt(TypeDeclaration<?> typeDeclaration) {
         return typeDeclaration.addMethod(SYNTHETIC_METHOD_NAME).getBody().orElseThrow();
@@ -144,7 +145,7 @@ public class JavaParserUtils {
      *     <li>variable declaration (of unknown type) using given expression</li>
      * </ul>
      *
-     * @param jpClass the declaring class in which to insert a synthetic method
+     * @param jpClass the class in which to insert the newly-created method
      * @param jpCallable the method under analysis
      * @param methodArgs tokens for the parameters of {@code jpCallable}
      * @param expression an expression to add to the synthetic method
@@ -184,7 +185,7 @@ public class JavaParserUtils {
     }
 
     /**
-     * Gets the type of the given java expression. For example, given the
+     * Gets the type of the given Java expression. For example, given the
      * expression {@code Integer.MAX_VALUE - Integer.MIN_VALUE}, this method
      * returns a JavaParser representation of the type {@code int}.
      *
@@ -256,7 +257,7 @@ public class JavaParserUtils {
         );
         BlockStmt syntheticMethodBody = syntheticMethod.getBody().get();
 
-        // If the method is not constructor and not void, add statement to save methodResultID
+        // If the method is not a constructor and not void, add a statement to save methodResultID.
         MethodDeclaration method = getMethodDeclaration(oracleDatapoint.getMethodSourceCode());
         if (method != null) {
             String methodName = method.getNameAsString();
@@ -286,8 +287,8 @@ public class JavaParserUtils {
     }
 
     /**
-     * Given the class and method under test, creates a synthetic method
-     * with the same signature (in terms of type parameters and arguments) as the method under test.
+     * Given a method, creates a synthetic method
+     * with the same signature (in terms of type parameters and arguments).
      * Inserts the synthetic method into the class and returns it.
      */
     private static MethodDeclaration getSyntheticMethod(TypeDeclaration<? extends TypeDeclaration<?>> classUnderTest, BodyDeclaration<?> methodUnderTest) {
@@ -309,12 +310,13 @@ public class JavaParserUtils {
                     getMethodOrConstructorDeclaration(oracleDatapoint.getMethodSourceCode())
             );
         } else {
-            return getClassOrInterface(cu, SYNTHETIC_CLASS_NAME).addMethod(SYNTHETIC_METHOD_NAME);
+            TypeDeclaration<?> clazz = getClassOrInterface(cu, SYNTHETIC_CLASS_NAME);
+            return clazz.addMethod(SYNTHETIC_METHOD_NAME);
         }
     }
 
     private static void handleJdVarIfNecessary(BlockStmt syntheticMethodBody, String expression, OracleDatapoint oracleDatapoint) {
-        if (!expression.contains("jdVar")) {
+        if (!Pattern.matches("\\bjdVar\\b", expression)) {
             return;
         }
         String jdVarArrayElement = oracleParser.getLastJdVarArrayElement(oracleDatapoint.getOracle());
@@ -416,8 +418,8 @@ public class JavaParserUtils {
      */
     public static String getTypeWithoutPackages(ResolvedType resolvedType) {
         String typeName = resolvedType.describe();
-        ResolvedType componentType = removeArray(resolvedType);
-        if (componentType.isReferenceType()) {
+        ResolvedType elementType = getElementType(resolvedType);
+        if (elementType.isReferenceType()) {
             // we use the original type name to avoid removing arrays
             return getTypeWithoutPackages(typeName);
         } else {
@@ -429,14 +431,14 @@ public class JavaParserUtils {
      * Returns the {@link ResolvedReferenceTypeDeclaration} of a given binary
      * type name.
      *
-     * @param type binary type name, e.g., {@code java.util.List}
+     * @param binaryName binary type name, e.g., {@code java.util.List}
      * @return the corresponding JavaParser ResolvedReferenceTypeDeclaration
      * @throws UnsolvedSymbolException if the type cannot be resolved
      * @throws UnsupportedOperationException if the type is an array or
      * primitive type
      */
-    public static ResolvedReferenceTypeDeclaration getResolvedReferenceTypeDeclaration(String type) throws UnsolvedSymbolException, UnsupportedOperationException {
-        return getResolvedType(type).asReferenceType().getTypeDeclaration().get();
+    public static ResolvedReferenceTypeDeclaration getResolvedReferenceTypeDeclaration(String binaryName) throws UnsolvedSymbolException, UnsupportedOperationException {
+        return getResolvedType(binaryName).asReferenceType().getTypeDeclaration().get();
     }
 
     private static ResolvedReferenceTypeDeclaration getResolvedReferenceTypeDeclaration(ResolvedType resolvedType) throws UnsupportedOperationException {
@@ -446,10 +448,10 @@ public class JavaParserUtils {
     /**
      * @throws UnsupportedOperationException if the type is an array or a primitive type
      */
-    private static ResolvedType getResolvedType(String type) throws UnsupportedOperationException {
+    private static ResolvedType getResolvedType(String binaryName) throws UnsupportedOperationException {
         CompilationUnit cu = javaParser.parse(SYNTHETIC_CLASS_SOURCE).getResult().get();
         BlockStmt syntheticMethodBody = getClassOrInterface(cu, SYNTHETIC_CLASS_NAME).addMethod(SYNTHETIC_METHOD_NAME).getBody().get();
-        syntheticMethodBody.addStatement(type + " type1Var;");
+        syntheticMethodBody.addStatement(binaryName + " type1Var;");
         return getClassOrInterface(cu, SYNTHETIC_CLASS_NAME)
                 .getMethodsByName(SYNTHETIC_METHOD_NAME).get(0)
                 .getBody().get()
@@ -460,11 +462,16 @@ public class JavaParserUtils {
     }
 
     /**
-     * Given a fully qualified class name, returns all methods that can be called on top of that type.
-     * If the type is a regular reference type that can be resolved, retrieves applicable methods. If
+     * Given a fully qualified class name, returns all methods that can be called on that type.
+     * <ul>
+     * <li>If the type is a regular reference type that can be resolved, retrieves applicable methods.
+     * <li>If
      * the type is a reference type but cannot be resolved (e.g., a generic type), retrieves methods
-     * from java.lang.Object. If the type is an array, retrieves methods from java.lang.Object. If the
+     * from java.lang.Object.
+     * <li>If the type is an array, retrieves methods from java.lang.Object.
+     * <li>If the
      * type is a primitive, throws an IllegalArgumentException.
+     * </ul>
      * @throws IllegalArgumentException if the type is not a reference type or an array
      */
     public static Set<MethodUsage> getMethodsOfType(String referenceType) throws IllegalArgumentException {
@@ -482,8 +489,9 @@ public class JavaParserUtils {
             }
         } catch (UnsupportedOperationException e) {
             if (!resolvedType.isArray()) {
-                throw new IllegalArgumentException("Trying to retrieve available methods from a type that is not " +
-                        "a reference type or an array: " + referenceType, e);
+                throw new IllegalArgumentException(
+                    "getMethodsOfType: "
+                    + "not a reference type or an array: " + referenceType, e);
             }
         } catch (UnsolvedSymbolException e) {
             logger.warn("Unresolvable type: {}", referenceType);
@@ -500,7 +508,7 @@ public class JavaParserUtils {
     }
 
     /** Returns true if type1 is an instance of type2, false otherwise.
-@param type1 fully qualified type, e.g., "java.util.List"
+     * @param type1 fully qualified type, e.g., "java.util.List"
      * @param type2 fully qualified type, e.g., "java.lang.Object"
      * @param oracleDatapoint may be null. If not null, it is used to check if some type is generic.
      * @return true if type1 is an instance of type2, false otherwise
@@ -518,14 +526,17 @@ public class JavaParserUtils {
      *     <li>{@code isInstanceOf("Object", "String", null)} returns {@code false}</li>
      *     <li>{@code doesInstanceofCompile("String", "Object", null)} returns {@code true}</li>
      *     <li>{@code doesInstanceofCompile("Object", "String", null)} returns {@code true}</li>
+     *     <li>{@code doesInstanceofCompile("String", "Integer", null)} returns {@code false}</li>
      * </ul>
-     * In other words, this method returns true if the expression "var1 instanceof type2" would compile,
+     * In other words, this method returns true if the expression {@code var1 instanceof type2} would compile,
      * where var1 is a variable of type1.
+     * The Java compiler rejects {@code var1 instanceof type2} if type1 and type2 are unrelated in
+     * the type hierarchy.
      */
     public static boolean doesInstanceofCompile(String type1, String type2, OracleDatapoint oracleDatapoint) {
-        ResolvedType resolvedType2 = tryToGetResolvedType(type2);
+        ResolvedType resolvedType2 = getResolvedTypeOrNull(type2);
         if (resolvedType2 == null) {
-            return false; // Either type2 is generic, or an unknown class. In both cases, type1 cannot be instanceof it
+            return false; // Either type2 is generic, or an unknown class. In both cases, type1 cannot be instanceof it.
         }
         try {
             List<String> type2TypeParameters = resolvedType2.asReferenceType().getTypeDeclaration().get().getTypeParameters()
@@ -555,7 +566,7 @@ public class JavaParserUtils {
         if (checkEquality && type1.equals(type2)) {
             return true;
         }
-        ResolvedType resolvedType2 = tryToGetResolvedType(type2);
+        ResolvedType resolvedType2 = getResolvedTypeOrNull(type2);
         if (resolvedType2 == null) {
             return false; // Type2 is generic or an unknown class. In both cases, type1 cannot be instanceof it
         }
@@ -591,7 +602,7 @@ public class JavaParserUtils {
         }
     }
 
-    private static ResolvedType tryToGetResolvedType(String type2) {
+    private static ResolvedType getResolvedTypeOrNull(String type2) {
         ResolvedType resolvedType2;
         try {
             resolvedType2 = getResolvedType(type2);
@@ -615,18 +626,27 @@ public class JavaParserUtils {
      * @return true if a variable of type1 can be assigned to a variable of type2, false otherwise
      */
     public static boolean isType1AssignableToType2(Pair<String, String> type1, Pair<String, String> type2, OracleDatapoint oracleDatapoint) {
-        // Cases to consider:
-        // 1) left and right types are the same
-        // 2) left type is null and right type is not primitive
-        // 3) left type is primitive and right type is wrapper
-        // 4) both types are numeric and left type is assignable to right type
-        // 5) left type is instance of right type (both types are non-primitive)
-        return
-                type1.equals(type2) ||
-                (type1.equals(JavaTypes.NULL) && !JavaTypes.PRIMITIVES.contains(type2)) ||
-                (JavaTypes.PRIMITIVES.contains(type1) && JavaTypes.PRIMITIVES_TO_WRAPPERS.get(type1).equals(type2)) ||
-                (JavaTypes.NUMBERS.contains(type1) && JavaTypes.NUMBERS.contains(type2) && isAssignableToNumeric(type1, type2)) ||
-                isInstanceOf(fullyQualifiedClassName(type1), fullyQualifiedClassName(type2), oracleDatapoint);
+        if (type1.equals(type2)) {
+            // 1) left and right types are the same
+            return true;
+        }
+        if (type1.equals(JavaTypes.NULL) && !JavaTypes.PRIMITIVES.contains(type2)) {
+            // 2) left type is the null/void type and right type is not primitive
+            return true;
+        }            
+        if (JavaTypes.PRIMITIVES.contains(type1) && JavaTypes.PRIMITIVES_TO_WRAPPERS.get(type1).equals(type2)) {
+            // 3) left type is primitive and right type is wrapper
+            return true;
+        }
+        if (JavaTypes.NUMBERS.contains(type1) && JavaTypes.NUMBERS.contains(type2) && isAssignableToNumeric(type1, type2)) {
+            // 4) both types are numeric and left type is assignable to right type
+            return true;
+        }
+        if (isInstanceOf(fullyQualifiedClassName(type1), fullyQualifiedClassName(type2), oracleDatapoint)) {
+            // 5) left type is instance of right type (both types are non-primitive)
+            return true;
+        }
+        return false;
     }
 
     public static TypeDeclaration<?> getClassOrInterface(CompilationUnit cu, String name) {
@@ -647,11 +667,12 @@ public class JavaParserUtils {
     }
 
     public static TypeDeclaration<?> getClassOrInterface(String classSourceCode, String name) {
-        return getClassOrInterface(javaParser.parse(classSourceCode).getResult().get(), name);
+        CompilationUnit cu = javaParser.parse(classSourceCode).getResult().get();
+        return getClassOrInterface(cu, name);
     }
 
     /**
-     * Returns the String variable declaration represented by a JavaParser
+     * Returns the String variable declaration(s) represented by a JavaParser
      * VariableDeclarator. Recall that a JavaParser field declaration may
      * declare multiple variables. Each variable is separated into individual
      * declarations.
@@ -663,13 +684,31 @@ public class JavaParserUtils {
      *  "(modifiers) (type) (name)( = initial value);"
      */
     public static String getVariableDeclaration(FieldDeclaration field, VariableDeclarator variable) {
-        return (String.join("", field.getModifiers().stream().map(Node::toString).toList()) +
+        return (String.join(" ", mapList(Node::toString, field.getModifiers())) +
                 variable.getTypeAsString() + " " +
                 variable.getNameAsString() +
                 (variable.getInitializer().isPresent()
                         ? " = " + variable.getInitializer().get()
                         : "") +
                 ";").trim();
+    }
+
+    /**
+     * Gets the String field declaration represented by a JavaParser
+     * {@link ResolvedFieldDeclaration}, but without the modifiers.
+     *
+     * @param resolvedField a field declaration
+     * @return a string representation of the declaration. The declaration
+     * follows the format:
+     *  "(type) (name);"
+     */
+    private static String getFieldDeclarationWithoutModifiers(
+            ResolvedFieldDeclaration resolvedField
+    ) {
+        return 
+                getTypeWithoutPackages(resolvedField.getType()) + " " +
+                resolvedField.getName() +
+                ";";
     }
 
     /**
@@ -684,13 +723,11 @@ public class JavaParserUtils {
     public static String getFieldDeclaration(
             ResolvedFieldDeclaration resolvedField
     ) {
-        boolean hasAccessSpecifier = !resolvedField.accessSpecifier().asString().equals("");
+        String accessSpecifier = resolvedField.accessSpecifier().asString();
         boolean isStatic = resolvedField.isStatic();
-        return ((hasAccessSpecifier ? resolvedField.accessSpecifier().asString() + " " : "") +
-                (isStatic ? "static " : "") +
-                getTypeWithoutPackages(resolvedField.getType().describe()) + " " +
-                resolvedField.getName() +
-                ";");
+        return (accessSpecifier.equals("") ? "" : accessSpecifier + " ") +
+               (isStatic ? "static " : "") +
+               getFieldDeclarationWithoutModifiers(resolvedField);
     }
 
     /**
@@ -707,10 +744,8 @@ public class JavaParserUtils {
             ResolvedFieldDeclaration resolvedField,
             int modifier
     ) {
-        return ((modifier == 0) ? "" : (java.lang.reflect.Modifier.toString(modifier) + " ") +
-                getTypeWithoutPackages(resolvedField.getType()) + " " +
-                resolvedField.getName() +
-                ";").trim();
+        return ((modifier == 0) ? "" : (java.lang.reflect.Modifier.toString(modifier) + " ")) +
+               getFieldDeclarationWithoutModifiers(resolvedField);
     }
 
     /**
@@ -784,16 +819,17 @@ public class JavaParserUtils {
     }
 
     /**
-     * Gets all formal parameters in the method definition. This method gets
+     * Gets all formal parameters in the method definition, but not the receiver. This method returns
      * the type of each parameter, followed by an artificial name. For
      * example,
-     *     "MethodUsage[get(int i)]"    => "List.of("int arg0")"
+     *     "MethodUsage[get(int i)]"    =&gt; "List.of("int arg1")"
      */
     private static List<String> getParameters(MethodUsage methodUsage) {
         ResolvedMethodDeclaration methodDeclaration = methodUsage.getDeclaration();
         // iterate through each parameter in the method declaration.
         List<String> methodParameters = new ArrayList<>();
-        for (int i = 0; i < methodDeclaration.getNumberOfParams(); i++) {
+        // Start at 1, considering the receiver to be formal parameter #0.
+        for (int i = 1; i <= methodDeclaration.getNumberOfParams(); i++) {
             methodParameters.add(getTypeWithoutPackages(methodDeclaration.getParam(i).getType()) + " arg" + i);
         }
         return methodParameters;
@@ -803,10 +839,8 @@ public class JavaParserUtils {
      * Gets the types of all exceptions that can be thrown by a given method.
      */
     private static List<String> getExceptions(MethodUsage methodUsage) {
-        return methodUsage.getDeclaration().getSpecifiedExceptions()
-                .stream()
-                .map(JavaParserUtils::getTypeWithoutPackages)
-                .toList();
+        return mapList(JavaParserUtils::getTypeWithoutPackages,
+                       methodUsage.getDeclaration().getSpecifiedExceptions());
     }
 
     /**
@@ -881,7 +915,7 @@ public class JavaParserUtils {
      * @param resolvedType a type
      * @return the base component type
      */
-    public static ResolvedType removeArray(ResolvedType resolvedType) {
+    public static ResolvedType getElementType(ResolvedType resolvedType) {
         while (resolvedType.isArray()) {
             resolvedType = resolvedType.asArrayType().getComponentType();
         }
@@ -899,8 +933,8 @@ public class JavaParserUtils {
     public static boolean isTypeVariable(
             ResolvedType resolvedType
     ) {
-        ResolvedType componentType = removeArray(resolvedType);
-        return componentType.isTypeVariable();
+        ResolvedType elementType = getElementType(resolvedType);
+        return elementType.isTypeVariable();
     }
 
     /**
