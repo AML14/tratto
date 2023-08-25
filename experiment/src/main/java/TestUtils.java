@@ -724,6 +724,28 @@ public class TestUtils {
         return Modifier.isStatic(method.getModifiers());
     }
 
+    /**
+     * Gets a statement that initializes the variable returned by a given
+     * expression. There are three possible cases depending on the type of
+     * expression:
+     * <ul>
+     *     <li>Variable Declaration: Instantiate the variable using the given
+     *     name, with no initial assignment</li>
+     *     <li>Method Call (ignored return type): Instantiate a dummy
+     *     placeholder variable</li>
+     *     <li>Other: Do nothing</li>
+     * </ul>
+     * If the expression is not a variable declaration or method call, then
+     * the relevant variable must already be initialized, and does not require
+     * an additional initialization statement (e.g. {@code x += getCount();}).
+     *
+     * @param testExpr a Java expression with a method call
+     * @param returnType the return type of the method call in
+     *                   {@code testExpr}
+     * @return a Java statement that initializes the return type of the
+     * original expression. Returns an empty statement if a variable does not
+     * need to be initialized.
+     */
     private static Statement getInitStmt(
             Expression testExpr,
             Type returnType
@@ -748,6 +770,21 @@ public class TestUtils {
         }
     }
 
+    /**
+     * Gets a statement that initializes the variable returned by the method
+     * call of a given statement. If the method call has a void return type or
+     * the variable affected by the statement is already initialized, then
+     * this method returns an empty statement. If the return type of the
+     * expression is ignored in the original statement, then a dummy variable
+     * is initialized for any possible post-conditions.
+     *
+     * @param testStmt a Java statement with a method call
+     * @param oracles all oracles related to the method call of
+     *                {@code testStmt}
+     * @return a Java statement that initializes a variable for the return
+     * type of the original statement. Returns an empty statement if a
+     * variable does not need to be initialized.
+     */
     private static Statement getInitStmt(
             Statement testStmt,
             List<OracleOutput> oracles
