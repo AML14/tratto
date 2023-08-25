@@ -297,7 +297,7 @@ public class TestUtils {
     }
 
     /**
-     * Removes all oracles from all test files in a given directory. Our
+     * Removes all oracles from all test files in a given directory. The
      * approach for removing oracles depends on whether an oracle is
      * exceptional (e.g. throws an exception) or a normal assertion. Saves the
      * modified test cases in "output/evosuite-prefix/". Does not override
@@ -1252,6 +1252,26 @@ public class TestUtils {
         return new NodeList<>(base);
     }
 
+    /**
+     * Gets all assertions from the relevant oracles of a given test
+     * statement. The approach for inserting oracles varies based on the
+     * oracle type:
+     * <ul>
+     *     <li>Pre-condition: added as assertions before the method under test
+     *     is called</li>
+     *     <li>Throws condition: added as if-statements to check the program
+     *     state before the method under test is called</li>
+     *     <li>Post-condition: added to the "else" block of the aforementioned
+     *     if-statements, or added as assertions after the method under test
+     *     is called (if no exceptional conditions are present)</li>
+     * </ul>
+     *
+     * @param testStmt a Java statement with a method call for the method
+     *                 under test
+     * @param oracles all oracles related to the method under test
+     * @return a list of Java statements representing the axiomatic test
+     * assertions
+     */
     private static NodeList<Statement> getOracleStatements(
             Statement testStmt,
             List<OracleOutput> oracles
@@ -1475,7 +1495,7 @@ public class TestUtils {
     }
 
     /**
-     * Adds oracles to test prefixes in a given directory. Our approach for
+     * Adds oracles to test prefixes in a given directory. The approach for
      * adding oracles varies based on whether the oracles are axiomatic or
      * non-axiomatic. Saves the modified test prefixes in
      * output/tog-test/[tog], where [tog] is the given test oracle generator.
