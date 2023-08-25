@@ -510,10 +510,10 @@ public class TestUtils {
 
     /**
      * Gets the type of a given variable. Iterates through all statements in
-     * the method which declares the variable to find the type at declaration.
+     * the parent method to find the variable declaration.
      *
      * @param name a variable name
-     * @param body all statements in the method which declares the variable
+     * @param body all statements in the parent method
      * @return the type of the given variable name
      */
     private static Type getTypeOfName(List<Statement> body, String name) {
