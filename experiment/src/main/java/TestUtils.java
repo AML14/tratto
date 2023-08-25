@@ -965,7 +965,7 @@ public class TestUtils {
      * {@code originalNames}, then it is not modified.
      *
      * @param originalNames the original names
-     * @param newNames the new names
+     * @param newNames the new names. May contain literal values.
      * @param stringExpression a Java expression
      * @return an equivalent Java expression String with new names
      * @throws IllegalArgumentException if {@code originalNames} and
