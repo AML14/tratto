@@ -6,7 +6,8 @@
  *                        follows the format:
  *                            {@code [methodName]([paramType] [paramName], ...)}
  * @param oracleType the type of oracle
- * @param prefix the test prefix corresponding to a non-axiomatic oracle
+ * @param prefix a test prefix corresponding to the generated oracle. An empty
+ *               string if the oracle is axiomatic.
  * @param oracle a generated oracle
  * @param exception the exception class thrown by an exceptional oracle. An
  *                  empty string if the oracle is not exceptional.
