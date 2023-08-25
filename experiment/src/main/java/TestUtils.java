@@ -1220,26 +1220,19 @@ public class TestUtils {
     }
 
     /**
-     * Gets an if-block representing all exceptional axiomatic oracles. Each
-     * condition in an if (or else if) statement corresponds to a program
-     * state in which an exception should be thrown. The body of each if
-     * statement has a try/catch block corresponding to the expected exception
-     * after the post statement is executed.
+     * Gets a list of statements corresponding to all axiomatic post
+     * conditions of a method under test. If the given base is null (e.g. no
+     * exceptional post conditions), then this method returns all normal post
+     * conditions as a list of assertions (similar to the pre-conditions).
+     * Otherwise, this method appends the normal post conditions as the body
+     * of the "else" branch in the base if-block.
      *
+     * @param base an if-block representing all exceptional oracles
      * @param postStmt a Java statement that calls the method under test and
      *                 assigns its output to a variable
-     * @param oracles all relevant exceptional oracles
-     * @return an if-block representing all exceptional oracles
-     */
-
-    /**
-     * Gets a list of statements corresponding to all axiomatic post
-     * conditions of a method under test. If
-     *
-     * @param base
-     * @param postStmt
-     * @param oracles
-     * @return
+     * @param oracles all relevant normal post-condition oracles
+     * @return an if-block representing all post-conditions (normal and
+     * exceptional) or a list of normal post-conditions
      */
     private static NodeList<Statement> getPostConditions(
             IfStmt base,
