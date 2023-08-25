@@ -800,7 +800,7 @@ public class TestUtils {
     }
 
     /**
-     * Gets the reflection Method representation of a method.
+     * Gets the reflection {@link Method} representation of a method.
      *
      * @param className the fully qualified name of the declaring class
      * @param methodSignature the method signature
