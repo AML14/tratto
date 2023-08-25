@@ -990,12 +990,13 @@ public class TestUtils {
     }
 
     /**
-     * Replaces all parameter variable names in an oracle with names from a
-     * method under test.
+     * Replaces all parameter variable names in an oracle with names or
+     * literal expressions from a method call of the method under test.
      *
      * @param testStmt a Java test statement
      * @param oracleOutput an oracle record
-     * @return an equivalent oracle record with relevant parameter names
+     * @return an equivalent oracle record with relevant parameter names or
+     * literal values
      */
     private static OracleOutput getParameterID(
             Statement testStmt,
