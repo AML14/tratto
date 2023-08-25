@@ -1194,7 +1194,6 @@ public class TestUtils {
                 .map(o -> new BlockStmt().addStatement(getTryCatchBlock(postStmt, o)))
                 .toList();
         assert conditions.size() == tryStmts.size();
-        assert conditions.size() > 0;
         IfStmt ifStmt = new IfStmt(conditions.get(0), tryStmts.get(0), new BlockStmt());
         IfStmt currentIfStmt = ifStmt;
         for (int i = 1; i < conditions.size(); i++) {
