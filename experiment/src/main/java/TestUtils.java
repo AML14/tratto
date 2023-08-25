@@ -977,11 +977,18 @@ public class TestUtils {
     }
 
     /**
-     * Substitutes contextual variable names into an oracle.
+     * Replaces all instances of original names in an oracle with their
+     * corresponding instance names in a test statement. The original oracle
+     * uses the parameter names from the method signature, "receiverObjectID"
+     * for the instance of the declaring class, and "methodResultID" for the
+     * instance of the method return type.
      *
-     * @param postStmt a list of statements in a test case
-     * @param oracleOutput an oracle
-     * @return the same oracle with names from the test body
+     * @param postStmt a Java statement that assigns the return value of the
+     *                 method under test to a variable
+     * @param testStmt a Java test statement
+     * @param oracleOutput an original oracle record
+     * @return an equivalent oracle record with contextual names from a test
+     * statement
      */
     private static OracleOutput contextualizeOracle(
             Statement postStmt,
