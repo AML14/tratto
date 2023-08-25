@@ -140,8 +140,8 @@ public class TestUtils {
     /**
      * Gets the method call in a JUnit Assert condition. Returns null if the
      * conditions does not have a method call. For example,
-     *     "{@code assertTrue(stack.isEmpty()}" => "{@code stack.isEmpty()}",
-     *     "{@code assertFalse(boolVar)}" => "null".
+     *     "{@code assertTrue(stack.isEmpty()}" -> "{@code stack.isEmpty()}",
+     *     "{@code assertFalse(boolVar)}" -> "null".
      * This method assumes that a JUnit condition has at most one method call
      * in its condition.
      *
@@ -506,9 +506,9 @@ public class TestUtils {
      * Gets the component type of a given type. If the type is an array, then
      * all outer arrays are removed. Otherwise, the type is not modified. For
      * example,
-     *     "int[][]"    =>    "int"
-     *     "Object"    =>    "Object"
-     *     "T[]"    =>    "T"
+     *     "int[][]"    ->    "int"
+     *     "Object"    ->    "Object"
+     *     "T[]"    ->    "T"
      *
      * @param type a type
      * @return the base component type of the given type
@@ -564,8 +564,8 @@ public class TestUtils {
 
     /**
      * Gets the type of a literal expression. For example,
-     *     {@code 0}    =>    {@code PrimitiveType.intType();}
-     *     {@code "hello"}    =>    {@code java.lang.String}
+     *     {@code 0}    ->    {@code PrimitiveType.intType();}
+     *     {@code "hello"}    ->    {@code java.lang.String}
      * If the literal is "null", then this method returns null, as JavaParser
      * does not have a {@link Type} representation for null types.
      *
