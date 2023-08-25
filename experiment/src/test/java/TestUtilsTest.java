@@ -149,7 +149,7 @@ public class TestUtilsTest {
                     @Disabled
                     public void assertionTest() throws Throwable {
                         int primitiveInt = 5;
-                        assertTrue((primitiveInt == null) == false);
+                        assertTrue(primitiveInt > 0);
                         java.lang.Integer objectInt;
                         objectInt = Integer.valueOf(primitiveInt);
                     }""";
@@ -219,7 +219,7 @@ public class TestUtilsTest {
         } catch (IOException e) {
             fail();
         }
-        FileUtils.deleteDirectory(outputPath.resolve("tog-tests"));
+//        FileUtils.deleteDirectory(outputPath.resolve("tog-tests"));
     }
 
     private List<OracleOutput> getNonAxiomaticOracles() {
