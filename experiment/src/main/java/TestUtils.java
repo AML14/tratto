@@ -872,12 +872,12 @@ public class TestUtils {
     }
 
     /**
-     * Replaces all variable names in the original oracle with the names from
-     * the test case.
+     * Replaces all parameter variable names in an oracle with names from a
+     * method under test.
      *
-     * @param testStmt a Java statement
+     * @param testStmt a Java test statement
      * @param oracleOutput an oracle record
-     * @return an oracle record with contextual parameter names
+     * @return an equivalent oracle record with relevant parameter names
      */
     private static OracleOutput getParameterID(
             Statement testStmt,
@@ -900,12 +900,16 @@ public class TestUtils {
     }
 
     /**
-     * Replaces all instances of "receiverObjectID" in a given oracle, with
-     * the corresponding object name in source code.
+     * Replaces all instances of "receiverObjectID" in an oracle with the
+     * corresponding object name in source code. The "receiverObjectID"
+     * corresponds to the name of the instance of the declaring class for the
+     * method under test. If the method under test is a static method, then
+     * the "receiverObjectID" does not exist, and the given oracle is not
+     * modified.
      *
-     * @param testStmt the contextual test statement
-     * @param oracleOutput the original oracle
-     * @return the axiomatic oracle with names replaced
+     * @param testStmt a Java test statement
+     * @param oracleOutput an oracle record
+     * @return an equivalent oracle record with the relevant object name
      */
     private static OracleOutput getReceiverObjectID(
             Statement testStmt,
@@ -932,8 +936,11 @@ public class TestUtils {
     }
 
     /**
-     * Replaces all instances of "methodResultID" in a given oracle with
-     * the corresponding object name in source code.
+     * Replaces all instances of "methodResultID" in an oracle with the
+     * corresponding object name in source code. The "methodResultID"
+     * corresponds to the name of the variable returned by the method under
+     * test. If the method under test has a void return type, then the
+     * "methodResultID" does not exist, and the given oracle is not modified.
      *
      * @param initStmt the initialization of the method result
      * @param oracleOutput the original oracle
