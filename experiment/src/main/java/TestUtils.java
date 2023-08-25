@@ -670,7 +670,7 @@ public class TestUtils {
      * Gets all Class objects of a given list of types.
      *
      * @param classNames a list of fully qualified type names
-     * @return the Classes corresponding to the type names
+     * @return the Class objects corresponding to the type names
      * @see TestUtils#getClassOfName(String)
      */
     private static List<Class<?>> getClassesOfNames(List<String> classNames) {
