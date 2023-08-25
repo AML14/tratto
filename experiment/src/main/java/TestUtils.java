@@ -395,23 +395,69 @@ public class TestUtils {
     }
 
     /**
+     * Gets the field descriptor of a given fully qualified primitive type
+     * name.
+     *
+     * @param primitiveName a fully qualified primitive type name
+     * @return the field descriptor corresponding to the primitive type
+     * @throws IllegalArgumentException if the given type name is not a
+     * primitive type
+     */
+    private static String fqnToFieldDescriptor(String primitiveName) {
+        switch (primitiveName) {
+            case "boolean" -> {
+                return "Z";
+            }
+            case "byte" -> {
+                return "B";
+            }
+            case "char" -> {
+                return "C";
+            }
+            case "short" -> {
+                return "S";
+            }
+            case "int" -> {
+                return "I";
+            }
+            case "long" -> {
+                return "J";
+            }
+            case "float" -> {
+                return "F";
+            }
+            case "double" -> {
+                return "D";
+            }
+            default -> throw new IllegalArgumentException("Unrecognized primitive type " + primitiveName);
+        }
+    }
+
+    /**
      * Converts a fully qualified name to the {@code Class.getName()} form of
-     * a name.
+     * a name. This method does not distinguish between package names and
+     * inner classes, such that no "$" symbols are added.
      *
      * @param fullyQualifiedName a fully qualified name
      * @return the {@code Class.getName()} form of a name
      */
     private static String fqnToClassGetName(String fullyQualifiedName) {
         int arrayLevel = getArrayLevel(fullyQualifiedName);
-        if (arrayLevel != 0) {
-            StringBuilder sb = new StringBuilder(fullyQualifiedName.replaceAll("\\[]", ""));
+        if (arrayLevel == 0) {
+            return fullyQualifiedName;
+        }
+        String componentType = fullyQualifiedName.replaceAll("\\[]", "");
+        StringBuilder sb = new StringBuilder();
+        if (primitiveTypes.contains(componentType)) {
+            sb.append(fqnToFieldDescriptor(componentType));
+            sb.insert(0, "[".repeat(arrayLevel));
+        } else {
+            sb.append(componentType);
             sb.insert(0, "L");
             sb.insert(0, "[".repeat(arrayLevel));
             sb.append(";");
-            return sb.toString();
-        } else {
-            return fullyQualifiedName;
         }
+        return sb.toString();
     }
 
     /**
