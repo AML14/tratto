@@ -602,7 +602,7 @@ public class TestUtils {
      * Gets the type of a given expression.
      *
      * @param body all statements in the parent method
-     * @param expr a Java expression
+     * @param expr a Java variable or literal expression
      * @return the type of the given expression
      */
     private static Type getTypeOfExpression(List<Statement> body, Expression expr) {
@@ -621,7 +621,8 @@ public class TestUtils {
      * @param cu the parent Java file of {@code body}
      * @param body a list of statements in a method body
      * @param methodCall a method call in the given method body
-     * @return all parameter type names in the given method
+     * @return all parameter type names in the given method. May contain null
+     * values for null literal expressions.
      */
     private static List<String> getParameterTypeNames(
             CompilationUnit cu,
