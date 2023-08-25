@@ -939,25 +939,31 @@ public class TestUtils {
      * Replaces all instances of "methodResultID" in an oracle with the
      * corresponding object name in source code. The "methodResultID"
      * corresponds to the name of the variable returned by the method under
-     * test. If the method under test has a void return type, then the
-     * "methodResultID" does not exist, and the given oracle is not modified.
+     * test. If the method under test has a void return type (no corresponding
+     * variable assignment), then the "methodResultID" does not exist, and the
+     * given oracle is not modified.
      *
-     * @param initStmt the initialization of the method result
+     * @param postStmt a Java statement that assigns the return value of the
+     *                 method under test to a variable
      * @param oracleOutput the original oracle
-     * @return the axiomatic oracle with names replaced
+     * @return an equivalent oracle record with the relevant object name
      */
     private static OracleOutput getMethodResultID(
-            Statement initStmt,
+            Statement postStmt,
             OracleOutput oracleOutput
     ) {
-        if (initStmt.isEmptyStmt()) {
-            // if there is no return type, then the methodResultID is not necessary
+        if (!postStmt.isExpressionStmt()) {
+            return oracleOutput;
+        }
+        Expression postExpr = postStmt.asExpressionStmt().getExpression();
+        if (!postExpr.isAssignExpr()) {
             return oracleOutput;
         }
         String originalName = "methodResultID";
-        String contextName = initStmt
-                .asExpressionStmt().getExpression()
-                .asVariableDeclarationExpr().getVariables().get(0)
+        String contextName = postExpr
+                .asAssignExpr()
+                .getTarget()
+                .asNameExpr()
                 .getNameAsString();
         String contextOracle = replaceNames(List.of(originalName), List.of(contextName), oracleOutput.oracle());
         return new OracleOutput(
@@ -973,18 +979,18 @@ public class TestUtils {
     /**
      * Substitutes contextual variable names into an oracle.
      *
-     * @param initStmt a list of statements in a test case
+     * @param postStmt a list of statements in a test case
      * @param oracleOutput an oracle
      * @return the same oracle with names from the test body
      */
     private static OracleOutput contextualizeOracle(
-            Statement initStmt,
+            Statement postStmt,
             Statement testStmt,
             OracleOutput oracleOutput
     )  {
         oracleOutput = getParameterID(testStmt, oracleOutput);
         oracleOutput = getReceiverObjectID(testStmt, oracleOutput);
-        oracleOutput = getMethodResultID(initStmt, oracleOutput);
+        oracleOutput = getMethodResultID(postStmt, oracleOutput);
         return oracleOutput;
     }
 
@@ -1091,7 +1097,7 @@ public class TestUtils {
         Statement postStmt = getPostStmt(initStmt, testStmt);
         oracles = oracles
                 .stream()
-                .map(o -> contextualizeOracle(initStmt, testStmt, o))
+                .map(o -> contextualizeOracle(postStmt, testStmt, o))
                 .toList();
         List<OracleOutput> preConditions = oracles
                 .stream()
