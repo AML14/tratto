@@ -132,6 +132,22 @@ public class TestUtilsTest {
                         "",
                         "methodResultID.getDeclaringClass() == receiverObjectID",
                         ""
+                ),
+                new OracleOutput(
+                        "java.lang.String",
+                        "getChars(int srcBegin, int srcEnd, char[] dst, int dstBegin)",
+                        OracleType.NORMAL_POST,
+                        "",
+                        "receiverObjectID.charAt(srcBegin) == char[dstBegin]",
+                        ""
+                ),
+                new OracleOutput(
+                        "java.lang.String",
+                        "substring(int beginIndex, int endIndex)",
+                        OracleType.NORMAL_POST,
+                        "",
+                        "(methodResultID == null) == false",
+                        ""
                 )
         );
     }
