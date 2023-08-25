@@ -582,14 +582,14 @@ public class TestUtils {
 
     /**
      * Gets all oracles applicable to a Java statement. An oracle is
-     * applicable to a statement if it corresponds to a method call in the
-     * given statement.
+     * applicable to a statement if and only if it corresponds to the method
+     * call in the given statement.
      *
-     * @param cu the parent Java file
-     * @param body the parent method of the statement
+     * @param cu the parent Java file of {@code body}
+     * @param body the parent method of {@code stmt}
      * @param stmt a Java statement
      * @param allOracles all possible oracles
-     * @return all oracles corresponding to methods calls in the given
+     * @return all oracles corresponding to the method call in the given
      * statement
      */
     private static List<OracleOutput> getRelatedOracles(
