@@ -1142,8 +1142,8 @@ public class TestUtils {
      * catches the expected exception. If the expected exception is not
      * thrown, then the test fails.
      *
-     * @param postStmt a Java statement that calls the method under test
-     *                 and assigns its output to a variable
+     * @param postStmt a Java statement that calls the method under test and
+     *                 assigns its output to a variable
      * @param oracleOutput an exceptional oracle
      * @return a try/catch block corresponding to the exceptional oracle
      */
@@ -1166,6 +1166,18 @@ public class TestUtils {
                 .setCatchClauses(new NodeList<>(catchClause));
     }
 
+    /**
+     * Gets an if-block representing all exceptional axiomatic oracles. Each
+     * condition in an if (or else if) statement corresponds to a program
+     * state in which an exception should be thrown. The body of each if
+     * statement has a try/catch block corresponding to the expected exception
+     * after the post statement is executed.
+     *
+     * @param postStmt a Java statement that calls the method under test and
+     *                 assigns its output to a variable
+     * @param oracles all relevant exceptional oracles
+     * @return an if-block representing all exceptional oracles
+     */
     private static IfStmt getThrowsConditions(
             Statement postStmt,
             List<OracleOutput> oracles
