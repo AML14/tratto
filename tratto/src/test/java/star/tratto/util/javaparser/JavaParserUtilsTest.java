@@ -477,7 +477,7 @@ public class JavaParserUtilsTest {
         CallableDeclaration<?> jpCallable = getMethodDeclaration(oracleDatapoint.getMethodSourceCode());
         String typeName = "T";
         assertNotNull(jpCallable);
-        assertTrue(isTypeParameter(typeName, jpCallable, jpClass));
+        assertTrue(isTypeVariable(typeName, jpCallable, jpClass));
     }
 
     @Test
