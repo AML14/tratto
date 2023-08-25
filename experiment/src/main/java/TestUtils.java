@@ -384,17 +384,18 @@ public class TestUtils {
     }
 
     /**
-     * Converts a fully qualified name to the Class.getName form of a name.
+     * Converts a fully qualified name to the {@code Class.getName()} form of
+     * a name.
      *
      * @param fullyQualifiedName a fully qualified name
-     * @return the Class.getName form of a type
+     * @return the {@code Class.getName()} form of a name
      */
     private static String fqnToClassGetName(String fullyQualifiedName) {
         int arrayLevel = getArrayLevel(fullyQualifiedName);
         if (arrayLevel != 0) {
             StringBuilder sb = new StringBuilder(fullyQualifiedName.replaceAll("\\[]", ""));
             sb.insert(0, "L");
-            sb.insert(0, ("[").repeat(arrayLevel));
+            sb.insert(0, "[".repeat(arrayLevel));
             sb.append(";");
             return sb.toString();
         } else {
