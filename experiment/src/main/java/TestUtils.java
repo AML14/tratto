@@ -37,9 +37,9 @@ import java.util.stream.Stream;
  * and inserting oracles into test prefixes.
  */
 public class TestUtils {
-    /** A unique id for placeholder variable names when inserting oracles */
+    /** A unique id for placeholder variable names when inserting oracles. */
     private static int variableID = 0;
-    /** All primitive fully qualified type names  */
+    /** All primitive fully qualified type names.  */
     private static final List<String> primitiveTypes = List.of(
             "boolean",
             "byte",
@@ -50,9 +50,9 @@ public class TestUtils {
             "float",
             "double"
     );
-    /** The path to the output directory */
+    /** The path to the output directory. */
     private static final Path output = Paths.get("output");
-    /** A list of all JUnit Assertions assert methods */
+    /** A list of all JUnit Assertions assert methods. */
     private static final List<String> jUnitAssertMethods = List.of(
             "assertArrayEquals",
             "assertEquals",
@@ -70,7 +70,7 @@ public class TestUtils {
             "tratto"
     );
 
-    /** Private constructor to avoid creating an instance of this class */
+    /** Private constructor to avoid creating an instance of this class. */
     private TestUtils() {
         throw new UnsupportedOperationException("This class cannot be instantiated.");
     }
@@ -1288,7 +1288,7 @@ public class TestUtils {
      * @param tog a test oracle generator
      * @return true iff the given tog generates axiomatic test oracles (known
      * a priori)
-     * @see TestUtils#allAxiomaticTogs
+     * @see TestUtils#axiomaticTogs
      */
     private static boolean isAxiomatic(String tog) {
         return axiomaticTogs.contains(tog);
