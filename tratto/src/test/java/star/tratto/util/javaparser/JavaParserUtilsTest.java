@@ -464,10 +464,10 @@ public class JavaParserUtilsTest {
     }
 
     @Test
-    public void removeArrayTest() {
+    public void getElementTypeTest() {
         ResolvedType intType = ResolvedPrimitiveType.byName("int");
         ResolvedType arrayType = new ResolvedArrayType(intType);
-        assertEquals(intType.toString(), removeArray(arrayType).toString());
+        assertEquals(intType.toString(), getElementType(arrayType).toString());
     }
 
     @Test

@@ -58,8 +58,8 @@ import static star.tratto.util.JavaTypes.isAssignableToNumeric;
 import static star.tratto.util.StringUtils.fullyQualifiedClassName;
 
 /**
- * This class provides static methods for a variety of common JavaParser
- * utilities to avoid duplicate code.
+ * This class provides static methods for JavaParser
+ * utilities.
  */
 public class JavaParserUtils {
     private static final Logger logger = LoggerFactory.getLogger(JavaParserUtils.class);
@@ -415,8 +415,8 @@ public class JavaParserUtils {
      */
     public static String getTypeWithoutPackages(ResolvedType resolvedType) {
         String typeName = resolvedType.describe();
-        ResolvedType componentType = removeArray(resolvedType);
-        if (componentType.isReferenceType()) {
+        ResolvedType elementType = getElementType(resolvedType);
+        if (elementType.isReferenceType()) {
             // we use the original type name to avoid removing arrays
             return getTypeWithoutPackages(typeName);
         } else {
@@ -522,7 +522,7 @@ public class JavaParserUtils {
      * where var1 is a variable of type1.
      */
     public static boolean doesInstanceofCompile(String type1, String type2, OracleDatapoint oracleDatapoint) {
-        ResolvedType resolvedType2 = tryToGetResolvedType(type2);
+        ResolvedType resolvedType2 = getResolvedTypeOrNull(type2);
         if (resolvedType2 == null) {
             return false; // Either type2 is generic, or an unknown class. In both cases, type1 cannot be instanceof it
         }
@@ -554,7 +554,7 @@ public class JavaParserUtils {
         if (checkEquality && type1.equals(type2)) {
             return true;
         }
-        ResolvedType resolvedType2 = tryToGetResolvedType(type2);
+        ResolvedType resolvedType2 = getResolvedTypeOrNull(type2);
         if (resolvedType2 == null) {
             return false; // Type2 is generic or an unknown class. In both cases, type1 cannot be instanceof it
         }
@@ -590,7 +590,7 @@ public class JavaParserUtils {
         }
     }
 
-    private static ResolvedType tryToGetResolvedType(String type2) {
+    private static ResolvedType getResolvedTypeOrNull(String type2) {
         ResolvedType resolvedType2;
         try {
             resolvedType2 = getResolvedType(type2);
@@ -880,7 +880,7 @@ public class JavaParserUtils {
      * @param resolvedType a type
      * @return the base component type
      */
-    public static ResolvedType removeArray(ResolvedType resolvedType) {
+    public static ResolvedType getElementType(ResolvedType resolvedType) {
         while (resolvedType.isArray()) {
             resolvedType = resolvedType.asArrayType().getComponentType();
         }
@@ -898,8 +898,8 @@ public class JavaParserUtils {
     public static boolean isTypeVariable(
             ResolvedType resolvedType
     ) {
-        ResolvedType componentType = removeArray(resolvedType);
-        return componentType.isTypeVariable();
+        ResolvedType elementType = getElementType(resolvedType);
+        return elementType.isTypeVariable();
     }
 
     /**
