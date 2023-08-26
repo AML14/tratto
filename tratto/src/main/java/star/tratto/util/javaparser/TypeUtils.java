@@ -1,5 +1,7 @@
 package star.tratto.util.javaparser;
 
+import static org.plumelib.util.CollectionsPlume.mapList;
+
 import com.github.javaparser.TokenRange;
 import com.github.javaparser.ast.body.CallableDeclaration;
 import com.github.javaparser.ast.body.Parameter;
@@ -36,6 +38,9 @@ public class TypeUtils {
      * package does not exist (e.g. default or primitive), then the method
      * returns an empty string.
      *
+     * This method works properly for inner classes, because the ClassGetName syntax uses "$"
+     * between inner and outer classes.  This method does not work for array classes.
+
      * @param classGetName a ClassGetName form of a type
      * @return the package name of the class
      */
@@ -59,6 +64,9 @@ public class TypeUtils {
     /**
      * Returns the array level of the type.
      *
+     *  ClassGetName arrays have "[" characters are at the beginning.  ClassGetSimpleName arrays
+     *  have "[]" at the end.
+
      * @param typeName a ClassGetName or ClassGetSimpleName form of a type
      * @return the array level of the type
      */
@@ -97,10 +105,12 @@ public class TypeUtils {
     }
 
     /**
-     * Gets the ClassGetName form of the base component type for a given
+     * Gets the ClassGetName form of the element type (the base component type) for a given
      * ClassGetName array type. For example,
-     *     "[[I"    =>    "I"
-     *     "[Ljava.lang.String;"    =>    "java.lang.String"
+     * <pre>
+     *     "[[I"    =&gt;    "I"
+     *     "[Ljava.lang.String;"    =&gt;    "java.lang.String"
+     * </pre>
      *
      * @param classGetNameArray a ClassGetName form of an array type
      * @return the ClassGetName form of the component type without arrays
@@ -114,8 +124,8 @@ public class TypeUtils {
         if (isPrimitiveFieldDescriptor(classGetNameComponent)) {
             return classGetNameComponent;
         } else {
+            // For arrays of references, remove "L" prefix and ";" suffix.
             classGetNameComponent = classGetNameComponent.replaceAll(";", "");
-            // for arrays of Objects, remove "L" prefix
             return classGetNameComponent.substring(1);
         }
     }
@@ -151,10 +161,8 @@ public class TypeUtils {
     public static List<String> classGetNameToClassGetSimpleName(
             List<String> classGetNames
     ) {
-        return classGetNames
-                .stream()
-                .map(TypeUtils::classGetNameToClassGetSimpleName)
-                .collect(Collectors.toList());
+        return mapList(TypeUtils::classGetNameToClassGetSimpleName,
+                       classGetNames);
     }
 
     /**
@@ -163,7 +171,8 @@ public class TypeUtils {
      * ClassGetSimpleName nor ClassGetName forms include type parameters.
      * These names may include semicolons due to source code format. For
      * example,
-     *     "private final static Map&lt;String, Integer&gt;;"
+     * {@code 
+     *     "private final static Map<String, Integer>;"}
      * includes a semicolon at the end of its declaration, which is removed
      * by this method.
      *
@@ -171,7 +180,7 @@ public class TypeUtils {
      * @return the base type without type arguments
      */
     public static String removeTypeArgumentsAndSemicolon(String parameterizedType) {
-        String regex = "<[^<>]*>|;";
+        String regex = "<[^<>]*>";
         // repeatedly remove all type arguments.
         String previous;
         String current = parameterizedType;
@@ -179,7 +188,7 @@ public class TypeUtils {
             previous = current;
             current = previous.replaceAll(regex, "");
         } while (!current.equals(previous));
-        return current;
+        return current.replaceAll(";", "");
     }
 
     /**
