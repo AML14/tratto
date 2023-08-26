@@ -105,7 +105,7 @@ public class TypeUtils {
      * @param classGetNameArray a ClassGetName form of an array type
      * @return the ClassGetName form of the component type without arrays
      */
-    private static String classGetNameComponentType(String classGetNameArray) {
+    private static String classGetNameElementType(String classGetNameArray) {
         int arrayLevel = getArrayLevel(classGetNameArray);
         if (arrayLevel == 0) {
             return classGetNameArray;
@@ -131,7 +131,7 @@ public class TypeUtils {
             String classGetName
     ) {
         int arrayLevel = getArrayLevel(classGetName);
-        classGetName = classGetNameComponentType(classGetName);
+        classGetName = classGetNameElementType(classGetName);
         if (isPrimitiveFieldDescriptor(classGetName)) {
             // ClassGetName uses field descriptors for arrays of primitive types
             classGetName = Signatures.fieldDescriptorToBinaryName(classGetName);
