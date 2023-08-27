@@ -684,7 +684,7 @@ public class JavaParserUtils {
      *  "(modifiers) (type) (name)( = initial value);"
      */
     public static String getVariableDeclaration(FieldDeclaration field, VariableDeclarator variable) {
-        return (String.join(" ", mapList(Node::toString, field.getModifiers())) +
+        return (String.join("", mapList(Node::toString, field.getModifiers())) +
                 variable.getTypeAsString() + " " +
                 variable.getNameAsString() +
                 (variable.getInitializer().isPresent()
