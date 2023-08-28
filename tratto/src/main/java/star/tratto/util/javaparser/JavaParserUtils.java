@@ -825,7 +825,7 @@ public class JavaParserUtils {
     }
 
     /**
-     * Gets all type parameters of a given method.
+     * Gets all type parameters of a given method as declared in source code.
      */
     private static List<String> getTypeParameters(MethodUsage methodUsage) {
         return methodUsage.getDeclaration().getTypeParameters()
