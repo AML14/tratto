@@ -819,17 +819,16 @@ public class JavaParserUtils {
     }
 
     /**
-     * Gets all formal parameters in the method definition, but not the receiver. This method returns
-     * the type of each parameter, followed by an artificial name. For
+     * Gets all formal parameters in the method definition. This method
+     * returns the type of each parameter, followed by an artificial name. For
      * example,
-     *     "MethodUsage[get(int i)]"    =&gt; "List.of("int arg1")"
+     *     "MethodUsage[get(int i)]"    -&gt;    "List.of("int arg1")"
      */
     private static List<String> getParameters(MethodUsage methodUsage) {
         ResolvedMethodDeclaration methodDeclaration = methodUsage.getDeclaration();
         // iterate through each parameter in the method declaration.
         List<String> methodParameters = new ArrayList<>();
-        // Start at 1, considering the receiver to be formal parameter #0.
-        for (int i = 1; i <= methodDeclaration.getNumberOfParams(); i++) {
+        for (int i = 0; i < methodDeclaration.getNumberOfParams(); i++) {
             methodParameters.add(getTypeWithoutPackages(methodDeclaration.getParam(i).getType()) + " arg" + i);
         }
         return methodParameters;
