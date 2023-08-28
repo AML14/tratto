@@ -40,10 +40,14 @@ public class TypeUtils {
      * classes. This method does NOT work for array classes.
      *
      * @param classGetName a ClassGetName form of a type
-     * @return the package name of the class
+     * @return the package name of the class. Returns an empty string for
+     * primitive types.
      */
     public static String getPackageNameFromClassGetName(String classGetName) {
         int packageIdx = classGetName.lastIndexOf('.');
+        if (packageIdx == -1) {
+            return "";
+        }
         return classGetName.substring(0, packageIdx);
     }
 
