@@ -133,7 +133,7 @@ public class JavaParserUtils {
 
     /**
      * Injects a new synthetic method declaration into a class given an
-     * original method under test, including:
+     * original method from the class, including:
      * <ul>
      *     <li>variable declaration for each method argument in the original method</li>
      *     <li>variable declaration for the return type of the original method</li>
@@ -141,7 +141,7 @@ public class JavaParserUtils {
      * </ul>
      *
      * @param jpClass the class in which to insert the newly-created method
-     * @param jpCallable the method under analysis
+     * @param jpCallable a method from {@code jpClass}
      * @param methodArgs tokens for the parameters of {@code jpCallable}
      * @param expression an expression to add to the synthetic method
      * @throws ResolvedTypeNotFound if {@code jpCallable} is a constructor
@@ -185,8 +185,8 @@ public class JavaParserUtils {
      * returns a JavaParser representation of the type {@code int}.
      *
      * @param jpClass the declaring class of {@code jpCallable}
-     * @param jpCallable the method under analysis
-     * @param methodArgs the arguments in the method under analysis
+     * @param jpCallable a method of {@code jpClass}
+     * @param methodArgs tokens for the parameters of {@code jpCallable}
      * @param expression a Java expression
      * @return the type of the expression
      * @throws ResolvedTypeNotFound if {@code jpClass} is not a class/interface
