@@ -10,7 +10,6 @@ import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import org.apache.commons.math3.linear.ArrayRealVector;
 import org.apache.commons.math3.linear.RealVector;
 import org.javatuples.Pair;
-import org.plumelib.util.CollectionsPlume;
 
 import java.util.ArrayList;
 import java.util.Collections;
