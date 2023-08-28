@@ -147,20 +147,20 @@ public class JavaParserUtils {
      * </ul>
      *
      * @param jpClass the class in which to insert the new method
-     * @param jpCallable an original method from {@code jpClass}
-     * @param methodArgs tokens for the parameters of {@code jpCallable}
+     * @param originalMethod an original method from {@code jpClass}
+     * @param methodArgs tokens for the parameters of {@code originalMethod}
      * @param expression an expression to add to the new method
-     * @throws ResolvedTypeNotFound if {@code jpCallable} is a constructor
+     * @throws ResolvedTypeNotFound if {@code originalMethod} is a constructor
      */
     private static void addNewMethodWithExpression(
             TypeDeclaration<?> jpClass,
-            CallableDeclaration<?> jpCallable,
+            CallableDeclaration<?> originalMethod,
             // NOTE: This is MethodArgumentTokens in the next pull request where records are integrated.
             List<Triplet<String, String, String>> methodArgs,
             String expression
     ) throws ResolvedTypeNotFound {
         // throw error when given a constructor due to JavaParser behavior differences
-        if (jpCallable.getNameAsString().equals(jpClass.getNameAsString())) {
+        if (originalMethod.getNameAsString().equals(jpClass.getNameAsString())) {
             throw new ResolvedTypeNotFound("Unable to generate synthetic constructor for class " + jpClass.getNameAsString());
         }
         // create synthetic method
@@ -170,10 +170,10 @@ public class JavaParserUtils {
             methodBody.addStatement(methodArg.getValue2() + " " + methodArg.getValue0() + ";");
         }
         // add return type (if non-void)
-        String methodReturnType = ((MethodDeclaration) jpCallable).getType().asString();
+        String methodReturnType = ((MethodDeclaration) originalMethod).getType().asString();
         if (!methodReturnType.equals("void")) {
             methodBody.addStatement(
-                    methodReturnType + " methodResultID = " + jpCallable.getNameAsString() + "(" +
+                    methodReturnType + " methodResultID = " + originalMethod.getNameAsString() + "(" +
                             methodArgs
                                     .stream()
                                     .map(Triplet::getValue0)
