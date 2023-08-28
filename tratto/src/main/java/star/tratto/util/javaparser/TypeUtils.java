@@ -51,7 +51,8 @@ public class TypeUtils {
     }
 
     /**
-     * Gets the innermost class from a ClassGetName form of a type.
+     * Gets the innermost class from a ClassGetName form of a type. This
+     * method does NOT work for array classes.
      *
      * @param classGetName a ClassGetName form of a type
      * @return the innermost class of the type
