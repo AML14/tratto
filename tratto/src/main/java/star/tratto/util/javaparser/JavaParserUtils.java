@@ -1087,10 +1087,10 @@ public class JavaParserUtils {
     }
 
     /**
-     * Checks if a method is non-private and non-static.
+     * Checks if a method is non-private and non-void.
      *
      * @param methodUsage a method
-     * @return true iff the method is non-private non-static
+     * @return true iff the method is non-private and non-void
      */
     private static boolean isNonPrivateNonVoidMethod(MethodUsage methodUsage) {
         return !methodUsage.getDeclaration().getReturnType().isVoid() && !methodUsage.getDeclaration().accessSpecifier().equals(AccessSpecifier.PRIVATE);
