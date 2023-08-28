@@ -1046,8 +1046,9 @@ public class JavaParserUtils {
     }
 
     /**
-     * Get all fields available (non-private) to a given class (including
-     * those defined in superclasses).
+     * Get all fields available (non-private) to a given class instance
+     * (including those defined in superclasses). This method only considers
+     * an instance of a class, such that private fields are not accessible.
      *
      * @param typeDeclaration object class
      * @return list of ResolvedFieldDeclaration objects
