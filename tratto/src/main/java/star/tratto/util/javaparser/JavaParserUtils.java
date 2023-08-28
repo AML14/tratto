@@ -399,12 +399,16 @@ public class JavaParserUtils {
     private static String getTypeWithoutPackages(String fullyQualifiedName) {
         // regex is used instead of String.lastIndexOf to avoid removing outer classes
         Matcher matcher = PACKAGE_CLASS.matcher(fullyQualifiedName);
+        // continuously remove packages until none remain
         while (matcher.find()) {
             if (matcher.group().contains(".")) {
+                // gets the class name using a JavaParser ResolvedReferenceTypeDeclaration
+                String classNameWithoutPackages = getResolvedReferenceTypeDeclaration(matcher.group())
+                        .getClassName();
+                // replaces all instances of the fully qualified name with the JavaParser type name
                 fullyQualifiedName = fullyQualifiedName.replaceAll(
                         matcher.group(),
-                        // removes packages but keeps outer classes
-                        getResolvedReferenceTypeDeclaration(matcher.group()).getClassName()
+                        classNameWithoutPackages
                 );
             }
         }
