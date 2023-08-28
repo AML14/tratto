@@ -1,6 +1,9 @@
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.OpenOption;
@@ -16,7 +19,9 @@ import java.util.stream.Stream;
  * reading, etc.
  */
 public class FileUtils {
-    /** Private constructor to avoid creating an instance of this class. */
+    /**
+     * Private constructor to avoid creating an instance of this class.
+     */
     private FileUtils() {
         throw new UnsupportedOperationException("This class cannot be instantiated.");
     }
@@ -42,7 +47,7 @@ public class FileUtils {
      *
      * @param path a file
      * @throws Error if an error occurs while creating the parent directories
-     * or new file
+     *               or new file
      */
     public static void createFile(Path path) {
         try {
@@ -92,9 +97,9 @@ public class FileUtils {
      * source directory to the destination directory. NOTE: this method does
      * NOT move any files.
      *
-     * @param source the source directory
+     * @param source      the source directory
      * @param destination the destination directory
-     * @param target the target file in the source directory
+     * @param target      the target file in the source directory
      * @return the relative path of target in the destination directory. For
      * example, let
      * <pre>
@@ -125,10 +130,10 @@ public class FileUtils {
      * destination directory. If a file in the source directory already exists
      * in the destination directory, then the original file will be overridden.
      *
-     * @param source the directory where the files are located
+     * @param source      the directory where the files are located
      * @param destination the directory where the files will be copied to
      * @throws Error if the source directory does not exist or an error occurs
-     * while copying a file
+     *               while copying a file
      * @see FileUtils#move(Path, Path)
      */
     public static void copy(Path source, Path destination) {
@@ -162,10 +167,10 @@ public class FileUtils {
      * destination directory. If a file in the source directory already exists
      * in the destination directory, then the original file will be overridden.
      *
-     * @param source the directory where the files are located
+     * @param source      the directory where the files are located
      * @param destination the directory where the files will be moved to
      * @throws Error if the source directory does not exist or an error occurs
-     * while moving a file
+     *               while moving a file
      * @see FileUtils#copy
      */
     public static void move(Path source, Path destination) {
@@ -184,10 +189,10 @@ public class FileUtils {
      * file and parent directories if necessary. If file already exists,
      * then this method overrides any previous content.
      *
-     * @param path a file
+     * @param path    a file
      * @param content an object to be written in JSON content
      * @throws Error if unable to create files/directories or unable to write
-     * content to file
+     *               content to file
      */
     public static void writeJSON(Path path, Object content) {
         createFile(path);
@@ -205,10 +210,10 @@ public class FileUtils {
      * directories if needed. If file already exists, then this method
      * overrides any previous content.
      *
-     * @param path a file
+     * @param path    a file
      * @param content a string to be written to a file
      * @throws Error if unable to create files/directories or unable to write
-     * content to file
+     *               content to file
      */
     public static void writeString(Path path, String content) {
         createFile(path);
@@ -216,6 +221,25 @@ public class FileUtils {
             Files.writeString(path, content);
         } catch (IOException e) {
             throw new Error("Error when writing " + content + " to file " + path, e);
+        }
+    }
+
+    /**
+     * Reads the JSON file.
+     * The method only works with standard Java classes. To read custom
+     * objects a parser must be implemented.
+     *
+     * @param path a file
+     * @return the file contents as a Object
+     * @throws Error if unable to process the file
+     */
+    public static Object readJSON(Path path, TypeReference typeReference) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            File jsonFile = new File(path.toString());
+            return objectMapper.readValue(jsonFile, typeReference);
+        } catch (IOException e) {
+            throw new Error("Error in processing file " + path, e);
         }
     }
 
@@ -235,16 +259,32 @@ public class FileUtils {
     }
 
     /**
+     * Returns the file contents as a CSV parser.
+     *
+     * @param path a file
+     * @return the CSV parser of the file
+     * @throws Error if unable to process the file
+     */
+    public static CSVParser readCSV(Path path) {
+        try {
+            CSVParser parser = new CSVParser(new FileReader(path.toString()), CSVFormat.DEFAULT);
+            return parser;
+        } catch (IOException e) {
+            throw new Error("Error in processing file " + path, e);
+        }
+    }
+
+    /**
      * Reads a list of objects from a JSON file. If the given type is null,
      * then returns a list of unknown type (wildcard).
      *
      * @param jsonPath a JSON file
-     * @param type the class type of the elements to which the JSON data will
-     *             be deserialized
+     * @param type     the class type of the elements to which the JSON data will
+     *                 be deserialized
+     * @param <T>      the generic type parameter representing the class of the
+     *                 elements in the list
      * @return a list of objects of the specified class type. If type is null,
      * then returns a list of a wildcard type.
-     * @param <T> the generic type parameter representing the class of the
-     *            elements in the list
      */
     public static <T> List<T> readJSONList(Path jsonPath, Class<T> type) {
         if (!Files.exists(jsonPath)) {
@@ -254,7 +294,8 @@ public class FileUtils {
         try {
             return (type == null)
                     // if type is null, return List<?>
-                    ? objectMapper.readValue(jsonPath.toFile(), new TypeReference<>() {})
+                    ? objectMapper.readValue(jsonPath.toFile(), new TypeReference<>() {
+            })
                     // otherwise, return List<T> of the given type
                     : objectMapper.readValue(
                     jsonPath.toFile(),
