@@ -316,7 +316,7 @@ public class JavaParserUtils {
     }
 
     private static void handleJdVarIfNecessary(BlockStmt syntheticMethodBody, String expression, OracleDatapoint oracleDatapoint) {
-        if (!Pattern.matches("\\bjdVar\\b", expression)) {
+        if (!expression.contains("jdVar")) {
             return;
         }
         String jdVarArrayElement = oracleParser.getLastJdVarArrayElement(oracleDatapoint.getOracle());
