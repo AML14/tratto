@@ -215,7 +215,7 @@ public class TypeUtils {
                 .flatMap(bound -> bound.stream().findFirst())
                 .orElse(null);
         // check declaring class for matching type parameters
-        if (upperBound == null) {
+        if (upperBound == null && jpClass.isClassOrInterfaceDeclaration()) {
             upperBound = jpClass
                     .asClassOrInterfaceDeclaration()
                     .getTypeParameters()
