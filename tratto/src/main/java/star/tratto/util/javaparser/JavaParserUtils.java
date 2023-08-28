@@ -725,6 +725,7 @@ public class JavaParserUtils {
     /**
      * Returns the String field declaration represented by a JavaParser
      * {@link ResolvedFieldDeclaration} as it would appear in source code.
+     * Package names are removed for compatibility with the XText grammar.
      *
      * @param resolvedField a field declaration
      * @return a string representation of the declaration of
@@ -746,7 +747,8 @@ public class JavaParserUtils {
 
     /**
      * Gets the String field declaration represented by a JavaParser
-     * {@link ResolvedFieldDeclaration}.
+     * {@link ResolvedFieldDeclaration}. Package names are removed for
+     * compatibility with the XText grammar.
      *
      * @param resolvedField a field declaration
      * @param modifier an integer representing the field modifiers
