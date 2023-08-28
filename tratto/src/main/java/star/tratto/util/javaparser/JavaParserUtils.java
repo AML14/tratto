@@ -132,18 +132,22 @@ public class JavaParserUtils {
     }
 
     /**
-     * Injects a new synthetic method declaration into a class given an
-     * original method from the class, including:
+     * Injects a new synthetic method declaration into a class, given an
+     * original method from the class. The statements in the new method
+     * include:
      * <ul>
-     *     <li>variable declaration for each method argument in the original method</li>
-     *     <li>variable declaration for the return type of the original method</li>
-     *     <li>variable declaration (of unknown type) using given expression</li>
+     *     <li>a variable declaration for each method argument in the original
+     *     method</li>
+     *     <li>a variable declaration for the return type of the original
+     *     method</li>
+     *     <li>a variable declaration (of unknown type) using given
+     *     expression</li>
      * </ul>
      *
-     * @param jpClass the class in which to insert the newly-created method
-     * @param jpCallable a method from {@code jpClass}
+     * @param jpClass the class in which to insert the new method
+     * @param jpCallable an original method from {@code jpClass}
      * @param methodArgs tokens for the parameters of {@code jpCallable}
-     * @param expression an expression to add to the synthetic method
+     * @param expression an expression to add to the new method
      * @throws ResolvedTypeNotFound if {@code jpCallable} is a constructor
      */
     private static void addSyntheticMethodWithExpression(
