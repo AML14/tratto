@@ -136,18 +136,11 @@ public class ParserTest {
     @ParameterizedTest(name = "{0}")
     @MethodSource("findElementPrecedingLastInstanceOfParameterizedTestData")
     public void findElementPrecedingLastInstanceOfTest(String testName, String partialOracle, String expectedElementPrecedingLastInstanceOf) {
+
         Object elementPrecedingLastInstanceOf = parser.findElementPrecedingLastInstanceOf(partialOracle);
-        assertEquals(compactExpression((String) expectedElementPrecedingLastInstanceOf),
-                     compactExpression(split(elementPrecedingLastInstanceOf)),
-                     String.format(
-                         "findElementPrecedingLastInstanceOfTest(%s, %s, %s): not same when compacted: \"%s\" \"%s\"; compacted: \"%s\" \"%s\"",
-                         testName,
-                         partialOracle,
-                         expectedElementPrecedingLastInstanceOf,
-                         expectedElementPrecedingLastInstanceOf,
-                         elementPrecedingLastInstanceOf,
-                         compactExpression(expectedElementPrecedingLastInstanceOf),
-                         compactExpression((String) elementPrecedingLastInstanceOf)));
+        String expected = compactExpression(expectedElementPrecedingLastInstanceOf);
+        String actual = compactExpression(split(elementPrecedingLastInstanceOf));
+        assertEquals(expected, actual);
     }
 
     private static Stream<Arguments> findElementPrecedingLastInstanceOfParameterizedTestData() {

@@ -18,33 +18,27 @@ public class StringUtils {
      * Remove spaces, except around "instanceof".
      */
     public static String compactExpression(String expression) {
-        String result = compactExpressionNew(expression);
-        String resultOld = compactExpressionOld(expression);
-        if (! result.equals(resultOld)) {
-            System.out.printf("compactExpression(%s) different outcomes:%n  %s%n  %s%n",
-                              expression, result, resultOld);
-        }
-        return resultOld;
-    }
-
-    public static String compactExpressionNew(String expression) {
         if (expression == null) {
-            throw new NullPointerException();
+            return "";
         }
         if (instanceofPattern.matcher(expression).find()) {
             String[] segments = instanceofPattern.split(expression, -1);
-            List<String> compactedSegments = mapList(StringUtils::compactExpression, segments);
+            List<String> compactedSegments = mapList(StringUtils::removeSpaces, segments);
             return String.join(" instanceof ", compactedSegments);
         } else {
-            return expression.replace(" ", "");
+            return removeSpaces(expression);
         }
     }
 
-    public static String compactExpressionOld(String expression) {
-        return expression.replace(" ", "").replace("instanceof", " instanceof ");
+    /** Returns the string, with all spaces removed. */
+    private static String removeSpaces(String s) {
+        return s.replace(" ", "");
     }
 
     public static String compactExpression(List<String> expressionTokens) {
+        if (expressionTokens == null) {
+            return "";
+        }
         return compactExpression(String.join(" ", expressionTokens));
     }
 
