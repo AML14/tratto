@@ -25,7 +25,7 @@ public class FileUtils {
 
     /**
      * Creates an empty directory. Creates parent directories if necessary. If
-     * the directory already exists, then this method does nothing. This
+     * the directory already exists, then this method does nothing. <br> This
      * method is a wrapper method of {@link Files#createDirectories(Path, FileAttribute[])}
      * to substitute {@link IOException} with {@link Error} and avoid
      * superfluous try/catch blocks.
