@@ -137,12 +137,28 @@ public class ParserTest {
     @MethodSource("findElementPrecedingLastInstanceOfParameterizedTestData")
     public void findElementPrecedingLastInstanceOfTest(String testName, String partialOracle, String expectedElementPrecedingLastInstanceOf) {
         Object elementPrecedingLastInstanceOf = parser.findElementPrecedingLastInstanceOf(partialOracle);
-        assertEquals(compactExpression(expectedElementPrecedingLastInstanceOf), compactExpression(split(elementPrecedingLastInstanceOf)));
+        if (expectedElementPrecedingLastInstanceOf == null) {
+            assertNull(elementPrecedingLastInstanceOf);
+            return;
+        } else {
+            assertNotNull(elementPrecedingLastInstanceOf, "findElementPrecedingLastInstanceOf("+partialOracle+")");
+        }
+        assertEquals(compactExpression((String) expectedElementPrecedingLastInstanceOf),
+                     compactExpression(split(elementPrecedingLastInstanceOf)),
+                     String.format(
+                         "findElementPrecedingLastInstanceOfTest(%s, %s, %s): not same when compacted: \"%s\" \"%s\"; compacted: \"%s\" \"%s\"",
+                         testName,
+                         partialOracle,
+                         expectedElementPrecedingLastInstanceOf,
+                         expectedElementPrecedingLastInstanceOf,
+                         elementPrecedingLastInstanceOf,
+                         compactExpression(expectedElementPrecedingLastInstanceOf),
+                         compactExpression((String) elementPrecedingLastInstanceOf)));
     }
 
     private static Stream<Arguments> findElementPrecedingLastInstanceOfParameterizedTestData() {
         return Stream.of(
-                Arguments.of("findElementPrecedingLastInstanceOfEmptyOracleTest", "", ""),
+                Arguments.of("findElementPrecedingLastInstanceOfEmptyOracleTest", "", null),
                 Arguments.of("findElementPrecedingLastInstanceOfThisInstanceOfTest", "this instanceof", "this"),
                 Arguments.of("findElementPrecedingLastInstanceOfSecondInstanceOfTest", "this instanceof SomeClass && someArg instanceof", "someArg"),
                 Arguments.of("findElementPrecedingLastInstanceOfThisInstanceOfSomethingElseTest", "this instanceof SomeClass", "this"),

@@ -1,19 +1,28 @@
 package star.tratto.util;
 
+import static org.plumelib.util.CollectionsPlume.mapList;
+
 import org.javatuples.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class StringUtils {
+
+    private static final Pattern instanceofPattern = Pattern.compile(" instanceof( |$)");
+
     /**
-     * Remove spaces and add spaces around "instanceof".
+     * Remove spaces, except around "instanceof".
      */
     public static String compactExpression(String expression) {
-        if (expression.contains(" instanceof ")) {
-            String[] segments = expression.split(" instanceof ");
+        if (expression == null) {
+            throw new Error("compactExpression(null)");
+        }
+        if (instanceofPattern.matcher(expression).matches()) {
+            String[] segments = instanceofPattern.split(expression, -1);
             List<String> compactedSegments = mapList(StringUtils::compactExpression, segments);
             return String.join(" instanceof ", compactedSegments);
         } else {
