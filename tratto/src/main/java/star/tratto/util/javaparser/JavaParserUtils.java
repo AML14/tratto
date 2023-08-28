@@ -839,8 +839,8 @@ public class JavaParserUtils {
      * Gets the types of all exceptions that can be thrown by a given method.
      */
     private static List<String> getExceptions(MethodUsage methodUsage) {
-        return mapList(JavaParserUtils::getTypeWithoutPackages,
-                       methodUsage.getDeclaration().getSpecifiedExceptions());
+        List<ResolvedType> exceptions = methodUsage.getDeclaration().getSpecifiedExceptions();
+        return mapList(JavaParserUtils::getTypeWithoutPackages, exceptions);
     }
 
     /**
