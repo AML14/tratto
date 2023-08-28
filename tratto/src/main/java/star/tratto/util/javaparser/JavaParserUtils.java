@@ -883,15 +883,12 @@ public class JavaParserUtils {
      * @return the modifiers of the method
      */
     private static String getMethodModifiers(ResolvedMethodDeclaration methodDeclaration) {
-        Matcher reflectionMatcher = REFLECTION_METHOD_DECLARATION.matcher(methodDeclaration.toString());
-        Matcher javassistMatcher = JAVASSIST_METHOD_DECLARATION.matcher(methodDeclaration.toString());
-        if (!reflectionMatcher.find() && !javassistMatcher.find()) {
-            throw new IllegalStateException("Could not parse method signature: " + methodDeclaration);
-        }
         String methodModifiers;
         if (methodDeclaration instanceof ReflectionMethodDeclaration) {
+            Matcher reflectionMatcher = REFLECTION_METHOD_DECLARATION.matcher(methodDeclaration.toString());
             methodModifiers = reflectionMatcher.group(1);
         } else {
+            Matcher javassistMatcher = JAVASSIST_METHOD_DECLARATION.matcher(methodDeclaration.toString());
             methodModifiers = javassistMatcher.group(1);
         }
         if (methodModifiers == null) {
