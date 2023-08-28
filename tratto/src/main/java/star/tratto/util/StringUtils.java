@@ -16,6 +16,9 @@ public class StringUtils {
     }
 
     public static String compactExpression(List<String> expressionTokens) {
+        if (expressionTokens == null) {
+            return "";
+        }
         return compactExpression(String.join(" ", expressionTokens));
     }
 
