@@ -1,4 +1,6 @@
 import com.github.javaparser.ast.CompilationUnit;
+import data.OracleOutput;
+
 import java.nio.file.Path;
 import java.util.List;
 
