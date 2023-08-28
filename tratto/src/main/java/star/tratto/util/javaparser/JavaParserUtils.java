@@ -132,9 +132,8 @@ public class JavaParserUtils {
     }
 
     /**
-     * Injects a new synthetic method declaration into a class, given an
-     * original method from the class. The statements in the new method
-     * include:
+     * Injects a new method declaration into a class, given an original method
+     * from the class. The statements in the new method include:
      * <ul>
      *     <li>a variable declaration for each method argument in the original
      *     method</li>
@@ -150,7 +149,7 @@ public class JavaParserUtils {
      * @param expression an expression to add to the new method
      * @throws ResolvedTypeNotFound if {@code jpCallable} is a constructor
      */
-    private static void addSyntheticMethodWithExpression(
+    private static void addNewMethodWithExpression(
             TypeDeclaration<?> jpClass,
             CallableDeclaration<?> jpCallable,
             // NOTE: This is MethodArgumentTokens in the next pull request where records are integrated.
@@ -205,7 +204,7 @@ public class JavaParserUtils {
             String expression
     ) throws ResolvedTypeNotFound {
         if (jpClass instanceof ClassOrInterfaceDeclaration) {
-            addSyntheticMethodWithExpression(
+            addNewMethodWithExpression(
                     jpClass,
                     jpCallable,
                     methodArgs,
