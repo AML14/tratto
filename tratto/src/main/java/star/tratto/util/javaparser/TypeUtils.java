@@ -2,17 +2,14 @@ package star.tratto.util.javaparser;
 
 import static org.plumelib.util.CollectionsPlume.mapList;
 
-import com.github.javaparser.TokenRange;
 import com.github.javaparser.ast.body.CallableDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.TypeDeclaration;
+import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.type.TypeParameter;
 import org.plumelib.reflection.Signatures;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * This class provides static methods to convert between the ClassGetName and
@@ -188,60 +185,52 @@ public class TypeUtils {
     }
 
     /**
-     * Gets the upper bound of a type parameter using a method signature or
-     * class type parameter from JavaParser. If no such upper bound exists,
-     * then the method returns the original type name.
+     * Attempts to get the upper bound of a type parameter from a given method
+     * and declaring class. This method checks both the method using the given
+     * type and its declaring class to find a possible upper bound. <br> This
+     * method does not YET check enclosing classes or methods for potential
+     * upper bounds.
      *
-     * @param sourceCode the method signature or class type parameter
-     * @param typeName a type parameter name (e.g. "T", "E")
-     * @return the name of the upper bound of {@code typeName}
-     */
-    private static String getUpperBound(String sourceCode, String typeName) {
-        String regex = String.format(
-                "%s\\s+extends\\s+([A-Za-z0-9_]+)[<>[A-Za-z0-9_,]+]*",
-                typeName.replaceAll("\\[]","")
-        );
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(sourceCode);
-        if (matcher.find()) {
-            String typeBound = removeTypeArguments(matcher.group(1));
-            return addArrayLevel(typeBound, getArrayLevel(typeName));
-        } else {
-            return typeName;
-        }
-    }
-
-    /**
-     * Gets the upper bound of a type parameter from the method or class
-     * source. A type parameter may be declared in either the class or method
-     * signature. This method checks both the method using a type and its
-     * declaring class to find a possible upper bound.
-     *
-     * @param jpDeclaration the declaring class
+     * @param jpClass the declaring class
      * @param jpCallable the method using {@code typeName}
      * @param typeName a type parameter (e.g. "T", "E")
      * @return the type name of the upper bound of {@code typeName}. Returns
-     * {@code typeName} if no upper bound exists.
+     * {@code typeName} if unable to find an upper bound. Returns the first
+     * upper bound if a type parameter has multiple bounds.
      */
-    private static String getGenericUpperBound(
-            TypeDeclaration<?> jpDeclaration,
+    private static String getUpperBound(
+            TypeDeclaration<?> jpClass,
             CallableDeclaration<?> jpCallable,
             String typeName
     ) {
-        // get upper bound from method/constructor declaration
-        Optional<TokenRange> callableTokenRange = jpCallable.getTokenRange();
-        if (callableTokenRange.isPresent()) {
-            typeName = getUpperBound(callableTokenRange.get().toString(), typeName);
+        int arrayLevel = TypeUtils.getArrayLevel(typeName);
+        String elementType = typeName.replaceAll("\\[]", "");
+        // check method for matching type parameters
+        ClassOrInterfaceType upperBound = jpCallable
+                .getTypeParameters()
+                .stream()
+                .filter(typeParam -> typeParam.getName().getIdentifier().equals(elementType))
+                .findFirst()
+                .map(TypeParameter::getTypeBound)
+                .flatMap(bound -> bound.stream().findFirst())
+                .orElse(null);
+        // check declaring class for matching type parameters
+        if (upperBound == null) {
+            upperBound = jpClass
+                    .asClassOrInterfaceDeclaration()
+                    .getTypeParameters()
+                    .stream()
+                    .filter(typeParam -> typeParam.getName().getIdentifier().equals(elementType))
+                    .findFirst()
+                    .map(TypeParameter::getTypeBound)
+                    .flatMap(bound -> bound.stream().findFirst())
+                    .orElse(null);
         }
-        // get upper bound from class declaration
-        if (jpDeclaration.isClassOrInterfaceDeclaration()) {
-            for (TypeParameter jpGeneric : jpDeclaration.asClassOrInterfaceDeclaration().getTypeParameters()) {
-                if (jpGeneric.getNameAsString().equals(typeName.replaceAll("\\[]", ""))) {
-                    typeName = getUpperBound(jpGeneric.toString(), typeName);
-                }
-            }
+        if (upperBound == null) {
+            return typeName;
+        } else {
+            return addArrayLevel(upperBound.getNameAsString(), arrayLevel);
         }
-        return typeName;
     }
 
     /**
@@ -275,7 +264,7 @@ public class TypeUtils {
             typeName = addArrayLevel(typeName, 1);
         }
         // use upper bound (if possible)
-        typeName = getGenericUpperBound(jpDeclaration, jpCallable, typeName);
+        typeName = getUpperBound(jpDeclaration, jpCallable, typeName);
         return typeName;
     }
 
