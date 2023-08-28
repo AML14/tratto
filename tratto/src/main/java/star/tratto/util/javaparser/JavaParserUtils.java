@@ -97,19 +97,22 @@ public class JavaParserUtils {
      *
      * @return an empty JavaParser class
      */
-    private static TypeDeclaration<?> getSyntheticClass() {
+    private static TypeDeclaration<?> getNewClass() {
         return javaParser.parse(SYNTHETIC_CLASS_SOURCE).getResult().orElseThrow()
                 .getLocalDeclarationFromClassname(SYNTHETIC_CLASS_NAME).get(0);
     }
 
     /**
-     * Adds a new, empty method to a given class.
+     * Adds a new, empty method to a given class, and returns its body.
      *
      * @param typeDeclaration the class to add a method to
      * @return the body of the new method
      */
-    private static BlockStmt getSyntheticBlockStmt(TypeDeclaration<?> typeDeclaration) {
-        return typeDeclaration.addMethod(SYNTHETIC_METHOD_NAME).getBody().orElseThrow();
+    private static BlockStmt getNewMethodBody(TypeDeclaration<?> typeDeclaration) {
+        return typeDeclaration
+                .addMethod(SYNTHETIC_METHOD_NAME)
+                .getBody()
+                .orElseThrow();
     }
 
     /**
@@ -119,8 +122,8 @@ public class JavaParserUtils {
      */
     public static ResolvedType getObjectType() {
         if (objectType == null) {
-            TypeDeclaration<?> syntheticClass = getSyntheticClass();
-            BlockStmt syntheticMethod = getSyntheticBlockStmt(syntheticClass);
+            TypeDeclaration<?> syntheticClass = getNewClass();
+            BlockStmt syntheticMethod = getNewMethodBody(syntheticClass);
             objectType = syntheticMethod
                     .addStatement("java.lang.Object objectVar;")
                     .getStatements().getLast().orElseThrow()
@@ -161,7 +164,7 @@ public class JavaParserUtils {
             throw new ResolvedTypeNotFound("Unable to generate synthetic constructor for class " + jpClass.getNameAsString());
         }
         // create synthetic method
-        BlockStmt methodBody = getSyntheticBlockStmt(jpClass);
+        BlockStmt methodBody = getNewMethodBody(jpClass);
         // add method arguments as variable statements in method body (e.g. "ArgType argName;")
         for (Triplet<String, String, String> methodArg : methodArgs) {
             methodBody.addStatement(methodArg.getValue2() + " " + methodArg.getValue0() + ";");
