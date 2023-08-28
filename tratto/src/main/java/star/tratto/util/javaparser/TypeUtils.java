@@ -166,8 +166,7 @@ public class TypeUtils {
     public static List<String> classGetNameToClassGetSimpleName(
             List<String> classGetNames
     ) {
-        return mapList(TypeUtils::classGetNameToClassGetSimpleName,
-                       classGetNames);
+        return mapList(TypeUtils::classGetNameToClassGetSimpleName, classGetNames);
     }
 
     /**
