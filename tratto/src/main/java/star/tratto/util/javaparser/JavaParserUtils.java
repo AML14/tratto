@@ -421,9 +421,9 @@ public class JavaParserUtils {
      * type, this method returns the fully qualified name without packages.
      *
      * @param resolvedType JavaParser resolved type
-     * @return the fully qualified name of the type without packages. If the
-     * resolved type is an array of reference types, removes the packages from
-     * the fully qualified name of the component type.
+     * @return the name of a type without packages. If the resolved type is an
+     * array of reference types, then this method removes the packages from
+     * the fully qualified name of the element types.
      */
     public static String getTypeWithoutPackages(ResolvedType resolvedType) {
         String typeName = resolvedType.describe();
