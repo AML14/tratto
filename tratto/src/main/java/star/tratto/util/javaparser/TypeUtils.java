@@ -171,13 +171,11 @@ public class TypeUtils {
      * @return the base type without type arguments
      */
     public static String removeTypeArguments(String parameterizedType) {
-        String regex = "<[^<>]*>";
-        // repeatedly remove all type arguments.
         String previous;
         String current = parameterizedType;
         do {
             previous = current;
-            current = previous.replaceAll(regex, "");
+            current = previous.replaceAll("<[^<>]*>", "");
         } while (!current.equals(previous));
         return current;
     }
