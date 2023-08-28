@@ -10,6 +10,15 @@ import static star.tratto.util.StringUtils.getCorrespondingClosingParenthesisInd
 public class StringUtilsTest {
 
     @Test
+    public void compactExpressionTest()  {
+        assertEquals("", StringUtils.compactExpression(""));
+        assertEquals("this", StringUtils.compactExpression("this"));
+        assertEquals("this instanceof SomeClass", StringUtils.compactExpression("this instanceof SomeClass"));
+        assertEquals("this instanceof ", StringUtils.compactExpression("this instanceof"));
+        assertEquals("this instanceof SomeClass&&someArg instanceof ", StringUtils.compactExpression("this instanceof SomeClass && someArg instanceof"));
+    }
+
+    @Test
     public void getCorrespondingClosingParenthesisIndex_IndexEqualToListSizeThrowExceptionTest()  {
         List<String> oracleTokens = List.of("this", ".", "someMethod", "(", "someArg");
         int openingParenthesisIndex = 5;
