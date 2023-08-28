@@ -83,6 +83,8 @@ public class JavaParserUtils {
     );
     /** Regex to match the binary name of a class (e.g. "package.submodule.InnerClass$OuterClass") */
     private static final Pattern PACKAGE_CLASS = Pattern.compile("[a-zA-Z_][a-zA-Z\\d_]*(\\.[a-zA-Z_][a-zA-Z\\d_]*)*");
+    /** Cache ResolvedType of Object to make subsequent accesses free. */
+    private static ResolvedType objectType;
 
     /** Private constructor to avoid creating an instance of this class. */
     private JavaParserUtils() {
@@ -126,14 +128,17 @@ public class JavaParserUtils {
      * @return a "java.lang.Object" type
      */
     public static ResolvedType getObjectType() {
-        TypeDeclaration<?> syntheticClass = getSyntheticClass();
-        BlockStmt syntheticMethod = getSyntheticBlockStmt(syntheticClass);
-        return syntheticMethod
-                .addStatement("java.lang.Object objectVar;")
-                .getStatements().getLast().orElseThrow()
-                .asExpressionStmt().getExpression()
-                .asVariableDeclarationExpr().getVariables().get(0)
-                .resolve().getType();
+        if (objectType == null) {
+            TypeDeclaration<?> syntheticClass = getSyntheticClass();
+            BlockStmt syntheticMethod = getSyntheticBlockStmt(syntheticClass);
+            objectType = syntheticMethod
+                    .addStatement("java.lang.Object objectVar;")
+                    .getStatements().getLast().orElseThrow()
+                    .asExpressionStmt().getExpression()
+                    .asVariableDeclarationExpr().getVariables().get(0)
+                    .resolve().getType();
+        }
+        return objectType;
     }
 
     /**
