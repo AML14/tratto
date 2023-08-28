@@ -111,8 +111,8 @@ public class TypeUtils {
     }
 
     /**
-     * Gets the ClassGetName form of the element type (the base component type) for a given
-     * ClassGetName array type. For example,
+     * Gets the ClassGetName form of the element type for a given ClassGetName
+     * array type. For example,
      * <pre>
      *     "[[I"    =&gt;    "I"
      *     "[Ljava.lang.String;"    =&gt;    "java.lang.String"
@@ -126,13 +126,12 @@ public class TypeUtils {
         if (arrayLevel == 0) {
             return classGetNameArray;
         }
-        String classGetNameComponent = classGetNameArray.replaceAll("\\[", "");
-        if (isPrimitiveFieldDescriptor(classGetNameComponent)) {
-            return classGetNameComponent;
+        String classGetNameElement = classGetNameArray.replaceAll("\\[", "");
+        if (isPrimitiveFieldDescriptor(classGetNameElement)) {
+            return classGetNameElement;
         } else {
-            // For arrays of references, remove "L" prefix and ";" suffix.
-            classGetNameComponent = classGetNameComponent.replaceAll(";", "");
-            return classGetNameComponent.substring(1);
+            // for arrays of objects, remove "L" prefix and ";" suffix.
+            return classGetNameElement.substring(1, classGetNameElement.length() - 1);
         }
     }
 
