@@ -429,7 +429,7 @@ public class JavaParserUtils {
         String typeName = resolvedType.describe();
         ResolvedType elementType = getElementType(resolvedType);
         if (elementType.isReferenceType()) {
-            // we use the original type name to avoid removing arrays
+            // use the original type name to avoid removing array brackets
             return getTypeWithoutPackages(typeName);
         } else {
             return typeName;
