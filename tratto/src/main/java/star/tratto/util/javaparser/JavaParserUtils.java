@@ -851,7 +851,8 @@ public class JavaParserUtils {
     }
 
     /**
-     * Gets the types of all exceptions that can be thrown by a given method.
+     * Gets the simple names of all exceptions that can be thrown by a given
+     * method.
      */
     private static List<String> getExceptions(MethodUsage methodUsage) {
         List<ResolvedType> exceptions = methodUsage.getDeclaration().getSpecifiedExceptions();
@@ -913,6 +914,8 @@ public class JavaParserUtils {
      * ReflectionMethodDeclaration, and JavassistMethodDeclaration. A
      * signature follows the format:
      *     "[modifiers] [typeParameters] [type] [methodName]([parameters]) throws [exceptions]"
+     * All type names do not use package names for compatibility with the
+     * XText grammar.
      */
     public static String getMethodSignature(
             MethodUsage methodUsage
