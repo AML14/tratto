@@ -181,7 +181,7 @@ public class TypeUtils {
             previous = current;
             current = previous.replaceAll(regex, "");
         } while (!current.equals(previous));
-        return current.replaceAll(";", "");
+        return current;
     }
 
     /**
