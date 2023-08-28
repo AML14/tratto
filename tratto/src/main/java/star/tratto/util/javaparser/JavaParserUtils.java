@@ -686,7 +686,9 @@ public class JavaParserUtils {
      * declare multiple variables. Each variable is separated into individual
      * declarations.
      *
-     * @param field the JavaParser field declaration
+     * @param field the JavaParser field declaration. The parent field is
+     *              necessary, as a {@link VariableDeclarator} does not store
+     *              modifier information.
      * @param variable the JavaParser variable declaration
      * @return a string representation of the declaration of {@code variable}.
      * The declaration follows the format:
