@@ -1098,10 +1098,10 @@ public class JavaParserUtils {
 
     /**
      * Checks if an attribute is non-private and non-static. An attribute
-     * is any class field.
+     * is defined as any class field.
      *
-     * @param fieldDeclaration a class field
-     * @return true iff the field is non-private and non-static
+     * @param fieldDeclaration a class attribute
+     * @return true iff the attribute is non-private and non-static
      */
     public static boolean isNonPrivateNonStaticAttribute(ResolvedFieldDeclaration fieldDeclaration) {
         return !fieldDeclaration.accessSpecifier().equals(AccessSpecifier.PRIVATE) && !fieldDeclaration.isStatic();
