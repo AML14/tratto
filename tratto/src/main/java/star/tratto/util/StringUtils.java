@@ -12,7 +12,13 @@ public class StringUtils {
      * Remove spaces and add spaces around "instanceof".
      */
     public static String compactExpression(String expression) {
-        return expression.replace(" ", "").replace("instanceof", " instanceof ");
+        if (expression.contains(" instanceof ")) {
+            String[] segments = expression.split(" instanceof ");
+            List<String> compactedSegments = mapList(StringUtils::compactExpression, segments);
+            return String.join(" instanceof ", compactedSegments);
+        } else {
+            return expression.replace(" ", "");
+        }
     }
 
     public static String compactExpression(List<String> expressionTokens) {
