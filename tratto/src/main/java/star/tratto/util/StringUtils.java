@@ -57,13 +57,9 @@ public class StringUtils {
      * Remove spaces, except those around "instanceof".
      */
     public static String compactExpression(String expression) {
-        if (expression.contains(" instanceof ")) {
-            String[] segments = expression.split(" instanceof ");
-            List<String> compactedSegments = mapList(StringUtils::compactExpression, segments);
-            return String.join(" instanceof ", compactedSegments);
-        } else {
-            return expression.replace(" ", "");
-        }
+        return expression
+                .replace(" ", "")
+                .replace("instanceof", " instanceof ");
     }
 
     /**
