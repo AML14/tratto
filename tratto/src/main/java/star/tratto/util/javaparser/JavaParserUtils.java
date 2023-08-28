@@ -701,7 +701,7 @@ public class JavaParserUtils {
                 (variable.getInitializer().isPresent()
                         ? " = " + variable.getInitializer().get()
                         : "") +
-                ";").trim();
+                ";");
     }
 
     /**
