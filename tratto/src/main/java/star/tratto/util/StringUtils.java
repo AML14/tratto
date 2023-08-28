@@ -19,12 +19,16 @@ public class StringUtils {
      */
     public static String compactExpression(String expression) {
         if (expression == null) {
-            throw new Error("compactExpression(null)");
+            throw new NullPointerException();
         }
         if (instanceofPattern.matcher(expression).matches()) {
             String[] segments = instanceofPattern.split(expression, -1);
             List<String> compactedSegments = mapList(StringUtils::compactExpression, segments);
-            return String.join(" instanceof ", compactedSegments);
+            String result = String.join(" instanceof ", compactedSegments);
+            if (result.endsWith(" ")) {
+                result = result.substring(result.length() - 1);
+            }
+            return result;
         } else {
             return expression.replace(" ", "");
         }

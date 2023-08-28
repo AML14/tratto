@@ -137,12 +137,6 @@ public class ParserTest {
     @MethodSource("findElementPrecedingLastInstanceOfParameterizedTestData")
     public void findElementPrecedingLastInstanceOfTest(String testName, String partialOracle, String expectedElementPrecedingLastInstanceOf) {
         Object elementPrecedingLastInstanceOf = parser.findElementPrecedingLastInstanceOf(partialOracle);
-        if (expectedElementPrecedingLastInstanceOf == null) {
-            assertNull(elementPrecedingLastInstanceOf);
-            return;
-        } else {
-            assertNotNull(elementPrecedingLastInstanceOf, "findElementPrecedingLastInstanceOf("+partialOracle+")");
-        }
         assertEquals(compactExpression((String) expectedElementPrecedingLastInstanceOf),
                      compactExpression(split(elementPrecedingLastInstanceOf)),
                      String.format(
@@ -158,7 +152,7 @@ public class ParserTest {
 
     private static Stream<Arguments> findElementPrecedingLastInstanceOfParameterizedTestData() {
         return Stream.of(
-                Arguments.of("findElementPrecedingLastInstanceOfEmptyOracleTest", "", null),
+                Arguments.of("findElementPrecedingLastInstanceOfEmptyOracleTest", "", ""),
                 Arguments.of("findElementPrecedingLastInstanceOfThisInstanceOfTest", "this instanceof", "this"),
                 Arguments.of("findElementPrecedingLastInstanceOfSecondInstanceOfTest", "this instanceof SomeClass && someArg instanceof", "someArg"),
                 Arguments.of("findElementPrecedingLastInstanceOfThisInstanceOfSomethingElseTest", "this instanceof SomeClass", "this"),
