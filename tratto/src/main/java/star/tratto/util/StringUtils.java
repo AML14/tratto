@@ -239,7 +239,18 @@ public class StringUtils {
     }
 
     /**
-     * Computes the cosine similarity of two lists of Strings.
+     * Computes the cosine similarity of two lists of Strings. <br>
+     * Note: This  implementation uses the set intersection, rather than the
+     * set union, due to the nature of the use case: comparing pre-processed
+     * JDoctor tags and tags from source code. JDoctor removes several words
+     * to simplify a tag. Notably, no NEW words are added (although some may
+     * be repeated). Therefore, the set of JDoctor tag words is a strict
+     * subset of the set of source code tag words. If we use the set union, it
+     * does not identify tags as accurately. Attempts were made using both the
+     * set union and intersection. When using the set intersection, all
+     * correct tags were found. However, when using the set union, some
+     * JDoctor tags were matched to incorrect source code tags. This behavior
+     * was tested via randomly sampling 50 tags.
      *
      * @param strings1 list of strings
      * @param strings2 list of strings
