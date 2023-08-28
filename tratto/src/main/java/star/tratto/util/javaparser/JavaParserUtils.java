@@ -3,13 +3,13 @@ package star.tratto.util.javaparser;
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.AccessSpecifier;
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.body.BodyDeclaration;
 import com.github.javaparser.ast.body.CallableDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
-import com.github.javaparser.ast.body.ConstructorDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
@@ -17,6 +17,7 @@ import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
 import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.type.ReferenceType;
 import com.github.javaparser.ast.type.TypeParameter;
 import com.github.javaparser.resolution.MethodUsage;
 import com.github.javaparser.resolution.UnsolvedSymbolException;
@@ -777,26 +778,49 @@ public class JavaParserUtils {
     public static String getCallableSignature(
             CallableDeclaration<?> jpCallable
     ) {
-        // get method source as a string
-        String methodSignature = jpCallable.toString();
-        Optional<BlockStmt> methodBody = jpCallable instanceof MethodDeclaration ?
-                ((MethodDeclaration) jpCallable).getBody() :
-                Optional.ofNullable(((ConstructorDeclaration) jpCallable).getBody());
-        // remove method body
-        if (methodBody.isPresent()) {
-            methodSignature = methodSignature.replace(methodBody.get().toString(), "");
+        StringBuilder sb = new StringBuilder();
+        // add modifiers
+        List<String> modifiers = jpCallable.getModifiers()
+                .stream()
+                .map(Modifier::toString)
+                .toList();
+        sb.append(String.join("", modifiers));
+        // add type parameters
+        List<String> typeParameters = jpCallable.getTypeParameters()
+                .stream()
+                .map(TypeParameter::toString)
+                .toList();
+        if (!typeParameters.isEmpty()) {
+            sb.append("<")
+                    .append(String.join(", ", typeParameters))
+                    .append(">")
+                    .append(" ");
         }
-        // remove all comments
-        for (Node comment: jpCallable.getAllContainedComments()) {
-            methodSignature = methodSignature.replace(comment.toString(), "");
+        // add return type (if not a constructor)
+        if (jpCallable.isMethodDeclaration()) {
+            sb.append(jpCallable.asMethodDeclaration().getType())
+                    .append(" ");
         }
-        // remove Javadoc comment
-        if (jpCallable.getComment().isPresent()) {
-            methodSignature = methodSignature.replaceAll("[\\s\\S]*\n", "");
+        // add method name
+        sb.append(jpCallable.getNameAsString());
+        // add formal parameters
+        List<String> parameters = jpCallable.getParameters()
+                .stream()
+                .map(Parameter::toString)
+                .toList();
+        sb.append("(")
+                .append(String.join(", ", parameters))
+                .append(")");
+        // add exceptions
+        List<String> exceptions = jpCallable.getThrownExceptions()
+                .stream()
+                .map(ReferenceType::asString)
+                .toList();
+        if (!exceptions.isEmpty()) {
+            sb.append(" throws ")
+                    .append(String.join(", ", exceptions));
         }
-        // remove special characters
-        methodSignature = methodSignature.replaceAll("/\\*\\*([\\s\\S]*?)\\*/(\\n|\\r|\\t)*", "");
-        return methodSignature.trim().replaceAll(";$", "");
+        return sb.toString().replaceAll(" +", " ").trim();
     }
 
     /**
