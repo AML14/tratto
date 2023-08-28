@@ -73,16 +73,6 @@ public class JavaParserUtils {
     private static final String SYNTHETIC_CLASS_SOURCE = "public class " + SYNTHETIC_CLASS_NAME + " {}";
     /** Artificial method name */
     private static final String SYNTHETIC_METHOD_NAME = "__tratto__auxiliaryMethod";
-    /**
-     * Regex to match the "toString" of either {@link ReflectionMethodDeclaration} or
-     * {@link JavassistMethodDeclaration} (both implementations of {@link ResolvedMethodDeclaration})
-     */
-    private static final Pattern METHOD_SIGNATURE = Pattern.compile(
-            "^ReflectionMethodDeclaration\\{method=((.*) )?\\S+ \\S+\\(.*\\}$|" +
-                    "^JavassistMethodDeclaration\\{ctMethod\\=.*\\[((.*) )?\\S+ \\(.*\\).*\\]}$"
-    );
-    /** Regex to match the binary name of a class (e.g. "package.submodule.InnerClass$OuterClass") */
-    private static final Pattern PACKAGE_CLASS = Pattern.compile("[a-zA-Z_][a-zA-Z\\d_]*(\\.[a-zA-Z_][a-zA-Z\\d_]*)*");
     /** Cache ResolvedType of Object to make subsequent accesses free. */
     private static ResolvedType objectType;
 
@@ -387,6 +377,9 @@ public class JavaParserUtils {
             return Pair.with("", resolvedType.describe()); // Primitive type
         }
     }
+
+    /** Regex to match the binary name of a class (e.g. "package.submodule.InnerClass$OuterClass") */
+    private static final Pattern PACKAGE_CLASS = Pattern.compile("[a-zA-Z_][a-zA-Z\\d_]*(\\.[a-zA-Z_][a-zA-Z\\d_]*)*");
 
     /**
      * Removes the package name from a fully qualified name of a type. Also
@@ -849,6 +842,15 @@ public class JavaParserUtils {
         List<ResolvedType> exceptions = methodUsage.getDeclaration().getSpecifiedExceptions();
         return mapList(JavaParserUtils::getTypeWithoutPackages, exceptions);
     }
+
+    /**
+     * Regex to match the "toString" of either {@link ReflectionMethodDeclaration} or
+     * {@link JavassistMethodDeclaration} (both implementations of {@link ResolvedMethodDeclaration})
+     */
+    private static final Pattern METHOD_SIGNATURE = Pattern.compile(
+            "^ReflectionMethodDeclaration\\{method=((.*) )?\\S+ \\S+\\(.*\\}$|" +
+                    "^JavassistMethodDeclaration\\{ctMethod\\=.*\\[((.*) )?\\S+ \\(.*\\).*\\]}$"
+    );
 
     /**
      * Gets the method signature from a JavaParser MethodUsage. Unfortunately,
