@@ -35,11 +35,10 @@ public class TypeUtils {
     /**
      * Gets the package name from a ClassGetName form of a type. If the
      * package does not exist (e.g. default or primitive), then the method
-     * returns an empty string.
+     * returns an empty string. This method works properly for inner classes,
+     * because the ClassGetName syntax uses "$" between inner and outer
+     * classes. This method does not work for array classes.
      *
-     * This method works properly for inner classes, because the ClassGetName syntax uses "$"
-     * between inner and outer classes.  This method does not work for array classes.
-
      * @param classGetName a ClassGetName form of a type
      * @return the package name of the class
      */
@@ -61,11 +60,10 @@ public class TypeUtils {
     }
 
     /**
-     * Returns the array level of the type.
+     * Returns the array level of the type. ClassGetName arrays have "["
+     * characters are at the beginning. ClassGetSimpleName arrays have "[]" at
+     * the end.
      *
-     *  ClassGetName arrays have "[" characters are at the beginning.  ClassGetSimpleName arrays
-     *  have "[]" at the end.
-
      * @param typeName a ClassGetName or ClassGetSimpleName form of a type
      * @return the array level of the type
      */
