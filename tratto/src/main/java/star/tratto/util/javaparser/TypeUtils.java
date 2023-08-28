@@ -192,13 +192,15 @@ public class TypeUtils {
      * class type parameter from JavaParser. If no such upper bound exists,
      * then the method returns the original type name.
      *
-     * @param sourceCode the class or method signature where a type
-     *                   parameter may be declared
-     * @param typeName a type parameter (e.g. "T", "E")
+     * @param sourceCode the method signature or class type parameter
+     * @param typeName a type parameter name (e.g. "T", "E")
      * @return the name of the upper bound of {@code typeName}
      */
     private static String getUpperBound(String sourceCode, String typeName) {
-        String regex = String.format("%s\\s+extends\\s+([A-Za-z0-9_]+)[<>[A-Za-z0-9_,]+]*", typeName.replaceAll("\\[]",""));
+        String regex = String.format(
+                "%s\\s+extends\\s+([A-Za-z0-9_]+)[<>[A-Za-z0-9_,]+]*",
+                typeName.replaceAll("\\[]","")
+        );
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(sourceCode);
         if (matcher.find()) {
