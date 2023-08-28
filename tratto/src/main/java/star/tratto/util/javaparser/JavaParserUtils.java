@@ -1093,7 +1093,8 @@ public class JavaParserUtils {
      * @return true iff the method is non-private and non-void
      */
     private static boolean isNonPrivateNonVoidMethod(MethodUsage methodUsage) {
-        return !methodUsage.getDeclaration().getReturnType().isVoid() && !methodUsage.getDeclaration().accessSpecifier().equals(AccessSpecifier.PRIVATE);
+        return !methodUsage.getDeclaration().getReturnType().isVoid() &&
+                !methodUsage.getDeclaration().accessSpecifier().equals(AccessSpecifier.PRIVATE);
     }
 
     /**
@@ -1104,15 +1105,18 @@ public class JavaParserUtils {
      * @return true iff the attribute is non-private and non-static
      */
     public static boolean isNonPrivateNonStaticAttribute(ResolvedFieldDeclaration fieldDeclaration) {
-        return !fieldDeclaration.accessSpecifier().equals(AccessSpecifier.PRIVATE) && !fieldDeclaration.isStatic();
+        return !fieldDeclaration.accessSpecifier().equals(AccessSpecifier.PRIVATE) &&
+                !fieldDeclaration.isStatic();
     }
 
     public static boolean isNonPrivateStaticNonVoidMethod(MethodUsage methodUsage) {
-        return methodUsage.getDeclaration().isStatic() && isNonPrivateNonVoidMethod(methodUsage);
+        return methodUsage.getDeclaration().isStatic() &&
+                isNonPrivateNonVoidMethod(methodUsage);
     }
 
     public static boolean isNonPrivateNonStaticNonVoidMethod(MethodUsage methodUsage) {
-        return !methodUsage.getDeclaration().isStatic() && isNonPrivateNonVoidMethod(methodUsage);
+        return !methodUsage.getDeclaration().isStatic() &&
+                isNonPrivateNonVoidMethod(methodUsage);
     }
 
     /**
