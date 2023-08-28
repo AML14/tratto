@@ -388,8 +388,9 @@ public class JavaParserUtils {
     private static final Pattern PACKAGE_CLASS = Pattern.compile("[a-zA-Z_][a-zA-Z\\d_]*(\\.[a-zA-Z_][a-zA-Z\\d_]*)*");
 
     /**
-     * Removes the package name from a fully qualified name of a type. Also
-     * removes package from type parameters.
+     * Removes the package name from a fully qualified name of a type for
+     * compatibility with the XText grammar. Also removes package from type
+     * parameters.
      *
      * @param fullyQualifiedName a fully qualified name of a type
      * @return the type name without packages. Includes outer classes, e.g.,
