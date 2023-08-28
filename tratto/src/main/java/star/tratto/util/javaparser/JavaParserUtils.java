@@ -136,7 +136,7 @@ public class JavaParserUtils {
 
     /**
      * Injects a new method declaration into a class, given an original method
-     * from the class. The statements in the new method include:
+     * from the class. The statements in the NEW method include:
      * <ul>
      *     <li>a variable declaration for each method argument in the original
      *     method</li>
