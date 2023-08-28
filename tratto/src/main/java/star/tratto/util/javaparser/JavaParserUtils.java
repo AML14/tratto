@@ -724,8 +724,11 @@ public class JavaParserUtils {
             ResolvedFieldDeclaration resolvedField
     ) {
         String accessSpecifier = resolvedField.accessSpecifier().asString();
+        if (!accessSpecifier.equals("")) {
+            accessSpecifier += " ";
+        }
         boolean isStatic = resolvedField.isStatic();
-        return (accessSpecifier.equals("") ? "" : accessSpecifier + " ") +
+        return accessSpecifier +
                (isStatic ? "static " : "") +
                getFieldDeclarationWithoutModifiers(resolvedField);
     }
