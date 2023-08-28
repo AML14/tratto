@@ -1062,7 +1062,7 @@ public class JavaParserUtils {
             return typeDeclaration.resolve().getAllFields();
         } catch (UnsolvedSymbolException | IllegalArgumentException e) {
             String errMsg = String.format(
-                    "Impossible to get all the methods of class %s.%n%s.",
+                    "Unable to get all the methods of class %s.%n%s.",
                     typeDeclaration.getNameAsString(), e
             );
             logger.error(errMsg);
