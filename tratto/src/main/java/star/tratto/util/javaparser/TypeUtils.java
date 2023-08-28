@@ -37,15 +37,14 @@ public class TypeUtils {
      * package does not exist (e.g. default or primitive), then the method
      * returns an empty string. This method works properly for inner classes,
      * because the ClassGetName syntax uses "$" between inner and outer
-     * classes. This method does not work for array classes.
+     * classes. This method does NOT work for array classes.
      *
      * @param classGetName a ClassGetName form of a type
      * @return the package name of the class
      */
     public static String getPackageNameFromClassGetName(String classGetName) {
-        List<String> nameSegments = Arrays.asList(classGetName.split("\\."));
-        List<String> packageSegments = nameSegments.subList(0, nameSegments.size() - 1);
-        return String.join(".", packageSegments);
+        int packageIdx = classGetName.lastIndexOf('.');
+        return classGetName.substring(0, packageIdx);
     }
 
     /**
