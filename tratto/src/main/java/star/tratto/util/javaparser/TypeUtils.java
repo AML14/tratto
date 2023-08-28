@@ -9,7 +9,6 @@ import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.type.TypeParameter;
 import org.plumelib.reflection.Signatures;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -44,7 +43,7 @@ public class TypeUtils {
      * primitive types.
      */
     public static String getPackageNameFromClassGetName(String classGetName) {
-        int packageIdx = classGetName.lastIndexOf('.');
+        int packageIdx = classGetName.lastIndexOf(".");
         if (packageIdx == -1) {
             return "";
         }
@@ -58,8 +57,14 @@ public class TypeUtils {
      * @return the innermost class of the type
      */
     public static String getInnermostClassNameFromClassGetName(String classGetName) {
-        List<String> nameSegments = Arrays.asList(classGetName.split("[.$]"));
-        return nameSegments.get(nameSegments.size() - 1);
+        int classIdx = classGetName.lastIndexOf(".");
+        if (classGetName.contains("$")) {
+            classIdx = classGetName.lastIndexOf("$");
+        }
+        if (classIdx == -1) {
+            return classGetName;
+        }
+        return classGetName.substring(classIdx + 1);
     }
 
     /**
