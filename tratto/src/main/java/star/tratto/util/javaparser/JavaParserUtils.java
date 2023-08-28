@@ -1041,7 +1041,7 @@ public class JavaParserUtils {
                     typeDeclaration.getNameAsString(), e
             );
             logger.error(errMsg);
-            throw new JPClassNotFoundException(errMsg);
+            throw new JPClassNotFoundException(errMsg, e);
         }
     }
 
@@ -1065,7 +1065,7 @@ public class JavaParserUtils {
                     typeDeclaration.getNameAsString(), e
             );
             logger.error(errMsg);
-            throw new JPClassNotFoundException(errMsg);
+            throw new JPClassNotFoundException(errMsg, e);
         }
     }
 
