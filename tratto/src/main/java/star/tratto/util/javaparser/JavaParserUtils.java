@@ -170,10 +170,10 @@ public class JavaParserUtils {
             methodBody.addStatement(methodArg.getValue2() + " " + methodArg.getValue0() + ";");
         }
         // add return type (if non-void)
-        String returnType = ((MethodDeclaration) jpCallable).getType().asString();
-        if (!returnType.equals("void")) {
+        String methodReturnType = ((MethodDeclaration) jpCallable).getType().asString();
+        if (!methodReturnType.equals("void")) {
             methodBody.addStatement(
-                    returnType + " methodResultID = " + jpCallable.getNameAsString() + "(" +
+                    methodReturnType + " methodResultID = " + jpCallable.getNameAsString() + "(" +
                             methodArgs
                                     .stream()
                                     .map(Triplet::getValue0)
@@ -182,7 +182,7 @@ public class JavaParserUtils {
             );
         }
         // add expression
-        methodBody.addStatement("var returnType = " + expression + ";");
+        methodBody.addStatement("var expressionReturnType = " + expression + ";");
     }
 
     /**
