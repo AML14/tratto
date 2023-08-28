@@ -136,7 +136,6 @@ public class ParserTest {
     @ParameterizedTest(name = "{0}")
     @MethodSource("findElementPrecedingLastInstanceOfParameterizedTestData")
     public void findElementPrecedingLastInstanceOfTest(String testName, String partialOracle, String expectedElementPrecedingLastInstanceOf) {
-
         Object elementPrecedingLastInstanceOf = parser.findElementPrecedingLastInstanceOf(partialOracle);
         String expected = compactExpression(expectedElementPrecedingLastInstanceOf);
         String actual = compactExpression(split(elementPrecedingLastInstanceOf));
