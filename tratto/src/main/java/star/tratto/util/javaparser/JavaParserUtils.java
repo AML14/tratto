@@ -1027,7 +1027,7 @@ public class JavaParserUtils {
      * @throws JPClassNotFoundException if {@code typeDeclaration} is not
      * resolvable
      */
-    public static List<MethodUsage> getMethodsOfType(
+    public static List<MethodUsage> getAllMethods(
             TypeDeclaration<?> typeDeclaration
     ) throws JPClassNotFoundException {
         try {
@@ -1051,7 +1051,7 @@ public class JavaParserUtils {
      * @throws JPClassNotFoundException if {@code typeDeclaration} is not
      * resolvable
      */
-    public static List<ResolvedFieldDeclaration> getFieldsOfType(
+    public static List<ResolvedFieldDeclaration> getAllFields(
             TypeDeclaration<?> typeDeclaration
     ) throws JPClassNotFoundException {
         try {
