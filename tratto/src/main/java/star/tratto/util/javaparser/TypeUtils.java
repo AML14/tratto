@@ -165,20 +165,14 @@ public class TypeUtils {
     }
 
     /**
-     * Removes type arguments and semicolons from a parameterized type name.
-     * The given type name should originate from source code, as neither
-     * ClassGetSimpleName nor ClassGetName forms include type parameters.
-     * These names may include semicolons due to source code format. For
-     * example,
-     * {@code 
-     *     "private final static Map<String, Integer>;"}
-     * includes a semicolon at the end of its declaration, which is removed
-     * by this method.
+     * Removes type arguments from a parameterized type name. The given type
+     * name should originate from source code, as neither ClassGetSimpleName
+     * nor ClassGetName forms include type parameters.
      *
      * @param parameterizedType a type name from source code
      * @return the base type without type arguments
      */
-    public static String removeTypeArgumentsAndSemicolon(String parameterizedType) {
+    public static String removeTypeArguments(String parameterizedType) {
         String regex = "<[^<>]*>";
         // repeatedly remove all type arguments.
         String previous;
@@ -205,7 +199,7 @@ public class TypeUtils {
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(sourceCode);
         if (matcher.find()) {
-            String typeBound = removeTypeArgumentsAndSemicolon(matcher.group(1));
+            String typeBound = removeTypeArguments(matcher.group(1));
             return addArrayLevel(typeBound, getArrayLevel(typeName));
         } else {
             return typeName;
@@ -267,9 +261,9 @@ public class TypeUtils {
         // get simple name
         String typeName;
         if (jpParam.getType().isClassOrInterfaceType()) {
-            typeName = removeTypeArgumentsAndSemicolon(jpParam.getType().asClassOrInterfaceType().getNameAsString());
+            typeName = removeTypeArguments(jpParam.getType().asClassOrInterfaceType().getNameAsString());
         } else {
-            typeName = removeTypeArgumentsAndSemicolon(jpParam.getType().asString());
+            typeName = removeTypeArguments(jpParam.getType().asString());
         }
         // represent varargs as an array
         if (jpParam.isVarArgs()) {
