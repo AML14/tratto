@@ -46,15 +46,19 @@ TOGA_INPUT="${ROOT_DIR}${SEPARATOR}output${SEPARATOR}toga${SEPARATOR}input"
 TOGA_OUTPUT="${ROOT_DIR}${SEPARATOR}output${SEPARATOR}toga${SEPARATOR}output"
 TEST_CLASS_PATH="${ROOT_DIR}${SEPARATOR}output${SEPARATOR}evosuite-tests${SEPARATOR}${FULLY_QUALIFIED_NAME//./${SEPARATOR}}_ESTestPrefix.java"
 
-java -jar "generator${SEPARATOR}resources${SEPARATOR}experiment.jar" toga $SRC_PATH $CLASS_PATH $TEST_CLASS_PATH
+#java -jar "generator${SEPARATOR}resources${SEPARATOR}experiment.jar" toga $SRC_PATH $CLASS_PATH $TEST_CLASS_PATH
 
 cd "${TOGA_PROJECT}"
 
-python3 toga.py "${TOGA_INPUT}${SEPARATOR}toga_input.csv" "${TOGA_INPUT}${SEPARATOR}toga_metadata.csv"
+#python3 toga.py "${TOGA_INPUT}${SEPARATOR}toga_input.csv" "${TOGA_INPUT}${SEPARATOR}toga_metadata.csv"
 if [ ! -d "$TOGA_OUTPUT" ]; then
     # If it doesn't exist, create the folder
     mkdir -p "$TOGA_OUTPUT"
     echo "Folder created: $TOGA_OUTPUT"
 fi
 
-mv "${TOGA_PROJECT}${SEPARATOR}oracle_preds.csv" "${TOGA_OUTPUT}${SEPARATOR}oracle_preds.csv"
+mv "${TOGA_PROJECT}${SEPARATOR}oracle_preds.csv" "${TOGA_OUTPUT}"
+
+cd "${ROOT_DIR}"
+
+java -jar "generator${SEPARATOR}resources${SEPARATOR}experiment.jar" toga $SRC_PATH

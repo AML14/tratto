@@ -16,7 +16,7 @@ package data;
 public record OracleOutput(
         String className,
         String methodSignature,
-        String oracleType,
+        OracleType oracleType,
         String prefix,
         String oracle,
         String exception,

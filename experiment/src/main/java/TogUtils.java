@@ -228,29 +228,14 @@ public class TogUtils {
             OracleOutput oracleOutput = new OracleOutput(
                     togaTest.get("className"),
                     togaTest.get("methodSignature"),
-                    isException ? OracleType.EXCEPT_POST.toString() : OracleType.NORMAL_POST.toString(),
+                    OracleType.NON_AXIOMATIC,
                     togaTest.get("testPrefix"),
                     assertPred,
-                    "",
+                    isException ? "java.lang.Exception" : "",
                     testName
             );
             oracleOutputs.add(oracleOutput);
         }
         FileUtils.writeJSON(prefixPath.resolve("oracle_outputs.json"), oracleOutputs);
-    }
-
-    public static void main(String[] args) {
-        String root = "src/test/resources/project/src";
-        SymbolSolverCollectionStrategy strategy = new SymbolSolverCollectionStrategy();
-        strategy.collect(Paths.get(root));
-        JavaParser javaParser = new JavaParser();
-        javaParser.getParserConfiguration().setSymbolResolver(strategy.getParserConfiguration().getSymbolResolver().get());
-
-        /*generateTOGAInput(
-            Paths.get(root),
-            Paths.get(System.getProperty("user.dir"), "src", "test","resources","Stack.java"),
-            Paths.get(System.getProperty("user.dir"), "src", "test","resources","Stack_ESTestPrefix.java")
-        );*/
-        mapTOGAOutputToOracleOutput(Paths.get(root));
     }
 }
