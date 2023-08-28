@@ -843,14 +843,46 @@ public class JavaParserUtils {
         return mapList(JavaParserUtils::getTypeWithoutPackages, exceptions);
     }
 
-    /**
-     * Regex to match the "toString" of either {@link ReflectionMethodDeclaration} or
-     * {@link JavassistMethodDeclaration} (both implementations of {@link ResolvedMethodDeclaration})
-     */
-    private static final Pattern METHOD_SIGNATURE = Pattern.compile(
-            "^ReflectionMethodDeclaration\\{method=((.*) )?\\S+ \\S+\\(.*\\}$|" +
-                    "^JavassistMethodDeclaration\\{ctMethod\\=.*\\[((.*) )?\\S+ \\(.*\\).*\\]}$"
+    /** Regex to match {@link ReflectionMethodDeclaration#toString()}. */
+    private static final Pattern REFLECTION_METHOD_DECLARATION = Pattern.compile(
+            "^ReflectionMethodDeclaration\\{method=((.*) )?\\S+ \\S+\\(.*}$"
     );
+
+    /** Regex to match {@link JavassistMethodDeclaration#toString()}. */
+    private static final Pattern JAVASSIST_METHOD_DECLARATION = Pattern.compile(
+            "^JavassistMethodDeclaration\\{ctMethod=.*\\[((.*) )?\\S+ \\(.*\\).*]}$"
+    );
+
+    /**
+     * Gets the modifiers of a JavaParser MethodUsage. Unfortunately, the
+     * implementations of ResolvedMethodDeclaration have different approaches
+     * for storing modifier information. This method uses regexes to handle
+     * retrieving this information from {@link ReflectionMethodDeclaration} or
+     * {@link JavassistMethodDeclaration} implementations of
+     * ResolvedMethodDeclaration.
+     *
+     * @param methodDeclaration a resolved method declaration. Must be either
+     *                          {@link ReflectionMethodDeclaration} or
+     *                          {@link JavassistMethodDeclaration}.
+     * @return the modifiers of the method
+     */
+    private static String getMethodModifiers(ResolvedMethodDeclaration methodDeclaration) {
+        Matcher reflectionMatcher = REFLECTION_METHOD_DECLARATION.matcher(methodDeclaration.toString());
+        Matcher javassistMatcher = JAVASSIST_METHOD_DECLARATION.matcher(methodDeclaration.toString());
+        if (!reflectionMatcher.find() && !javassistMatcher.find()) {
+            throw new IllegalStateException("Could not parse method signature: " + methodDeclaration);
+        }
+        String methodModifiers;
+        if (methodDeclaration instanceof ReflectionMethodDeclaration) {
+            methodModifiers = reflectionMatcher.group(1);
+        } else {
+            methodModifiers = javassistMatcher.group(1);
+        }
+        if (methodModifiers == null) {
+            methodModifiers = "";
+        }
+        return methodModifiers;
+    }
 
     /**
      * Gets the method signature from a JavaParser MethodUsage. Unfortunately,
@@ -876,16 +908,7 @@ public class JavaParserUtils {
             MethodDeclaration jpMethod = jpMethodDeclaration.getWrappedNode();
             return getMethodSignature(jpMethod);
         }
-        // Consider ReflectionMethodDeclaration or JavassistMethodDeclaration
-        Matcher matcher = METHOD_SIGNATURE.matcher(methodDeclaration.toString());
-        if (!matcher.find()) {
-            throw new IllegalStateException("Could not parse method signature: " + methodDeclaration);
-        }
-        String methodModifiers = methodDeclaration instanceof ReflectionMethodDeclaration ? matcher.group(1) : matcher.group(2);
-        // Take into account the case in which the method declaration refers to a method without an access specifier.
-        if (methodModifiers == null) {
-            methodModifiers = "";
-        }
+        String methodModifiers = getMethodModifiers(methodDeclaration);
         List<String> typeParameterList = getTypeParameters(methodUsage);
         List<String> formalParameterList = getParameters(methodUsage);
         List<String> exceptionList = getExceptions(methodUsage);
