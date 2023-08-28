@@ -955,12 +955,12 @@ public class JavaParserUtils {
     }
 
     /**
-     * Returns the base component type of a resolved type. Recursively strips
-     * all array variables. For example:
+     * Returns the element of a resolved type. Recursively strips all array
+     * variables. For example:
      *     Object[][] => Object
      *
      * @param resolvedType a type
-     * @return the base component type
+     * @return the element type
      */
     public static ResolvedType getElementType(ResolvedType resolvedType) {
         while (resolvedType.isArray()) {
@@ -974,8 +974,8 @@ public class JavaParserUtils {
      *
      * @param resolvedType a JavaParser resolved type
      * @return true iff a given type is a type variable of a generic class or
-     * method. If the given type is an array, then this method checks the base
-     * component type.
+     * method. If the given type is an array, then this method checks the
+     * element type.
      */
     public static boolean isTypeVariable(
             ResolvedType resolvedType
@@ -994,7 +994,7 @@ public class JavaParserUtils {
      * @param jpClass the declaring class of {@code jpCallable}
      * @return true iff a given type is a type variable of the declaring class
      * or method. If the given type is an array, then this method checks the
-     * base component type.
+     * element type.
      */
     public static boolean isTypeVariable(
             String typeName,
