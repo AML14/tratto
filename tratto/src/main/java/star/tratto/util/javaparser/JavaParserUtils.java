@@ -1028,21 +1028,20 @@ public class JavaParserUtils {
             CallableDeclaration<?> jpCallable,
             TypeDeclaration<?> jpClass
     ) {
-        // add all type parameters of the method
-        List<String> typeParameterNames = jpCallable.getTypeParameters()
-                .stream()
-                .map(NodeWithSimpleName::getNameAsString)
-                .collect(Collectors.toList());
-        // add all type parameters of the class
-        if (jpClass instanceof ClassOrInterfaceDeclaration) {
-            typeParameterNames.addAll(
-                    jpClass.asClassOrInterfaceDeclaration().getTypeParameters()
-                            .stream()
-                            .map(NodeWithSimpleName::getNameAsString)
-                            .toList()
-            );
+        String elementType = typeName.replaceAll("\\[]", "");
+        for (TypeParameter typeParameter : jpCallable.getTypeParameters()) {
+            if (typeParameter.getNameAsString().equals(elementType)) {
+                return true;
+            }
         }
-        return typeParameterNames.contains(typeName.replaceAll("\\[]", ""));
+        if (jpClass instanceof ClassOrInterfaceDeclaration) {
+            for (TypeParameter typeParameter : jpClass.asClassOrInterfaceDeclaration().getTypeParameters()) {
+                if (typeParameter.getNameAsString().equals(elementType)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**
