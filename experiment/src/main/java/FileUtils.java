@@ -107,7 +107,7 @@ public class FileUtils {
      *      relativePath = [destinationPrefix]/[destination]/[suffix]/[fileName]
      * </pre>
      */
-    private static Path getRelativePath(Path source, Path destination, Path target) {
+    public static Path getRelativePath(Path source, Path destination, Path target) {
         if (source.equals(target)) {
             return destination;
         }
