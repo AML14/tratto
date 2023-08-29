@@ -194,23 +194,24 @@ public class TestUtils {
     }
 
     /**
-     * Creates a duplicate method based on a given original method. The
-     * original method is given a new body, and a new name.
+     * Creates a related method based on a given original method. The original
+     * method is given a new body and a new name. The new name is the same as
+     * the original method name, but with a global ID appended to avoid
+     * repeating a method name.
      *
      * @param original the original method
      * @param newBody the new method body
-     * @return a duplicate method test case
+     * @return the new method
      */
-    private static MethodDeclaration createMethodDuplicate(
+    private static MethodDeclaration createRelatedMethod(
             MethodDeclaration original,
             NodeList<Statement> newBody
     ) {
-        String duplicateName = original.getNameAsString() + testID;
-        MethodDeclaration duplicate = original.clone();
-        duplicate.setBody(new BlockStmt(newBody));
-        duplicate.setName(duplicateName);
+        String newName = original.getNameAsString() + testID;
         testID++;
-        return duplicate;
+        return original.clone()
+                .setBody(new BlockStmt(newBody))
+                .setName(newName);
     }
 
     /**
@@ -238,7 +239,7 @@ public class TestUtils {
                 newBody.add(statement);
             }
         }
-        return createMethodDuplicate(testCase, newBody);
+        return createRelatedMethod(testCase, newBody);
     }
 
     /**
@@ -277,7 +278,7 @@ public class TestUtils {
             }
             // keep exceptional oracles
             if (numAssertions == 0) {
-                MethodDeclaration exceptionalPrefix = createMethodDuplicate(
+                MethodDeclaration exceptionalPrefix = createRelatedMethod(
                         testCase,
                         testCase.getBody().orElseThrow().getStatements()
                 );
