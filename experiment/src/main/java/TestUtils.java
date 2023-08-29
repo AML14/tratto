@@ -128,8 +128,8 @@ public class TestUtils {
     /**
      * Removes all assertion oracles from a given test file, represented by a
      * JavaParser compilation unit. Assertion oracles are represented by JUnit
-     * Assert method calls (e.g. {@code assertEquals}). If the JUnit assertion
-     * condition contains a method call, the method call is kept for the
+     * Assert method calls (e.g. {@code assertEquals}). If a JUnit assertion
+     * condition contains a method call, then the method call is kept in the
      * prefix. For example,
      *     {@code assertTrue(stack.isEmpty())}    -&gt;    {@code stack.isEmpty()}.
      * This method does not modify the actual source file.
@@ -252,13 +252,14 @@ public class TestUtils {
     }
 
     /**
-     * Splits all test cases in the original test file into smaller
-     * subtests each corresponding to a single assertion in the original
-     * test. Does not modify the original file.
+     * Splits all test cases in a given test file into smaller subtests, each
+     * with a single assertion from the original test case. If a test case
+     * does not contain a JUnit assertion (e.g. exceptional oracle), then it
+     * is not modified. This method does ot modify the actual source file.
      *
-     * @param testFile a Java test file
+     * @param testFile a JavaParser representation of a test file
      */
-    public static void splitOracles(CompilationUnit testFile) {
+    public static void splitTests(CompilationUnit testFile) {
         List<MethodDeclaration> testCases = testFile.findAll(MethodDeclaration.class);
         for (MethodDeclaration testCase : testCases) {
             TypeDeclaration<?> testClass = testFile.getType(0);
@@ -286,7 +287,9 @@ public class TestUtils {
      * @see TestUtils#removeExceptionalOracles(CompilationUnit)
      */
     public static void removeOracles(Path dir) {
+        Path simplePath = output.resolve("evosuite-tests-simple");
         Path prefixPath = output.resolve("evosuite-prefix");
+        FileUtils.copy(dir, simplePath);
         FileUtils.copy(dir, prefixPath);
         try (Stream<Path> walk = Files.walk(prefixPath)) {
             walk
@@ -294,11 +297,12 @@ public class TestUtils {
                     .forEach(testFile -> {
                         try {
                             CompilationUnit cu = StaticJavaParser.parse(testFile);
-                            splitOracles(cu);
+                            splitTests(cu);
+                            Path simpleTestFile = FileUtils.getRelativePath(prefixPath, simplePath, testFile);
+                            FileUtils.writeString(simpleTestFile, cu.toString());
+                            removeExceptionalOracles(cu);
+                            removeAssertionOracles(cu);
                             FileUtils.writeString(testFile, cu.toString());
-//                            removeExceptionalOracles(cu);
-//                            removeAssertionOracles(cu);
-//                            FileUtils.writeString(testFile, cu.toString());
                         } catch (IOException e) {
                             throw new Error("Unable to parse test file " + testFile.getFileName().toString());
                         }
