@@ -23,6 +23,8 @@ import java.util.stream.Stream;
  * and inserting oracles into test prefixes.
  */
 public class TestUtils {
+    /** A global unique ID to avoid duplicate test names. */
+    private static int testID = 0;
     /** The path to the output directory */
     private static final Path output = Paths.get("output");
     /** A list of all JUnit Assertions assert methods */
@@ -124,94 +126,25 @@ public class TestUtils {
     }
 
     /**
-     * Creates a duplicate method based on a given original method. The
-     * original method is given a new body, and a new name, corresponding
-     * to the given index.
-     *
-     * @param original the original method
-     * @param newBody the new method body
-     * @param assertionIdx the duplicate index
-     * @return a duplicate method test case
-     */
-    private static MethodDeclaration createMethodDuplicate(
-            MethodDeclaration original,
-            NodeList<Statement> newBody,
-            int assertionIdx
-    ) {
-        String duplicateName = original.getNameAsString() + "_" + assertionIdx;
-        MethodDeclaration duplicate = original.clone();
-        duplicate.setBody(new BlockStmt(newBody));
-        duplicate.setName(duplicateName);
-        return duplicate;
-    }
-
-    /**
-     * Gets a new method prefix corresponding to a given assertion in the
-     * original test case. An EvoSuite test may contain multiple assertions.
-     * Each test is split into multiple prefixes, where each prefix
-     * corresponds to a single assertion in the original test case.
-     *
-     * @param testCase a test case
-     * @param assertionIdx the assertion number
-     * @return a test prefix corresponding to the "assertionIdx"-th assertion
-     */
-    private static MethodDeclaration getNextPrefix(MethodDeclaration testCase, int assertionIdx) {
-        NodeList<Statement> originalBody = testCase.getBody().orElseThrow().getStatements();
-        NodeList<Statement> newBody = new NodeList<>();
-        int currentIdx = 0;
-        for (Statement statement : originalBody) {
-            if (isJUnitAssertion(statement)) {
-                if (currentIdx == assertionIdx) {
-                    MethodCallExpr conditionMethodCall = getMethodCallOfJUnitAssertion(statement);
-                    if (conditionMethodCall != null) {
-                        newBody.add(new ExpressionStmt(conditionMethodCall));
-                    }
-                    break;
-                }
-                currentIdx++;
-            } else {
-                newBody.add(statement);
-            }
-        }
-        return createMethodDuplicate(testCase, newBody, assertionIdx);
-    }
-
-    /**
-     * Gets the number of JUnit assertions in a given test case.
-     *
-     * @param testCase a test case
-     * @return the number of JUnit assertions in the test case
-     */
-    private static int getNumberOfAssertions(MethodDeclaration testCase) {
-        NodeList<Statement> testBody = testCase.getBody().orElseThrow().getStatements();
-        int numAssertions = 0;
-        for (Statement statement : testBody) {
-            if (isJUnitAssertion(statement)) {
-                numAssertions++;
-            }
-        }
-        return numAssertions;
-    }
-
-    /**
      * Removes all assertion oracles from a given test file, represented by a
-     * JavaParser compilation unit. This method generates an individual prefix
-     * per each assertion in the original test case. This method does not
-     * modify the actual source file.
+     * JavaParser compilation unit. Assertion oracles are represented by JUnit
+     * Assert method calls (e.g. {@code assertEquals}). If the JUnit assertion
+     * condition contains a method call, the method call is kept for the
+     * prefix. For example,
+     *     {@code assertTrue(stack.isEmpty())}    -&gt;    {@code stack.isEmpty()}.
+     * This method does not modify the actual source file.
      *
      * @param testFile a JavaParser representation of a test file
      */
     private static void removeAssertionOracles(CompilationUnit testFile) {
-        testFile.findAll(MethodDeclaration.class).forEach(testCase -> {
-            TypeDeclaration<?> testClass = testFile.getType(0);
-            int numAssertions = getNumberOfAssertions(testCase);
-            for (int i = 0; i < numAssertions; i++) {
-                MethodDeclaration prefix = getNextPrefix(testCase, i);
-                testClass.addMember(prefix);
-            }
-            // do not remove exceptional oracles.
-            if (numAssertions != 0) {
-                testCase.remove();
+        testFile.findAll(Statement.class).forEach(testStmt -> {
+            if (isJUnitAssertion(testStmt)) {
+                MethodCallExpr conditionMethodCall = getMethodCallOfJUnitAssertion(testStmt);
+                if (conditionMethodCall != null) {
+                    testStmt.replace(new ExpressionStmt(conditionMethodCall));
+                } else {
+                    testStmt.remove();
+                }
             }
         });
     }
@@ -254,6 +187,94 @@ public class TestUtils {
     }
 
     /**
+     * Creates a duplicate method based on a given original method. The
+     * original method is given a new body, and a new name.
+     *
+     * @param original the original method
+     * @param newBody the new method body
+     * @return a duplicate method test case
+     */
+    private static MethodDeclaration createMethodDuplicate(
+            MethodDeclaration original,
+            NodeList<Statement> newBody
+    ) {
+        String duplicateName = original.getNameAsString() + testID;
+        MethodDeclaration duplicate = original.clone();
+        duplicate.setBody(new BlockStmt(newBody));
+        duplicate.setName(duplicateName);
+        testID++;
+        return duplicate;
+    }
+
+    /**
+     * Gets a new test case corresponding to a given assertion in the original
+     * test case. An EvoSuite test may contain multiple assertions. For
+     * compatibility, each test is split into multiple subtests, each
+     * corresponding to a single assertion in the original test case.
+     *
+     * @param testCase a test case
+     * @param assertionIdx the assertion number
+     * @return a test case corresponding to the "assertionIdx"-th assertion
+     */
+    private static MethodDeclaration getNextTestCase(MethodDeclaration testCase, int assertionIdx) {
+        NodeList<Statement> originalBody = testCase.getBody().orElseThrow().getStatements();
+        NodeList<Statement> newBody = new NodeList<>();
+        int currentIdx = 0;
+        for (Statement statement : originalBody) {
+            if (isJUnitAssertion(statement)) {
+                if (currentIdx == assertionIdx) {
+                    newBody.add(statement);
+                    break;
+                }
+                currentIdx++;
+            } else {
+                newBody.add(statement);
+            }
+        }
+        return createMethodDuplicate(testCase, newBody);
+    }
+
+    /**
+     * Gets the number of JUnit assertions in a given test case.
+     *
+     * @param testCase a test case
+     * @return the number of JUnit assertions in the test case
+     */
+    private static int getNumberOfAssertions(MethodDeclaration testCase) {
+        NodeList<Statement> testBody = testCase.getBody().orElseThrow().getStatements();
+        int numAssertions = 0;
+        for (Statement statement : testBody) {
+            if (isJUnitAssertion(statement)) {
+                numAssertions++;
+            }
+        }
+        return numAssertions;
+    }
+
+    /**
+     * Splits all test cases in the original test file into smaller
+     * subtests each corresponding to a single assertion in the original
+     * test. Does not modify the original file.
+     *
+     * @param testFile a Java test file
+     */
+    public static void splitOracles(CompilationUnit testFile) {
+        List<MethodDeclaration> testCases = testFile.findAll(MethodDeclaration.class);
+        for (MethodDeclaration testCase : testCases) {
+            TypeDeclaration<?> testClass = testFile.getType(0);
+            int numAssertions = getNumberOfAssertions(testCase);
+            for (int i = 0; i < numAssertions; i++) {
+                MethodDeclaration prefix = getNextTestCase(testCase, i);
+                testClass.addMember(prefix);
+            }
+            // do not remove exceptional oracles
+            if (numAssertions != 0) {
+                testCase.remove();
+            }
+        }
+    }
+
+    /**
      * Removes all assertions from all test files in a given directory. Our
      * approach for removing oracles depends on whether an oracle is
      * exceptional (e.g. throws an exception) or a normal assertion. Saves the
@@ -273,9 +294,11 @@ public class TestUtils {
                     .forEach(testFile -> {
                         try {
                             CompilationUnit cu = StaticJavaParser.parse(testFile);
-                            removeExceptionalOracles(cu);
-                            removeAssertionOracles(cu);
+                            splitOracles(cu);
                             FileUtils.writeString(testFile, cu.toString());
+//                            removeExceptionalOracles(cu);
+//                            removeAssertionOracles(cu);
+//                            FileUtils.writeString(testFile, cu.toString());
                         } catch (IOException e) {
                             throw new Error("Unable to parse test file " + testFile.getFileName().toString());
                         }
