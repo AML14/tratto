@@ -744,8 +744,17 @@ public class DatasetUtils {
     }
 
     /**
-     * Uses methods and fields of JavaParserFieldDeclaration to get a more
-     * detailed field signature (includes all modifiers and value).
+     * Converts a field declaration to a list of records of attribute tokens,
+     * where each entry has the form:
+     *     [fieldName, packageName, className, fieldDeclaration]
+     * This method is a special case of
+     * {@link DatasetUtils#convertFieldDeclarationToAttributeTokens(List)}
+     * using available information from the implementation of
+     * {@link JavaParserFieldDeclaration}. If possible, declarations with
+     * multiple fields are split into individual records.
+     *
+     * @param resolvedField a JavaParser resolved field declaration
+     * @return the corresponding list of attribute tokens records.
      */
     private static List<AttributeTokens> convertJavaParserFieldDeclarationToAttributeTokens(
             JavaParserFieldDeclaration resolvedField
@@ -764,13 +773,19 @@ public class DatasetUtils {
     }
 
     /**
-     * Uses methods and fields of ReflectionFieldDeclaration to get a more
-     * detailed field signature (includes all modifiers).
+     * Converts a field declaration to a record with the form:
+     *     [fieldName, packageName, className, fieldDeclaration]
+     * This method is a special case of
+     * {@link DatasetUtils#convertFieldDeclarationToAttributeTokens(List)}
+     * using available information from the implementation of
+     * {@link ReflectionFieldDeclaration}.
+     *
+     * @param resolvedField a reflection resolved field declaration
+     * @return the corresponding attribute token record
      */
-    private static List<AttributeTokens> convertReflectionFieldDeclarationToAttributeTokens(
+    private static AttributeTokens convertReflectionFieldDeclarationToAttributeTokens(
             ReflectionFieldDeclaration resolvedField
     ) {
-        List<AttributeTokens> attributeList = new ArrayList<>();
         String signature;
         try {
             Field f = resolvedField.getClass().getDeclaredField("field");
@@ -780,22 +795,25 @@ public class DatasetUtils {
         } catch (NoSuchFieldException | IllegalAccessException e) {
             signature = JavaParserUtils.getFieldDeclaration(resolvedField);
         }
-        attributeList.add(new AttributeTokens(
+        return new AttributeTokens(
                 resolvedField.getName(),
                 resolvedField.declaringType().getPackageName(),
                 resolvedField.declaringType().getClassName(),
                 signature
-        ));
-        return attributeList;
+        );
     }
 
     /**
-     * Converts a list of fields to a list of records of attribute tokens,
-     * where each record has the form:
-     *  [fieldName, packageName, className, fieldSignature]
-     * where "className" refers to the name of the field type. If possible,
-     * declarations with multiple fields are split into individual attribute
-     * tokens.
+     * Converts a list of field declarations to a list of records of attribute
+     * tokens, where each record has the form:
+     *     [fieldName, packageName, className, fieldDeclaration]
+     * where "className" refers to the field type name. If possible,
+     * declarations with multiple fields are split into individual records.
+     * The "fieldDeclaration" includes modifiers, type, name, and initial
+     * value (if applicable).
+     *
+     * @param resolvedFields a list of field declarations
+     * @return the corresponding list of attribute token records
      */
     private static List<AttributeTokens> convertFieldDeclarationToAttributeTokens(
             List<ResolvedFieldDeclaration> resolvedFields
@@ -807,7 +825,7 @@ public class DatasetUtils {
                 fieldList.addAll(convertJavaParserFieldDeclarationToAttributeTokens((JavaParserFieldDeclaration) resolvedField));
             } else if (resolvedField instanceof ReflectionFieldDeclaration) {
                 // use ReflectionFieldDeclaration to get a more detailed signature.
-                fieldList.addAll(convertReflectionFieldDeclarationToAttributeTokens((ReflectionFieldDeclaration) resolvedField));
+                fieldList.add(convertReflectionFieldDeclarationToAttributeTokens((ReflectionFieldDeclaration) resolvedField));
             } else {
                 // use default ResolvedFieldDeclaration.
                 fieldList.add(new AttributeTokens(
@@ -822,16 +840,14 @@ public class DatasetUtils {
     }
 
     /**
-     * Collects information for all non-private, non-static attributes visible
+     * Gets information for all non-private, non-static attributes available
      * to a given type.
      *
      * @param jpResolvedType the given type
-     * @return a list of information about each attribute. Each entry has the
-     * form:
-     *  [fieldName, packageName, className, fieldSignature]
+     * @return a list of attribute token records. Each entry has the form:
+     *     [fieldName, packageName, className, fieldSignature]
      * where "className" refers to the name of the field type. If possible,
-     * declarations with multiple fields are split into individual attribute
-     * tokens.
+     * declarations with multiple fields are split into individual records.
      */
     public static List<AttributeTokens> getFieldsFromType(
             ResolvedType jpResolvedType
@@ -873,9 +889,17 @@ public class DatasetUtils {
     }
 
     /**
-     * Wrapper method which first attempts to resolve a given type. Returns
-     * an empty list if an error occurs. See public "getFieldsFromType()"
-     * method above for further detail.
+     * Gets information for all non-private, non-static attributes available
+     * to a given type. This method is a wrapper of
+     * {@link DatasetUtils#getFieldsFromType(ResolvedType)} which attempts to
+     * resolve the given type. Returns an empty list if unable to resolve the
+     * given type.
+     *
+     * @param jpType the given type
+     * @return a list of attribute token records. Each entry has the form:
+     *     [fieldName, packageName, className, fieldSignature]
+     * where "className" refers to the name of the field type. If possible,
+     * declarations with multiple fields are split into individual records.
      */
     private static List<AttributeTokens> getFieldsFromType(
             Type jpType
@@ -890,10 +914,18 @@ public class DatasetUtils {
     }
 
     /**
-     * Like previous method, but to be used with method arguments. This function
-     * handles those cases where the argument is an array but expressed using ellipsis,
-     * e.g., {@code foo(String... bar)}. If the method argument is not an array
-     * of this kind, the method simply calls the previous method.
+     * Gets information for all non-private, non-static attributes available
+     * to a given parameter. This method is a wrapper of
+     * {@link DatasetUtils#getFieldsFromType(Type)} (another wrapper) which
+     * checks if a parameter is a varargs, and adds array fields if
+     * applicable. If the parameter is not a varargs, then this method is
+     * identical to the aforementioned method.
+     *
+     * @param jpParameter the given parameter
+     * @return a list of attribute token records. Each entry has the form:
+     *     [fieldName, packageName, className, fieldSignature]
+     * where "className" refers to the name of the field type. If possible,
+     * declarations with multiple fields are split into individual records.
      */
     public static List<AttributeTokens> getFieldsFromParameter(
             Parameter jpParameter
@@ -921,7 +953,7 @@ public class DatasetUtils {
      * @param jpCallable a function
      * @return a list of information about each method. Each entry has the
      * form:
-     *  [methodName, packageName, className, methodSignature]
+     *     [methodName, packageName, className, methodSignature]
      * @throws JPClassNotFoundException if the declaring class is not
      * resolvable
      */
@@ -965,7 +997,7 @@ public class DatasetUtils {
      * @param jpCallable a function
      * @return a list of information about each attribute. Each entry has the
      * form:
-     *  [fieldName, packageName, className, fieldSignature]
+     *     [fieldName, packageName, className, fieldSignature]
      * @throws JPClassNotFoundException if the declaring class is not
      * resolvable
      */
@@ -1001,7 +1033,7 @@ public class DatasetUtils {
      * @param oracle an oracle corresponding to the function
      * @return a list of information about each method. Each entry has the
      * form:
-     *  [methodName, packageName, className, methodSignature]
+     *     [methodName, packageName, className, methodSignature]
      */
     public static List<MethodTokens> getTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(
             TypeDeclaration<?> jpClass,
@@ -1078,16 +1110,23 @@ public class DatasetUtils {
     }
 
     /**
-     * Returns true iff a given JDoctor parameter and JavaParser parameter
-     * are equivalent. Handles four cases:
-     *  (1) jDoctorParam and jpParam are equal.
-     *  (2) Both jDoctorParam and jpParam represent standard objects
-     *      (e.g. Object, Comparable).
-     *  (3) jpParam is a generic (not an array) and jDoctorParam is a
-     *      standard object.
-     *  (4) jpParam is a generic (array) and jDoctorParam is an array
-     *      of standard objects.
-     * Returns true if any of the above conditions hold.
+     * Checks if a JDoctor parameter and JavaParser parameter are equivalent.
+     * Handles four cases:
+     * <ul>
+     *     <li>{@code jDoctorParam} and {@code jpParam} are equal</li>
+     *     <li>Both {@code jDoctorParam} and {@code jpParam} represent
+     *     "standard" objects, defined as "Object" and "Comparable".</li>
+     *     <li>{@code jpParam} is a type parameter (not an array) and
+     *     {@code jDoctorParam} is a standard object.</li>
+     *     <li>{@code jpParam} is a type parameter (array) and
+     *     {@code jDoctorParam} is an array of standard objects.</li>
+     * </ul>
+     *
+     * @param jDoctorParam the JDoctor parameter name
+     * @param jpParam a JavaParser parameter
+     * @param jpCallable the declaring method with parameter {@code jpParam}
+     * @param jpClass the declaring class of {@code jpCallable}
+     * @return returns true if any of the aforementioned cases are true
      */
     private static boolean jpParamEqualsJDoctorParam(
             String jDoctorParam,
@@ -1206,6 +1245,9 @@ public class DatasetUtils {
     }
 
     /**
+     * Gets the path to the class of a JDoctor condition from the given source
+     * path.
+     *
      * @param operation an operation of a JDoctor condition
      * @param sourceDir the source path of the relevant project
      * @return the path of the class in the JDoctor condition
@@ -1236,8 +1278,13 @@ public class DatasetUtils {
     }
 
     /**
-     * Like previous method, but instead of retrieving the compilation unit,
-     * retrieves the source code of the class.
+     * Gets the source code of the Java file, corresponding to the class of a
+     * JDoctor condition.
+     *
+     * @param operation a JDoctor condition operation
+     * @param sourcePath the path to the corresponding source code of the Java
+     *                   project
+     * @return the source code of the class in the JDoctor condition
      */
     public static Optional<String> getOperationClassSource(
             Operation operation,
@@ -1252,7 +1299,10 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets the method/constructor name of an operation.
+     * Gets the method/constructor name of an operation
+     *
+     * @param operation a JDoctor condition operation
+     * @return the method/constructor name of the operation
      */
     public static String getOperationCallableName(
             Operation operation
