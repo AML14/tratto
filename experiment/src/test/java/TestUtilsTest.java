@@ -1,5 +1,6 @@
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.stmt.Statement;
@@ -13,7 +14,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestUtilsTest {
-    private static final Path testPath = Paths.get("src/test/resources");
+    private static final Path resourcesPath = Paths.get("src/test/resources");
     private static final Path outputPath = Paths.get("output");
     private static final List<String> allJUnitTestMethods = List.of(
             "assertArrayEquals",
@@ -30,7 +31,7 @@ public class TestUtilsTest {
 
     @Test
     public void removeOraclesTest() {
-        TestUtils.removeOracles(testPath);
+        TestUtils.removeOracles(resourcesPath.resolve("test"), "ExampleTest");
         try {
             CompilationUnit cu = StaticJavaParser.parse(outputPath.resolve("evosuite-prefix/ExampleTest.java"));
             cu.findAll(Statement.class)
@@ -50,9 +51,12 @@ public class TestUtilsTest {
                             }
                         }
                     });
+            List<MethodDeclaration> testCases = cu.getType(0).getMethods();
+            assertEquals(7, testCases.size());
         } catch (IOException e) {
             fail();
         }
         FileUtils.deleteDirectory(outputPath.resolve("evosuite-prefix"));
     }
+
 }

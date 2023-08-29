@@ -15,11 +15,13 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * This class provides static methods for generating the input for each specific TOG.
@@ -27,6 +29,9 @@ import java.util.regex.Pattern;
 public class TogUtils {
     /** The path to the output directory */
     private static final Path output = Paths.get("output");
+    private static final Path evosuitePath = output.resolve("evosuite-tests");
+    private static final Path evosuitePrefixPath = output.resolve("evosuite-prefix");
+    private static final Path evosuiteTestsSimplePath = output.resolve("evosuite-tests-simple");
 
     /** The pattern to extract the text prefix (removing comments and decorators) */
     private static final Pattern testPrefixPattern = Pattern.compile("(public|protected|private)(.|\s)*");
@@ -51,61 +56,81 @@ public class TogUtils {
      * Saves the output file in output/toga/input.
      *
      * @param srcDirPath the path to the source code of the project under test
-     * @param classFilePath the path to the class under test
-     * @param testClassFilePath the path to the corresponding test class, containing all the test prefixes
-     *                          (i.e. the test methods without assertions).
+     * @param fullyQualifiedClassName the fully qualified name of the class under test
      *
      */
-    public static void generateTOGAInput(Path srcDirPath, Path classFilePath, Path testClassFilePath) {
+    public static void generateTOGAInput(Path srcDirPath, String fullyQualifiedClassName) {
+        javaParser = getJavaParser(srcDirPath);
         Path prefixPath = output.resolve(Paths.get("toga", "input"));
         Path togaInputPath = prefixPath.resolve("toga_input.csv");
         Path togaMetadataPath = prefixPath.resolve("toga_metadata.csv");
         Path togaInfoPath = prefixPath.resolve("toga_info.json");
-        javaParser = getJavaParser(srcDirPath);
+        Path fullyQualifiedClassNamePath = FileUtils.getRelativePathFromFullyQualifiedClassName(fullyQualifiedClassName);
+        String className = FileUtils.getClassNameFromFullyQualifiedName(fullyQualifiedClassName);
+        int classNameIdx = fullyQualifiedClassNamePath.getNameCount() - 1;
+        Path fullyQualifiedTestClassNamePath = classNameIdx > 0 ?
+                fullyQualifiedClassNamePath.subpath(0, classNameIdx).resolve(className + "_ESTest.java") :
+                Paths.get(className);
+        Path classFilePath = srcDirPath.resolve(fullyQualifiedClassNamePath);
+        Path testClassFilePath = evosuiteTestsSimplePath.resolve(fullyQualifiedTestClassNamePath);
+        Path testClassPrefixFilePath = evosuitePrefixPath.resolve(fullyQualifiedTestClassNamePath);
+
+        if (!Files.exists(classFilePath)){
+            Path commonPatternPath = Paths.get(srcDirPath.toString(), "main", "java");
+            classFilePath = commonPatternPath.resolve(fullyQualifiedClassNamePath);
+            if (!Files.exists(classFilePath)) {
+                classFilePath = FileUtils.searchClassFile(srcDirPath, fullyQualifiedClassNamePath);
+                if (classFilePath == null) {
+                    throw new RuntimeException("The full path to the class file has not been found.");
+                }
+            }
+        }
+
         try {
             CompilationUnit cuClassFile = javaParser.parse(classFilePath).getResult().orElseThrow();
             CompilationUnit cuTestClassFile = javaParser.parse(testClassFilePath).getResult().orElseThrow();
-            //Map<String, List<Map<String,String>>> togaInfo = new HashMap<>();
+            CompilationUnit cuTestClassPrefixFile = javaParser.parse(testClassPrefixFilePath).getResult().orElseThrow();
             Map<String, Map<String,String>> togaInfo = new HashMap<>();
             StringBuilder togaInputBuilder = new StringBuilder();
             StringBuilder togaMetadataBuilder = new StringBuilder();
             togaInputBuilder.append("focal_method,test_prefix,docstring\n");
             togaMetadataBuilder.append("project,bug_num,test_name,exception_bug,assertion_bug,exception_lbl,assertion_lbl,assert_err\n");
-            cuTestClassFile.findAll(MethodDeclaration.class).forEach(testprefix -> {
-                List<MethodCallExpr> methodCallExpressions = testprefix.getBody().orElseThrow().findAll(MethodCallExpr.class);
+            cuTestClassPrefixFile.findAll(MethodDeclaration.class).forEach(testPrefix -> {
+                List<MethodCallExpr> methodCallExpressions = testPrefix.getBody().orElseThrow().findAll(MethodCallExpr.class);
                 MethodCallExpr lastMethodCallExpression = methodCallExpressions.get(methodCallExpressions.size() - 1);
                 try {
+                    String testName = testPrefix.getNameAsString();
                     Map<String,String> togaRow = new HashMap<>();
                     MethodDeclaration mut = (MethodDeclaration) lastMethodCallExpression.resolve().toAst().orElseThrow();
+                    MethodDeclaration test = cuTestClassFile
+                            .findAll(MethodDeclaration.class)
+                            .stream()
+                            .filter(t -> t.getNameAsString().equals(testName))
+                            .collect(Collectors.toList())
+                            .get(0);
                     String methodName = mut.getNameAsString();
-                    String testName = testprefix.getNameAsString();
                     String focalMethod = getMethodSignature(mut);
                     String javadocString = getCallableJavadoc(mut).replaceAll("\"", "'");
-                    String testPrefixStr = testprefix.toString().replaceAll("\"", "'");
-                    Matcher matcher = testPrefixPattern.matcher(testprefix.toString());
+                    String testStr = test.toString().replaceAll("\"", "'");
+                    String testPrefixStr = testPrefix.toString();
+                    Matcher matcher = testPrefixPattern.matcher(testPrefix.toString());
                     if (matcher.find()) {
                         int startIdx = matcher.start();
-                        testPrefixStr = testPrefixStr.substring(startIdx);
+                        testStr = testStr.substring(startIdx);
                     }
-                    togaInputBuilder.append(String.format("\"%s {}\",\"%s\",\"%s\"\n",focalMethod, testPrefixStr, javadocString));
+                    togaInputBuilder.append(String.format("\"%s {}\",\"%s\",\"%s\"\n",focalMethod, testStr, javadocString));
                     togaMetadataBuilder.append(String.format("project,0,%s,0,0,False,\"\",\"\"\n", testName));
                     togaRow.put("className", cuClassFile.getPrimaryType().orElseThrow().getFullyQualifiedName().orElseThrow());
                     togaRow.put("methodName", methodName);
                     togaRow.put("methodSignature", focalMethod);
                     togaRow.put("testPrefix", testPrefixStr);
                     togaRow.put("testName", testName);
-                    /*List<Map<String, String>> togaTestList = new ArrayList<>();
-                    if (togaInfo.containsKey(testName)) {
-                        togaTestList = togaInfo.get(testName);
-                    }
-                    togaTestList.add(togaRow);
-                    togaInfo.put(testName, togaTestList);*/
                     togaInfo.put(testName,togaRow);
                 } catch (NoSuchElementException e) {
                     String errMsg = String.format(
                             "Focal method %s not found for class %s",
                             lastMethodCallExpression.getNameAsString(),
-                            classFilePath
+                            fullyQualifiedClassName
                     );
                     System.err.println(errMsg);
                 }
@@ -196,14 +221,12 @@ public class TogUtils {
      * Saves the output file in output/toga/experiment.
      * @see OracleOutput
      * @param srcDirPath the path to the source code of the project under test
-     * @param inputTogaFilePath the path to the input file to the TOGA script.
-     * @param outputTogaFilePath the path to the output file generated by TOGA script.
      */
     public static void mapTOGAOutputToOracleOutput(Path srcDirPath) {
+        javaParser = getJavaParser(srcDirPath);
         Path prefixPath = output.resolve(Paths.get("toga", "experiment"));
         Path inputPath = output.resolve(Paths.get("toga", "input"));
         Path outputPath = output.resolve(Paths.get("toga", "output"));
-        javaParser = getJavaParser(srcDirPath);
         TypeReference<Map<String, Map<String, String>>> typeReference = new TypeReference<>(){};
         Map<String, Map<String, String>> togaInfo = (Map<String, Map<String, String>>) FileUtils.readJSON(
                 inputPath.resolve("toga_info.json"),
@@ -222,9 +245,7 @@ public class TogUtils {
             String exceptPred = record.get(columnIndexMap.get("except_pred"));
             String assertPred = record.get(columnIndexMap.get("assert_pred"));
             Map<String,String> togaTest = togaInfo.get(testName);
-
             boolean isException = Boolean.parseBoolean(exceptPred);
-
             OracleOutput oracleOutput = new OracleOutput(
                     togaTest.get("className"),
                     togaTest.get("methodSignature"),
@@ -237,5 +258,12 @@ public class TogUtils {
             oracleOutputs.add(oracleOutput);
         }
         FileUtils.writeJSON(prefixPath.resolve("oracle_outputs.json"), oracleOutputs);
+    }
+
+    public static void main(String[] args) {
+        generateTOGAInput(
+                Paths.get("src","test","resources","project","src"),
+                "tutorial.Stack"
+        );
     }
 }
