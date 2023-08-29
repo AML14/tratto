@@ -237,7 +237,9 @@ public class DatasetUtils {
     /**
      * Gets the class name of a given parameter type. Handles special cases
      * with generic types, primitives, arrays, and reference types. Uses an
-     * upper bound for generic types if possible.
+     * upper bound for generic types if possible. Includes enclosing classes
+     * for inner classes, but removes package names. These modifications are
+     * made for compatibility with the XText grammar.
      *
      * @param jpClass the declaring class of {@code jpCallable}
      * @param jpCallable the method with a parameter {@code jpParameter}
@@ -257,6 +259,7 @@ public class DatasetUtils {
                 className.append(parameterType.asPrimitiveType().asString());
             } else if (parameterType.isReferenceType()) {
                 if (JavaParserUtils.isTypeVariable(resolvedType)) {
+                    // get type bound for type parameters
                     className.append(TypeUtils.getJDoctorSimpleNameFromSourceCode(jpClass, jpCallable, jpParameter));
                 } else {
                     className.append(JavaParserUtils.getTypeWithoutPackages(resolvedType));
