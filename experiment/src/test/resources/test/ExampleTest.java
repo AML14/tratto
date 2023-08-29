@@ -50,19 +50,4 @@ public class ExampleTest {
             assertTrue(e instanceof IndexOutOfBoundsException);
         }
     }
-
-    @Test
-    @Disabled
-    public void assertionAndExceptionalTest() {
-        // assertion prefix.
-        List<String> emptyList = new ArrayList<>();
-        assertEquals(0, emptyList.size());
-        try {
-            // exceptional prefix.
-            String element = emptyList.get(0);
-            fail();
-        } catch (Exception e) {
-            assertTrue(e instanceof IndexOutOfBoundsException);
-        }
-    }
 }
