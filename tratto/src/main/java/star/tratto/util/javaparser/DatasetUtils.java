@@ -345,14 +345,17 @@ public class DatasetUtils {
     public static String reconstructTag(
             JavadocTagTokens jpTag
     ) {
-        String tagString = switch (jpTag.oracleType()) {
-            case PRE -> "@param ";
-            case NORMAL_POST -> "@return ";
-            case EXCEPT_POST -> "@throws ";
-        };
-        tagString += !jpTag.tagName().equals("") ?  jpTag.tagName() + " " : "";
-        tagString += jpTag.tagBody();
-        return tagString;
+        StringBuilder sb = new StringBuilder();
+        switch (jpTag.oracleType()) {
+            case PRE -> sb.append("@param ");
+            case NORMAL_POST -> sb.append("@return ");
+            case EXCEPT_POST -> sb.append("@throws ");
+        }
+        if (!jpTag.tagName().equals("")) {
+            sb.append(jpTag.tagName()).append(" ");
+        }
+        sb.append(jpTag.tagBody());
+        return sb.toString();
     }
 
     /**
