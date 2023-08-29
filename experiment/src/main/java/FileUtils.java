@@ -2,7 +2,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
-
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -11,7 +10,6 @@ import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Stream;
 
 
@@ -112,7 +110,7 @@ public class FileUtils {
      *      relativePath = [destinationPrefix]/[destination]/[suffix]/[fileName]
      * </pre>
      */
-    private static Path getRelativePath(Path source, Path destination, Path target) {
+    public static Path getRelativePath(Path source, Path destination, Path target) {
         if (source.equals(target)) {
             return destination;
         }
