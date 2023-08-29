@@ -25,9 +25,7 @@ public class FileUtils {
 
     /**
      * Creates an empty directory. Creates parent directories if necessary. If
-     * the directory already exists, then this method does nothing.
-     *
-     * This
+     * the directory already exists, then this method does nothing. <br> This
      * method is a wrapper method of {@link Files#createDirectories(Path, FileAttribute[])}
      * to substitute {@link IOException} with {@link Error} and avoid
      * superfluous try/catch blocks.
@@ -104,16 +102,16 @@ public class FileUtils {
      * @param sourceDir the source directory
      * @param destination the destination directory
      * @param target the target file in the source directory
-     * @return the relative path of target in the destination directory. For
-     * example, let
+     * @return the path of the target file if hypothetically moved from the
+     * source directory to the destination directory. For example, let
      * <pre>
-     *     sourceDir = [...]/[source]
-     *     destination = [...]/[destination]
-     *     target = [...]/[source]/[...]/[fileName]
+     *     sourceDir = [sourcePath]
+     *     destination = [destinationPath]
+     *     target = [sourcePath]/[internalDirectories]/[fileName]
      * </pre>
      * then the method outputs,
      * <pre>
-     *     relativePath = [...]/[destination]/[...]/[fileName]
+     *     relativePath = [destinationPath]/[internalDirectories]/[fileName]
      * </pre>
      */
     private static Path getRelativePath(Path sourceDir, Path destination, Path target) {

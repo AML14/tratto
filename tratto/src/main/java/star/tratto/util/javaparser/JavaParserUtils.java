@@ -3,13 +3,13 @@ package star.tratto.util.javaparser;
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.AccessSpecifier;
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.body.BodyDeclaration;
 import com.github.javaparser.ast.body.CallableDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
-import com.github.javaparser.ast.body.ConstructorDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
@@ -17,6 +17,7 @@ import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
 import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.type.ReferenceType;
 import com.github.javaparser.ast.type.TypeParameter;
 import com.github.javaparser.resolution.MethodUsage;
 import com.github.javaparser.resolution.UnsolvedSymbolException;
@@ -83,6 +84,18 @@ public class JavaParserUtils {
     );
     /** Regex to match the binary name of a class (e.g. "package.submodule.InnerClass$OuterClass") */
     private static final Pattern PACKAGE_CLASS = Pattern.compile("[a-zA-Z_][a-zA-Z\\d_]*(\\.[a-zA-Z_][a-zA-Z\\d_]*)*");
+    /**
+     * Regex to match the "toString" of either {@link ReflectionMethodDeclaration} or
+     * {@link JavassistMethodDeclaration} (both implementations of {@link ResolvedMethodDeclaration})
+     */
+    private static final Pattern METHOD_SIGNATURE = Pattern.compile(
+            "^ReflectionMethodDeclaration\\{method=((.*) )?\\S+ \\S+\\(.*\\}$|" +
+                    "^JavassistMethodDeclaration\\{ctMethod\\=.*\\[((.*) )?\\S+ \\(.*\\).*\\]}$"
+    );
+    /** Regex to match the binary name of a class (e.g. "package.submodule.InnerClass$OuterClass") */
+    private static final Pattern PACKAGE_CLASS = Pattern.compile("[a-zA-Z_][a-zA-Z\\d_]*(\\.[a-zA-Z_][a-zA-Z\\d_]*)*");
+    /** Cache ResolvedType of Object to make subsequent accesses free. */
+    private static ResolvedType objectType;
 
     /** Private constructor to avoid creating an instance of this class. */
     private JavaParserUtils() {
@@ -105,19 +118,22 @@ public class JavaParserUtils {
      *
      * @return an empty JavaParser class
      */
-    private static TypeDeclaration<?> getSyntheticClass() {
+    private static TypeDeclaration<?> getNewClass() {
         return javaParser.parse(SYNTHETIC_CLASS_SOURCE).getResult().orElseThrow()
                 .getLocalDeclarationFromClassname(SYNTHETIC_CLASS_NAME).get(0);
     }
 
     /**
-     * Adds a new, empty method to a given class.
+     * Adds a new, empty method to a given class, and returns its body.
      *
      * @param typeDeclaration the class to add a method to
      * @return the body of the new method
      */
-    private static BlockStmt getSyntheticBlockStmt(TypeDeclaration<?> typeDeclaration) {
-        return typeDeclaration.addMethod(SYNTHETIC_METHOD_NAME).getBody().orElseThrow();
+    private static BlockStmt getNewMethodBody(TypeDeclaration<?> typeDeclaration) {
+        return typeDeclaration
+                .addMethod(SYNTHETIC_METHOD_NAME)
+                .getBody()
+                .orElseThrow();
     }
 
     /**
@@ -126,52 +142,59 @@ public class JavaParserUtils {
      * @return a "java.lang.Object" type
      */
     public static ResolvedType getObjectType() {
-        TypeDeclaration<?> syntheticClass = getSyntheticClass();
-        BlockStmt syntheticMethod = getSyntheticBlockStmt(syntheticClass);
-        return syntheticMethod
-                .addStatement("java.lang.Object objectVar;")
-                .getStatements().getLast().orElseThrow()
-                .asExpressionStmt().getExpression()
-                .asVariableDeclarationExpr().getVariables().get(0)
-                .resolve().getType();
+        if (objectType == null) {
+            TypeDeclaration<?> syntheticClass = getNewClass();
+            BlockStmt syntheticMethod = getNewMethodBody(syntheticClass);
+            objectType = syntheticMethod
+                    .addStatement("java.lang.Object objectVar;")
+                    .getStatements().getLast().orElseThrow()
+                    .asExpressionStmt().getExpression()
+                    .asVariableDeclarationExpr().getVariables().get(0)
+                    .resolve().getType();
+        }
+        return objectType;
     }
 
     /**
-     * Injects a new synthetic method declaration into a class given an
-     * original method under test, including:
+     * Injects a new method declaration into a class, given an original method
+     * from the class. The statements in the NEW method include:
      * <ul>
-     *     <li>variable declaration for each method argument in the original method</li>
-     *     <li>variable declaration for the return type of the original method</li>
-     *     <li>variable declaration (of unknown type) using given expression</li>
+     *     <li>a variable declaration for each method argument in the original
+     *     method</li>
+     *     <li>a variable declaration for the return type of the original
+     *     method</li>
+     *     <li>a variable declaration (of unknown type) using given
+     *     expression</li>
      * </ul>
      *
-     * @param jpClass the class in which to insert the newly-created method
-     * @param jpCallable the method under analysis
-     * @param methodArgs tokens for the parameters of {@code jpCallable}
-     * @param expression an expression to add to the synthetic method
-     * @throws ResolvedTypeNotFound if {@code jpCallable} is a constructor
+     * @param jpClass the class in which to insert the new method
+     * @param originalMethod an original method from {@code jpClass}
+     * @param methodArgs tokens for the parameters of {@code originalMethod}
+     * @param expression an expression to add to the new method
+     * @throws ResolvedTypeNotFound if {@code originalMethod} is a constructor
      */
-    private static void addSyntheticMethodWithExpression(
+    private static void addNewMethodWithExpression(
             TypeDeclaration<?> jpClass,
-            CallableDeclaration<?> jpCallable,
+            CallableDeclaration<?> originalMethod,
+            // NOTE: This is MethodArgumentTokens in the next pull request where records are integrated.
             List<MethodArgumentTokens> methodArgs,
             String expression
     ) throws ResolvedTypeNotFound {
         // throw error when given a constructor due to JavaParser behavior differences
-        if (jpCallable.getNameAsString().equals(jpClass.getNameAsString())) {
+        if (originalMethod.getNameAsString().equals(jpClass.getNameAsString())) {
             throw new ResolvedTypeNotFound("Unable to generate synthetic constructor for class " + jpClass.getNameAsString());
         }
         // create synthetic method
-        BlockStmt methodBody = getSyntheticBlockStmt(jpClass);
+        BlockStmt methodBody = getNewMethodBody(jpClass);
         // add method arguments as variable statements in method body (e.g. "ArgType argName;")
         for (MethodArgumentTokens methodArg : methodArgs) {
             methodBody.addStatement(methodArg.typeName() + " " + methodArg.argumentName() + ";");
         }
         // add return type (if non-void)
-        String returnType = ((MethodDeclaration) jpCallable).getType().asString();
-        if (!returnType.equals("void")) {
+        String methodReturnType = ((MethodDeclaration) originalMethod).getType().asString();
+        if (!methodReturnType.equals("void")) {
             methodBody.addStatement(
-                    returnType + " methodResultID = " + jpCallable.getNameAsString() + "(" +
+                    methodReturnType + " methodResultID = " + originalMethod.getNameAsString() + "(" +
                             methodArgs
                                     .stream()
                                     .map(MethodArgumentTokens::argumentName)
@@ -180,7 +203,7 @@ public class JavaParserUtils {
             );
         }
         // add expression
-        methodBody.addStatement("var returnType = " + expression + ";");
+        methodBody.addStatement("var expressionReturnType = " + expression + ";");
     }
 
     /**
@@ -189,8 +212,8 @@ public class JavaParserUtils {
      * returns a JavaParser representation of the type {@code int}.
      *
      * @param jpClass the declaring class of {@code jpCallable}
-     * @param jpCallable the method under analysis
-     * @param methodArgs the arguments in the method under analysis
+     * @param jpCallable a method of {@code jpClass}
+     * @param methodArgs tokens for the parameters of {@code jpCallable}
      * @param expression a Java expression
      * @return the type of the expression
      * @throws ResolvedTypeNotFound if {@code jpClass} is not a class/interface
@@ -205,7 +228,7 @@ public class JavaParserUtils {
             String expression
     ) throws ResolvedTypeNotFound {
         if (jpClass instanceof ClassOrInterfaceDeclaration) {
-            addSyntheticMethodWithExpression(
+            addNewMethodWithExpression(
                     jpClass,
                     jpCallable,
                     methodArgs,
@@ -315,7 +338,7 @@ public class JavaParserUtils {
     }
 
     private static void handleJdVarIfNecessary(BlockStmt syntheticMethodBody, String expression, OracleDatapoint oracleDatapoint) {
-        if (!Pattern.matches("\\bjdVar\\b", expression)) {
+        if (!expression.contains("jdVar")) {
             return;
         }
         String jdVarArrayElement = oracleParser.getLastJdVarArrayElement(oracleDatapoint.getOracle());
@@ -382,9 +405,13 @@ public class JavaParserUtils {
         }
     }
 
+    /** Regex to match the binary name of a class (e.g. "package.submodule.InnerClass$OuterClass") */
+    private static final Pattern PACKAGE_CLASS = Pattern.compile("[a-zA-Z_][a-zA-Z\\d_]*(\\.[a-zA-Z_][a-zA-Z\\d_]*)*");
+
     /**
-     * Removes the package name from a fully qualified name of a type. Also
-     * removes package from type parameters.
+     * Removes the package name from a fully qualified name of a type for
+     * compatibility with the XText grammar. Also removes package from type
+     * parameters.
      *
      * @param fullyQualifiedName a fully qualified name of a type
      * @return the type name without packages. Includes outer classes, e.g.,
@@ -393,12 +420,16 @@ public class JavaParserUtils {
     private static String getTypeWithoutPackages(String fullyQualifiedName) {
         // regex is used instead of String.lastIndexOf to avoid removing outer classes
         Matcher matcher = PACKAGE_CLASS.matcher(fullyQualifiedName);
+        // continuously remove packages until none remain
         while (matcher.find()) {
             if (matcher.group().contains(".")) {
+                // gets the class name using a JavaParser ResolvedReferenceTypeDeclaration
+                String classNameWithoutPackages = getResolvedReferenceTypeDeclaration(matcher.group())
+                        .getClassName();
+                // replaces all instances of the fully qualified name with the JavaParser type name
                 fullyQualifiedName = fullyQualifiedName.replaceAll(
                         matcher.group(),
-                        // removes packages but keeps outer classes
-                        getResolvedReferenceTypeDeclaration(matcher.group()).getClassName()
+                        classNameWithoutPackages
                 );
             }
         }
@@ -411,15 +442,15 @@ public class JavaParserUtils {
      * type, this method returns the fully qualified name without packages.
      *
      * @param resolvedType JavaParser resolved type
-     * @return the fully qualified name of the type without packages. If the
-     * resolved type is an array of reference types, removes the packages from
-     * the fully qualified name of the component type.
+     * @return the name of a type without packages. If the resolved type is an
+     * array of reference types, then this method removes the packages from
+     * the fully qualified name of the element types.
      */
     public static String getTypeWithoutPackages(ResolvedType resolvedType) {
         String typeName = resolvedType.describe();
         ResolvedType elementType = getElementType(resolvedType);
         if (elementType.isReferenceType()) {
-            // we use the original type name to avoid removing arrays
+            // use the original type name to avoid removing array brackets
             return getTypeWithoutPackages(typeName);
         } else {
             return typeName;
@@ -676,20 +707,22 @@ public class JavaParserUtils {
      * declare multiple variables. Each variable is separated into individual
      * declarations.
      *
-     * @param field the JavaParser field declaration
+     * @param field the JavaParser field declaration. The parent field is
+     *              necessary, as a {@link VariableDeclarator} does not store
+     *              modifier information.
      * @param variable the JavaParser variable declaration
      * @return a string representation of the declaration of {@code variable}.
      * The declaration follows the format:
      *  "(modifiers) (type) (name)( = initial value);"
      */
     public static String getVariableDeclaration(FieldDeclaration field, VariableDeclarator variable) {
-        return (String.join(" ", mapList(Node::toString, field.getModifiers())) +
+        return (String.join("", mapList(Node::toString, field.getModifiers())) +
                 variable.getTypeAsString() + " " +
                 variable.getNameAsString() +
                 (variable.getInitializer().isPresent()
                         ? " = " + variable.getInitializer().get()
                         : "") +
-                ";").trim();
+                ";");
     }
 
     /**
@@ -713,6 +746,7 @@ public class JavaParserUtils {
     /**
      * Returns the String field declaration represented by a JavaParser
      * {@link ResolvedFieldDeclaration} as it would appear in source code.
+     * Package names are removed for compatibility with the XText grammar.
      *
      * @param resolvedField a field declaration
      * @return a string representation of the declaration of
@@ -723,15 +757,19 @@ public class JavaParserUtils {
             ResolvedFieldDeclaration resolvedField
     ) {
         String accessSpecifier = resolvedField.accessSpecifier().asString();
+        if (!accessSpecifier.equals("")) {
+            accessSpecifier += " ";
+        }
         boolean isStatic = resolvedField.isStatic();
-        return (accessSpecifier.equals("") ? "" : accessSpecifier + " ") +
+        return accessSpecifier +
                (isStatic ? "static " : "") +
                getFieldDeclarationWithoutModifiers(resolvedField);
     }
 
     /**
      * Gets the String field declaration represented by a JavaParser
-     * {@link ResolvedFieldDeclaration}.
+     * {@link ResolvedFieldDeclaration}. Package names are removed for
+     * compatibility with the XText grammar.
      *
      * @param resolvedField a field declaration
      * @param modifier an integer representing the field modifiers
@@ -760,26 +798,49 @@ public class JavaParserUtils {
     public static String getCallableSignature(
             CallableDeclaration<?> jpCallable
     ) {
-        // get method source as a string
-        String methodSignature = jpCallable.toString();
-        Optional<BlockStmt> methodBody = jpCallable instanceof MethodDeclaration ?
-                ((MethodDeclaration) jpCallable).getBody() :
-                Optional.ofNullable(((ConstructorDeclaration) jpCallable).getBody());
-        // remove method body
-        if (methodBody.isPresent()) {
-            methodSignature = methodSignature.replace(methodBody.get().toString(), "");
+        StringBuilder sb = new StringBuilder();
+        // add modifiers
+        List<String> modifiers = jpCallable.getModifiers()
+                .stream()
+                .map(Modifier::toString)
+                .toList();
+        sb.append(String.join("", modifiers));
+        // add type parameters
+        List<String> typeParameters = jpCallable.getTypeParameters()
+                .stream()
+                .map(TypeParameter::toString)
+                .toList();
+        if (!typeParameters.isEmpty()) {
+            sb.append("<")
+                    .append(String.join(", ", typeParameters))
+                    .append(">")
+                    .append(" ");
         }
-        // remove all comments
-        for (Node comment: jpCallable.getAllContainedComments()) {
-            methodSignature = methodSignature.replace(comment.toString(), "");
+        // add return type (if not a constructor)
+        if (jpCallable.isMethodDeclaration()) {
+            sb.append(jpCallable.asMethodDeclaration().getType())
+                    .append(" ");
         }
-        // remove Javadoc comment
-        if (jpCallable.getComment().isPresent()) {
-            methodSignature = methodSignature.replaceAll("[\\s\\S]*\n", "");
+        // add method name
+        sb.append(jpCallable.getNameAsString());
+        // add formal parameters
+        List<String> parameters = jpCallable.getParameters()
+                .stream()
+                .map(Parameter::toString)
+                .toList();
+        sb.append("(")
+                .append(String.join(", ", parameters))
+                .append(")");
+        // add exceptions
+        List<String> exceptions = jpCallable.getThrownExceptions()
+                .stream()
+                .map(ReferenceType::asString)
+                .toList();
+        if (!exceptions.isEmpty()) {
+            sb.append(" throws ")
+                    .append(String.join(", ", exceptions));
         }
-        // remove special characters
-        methodSignature = methodSignature.replaceAll("/\\*\\*([\\s\\S]*?)\\*/(\\n|\\r|\\t)*", "");
-        return methodSignature.trim().replaceAll(";$", "");
+        return sb.toString().replaceAll(" +", " ").trim();
     }
 
     /**
@@ -808,7 +869,7 @@ public class JavaParserUtils {
     }
 
     /**
-     * Gets all type parameters of a given method.
+     * Gets all type parameters of a given method as declared in source code.
      */
     private static List<String> getTypeParameters(MethodUsage methodUsage) {
         return methodUsage.getDeclaration().getTypeParameters()
@@ -818,28 +879,69 @@ public class JavaParserUtils {
     }
 
     /**
-     * Gets all formal parameters in the method definition, but not the receiver. This method returns
-     * the type of each parameter, followed by an artificial name. For
+     * Gets all formal parameters in the method definition. This method
+     * returns the type of each parameter, followed by an artificial name. For
      * example,
-     *     "MethodUsage[get(int i)]"    =&gt; "List.of("int arg1")"
+     *     "MethodUsage[get(int i)]"    -&gt;    "List.of("int arg1")"
      */
     private static List<String> getParameters(MethodUsage methodUsage) {
         ResolvedMethodDeclaration methodDeclaration = methodUsage.getDeclaration();
         // iterate through each parameter in the method declaration.
         List<String> methodParameters = new ArrayList<>();
-        // Start at 1, considering the receiver to be formal parameter #0.
-        for (int i = 1; i <= methodDeclaration.getNumberOfParams(); i++) {
+        for (int i = 0; i < methodDeclaration.getNumberOfParams(); i++) {
             methodParameters.add(getTypeWithoutPackages(methodDeclaration.getParam(i).getType()) + " arg" + i);
         }
         return methodParameters;
     }
 
     /**
-     * Gets the types of all exceptions that can be thrown by a given method.
+     * Gets the simple names of all exceptions that can be thrown by a given
+     * method.
      */
     private static List<String> getExceptions(MethodUsage methodUsage) {
-        return mapList(JavaParserUtils::getTypeWithoutPackages,
-                       methodUsage.getDeclaration().getSpecifiedExceptions());
+        List<ResolvedType> exceptions = methodUsage.getDeclaration().getSpecifiedExceptions();
+        return mapList(JavaParserUtils::getTypeWithoutPackages, exceptions);
+    }
+
+    /** Regex to match {@link ReflectionMethodDeclaration#toString()}. */
+    private static final Pattern REFLECTION_METHOD_DECLARATION = Pattern.compile(
+            "^ReflectionMethodDeclaration\\{method=((.*) )?\\S+ \\S+\\(.*}$"
+    );
+
+    /** Regex to match {@link JavassistMethodDeclaration#toString()}. */
+    private static final Pattern JAVASSIST_METHOD_DECLARATION = Pattern.compile(
+            "^JavassistMethodDeclaration\\{ctMethod=.*\\[((.*) )?\\S+ \\(.*\\).*]}$"
+    );
+
+    /**
+     * Gets the modifiers of a JavaParser MethodUsage. Unfortunately, the
+     * implementations of ResolvedMethodDeclaration have different approaches
+     * for storing modifier information. This method uses regexes to handle
+     * retrieving this information from {@link ReflectionMethodDeclaration} or
+     * {@link JavassistMethodDeclaration} implementations of
+     * ResolvedMethodDeclaration.
+     *
+     * @param methodDeclaration a resolved method declaration. Must be either
+     *                          {@link ReflectionMethodDeclaration} or
+     *                          {@link JavassistMethodDeclaration}.
+     * @return the modifiers of the method
+     */
+    private static String getMethodModifiers(ResolvedMethodDeclaration methodDeclaration) {
+        Matcher reflectionMatcher = REFLECTION_METHOD_DECLARATION.matcher(methodDeclaration.toString());
+        Matcher javassistMatcher = JAVASSIST_METHOD_DECLARATION.matcher(methodDeclaration.toString());
+        if (!reflectionMatcher.find() && !javassistMatcher.find()) {
+            throw new IllegalStateException("Could not parse method signature: " + methodDeclaration);
+        }
+        String methodModifiers;
+        if (methodDeclaration instanceof ReflectionMethodDeclaration) {
+            methodModifiers = reflectionMatcher.group(1);
+        } else {
+            methodModifiers = javassistMatcher.group(1);
+        }
+        if (methodModifiers == null) {
+            methodModifiers = "";
+        }
+        return methodModifiers;
     }
 
     /**
@@ -856,6 +958,8 @@ public class JavaParserUtils {
      * ReflectionMethodDeclaration, and JavassistMethodDeclaration. A
      * signature follows the format:
      *     "[modifiers] [typeParameters] [type] [methodName]([parameters]) throws [exceptions]"
+     * All type names do not use package names for compatibility with the
+     * XText grammar.
      */
     public static String getMethodSignature(
             MethodUsage methodUsage
@@ -866,16 +970,7 @@ public class JavaParserUtils {
             MethodDeclaration jpMethod = jpMethodDeclaration.getWrappedNode();
             return getMethodSignature(jpMethod);
         }
-        // Consider ReflectionMethodDeclaration or JavassistMethodDeclaration
-        Matcher matcher = METHOD_SIGNATURE.matcher(methodDeclaration.toString());
-        if (!matcher.find()) {
-            throw new IllegalStateException("Could not parse method signature: " + methodDeclaration);
-        }
-        String methodModifiers = methodDeclaration instanceof ReflectionMethodDeclaration ? matcher.group(1) : matcher.group(2);
-        // Take into account the case in which the method declaration refers to a method without an access specifier.
-        if (methodModifiers == null) {
-            methodModifiers = "";
-        }
+        String methodModifiers = getMethodModifiers(methodDeclaration);
         List<String> typeParameterList = getTypeParameters(methodUsage);
         List<String> formalParameterList = getParameters(methodUsage);
         List<String> exceptionList = getExceptions(methodUsage);
@@ -907,12 +1002,12 @@ public class JavaParserUtils {
     }
 
     /**
-     * Returns the base component type of a resolved type. Recursively strips
-     * all array variables. For example:
+     * Returns the element of a resolved type. Recursively strips all array
+     * variables. For example:
      *     Object[][] => Object
      *
      * @param resolvedType a type
-     * @return the base component type
+     * @return the element type
      */
     public static ResolvedType getElementType(ResolvedType resolvedType) {
         while (resolvedType.isArray()) {
@@ -926,8 +1021,8 @@ public class JavaParserUtils {
      *
      * @param resolvedType a JavaParser resolved type
      * @return true iff a given type is a type variable of a generic class or
-     * method. If the given type is an array, then this method checks the base
-     * component type.
+     * method. If the given type is an array, then this method checks the
+     * element type.
      */
     public static boolean isTypeVariable(
             ResolvedType resolvedType
@@ -946,28 +1041,27 @@ public class JavaParserUtils {
      * @param jpClass the declaring class of {@code jpCallable}
      * @return true iff a given type is a type variable of the declaring class
      * or method. If the given type is an array, then this method checks the
-     * base component type.
+     * element type.
      */
     public static boolean isTypeVariable(
             String typeName,
             CallableDeclaration<?> jpCallable,
             TypeDeclaration<?> jpClass
     ) {
-        // add all type parameters of the method
-        List<String> typeParameterNames = jpCallable.getTypeParameters()
-                .stream()
-                .map(NodeWithSimpleName::getNameAsString)
-                .collect(Collectors.toList());
-        // add all type parameters of the class
-        if (jpClass instanceof ClassOrInterfaceDeclaration) {
-            typeParameterNames.addAll(
-                    jpClass.asClassOrInterfaceDeclaration().getTypeParameters()
-                            .stream()
-                            .map(NodeWithSimpleName::getNameAsString)
-                            .toList()
-            );
+        String elementType = typeName.replaceAll("\\[]", "");
+        for (TypeParameter typeParameter : jpCallable.getTypeParameters()) {
+            if (typeParameter.getNameAsString().equals(elementType)) {
+                return true;
+            }
         }
-        return typeParameterNames.contains(typeName.replaceAll("\\[]", ""));
+        if (jpClass instanceof ClassOrInterfaceDeclaration) {
+            for (TypeParameter typeParameter : jpClass.asClassOrInterfaceDeclaration().getTypeParameters()) {
+                if (typeParameter.getNameAsString().equals(elementType)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**
@@ -979,7 +1073,7 @@ public class JavaParserUtils {
      * @throws JPClassNotFoundException if {@code typeDeclaration} is not
      * resolvable
      */
-    public static List<MethodUsage> getMethodsOfType(
+    public static List<MethodUsage> getAllMethods(
             TypeDeclaration<?> typeDeclaration
     ) throws JPClassNotFoundException {
         try {
@@ -990,31 +1084,32 @@ public class JavaParserUtils {
                     typeDeclaration.getNameAsString(), e
             );
             logger.error(errMsg);
-            throw new JPClassNotFoundException(errMsg);
+            throw new JPClassNotFoundException(errMsg, e);
         }
     }
 
     /**
-     * Get all fields available (non-private) to a given class (including
-     * those defined in superclasses).
+     * Get all fields available (non-private) to a given class instance
+     * (including those defined in superclasses). This method only considers
+     * an instance of a class, such that private fields are not accessible.
      *
      * @param typeDeclaration object class
      * @return list of ResolvedFieldDeclaration objects
      * @throws JPClassNotFoundException if {@code typeDeclaration} is not
      * resolvable
      */
-    public static List<ResolvedFieldDeclaration> getFieldsOfType(
+    public static List<ResolvedFieldDeclaration> getAllFields(
             TypeDeclaration<?> typeDeclaration
     ) throws JPClassNotFoundException {
         try {
             return typeDeclaration.resolve().getAllFields();
         } catch (UnsolvedSymbolException | IllegalArgumentException e) {
             String errMsg = String.format(
-                    "Impossible to get all the methods of class %s.%n%s.",
+                    "Unable to get all the methods of class %s.%n%s.",
                     typeDeclaration.getNameAsString(), e
             );
             logger.error(errMsg);
-            throw new JPClassNotFoundException(errMsg);
+            throw new JPClassNotFoundException(errMsg, e);
         }
     }
 
@@ -1035,32 +1130,36 @@ public class JavaParserUtils {
     }
 
     /**
-     * Checks if a method is non-private and non-static.
+     * Checks if a method is non-private and non-void.
      *
      * @param methodUsage a method
-     * @return true iff the method is non-private non-static
+     * @return true iff the method is non-private and non-void
      */
     private static boolean isNonPrivateNonVoidMethod(MethodUsage methodUsage) {
-        return !methodUsage.getDeclaration().getReturnType().isVoid() && !methodUsage.getDeclaration().accessSpecifier().equals(AccessSpecifier.PRIVATE);
+        return !methodUsage.getDeclaration().getReturnType().isVoid() &&
+                !methodUsage.getDeclaration().accessSpecifier().equals(AccessSpecifier.PRIVATE);
     }
 
     /**
      * Checks if an attribute is non-private and non-static. An attribute
-     * is any class field.
+     * is defined as any class field.
      *
-     * @param fieldDeclaration a class field
-     * @return true iff the field is non-private and non-static
+     * @param fieldDeclaration a class attribute
+     * @return true iff the attribute is non-private and non-static
      */
     public static boolean isNonPrivateNonStaticAttribute(ResolvedFieldDeclaration fieldDeclaration) {
-        return !fieldDeclaration.accessSpecifier().equals(AccessSpecifier.PRIVATE) && !fieldDeclaration.isStatic();
+        return !fieldDeclaration.accessSpecifier().equals(AccessSpecifier.PRIVATE) &&
+                !fieldDeclaration.isStatic();
     }
 
     public static boolean isNonPrivateStaticNonVoidMethod(MethodUsage methodUsage) {
-        return methodUsage.getDeclaration().isStatic() && isNonPrivateNonVoidMethod(methodUsage);
+        return methodUsage.getDeclaration().isStatic() &&
+                isNonPrivateNonVoidMethod(methodUsage);
     }
 
     public static boolean isNonPrivateNonStaticNonVoidMethod(MethodUsage methodUsage) {
-        return !methodUsage.getDeclaration().isStatic() && isNonPrivateNonVoidMethod(methodUsage);
+        return !methodUsage.getDeclaration().isStatic() &&
+                isNonPrivateNonVoidMethod(methodUsage);
     }
 
     /**
