@@ -246,16 +246,18 @@ public class TestUtils {
     }
 
     /**
-     * Gets the number of JUnit assertions in a given test case.
+     * Gets the number of JUnit Assertions assert method calls in a given test
+     * case. This method does NOT count {@code fail()} calls.
      *
      * @param testCase a test case
-     * @return the number of JUnit assertions in the test case
+     * @return the number of JUnit Assertions assert method calls in the test
+     * case
      */
     private static int getNumberOfAssertions(MethodDeclaration testCase) {
         NodeList<Statement> testBody = testCase.getBody().orElseThrow().getStatements();
         int numAssertions = 0;
-        for (Statement statement : testBody) {
-            if (isJUnitAssertion(statement)) {
+        for (Statement testStmt : testBody) {
+            if (isJUnitAssertion(testStmt)) {
                 numAssertions++;
             }
         }
