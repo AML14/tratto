@@ -215,14 +215,17 @@ public class TestUtils {
     }
 
     /**
-     * Gets a new test case corresponding to a given assertion in the original
-     * test case. An EvoSuite test may contain multiple assertions. For
-     * compatibility, each test is split into multiple subtests, each
-     * corresponding to a single assertion in the original test case.
+     * Gets a new test case corresponding to a specific assertion in the
+     * original test case. An EvoSuite test may contain multiple assertions.
+     * For compatibility with TOGA, each test is split into multiple subtests,
+     * each corresponding to a single assertion in the original test case.
      *
      * @param testCase a test case
-     * @param assertionIdx the assertion number
-     * @return a test case corresponding to the "assertionIdx"-th assertion
+     * @param assertionIdx the index of the assertion in the test case. Must
+     *                     be less than the number of assertions in the test
+     *                     case.
+     * @return a test case with a single assertion, corresponding to the given
+     * assertion index
      */
     private static MethodDeclaration getNextTestCase(MethodDeclaration testCase, int assertionIdx) {
         NodeList<Statement> originalBody = testCase.getBody().orElseThrow().getStatements();
