@@ -299,15 +299,16 @@ public class TestUtils {
      * approach for removing oracles depends on whether an oracle is
      * exceptional (e.g. throws an exception) or a normal assertion. Firstly,
      * this method splits any test case with multiple assertions into multiple
-     * tests, each with a single JUnit assertion. These smaller subtests are
-     * saved in "output/evosuite-tests-simple/". Then, all oracles are removed
-     * from each test case. The test prefixes are saved in
-     * "output/evosuite-prefix". This method does not override the original
-     * test files.
+     * simple tests, each with a single JUnit assertion. These smaller
+     * subtests are saved in "output/evosuite-tests-simple/". Then, all
+     * oracles are removed from each test case to create test prefixes. The
+     * test prefixes are saved in "output/evosuite-prefix". This method does
+     * not override the original test files.
      *
      * @param dir a directory with Java test files
-     * @see TestUtils#removeAssertionOracles(CompilationUnit)
+     * @see TestUtils#splitTests(CompilationUnit)
      * @see TestUtils#removeExceptionalOracles(CompilationUnit)
+     * @see TestUtils#removeAssertionOracles(CompilationUnit)
      */
     public static void removeOracles(Path dir) {
         Path simplePath = output.resolve("evosuite-tests-simple");
@@ -320,9 +321,11 @@ public class TestUtils {
                     .forEach(testFile -> {
                         try {
                             CompilationUnit cu = StaticJavaParser.parse(testFile);
+                            // save simple tests to separate output for later analysis
                             splitTests(cu);
-                            Path simpleTestFile = FileUtils.getRelativePath(prefixPath, simplePath, testFile);
-                            FileUtils.writeString(simpleTestFile, cu.toString());
+                            Path simpleTestPath = FileUtils.getRelativePath(prefixPath, simplePath, testFile);
+                            FileUtils.writeString(simpleTestPath, cu.toString());
+                            // then, remove oracles for future insertion
                             removeExceptionalOracles(cu);
                             removeAssertionOracles(cu);
                             FileUtils.writeString(testFile, cu.toString());
