@@ -231,15 +231,15 @@ public class TestUtils {
         NodeList<Statement> originalBody = testCase.getBody().orElseThrow().getStatements();
         NodeList<Statement> newBody = new NodeList<>();
         int currentIdx = 0;
-        for (Statement statement : originalBody) {
-            if (isJUnitAssertion(statement)) {
+        for (Statement testStmt : originalBody) {
+            if (isJUnitAssertion(testStmt)) {
                 if (currentIdx == assertionIdx) {
-                    newBody.add(statement);
+                    newBody.add(testStmt);
                     break;
                 }
                 currentIdx++;
             } else {
-                newBody.add(statement);
+                newBody.add(testStmt);
             }
         }
         return createRelatedMethod(testCase, newBody);
