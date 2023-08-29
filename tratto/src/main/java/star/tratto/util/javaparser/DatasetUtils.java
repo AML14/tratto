@@ -67,7 +67,7 @@ public class DatasetUtils {
     }
 
     /**
-     * Removes all duplicate elements from a list. 
+     * Removes all duplicate elements in a list.
      * 
      * @param list a list of elements 
      * @return the same list with all duplicates removed
@@ -79,10 +79,10 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets a list of class tokens for each class in a java file.
+     * Gets a list of class tokens corresponding to each class in a Java file.
      *
-     * @param cu the compilation unit of a java file
-     * @return a list of class tokens, (className, packageName)
+     * @param cu a Java file
+     * @return a list of class tokens: (className, packageName)
      * @throws PackageDeclarationNotFoundException if the package cannot be
      * retrieved
      */
