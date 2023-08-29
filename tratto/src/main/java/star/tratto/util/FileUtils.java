@@ -257,7 +257,8 @@ public class FileUtils {
     /**
      * Reads a list of objects from a JSON file. This method is used instead
      * of {@link FileUtils#readJSONList(Path, Class)} for parameterized types,
-     * where it is not possible to retrieve the corresponding class.
+     * where it is not possible to retrieve the corresponding class, such as
+     * lists of List&lt;Integer&gt;.
      *
      * @param jsonPath a JSON file
      * @return a list of objects
