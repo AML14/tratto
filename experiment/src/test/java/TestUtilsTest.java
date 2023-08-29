@@ -263,7 +263,7 @@ public class TestUtilsTest {
         return List.of(
                 new OracleOutput(
                         "java.lang.Integer",
-                        "valueOf(int)",
+                        "valueOf(int i)",
                         OracleType.NON_AXIOMATIC,
                         """
                                 @Test
@@ -277,7 +277,7 @@ public class TestUtilsTest {
                 ),
                 new OracleOutput(
                         "java.lang.Integer",
-                        "parseInt(java.lang.String)",
+                        "parseInt(java.lang.String s)",
                         OracleType.NON_AXIOMATIC,
                         """
                                 @Test
