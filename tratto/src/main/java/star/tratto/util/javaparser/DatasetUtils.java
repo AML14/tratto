@@ -235,12 +235,13 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets the class name of a given parameter type. Handles generics,
-     * primitives, arrays, and reference types.
+     * Gets the class name of a given parameter type. Handles special cases
+     * with generic types, primitives, arrays, and reference types. Uses an
+     * upper bound for generic types if possible.
      *
-     * @param jpClass the class declaring the method
-     * @param jpCallable the method containing the type
-     * @param jpParameter the given type
+     * @param jpClass the declaring class of {@code jpCallable}
+     * @param jpCallable the method with a parameter {@code jpParameter}
+     * @param jpParameter the given method parameter
      * @return the type name of the given parameter
      */
     private static String getParameterTypeName(
@@ -261,7 +262,7 @@ public class DatasetUtils {
                     className.append(JavaParserUtils.getTypeWithoutPackages(resolvedType));
                 }
             } else {
-                throw new IllegalArgumentException(String.format("Unexpected type when evaluating %s parameter type.", parameterType));
+                throw new IllegalArgumentException("Unable to parse parameter type of " + parameterType);
             }
             if (jpParameter.isVarArgs()) {
                 className.append("[]");
