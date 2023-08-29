@@ -194,8 +194,9 @@ public class DatasetUtils {
 
     /**
      * Gets all string value tokens in a Javadoc comment. The second value may
-     * seem redundant, but is added for consistency with the numeric Javadoc
-     * values when using the XText grammar.
+     * seem redundant, but is added for consistency with the values of
+     * {@link DatasetUtils#findAllNumericValuesInJavadoc(String)}. Both method
+     * outputs follow this format for compatibility with the XText grammar.
      *
      * @param javadocComment a Javadoc comment
      * @return a list of value tokens. The first element is the numeric value,
