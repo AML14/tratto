@@ -241,7 +241,7 @@ public class Parser {
 
     /** Returns null if the oracle contains no "instanceof" token; "this" if that's the preceding
      * element; or the preceding element as an EObject (CanEvaluateToPrimitive) otherwise.
-@return null if the oracle contains no "instanceof" token; "this" if that's the preceding
+     * @return null if the oracle contains no "instanceof" token; "this" if that's the preceding
      * element; or the preceding element as an EObject (CanEvaluateToPrimitive) otherwise 
      */
     public Object findElementPrecedingLastInstanceOf(String oracle) {
@@ -260,7 +260,7 @@ public class Parser {
 
     /** Returns null if the oracle contains no NonEqIneqOp token or the preceding
      * CanEvaluateToPrimitive element otherwise.
-@return null if the oracle contains no NonEqIneqOp token or the preceding
+     * @return null if the oracle contains no NonEqIneqOp token or the preceding
      * CanEvaluateToPrimitive element otherwise 
      */
     public CanEvaluateToPrimitive findElementPrecedingLastNonEqIneqOp(String oracle) {
@@ -275,7 +275,7 @@ public class Parser {
     }
 
     /** Returns null if the oracle contains no CanEvaluateToPrimitive contained within a ClauseWithVars.
-@return null if the oracle contains no CanEvaluateToPrimitive contained within a ClauseWithVars 
+     * @return null if the oracle contains no CanEvaluateToPrimitive contained within a ClauseWithVars 
      */
     public CanEvaluateToPrimitive findLastCanEvalToPrimInClauseWithVars(String oracle) {
         List<CanEvaluateToPrimitive> allCanEvalToPrimInClauseWithVars = getAllCanEvalToPrimInEObject(oracle, ClauseWithVars.class);
@@ -286,7 +286,7 @@ public class Parser {
     }
 
     /** Returns null if the oracle contains no CanEvaluateToPrimitive contained within an OtherComparisonElement.
-@return null if the oracle contains no CanEvaluateToPrimitive contained within an OtherComparisonElement 
+     * @return null if the oracle contains no CanEvaluateToPrimitive contained within an OtherComparisonElement 
      */
     public CanEvaluateToPrimitive findLastCanEvalToPrimInOtherCompElem(String oracle) {
         List<CanEvaluateToPrimitive> allCanEvalToPrimInClauseWithVars = getAllCanEvalToPrimInEObject(oracle, OtherComparisonElement.class);
@@ -305,7 +305,7 @@ public class Parser {
     }
 
     /** Returns null if the oracle contains no ClauseWithVars.
-@return null if the oracle contains no ClauseWithVars 
+     * @return null if the oracle contains no ClauseWithVars 
      */
     public ClauseWithVars findLastClauseWithVars(String oracle) {
         List<ClauseWithVars> allClausesWithVars = getAllPartialOracleContents(oracle)
@@ -521,7 +521,7 @@ public class Parser {
     }
 
     /** Returns null if the element has no method modifiers.
-@param elementWithModifiers must be an element with modifiers, i.e., VarOrClassWithModifiers,
+     * @param elementWithModifiers must be an element with modifiers, i.e., VarOrClassWithModifiers,
      *                             IsolableVarOrClassWithModifiers, or ThisWithMandatoryModifiers
      * @return null if the element has no method modifiers 
      */
