@@ -56,6 +56,7 @@ public class TestUtilsTest {
         } catch (IOException e) {
             fail();
         }
+        FileUtils.deleteDirectory(outputPath.resolve("evosuite-tests-simple"));
         FileUtils.deleteDirectory(outputPath.resolve("evosuite-prefix"));
     }
 
