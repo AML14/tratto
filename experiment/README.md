@@ -111,7 +111,7 @@ We provide a brief description of the relevant files:
   - `FileUtils.java`: a class with all necessary utilities to read and write to files 
   - `TestAnalyzer.java`: a class for reporting the statistics of a test suite. Includes the number of passing/failing tests and mutation score.
   - `TestUtils.java`: a class for test suite utilities, such as removing/adding assertions
-  - `TestOutput.java`: a record for storing a test case and its contextual information
+  - `data.TestOutput.java`: a record for storing a test case and its contextual information
 - `experiment.sh`: the end-to-end script which performs the experiment
 
 ### Prefix
@@ -199,7 +199,7 @@ We save the output as a JSON file. The output follows the format,
 }
 ```
 
-We report the TOG, the source path, the number of failing tests (positive), the number of passing test (negative), the mutation score, and information for each test case. For each test case, we report the class under test, the method under test, whether the test passes or fails (`isPositive` is `true` if the test fails), and the test case as a String (see `TestOutput.java` for further detail).
+We report the TOG, the source path, the number of failing tests (positive), the number of passing test (negative), the mutation score, and information for each test case. For each test case, we report the class under test, the method under test, whether the test passes or fails (`isPositive` is `true` if the test fails), and the test case as a String (see `data.TestOutput.java` for further detail).
 
 ## Related Resources
 

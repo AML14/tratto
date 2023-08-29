@@ -1,3 +1,5 @@
+package data;
+
 /**
  * This record represents a generated test case and contextual information.
  *
