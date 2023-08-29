@@ -5,10 +5,8 @@ import org.apache.commons.csv.CSVParser;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.OpenOption;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
+import java.nio.file.*;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -121,6 +119,30 @@ public class FileUtils {
         Path suffix = target.subpath(source.getNameCount(), target.getNameCount());
         // add remaining suffix to destination
         return destination.resolve(suffix);
+    }
+
+    /**
+     * Generates a relative path to a class file from a fully qualified class name.
+     * @param fullyQualifiedClassName the fully qualified class name.
+     * @return the relative path corresponding to the fully qualified class name.
+     */
+    public static Path getRelativePathFromFullyQualifiedClassName(String fullyQualifiedClassName) {
+        String[] fullyQualifiedClassNameSplitted = fullyQualifiedClassName.split("\\.");
+        if (fullyQualifiedClassNameSplitted.length > 1) {
+            int classNameIdx = fullyQualifiedClassNameSplitted.length - 1;
+            String className = fullyQualifiedClassNameSplitted[classNameIdx];
+            fullyQualifiedClassNameSplitted[classNameIdx] = className + ".java";
+            Path relativePath = Paths.get(
+                    fullyQualifiedClassNameSplitted[0],
+                    Arrays.copyOfRange(
+                            fullyQualifiedClassNameSplitted,
+                            1,
+                            fullyQualifiedClassNameSplitted.length
+                    )
+            );
+            return relativePath;
+        }
+        return Paths.get(fullyQualifiedClassName);
     }
 
     /**
@@ -324,5 +346,48 @@ public class FileUtils {
      */
     public static boolean isJavaFile(Path path) {
         return path.getFileName().toString().endsWith(".java");
+    }
+
+    /**
+     * Searches a file within all the subdirectories of a given directory.
+     * @param dir the root directory.
+     * @param fullyQualifiedClassFilePath the fully qualified name of the class file.
+     * @return the full path to the file. Returns null if the path is not found.
+     */
+    public static Path searchClassFile(Path dir, Path fullyQualifiedClassFilePath) {
+        File dirFile = new File(dir.toString());
+        int classNameIdx = fullyQualifiedClassFilePath.getNameCount() - 1;
+        Path className = fullyQualifiedClassFilePath.getName(classNameIdx);
+        File[] files = dirFile.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    Path path = searchClassFile(file.toPath(), fullyQualifiedClassFilePath);
+                    if (!(path == null)) {
+                        return path;
+                    }
+                } else if (file.getName().equals(className.toString())) {
+                    if (file.toPath().endsWith(fullyQualifiedClassFilePath)) {
+                        return file.toPath();
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Extracts the class name from a fully qualified class name and returns it as a string.
+     * @param fullyQualifiedClassName the fully qualified class name.
+     * @return the class name.
+     */
+    public static String getClassNameFromFullyQualifiedName(String fullyQualifiedClassName) {
+        String[] fullyQualifiedClassNameSplitted = fullyQualifiedClassName.split("\\.");
+        if (fullyQualifiedClassNameSplitted.length > 1) {
+            int classNameIdx = fullyQualifiedClassNameSplitted.length - 1;
+            String className = fullyQualifiedClassNameSplitted[classNameIdx];
+            return className;
+        }
+        return fullyQualifiedClassName;
     }
 }

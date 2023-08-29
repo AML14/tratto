@@ -295,9 +295,15 @@ public class TestUtils {
      * @see TestUtils#removeAssertionOracles(CompilationUnit)
      * @see TestUtils#removeExceptionalOracles(CompilationUnit)
      */
-    public static void removeOracles(Path dir) {
-        Path simplePath = output.resolve("evosuite-tests-simple");
-        Path prefixPath = output.resolve("evosuite-prefix");
+    public static void removeOracles(Path dir, String fullyQualifiedName) {
+        Path fullyQualifiedNamePath = FileUtils.getRelativePathFromFullyQualifiedClassName(fullyQualifiedName);
+        int classNameIdx = fullyQualifiedNamePath.getNameCount() - 1;
+        Path simplePath = classNameIdx > 0 ?
+                output.resolve("evosuite-tests-simple").resolve(fullyQualifiedNamePath.subpath(0, classNameIdx)) :
+                output.resolve("evosuite-tests-simple");
+        Path prefixPath = classNameIdx > 0 ?
+                output.resolve("evosuite-prefix").resolve(fullyQualifiedNamePath.subpath(0, classNameIdx)) :
+                output.resolve("evosuite-prefix");
         FileUtils.copy(dir, simplePath);
         FileUtils.copy(dir, prefixPath);
         try (Stream<Path> walk = Files.walk(prefixPath)) {
@@ -372,5 +378,9 @@ public class TestUtils {
      */
     public static void insertOracles(Path dir, String tog, List<OracleOutput> oracles) {
 
+    }
+
+    public static void main(String[] args) {
+        removeOracles(Paths.get("output", "evosuite-tests", "example", "tutorial"), "tutorial.Stack");
     }
 }

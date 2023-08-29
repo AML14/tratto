@@ -31,7 +31,7 @@ public class TestUtilsTest {
 
     @Test
     public void removeOraclesTest() {
-        TestUtils.removeOracles(resourcesPath.resolve("test"));
+        TestUtils.removeOracles(resourcesPath.resolve("test"), "ExampleTest");
         try {
             CompilationUnit cu = StaticJavaParser.parse(outputPath.resolve("evosuite-prefix/ExampleTest.java"));
             cu.findAll(Statement.class)
@@ -58,4 +58,5 @@ public class TestUtilsTest {
         }
         FileUtils.deleteDirectory(outputPath.resolve("evosuite-prefix"));
     }
+
 }
