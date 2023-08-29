@@ -222,9 +222,8 @@ public class DatasetUtils {
      *
      * @param javadocComment a Javadoc comment
      * @return a list of records describing each numerical and string value.
-     * Each entry has the form:
-     *  [value, type]
-     * For example: [["name", "String"], ["64", "int"]]
+     * Each entry has the form: [value, type]. For example:
+     *     [["name", "String"], ["64", "int"]]
      */
     public static List<ValueTokens> getJavadocValues(
             String javadocComment
