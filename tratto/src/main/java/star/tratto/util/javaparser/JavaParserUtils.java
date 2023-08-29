@@ -15,7 +15,6 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
-import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.type.ReferenceType;
 import com.github.javaparser.ast.type.TypeParameter;
@@ -98,7 +97,7 @@ public class JavaParserUtils {
      *
      * @return an empty JavaParser class
      */
-    private static TypeDeclaration<?> getNewClass() {
+    private static TypeDeclaration<?> createNewClass() {
         return javaParser.parse(SYNTHETIC_CLASS_SOURCE).getResult().orElseThrow()
                 .getLocalDeclarationFromClassname(SYNTHETIC_CLASS_NAME).get(0);
     }
@@ -109,7 +108,7 @@ public class JavaParserUtils {
      * @param typeDeclaration the class to add a method to
      * @return the body of the new method
      */
-    private static BlockStmt getNewMethodBody(TypeDeclaration<?> typeDeclaration) {
+    private static BlockStmt createNewMethodBody(TypeDeclaration<?> typeDeclaration) {
         return typeDeclaration
                 .addMethod(SYNTHETIC_METHOD_NAME)
                 .getBody()
@@ -117,14 +116,15 @@ public class JavaParserUtils {
     }
 
     /**
-     * Creates a "java.lang.Object" type.
+     * Creates a "java.lang.Object" type if it has not been previously created
+     * (see {@link #objectType}), otherwise returns the previously created type.
      *
      * @return a "java.lang.Object" type
      */
     public static ResolvedType getObjectType() {
         if (objectType == null) {
-            TypeDeclaration<?> syntheticClass = getNewClass();
-            BlockStmt syntheticMethod = getNewMethodBody(syntheticClass);
+            TypeDeclaration<?> syntheticClass = createNewClass();
+            BlockStmt syntheticMethod = createNewMethodBody(syntheticClass);
             objectType = syntheticMethod
                     .addStatement("java.lang.Object objectVar;")
                     .getStatements().getLast().orElseThrow()
@@ -165,7 +165,7 @@ public class JavaParserUtils {
             throw new ResolvedTypeNotFound("Unable to generate synthetic constructor for class " + jpClass.getNameAsString());
         }
         // create synthetic method
-        BlockStmt methodBody = getNewMethodBody(jpClass);
+        BlockStmt methodBody = createNewMethodBody(jpClass);
         // add method arguments as variable statements in method body (e.g. "ArgType argName;")
         for (Triplet<String, String, String> methodArg : methodArgs) {
             methodBody.addStatement(methodArg.getValue2() + " " + methodArg.getValue0() + ";");
@@ -254,7 +254,7 @@ public class JavaParserUtils {
         // Generate synthetic method
         CompilationUnit cu = javaParser.parse(oracleDatapoint.getClassSourceCode()).getResult().get();
         String className = oracleDatapoint.getClassName();
-        MethodDeclaration syntheticMethod = getSyntheticMethod(
+        MethodDeclaration syntheticMethod = createSyntheticMethod(
                 getClassOrInterface(cu, className),
                 getMethodOrConstructorDeclaration(oracleDatapoint.getMethodSourceCode())
         );
@@ -294,7 +294,7 @@ public class JavaParserUtils {
      * with the same signature (in terms of type parameters and arguments).
      * Inserts the synthetic method into the class and returns it.
      */
-    private static MethodDeclaration getSyntheticMethod(TypeDeclaration<? extends TypeDeclaration<?>> classUnderTest, BodyDeclaration<?> methodUnderTest) {
+    private static MethodDeclaration createSyntheticMethod(TypeDeclaration<? extends TypeDeclaration<?>> classUnderTest, BodyDeclaration<?> methodUnderTest) {
         MethodDeclaration syntheticMethod = classUnderTest.addMethod(SYNTHETIC_METHOD_NAME);
         syntheticMethod.setTypeParameters(getTypeParameters(methodUnderTest));
         syntheticMethod.setParameters(getParameters(methodUnderTest));
@@ -304,11 +304,11 @@ public class JavaParserUtils {
     /**
      * Pass a null oracleDatapoint to create a synthetic method without any particularities. Otherwise,
      * if the oracleDatapoint is not null, the method will be created with
-     * {@link #getSyntheticMethod(TypeDeclaration, BodyDeclaration)} (see its documentation).
+     * {@link #createSyntheticMethod(TypeDeclaration, BodyDeclaration)} (see its documentation).
      */
-    private static MethodDeclaration getSyntheticMethod(CompilationUnit cu, OracleDatapoint oracleDatapoint) {
+    private static MethodDeclaration createSyntheticMethod(CompilationUnit cu, OracleDatapoint oracleDatapoint) {
         if (oracleDatapoint != null) {
-            return getSyntheticMethod(
+            return createSyntheticMethod(
                     getClassOrInterface(cu, oracleDatapoint.getClassName()),
                     getMethodOrConstructorDeclaration(oracleDatapoint.getMethodSourceCode())
             );
@@ -594,7 +594,7 @@ public class JavaParserUtils {
 
         // Parse class that contains method under test and add synthetic method to get resolved type 1 (we already have type 2)
         CompilationUnit cu = javaParser.parse(classSourceCode).getResult().get();
-        BlockStmt syntheticMethodBody = getSyntheticMethod(cu, oracleDatapoint).getBody().get();
+        BlockStmt syntheticMethodBody = createSyntheticMethod(cu, oracleDatapoint).getBody().get();
         syntheticMethodBody.addStatement(type1 + " type1Var;");
 
         // Get result of instanceof expression
