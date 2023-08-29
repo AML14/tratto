@@ -368,9 +368,9 @@ public class DatasetUtils {
             CallableDeclaration<?> jpCallable
     ) {
         String jpSignature = JavaParserUtils.getCallableSignature(jpCallable);
-        Optional<BlockStmt> jpBody = jpCallable instanceof MethodDeclaration ?
-                ((MethodDeclaration) jpCallable).getBody() :
-                Optional.ofNullable(((ConstructorDeclaration) jpCallable).getBody());
+        Optional<BlockStmt> jpBody = jpCallable instanceof MethodDeclaration
+                ? ((MethodDeclaration) jpCallable).getBody()
+                : Optional.ofNullable(((ConstructorDeclaration) jpCallable).getBody());
         return jpSignature + (jpBody.isEmpty() ? ";" : jpBody.get().toString());
     }
 
@@ -381,7 +381,7 @@ public class DatasetUtils {
      * @param cu a compilation unit of a Java file
      * @return a list of information about each method. Each entry has the
      * form:
-     *  [methodName, packageName, className, methodSignature]
+     *     [methodName, packageName, className, methodSignature]
      * @throws PackageDeclarationNotFoundException if the package
      * {@link PackageDeclaration} of the compilation unit is not found
      */
@@ -417,7 +417,7 @@ public class DatasetUtils {
      * @param cu a compilation unit of a Java file
      * @return a list of information about each attribute. Each entry has the
      * form:
-     *  [variableName, packageName, className, variableSignature]
+     *     [variableName, packageName, className, variableSignature]
      * @throws PackageDeclarationNotFoundException if the package
      * {@link PackageDeclaration} of the compilation unit is not found
      */
@@ -459,7 +459,7 @@ public class DatasetUtils {
      * @param cu a compilation unit of a Java file
      * @param fileContent the content of the Java file
      * @return a list of information about each tag. Each entry has the form:
-     *  [fileContent, typeDeclaration, callableDeclaration, oracleType, name, content]
+     *     [fileContent, typeDeclaration, callableDeclaration, oracleType, name, content]
      * where a Javadoc tag is interpreted as:
      *  "@tag name content"
      * and the value of "@tag" determines "oracleType".
