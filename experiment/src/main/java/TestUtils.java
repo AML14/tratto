@@ -28,7 +28,7 @@ public class TestUtils {
     /** The path to the output directory. */
     private static final Path output = Paths.get("output");
     /** A list of all JUnit Assertions assert methods. */
-    private static final List<String> allJUnitAssertMethods = List.of(
+    private static final List<String> allJUnitAssertionsMethods = List.of(
             "assertArrayEquals",
             "assertEquals",
             "assertFalse",
@@ -50,16 +50,17 @@ public class TestUtils {
      * (e.g. assertEquals). This does NOT include "fail()", which is used by
      * exceptional oracles.
      *
-     * @param statement a code statement
-     * @return true iff the statement uses an "assert..." method from the
-     * JUnit Assertions class
+     * @param statement a Java statement
+     * @return true iff the statement is a method call of a JUnit Assertions
+     * assert method
+     * @see TestUtils#allJUnitAssertionsMethods
      */
     private static boolean isJUnitAssertion(Statement statement) {
         if (statement.isExpressionStmt()) {
             Expression expression = statement.asExpressionStmt().getExpression();
             if (expression.isMethodCallExpr()) {
                 MethodCallExpr methodCallExpr = expression.asMethodCallExpr();
-                return allJUnitAssertMethods.contains(methodCallExpr.getNameAsString());
+                return allJUnitAssertionsMethods.contains(methodCallExpr.getNameAsString());
             }
         }
         return false;
@@ -116,7 +117,7 @@ public class TestUtils {
         }
         List<MethodCallExpr> nonJUnitMethods = getAllMethodCallsOfStatement(jUnitAssertion)
                 .stream()
-                .filter(methodCallExpr -> !allJUnitAssertMethods.contains(methodCallExpr.getNameAsString()))
+                .filter(methodCallExpr -> !allJUnitAssertionsMethods.contains(methodCallExpr.getNameAsString()))
                 .toList();
         if (nonJUnitMethods.isEmpty()) {
             return null;
