@@ -67,11 +67,12 @@ public class TestUtils {
     }
 
     /**
-     * Checks if a given statement is a fail statement. These are used in
-     * exceptional oracles to ensure that a prefix throws an exception.
+     * Checks if a given statement is a JUnit Assertions fail statement. These
+     * are used in exceptional oracles to ensure that a program state throws
+     * an exception.
      *
-     * @param statement a code statement
-     * @return true iff the statement is a "fail" method call
+     * @param statement a Java statement
+     * @return true iff the statement is a {@code fail()} method call
      */
     private static boolean isFail(Statement statement) {
         if (statement.isExpressionStmt()) {
