@@ -6,6 +6,7 @@ import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.stmt.Statement;
 import data.OracleOutput;
 import data.OracleType;
+import data.TogType;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -169,7 +170,7 @@ public class TestUtilsTest {
     @Test
     public void insertAxiomaticOraclesTest() {
         List<OracleOutput> axiomaticOracles = getAxiomaticOracles();
-        TestUtils.insertOracles(resourcesPath.resolve("prefix"), "jdoctor", axiomaticOracles);
+        TestUtils.insertOracles(resourcesPath.resolve("prefix"), TogType.JDOCTOR, axiomaticOracles);
         try {
             CompilationUnit cu = StaticJavaParser.parse(outputPath.resolve("tog-tests/jdoctor/ExamplePrefix.java"));
             List<MethodDeclaration> testCases = cu.findAll(MethodDeclaration.class);
@@ -311,7 +312,7 @@ public class TestUtilsTest {
     @Test
     public void insertNonAxiomaticOraclesTest() {
         List<OracleOutput> nonAxiomaticOracles = getNonAxiomaticOracles();
-        TestUtils.insertOracles(resourcesPath.resolve("prefix"), "toga", nonAxiomaticOracles);
+        TestUtils.insertOracles(resourcesPath.resolve("prefix"), TogType.TOGA, nonAxiomaticOracles);
         String expectedAssertionTest = """
                                 @Test
                                 @Disabled

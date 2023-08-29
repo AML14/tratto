@@ -44,6 +44,7 @@ import java.util.stream.Stream;
 
 import data.OracleOutput;
 import data.OracleType;
+import data.TogType;
 
 /**
  * This class provides static methods for removing oracles from a test suite,
@@ -80,10 +81,7 @@ public class TestUtils {
             "assertTrue"
     );
     /** A list of all supported axiomatic test oracle generators. */
-    private static final List<String> axiomaticTogs = List.of(
-            "jdoctor",
-            "tratto"
-    );
+    private static final List<TogType> axiomaticTogs = List.of(TogType.JDOCTOR, TogType.TRATTO);
 
     /** Private constructor to avoid creating an instance of this class. */
     private TestUtils() {
@@ -1555,7 +1553,7 @@ public class TestUtils {
      * a priori)
      * @see TestUtils#axiomaticTogs
      */
-    private static boolean isAxiomatic(String tog) {
+    private static boolean isAxiomatic(TogType tog) {
         return axiomaticTogs.contains(tog);
     }
 
@@ -1567,12 +1565,12 @@ public class TestUtils {
      * Does not override original test prefixes.
      *
      * @param dir a directory with Java test prefixes
-     * @param tog the name of the test oracle generator being analyzed
+     * @param tog a test oracle generator
      * @param oracles a list of test oracles made by the given tog
      * @see TestUtils#insertAxiomaticOracles(Path, List)
      * @see TestUtils#insertNonAxiomaticOracles(Path, List)
      */
-    public static void insertOracles(Path dir, String tog, List<OracleOutput> oracles) {
+    public static void insertOracles(Path dir, TogType tog, List<OracleOutput> oracles) {
         Path testPath = output.resolve("tog-tests/" + tog);
         FileUtils.copy(dir, testPath);
         if (isAxiomatic(tog)) {
