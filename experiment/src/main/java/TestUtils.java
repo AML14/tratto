@@ -255,7 +255,7 @@ public class TestUtils {
      * Splits all test cases in a given test file into smaller subtests, each
      * with a single assertion from the original test case. If a test case
      * does not contain a JUnit assertion (e.g. exceptional oracle), then it
-     * is not modified. This method does ot modify the actual source file.
+     * is not modified. This method does not modify the actual source file.
      *
      * @param testFile a JavaParser representation of a test file
      */
@@ -276,11 +276,15 @@ public class TestUtils {
     }
 
     /**
-     * Removes all assertions from all test files in a given directory. Our
+     * Removes all assertions from all test files in a given directory. The
      * approach for removing oracles depends on whether an oracle is
-     * exceptional (e.g. throws an exception) or a normal assertion. Saves the
-     * modified test cases in output/evosuite-prefix/. Does not override
-     * original test files at the given path.
+     * exceptional (e.g. throws an exception) or a normal assertion. Firstly,
+     * this method splits any test case with multiple assertions into multiple
+     * tests, each with a single JUnit assertion. These smaller subtests are
+     * saved in "output/evosuite-tests-simple/". Then, all oracles are removed
+     * from each test case. The test prefixes are saved in
+     * "output/evosuite-prefix". This method does not override the original
+     * test files.
      *
      * @param dir a directory with Java test files
      * @see TestUtils#removeAssertionOracles(CompilationUnit)
