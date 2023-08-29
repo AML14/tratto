@@ -464,10 +464,10 @@ public class JavaParserUtilsTest {
     }
 
     @Test
-    public void removeArrayTest() {
+    public void getElementTypeTest() {
         ResolvedType intType = ResolvedPrimitiveType.byName("int");
         ResolvedType arrayType = new ResolvedArrayType(intType);
-        assertEquals(intType.toString(), removeArray(arrayType).toString());
+        assertEquals(intType.toString(), getElementType(arrayType).toString());
     }
 
     @Test
@@ -485,7 +485,7 @@ public class JavaParserUtilsTest {
         OracleDatapoint oracleDatapoint = oracleDatapoints.get(1);
         TypeDeclaration<?> jpClass = getClassOrInterface(oracleDatapoint.getClassSourceCode(), oracleDatapoint.getClassName());
         try {
-            List<String> availableMethodList = JavaParserUtils.getMethodsOfType(jpClass)
+            List<String> availableMethodList = JavaParserUtils.getAllMethods(jpClass)
                     .stream()
                     .map(MethodUsage::getName)
                     .collect(Collectors.toList());
@@ -509,7 +509,7 @@ public class JavaParserUtilsTest {
         OracleDatapoint oracleDatapoint = oracleDatapoints.get(1);
         TypeDeclaration<?> jpClass = getClassOrInterface(oracleDatapoint.getClassSourceCode(), oracleDatapoint.getClassName());
         try {
-            List<String> availableFieldsList = getFieldsOfType(jpClass)
+            List<String> availableFieldsList = getAllFields(jpClass)
                     .stream()
                     .map(ResolvedDeclaration::getName)
                     .collect(Collectors.toList());

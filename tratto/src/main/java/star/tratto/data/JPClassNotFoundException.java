@@ -10,4 +10,8 @@ public class JPClassNotFoundException extends IOException {
     public JPClassNotFoundException(String message) {
         super(message);
     }
+
+    public JPClassNotFoundException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }
