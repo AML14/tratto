@@ -259,7 +259,7 @@ public class TestUtils {
      *
      * @param testFile a JavaParser representation of a test file
      */
-    public static void splitTests(CompilationUnit testFile) {
+    private static void splitTests(CompilationUnit testFile) {
         List<MethodDeclaration> testCases = testFile.findAll(MethodDeclaration.class);
         for (MethodDeclaration testCase : testCases) {
             TypeDeclaration<?> testClass = testFile.getType(0);
