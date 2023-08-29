@@ -235,13 +235,14 @@ public class JavaParserUtils {
      * Given a syntactically valid Java expression, evaluates its return type, including package and class.
      * If the expression is not syntactically valid, the method will throw an exception.
      * @param expression the expression to evaluate, e.g., "methodResultID.negate().value(null).getField()".
-     *                   Must conform to TrattoGrammar.
+     *                   Must conform to TrattoGrammar
      * @param oracleDatapoint OracleDatapoint containing additional necessary information for resolving types,
      *                        e.g., class and method names and sources. NOTE: To handle Java expressions
-     *                        containing the token "jdVar", the oracleDatapoint must have its "oracle" field
-     *                        populated, even if it's a partial oracle (e.g., it's the oracle being currently
-     *                        generated). Then, the last occurring jdVar clause is looked for and its type is
-     *                        resolved, which will be used to resolve the type of the expression.
+     *                        containing the token "jdVar" (see {@link star.tratto.oraclegrammar.custom}), the
+     *                        oracleDatapoint must have its "oracle" field populated, even if it's a partial
+     *                        oracle (e.g., it's the oracle being currently generated). Then, the last occurring
+     *                        jdVar clause is looked for and its type is resolved, which will be used to resolve
+     *                        the type of the expression
      * @return pair of strings, where the first string is the package and the second string is the class
      */
     public static Pair<String, String> getReturnTypeOfExpression(String expression, OracleDatapoint oracleDatapoint) {
