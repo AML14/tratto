@@ -100,7 +100,9 @@ public class DatasetUtils {
 
     /**
      * Gets the Javadoc comment of a body declaration using regex patterns.
-     * Use ONLY IF Javadoc comment is not recoverable using JavaParser API.
+     * Use ONLY IF Javadoc comment is not recoverable using JavaParser API,
+     * such as {@link DatasetUtils#getClassJavadoc(TypeDeclaration)} or
+     * {@link DatasetUtils#getCallableJavadoc(CallableDeclaration)}.
      *
      * @param jpBody a member in a Java class
      * @return the matched Javadoc comment (empty string if not found)
