@@ -25,9 +25,9 @@ import java.util.stream.Stream;
 public class TestUtils {
     /** A global unique ID to avoid duplicate test names. */
     private static int testID = 0;
-    /** The path to the output directory */
+    /** The path to the output directory. */
     private static final Path output = Paths.get("output");
-    /** A list of all JUnit Assertions assert methods */
+    /** A list of all JUnit Assertions assert methods. */
     private static final List<String> allJUnitAssertMethods = List.of(
             "assertArrayEquals",
             "assertEquals",
