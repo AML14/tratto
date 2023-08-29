@@ -644,13 +644,15 @@ public class DatasetUtils {
     }
 
     /**
-     * Converts a list of methods to a list of records of method tokens,
+     * Converts a list of method usages to a list of method tokens records,
      * where each record has the form:
-     *  [methodName, packageName, className, methodSignature]
-     * where "className" refers to the class in which the method is declared.
-     * "methodSignature" includes access specifiers, non-access modifiers,
-     * generic type parameters, return type, method signature, parameters,
-     * and exceptions (unless otherwise un-recoverable).
+     *     [methodName, packageName, className, methodSignature]
+     * where "className" refers to the declaring class, "methodSignature"
+     * includes modifiers, type parameters, return type, method name,
+     * parameters, and exceptions.
+     *
+     * @param jpMethods a list of method usages
+     * @return the corresponding list of method tokens records
      */
     private static List<MethodTokens> convertMethodUsageToMethodTokens(
             List<MethodUsage> jpMethods
