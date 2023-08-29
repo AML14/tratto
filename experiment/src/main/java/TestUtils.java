@@ -227,7 +227,7 @@ public class TestUtils {
      * @return a test case with a single assertion, corresponding to the given
      * assertion index
      */
-    private static MethodDeclaration getNextTestCase(MethodDeclaration testCase, int assertionIdx) {
+    private static MethodDeclaration getSimpleTestCase(MethodDeclaration testCase, int assertionIdx) {
         NodeList<Statement> originalBody = testCase.getBody().orElseThrow().getStatements();
         NodeList<Statement> newBody = new NodeList<>();
         int currentIdx = 0;
@@ -267,27 +267,28 @@ public class TestUtils {
     /**
      * Splits all test cases in a given test file into smaller subtests, each
      * with a single assertion from the original test case. If a test case
-     * does not contain a JUnit assertion (e.g. exceptional oracle), then it
-     * is not modified. This method does not modify the actual source file.
+     * does not contain a JUnit Assertions assert method call (e.g.
+     * exceptional oracle), then it is not modified. The original tests with
+     * multiple assertions are removed. This method does not modify the actual
+     * source file.
      *
      * @param testFile a JavaParser representation of a test file
      */
     private static void splitTests(CompilationUnit testFile) {
+        TypeDeclaration<?> testClass = testFile.getType(0);
         List<MethodDeclaration> testCases = testFile.findAll(MethodDeclaration.class);
         for (MethodDeclaration testCase : testCases) {
-            TypeDeclaration<?> testClass = testFile.getType(0);
             int numAssertions = getNumberOfAssertions(testCase);
             for (int i = 0; i < numAssertions; i++) {
-                MethodDeclaration prefix = getNextTestCase(testCase, i);
-                testClass.addMember(prefix);
+                MethodDeclaration simpleTest = getSimpleTestCase(testCase, i);
+                testClass.addMember(simpleTest);
             }
             // keep exceptional oracles
             if (numAssertions == 0) {
-                MethodDeclaration exceptionalPrefix = createRelatedMethod(
-                        testCase,
-                        testCase.getBody().orElseThrow().getStatements()
-                );
-                testClass.addMember(exceptionalPrefix);
+                NodeList<Statement> originalBody = testCase.getBody().orElseThrow()
+                        .getStatements();
+                MethodDeclaration exceptionalTest = createRelatedMethod(testCase, originalBody);
+                testClass.addMember(exceptionalTest);
             }
             testCase.remove();
         }
