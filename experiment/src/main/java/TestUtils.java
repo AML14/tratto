@@ -133,9 +133,9 @@ public class TestUtils {
     /**
      * Removes all assertion oracles from a given test file, represented by a
      * JavaParser compilation unit. Assertion oracles are represented by JUnit
-     * Assert method calls (e.g. {@code assertEquals}). If a JUnit assertion
-     * condition contains a method call, then the method call is kept in the
-     * prefix. For example,
+     * Assertions method calls (e.g. {@code assertEquals}). If a JUnit
+     * Assertions condition contains a method call, then the method call is
+     * kept in the prefix. For example,
      *     {@code assertTrue(stack.isEmpty())}    -&gt;    {@code stack.isEmpty()}.
      * This method does not modify the actual source file.
      *
@@ -157,7 +157,8 @@ public class TestUtils {
     /**
      * Removes all exceptional oracles from a given test file, represented by
      * a JavaParser compilation unit. The prefix in the try/catch block is
-     * preserved, but any "fail" calls are removed. For example:
+     * kept, but any {@code fail()} method calls are removed. For example,
+     * <pre>
      * {@code
      *     int x = 5;
      *     try {
@@ -170,6 +171,7 @@ public class TestUtils {
      *     int x = 5;
      *     int y = 10;
      * }
+     * </pre>
      * This method does not modify the actual source file.
      *
      * @param testFile a JavaParser representation of a test file
@@ -184,9 +186,9 @@ public class TestUtils {
             tryStmt.remove();
         });
         // remove "fail()" statements
-        testFile.findAll(Statement.class).forEach(statement -> {
-            if (isFail(statement)) {
-                statement.remove();
+        testFile.findAll(Statement.class).forEach(stmt -> {
+            if (isFail(stmt)) {
+                stmt.remove();
             }
         });
     }
