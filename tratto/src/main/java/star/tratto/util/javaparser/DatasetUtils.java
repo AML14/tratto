@@ -289,7 +289,7 @@ public class DatasetUtils {
      * @param jpCallable a method
      * @return a list of information about each argument. Each entry has the
      * form:
-     *  [parameterName, packageName, parameterTypeName]
+     *     [parameterName, packageName, parameterTypeName]
      * where "packageName" refers to the package of the parameter type (empty
      * if the parameter is not a reference type).
      */
@@ -304,20 +304,18 @@ public class DatasetUtils {
             Type parameterType = parameter.getType();
             String parameterTypeName = getParameterTypeName(jpClass, jpCallable, parameter);
             try {
+                ResolvedType resolvedParameterType = parameterType.resolve();
                 if (
-                        parameterType.resolve().isTypeVariable() ||
-                        parameterType.resolve().isPrimitive() ||
-                        parameterType.resolve().isArray()
+                        resolvedParameterType.isTypeVariable() ||
+                        resolvedParameterType.isPrimitive() ||
+                        resolvedParameterType.isArray()
                 ) {
                     // if not a reference type, ignore package name (e.g. primitives do not have packages).
                     argumentList.add(new MethodArgumentTokens(parameter.getNameAsString(), "", parameterTypeName));
                 } else if (parameterType.resolve().isReferenceType()) {
-                    String typeName = TypeUtils.getJDoctorSimpleNameFromSourceCode(jpClass, jpCallable, parameter);
-                    if (JavaParserUtils.isTypeVariable(parameterType.resolve())) {
-                        // if reference object is a generic type, ignore package name.
-                        argumentList.add(new MethodArgumentTokens(parameter.getNameAsString(), "", typeName));
+                    if (JavaParserUtils.isTypeVariable(resolvedParameterType)) {
+                        argumentList.add(new MethodArgumentTokens(parameter.getNameAsString(), "", parameterTypeName));
                     } else {
-                        // otherwise, retrieve necessary package information.
                         String className = JavaParserUtils.getTypeWithoutPackages(parameterType.resolve().asReferenceType());
                         String parameterPackageName = parameterType.resolve().asReferenceType().getQualifiedName()
                                 .replace(String.format(".%s", className), "");
@@ -329,7 +327,7 @@ public class DatasetUtils {
                     }
                 }
             } catch (UnsolvedSymbolException e) {
-                logger.error(String.format("Unable to generate MethodArgumentTokens for argument %s.", parameterType));
+                logger.error("Unable to generate MethodArgumentTokens for argument " + parameterType);
             }
         }
         return argumentList;
