@@ -719,9 +719,17 @@ public class DatasetUtils {
     }
 
     /**
-     * Wrapper method which first attempts to resolve a given type. Returns
-     * an empty list if an error occurs. See public "getMethodsFromType()"
-     * method above for further detail.
+     * Collects information for all non-private, non-static, non-void methods
+     * available to a given type. This method is a wrapper method for
+     * {@link DatasetUtils#getMethodsFromType(ResolvedType)} which first
+     * attempts to resolve the given type. Returns an empty list if unable
+     * to resolve the type.
+     *
+     * @param jpType a type
+     * @return a list of information about each method available to the type.
+     * Each entry has the form:
+     *     [methodName, packageName, className, methodSignature]
+     * Returns an empty list if the given type is primitive.
      */
     private static List<MethodTokens> getMethodsFromType(
             Type jpType
