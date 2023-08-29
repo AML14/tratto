@@ -68,10 +68,6 @@ public class Tratto {
             List<String> oracleSoFarTokens = new ArrayList<>();
             List<String> tokenClassesSoFar = new ArrayList<>();
 
-            if (!(oracleDatapoint.getOracleType().equals(OracleType.NORMAL_POST)) || !(oracleDatapoint.getJavadocTag().contains("@return an empty Bag"))) {
-                continue;
-            }
-
             logger.info("-------------------------------------------------------------------------");
             logger.info("Generating oracle for:\n\tMethod: {}\n\tJavadoc tag: {}\n\tOracle type: {}",
                     oracleDatapoint.getMethodSourceCode().split("\\{")[0],
