@@ -99,22 +99,25 @@ public class TestUtils {
     }
 
     /**
-     * Returns the method call in a JUnit assertion condition. Returns null if
-     * the condition does not have a method call. For example,
-     *     "{@code assertEquals(stack.isEmpty())}" =>
-     *     "{@code stack.isEmpty()}".
-     * This method assumes that a JUnit assertion only has a single method
+     * Returns the method call in a JUnit Assertions condition. Returns null
+     * if the condition does not have a method call. For example,
+     * <pre>
+     *     {@code assertEquals(stack.isEmpty()}    -&gt;    {@code stack.isEmpty()}
+     * or,
+     *     {@code assertTrue(booleanVar}    -&gt;    {@code null}
+     * </pre>
+     * This method assumes that a JUnit Assertions only has a single method
      * call in its condition.
      *
-     * @param jUnitAssertion a JUnit assertion
-     * @return the method call in a given JUnit assertion. Returns null if the
-     * JUnit condition does not have a method call.
+     * @param jUnitAssertion a JUnit Assertion statement
+     * @return the method call in the JUnit Assertion condition. Returns null
+     * if the condition does not have a method call.
      * @throws IllegalArgumentException if the given statement is not a JUnit
-     * assertion
+     * Assertion
      */
     private static MethodCallExpr getMethodCallOfJUnitAssertion(Statement jUnitAssertion) {
         if (!isJUnitAssertion(jUnitAssertion)) {
-            throw new IllegalArgumentException(jUnitAssertion + " is not a statement.");
+            throw new IllegalArgumentException(jUnitAssertion + " is not a JUnit Assertion method call");
         }
         List<MethodCallExpr> nonJUnitMethods = getAllMethodCallsOfStatement(jUnitAssertion)
                 .stream()
