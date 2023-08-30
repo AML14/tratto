@@ -12,9 +12,6 @@ if [ -n "$JDK_OLD_PATH" ]; then
     JDK_NEW_NAME="jdk-1.8.jdk"
     JDK_NEW_PATH=$(dirname "$JDK_OLD_PATH")"/$JDK_NEW_NAME"
 
-    echo $JDK_OLD_PATH
-    echo $JDK_NEW_PATH
-
     if [ $JDK_OLD_PATH != $JDK_NEW_PATH ]; then
       mv "$JDK_OLD_PATH" "$JDK_NEW_PATH"
     fi
@@ -46,5 +43,5 @@ mkdir -p "$OUTPUT_DIR"
 # use EvoSuite to generate tests
 (export JAVA_HOME=$JAVA8_HOME; $EVOSUITE -class "$TARGET_CLASS" -projectCP "$TARGET_DIR")
 
-#mv "./evosuite-tests" "$OUTPUT_DIR"
-#rm -r "./evosuite-report"
+mv "./evosuite-tests" "$OUTPUT_DIR"
+rm -r "./evosuite-report"
