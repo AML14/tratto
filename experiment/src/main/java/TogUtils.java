@@ -316,6 +316,13 @@ public class TogUtils {
         );
     }
 
+    /**
+     * Converts a JDoctor ThrowsTag to an OracleOutput record.
+     *
+     * @param jDoctorOutput the parent JDoctor condition of {@code throwsTag}
+     * @param throwsTag a JDoctor exceptional post condition
+     * @return the corresponding OracleOutput of {@code throwsTag}
+     */
     private static OracleOutput throwsTagToOracleOutput(JDoctorOutput jDoctorOutput, ThrowsTag throwsTag) {
         if (throwsTag.condition().isEmpty()) {
             return null;
