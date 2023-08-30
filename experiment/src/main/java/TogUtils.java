@@ -332,6 +332,15 @@ public class TogUtils {
         );
     }
 
+    /**
+     * Converts a JDoctorOutput record to a list of OracleOutput records. A
+     * single JDoctorOutput record may contain multiple preconditions, throws
+     * conditions, and post-conditions, each necessitating an individual
+     * OracleOutput record.
+     *
+     * @param jDoctorOutput a JDoctor JSON condition
+     * @return the corresponding OracleOutputs from the condition
+     */
     private static List<OracleOutput> conditionToOracleOutput(JDoctorOutput jDoctorOutput) {
         List<OracleOutput> oracleOutputs = new ArrayList<>();
         jDoctorOutput.paramTags().forEach(paramTag -> oracleOutputs.add(
