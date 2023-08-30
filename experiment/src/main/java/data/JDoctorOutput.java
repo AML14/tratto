@@ -17,6 +17,7 @@ public record JDoctorOutput(
         @JsonProperty("throwsTags") List<ThrowsTag> throwsTags
 ) {
     public record ParamTag(
+            @JsonProperty("parameter") Parameter parameter,
             @JsonProperty("comment") String comment,
             @JsonProperty("kind") String kind,
             @JsonProperty("condition") String condition
