@@ -297,7 +297,8 @@ public class TogUtils {
      *
      * @param jDoctorOutput the parent JDoctor condition of {@code paramTag}
      * @param paramTag a JDoctor precondition
-     * @return the corresponding OracleOutput of {@code paramTag}
+     * @return the corresponding OracleOutput of {@code paramTag}. Returns
+     * null if the oracle is an empty string.
      */
     private static OracleOutput paramTagToOracleOutput(JDoctorOutput jDoctorOutput, ParamTag paramTag) {
         if (paramTag.condition().isEmpty()) {
@@ -320,7 +321,8 @@ public class TogUtils {
      *
      * @param jDoctorOutput the parent JDoctor condition of {@code returnTag}
      * @param returnTag a JDoctor normal post-condition
-     * @return the corresponding OracleOutput of {@code returnTag}
+     * @return the corresponding OracleOutput of {@code returnTag}. Returns
+     * null if {@code returnTag} is null or the oracle is an empty string.
      */
     private static OracleOutput returnTagToOracleOutput(JDoctorOutput jDoctorOutput, ReturnTag returnTag) {
         if (returnTag == null || returnTag.condition().isEmpty()) {
@@ -343,7 +345,8 @@ public class TogUtils {
      *
      * @param jDoctorOutput the parent JDoctor condition of {@code throwsTag}
      * @param throwsTag a JDoctor exceptional post-condition
-     * @return the corresponding OracleOutput of {@code throwsTag}
+     * @return the corresponding OracleOutput of {@code throwsTag}. Returns
+     * null if the oracle is an empty string.
      */
     private static OracleOutput throwsTagToOracleOutput(JDoctorOutput jDoctorOutput, ThrowsTag throwsTag) {
         if (throwsTag.condition().isEmpty()) {
@@ -399,7 +402,7 @@ public class TogUtils {
         if (!Files.exists(jDoctorPath)) {
             throw new IllegalArgumentException("Unable to find JDoctor output file " + jDoctorPath);
         }
-        Path oraclePath = output.resolve(Paths.get("jdoctor", "oracle_outputs.json"));
+        Path oraclePath = output.resolve("jdoctor").resolve("oracle_outputs.json");
         List<JDoctorOutput> jDoctorOutputs = FileUtils.readJSONList(jDoctorPath, JDoctorOutput.class);
         List<OracleOutput> oracleOutputs = jDoctorOutputs
                 .stream()
