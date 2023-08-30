@@ -28,5 +28,5 @@ bash jdoctor.sh [fully qualified name] [path to source] [path to binaries]
 For example,
 
 ```shell
-bash evosuite.sh tutorial.Stack ../src/test/resources/project/src ../src/test/resources/project/target/classes
+bash jdoctor.sh tutorial.Stack ../src/test/resources/project/src ../src/test/resources/project/target/classes
 ```
