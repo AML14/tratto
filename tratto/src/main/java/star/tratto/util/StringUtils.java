@@ -283,4 +283,14 @@ public class StringUtils {
         List<String> lemmas2 = toLemmas(s2);
         return cosineSimilarity(lemmas1, lemmas2);
     }
+
+    /**
+     * Checks if expression contains word as a whole (i.e., not as a substring).
+     * @param expression expression to check
+     * @param word word potentially contained in expression
+     * @return true if expression contains word as a whole, false otherwise
+     */
+    public static boolean containsWord(String expression, String word) {
+        return expression.matches(".*\\b" + word + "\\b.*");
+    }
 }

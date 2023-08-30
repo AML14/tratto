@@ -56,6 +56,7 @@ import java.util.stream.Collectors;
 
 import static org.plumelib.util.CollectionsPlume.mapList;
 import static star.tratto.util.JavaTypes.isAssignableToNumeric;
+import static star.tratto.util.StringUtils.containsWord;
 import static star.tratto.util.StringUtils.fullyQualifiedClassName;
 
 /**
@@ -369,7 +370,7 @@ public class JavaParserUtils {
 
     private static void addImports(CompilationUnit cu, String expression, OracleDatapoint oracleDatapoint) {
         oracleDatapoint.getTokensProjectClasses().forEach(projectClass -> {
-            if (expression.contains(projectClass.getValue0())) {
+            if (containsWord(expression, projectClass.getValue0())) {
                 cu.addImport(fullyQualifiedClassName(projectClass.getValue1(), projectClass.getValue0()));
             }
         });
