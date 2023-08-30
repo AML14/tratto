@@ -1,18 +1,38 @@
 package star.tratto.util;
 
+import static org.plumelib.util.CollectionsPlume.mapList;
+
 import org.javatuples.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class StringUtils {
+
+    private static final Pattern instanceofPattern = Pattern.compile(" instanceof( |$)");
+
     /**
-     * Remove spaces and add spaces around "instanceof".
+     * Remove spaces, except around "instanceof".
      */
     public static String compactExpression(String expression) {
-        return expression.replace(" ", "").replace("instanceof", " instanceof ");
+        if (expression == null) {
+            return "";
+        }
+        if (instanceofPattern.matcher(expression).find()) {
+            String[] segments = instanceofPattern.split(expression, -1);
+            List<String> compactedSegments = mapList(StringUtils::removeSpaces, segments);
+            return String.join(" instanceof ", compactedSegments);
+        } else {
+            return removeSpaces(expression);
+        }
+    }
+
+    /** Returns the string, with all spaces removed. */
+    private static String removeSpaces(String s) {
+        return s.replace(" ", "");
     }
 
     public static String compactExpression(List<String> expressionTokens) {
