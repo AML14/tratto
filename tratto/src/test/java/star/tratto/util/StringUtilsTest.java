@@ -12,6 +12,19 @@ import static star.tratto.util.StringUtils.containsWord;
 public class StringUtilsTest {
 
     @Test
+    public void compactExpressionTest()  {
+        assertEquals("", StringUtils.compactExpression(""));
+        assertEquals("this", StringUtils.compactExpression("this"));
+        assertEquals("this instanceof SomeClass", StringUtils.compactExpression("this instanceof SomeClass"));
+        assertEquals("this instanceof ", StringUtils.compactExpression("this instanceof"));
+        assertEquals("this instanceof SomeClass&&someArg instanceof ", StringUtils.compactExpression("this instanceof SomeClass && someArg instanceof"));
+        assertEquals("instanceofVar instanceof MyClass", StringUtils.compactExpression("instanceofVar instanceof MyClass"));
+        assertEquals("x&&instanceofVar instanceof MyClass", StringUtils.compactExpression("x && instanceofVar instanceof MyClass"));
+        assertEquals("", StringUtils.compactExpression((String) null));
+        assertEquals("", StringUtils.compactExpression((List<String>) null));
+    }
+
+    @Test
     public void getCorrespondingClosingParenthesisIndex_IndexEqualToListSizeThrowExceptionTest()  {
         List<String> oracleTokens = List.of("this", ".", "someMethod", "(", "someArg");
         int openingParenthesisIndex = 5;

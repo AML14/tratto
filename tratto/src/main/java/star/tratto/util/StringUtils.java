@@ -20,6 +20,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -31,6 +32,7 @@ import java.util.stream.IntStream;
 public class StringUtils {
     /** A suite of NLP tools for pre-processing text inputs. */
     private static final StanfordCoreNLP stanfordCoreNLP = getStanfordCoreNLP();
+    private static final Pattern instanceofPattern = Pattern.compile(" instanceof( |$)");
 
     /** Private constructor to avoid creating an instance of this class. */
     private StringUtils() {
@@ -54,18 +56,33 @@ public class StringUtils {
     }
 
     /**
-     * Remove spaces, except those around "instanceof".
+     * Remove spaces, except around "instanceof".
      */
     public static String compactExpression(String expression) {
-        return expression
-                .replace(" ", "")
-                .replace("instanceof", " instanceof ");
+        if (expression == null) {
+            return "";
+        }
+        if (instanceofPattern.matcher(expression).find()) {
+            String[] segments = instanceofPattern.split(expression, -1);
+            List<String> compactedSegments = mapList(StringUtils::removeSpaces, segments);
+            return String.join(" instanceof ", compactedSegments);
+        } else {
+            return removeSpaces(expression);
+        }
+    }
+
+    /** Returns the string, with all spaces removed. */
+    private static String removeSpaces(String s) {
+        return s.replace(" ", "");
     }
 
     /**
      * Join the given strings by spaces, then call {@link #compactExpression(String)} on the result.
      */
     public static String compactExpression(List<String> expressionTokens) {
+        if (expressionTokens == null) {
+            return "";
+        }
         return compactExpression(String.join(" ", expressionTokens));
     }
 
@@ -213,7 +230,7 @@ public class StringUtils {
      *
      * @param set1 a set of words
      * @param set2 a set of words
-     * @return the words in both sets 
+     * @return the words in both sets
      */
     private static SortedSet<String> setIntersection(Set<String> set1, Set<String> set2) {
         TreeSet<String> intersectionKeys = new TreeSet<>(set1);
