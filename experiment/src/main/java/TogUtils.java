@@ -8,10 +8,13 @@ import com.github.javaparser.ast.body.CallableDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.comments.JavadocComment;
+import com.github.javaparser.ast.expr.ArrayAccessExpr;
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.MethodCallExpr;
+import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.symbolsolver.utils.SymbolSolverCollectionStrategy;
 import data.JDoctorOutput;
+import data.JDoctorOutput.Parameter;
 import data.JDoctorOutput.ParamTag;
 import data.JDoctorOutput.ReturnTag;
 import data.JDoctorOutput.ThrowsTag;
@@ -268,8 +271,17 @@ public class TogUtils {
 
     private static String contextualizeOracle(JDoctorOutput jDoctorOutput, String oracle) {
         Expression oracleExpression = StaticJavaParser.parseExpression(oracle);
-        System.out.println(oracle);
-        return "";
+        List<String> parameterNames = jDoctorOutput.parameters()
+                .stream()
+                .map(Parameter::name)
+                .toList();
+        oracleExpression.walk(ArrayAccessExpr.class, arrayAccess -> {
+            if (arrayAccess.getName().toString().equals("args")) {
+                int index = Integer.parseInt(arrayAccess.getIndex().toString());
+                arrayAccess.replace(new NameExpr(parameterNames.get(index)));
+            }
+        });
+        return oracleExpression.toString();
     }
 
     private static OracleOutput paramTagToOracleOutput(JDoctorOutput jDoctorOutput, ParamTag paramTag) {
@@ -278,7 +290,7 @@ public class TogUtils {
         }
         String oracle = contextualizeOracle(jDoctorOutput, paramTag.condition());
         return new OracleOutput(
-                jDoctorOutput.name(),
+                jDoctorOutput.targetClass(),
                 jDoctorOutput.signature(),
                 OracleType.PRE,
                 "" ,
@@ -294,7 +306,7 @@ public class TogUtils {
         }
         String oracle = contextualizeOracle(jDoctorOutput, returnTag.condition());
         return new OracleOutput(
-                jDoctorOutput.name(),
+                jDoctorOutput.targetClass(),
                 jDoctorOutput.signature(),
                 OracleType.NORMAL_POST,
                 "" ,
@@ -310,7 +322,7 @@ public class TogUtils {
         }
         String oracle = contextualizeOracle(jDoctorOutput, throwsTag.condition());
         return new OracleOutput(
-                jDoctorOutput.name(),
+                jDoctorOutput.targetClass(),
                 jDoctorOutput.signature(),
                 OracleType.EXCEPT_POST,
                 "" ,
