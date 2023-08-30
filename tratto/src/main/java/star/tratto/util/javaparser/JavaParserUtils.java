@@ -469,27 +469,29 @@ public class JavaParserUtils {
      * Returns the {@link ResolvedReferenceTypeDeclaration} of a given binary
      * type name.
      *
-     * @param binaryName binary type name, e.g., {@code java.util.List}
+     * @param fqName fully qualified type name, e.g., {@code java.util.List}
      * @return the corresponding JavaParser ResolvedReferenceTypeDeclaration
      * @throws UnsolvedSymbolException if the type cannot be resolved
      * @throws UnsupportedOperationException if the type is an array or
      * primitive type
      */
-    public static ResolvedReferenceTypeDeclaration getResolvedReferenceTypeDeclaration(String binaryName) throws UnsolvedSymbolException, UnsupportedOperationException {
-        return getResolvedType(binaryName).asReferenceType().getTypeDeclaration().get();
+    public static ResolvedReferenceTypeDeclaration getResolvedReferenceTypeDeclaration(String fqName) throws UnsolvedSymbolException, UnsupportedOperationException {
+        return getResolvedType(fqName).asReferenceType().getTypeDeclaration().get();
     }
 
     private static ResolvedReferenceTypeDeclaration getResolvedReferenceTypeDeclaration(ResolvedType resolvedType) throws UnsupportedOperationException {
         return resolvedType.asReferenceType().getTypeDeclaration().get();
     }
 
+    // TODO: Check that this method is not called with binary names as argument
     /**
+     * @param fqName fully qualified name, e.g., {@code java.util.List}
      * @throws UnsupportedOperationException if the type is an array or a primitive type
      */
-    private static ResolvedType getResolvedType(String binaryName) throws UnsupportedOperationException {
+    private static ResolvedType getResolvedType(String fqName) throws UnsupportedOperationException {
         CompilationUnit cu = javaParser.parse(SYNTHETIC_CLASS_SOURCE).getResult().get();
         BlockStmt syntheticMethodBody = getClassOrInterface(cu, SYNTHETIC_CLASS_NAME).addMethod(SYNTHETIC_METHOD_NAME).getBody().get();
-        syntheticMethodBody.addStatement(binaryName + " type1Var;");
+        syntheticMethodBody.addStatement(fqName + " type1Var;");
         return getClassOrInterface(cu, SYNTHETIC_CLASS_NAME)
                 .getMethodsByName(SYNTHETIC_METHOD_NAME).get(0)
                 .getBody().get()
