@@ -80,7 +80,11 @@ public class E2ETests {
             });
         } catch (AssertionFailedError e) {
             logger.warn("Exception: " + e);
-            logger.warn("Maybe this means that test could not finish within 6 hours.  We'll assume it passed.");
+            if (e.getMessage().contains("execution timed out after")) {
+                logger.warn("Maybe this means that this test could not finish within 6 hours.  We'll assume it passed.");
+            } else {
+                throw e;
+            }
         }
 
         // Delete datasets and recreate folders
