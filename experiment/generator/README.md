@@ -2,12 +2,13 @@
 
 ### JDoctor
 
-Follow the setup instructions on the [ToRaDoCu](https://github.com/albertogoffi/toradocu) GitHub page. After the build is complete, add the `toradocu-1.0-all.jar` file to the `experiment/generator/resources` directory.
+Follow the setup instructions on the [ToRaDoCu](https://github.com/albertogoffi/toradocu) GitHub page. After the build is complete (this may take a few minutes), add the `toradocu-1.0-all.jar` file to the `experiment/generator/resources` directory.
 
 ## Overview
 
-This module:
- * generates test oracles using a test oracle generator (TOG).  Each TOG script produces oracles as a list of [`OracleOutput`](../src/main/java/OracleOutput.java)'s.
+This module...
+
+ * generates test oracles using a test oracle generator (TOG).  Each TOG script produces oracles as a list of [`OracleOutput`](../src/main/java/data/OracleOutput.java)'s.
     - `jdoctor.sh`: Generates oracles using JDoctor
     - `toga.sh`: Generates oracles using TOGA
     - `tratto.sh`: Generates oracles using Tratto
