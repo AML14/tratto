@@ -611,8 +611,12 @@ public class JavaParserUtils {
     }
 
     /**
-     * Auxiliary method used both by {@link #isInstanceOf(String, String, OracleDatapoint)}
-     * and {@link #doesInstanceofCompile}.
+     * This method implements the underlying logic used both to check if a variable of type1 is an
+     * instance of type2 ({@link #isInstanceOf(String, String, OracleDatapoint)}), and to check if
+     * type1 and type2 can be compared using the instanceof operator ({@link #doesInstanceofCompile}).
+     * This is an auxiliary private method to avoid code duplication, and it should ONLY be called
+     * from the two aforementioned methods. Also, depending on where it is called from, the parameter
+     * checkEquality must be true or false (see its documentation).
      * @param checkEquality if true, returns true if type1 is equal to type2. If false, this check is
      *                      not performed at all. Must be true if checking {@code isInstanceOf}.
      *                      Must be false if checking {@code doesInstanceofCompile}. This is because
