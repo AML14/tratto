@@ -33,5 +33,5 @@ $JDOCTOR \
 --target-class "$TARGET_CLASS" \
 --source-dir "$SRC_DIR" \
 --class-dir "$CLASS_DIR" \
---condition-translator-output "$RESOURCES_DIR/jdoctor-output.json"  # location of JDoctor output in JSON format
+--condition-translator-output "$OUTPUT_DIR/jdoctor/jdoctor_output.json"  # location of JDoctor output in JSON format
 )
