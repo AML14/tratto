@@ -76,6 +76,8 @@ public class JavaParserUtils {
     private static final String SYNTHETIC_METHOD_NAME = "__tratto__auxiliaryMethod";
     /** Cache ResolvedType of Object to make subsequent accesses free. */
     private static ResolvedType objectType;
+    /** Cache Set<MethodUsage> of Object methods to make subsequent accesses free. */
+    private static Set<MethodUsage> objectMethods;
 
     /** Private constructor to avoid creating an instance of this class. */
     private JavaParserUtils() {
@@ -134,6 +136,20 @@ public class JavaParserUtils {
                     .resolve().getType();
         }
         return objectType;
+    }
+
+    /**
+     * Creates a set containing all methods of "java.lang.Object" if it has not
+     * been previously created (see {@link #objectMethods}), otherwise returns
+     * the previously created set.
+     *
+     * @return a set of "java.lang.Object" methods
+     */
+    public static Set<MethodUsage> getObjectMethods() {
+        if (objectMethods == null) {
+            objectMethods = getResolvedReferenceTypeDeclaration(getObjectType()).getAllMethods();
+        }
+        return objectMethods;
     }
 
     /**
@@ -537,8 +553,7 @@ public class JavaParserUtils {
             logger.warn("Unresolvable type: {}", referenceType);
         }
         if (useObjectMethods) {
-            Set<MethodUsage> objectMethods = getResolvedReferenceTypeDeclaration("java.lang.Object").getAllMethods();
-            objectMethods.forEach(om -> {
+            getObjectMethods().forEach(om -> {
                 if (methods.stream().noneMatch(m -> m.getName().equals(om.getName()) && m.getParamTypes().equals(om.getParamTypes()))) {
                     methods.add(om);
                 }
