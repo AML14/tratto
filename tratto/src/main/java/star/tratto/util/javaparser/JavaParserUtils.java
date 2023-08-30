@@ -171,17 +171,15 @@ public class JavaParserUtils {
             methodBody.addStatement(methodArg.getValue2() + " " + methodArg.getValue0() + ";");
         }
         // add return type (if non-void)
-        String methodReturnType = ((MethodDeclaration) originalMethod).getType().asString();
-        if (!methodReturnType.equals("void")) {
-            methodBody.addStatement(
-                    methodReturnType + " methodResultID = " + originalMethod.getNameAsString() + "(" +
-                            methodArgs
-                                    .stream()
-                                    .map(Triplet::getValue0)
-                                    .collect(Collectors.joining(", "))
-                            + ");"
-            );
-        }
+        addMethodResultIDStatementToMethod(
+                methodBody,
+                ((MethodDeclaration) originalMethod).getType().asString(),
+                originalMethod.getNameAsString(),
+                methodArgs
+                        .stream()
+                        .map(Triplet::getValue0)
+                        .toList()
+        );
         // add expression
         methodBody.addStatement("var expressionReturnType = " + expression + ";");
     }
@@ -263,12 +261,15 @@ public class JavaParserUtils {
         // If the method is not a constructor and not void, add a statement to save methodResultID.
         MethodDeclaration method = getMethodDeclaration(oracleDatapoint.getMethodSourceCode());
         if (method != null) {
-            String methodName = method.getNameAsString();
-            String methodReturnType = method.getType().asString();
-            if (!"void".equals(methodReturnType)) {
-                syntheticMethodBody.addStatement(methodReturnType + " methodResultID = " + methodName +
-                        "(" + syntheticMethod.getParameters().stream().map(Parameter::getNameAsString).collect(Collectors.joining(", ")) + ");");
-            }
+            addMethodResultIDStatementToMethod(
+                    syntheticMethodBody,
+                    method.getType().asString(),
+                    method.getNameAsString(),
+                    syntheticMethod.getParameters()
+                            .stream()
+                            .map(Parameter::getNameAsString)
+                            .toList()
+            );
         }
 
         // Handle jdVar if necessary
@@ -287,6 +288,20 @@ public class JavaParserUtils {
         }
 
         return getTypePairFromResolvedType(returnType);
+    }
+
+    /**
+     * Add a statement to parentMethod that saves the result of a method call to a variable.
+     * @param parentMethod the method to which the statement will be added
+     * @param methodReturnType the return type of the method to add. If "void", no statement will be added
+     * @param methodName the name of the method to add
+     * @param methodParameters the parameters of the method to add
+     */
+    private static void addMethodResultIDStatementToMethod(BlockStmt parentMethod, String methodReturnType, String methodName, List<String> methodParameters) {
+        if (!"void".equals(methodReturnType)) {
+            parentMethod.addStatement(methodReturnType + " methodResultID = " + methodName +
+                    "(" + String.join(", ", methodParameters) + ");");
+        }
     }
 
     /**
