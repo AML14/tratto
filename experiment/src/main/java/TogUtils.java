@@ -9,6 +9,8 @@ import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.comments.JavadocComment;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.symbolsolver.utils.SymbolSolverCollectionStrategy;
+import data.JDoctorCondition;
+import data.JDoctorOutput;
 import data.OracleOutput;
 import data.OracleType;
 import org.apache.commons.csv.CSVParser;
@@ -260,10 +262,17 @@ public class TogUtils {
         FileUtils.writeJSON(prefixPath.resolve("oracle_outputs.json"), oracleOutputs);
     }
 
+    public static void jDoctorToOracleOutput(Path jDoctorOutput) {
+        List<JDoctorOutput> output = FileUtils.readJSONList(jDoctorOutput, JDoctorOutput.class);
+        System.out.println(output);
+    }
+
     public static void main(String[] args) {
-        generateTOGAInput(
-                Paths.get("src","test","resources","project","src"),
-                "tutorial.Stack"
-        );
+//        generateTOGAInput(
+//                Paths.get("src","test","resources","project","src"),
+//                "tutorial.Stack"
+//        );
+        Path jDoctorOutput = Paths.get("generator", "resources", "jdoctor-output.json");
+        jDoctorToOracleOutput(jDoctorOutput);
     }
 }
