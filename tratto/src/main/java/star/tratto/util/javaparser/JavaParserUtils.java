@@ -597,10 +597,11 @@ public class JavaParserUtils {
             return false; // Either type2 is generic, or an unknown class. In both cases, type1 cannot be instanceof it.
         }
         try {
-            List<String> type2TypeParameters = resolvedType2.asReferenceType().getTypeDeclaration().get().getTypeParameters()
-                    .stream().map(ResolvedTypeParameterDeclaration::getName).collect(Collectors.toList());
-            if (type2TypeParameters.contains(type1)) {
-                return true; // Special case: type1 is a generic and a type parameter of type2
+            List<String> classTypeParameters = getClassOrInterface(oracleDatapoint.getClassSourceCode(), oracleDatapoint.getClassName())
+                    .resolve().getTypeParameters().stream().map(ResolvedTypeParameterDeclaration::getName).toList();
+            if (classTypeParameters.contains(type1)) {
+                // Special case: type1 is a type parameter of the oracle datapoint class, so "type1Var instanceof type2" compiles for any type2
+                return true;
             }
         } catch (UnsupportedOperationException|NoSuchElementException|NullPointerException ignored) {}
         return isInstanceOf(type1, type2, oracleDatapoint, false) || isInstanceOf(type2, type1, null, false);

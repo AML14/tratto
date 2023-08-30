@@ -236,6 +236,8 @@ public class JavaParserUtilsTest {
         assertTrue(doesInstanceofCompile("T", "java.lang.Object", oracleDatapoints.get(0)));
         assertFalse(doesInstanceofCompile("java.lang.Object", "T", null));
         assertFalse(doesInstanceofCompile("java.lang.Object", "T", oracleDatapoints.get(0)));
+        assertTrue(doesInstanceofCompile("T", "org.apache.commons.collections4.Equator", oracleDatapoints.get(0)));
+        assertTrue(doesInstanceofCompile("T", "java.lang.String", oracleDatapoints.get(0)));
         assertFalse(doesInstanceofCompile("java.lang.Object", "non.existing.Clazz", null));
         assertFalse(doesInstanceofCompile("java.lang.Object", "non.existing.Clazz", oracleDatapoints.get(0)));
         assertFalse(doesInstanceofCompile("non.existing.Clazz", "java.lang.Object", null));
