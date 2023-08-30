@@ -9,7 +9,6 @@ import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.comments.JavadocComment;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.symbolsolver.utils.SymbolSolverCollectionStrategy;
-import data.JDoctorCondition;
 import data.JDoctorOutput;
 import data.OracleOutput;
 import data.OracleType;
