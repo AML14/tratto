@@ -33,13 +33,13 @@ public class Tog {
      * Converts the output of a given TOG to a list of OracleOutput records.
      *
      * @param togType a TOG
-     * @param srcDir the directory to the project source code
+     * @param dir the directory for mapping outputs
      */
-    private static void generateOracleOutputOperation(TogType togType, Path srcDir) {
+    private static void generateOracleOutputOperation(TogType togType, Path dir) {
         if (togType == TogType.TOGA) {
-            TogUtils.mapTOGAOutputToOracleOutput(srcDir);
+            TogUtils.mapTOGAOutputToOracleOutput(dir);
         } else if (togType == TogType.JDOCTOR) {
-            TogUtils.jDoctorToOracleOutput();
+            TogUtils.jDoctorToOracleOutput(dir);
         }
     }
 
