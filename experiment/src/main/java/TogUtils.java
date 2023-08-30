@@ -395,10 +395,10 @@ public class TogUtils {
      * {@link OracleOutput} records and saves the output to
      * "output/jdoctor/oracle_outputs.json".
      *
+     * @param jDoctorPath path to the JDoctor JSON output
      * @throws IllegalArgumentException if jDoctorPath does not exist
      */
-    public static void jDoctorToOracleOutput() {
-        Path jDoctorPath = output.resolve("jdoctor").resolve("jdoctor_output.json");
+    public static void jDoctorToOracleOutput(Path jDoctorPath) {
         if (!Files.exists(jDoctorPath)) {
             throw new IllegalArgumentException("Unable to find JDoctor output file " + jDoctorPath);
         }
