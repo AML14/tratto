@@ -29,7 +29,9 @@ public record JDoctorOutput(
     ) {}
 
     public record Parameter(
-
+        @JsonProperty("type") Type type,
+        @JsonProperty("name") String name,
+        @JsonProperty("nullable") boolean isNullable
     ) {}
 
     public record Type(
