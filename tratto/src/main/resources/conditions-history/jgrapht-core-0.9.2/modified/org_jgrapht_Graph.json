@@ -1,4 +1,43 @@
 [
+
+  {
+    "operation": {
+      "classname": "org.jgrapht.Graph",
+      "name": "addEdge",
+      "parameterTypes": [
+        "java.lang.Object",
+        "java.lang.Object"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "sourceVertex",
+        "targetVertex"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.IllegalArgumentException",
+        "description": "@throws java.lang.IllegalArgumentException if source or target vertices are not found in the graph.",
+        "guard": {
+          "condition": "receiverObjectID.containsVertex(sourceVertex)==false || receiverObjectID.containsVertex(targetVertex)==false",
+          "description": "if source or target vertices are not found in the graph."
+        }
+      },
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException if any of the specified vertices is null.",
+        "guard": {
+          "condition": "sourceVertex==null || targetVertex==null",
+          "description": "if any of the specified vertices is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
   {
     "operation": {
       "classname": "org.jgrapht.Graph",
@@ -18,7 +57,24 @@
       "receiverName": "receiverObjectID",
       "returnName": "methodResultID"
     },
-    "throws": [],
+    "throws": [
+      {
+        "exception": "java.lang.IllegalArgumentException",
+        "description": "@throws java.lang.IllegalArgumentException if source or target vertices are not found in the graph.",
+        "guard": {
+          "condition": "receiverObjectID.containsVertex(sourceVertex)==false || receiverObjectID.containsVertex(targetVertex)==false",
+          "description": "if source or target vertices are not found in the graph."
+        }
+      },
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException if any of the specified vertices is null.",
+        "guard": {
+          "condition": "sourceVertex==null || targetVertex==null",
+          "description": "if any of the specified vertices is null."
+        }
+      }
+    ],
     "post": [
       {
         "property": {

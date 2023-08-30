@@ -1,0 +1,93 @@
+[
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.analysis.interpolation.LoessInterpolator",
+      "name": "org.apache.commons.math3.analysis.interpolation.LoessInterpolator",
+      "parameterTypes": [
+        "double",
+        "int"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "bandwidth",
+        "robustnessIters"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param bandwidth when computing the loess fit at a particular point this fraction of source points closest to the current point is taken into account for computing a least-squares regression. A sensible value is usually 0.25 to 0.5. bandwidth is the default value is DEFAULT_BANDWIDTH.",
+        "guard": {
+          "condition": "bandwidth==0.25",
+          "description": "when computing the loess fit at a particular point this fraction of source points closest to the current point is taken into account for computing a least-squares regression. A sensible value is usually 0.25 to 0.5. bandwidth is the default value is DEFAULT_BANDWIDTH."
+        }
+      },
+      {
+        "description": "@param robustnessIters This many robustness iterations are done. A sensible value is usually 0 (just the initial fit without any robustness iterations) to 4 the default value is DEFAULT_ROBUSTNESS_ITERS.",
+        "guard": {
+          "condition": "bandwidth==0",
+          "description": "This many robustness iterations are done. A sensible value is usually 0 (just the initial fit without any robustness iterations) to 4 the default value is DEFAULT_ROBUSTNESS_ITERS."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.analysis.interpolation.LoessInterpolator",
+      "name": "org.apache.commons.math3.analysis.interpolation.LoessInterpolator",
+      "parameterTypes": [
+        "double",
+        "int",
+        "double"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "bandwidth",
+        "robustnessIters",
+        "accuracy"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.OutOfRangeException",
+        "description": "@throws org.apache.commons.math3.exception.OutOfRangeException bandwidth does <0 or >1.",
+        "guard": {
+          "condition": "bandwidth<0 || bandwidth>1",
+          "description": "bandwidth does <0 or >1."
+        }
+      },
+      {
+        "exception": "org.apache.commons.math3.exception.NotPositiveException",
+        "description": "@throws org.apache.commons.math3.exception.NotPositiveException robustnessIters is negative.",
+        "guard": {
+          "condition": "robustnessIters<0",
+          "description": "robustnessIters is negative."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param bandwidth when computing the loess fit at a particular point this fraction of source points closest to the current point is taken into account for computing a least-squares regression. A sensible value is usually 0.25 to 0.5. bandwidth is the default value is DEFAULT_BANDWIDTH.",
+        "guard": {
+          "condition": "bandwidth==0.25",
+          "description": "when computing the loess fit at a particular point this fraction of source points closest to the current point is taken into account for computing a least-squares regression. A sensible value is usually 0.25 to 0.5. bandwidth is the default value is DEFAULT_BANDWIDTH."
+        }
+      },
+      {
+        "description": "@param robustnessIters This many robustness iterations are done. A sensible value is usually 0 (just the initial fit without any robustness iterations) to 4 the default value is DEFAULT_ROBUSTNESS_ITERS.",
+        "guard": {
+          "condition": "bandwidth==0",
+          "description": "This many robustness iterations are done. A sensible value is usually 0 (just the initial fit without any robustness iterations) to 4 the default value is DEFAULT_ROBUSTNESS_ITERS."
+        }
+      }
+    ]
+  }
+]

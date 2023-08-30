@@ -1,11 +1,20 @@
 package star.tratto.input;
 
+import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.CallableDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.javadoc.Javadoc;
 import com.github.javaparser.javadoc.JavadocBlockTag;
+import com.github.javaparser.resolution.UnsolvedSymbolException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import star.tratto.data.OracleDatapoint;
+import star.tratto.data.OracleType;
+import star.tratto.data.oracles.OracleDatapointBuilder;
+import star.tratto.data.JPClassNotFoundException;
+import star.tratto.util.javaparser.DatasetUtils;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -20,13 +29,24 @@ import java.util.Optional;
  */
 public class ClassAnalyzer {
 
+    private static final Logger logger = LoggerFactory.getLogger(ClassAnalyzer.class);
+
     private static ClassAnalyzer instance;
     private String projectPath;
-    private String classPath;
-    private OracleDatapoint baseOracleDatapoint;
+    private String className;
+    private String classSourceCode;
+    private CompilationUnit classCu;
+    private TypeDeclaration<?> classTd;
+    private final OracleDatapointBuilder oracleDPBuilder;
 
     private ClassAnalyzer() {
-        // TODO: Initialize baseOracleDatapoint
+        this.projectPath = null;
+        this.className = null;
+        this.classSourceCode = null;
+        this.classCu = null;
+        this.classTd = null;
+        oracleDPBuilder = new OracleDatapointBuilder();
+        oracleDPBuilder.resetWithDefaults();
     }
 
     public static ClassAnalyzer getInstance() {
@@ -36,42 +56,78 @@ public class ClassAnalyzer {
         return instance;
     }
 
-    public String getProjectPath() {
-        return projectPath;
-    }
-
+    /**
+     * Updating the project path also means resetting the class features, since
+     * the latter depend on the former.
+     */
     public void setProjectPath(String projectPath) {
         if (projectPath != null && !projectPath.equals(this.projectPath)) {
+            reset();
             this.projectPath = projectPath;
-            updateBaseOracleDatapointWithNewProject();
+            updateOracleDPBuilderWithNewProject();
         }
     }
 
-    public String getClassPath() {
-        return classPath;
-    }
-
-    public void setClassPath(String classPath) {
-        if (classPath != null && !classPath.equals(this.classPath)) {
-            this.classPath = classPath;
-            updateBaseOracleDatapointWithNewClass();
+    public void setClassFeatures(String className, String classSourceCode, CompilationUnit classCu, TypeDeclaration<?> classTd) {
+        if (classSourceCode != null && !classSourceCode.equals(this.classSourceCode)) {
+            this.className = className;
+            this.classSourceCode = classSourceCode;
+            this.classCu = classCu;
+            this.classTd = classTd;
+            updateOracleDPBuilderWithNewClassFeatures();
         }
     }
 
-    private void updateBaseOracleDatapointWithNewProject() {
-        // TODO
+    private void updateOracleDPBuilderWithNewProject() {
+        Path projectPathPath = Path.of(projectPath);
+        oracleDPBuilder.setTokensProjectClasses(DatasetUtils.getProjectClassTokens(projectPathPath));
+        oracleDPBuilder.setTokensProjectClassesNonPrivateStaticNonVoidMethods(DatasetUtils.getProjectNonPrivateStaticNonVoidMethodsTokens(projectPathPath));
+        oracleDPBuilder.setTokensProjectClassesNonPrivateStaticAttributes(DatasetUtils.getProjectNonPrivateStaticAttributesTokens(projectPathPath));
+        oracleDPBuilder.reset("project", true);
     }
 
-    private void updateBaseOracleDatapointWithNewClass() {
-        // TODO
+    private void updateOracleDPBuilderWithNewClassFeatures() {
+        oracleDPBuilder.setClassName(className);
+        oracleDPBuilder.setClassSourceCode(classSourceCode);
+        oracleDPBuilder.setClassJavadoc(DatasetUtils.getClassJavadoc(classTd));
+        oracleDPBuilder.setPackageName(DatasetUtils.getClassPackage(classCu));
+        oracleDPBuilder.reset("class", true);
     }
 
-    public List<OracleDatapoint> getOracleDatapointsFromClass(TypeDeclaration<?> clazz) {
+    private void updateOracleDPBuilderWithNewMethodFeatures(CallableDeclaration<?> methodOrConstructor) {
+        String methodJavadoc = DatasetUtils.getCallableJavadoc(methodOrConstructor);
+        oracleDPBuilder.setMethodSourceCode(DatasetUtils.getCallableSourceCode(methodOrConstructor));
+        oracleDPBuilder.setMethodJavadoc(methodJavadoc);
+        oracleDPBuilder.setTokensMethodJavadocValues(DatasetUtils.getJavadocValues(methodJavadoc));
+        oracleDPBuilder.setTokensMethodArguments(DatasetUtils.getTokensMethodArguments(classTd, methodOrConstructor));
+        try {
+            oracleDPBuilder.setTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(DatasetUtils.getTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(classTd, methodOrConstructor));
+            oracleDPBuilder.setTokensMethodVariablesNonPrivateNonStaticAttributes(DatasetUtils.getTokensMethodVariablesNonPrivateNonStaticAttributes(classTd, methodOrConstructor));
+        } catch (JPClassNotFoundException e) {
+            logger.warn("Class {} not found while trying to get variable tokens from method {}", className, methodOrConstructor.getNameAsString());
+        }
+        oracleDPBuilder.reset("method", true);
+    }
+
+    /**
+     * Generates oracle datapoints based on currently set project path and class
+     * features.
+     * @throws IllegalStateException if {@link #setProjectPath} or {@link #setClassFeatures}
+     * have not been called before this method, i.e., if the project path or class features
+     * are null.
+     * @throws UnsolvedSymbolException if some symbol within the class source code
+     * could not be solved.
+     */
+    public List<OracleDatapoint> getOracleDatapointsFromClass() {
+        if (projectPath == null || className == null) {
+            throw new IllegalStateException("Project path or class features are null. You need to call setProjectPath and setClassFeatures before this method.");
+        }
+
         List<OracleDatapoint> oracleDatapoints = new ArrayList<>();
         List<CallableDeclaration<?>> methodsAndConstructors = new ArrayList<>();
 
-        methodsAndConstructors.addAll(clazz.getMethods());
-        methodsAndConstructors.addAll(clazz.getConstructors());
+        methodsAndConstructors.addAll(classTd.getMethods());
+        methodsAndConstructors.addAll(classTd.getConstructors());
 
         for (CallableDeclaration<?> methodOrConstructor : methodsAndConstructors) {
             oracleDatapoints.addAll(getOracleDatapointsFromMethod(methodOrConstructor));
@@ -80,7 +136,21 @@ public class ClassAnalyzer {
         return oracleDatapoints;
     }
 
+    /**
+     * Generates oracle datapoints based on currently set project path and class
+     * features, and passed method.
+     * @throws IllegalStateException if {@link #setProjectPath} or {@link #setClassFeatures}
+     * have not been called before this method, i.e., if the project path or class features
+     * are null.
+     */
     public List<OracleDatapoint> getOracleDatapointsFromMethod(CallableDeclaration<?> methodOrConstructor) {
+        if (projectPath == null || className == null) {
+            throw new IllegalStateException("Project path or class features are null. You need to call setProjectPath and setClassFeatures before this method.");
+        }
+
+        // At this point we can already update the OracleDatapointBuilder with the new method features
+        updateOracleDPBuilderWithNewMethodFeatures(methodOrConstructor);
+
         List<OracleDatapoint> oracleDatapoints = new ArrayList<>();
 
         Optional<Javadoc> optionalJavadoc = methodOrConstructor.getJavadoc();
@@ -89,12 +159,25 @@ public class ClassAnalyzer {
         }
 
         // If no Javadoc is present, we generate one OracleDatapoint for each type, with empty javadocTag and methodJavadoc
-        // TODO: Generate the three OracleDatapoints
+        addOracleToList(oracleDatapoints, OracleType.PRE, "");
+        addOracleToList(oracleDatapoints, OracleType.NORMAL_POST, "");
+        addOracleToList(oracleDatapoints, OracleType.EXCEPT_POST, "");
 
         return oracleDatapoints;
     }
 
+    /**
+     * Generates oracle datapoints based on currently set project path and class
+     * features, and passed Javadoc.
+     * @throws IllegalStateException if {@link #setProjectPath} or {@link #setClassFeatures}
+     * have not been called before this method, i.e., if the project path or class features
+     * are null.
+     */
     public List<OracleDatapoint> getOracleDatapointsFromJavadoc(Javadoc javadoc) {
+        if (projectPath == null || className == null) {
+            throw new IllegalStateException("Project path or class features are null. You need to call setProjectPath and setClassFeatures before this method.");
+        }
+
         List<OracleDatapoint> oracleDatapoints = new ArrayList<>();
         boolean hasParamTag = false;
         boolean hasReturnTag = false;
@@ -103,28 +186,54 @@ public class ClassAnalyzer {
         List<JavadocBlockTag> javadocTags = javadoc.getBlockTags();
         for (JavadocBlockTag javadocTag : javadocTags) {
             if (javadocTag.getType().equals(JavadocBlockTag.Type.PARAM)) {
-                // TODO: Generate precondition
+                addOracleToList(oracleDatapoints, OracleType.PRE, javadocTag.toText());
                 hasParamTag = true;
             } else if (javadocTag.getType().equals(JavadocBlockTag.Type.RETURN)) {
-                // TODO: Generate postcondition
+                addOracleToList(oracleDatapoints, OracleType.NORMAL_POST, javadocTag.toText());
                 hasReturnTag = true;
             } else if (javadocTag.getType().equals(JavadocBlockTag.Type.THROWS) || javadocTag.getType().equals(JavadocBlockTag.Type.EXCEPTION)) {
-                // TODO: Generate exceptional behavior
+                addOracleToList(oracleDatapoints, OracleType.EXCEPT_POST, javadocTag.toText());
                 hasThrowsOrExceptionTag = true;
             }
         }
 
         // If there's some missing tag, generate OracleDatapoint without associated tag
         if (!hasParamTag) {
-            // TODO: Generate precondition
+            addOracleToList(oracleDatapoints, OracleType.PRE, "");
         }
         if (!hasReturnTag) {
-            // TODO: Generate postcondition
+            addOracleToList(oracleDatapoints, OracleType.NORMAL_POST, "");
         }
         if (!hasThrowsOrExceptionTag) {
-            // TODO: Generate exceptional behavior
+            addOracleToList(oracleDatapoints, OracleType.EXCEPT_POST, "");
         }
 
         return oracleDatapoints;
+    }
+
+    private void addOracleToList(List<OracleDatapoint> oracleDatapoints, OracleType oracleType, String javadocTag) {
+        oracleDPBuilder.setOracleType(oracleType);
+        oracleDPBuilder.setJavadocTag(javadocTag);
+        oracleDatapoints.add(oracleDPBuilder.build("method", true));
+    }
+
+    /** For testing purposes */
+    void setMethodFeatures(CallableDeclaration<?> methodOrConstructor) {
+        updateOracleDPBuilderWithNewMethodFeatures(methodOrConstructor);
+    }
+
+    /** For testing purposes */
+    void reset() {
+        oracleDPBuilder.resetWithDefaults();
+        projectPath = null;
+        className = null;
+        classSourceCode = null;
+        classCu = null;
+        classTd = null;
+    }
+
+    /** For testing purposes */
+    OracleDatapointBuilder getOracleDPBuilder() {
+        return oracleDPBuilder;
     }
 }

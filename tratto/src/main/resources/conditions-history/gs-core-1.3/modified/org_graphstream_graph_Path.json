@@ -1,1 +1,64 @@
-[]
+[
+  {
+    "operation": {
+      "classname": "org.graphstream.graph.Path",
+      "name": "contains",
+      "parameterTypes": [
+        "org.graphstream.graph.Node"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "node"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID==true",
+          "description": "true if the path contains the node."
+        },
+        "description": "true if the path contains the node.",
+        "guard": {
+          "condition": "receiverObjectID.getNodePath().contains(node)",
+          "description": "true if the path contains the node."
+        }
+      }
+    ],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.graphstream.graph.Path",
+      "name": "contains",
+      "parameterTypes": [
+        "org.graphstream.graph.Edge"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "edge"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID==true",
+          "description": "true if the path contains the edge."
+        },
+        "description": "true if the path contains the edge.",
+        "guard": {
+          "condition": "receiverObjectID.getEdgePath().contains(edge)",
+          "description": "true if the path contains the edge."
+        }
+      }
+    ],
+    "pre": []
+  }
+]

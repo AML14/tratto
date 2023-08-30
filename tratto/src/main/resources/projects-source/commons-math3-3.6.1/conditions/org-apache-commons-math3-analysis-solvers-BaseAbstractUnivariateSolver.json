@@ -1,0 +1,100 @@
+[
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.analysis.solvers.BaseAbstractUnivariateSolver",
+      "name": "setup",
+      "parameterTypes": [
+        "int",
+        "org.apache.commons.math3.analysis.UnivariateFunction",
+        "double",
+        "double",
+        "double"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "maxEval",
+        "f",
+        "min",
+        "max",
+        "startValue"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NullArgumentException",
+        "description": "@throws org.apache.commons.math3.exception.NullArgumentException f is null.",
+        "guard": {
+          "condition": "f==null",
+          "description": "f is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.analysis.solvers.BaseAbstractUnivariateSolver",
+      "name": "verifyInterval",
+      "parameterTypes": [
+        "double",
+        "double"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "lower",
+        "upper"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NumberIsTooLargeException",
+        "description": "@throws org.apache.commons.math3.exception.NumberIsTooLargeException lower >= upper.",
+        "guard": {
+          "condition": "lower>=upper",
+          "description": "lower >= upper."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.analysis.solvers.BaseAbstractUnivariateSolver",
+      "name": "verifySequence",
+      "parameterTypes": [
+        "double",
+        "double",
+        "double"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "lower",
+        "initial",
+        "upper"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NumberIsTooLargeException",
+        "description": "@throws org.apache.commons.math3.exception.NumberIsTooLargeException lower >= initial or initial >= upper.",
+        "guard": {
+          "condition": "lower>=initial || initial>=upper",
+          "description": "lower >= initial or initial >= upper."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  }
+]

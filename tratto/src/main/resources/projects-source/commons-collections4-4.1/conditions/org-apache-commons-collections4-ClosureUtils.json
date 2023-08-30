@@ -1,0 +1,450 @@
+[
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.ClosureUtils",
+      "name": "whileClosure",
+      "parameterTypes": [
+        "org.apache.commons.collections4.Predicate",
+        "org.apache.commons.collections4.Closure"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "predicate",
+        "closure"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException either argument is null.",
+        "guard": {
+          "condition": "predicate==null || closure==null",
+          "description": "either argument is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param predicate the predicate to use as an end of loop test. predicate is not null.",
+        "guard": {
+          "condition": "(predicate==null) == false",
+          "description": "the predicate to use as an end of loop test. predicate is not null."
+        }
+      },
+      {
+        "description": "@param closure the closure to call repeatedly. closure is not null.",
+        "guard": {
+          "condition": "(closure==null) == false",
+          "description": "the closure to call repeatedly. closure is not null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.ClosureUtils",
+      "name": "doWhileClosure",
+      "parameterTypes": [
+        "org.apache.commons.collections4.Closure",
+        "org.apache.commons.collections4.Predicate"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "closure",
+        "predicate"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException either argument is null.",
+        "guard": {
+          "condition": "closure==null || predicate==null",
+          "description": "either argument is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param closure the closure to call repeatedly. closure is not null.",
+        "guard": {
+          "condition": "(closure==null) == false",
+          "description": "the closure to call repeatedly. closure is not null."
+        }
+      },
+      {
+        "description": "@param predicate the predicate to use as an end of loop test. predicate is not null.",
+        "guard": {
+          "condition": "(predicate==null) == false",
+          "description": "the predicate to use as an end of loop test. predicate is not null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.ClosureUtils",
+      "name": "invokerClosure",
+      "parameterTypes": [
+        "java.lang.String"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "methodName"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the method name is null.",
+        "guard": {
+          "condition": "methodName==null",
+          "description": "the method name is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.ClosureUtils",
+      "name": "invokerClosure",
+      "parameterTypes": [
+        "java.lang.String",
+        "[Ljava.lang.Class;",
+        "[Ljava.lang.Object;"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "methodName",
+        "paramTypes",
+        "args"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the method name is null.",
+        "guard": {
+          "condition": "methodName==null",
+          "description": "the method name is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.ClosureUtils",
+      "name": "chainedClosure",
+      "parameterTypes": [
+        "[Lorg.apache.commons.collections4.Closure;"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "closures"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the closures array is null.",
+        "guard": {
+          "condition": "closures==null",
+          "description": "the closures array is null."
+        }
+      },
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException any closure in the array is null.",
+        "guard": {
+          "condition": "Arrays.stream(closures).anyMatch(jdVar -> jdVar==null)",
+          "description": "any closure in the array is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.ClosureUtils",
+      "name": "chainedClosure",
+      "parameterTypes": [
+        "java.util.Collection"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "closures"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the closures collection is null.",
+        "guard": {
+          "condition": "closures==null",
+          "description": "the closures collection is null."
+        }
+      },
+      {
+        "exception": "java.lang.IllegalArgumentException",
+        "description": "@throws java.lang.IllegalArgumentException the closures collection is empty.",
+        "guard": {
+          "condition": "((closures==null)==false) && (closures.isEmpty())",
+          "description": "the closures collection is empty."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.ClosureUtils",
+      "name": "ifClosure",
+      "parameterTypes": [
+        "org.apache.commons.collections4.Predicate",
+        "org.apache.commons.collections4.Closure"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "predicate",
+        "trueClosure"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the predicate or closure is null.",
+        "guard": {
+          "condition": "predicate==null || trueClosure==null",
+          "description": "the predicate or closure is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.ClosureUtils",
+      "name": "ifClosure",
+      "parameterTypes": [
+        "org.apache.commons.collections4.Predicate",
+        "org.apache.commons.collections4.Closure",
+        "org.apache.commons.collections4.Closure"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "predicate",
+        "trueClosure",
+        "falseClosure"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the predicate or either closure is null.",
+        "guard": {
+          "condition": "predicate==null || trueClosure==null || falseClosure==null",
+          "description": "the predicate or either closure is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.ClosureUtils",
+      "name": "switchClosure",
+      "parameterTypes": [
+        "[Lorg.apache.commons.collections4.Predicate;",
+        "[Lorg.apache.commons.collections4.Closure;"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "predicates",
+        "closures"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the either array is null.",
+        "guard": {
+          "condition": "predicates==null || closures==null",
+          "description": "the either array is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param predicates an array of predicates to check. predicates is not null.",
+        "guard": {
+          "condition": "(predicates==null) == false",
+          "description": "an array of predicates to check. predicates is not null."
+        }
+      },
+      {
+        "description": "@param closures an array of closures to call. closures is not null.",
+        "guard": {
+          "condition": "(closures==null) == false",
+          "description": "an array of closures to call. closures is not null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.ClosureUtils",
+      "name": "switchClosure",
+      "parameterTypes": [
+        "[Lorg.apache.commons.collections4.Predicate;",
+        "[Lorg.apache.commons.collections4.Closure;",
+        "org.apache.commons.collections4.Closure"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "predicates",
+        "closures",
+        "defaultClosure"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the either array is null.",
+        "guard": {
+          "condition": "predicates==null || closures==null",
+          "description": "the either array is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param predicates an array of predicates to check. predicates is not null.",
+        "guard": {
+          "condition": "(predicates==null) == false",
+          "description": "an array of predicates to check. predicates is not null."
+        }
+      },
+      {
+        "description": "@param closures an array of closures to call. closures is not null.",
+        "guard": {
+          "condition": "(closures==null) == false",
+          "description": "an array of closures to call. closures is not null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.ClosureUtils",
+      "name": "switchClosure",
+      "parameterTypes": [
+        "java.util.Map"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "predicatesAndClosures"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the map is null.",
+        "guard": {
+          "condition": "predicatesAndClosures==null",
+          "description": "the map is null."
+        }
+      },
+      {
+        "exception": "java.lang.IllegalArgumentException",
+        "description": "@throws java.lang.IllegalArgumentException the map is empty.",
+        "guard": {
+          "condition": "((predicatesAndClosures==null)==false) && (predicatesAndClosures.isEmpty())",
+          "description": "the map is empty."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.ClosureUtils",
+      "name": "switchMapClosure",
+      "parameterTypes": [
+        "java.util.Map"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "objectsAndClosures"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the map is null.",
+        "guard": {
+          "condition": "objectsAndClosures==null",
+          "description": "the map is null."
+        }
+      },
+      {
+        "exception": "java.lang.IllegalArgumentException",
+        "description": "@throws java.lang.IllegalArgumentException the map is empty.",
+        "guard": {
+          "condition": "((objectsAndClosures==null)==false) && (objectsAndClosures.isEmpty())",
+          "description": "the map is empty."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  }
+]

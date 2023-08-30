@@ -5,8 +5,8 @@ import star.tratto.data.OracleDatapoint;
 
 import java.util.List;
 
-import static star.tratto.util.JavaParserUtils.getReturnTypeOfExpression;
-import static star.tratto.util.JavaParserUtils.isInstanceOf;
+import static star.tratto.util.javaparser.JavaParserUtils.getReturnTypeOfExpression;
+import static star.tratto.util.javaparser.JavaParserUtils.isInstanceOf;
 import static star.tratto.util.StringUtils.fullyQualifiedClassName;
 
 /**
@@ -39,9 +39,9 @@ public class NoStreamRestriction extends SingleTokenRestriction {
 
         // If any of the variables is a collection, then "stream()" should be a method available within the oracleDatapoint
         boolean noneIsCollection = oracleDatapoint.getTokensMethodVariablesNonPrivateNonStaticNonVoidMethods().stream().noneMatch(m ->
-                m.getValue0().equals("stream") &&
-                m.getValue1().equals("java.util") &&
-                m.getValue2().equals("Collection")
+                m.methodName().equals("stream") &&
+                m.packageName().equals("java.util") &&
+                m.className().equals("Collection")
         );
         if (noneIsCollection) {
             return true;

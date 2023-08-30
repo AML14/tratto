@@ -1,1 +1,84 @@
-[]
+[
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.geometry.euclidean.threed.Vector3D",
+      "name": "Vector3D",
+      "parameterTypes": [
+        "[D"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "v"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.DimensionMismatchException",
+        "description": "@throws org.apache.commons.math3.exception.DimensionMismatchException if array does not have 3 elements.",
+        "guard": {
+          "condition": "(v.length==3)==false",
+          "description": "if array does not have 3 elements."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.geometry.euclidean.threed.Vector3D",
+      "name": "orthogonal",
+      "parameterTypes": []
+    },
+    "identifiers": {
+      "parameters": [],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.MathArithmeticException",
+        "description": "@throws org.apache.commons.math3.exception.MathArithmeticException if the norm of the instance is null.",
+        "guard": {
+          "condition": "receiverObjectID.getNorm()==0",
+          "description": "if the norm of the instance is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.geometry.euclidean.threed.Vector3D",
+      "name": "angle",
+      "parameterTypes": [
+        "org.apache.commons.math3.geometry.euclidean.threed.Vector3D",
+        "org.apache.commons.math3.geometry.euclidean.threed.Vector3D"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "v1",
+        "v2"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.MathArithmeticException",
+        "description": "@throws org.apache.commons.math3.exception.MathArithmeticException if either vector has a null norm.",
+        "guard": {
+          "condition": "v1.getNorm()==0 || v2.getNorm()==0",
+          "description": "if either vector has a null norm."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  }
+]
