@@ -46,13 +46,11 @@ public class Tog {
     public static void main(String[] args) {
         TogType togType = TogType.valueOf(args[0].toUpperCase());
         OperationType operationType = OperationType.valueOf(args[1].toUpperCase());
-        Path srcDir = Paths.get(args[2]);
-        String fullyQualifiedName = args[3];
         switch (operationType) {
-            case REMOVE_ORACLES -> TestUtils.removeOracles(srcDir, fullyQualifiedName);
+            case REMOVE_ORACLES -> TestUtils.removeOracles(Paths.get(args[2]), args[3]);
             case INSERT_ORACLES -> throw new IllegalArgumentException("Currently invalid operation");
-            case GENERATE_TOG_INPUTS -> generateTogInputOperation(togType, srcDir, fullyQualifiedName);
-            case GENERATE_ORACLE_OUTPUTS -> generateOracleOutputOperation(togType, srcDir);
+            case GENERATE_TOG_INPUTS -> generateTogInputOperation(togType, Paths.get(args[2]), args[3]);
+            case GENERATE_ORACLE_OUTPUTS -> generateOracleOutputOperation(togType, Paths.get(args[2]));
             default -> throw new IllegalArgumentException("Unknown operation " + operationType);
         }
     }
