@@ -40,8 +40,4 @@ mv "${TOGA_PROJECT}${SEPARATOR}oracle_preds.csv" "${TOGA_OUTPUT}"
 
 cd "${ROOT_DIR}"
 
-mv "${TOGA_PROJECT}${SEPARATOR}oracle_preds.csv" "${TOGA_OUTPUT}"
-
-cd "${ROOT_DIR}"
-
-java -jar "generator${SEPARATOR}resources${SEPARATOR}experiment.jar" toga generate_oracle_ouputs $SRC_PATH
+java -jar "generator${SEPARATOR}resources${SEPARATOR}experiment.jar" toga generate_oracle_outputs $SRC_PATH
