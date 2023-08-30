@@ -10,6 +10,7 @@ import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.body.BodyDeclaration;
 import com.github.javaparser.ast.body.CallableDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.body.EnumDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
@@ -719,25 +720,27 @@ public class JavaParserUtils {
 
     public static TypeDeclaration<?> getClassOrInterface(CompilationUnit cu, String name) {
         try {
-            return cu.getLocalDeclarationFromClassname(name).get(0);
-        } catch (NoSuchElementException|IndexOutOfBoundsException ignored) {
-            // There is still another way to retrieve the class, as below
-        }
-        try {
-            return cu.getClassByName(name).get();
+            List<ClassOrInterfaceDeclaration> classOrInterfaceList = cu.getLocalDeclarationFromClassname(name);
+            if (!classOrInterfaceList.isEmpty()) {
+                return classOrInterfaceList.get(0);
+            }
         } catch (NoSuchElementException ignored) {
-            // No class, try interface
+            // There are other alternatives to retrieve class, interface, etc., as below
         }
-        try {
-            return cu.getInterfaceByName(name).get();
-        } catch (NoSuchElementException ignored) {
-            // No interface, try enum
+        Optional<ClassOrInterfaceDeclaration> classOrInterface = cu.getClassByName(name);
+        if (classOrInterface.isPresent()) {
+            return classOrInterface.get();
         }
-        try {
-            return cu.getEnumByName(name).get();
-        } catch (NoSuchElementException e) {
-            throw new RuntimeException("Could not find class or interface " + name + " in compilation unit.", e);
+        Optional<ClassOrInterfaceDeclaration> interface0 = cu.getInterfaceByName(name);
+        if (interface0.isPresent()) {
+            return interface0.get();
         }
+        Optional<EnumDeclaration> enum0 = cu.getEnumByName(name);
+        if (enum0.isPresent()) {
+            return enum0.get();
+        }
+
+        throw new RuntimeException("Could not find class, interface or enum " + name + " in compilation unit.");
     }
 
     public static TypeDeclaration<?> getClassOrInterface(String classSourceCode, String name) {
