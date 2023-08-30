@@ -10,7 +10,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TogUtilsTest {
-    private Path setupJDoctorOutput() throws IOException, InterruptedException {
+    private void setupJDoctorOutput() throws IOException, InterruptedException {
         Path jDoctorSh = Paths.get("generator", "jdoctor.sh");
         Path projectSrc = Paths.get("src", "test", "resources", "project", "src", "main", "java");
         Path projectBin = Paths.get("src", "test", "resources", "project", "target", "classes");
@@ -22,13 +22,12 @@ public class TogUtilsTest {
                 projectBin.toString()
         );
         processBuilder.start().waitFor();
-        return Paths.get("output", "jdoctor", "jdoctor_output.json");
     }
 
     @Test
     public void jDoctorToOracleOutputTest() throws Throwable {
-        Path jDoctorPath = setupJDoctorOutput();
-        TogUtils.jDoctorToOracleOutput(jDoctorPath);
+        setupJDoctorOutput();
+        TogUtils.jDoctorToOracleOutput();
         Path oraclePath = Paths.get("output", "jdoctor", "oracle_outputs.json");
         List<OracleOutput> oracleOutputList = FileUtils.readJSONList(oraclePath, OracleOutput.class);
         System.out.println(oracleOutputList);
