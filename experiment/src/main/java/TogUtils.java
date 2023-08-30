@@ -268,10 +268,14 @@ public class TogUtils {
 
     private static String contextualizeOracle(JDoctorOutput jDoctorOutput, String oracle) {
         Expression oracleExpression = StaticJavaParser.parseExpression(oracle);
+        System.out.println(oracle);
         return "";
     }
 
     private static OracleOutput paramTagToOracleOutput(JDoctorOutput jDoctorOutput, ParamTag paramTag) {
+        if (paramTag.condition().isEmpty()) {
+            return null;
+        }
         String oracle = contextualizeOracle(jDoctorOutput, paramTag.condition());
         return new OracleOutput(
                 jDoctorOutput.name(),
@@ -285,6 +289,9 @@ public class TogUtils {
     }
 
     private static OracleOutput returnTagToOracleOutput(JDoctorOutput jDoctorOutput, ReturnTag returnTag) {
+        if (returnTag == null || returnTag.condition().isEmpty()) {
+            return null;
+        }
         String oracle = contextualizeOracle(jDoctorOutput, returnTag.condition());
         return new OracleOutput(
                 jDoctorOutput.name(),
@@ -298,6 +305,9 @@ public class TogUtils {
     }
 
     private static OracleOutput throwsTagToOracleOutput(JDoctorOutput jDoctorOutput, ThrowsTag throwsTag) {
+        if (throwsTag.condition().isEmpty()) {
+            return null;
+        }
         String oracle = contextualizeOracle(jDoctorOutput, throwsTag.condition());
         return new OracleOutput(
                 jDoctorOutput.name(),
@@ -321,7 +331,10 @@ public class TogUtils {
         jDoctorOutput.throwsTags().forEach(throwsTag -> oracleOutputs.add(
                 throwsTagToOracleOutput(jDoctorOutput, throwsTag)
         ));
-        return oracleOutputs;
+        return oracleOutputs
+                .stream()
+                .filter(Objects::nonNull)
+                .toList();
     }
 
     public static void jDoctorToOracleOutput(Path jDoctorPath) {
