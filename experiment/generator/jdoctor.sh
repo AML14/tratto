@@ -28,4 +28,10 @@ OUTPUT_DIR="$RESOURCES_DIR/../../output"
 JDOCTOR="java -jar $RESOURCES_DIR/toradocu-1.0-all.jar"
 mkdir -p "$OUTPUT_DIR"
 # use JDoctor to generate oracles
-(export JAVA_HOME=$JAVA8_HOME ; $JDOCTOR --target-class "$TARGET_CLASS" --source-dir "$SRC_DIR" --class-dir "$CLASS_DIR")
+(export JAVA_HOME=$JAVA8_HOME ;
+$JDOCTOR \
+--target-class "$TARGET_CLASS" \
+--source-dir "$SRC_DIR" \
+--class-dir "$CLASS_DIR" \
+--condition-translator-output "$RESOURCES_DIR/jdoctor-output.json"  # location of JDoctor output in JSON format
+)
