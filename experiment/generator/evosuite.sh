@@ -12,9 +12,6 @@ if [ -n "$JDK_OLD_PATH" ]; then
     JDK_NEW_NAME="jdk-1.8.jdk"
     JDK_NEW_PATH=$(dirname "$JDK_OLD_PATH")"/$JDK_NEW_NAME"
 
-    echo $JDK_OLD_PATH
-    echo $JDK_NEW_PATH
-
     if [ $JDK_OLD_PATH != $JDK_NEW_PATH ]; then
       mv "$JDK_OLD_PATH" "$JDK_NEW_PATH"
     fi
