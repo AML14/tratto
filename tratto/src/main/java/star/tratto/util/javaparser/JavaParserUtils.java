@@ -601,6 +601,7 @@ public class JavaParserUtils {
                     .resolve().getTypeParameters().stream().map(ResolvedTypeParameterDeclaration::getName).toList();
             if (classTypeParameters.contains(type1)) {
                 // Special case: type1 is a type parameter of the oracle datapoint class, so "type1Var instanceof type2" compiles for any type2
+                // Example: The OracleDatapoint class is Equator<T>, and type1 is T. Then, this method returns true regardless of type2.
                 return true;
             }
         } catch (UnsupportedOperationException|NoSuchElementException|NullPointerException ignored) {}
