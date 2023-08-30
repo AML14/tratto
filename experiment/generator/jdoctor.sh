@@ -27,6 +27,7 @@ CLASS_DIR="$3"  # path to binary files of the system under test
 OUTPUT_DIR="$RESOURCES_DIR/../../output"
 JDOCTOR="java -jar $RESOURCES_DIR/toradocu-1.0-all.jar"
 mkdir -p "$OUTPUT_DIR"
+mkdir -p "$OUTPUT_DIR/jdoctor"
 # use JDoctor to generate oracles
 (export JAVA_HOME=$JAVA8_HOME ;
 $JDOCTOR \
