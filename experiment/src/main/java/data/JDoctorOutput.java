@@ -17,15 +17,22 @@ public record JDoctorOutput(
     @JsonProperty("throwsTags") List<ThrowsTag> throwsTags
 ) {
     public record ParamTag(
+        @JsonProperty("comment") String comment,
+        @JsonProperty("kind") String kind,
+        @JsonProperty("condition") String condition
 
     ) {}
 
     public record ThrowsTag(
-
+        @JsonProperty("comment") String comment,
+        @JsonProperty("kind") String kind,
+        @JsonProperty("condition") String condition
     ) {}
 
     public record ReturnTag(
-
+        @JsonProperty("comment") String comment,
+        @JsonProperty("kind") String kind,
+        @JsonProperty("condition") String condition
     ) {}
 
     public record Parameter(
