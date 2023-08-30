@@ -333,6 +333,17 @@ public class JavaParserUtils {
         }
     }
 
+    /**
+     * When evaluating the return type of an expression, such expression may contain the
+     * token "jdVar" (see {@link star.tratto.oraclegrammar.custom}). If so, this method
+     * adds a statement to the synthetic method where the expression is evaluated, to declare
+     * a variable "jdVar" with its type.
+     * @param syntheticMethodBody parent method where an expression will be evaluated and
+     *                            where the jdVar clause will be added if necessary
+     * @param expression the expression to evaluate, potentially containing "jdVar"
+     * @param oracleDatapoint OracleDatapoint containing additional necessary information
+     *                        to resolve the type of "jdVar"
+     */
     private static void handleJdVarIfNecessary(BlockStmt syntheticMethodBody, String expression, OracleDatapoint oracleDatapoint) {
         if (!expression.contains("jdVar")) {
             return;
