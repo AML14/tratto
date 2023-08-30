@@ -414,7 +414,7 @@ public class TogUtils {
 //                Paths.get("src","test","resources","project","src"),
 //                "tutorial.Stack"
 //        );
-        Path jDoctorOutput = Paths.get("generator", "resources", "jdoctor_output.json");
+        Path jDoctorOutput = output.resolve("jdoctor").resolve("jdoctor_output.json");
         jDoctorToOracleOutput(jDoctorOutput);
     }
 }
