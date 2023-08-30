@@ -604,7 +604,9 @@ public class JavaParserUtils {
                 // Example: The OracleDatapoint class is Equator<T>, and type1 is T. Then, this method returns true regardless of type2.
                 return true;
             }
-        } catch (UnsupportedOperationException|NoSuchElementException|NullPointerException ignored) {}
+        } catch (UnsupportedOperationException|NoSuchElementException|NullPointerException ignored) {
+            // Previous check is only intended for special case, it may throw these exceptions for normal cases, which are handled below
+        }
         return isInstanceOf(type1, type2, oracleDatapoint, false) || isInstanceOf(type2, type1, null, false);
     }
 
@@ -712,13 +714,19 @@ public class JavaParserUtils {
     public static TypeDeclaration<?> getClassOrInterface(CompilationUnit cu, String name) {
         try {
             return cu.getLocalDeclarationFromClassname(name).get(0);
-        } catch (NoSuchElementException|IndexOutOfBoundsException ignored) {}
+        } catch (NoSuchElementException|IndexOutOfBoundsException ignored) {
+            // There is still another way to retrieve the class, as below
+        }
         try {
             return cu.getClassByName(name).get();
-        } catch (NoSuchElementException ignored) {}
+        } catch (NoSuchElementException ignored) {
+            // No class, try interface
+        }
         try {
             return cu.getInterfaceByName(name).get();
-        } catch (NoSuchElementException ignored) {}
+        } catch (NoSuchElementException ignored) {
+            // No interface, try enum
+        }
         try {
             return cu.getEnumByName(name).get();
         } catch (NoSuchElementException e) {
