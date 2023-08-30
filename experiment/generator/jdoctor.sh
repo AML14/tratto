@@ -25,7 +25,7 @@ TARGET_CLASS="$1"  # fully-qualified name of target class
 SRC_DIR="$2"  # project source directory
 CLASS_DIR="$3"  # path to binary files of the system under test
 OUTPUT_DIR="$RESOURCES_DIR/../../output"
-JDOCTOR="java -jar $RESOURCES_DIR/toradocu-1.0-all.jar"
+JDOCTOR="$JAVA8_HOME/bin/java -jar $RESOURCES_DIR/toradocu-1.0-all.jar"
 mkdir -p "$OUTPUT_DIR"
 mkdir -p "$OUTPUT_DIR/jdoctor"
 # use JDoctor to generate oracles
