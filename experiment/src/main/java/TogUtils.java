@@ -413,11 +413,9 @@ public class TogUtils {
     }
 
     public static void main(String[] args) {
-//        generateTOGAInput(
-//                Paths.get("src","test","resources","project","src"),
-//                "tutorial.Stack"
-//        );
-        Path jDoctorOutput = output.resolve("jdoctor").resolve("jdoctor_output.json");
-        jDoctorToOracleOutput(jDoctorOutput);
+        generateTOGAInput(
+                Paths.get("src","test","resources","project","src"),
+                "tutorial.Stack"
+        );
     }
 }
