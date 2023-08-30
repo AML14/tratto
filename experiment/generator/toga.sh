@@ -3,7 +3,7 @@
 # Should output a list of OracleOutput.
 
 # argument and setup check
-if [ ! $# -eq 2 ]; then
+if [ ! $# -eq 3 ]; then
   echo -e "(TOGA) Incorrect number of arguments. Expected 2 arguments, but got $#".
   exit 1
 fi
