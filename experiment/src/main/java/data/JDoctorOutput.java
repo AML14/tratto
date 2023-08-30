@@ -28,13 +28,13 @@ public record JDoctorOutput(
 
     ) {}
 
-    public record Type(
-
-    ) {}
-
     public record Parameter(
 
     ) {}
 
-
+    public record Type(
+        @JsonProperty("qualifiedName") String fullyQualifiedName,
+        @JsonProperty("name") String name,
+        @JsonProperty("isArray") boolean isArray
+    ) {}
 }
