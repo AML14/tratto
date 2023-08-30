@@ -565,7 +565,7 @@ public class JavaParserUtils {
         return methods;
     }
 
-    /** Returns true if type1 is an instance of type2, false otherwise.
+    /** Returns true if a variable of type1 is an instance of type2, false otherwise.
      * @param type1 fully qualified type, e.g., "java.util.List"
      * @param type2 fully qualified type, e.g., "java.lang.Object"
      * @param oracleDatapoint may be null. If not null, it is used to check if some type is generic.
