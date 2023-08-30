@@ -284,6 +284,13 @@ public class TogUtils {
         return oracleExpression.toString();
     }
 
+    /**
+     * Converts a JDoctor ParamTag to an OracleOutput record.
+     *
+     * @param jDoctorOutput the parent JDoctor condition of {@code paramTag}
+     * @param paramTag a JDoctor precondition
+     * @return the corresponding OracleOutput of {@code paramTag}
+     */
     private static OracleOutput paramTagToOracleOutput(JDoctorOutput jDoctorOutput, ParamTag paramTag) {
         if (paramTag.condition().isEmpty()) {
             return null;
