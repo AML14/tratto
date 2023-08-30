@@ -28,3 +28,5 @@ For example,
 ```shell
 bash jdoctor.sh tutorial.Stack ../src/test/resources/project/src/main/java ../src/test/resources/project/target/classes
 ```
+
+The JSON output is stored in `output/jdoctor/jdoctor_output.json`.
