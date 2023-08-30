@@ -311,7 +311,7 @@ public class TogUtils {
      * Converts a JDoctor ReturnTag to an OracleOutput record.
      *
      * @param jDoctorOutput the parent JDoctor condition of {@code returnTag}
-     * @param returnTag a JDoctor normal post condition
+     * @param returnTag a JDoctor normal post-condition
      * @return the corresponding OracleOutput of {@code returnTag}
      */
     private static OracleOutput returnTagToOracleOutput(JDoctorOutput jDoctorOutput, ReturnTag returnTag) {
@@ -334,7 +334,7 @@ public class TogUtils {
      * Converts a JDoctor ThrowsTag to an OracleOutput record.
      *
      * @param jDoctorOutput the parent JDoctor condition of {@code throwsTag}
-     * @param throwsTag a JDoctor exceptional post condition
+     * @param throwsTag a JDoctor exceptional post-condition
      * @return the corresponding OracleOutput of {@code throwsTag}
      */
     private static OracleOutput throwsTagToOracleOutput(JDoctorOutput jDoctorOutput, ThrowsTag throwsTag) {
