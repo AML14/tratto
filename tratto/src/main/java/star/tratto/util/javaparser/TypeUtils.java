@@ -119,6 +119,7 @@ public class TypeUtils {
      * @return the ClassGetName form of the component type without arrays
      */
     private static String classGetNameElementType(String classGetNameArray) {
+        assert Signatures.isClassGetName(classGetNameArray);
         int arrayLevel = getArrayLevel(classGetNameArray);
         if (arrayLevel == 0) {
             return classGetNameArray;
