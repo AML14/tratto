@@ -1,5 +1,6 @@
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.github.javaparser.JavaParser;
+import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.BodyDeclaration;
@@ -7,9 +8,13 @@ import com.github.javaparser.ast.body.CallableDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.comments.JavadocComment;
+import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.symbolsolver.utils.SymbolSolverCollectionStrategy;
 import data.JDoctorOutput;
+import data.JDoctorOutput.ParamTag;
+import data.JDoctorOutput.ReturnTag;
+import data.JDoctorOutput.ThrowsTag;
 import data.OracleOutput;
 import data.OracleType;
 import org.apache.commons.csv.CSVParser;
@@ -261,9 +266,73 @@ public class TogUtils {
         FileUtils.writeJSON(prefixPath.resolve("oracle_outputs.json"), oracleOutputs);
     }
 
-    public static void jDoctorToOracleOutput(Path jDoctorOutput) {
-        List<JDoctorOutput> output = FileUtils.readJSONList(jDoctorOutput, JDoctorOutput.class);
-        System.out.println(output);
+    private static String contextualizeOracle(JDoctorOutput jDoctorOutput, String oracle) {
+        Expression oracleExpression = StaticJavaParser.parseExpression(oracle);
+        return "";
+    }
+
+    private static OracleOutput paramTagToOracleOutput(JDoctorOutput jDoctorOutput, ParamTag paramTag) {
+        String oracle = contextualizeOracle(jDoctorOutput, paramTag.condition());
+        return new OracleOutput(
+                jDoctorOutput.name(),
+                jDoctorOutput.signature(),
+                OracleType.PRE,
+                "" ,
+                oracle,
+                "",
+                ""
+        );
+    }
+
+    private static OracleOutput returnTagToOracleOutput(JDoctorOutput jDoctorOutput, ReturnTag returnTag) {
+        String oracle = contextualizeOracle(jDoctorOutput, returnTag.condition());
+        return new OracleOutput(
+                jDoctorOutput.name(),
+                jDoctorOutput.signature(),
+                OracleType.NORMAL_POST,
+                "" ,
+                oracle,
+                "",
+                ""
+        );
+    }
+
+    private static OracleOutput throwsTagToOracleOutput(JDoctorOutput jDoctorOutput, ThrowsTag throwsTag) {
+        String oracle = contextualizeOracle(jDoctorOutput, throwsTag.condition());
+        return new OracleOutput(
+                jDoctorOutput.name(),
+                jDoctorOutput.signature(),
+                OracleType.EXCEPT_POST,
+                "" ,
+                oracle,
+                throwsTag.exceptionType().fullyQualifiedName(),
+                ""
+        );
+    }
+
+    private static List<OracleOutput> conditionToOracleOutput(JDoctorOutput jDoctorOutput) {
+        List<OracleOutput> oracleOutputs = new ArrayList<>();
+        jDoctorOutput.paramTags().forEach(paramTag -> oracleOutputs.add(
+                paramTagToOracleOutput(jDoctorOutput, paramTag)
+        ));
+        oracleOutputs.add(
+                returnTagToOracleOutput(jDoctorOutput, jDoctorOutput.returnTag())
+        );
+        jDoctorOutput.throwsTags().forEach(throwsTag -> oracleOutputs.add(
+                throwsTagToOracleOutput(jDoctorOutput, throwsTag)
+        ));
+        return oracleOutputs;
+    }
+
+    public static void jDoctorToOracleOutput(Path jDoctorPath) {
+        Path oraclePath = output.resolve(Paths.get("jdoctor", "oracle_outputs.json"));
+        List<JDoctorOutput> jDoctorOutputs = FileUtils.readJSONList(jDoctorPath, JDoctorOutput.class);
+        List<OracleOutput> oracleOutputs = jDoctorOutputs
+                .stream()
+                .map(TogUtils::conditionToOracleOutput)
+                .flatMap(List::stream)
+                .toList();
+        FileUtils.writeJSON(oraclePath, oracleOutputs);
     }
 
     public static void main(String[] args) {
