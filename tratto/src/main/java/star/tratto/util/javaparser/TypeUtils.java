@@ -1,18 +1,15 @@
 package star.tratto.util.javaparser;
 
-import com.github.javaparser.TokenRange;
+import static org.plumelib.util.CollectionsPlume.mapList;
+
 import com.github.javaparser.ast.body.CallableDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.TypeDeclaration;
+import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.type.TypeParameter;
 import org.plumelib.reflection.Signatures;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 /**
  * This class provides static methods to convert between the ClassGetName and
@@ -24,7 +21,7 @@ public class TypeUtils {
      * All primitive field descriptors. The ClassGetName form of a type uses
      * field descriptor for arrays of primitive types.
      */
-    private final static List<String> allPrimitiveFieldDescriptors = List.of("Z", "B", "C", "S", "I", "J", "F", "D");
+    private final static List<String> primitiveFieldDescriptors = List.of("Z", "B", "C", "S", "I", "J", "F", "D");
 
     /** Private constructor to avoid creating an instance of this class. */
     private TypeUtils() {
@@ -32,38 +29,54 @@ public class TypeUtils {
     }
 
     /**
-     * Gets the package name from a ClassGetName form of a type.
+     * Gets the package name from a ClassGetName form of a type. If the
+     * package does not exist (e.g. default or primitive), then the method
+     * returns an empty string. This method works properly for inner classes,
+     * because the ClassGetName syntax uses "$" between inner and outer
+     * classes. This method does NOT work for array classes.
      *
      * @param classGetName a ClassGetName form of a type
-     * @return the package name of the class
+     * @return the package name of the class. Returns an empty string for
+     * primitive types.
      */
     public static String getPackageNameFromClassGetName(String classGetName) {
-        List<String> nameSegments = Arrays.asList(classGetName.split("\\."));
-        List<String> packageSegments = nameSegments.subList(0, nameSegments.size() - 1);
-        return String.join(".", packageSegments);
+        int packageIdx = classGetName.lastIndexOf(".");
+        if (packageIdx == -1) {
+            return "";
+        }
+        return classGetName.substring(0, packageIdx);
     }
 
     /**
-     * Gets the innermost class from a ClassGetName form of a type.
+     * Gets the innermost class from a ClassGetName form of a type. This
+     * method does NOT work for array classes.
      *
      * @param classGetName a ClassGetName form of a type
      * @return the innermost class of the type
      */
     public static String getInnermostClassNameFromClassGetName(String classGetName) {
-        List<String> nameSegments = Arrays.asList(classGetName.split("[.$]"));
-        return nameSegments.get(nameSegments.size() - 1);
+        int classIdx = classGetName.lastIndexOf(".");
+        if (classGetName.contains("$")) {
+            classIdx = classGetName.lastIndexOf("$");
+        }
+        if (classIdx == -1) {
+            return classGetName;
+        }
+        return classGetName.substring(classIdx + 1);
     }
 
     /**
-     * Returns the array level of the type.
+     * Returns the array level of the type. ClassGetName arrays have "["
+     * characters are at the beginning. ClassGetSimpleName arrays have "[]" at
+     * the end.
      *
      * @param typeName a ClassGetName or ClassGetSimpleName form of a type
      * @return the array level of the type
      */
     private static int getArrayLevel(String typeName) {
         int arrayLevel = 0;
-        for (char c : typeName.toCharArray()) {
-            if (c == '[') {
+        for (int i = 0; i < typeName.length(); i++) {
+            if (typeName.charAt(i) == '[') {
                 arrayLevel++;
             }
         }
@@ -78,7 +91,7 @@ public class TypeUtils {
      * @return the simple type name with the added number of array levels
      */
     private static String addArrayLevel(String classGetSimpleName, int arrayLevel) {
-        return classGetSimpleName + ("[]").repeat(arrayLevel);
+        return classGetSimpleName + "[]".repeat(arrayLevel);
     }
 
     /**
@@ -86,33 +99,36 @@ public class TypeUtils {
      * The ClassGetName form of a type uses field descriptors for arrays of
      * primitive types.
      *
-     * @param classGetNameComponent a ClassGetName component type
+     * @param classGetNameComponent a ClassGetName type
      * @return true iff the ClassGetName component is a field descriptor
-     * @see TypeUtils#allPrimitiveFieldDescriptors
+     * @see TypeUtils#primitiveFieldDescriptors
      */
     private static boolean isPrimitiveFieldDescriptor(String classGetNameComponent) {
-        return allPrimitiveFieldDescriptors.contains(classGetNameComponent);
+        return primitiveFieldDescriptors.contains(classGetNameComponent);
     }
 
     /**
-     * Gets the ClassGetName form of the component type for a given
-     * ClassGetName array type.
+     * Gets the ClassGetName form of the element type for a given ClassGetName
+     * array type. For example,
+     * <pre>
+     *     "[[I"    =&gt;    "I"
+     *     "[Ljava.lang.String;"    =&gt;    "java.lang.String"
+     * </pre>
      *
      * @param classGetNameArray a ClassGetName form of an array type
-     * @return the ClassGetName form of the component type
+     * @return the ClassGetName form of the component type without arrays
      */
-    private static String classGetNameComponentType(String classGetNameArray) {
+    private static String classGetNameElementType(String classGetNameArray) {
         int arrayLevel = getArrayLevel(classGetNameArray);
         if (arrayLevel == 0) {
             return classGetNameArray;
         }
-        String classGetNameComponent = classGetNameArray.replaceAll("\\[", "");
-        if (isPrimitiveFieldDescriptor(classGetNameComponent)) {
-            return classGetNameComponent;
+        String classGetNameElement = classGetNameArray.replaceAll("\\[", "");
+        if (isPrimitiveFieldDescriptor(classGetNameElement)) {
+            return classGetNameElement;
         } else {
-            classGetNameComponent = classGetNameComponent.replaceAll(";", "");
-            // for arrays of Objects, remove "L" prefix
-            return classGetNameComponent.substring(1);
+            // for arrays of objects, remove "L" prefix and ";" suffix.
+            return classGetNameElement.substring(1, classGetNameElement.length() - 1);
         }
     }
 
@@ -127,7 +143,7 @@ public class TypeUtils {
             String classGetName
     ) {
         int arrayLevel = getArrayLevel(classGetName);
-        classGetName = classGetNameComponentType(classGetName);
+        classGetName = classGetNameElementType(classGetName);
         if (isPrimitiveFieldDescriptor(classGetName)) {
             // ClassGetName uses field descriptors for arrays of primitive types
             classGetName = Signatures.fieldDescriptorToBinaryName(classGetName);
@@ -147,106 +163,74 @@ public class TypeUtils {
     public static List<String> classGetNameToClassGetSimpleName(
             List<String> classGetNames
     ) {
-        return classGetNames
-                .stream()
-                .map(TypeUtils::classGetNameToClassGetSimpleName)
-                .collect(Collectors.toList());
+        return mapList(TypeUtils::classGetNameToClassGetSimpleName, classGetNames);
     }
 
     /**
-     * Removes type arguments and semicolons from a parameterized type name.
-     * The given type name should originate from source code, as neither
-     * ClassGetSimpleName nor ClassGetName forms include type parameters.
+     * Removes type arguments from a parameterized type name. The given type
+     * name should originate from source code, as neither ClassGetSimpleName
+     * nor ClassGetName forms include type parameters.
      *
      * @param parameterizedType a type name from source code
      * @return the base type without type arguments
      */
-    public static String removeTypeArgumentsAndSemicolon(String parameterizedType) {
-        String regex = "<[^<>]*>|;";
-        // repeatedly remove all type arguments.
+    public static String removeTypeArguments(String parameterizedType) {
         String previous;
         String current = parameterizedType;
         do {
             previous = current;
-            current = previous.replaceAll(regex, "");
+            current = previous.replaceAll("<[^<>]*>", "");
         } while (!current.equals(previous));
         return current;
     }
 
     /**
-     * Checks if a type parameter has an upper bound in source code.
+     * Attempts to get the upper bound of a type parameter from a given method
+     * and declaring class. This method checks both the method using the given
+     * type and its declaring class to find a possible upper bound. <br> This
+     * method does not YET check enclosing classes or methods for potential
+     * upper bounds.
      *
-     * @param sourceCode the source of the method or class in which the type
-     *                   parameter is declared
-     * @param typeName a type parameter (e.g. "T", "E")
-     * @return true iff the given type parameter has na upper bound
-     */
-    private static boolean hasUpperBound(String sourceCode, String typeName) {
-        String regex = String.format("%s\\s+extends\\s+([A-Za-z0-9_]+)[<[A-Za-z0-9_,]+]*", typeName.replaceAll("\\[]",""));
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(sourceCode);
-        return matcher.find();
-    }
-
-    /**
-     * Gets the upper bound of a type parameter using the source code.
-     *
-     * @param sourceCode the source of the method or class in which the type
-     *                   parameter is declared
-     * @param typeName a type parameter (e.g. "T", "E")
-     * @return the type name of the upper bound of {@code typeName}
-     * @throws IllegalArgumentException if {@code typeName} does not have an
-     * upper bound
-     */
-    private static String getUpperBound(String sourceCode, String typeName) {
-        String regex = String.format("%s\\s+extends\\s+([A-Za-z0-9_]+)[<[A-Za-z0-9_,]+]*", typeName.replaceAll("\\[]",""));
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(sourceCode);
-        if (matcher.find()) {
-            String typeBound = removeTypeArgumentsAndSemicolon(matcher.group(1));
-            return addArrayLevel(typeBound, getArrayLevel(typeName));
-        } else {
-            throw new IllegalArgumentException(String.format(
-                    "The JavaParser source code %s does not match the regex built with the JavaParser type name %s.",
-                    sourceCode,
-                    typeName
-            ));
-        }
-    }
-
-    /**
-     * Gets the upper bound of a type parameter from the method or class
-     * source. A type parameter may be declared in either the class or method
-     * signature. This method checks both the method using a type and its
-     * declaring class to find a possible upper bound.
-     *
-     * @param jpDeclaration the declaring class
+     * @param jpClass the declaring class
      * @param jpCallable the method using {@code typeName}
      * @param typeName a type parameter (e.g. "T", "E")
      * @return the type name of the upper bound of {@code typeName}. Returns
-     * {@code typeName} if no upper bound exists.
+     * {@code typeName} if unable to find an upper bound. Returns the first
+     * upper bound if a type parameter has multiple bounds.
      */
-    private static String getGenericUpperBound(
-            TypeDeclaration<?> jpDeclaration,
+    private static String getUpperBound(
+            TypeDeclaration<?> jpClass,
             CallableDeclaration<?> jpCallable,
             String typeName
     ) {
-        // get upper bound from method/constructor declaration
-        Optional<TokenRange> callableTokenRange = jpCallable.getTokenRange();
-        if (callableTokenRange.isPresent() && hasUpperBound(callableTokenRange.get().toString(), typeName)) {
-            typeName = getUpperBound(callableTokenRange.get().toString(), typeName);
+        int arrayLevel = TypeUtils.getArrayLevel(typeName);
+        String elementType = typeName.replaceAll("\\[]", "");
+        // check method for matching type parameters
+        ClassOrInterfaceType upperBound = jpCallable
+                .getTypeParameters()
+                .stream()
+                .filter(typeParam -> typeParam.getName().getIdentifier().equals(elementType))
+                .findFirst()
+                .map(TypeParameter::getTypeBound)
+                .flatMap(bound -> bound.stream().findFirst())
+                .orElse(null);
+        // check declaring class for matching type parameters
+        if (upperBound == null && jpClass.isClassOrInterfaceDeclaration()) {
+            upperBound = jpClass
+                    .asClassOrInterfaceDeclaration()
+                    .getTypeParameters()
+                    .stream()
+                    .filter(typeParam -> typeParam.getName().getIdentifier().equals(elementType))
+                    .findFirst()
+                    .map(TypeParameter::getTypeBound)
+                    .flatMap(bound -> bound.stream().findFirst())
+                    .orElse(null);
         }
-        // get upper bound from class declaration
-        if (jpDeclaration.isClassOrInterfaceDeclaration()) {
-            for (TypeParameter jpGeneric : jpDeclaration.asClassOrInterfaceDeclaration().getTypeParameters()) {
-                if (jpGeneric.getNameAsString().equals(typeName.replaceAll("\\[]", ""))) {
-                    if (hasUpperBound(jpGeneric.toString(), typeName)) {
-                        typeName = getUpperBound(jpGeneric.toString(), typeName);
-                    }
-                }
-            }
+        if (upperBound == null) {
+            return typeName;
+        } else {
+            return addArrayLevel(upperBound.getNameAsString(), arrayLevel);
         }
-        return typeName;
     }
 
     /**
@@ -271,16 +255,16 @@ public class TypeUtils {
         // get simple name
         String typeName;
         if (jpParam.getType().isClassOrInterfaceType()) {
-            typeName = removeTypeArgumentsAndSemicolon(jpParam.getType().asClassOrInterfaceType().getNameAsString());
+            typeName = removeTypeArguments(jpParam.getType().asClassOrInterfaceType().getNameAsString());
         } else {
-            typeName = removeTypeArgumentsAndSemicolon(jpParam.getType().asString());
+            typeName = removeTypeArguments(jpParam.getType().asString());
         }
         // represent varargs as an array
         if (jpParam.isVarArgs()) {
             typeName = addArrayLevel(typeName, 1);
         }
         // use upper bound (if possible)
-        typeName = getGenericUpperBound(jpDeclaration, jpCallable, typeName);
+        typeName = getUpperBound(jpDeclaration, jpCallable, typeName);
         return typeName;
     }
 

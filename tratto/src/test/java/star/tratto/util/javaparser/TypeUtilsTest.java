@@ -20,6 +20,7 @@ public class TypeUtilsTest {
     public void getPackageNameFromClassGetNameTest() {
         assertEquals("normal.package.setup.for.a", TypeUtils.getPackageNameFromClassGetName("normal.package.setup.for.a.Class"));
         assertEquals("normal.package.setup.for.a", TypeUtils.getPackageNameFromClassGetName("normal.package.setup.for.a.Class$InnerClass"));
+        assertEquals("", TypeUtils.getPackageNameFromClassGetName("int"));
     }
 
     @Test
@@ -30,10 +31,10 @@ public class TypeUtilsTest {
 
     @Test
     public void removeTypeArgumentsAndSemicolonTest() {
-        assertEquals("List", TypeUtils.removeTypeArgumentsAndSemicolon("List<? extends Integer>"));
-        assertEquals("ArrayList", TypeUtils.removeTypeArgumentsAndSemicolon("ArrayList<? super Number>"));
-        assertEquals("Oversuperstition", TypeUtils.removeTypeArgumentsAndSemicolon("Oversuperstition"));
-        assertEquals("Foo", TypeUtils.removeTypeArgumentsAndSemicolon("Foo<? super Collection<T>, T>"));
+        assertEquals("List", TypeUtils.removeTypeArguments("List<? extends Integer>"));
+        assertEquals("ArrayList", TypeUtils.removeTypeArguments("ArrayList<? super Number>"));
+        assertEquals("Oversuperstition", TypeUtils.removeTypeArguments("Oversuperstition"));
+        assertEquals("Foo", TypeUtils.removeTypeArguments("Foo<? super Collection<T>, T>"));
     }
 
     @Test

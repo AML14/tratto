@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 
 
 /**
- * This class provides static methods for a variety of file input and output
+ * This class provides file input and output
  * utilities, such as: creating, copying, moving, writing, reading, etc.
  */
 public class FileUtils {
@@ -24,11 +24,11 @@ public class FileUtils {
     }
 
     /**
-     * This method is a wrapper method of {@link Files#createDirectories(Path, FileAttribute[])}
+     * Creates an empty directory. Creates parent directories if necessary. If
+     * the directory already exists, then this method does nothing. <br> This
+     * method is a wrapper method of {@link Files#createDirectories(Path, FileAttribute[])}
      * to substitute {@link IOException} with {@link Error} and avoid
-     * superfluous try/catch blocks. Creates an empty directory. Creates
-     * parent directories if necessary. If the directory already exists, then
-     * this method does nothing.
+     * superfluous try/catch blocks.
      *
      * @param path a path
      * @throws Error if an error occurs while creating the directory
@@ -93,60 +93,64 @@ public class FileUtils {
     }
 
     /**
-     * Returns the path of the target file when (hypothetically) moved from
-     * the source directory to the destination directory.
-     * NOTE: This method does NOT perform the move.
+     * Returns the path of the target file or directory when (hypothetically)
+     * moved from the source directory to the destination directory.
+     * NOTE: This method does NOT perform the move. This method is different
+     * from {@link Path#relativize(Path)}, which gives a path to the
+     * destination, relative to the source.
      *
-     * @param source the source directory
+     * @param sourceDir the source directory
      * @param destination the destination directory
      * @param target the target file in the source directory
-     * @return the relative path of target in the destination directory. For
-     * example, let
+     * @return the path of the target file if hypothetically moved from the
+     * source directory to the destination directory. For example, let
      * <pre>
-     *      source = [sourcePrefix]/[source]
-     *      destination = [destinationPrefix]/[destination]
-     *      target = [sourcePrefix]/[source]/[suffix]/[fileName]
+     *     sourceDir = [sourcePath]
+     *     destination = [destinationPath]
+     *     target = [sourcePath]/[internalDirectories]/[fileName]
      * </pre>
      * then the method outputs,
      * <pre>
-     *      relativePath = [destinationPrefix]/[destination]/[suffix]/[fileName]
+     *     relativePath = [destinationPath]/[internalDirectories]/[fileName]
      * </pre>
      */
-    private static Path getRelativePath(Path source, Path destination, Path target) {
-        if (source.equals(target)) {
+    private static Path getRelativePath(Path sourceDir, Path destination, Path target) {
+        if (sourceDir.equals(target)) {
             return destination;
         }
         // remove source prefix
-        if (!target.startsWith(source)) {
-            throw new IllegalArgumentException(target + " must exist under " + source);
+        if (!target.startsWith(sourceDir)) {
+            throw new IllegalArgumentException(target + " must exist under " + sourceDir);
         }
-        Path suffix = target.subpath(source.getNameCount(), target.getNameCount());
+        Path suffix = target.subpath(sourceDir.getNameCount(), target.getNameCount());
         // add remaining suffix to destination
         return destination.resolve(suffix);
     }
 
     /**
-     * Recursively copies all files from the source directory to the
-     * destination directory. If a file in the source directory already exists
-     * in the destination directory, then the original file will be overridden.
+     * Recursively copies all files and directories from the source directory
+     * to the destination directory. If a file in the source directory already
+     * exists in the destination directory, then the original file will be
+     * overwritten.
      *
-     * @param source the directory where the files are located
-     * @param destination the directory where the files will be copied to
+     * @param sourceDir the directory where the files are located
+     * @param destinationDir the directory where the files will be copied to
      * @throws Error if the source directory does not exist or an error occurs
      * while copying a file
      * @see FileUtils#move(Path, Path)
      */
-    public static void copy(Path source, Path destination) {
-        if (!Files.exists(source)) {
-            throw new Error("Directory " + source + " is not found");
+    public static void copy(Path sourceDir, Path destinationDir) {
+        if (!Files.exists(sourceDir)) {
+            throw new Error("Directory " + sourceDir + " is not found");
         }
-        if (!Files.exists(destination)) {
-            createDirectories(destination);
+        if (!Files.exists(destinationDir)) {
+            createDirectories(destinationDir);
         }
-        try (Stream<Path> walk = Files.walk(source)) {
+        // walk is used to iterate over files in subdirectories
+        try (Stream<Path> walk = Files.walk(sourceDir)) {
             walk
                     .forEach(p -> {
-                        Path relativePath = getRelativePath(source, destination, p);
+                        Path relativePath = getRelativePath(sourceDir, destinationDir, p);
                         if (Files.isDirectory(p)) {
                             createDirectories(relativePath);
                         } else {
@@ -158,30 +162,31 @@ public class FileUtils {
                         }
                     });
         } catch (IOException e) {
-            throw new Error("Error when trying to copy " + source + " to " + destination, e);
+            throw new Error("Error when trying to copy " + sourceDir + " to " + destinationDir, e);
         }
     }
 
     /**
      * Recursively moves all files from the source directory to the
      * destination directory. If a file in the source directory already exists
-     * in the destination directory, then the original file will be overridden.
+     * in the destination directory, then the original file will be
+     * overwritten.
      *
-     * @param source the directory where the files are located
-     * @param destination the directory where the files will be moved to
+     * @param sourceDir the directory where the files are located
+     * @param destinationDir the directory where the files will be moved to
      * @throws Error if the source directory does not exist or an error occurs
      * while moving a file
      * @see FileUtils#copy(Path, Path)
      */
-    public static void move(Path source, Path destination) {
-        if (!Files.exists(source)) {
-            throw new Error("Directory " + source + " is not found");
+    public static void move(Path sourceDir, Path destinationDir) {
+        if (!Files.exists(sourceDir)) {
+            throw new Error("Directory " + sourceDir + " is not found");
         }
-        if (!Files.exists(destination)) {
-            createDirectories(destination);
+        if (!Files.exists(destinationDir)) {
+            createDirectories(destinationDir);
         }
-        copy(source, destination);
-        deleteDirectory(source);
+        copy(sourceDir, destinationDir);
+        deleteDirectory(sourceDir);
     }
 
     /**
@@ -226,10 +231,9 @@ public class FileUtils {
      * @param jsonPath a JSON file
      * @param type the class type of the elements to which the JSON data will
      *             be deserialized
-     * @return a list of objects of the specified class type. If type is null,
-     * then returns a list of a wildcard type.
-     * @param <T> the generic type parameter representing the class of the
-     *            elements in the list
+     * @return a list of objects
+     * @param <T> the type of the list elements,
+     *             or null (in which case the list element type is arbitrary)
      */
     public static <T> List<T> readJSONList(Path jsonPath, Class<T> type) {
         if (!Files.exists(jsonPath)) {
@@ -253,10 +257,11 @@ public class FileUtils {
     /**
      * Reads a list of objects from a JSON file. This method is used instead
      * of {@link FileUtils#readJSONList(Path, Class)} for parameterized types,
-     * where it is not possible to retrieve the corresponding class.
+     * where it is not possible to retrieve the corresponding class, such as
+     * lists of List&lt;Integer&gt;.
      *
      * @param jsonPath a JSON file
-     * @return a list of objects without a specified type
+     * @return a list of objects
      */
     public static List<?> readJSONList(Path jsonPath) {
         return readJSONList(jsonPath, null);
@@ -276,7 +281,7 @@ public class FileUtils {
                     .filter(p -> p.getFileName().toString().endsWith(".java"))
                     .collect(Collectors.toList());
         } catch (IOException e) {
-            throw new Error("Error when collecting all files from " + dir, e);
+            throw new Error("Error when collecting Java files from " + dir, e);
         }
     }
 }

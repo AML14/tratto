@@ -67,7 +67,7 @@ public class DatasetUtils {
     }
 
     /**
-     * Removes all duplicate elements from a list.
+     * Removes all duplicate elements in a list.
      *
      * @param list a list of elements
      * @return the same list with all duplicates removed
@@ -79,10 +79,10 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets a list of class tokens for each class in a java file.
+     * Gets a list of class tokens corresponding to each class in a Java file.
      *
-     * @param cu the compilation unit of a java file
-     * @return a list of class tokens, (className, packageName)
+     * @param cu a Java file
+     * @return a list of class tokens: (className, packageName)
      * @throws PackageDeclarationNotFoundException if the package cannot be
      * retrieved
      */
@@ -100,7 +100,9 @@ public class DatasetUtils {
 
     /**
      * Gets the Javadoc comment of a body declaration using regex patterns.
-     * Use ONLY IF Javadoc comment is not recoverable using JavaParser API.
+     * Use ONLY IF Javadoc comment is not recoverable using JavaParser API,
+     * such as {@link DatasetUtils#getClassJavadoc(TypeDeclaration)} or
+     * {@link DatasetUtils#getCallableJavadoc(CallableDeclaration)}.
      *
      * @param jpBody a member in a Java class
      * @return the matched Javadoc comment (empty string if not found)
@@ -208,8 +210,9 @@ public class DatasetUtils {
 
     /**
      * Gets all string value tokens in a Javadoc comment. The second value may
-     * seem redundant, but is added for consistency with the numeric Javadoc
-     * values when using the XText grammar.
+     * seem redundant, but is added for consistency with the values of
+     * {@link DatasetUtils#findAllNumericValuesInJavadoc(String)}. Both method
+     * outputs follow this format for compatibility with the XText grammar.
      *
      * @param javadocComment a Javadoc comment
      * @return a list of value tokens. The first element is the numeric value,
@@ -235,9 +238,8 @@ public class DatasetUtils {
      *
      * @param javadocComment a Javadoc comment
      * @return a list of records describing each numerical and string value.
-     * Each entry has the form:
-     *  [value, type]
-     * For example: [["name", "String"], ["64", "int"]]
+     * Each entry has the form: [value, type]. For example:
+     *     [["name", "String"], ["64", "int"]]
      */
     public static List<ValueTokens> getJavadocValues(
             String javadocComment
@@ -249,12 +251,15 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets the class name of a given parameter type. Handles generics,
-     * primitives, arrays, and reference types.
+     * Gets the class name of a given parameter type. Handles special cases
+     * with generic types, primitives, arrays, and reference types. Uses an
+     * upper bound for generic types if possible. Includes enclosing classes
+     * for inner classes, but removes package names. These modifications are
+     * made for compatibility with the XText grammar.
      *
-     * @param jpClass the class declaring the method
-     * @param jpCallable the method containing the type
-     * @param jpParameter the given type
+     * @param jpClass the declaring class of {@code jpCallable}
+     * @param jpCallable the method with a parameter {@code jpParameter}
+     * @param jpParameter the given method parameter
      * @return the type name of the given parameter
      */
     private static String getParameterTypeName(
@@ -269,13 +274,14 @@ public class DatasetUtils {
             if (parameterType.isPrimitiveType()) {
                 className.append(parameterType.asPrimitiveType().asString());
             } else if (parameterType.isReferenceType()) {
-                if (JavaParserUtils.isTypeParameter(resolvedType)) {
+                if (JavaParserUtils.isTypeVariable(resolvedType)) {
+                    // get type bound for type parameters
                     className.append(TypeUtils.getJDoctorSimpleNameFromSourceCode(jpClass, jpCallable, jpParameter));
                 } else {
                     className.append(JavaParserUtils.getTypeWithoutPackages(resolvedType));
                 }
             } else {
-                throw new IllegalArgumentException(String.format("Unexpected type when evaluating %s parameter type.", parameterType));
+                throw new IllegalArgumentException("Unable to parse parameter type of " + parameterType);
             }
             if (jpParameter.isVarArgs()) {
                 className.append("[]");
@@ -299,7 +305,7 @@ public class DatasetUtils {
      * @param jpCallable a method
      * @return a list of information about each argument. Each entry has the
      * form:
-     *  [parameterName, packageName, parameterTypeName]
+     *     [parameterName, packageName, parameterTypeName]
      * where "packageName" refers to the package of the parameter type (empty
      * if the parameter is not a reference type).
      */
@@ -314,20 +320,18 @@ public class DatasetUtils {
             Type parameterType = parameter.getType();
             String parameterTypeName = getParameterTypeName(jpClass, jpCallable, parameter);
             try {
+                ResolvedType resolvedParameterType = parameterType.resolve();
                 if (
-                        parameterType.resolve().isTypeVariable() ||
-                        parameterType.resolve().isPrimitive() ||
-                        parameterType.resolve().isArray()
+                        resolvedParameterType.isTypeVariable() ||
+                        resolvedParameterType.isPrimitive() ||
+                        resolvedParameterType.isArray()
                 ) {
                     // if not a reference type, ignore package name (e.g. primitives do not have packages).
                     argumentList.add(new MethodArgumentTokens(parameter.getNameAsString(), "", parameterTypeName));
                 } else if (parameterType.resolve().isReferenceType()) {
-                    String typeName = TypeUtils.getJDoctorSimpleNameFromSourceCode(jpClass, jpCallable, parameter);
-                    if (JavaParserUtils.isTypeParameter(parameterType.resolve())) {
-                        // if reference object is a generic type, ignore package name.
-                        argumentList.add(new MethodArgumentTokens(parameter.getNameAsString(), "", typeName));
+                    if (JavaParserUtils.isTypeVariable(resolvedParameterType)) {
+                        argumentList.add(new MethodArgumentTokens(parameter.getNameAsString(), "", parameterTypeName));
                     } else {
-                        // otherwise, retrieve necessary package information.
                         String className = JavaParserUtils.getTypeWithoutPackages(parameterType.resolve().asReferenceType());
                         String parameterPackageName = parameterType.resolve().asReferenceType().getQualifiedName()
                                 .replace(String.format(".%s", className), "");
@@ -339,7 +343,7 @@ public class DatasetUtils {
                     }
                 }
             } catch (UnsolvedSymbolException e) {
-                logger.error(String.format("Unable to generate MethodArgumentTokens for argument %s.", parameterType));
+                logger.error("Unable to generate MethodArgumentTokens for argument " + parameterType);
             }
         }
         return argumentList;
@@ -357,14 +361,17 @@ public class DatasetUtils {
     public static String reconstructTag(
             JavadocTagTokens jpTag
     ) {
-        String tagString = switch (jpTag.oracleType()) {
-            case PRE -> "@param ";
-            case NORMAL_POST -> "@return ";
-            case EXCEPT_POST -> "@throws ";
-        };
-        tagString += !jpTag.tagName().equals("") ?  jpTag.tagName() + " " : "";
-        tagString += jpTag.tagBody();
-        return tagString;
+        StringBuilder sb = new StringBuilder();
+        switch (jpTag.oracleType()) {
+            case PRE -> sb.append("@param ");
+            case NORMAL_POST -> sb.append("@return ");
+            case EXCEPT_POST -> sb.append("@throws ");
+        }
+        if (!jpTag.tagName().equals("")) {
+            sb.append(jpTag.tagName()).append(" ");
+        }
+        sb.append(jpTag.tagBody());
+        return sb.toString();
     }
 
     /**
@@ -377,9 +384,9 @@ public class DatasetUtils {
             CallableDeclaration<?> jpCallable
     ) {
         String jpSignature = JavaParserUtils.getCallableSignature(jpCallable);
-        Optional<BlockStmt> jpBody = jpCallable instanceof MethodDeclaration ?
-                ((MethodDeclaration) jpCallable).getBody() :
-                Optional.ofNullable(((ConstructorDeclaration) jpCallable).getBody());
+        Optional<BlockStmt> jpBody = jpCallable instanceof MethodDeclaration
+                ? ((MethodDeclaration) jpCallable).getBody()
+                : Optional.ofNullable(((ConstructorDeclaration) jpCallable).getBody());
         return jpSignature + (jpBody.isEmpty() ? ";" : jpBody.get().toString());
     }
 
@@ -390,7 +397,7 @@ public class DatasetUtils {
      * @param cu a compilation unit of a Java file
      * @return a list of information about each method. Each entry has the
      * form:
-     *  [methodName, packageName, className, methodSignature]
+     *     [methodName, packageName, className, methodSignature]
      * @throws PackageDeclarationNotFoundException if the package
      * {@link PackageDeclaration} of the compilation unit is not found
      */
@@ -426,7 +433,7 @@ public class DatasetUtils {
      * @param cu a compilation unit of a Java file
      * @return a list of information about each attribute. Each entry has the
      * form:
-     *  [variableName, packageName, className, variableSignature]
+     *     [variableName, packageName, className, variableSignature]
      * @throws PackageDeclarationNotFoundException if the package
      * {@link PackageDeclaration} of the compilation unit is not found
      */
@@ -468,7 +475,7 @@ public class DatasetUtils {
      * @param cu a compilation unit of a Java file
      * @param fileContent the content of the Java file
      * @return a list of information about each tag. Each entry has the form:
-     *  [fileContent, typeDeclaration, callableDeclaration, oracleType, name, content]
+     *     [fileContent, typeDeclaration, callableDeclaration, oracleType, name, content]
      * where a Javadoc tag is interpreted as:
      *  "@tag name content"
      * and the value of "@tag" determines "oracleType".
@@ -653,13 +660,15 @@ public class DatasetUtils {
     }
 
     /**
-     * Converts a list of methods to a list of records of method tokens,
+     * Converts a list of method usages to a list of method tokens records,
      * where each record has the form:
-     *  [methodName, packageName, className, methodSignature]
-     * where "className" refers to the class in which the method is declared.
-     * "methodSignature" includes access specifiers, non-access modifiers,
-     * generic type parameters, return type, method signature, parameters,
-     * and exceptions (unless otherwise un-recoverable).
+     *     [methodName, packageName, className, methodSignature]
+     * where "className" refers to the declaring class, "methodSignature"
+     * includes modifiers, type parameters, return type, method name,
+     * parameters, and exceptions.
+     *
+     * @param jpMethods a list of method usages
+     * @return the corresponding list of method tokens records
      */
     private static List<MethodTokens> convertMethodUsageToMethodTokens(
             List<MethodUsage> jpMethods
@@ -677,13 +686,15 @@ public class DatasetUtils {
 
     /**
      * Collects information for all non-private, non-static, non-void methods
-     * visible to a given type. Handles three cases: base type (e.g. class),
-     * generic type, and array type.
+     * available to a given type. Handles three cases for either (1) an array
+     * type, (2) a generic Object type (e.g. "T"), and (3) a normal reference
+     * type.
      *
-     * @param jpResolvedType the given type
-     * @return a list of information about each method. Each entry has the
-     * form:
-     *  [methodName, packageName, className, methodSignature]
+     * @param jpResolvedType a type
+     * @return a list of information about each method available to the type.
+     * Each entry has the form:
+     *     [methodName, packageName, className, methodSignature]
+     * Returns an empty list if the given type is primitive.
      */
     public static List<MethodTokens> getMethodsFromType(
             ResolvedType jpResolvedType
@@ -703,7 +714,7 @@ public class DatasetUtils {
                     .stream()
                     .map(m -> new MethodTokens(m.get(0), "", jpResolvedType.describe(), m.get(1)))
                     .toList());
-        } else if (JavaParserUtils.isTypeParameter(jpResolvedType)) {
+        } else if (JavaParserUtils.isTypeVariable(jpResolvedType)) {
             // generic type.
             List<MethodUsage> genericMethods = JavaParserUtils.getObjectType().asReferenceType().getAllMethods()
                     .stream()
@@ -724,9 +735,17 @@ public class DatasetUtils {
     }
 
     /**
-     * Wrapper method which first attempts to resolve a given type. Returns
-     * an empty list if an error occurs. See public "getMethodsFromType()"
-     * method above for further detail.
+     * Collects information for all non-private, non-static, non-void methods
+     * available to a given type. This method is a wrapper method for
+     * {@link DatasetUtils#getMethodsFromType(ResolvedType)} which first
+     * attempts to resolve the given type. Returns an empty list if unable
+     * to resolve the type.
+     *
+     * @param jpType a type
+     * @return a list of information about each method available to the type.
+     * Each entry has the form:
+     *     [methodName, packageName, className, methodSignature]
+     * Returns an empty list if the given type is primitive.
      */
     private static List<MethodTokens> getMethodsFromType(
             Type jpType
@@ -741,8 +760,17 @@ public class DatasetUtils {
     }
 
     /**
-     * Uses methods and fields of JavaParserFieldDeclaration to get a more
-     * detailed field signature (includes all modifiers and value).
+     * Converts a field declaration to a list of records of attribute tokens,
+     * where each entry has the form:
+     *     [fieldName, packageName, className, fieldDeclaration]
+     * This method is a special case of
+     * {@link DatasetUtils#convertFieldDeclarationToAttributeTokens(List)}
+     * using available information from the implementation of
+     * {@link JavaParserFieldDeclaration}. If possible, declarations with
+     * multiple fields are split into individual records.
+     *
+     * @param resolvedField a JavaParser resolved field declaration
+     * @return the corresponding list of attribute tokens records.
      */
     private static List<AttributeTokens> convertJavaParserFieldDeclarationToAttributeTokens(
             JavaParserFieldDeclaration resolvedField
@@ -761,13 +789,19 @@ public class DatasetUtils {
     }
 
     /**
-     * Uses methods and fields of ReflectionFieldDeclaration to get a more
-     * detailed field signature (includes all modifiers).
+     * Converts a field declaration to a record with the form:
+     *     [fieldName, packageName, className, fieldDeclaration]
+     * This method is a special case of
+     * {@link DatasetUtils#convertFieldDeclarationToAttributeTokens(List)}
+     * using available information from the implementation of
+     * {@link ReflectionFieldDeclaration}.
+     *
+     * @param resolvedField a reflection resolved field declaration
+     * @return the corresponding attribute token record
      */
-    private static List<AttributeTokens> convertReflectionFieldDeclarationToAttributeTokens(
+    private static AttributeTokens convertReflectionFieldDeclarationToAttributeTokens(
             ReflectionFieldDeclaration resolvedField
     ) {
-        List<AttributeTokens> attributeList = new ArrayList<>();
         String signature;
         try {
             Field f = resolvedField.getClass().getDeclaredField("field");
@@ -777,22 +811,25 @@ public class DatasetUtils {
         } catch (NoSuchFieldException | IllegalAccessException e) {
             signature = JavaParserUtils.getFieldDeclaration(resolvedField);
         }
-        attributeList.add(new AttributeTokens(
+        return new AttributeTokens(
                 resolvedField.getName(),
                 resolvedField.declaringType().getPackageName(),
                 resolvedField.declaringType().getClassName(),
                 signature
-        ));
-        return attributeList;
+        );
     }
 
     /**
-     * Converts a list of fields to a list of records of attribute tokens,
-     * where each record has the form:
-     *  [fieldName, packageName, className, fieldSignature]
-     * where "className" refers to the name of the field type. If possible,
-     * declarations with multiple fields are split into individual attribute
-     * tokens.
+     * Converts a list of field declarations to a list of records of attribute
+     * tokens, where each record has the form:
+     *     [fieldName, packageName, className, fieldDeclaration]
+     * where "className" refers to the field type name. If possible,
+     * declarations with multiple fields are split into individual records.
+     * The "fieldDeclaration" includes modifiers, type, name, and initial
+     * value (if applicable).
+     *
+     * @param resolvedFields a list of field declarations
+     * @return the corresponding list of attribute token records
      */
     private static List<AttributeTokens> convertFieldDeclarationToAttributeTokens(
             List<ResolvedFieldDeclaration> resolvedFields
@@ -804,7 +841,7 @@ public class DatasetUtils {
                 fieldList.addAll(convertJavaParserFieldDeclarationToAttributeTokens((JavaParserFieldDeclaration) resolvedField));
             } else if (resolvedField instanceof ReflectionFieldDeclaration) {
                 // use ReflectionFieldDeclaration to get a more detailed signature.
-                fieldList.addAll(convertReflectionFieldDeclarationToAttributeTokens((ReflectionFieldDeclaration) resolvedField));
+                fieldList.add(convertReflectionFieldDeclarationToAttributeTokens((ReflectionFieldDeclaration) resolvedField));
             } else {
                 // use default ResolvedFieldDeclaration.
                 fieldList.add(new AttributeTokens(
@@ -819,16 +856,14 @@ public class DatasetUtils {
     }
 
     /**
-     * Collects information for all non-private, non-static attributes visible
+     * Gets information for all non-private, non-static attributes available
      * to a given type.
      *
      * @param jpResolvedType the given type
-     * @return a list of information about each attribute. Each entry has the
-     * form:
-     *  [fieldName, packageName, className, fieldSignature]
+     * @return a list of attribute token records. Each entry has the form:
+     *     [fieldName, packageName, className, fieldSignature]
      * where "className" refers to the name of the field type. If possible,
-     * declarations with multiple fields are split into individual attribute
-     * tokens.
+     * declarations with multiple fields are split into individual records.
      */
     public static List<AttributeTokens> getFieldsFromType(
             ResolvedType jpResolvedType
@@ -870,9 +905,17 @@ public class DatasetUtils {
     }
 
     /**
-     * Wrapper method which first attempts to resolve a given type. Returns
-     * an empty list if an error occurs. See public "getFieldsFromType()"
-     * method above for further detail.
+     * Gets information for all non-private, non-static attributes available
+     * to a given type. This method is a wrapper of
+     * {@link DatasetUtils#getFieldsFromType(ResolvedType)} which attempts to
+     * resolve the given type. Returns an empty list if unable to resolve the
+     * given type.
+     *
+     * @param jpType the given type
+     * @return a list of attribute token records. Each entry has the form:
+     *     [fieldName, packageName, className, fieldSignature]
+     * where "className" refers to the name of the field type. If possible,
+     * declarations with multiple fields are split into individual records.
      */
     private static List<AttributeTokens> getFieldsFromType(
             Type jpType
@@ -887,10 +930,18 @@ public class DatasetUtils {
     }
 
     /**
-     * Like previous method, but to be used with method arguments. This function
-     * handles those cases where the argument is an array but expressed using ellipsis,
-     * e.g., {@code foo(String... bar)}. If the method argument is not an array
-     * of this kind, the method simply calls the previous method.
+     * Gets information for all non-private, non-static attributes available
+     * to a given parameter. This method is a wrapper of
+     * {@link DatasetUtils#getFieldsFromType(Type)} (another wrapper) which
+     * checks if a parameter is a varargs, and adds array fields if
+     * applicable. If the parameter is not a varargs, then this method is
+     * identical to the aforementioned method.
+     *
+     * @param jpParameter the given parameter
+     * @return a list of attribute token records. Each entry has the form:
+     *     [fieldName, packageName, className, fieldSignature]
+     * where "className" refers to the name of the field type. If possible,
+     * declarations with multiple fields are split into individual records.
      */
     public static List<AttributeTokens> getFieldsFromParameter(
             Parameter jpParameter
@@ -918,7 +969,7 @@ public class DatasetUtils {
      * @param jpCallable a function
      * @return a list of information about each method. Each entry has the
      * form:
-     *  [methodName, packageName, className, methodSignature]
+     *     [methodName, packageName, className, methodSignature]
      * @throws JPClassNotFoundException if the declaring class is not
      * resolvable
      */
@@ -927,7 +978,7 @@ public class DatasetUtils {
             CallableDeclaration<?> jpCallable
     ) throws JPClassNotFoundException {
         // add all methods of the base class (receiverObjectID -> this).
-        List<MethodUsage> allReceiverMethods = JavaParserUtils.getMethodsOfType(jpClass)
+        List<MethodUsage> allReceiverMethods = JavaParserUtils.getAllMethods(jpClass)
                 .stream()
                 .filter(JavaParserUtils::isNonPrivateNonStaticNonVoidMethod)
                 .toList();
@@ -962,7 +1013,7 @@ public class DatasetUtils {
      * @param jpCallable a function
      * @return a list of information about each attribute. Each entry has the
      * form:
-     *  [fieldName, packageName, className, fieldSignature]
+     *     [fieldName, packageName, className, fieldSignature]
      * @throws JPClassNotFoundException if the declaring class is not
      * resolvable
      */
@@ -971,7 +1022,7 @@ public class DatasetUtils {
             CallableDeclaration<?> jpCallable
     ) throws JPClassNotFoundException {
         // add all fields of the base class (receiverObjectID -> this).
-        List<ResolvedFieldDeclaration> allReceiverFields = JavaParserUtils.getFieldsOfType(jpClass)
+        List<ResolvedFieldDeclaration> allReceiverFields = JavaParserUtils.getAllFields(jpClass)
                 .stream()
                 .filter(JavaParserUtils::isNonPrivateNonStaticAttribute)
                 .toList();
@@ -998,7 +1049,7 @@ public class DatasetUtils {
      * @param oracle an oracle corresponding to the function
      * @return a list of information about each method. Each entry has the
      * form:
-     *  [methodName, packageName, className, methodSignature]
+     *     [methodName, packageName, className, methodSignature]
      */
     public static List<MethodTokens> getTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(
             TypeDeclaration<?> jpClass,
@@ -1075,16 +1126,23 @@ public class DatasetUtils {
     }
 
     /**
-     * Returns true iff a given JDoctor parameter and JavaParser parameter
-     * are equivalent. Handles four cases:
-     *  (1) jDoctorParam and jpParam are equal.
-     *  (2) Both jDoctorParam and jpParam represent standard objects
-     *      (e.g. Object, Comparable).
-     *  (3) jpParam is a generic (not an array) and jDoctorParam is a
-     *      standard object.
-     *  (4) jpParam is a generic (array) and jDoctorParam is an array
-     *      of standard objects.
-     * Returns true if any of the above conditions hold.
+     * Checks if a JDoctor parameter and JavaParser parameter are equivalent.
+     * Handles four cases:
+     * <ul>
+     *     <li>{@code jDoctorParam} and {@code jpParam} are equal</li>
+     *     <li>Both {@code jDoctorParam} and {@code jpParam} represent
+     *     "standard" objects, defined as "Object" and "Comparable".</li>
+     *     <li>{@code jpParam} is a type parameter (not an array) and
+     *     {@code jDoctorParam} is a standard object.</li>
+     *     <li>{@code jpParam} is a type parameter (array) and
+     *     {@code jDoctorParam} is an array of standard objects.</li>
+     * </ul>
+     *
+     * @param jDoctorParam the JDoctor parameter name
+     * @param jpParam a JavaParser parameter
+     * @param jpCallable the declaring method with parameter {@code jpParam}
+     * @param jpClass the declaring class of {@code jpCallable}
+     * @return returns true if any of the aforementioned cases are true
      */
     private static boolean jpParamEqualsJDoctorParam(
             String jDoctorParam,
@@ -1097,7 +1155,7 @@ public class DatasetUtils {
         boolean jDoctorParamIsStandardArray = TypeUtils.isObjectOrComparableArray(jDoctorParam);
         boolean jpParamIsStandard = TypeUtils.isObjectOrComparable(jpParam);
         boolean jpParamIsArray = jpParam.endsWith("[]");
-        boolean jpParamIsGeneric = JavaParserUtils.isTypeParameter(jpParam, jpCallable, jpClass);
+        boolean jpParamIsGeneric = JavaParserUtils.isTypeVariable(jpParam, jpCallable, jpClass);
         return (jDoctorParamIsStandard && jpParamIsStandard) ||
                 ((jpParamIsGeneric && !jpParamIsArray) && jDoctorParamIsStandard) ||
                 ((jpParamIsGeneric && jpParamIsArray) && jDoctorParamIsStandardArray);
@@ -1203,6 +1261,9 @@ public class DatasetUtils {
     }
 
     /**
+     * Gets the path to the class of a JDoctor condition from the given source
+     * path.
+     *
      * @param operation an operation of a JDoctor condition
      * @param sourceDir the source path of the relevant project
      * @return the path of the class in the JDoctor condition
@@ -1233,8 +1294,13 @@ public class DatasetUtils {
     }
 
     /**
-     * Like previous method, but instead of retrieving the compilation unit,
-     * retrieves the source code of the class.
+     * Gets the source code of the Java file, corresponding to the class of a
+     * JDoctor condition.
+     *
+     * @param operation a JDoctor condition operation
+     * @param sourcePath the path to the corresponding source code of the Java
+     *                   project
+     * @return the source code of the class in the JDoctor condition
      */
     public static Optional<String> getOperationClassSource(
             Operation operation,
@@ -1249,7 +1315,10 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets the method/constructor name of an operation.
+     * Gets the method/constructor name of an operation
+     *
+     * @param operation a JDoctor condition operation
+     * @return the method/constructor name of the operation
      */
     public static String getOperationCallableName(
             Operation operation
