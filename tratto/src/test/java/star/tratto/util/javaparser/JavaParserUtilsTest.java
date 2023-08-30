@@ -264,7 +264,7 @@ public class JavaParserUtilsTest {
         assertFalse(isType1AssignableToType2(Pair.with("java.lang", "String"), Pair.with("java.lang", "StringBuilder"), null));
         assertTrue(isType1AssignableToType2(Pair.with("", "boolean"), Pair.with("", "boolean"), null));
         assertTrue(isType1AssignableToType2(Pair.with("", "boolean"), Pair.with("java.lang", "Boolean"), null));
-        assertFalse(isType1AssignableToType2(Pair.with("java.lang", "Boolean"), Pair.with("", "boolean"), null));
+        assertTrue(isType1AssignableToType2(Pair.with("java.lang", "Boolean"), Pair.with("", "boolean"), null));
         assertTrue(isType1AssignableToType2(Pair.with("java.lang", "Boolean"), Pair.with("java.lang", "Boolean"), null));
         assertTrue(isType1AssignableToType2(Pair.with("", "int"), Pair.with("", "int"), null));
         assertTrue(isType1AssignableToType2(Pair.with("", "int"), Pair.with("java.lang", "Integer"), null));

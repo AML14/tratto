@@ -678,14 +678,12 @@ public class JavaParserUtils {
         return resolvedType2;
     }
 
-    // TODO: The "not the other way around" is true only in a certain sense.  Given variables `b`
-    // and `B` of type boolean and Boolean, both "b = B" and "B = b" will compile, because Java
-    // performs automatic boxing and unboxing.  Please clarify the comment.
     /**
-     * This method is different from {@link #isInstanceOf} in that it can be used to compare
-     * primitive types and primitive wrapper types. For instance, a boolean is assignable to a Boolean,
-     * but not the other way around. Note that this method takes as input pairs of package and class
-     * name, instead of fully qualified types.
+     * This method is different from {@link #isInstanceOf(String, String, OracleDatapoint)} in that it
+     * can be used to compare primitive types and primitive wrapper types. For instance, a boolean is
+     * assignable to a Boolean, and vice versa, but this cannot be checked with the instanceof operator.
+     * Note that this method takes as input pairs of package and class name, instead of fully qualified
+     * types.
      * @param type1 pair with &lt;package, class&gt;, e.g., &lt;"java.util", "List"&gt;
      * @param type2 pair with &lt;package, class&gt;, e.g., &lt;"java.lang", "Object"&gt;
      * @param oracleDatapoint may be null. If not null, it is used to check if some type is generic.
@@ -699,17 +697,21 @@ public class JavaParserUtils {
         if (type1.equals(JavaTypes.NULL) && !JavaTypes.PRIMITIVES.contains(type2)) {
             // 2) left type is the null/void type and right type is not primitive
             return true;
-        }            
+        }
         if (JavaTypes.PRIMITIVES.contains(type1) && JavaTypes.PRIMITIVES_TO_WRAPPERS.get(type1).equals(type2)) {
             // 3) left type is primitive and right type is wrapper
             return true;
         }
+        if (JavaTypes.PRIMITIVES.contains(type2) && JavaTypes.PRIMITIVES_TO_WRAPPERS.get(type2).equals(type1)) {
+            // 4) right type is primitive and left type is wrapper
+            return true;
+        }
         if (JavaTypes.NUMBERS.contains(type1) && JavaTypes.NUMBERS.contains(type2) && isAssignableToNumeric(type1, type2)) {
-            // 4) both types are numeric and left type is assignable to right type
+            // 5) both types are numeric and left type is assignable to right type
             return true;
         }
         if (isInstanceOf(fullyQualifiedClassName(type1), fullyQualifiedClassName(type2), oracleDatapoint)) {
-            // 5) left type is instance of right type (both types are non-primitive)
+            // 6) left type is instance of right type (both types are non-primitive)
             return true;
         }
         return false;
