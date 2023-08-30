@@ -1,6 +1,7 @@
 package star.tratto.util.javaparser;
 
 import com.github.javaparser.JavaParser;
+import com.github.javaparser.ParseResult;
 import com.github.javaparser.ast.AccessSpecifier;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Modifier;
@@ -53,7 +54,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import static org.plumelib.util.CollectionsPlume.mapList;
 import static star.tratto.util.JavaTypes.isAssignableToNumeric;
@@ -1214,15 +1214,22 @@ public class JavaParserUtils {
      * need the constructor declaration for anything, if the passed methodSourceCode is from a constructor,
      * this method returns null. This behavior must be handled by the caller.
      * @return null if the passed method source code is actually a constructor
-     * @throws IllegalArgumentException if the provided methodSourceCode cannot be parsed by JavaParser
+     * @throws IllegalArgumentException if the provided methodSourceCode cannot be parsed by JavaParser or
+     * if it is not a constructor or method
      */
     public static MethodDeclaration getMethodDeclaration(String methodSourceCode) throws IllegalArgumentException {
-        try {
-            return javaParser.parseBodyDeclaration(methodSourceCode).getResult().get().asMethodDeclaration();
-        } catch (NoSuchElementException e) {
-            throw new IllegalArgumentException("JavaParser cannot parse:" + System.lineSeparator() + methodSourceCode, e);
-        } catch (IllegalStateException e) {
-            return null; // This happens when the methodSourceCode is actually a constructor
+        Optional<BodyDeclaration<?>> parseResult = javaParser.parseBodyDeclaration(methodSourceCode).getResult();
+        if (parseResult.isPresent()) {
+            BodyDeclaration<?> bodyDeclaration = parseResult.get();
+            if (bodyDeclaration.isMethodDeclaration()) {
+                return bodyDeclaration.asMethodDeclaration();
+            } else if (bodyDeclaration.isConstructorDeclaration()) {
+                return null;
+            } else {
+                throw new IllegalArgumentException("Not a constructor or method:" + System.lineSeparator() + methodSourceCode);
+            }
+        } else {
+            throw new IllegalArgumentException("JavaParser cannot parse:" + System.lineSeparator() + methodSourceCode);
         }
     }
 
