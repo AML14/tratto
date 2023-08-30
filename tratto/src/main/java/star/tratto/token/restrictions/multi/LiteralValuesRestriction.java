@@ -17,7 +17,7 @@ import static star.tratto.oraclegrammar.custom.Parser.findLastMethodCall;
 import static star.tratto.oraclegrammar.custom.Parser.getNArgumentsSoFar;
 import static star.tratto.oraclegrammar.custom.Splitter.split;
 import static star.tratto.token.restrictions.RestrictionsUtils.getApplicableMethodsOfPrecedingExpr;
-import static star.tratto.util.JavaParserUtils.*;
+import static star.tratto.util.javaparser.JavaParserUtils.*;
 import static star.tratto.util.StringUtils.compactExpression;
 
 /**
@@ -78,7 +78,7 @@ public class LiteralValuesRestriction extends MultiTokenRestriction {
                 List<MethodUsage> matchingMethods = getApplicableMethodsOfPrecedingExpr(lastElementWithUnfinishedMethod, methodName, oracleDatapoint);
                 matchingMethods.forEach(m -> {
                     if (m.getNoParams() > nextArgIndex) {
-                        Pair<String, String> nextArgType = getTypeFromResolvedType(m.getParamType(nextArgIndex));
+                        Pair<String, String> nextArgType = getTypePairFromResolvedType(m.getParamType(nextArgIndex));
                         updateAllowedTokens(allowedTokens, nextArgType, true, oracleDatapoint);
                     }
                 });
@@ -90,7 +90,7 @@ public class LiteralValuesRestriction extends MultiTokenRestriction {
                 return false; // This may happen if false is suggested but it's not a comparison (e.g., "(a==b)==false") or if true is suggested as a whole predicate
             }
 
-            restrictedTokens.addAll(possiblyRestrictedTokens.stream().filter(t -> !allowedTokens.contains(t)).collect(Collectors.toList()));
+            restrictedTokens.addAll(possiblyRestrictedTokens.stream().filter(t -> !allowedTokens.contains(t)).toList());
 
             return !restrictedTokens.isEmpty();
         }

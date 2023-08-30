@@ -1,0 +1,48 @@
+[
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.analysis.solvers.NewtonRaphsonSolver",
+      "name": "solve",
+      "parameterTypes": [
+        "int",
+        "org.apache.commons.math3.analysis.differentiation.UnivariateDifferentiableFunction",
+        "double",
+        "double"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "maxEval",
+        "f",
+        "min",
+        "max"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NumberIsTooLargeException",
+        "description": "@throws org.apache.commons.math3.exception.NumberIsTooLargeException min >= max.",
+        "guard": {
+          "condition": "min>=maxEval",
+          "description": "min >= max."
+        }
+      }
+    ],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID==0",
+          "description": "the value where the function is zero."
+        },
+        "description": "the value where the function is zero.",
+        "guard": {
+          "condition": "true",
+          "description": "the value where the function is zero."
+        }
+      }
+    ],
+    "pre": []
+  }
+]

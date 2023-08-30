@@ -1,0 +1,62 @@
+[
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.primes.SmallPrimes",
+      "name": "smallTrialDivision",
+      "parameterTypes": [
+        "int",
+        "java.util.List"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "n",
+        "factors"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param n the number to factor. n is > 0.",
+        "guard": {
+          "condition": "n>0",
+          "description": "the number to factor. n is > 0."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.primes.SmallPrimes",
+      "name": "boundedTrialDivision",
+      "parameterTypes": [
+        "int",
+        "int",
+        "java.util.List"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "n",
+        "maxFactor",
+        "factors"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param n the number to factorize. n is >= PRIME_LAST+2 and must not contain any factor below PRIME_LAST+2.",
+        "guard": {
+          "condition": "n>=receiverObjectID.PRIMES_LAST",
+          "description": "the number to factorize. n is >= PRIME_LAST+2 and must not contain any factor below PRIME_LAST+2."
+        }
+      }
+    ]
+  }
+]

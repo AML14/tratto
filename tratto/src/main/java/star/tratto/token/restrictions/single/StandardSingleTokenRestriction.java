@@ -29,7 +29,8 @@ public class StandardSingleTokenRestriction extends SingleTokenRestriction {
 
     @Override
     public Boolean isEnabled(String nextLegalToken, List<String> partialExpressionTokens, OracleDatapoint oracleDatapoint) {
-        if (!isRestrictedToken(nextLegalToken) || oracleType != oracleDatapoint.getOracleType()) { // The token may be the same, but not applicable to this oracleType
+        if (!isRestrictedToken(nextLegalToken) || oracleType != oracleDatapoint.getOracleType()) {
+            // The token may be the same, but not applicable to this oracleType
             return false;
         }
 
@@ -55,7 +56,8 @@ public class StandardSingleTokenRestriction extends SingleTokenRestriction {
         if (minEnablerTokenIndex != maxDisablerTokenIndex) {
             return maxDisablerTokenIndex < minEnablerTokenIndex; // If false, the restriction was disabled at some point
         } else {
-            if (minEnablerTokenIndex == -1) { // Both indexes are -1, meaning that the partialExpression is empty. Apply default value.
+            if (minEnablerTokenIndex == -1) {
+                // Both indexes are -1, meaning that the partialExpression is empty. Apply default value.
                 return enabledByDefault;
             } else if (enablerTokens.size() != disablerTokens.size()) { // The last token enables (/disables) the restriction and any token can disable (/enable) it
                 return disablerTokens.size() <= enablerTokens.size(); // If any token can enable the restriction, the last token disables it, or vice versa

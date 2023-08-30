@@ -1,0 +1,62 @@
+[
+  {
+    "operation": {
+      "classname": "com.google.common.primitives.Bytes",
+      "name": "ensureCapacity",
+      "parameterTypes": [
+        "[B",
+        "int",
+        "int"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "array",
+        "minLength",
+        "padding"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.IllegalArgumentException",
+        "description": "@throws java.lang.IllegalArgumentException minLength or padding is negative.",
+        "guard": {
+          "condition": "minLength<0 || padding<0",
+          "description": "minLength or padding is negative."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "com.google.common.primitives.Bytes",
+      "name": "toArray",
+      "parameterTypes": [
+        "java.util.Collection"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "collection"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException collection or any of its elements is null.",
+        "guard": {
+          "condition": "collection==null",
+          "description": "collection or any of its elements is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  }
+]

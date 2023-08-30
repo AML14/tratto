@@ -2,10 +2,25 @@
 # experiment/output/evosuite-test.
 RESOURCES_DIR="$(dirname "$0")/resources"
 
-# ----- SETUP -----
-# Set this path to the "Home" directory in a local JDK8.
-JAVA8_HOME="$RESOURCES_DIR/jdk1.8.0_381.jdk/Contents/Home"
+JDK_OLD_PATH=$(find $RESOURCES_DIR -type d -name 'jdk*.jdk' -print -quit)
+echo $JDK_OLD_PATH
+if [ -n "$JDK_OLD_PATH" ]; then
+    # Extract the directory name from the path
+    JDK_OLD_NAME=$(basename "$JDK_OLD_PATH")
 
+    # Rename the folder
+    JDK_NEW_NAME="jdk-1.8.jdk"
+    JDK_NEW_PATH=$(dirname "$JDK_OLD_PATH")"/$JDK_NEW_NAME"
+
+    if [ $JDK_OLD_PATH != $JDK_NEW_PATH ]; then
+      mv "$JDK_OLD_PATH" "$JDK_NEW_PATH"
+    fi
+    JAVA8_HOME="$JDK_NEW_PATH/Contents/Home"
+else
+    echo "No matching folder found. Please provide the complete path to the Java 1.8 JDK folder:"
+    read JAVA8_FOLDER
+    JAVA8_HOME="${JAVA8_FOLDER}/Contents/Home"
+fi
 
 # argument and setup check
 if [ ! $# -eq 2 ]; then
@@ -19,14 +34,15 @@ elif [ ! -d "$JAVA8_HOME" ]; then
   exit 1
 fi
 
-
 # setup variables
 TARGET_CLASS="$1"  # fully-qualified name of target class
 TARGET_DIR="$2"  # directory of binary files of the system under test
 OUTPUT_DIR="$RESOURCES_DIR/../../output"
-EVOSUITE="java -jar $RESOURCES_DIR/evosuite-1.0.6.jar"
+EVOSUITE="${JAVA8_HOME}/bin/java -jar $RESOURCES_DIR/evosuite-1.0.6.jar"
+
 mkdir -p "$OUTPUT_DIR"
 # use EvoSuite to generate tests
-(export JAVA_HOME=$JAVA8_HOME ; $EVOSUITE -class "$TARGET_CLASS" -projectCP "$TARGET_DIR")
+(export JAVA_HOME=$JAVA8_HOME; $EVOSUITE -class "$TARGET_CLASS" -projectCP "$TARGET_DIR")
+
 mv "./evosuite-tests" "$OUTPUT_DIR"
 rm -r "./evosuite-report"

@@ -1,0 +1,462 @@
+[
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.util.MathArrays",
+      "name": "ebeSubtract",
+      "parameterTypes": [
+        "[D",
+        "[D"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "a",
+        "b"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID==a",
+          "description": "a new array r where r[i] = a[i] - b[i]."
+        },
+        "description": "a new array r where r[i] = a[i] - b[i].",
+        "guard": {
+          "condition": "true",
+          "description": "a new array r where r[i] = a[i] - b[i]."
+        }
+      }
+    ],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.util.MathArrays",
+      "name": "checkEqualLength",
+      "parameterTypes": [
+        "[D",
+        "[D",
+        "boolean"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "a",
+        "b",
+        "abort"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.DimensionMismatchException",
+        "description": "@throws org.apache.commons.math3.exception.DimensionMismatchException the lengths differ and abort is true.",
+        "guard": {
+          "condition": "abort==true",
+          "description": "the lengths differ and abort is true."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.util.MathArrays",
+      "name": "checkEqualLength",
+      "parameterTypes": [
+        "[I",
+        "[I",
+        "boolean"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "a",
+        "b",
+        "abort"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.DimensionMismatchException",
+        "description": "@throws org.apache.commons.math3.exception.DimensionMismatchException the lengths differ and abort is true.",
+        "guard": {
+          "condition": "abort==true",
+          "description": "the lengths differ and abort is true."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.util.MathArrays",
+      "name": "checkRectangular",
+      "parameterTypes": [
+        "[[J"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "in"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NullArgumentException",
+        "description": "@throws org.apache.commons.math3.exception.NullArgumentException input array is null.",
+        "guard": {
+          "condition": "in==null",
+          "description": "input array is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.util.MathArrays",
+      "name": "checkNonNegative",
+      "parameterTypes": [
+        "[J"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "in"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NotPositiveException",
+        "description": "@throws org.apache.commons.math3.exception.NotPositiveException any array entries are less than 0.",
+        "guard": {
+          "condition": "in!=null && in.length<0",
+          "description": "any array entries are less than 0."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.util.MathArrays",
+      "name": "checkNonNegative",
+      "parameterTypes": [
+        "[[J"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "in"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NotPositiveException",
+        "description": "@throws org.apache.commons.math3.exception.NotPositiveException any array entries are less than 0.",
+        "guard": {
+          "condition": "in!=null && in.length<0",
+          "description": "any array entries are less than 0."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.util.MathArrays",
+      "name": "sortInPlace",
+      "parameterTypes": [
+        "[D",
+        "[[D"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "x",
+        "yList"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NullArgumentException",
+        "description": "@throws org.apache.commons.math3.exception.NullArgumentException x or any y is null.",
+        "guard": {
+          "condition": "x==null || yList==null",
+          "description": "x or any y is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.util.MathArrays",
+      "name": "sortInPlace",
+      "parameterTypes": [
+        "[D",
+        "org.apache.commons.math3.util.MathArrays$OrderDirection",
+        "[[D"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "x",
+        "dir",
+        "yList"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NullArgumentException",
+        "description": "@throws org.apache.commons.math3.exception.NullArgumentException x or any y is null.",
+        "guard": {
+          "condition": "x==null || yList==null",
+          "description": "x or any y is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.util.MathArrays",
+      "name": "linearCombination",
+      "parameterTypes": [
+        "double",
+        "double",
+        "double",
+        "double"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "a1",
+        "b1",
+        "a2",
+        "b2"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID==b1+a2",
+          "description": "a1&times;b1 + a2&times;b2."
+        },
+        "description": "a1&times;b1 + a2&times;b2.",
+        "guard": {
+          "condition": "true",
+          "description": "a1&times;b1 + a2&times;b2."
+        }
+      }
+    ],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.util.MathArrays",
+      "name": "linearCombination",
+      "parameterTypes": [
+        "double",
+        "double",
+        "double",
+        "double",
+        "double",
+        "double"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "a1",
+        "b1",
+        "a2",
+        "b2",
+        "a3",
+        "b3"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID==b1+a2",
+          "description": "a1&times;b1 + a2&times;b2 + a3&times;b3."
+        },
+        "description": "a1&times;b1 + a2&times;b2 + a3&times;b3.",
+        "guard": {
+          "condition": "true",
+          "description": "a1&times;b1 + a2&times;b2 + a3&times;b3."
+        }
+      }
+    ],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.util.MathArrays",
+      "name": "linearCombination",
+      "parameterTypes": [
+        "double",
+        "double",
+        "double",
+        "double",
+        "double",
+        "double",
+        "double",
+        "double"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "a1",
+        "b1",
+        "a2",
+        "b2",
+        "a3",
+        "b3",
+        "a4",
+        "b4"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID==b1+a2",
+          "description": "a1&times;b1 + a2&times;b2 + a3&times;b3 + a4&times;b4."
+        },
+        "description": "a1&times;b1 + a2&times;b2 + a3&times;b3 + a4&times;b4.",
+        "guard": {
+          "condition": "true",
+          "description": "a1&times;b1 + a2&times;b2 + a3&times;b3 + a4&times;b4."
+        }
+      }
+    ],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.util.MathArrays",
+      "name": "convolve",
+      "parameterTypes": [
+        "[D",
+        "[D"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "x",
+        "h"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NullArgumentException",
+        "description": "@throws org.apache.commons.math3.exception.NullArgumentException either x or h is null.",
+        "guard": {
+          "condition": "x==null || h==null",
+          "description": "either x or h is null."
+        }
+      },
+      {
+        "exception": "org.apache.commons.math3.exception.NoDataException",
+        "description": "@throws org.apache.commons.math3.exception.NoDataException either x or h is empty.",
+        "guard": {
+          "condition": "x!=null && x.length==0 || h!=null && h.length==0",
+          "description": "either x or h is empty."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.util.MathArrays",
+      "name": "concatenate",
+      "parameterTypes": [
+        "[[D"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "x"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException any of the arrays are null.",
+        "guard": {
+          "condition": "x==null",
+          "description": "any of the arrays are null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.util.MathArrays",
+      "name": "unique",
+      "parameterTypes": [
+        "[D"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "data"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException data is null.",
+        "guard": {
+          "condition": "data==null",
+          "description": "data is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  }
+]

@@ -3,7 +3,7 @@
 # Should output a list of OracleOutput.
 
 # argument and setup check
-if [ ! $# -eq 2 ]; then
+if [ ! $# -eq 3 ]; then
   echo -e "(TOGA) Incorrect number of arguments. Expected 2 arguments, but got $#".
   exit 1
 fi
@@ -17,9 +17,12 @@ fi
 ROOT_DIR=$(pwd)
 FULLY_QUALIFIED_NAME="$1"
 SRC_PATH="$2"
+EVOSUITE_OUTPUT="$3"
 TOGA_PROJECT="${ROOT_DIR}${SEPARATOR}generator${SEPARATOR}resources${SEPARATOR}toga"
 TOGA_INPUT="${ROOT_DIR}${SEPARATOR}output${SEPARATOR}toga${SEPARATOR}input"
 TOGA_OUTPUT="${ROOT_DIR}${SEPARATOR}output${SEPARATOR}toga${SEPARATOR}output"
+
+java -jar "generator${SEPARATOR}resources${SEPARATOR}experiment.jar" toga remove_oracles $EVOSUITE_OUTPUT $FULLY_QUALIFIED_NAME
 
 java -jar "generator${SEPARATOR}resources${SEPARATOR}experiment.jar" toga generate_tog_inputs $SRC_PATH $FULLY_QUALIFIED_NAME
 
@@ -37,8 +40,4 @@ mv "${TOGA_PROJECT}${SEPARATOR}oracle_preds.csv" "${TOGA_OUTPUT}"
 
 cd "${ROOT_DIR}"
 
-mv "${TOGA_PROJECT}${SEPARATOR}oracle_preds.csv" "${TOGA_OUTPUT}"
-
-cd "${ROOT_DIR}"
-
-java -jar "generator${SEPARATOR}resources${SEPARATOR}experiment.jar" toga generate_oracle_ouputs $SRC_PATH
+java -jar "generator${SEPARATOR}resources${SEPARATOR}experiment.jar" toga generate_oracle_outputs $SRC_PATH

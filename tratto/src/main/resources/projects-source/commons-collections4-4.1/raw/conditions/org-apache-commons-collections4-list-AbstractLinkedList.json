@@ -1,0 +1,68 @@
+[
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.list.AbstractLinkedList",
+      "name": "isEqualValue",
+      "parameterTypes": [
+        "java.lang.Object",
+        "java.lang.Object"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "value1",
+        "value2"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param value1 value1 is first. first value to compare null.",
+        "guard": {
+          "condition": "value1==null",
+          "description": "value1 is first. first value to compare null."
+        }
+      },
+      {
+        "description": "@param value2 value2 is second. second value to compare null.",
+        "guard": {
+          "condition": "value2==null",
+          "description": "value2 is second. second value to compare null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.list.AbstractLinkedList",
+      "name": "getNode",
+      "parameterTypes": [
+        "int",
+        "boolean"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "index",
+        "endMarkerAllowed"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.IndexOutOfBoundsException",
+        "description": "@throws java.lang.IndexOutOfBoundsException the index is less than 0; equal to the size of the list and endMakerAllowed is false; or greater than the size of the list.",
+        "guard": {
+          "condition": "index<0",
+          "description": "the index is less than 0; equal to the size of the list and endMakerAllowed is false; or greater than the size of the list."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  }
+]
