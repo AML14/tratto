@@ -399,7 +399,7 @@ public class TogUtils {
         if (!Files.exists(jDoctorPath)) {
             throw new IllegalArgumentException("Unable to find JDoctor output file " + jDoctorPath);
         }
-        Path oraclePath = output.resolve(Paths.get("jdoctor", "oracle_output.json"));
+        Path oraclePath = output.resolve(Paths.get("jdoctor", "oracle_outputs.json"));
         List<JDoctorOutput> jDoctorOutputs = FileUtils.readJSONList(jDoctorPath, JDoctorOutput.class);
         List<OracleOutput> oracleOutputs = jDoctorOutputs
                 .stream()
@@ -414,7 +414,7 @@ public class TogUtils {
 //                Paths.get("src","test","resources","project","src"),
 //                "tutorial.Stack"
 //        );
-        Path jDoctorOutput = Paths.get("generator", "resources", "jdoctor_outputs.json");
+        Path jDoctorOutput = Paths.get("generator", "resources", "jdoctor_output.json");
         jDoctorToOracleOutput(jDoctorOutput);
     }
 }
