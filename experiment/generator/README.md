@@ -16,3 +16,17 @@ We provide a brief overview of the relevant scripts:
 - `tratto.sh`: Generates oracles using Tratto
 
 Each TOG script produces oracles as a list of [`OracleOutput`](../src/main/java/OracleOutput.java)'s.
+
+### JDoctor
+
+To use `jdoctor.sh`, run
+
+```shell
+bash jdoctor.sh [fully qualified name] [path to source] [path to binaries]
+```
+
+For example,
+
+```shell
+bash evosuite.sh tutorial.Stack ../src/test/resources/project/src ../src/test/resources/project/target/classes
+```
