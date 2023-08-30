@@ -300,6 +300,13 @@ public class TogUtils {
         );
     }
 
+    /**
+     * Converts a JDoctor ReturnTag to an OracleOutput record.
+     *
+     * @param jDoctorOutput the parent JDoctor condition of {@code returnTag}
+     * @param returnTag a JDoctor normal post condition
+     * @return the corresponding OracleOutput of {@code returnTag}
+     */
     private static OracleOutput returnTagToOracleOutput(JDoctorOutput jDoctorOutput, ReturnTag returnTag) {
         if (returnTag == null || returnTag.condition().isEmpty()) {
             return null;
