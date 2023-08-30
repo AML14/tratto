@@ -30,7 +30,6 @@ public class TogUtilsTest {
         TogUtils.jDoctorToOracleOutput();
         Path oraclePath = Paths.get("output", "jdoctor", "oracle_outputs.json");
         List<OracleOutput> oracleOutputList = FileUtils.readJSONList(oraclePath, OracleOutput.class);
-        System.out.println(oracleOutputList);
         for (OracleOutput oracleOutput : oracleOutputList) {
             assertEquals("tutorial.Stack", oracleOutput.className());
             assertTrue(List.of("push(T o)", "pop()").contains(oracleOutput.methodSignature()));
