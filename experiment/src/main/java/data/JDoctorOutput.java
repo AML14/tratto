@@ -25,6 +25,8 @@ public record JDoctorOutput(
     ) {}
 
     public record ThrowsTag(
+            @JsonProperty("exceptionType") Type exceptionType,
+            @JsonProperty("codeTags") List<String> codeTags,
             @JsonProperty("comment") String comment,
             @JsonProperty("kind") String kind,
             @JsonProperty("condition") String condition
