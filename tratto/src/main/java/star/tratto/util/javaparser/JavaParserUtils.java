@@ -482,8 +482,8 @@ public class JavaParserUtils {
     }
 
     /**
-     * Returns the {@link ResolvedReferenceTypeDeclaration} of a given binary
-     * type name.
+     * Returns the {@link ResolvedReferenceTypeDeclaration} of a given fully
+     * qualified type name.
      *
      * @param fqName fully qualified type name, e.g., {@code java.util.List}
      * @return the corresponding JavaParser ResolvedReferenceTypeDeclaration
@@ -495,6 +495,10 @@ public class JavaParserUtils {
         return getResolvedType(fqName).asReferenceType().getTypeDeclaration().get();
     }
 
+    /**
+     * @throws UnsupportedOperationException if the type is an array or
+     * primitive type
+     */
     private static ResolvedReferenceTypeDeclaration getResolvedReferenceTypeDeclaration(ResolvedType resolvedType) throws UnsupportedOperationException {
         return resolvedType.asReferenceType().getTypeDeclaration().get();
     }
@@ -502,7 +506,6 @@ public class JavaParserUtils {
     // TODO: Check that this method is not called with binary names as argument
     /**
      * @param fqName fully qualified name, e.g., {@code java.util.List}
-     * @throws UnsupportedOperationException if the type is an array or a primitive type
      */
     private static ResolvedType getResolvedType(String fqName) throws UnsupportedOperationException {
         CompilationUnit cu = javaParser.parse(SYNTHETIC_CLASS_SOURCE).getResult().get();
@@ -537,22 +540,22 @@ public class JavaParserUtils {
         boolean useObjectMethods = true;
         try {
             resolvedType = getResolvedType(referenceType);
-            resolvedReferenceTypeDeclaration = getResolvedReferenceTypeDeclaration(resolvedType);
-            methods.addAll(resolvedReferenceTypeDeclaration.getAllMethods());
-            // Interfaces do not always inherit from Object
-            if (!resolvedReferenceTypeDeclaration.isInterface()) {
-                useObjectMethods = false;
-            }
-        } catch (UnsupportedOperationException e) {
-            if (!resolvedType.isArray()) {
-                throw new IllegalArgumentException(
-                    "getMethodsOfType: "
-                    + "not a reference type or an array: " + referenceType, e);
+            if (!resolvedType.isArray() && !resolvedType.isReferenceType()) {
+                throw new IllegalArgumentException("getMethodsOfType: not a reference type or an array: " + referenceType);
+            } else if (resolvedType.isReferenceType()) {
+                resolvedReferenceTypeDeclaration = getResolvedReferenceTypeDeclaration(resolvedType);
+                methods.addAll(resolvedReferenceTypeDeclaration.getAllMethods());
+                // Interfaces do not always inherit from Object
+                if (!resolvedReferenceTypeDeclaration.isInterface()) {
+                    useObjectMethods = false;
+                }
             }
         } catch (UnsolvedSymbolException e) {
+            // Happens mostly for type parameters, may also happen in corner cases for unknown classes
             logger.warn("Unresolvable type: {}", referenceType);
         }
         if (useObjectMethods) {
+            // Always add object methods for arrays or types that couldn't be resolved (e.g., generics)
             getObjectMethods().forEach(om -> {
                 if (methods.stream().noneMatch(m -> m.getName().equals(om.getName()) && m.getParamTypes().equals(om.getParamTypes()))) {
                     methods.add(om);
