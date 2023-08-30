@@ -36,3 +36,6 @@ $JDOCTOR \
 --class-dir "$CLASS_DIR" \
 --condition-translator-output "$OUTPUT_DIR/jdoctor/jdoctor_output.json"  # location of JDoctor output in JSON format
 )
+java -jar "$RESOURCES_DIR/experiment.jar" "jdoctor" "generate_oracle_outputs" "$OUTPUT_DIR/jdoctor/jdoctor_output.json"
+mv "$RESOURCES_DIR/../output/jdoctor/oracle_outputs.json" "$OUTPUT_DIR/jdoctor"
+rm -r "$RESOURCES_DIR/../output"
