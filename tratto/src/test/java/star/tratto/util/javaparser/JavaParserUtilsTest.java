@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -570,5 +571,21 @@ public class JavaParserUtilsTest {
                 Arguments.of("test8", "java.lang.Class", "newInstance", true), // "public T newInstance() throws InstantiationException, IllegalAccessException")
                 Arguments.of("test9", "java.lang.Class", "getInterfaces", false) // "private Class<? extends Object>[] getInterfaces(boolean arg0)")
         );
+    }
+
+    @Test
+    public void getObjectMethodsTest() {
+        Set<MethodUsage> objectMethods = getObjectMethods();
+        Set<String> objectMethodsNames = objectMethods.stream().map(MethodUsage::getName).collect(Collectors.toSet());
+        assertTrue(objectMethodsNames.contains("equals"));
+        assertTrue(objectMethodsNames.contains("hashCode"));
+        assertTrue(objectMethodsNames.contains("toString"));
+        assertTrue(objectMethodsNames.contains("getClass"));
+        assertTrue(objectMethodsNames.contains("notify"));
+        assertTrue(objectMethodsNames.contains("notifyAll"));
+        assertTrue(objectMethodsNames.contains("wait"));
+        assertTrue(objectMethodsNames.contains("finalize"));
+        assertTrue(objectMethodsNames.contains("clone"));
+        assertFalse(objectMethodsNames.contains("someMethod"));
     }
 }
