@@ -4,6 +4,16 @@ import data.TogType;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/**
+ * This class represents the main file used in {@code experiment.jar}, with
+ * all necessary operations for the end-to-end experiment process, including:
+ * <ul>
+ *     <li>Removing oracles</li>
+ *     <li>Preprocessing TOG input</li>
+ *     <li>Postprocessing TOG output</li>
+ *     <li>Inserting oracles</li>
+ * </ul>
+ */
 public class Tog {
     /**
      * Preprocesses the given input to be valid for the specified TOG.
