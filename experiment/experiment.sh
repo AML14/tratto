@@ -46,10 +46,11 @@ if [ ! $found -eq 1 ]; then
   exit 1
 fi
 
-
 # generate EvoSuite tests
 bash ./generator/evosuite.sh "${TARGET_CLASS}" "${BIN_DIR}"
+# generate EvoSuite prefixes
 
+# generate oracles using TOG
 if [ "${TOG}" == "jdoctor" ]; then
   bash ./generator/jdoctor.sh "${TARGET_CLASS}" "${SRC_DIR}"
 elif [ "${TOG}" == "toga" ]; then
@@ -57,3 +58,4 @@ elif [ "${TOG}" == "toga" ]; then
 elif [ "${TOG}" == "tratto" ]; then
   bash ./generator/tratto.sh "${TARGET_CLASS}" "${SRC_DIR}"
 fi
+# insert oracles into EvoSuite prefixes
