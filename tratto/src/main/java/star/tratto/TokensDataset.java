@@ -34,7 +34,8 @@ public class TokensDataset {
         Files.createDirectories(tokensDatasetFolder);
         Path oraclesDatasetPath = Path.of(ORACLES_DATASET_FOLDER);
         DirectoryStream<Path> oraclesDatasetStream = Files.newDirectoryStream(oraclesDatasetPath);
-        for (Path oraclesDatasetFile : oraclesDatasetStream) { // Assume that only dataset files are in the folder
+        // Assume that only dataset files are in the folder
+        for (Path oraclesDatasetFile : oraclesDatasetStream) {
             logger.info("------------------------------------------------------------");
             logger.info("Processing file: {}", oraclesDatasetFile.getFileName());
             logger.info("------------------------------------------------------------");
