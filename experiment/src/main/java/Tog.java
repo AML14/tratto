@@ -27,7 +27,9 @@ public class Tog {
                 Path sourceDir = Paths.get(args[2]);
                 TogUtils.mapTOGAOutputToOracleOutput(sourceDir);
             }
-            if (togType == TogType.TRATTO) { }
+            if (togType == TogType.TRATTO) {
+
+            }
         } else if (operationType == OperationType.INSERT_ORACLES) { }
     }
 }

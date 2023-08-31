@@ -55,5 +55,6 @@ if [ "${TOG}" == "jdoctor" ]; then
 elif [ "${TOG}" == "toga" ]; then
   bash ./generator/toga.sh "${TARGET_CLASS}" "${SRC_DIR}" "${EVOSUITE_OUTPUT}"
 elif [ "${TOG}" == "tratto" ]; then
-  bash ./generator/tratto.sh "${TARGET_CLASS}" "${SRC_DIR}"
+  PROJECT_JAR=$5
+  bash ./generator/tratto.sh "${TARGET_CLASS}" "${SRC_DIR}" ${PROJECT_JAR}
 fi

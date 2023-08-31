@@ -9,6 +9,7 @@ import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.comments.JavadocComment;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.symbolsolver.utils.SymbolSolverCollectionStrategy;
+import data.OracleDatapoint;
 import data.OracleOutput;
 import data.OracleType;
 import org.apache.commons.csv.CSVParser;
@@ -260,10 +261,48 @@ public class TogUtils {
         FileUtils.writeJSON(prefixPath.resolve("oracle_outputs.json"), oracleOutputs);
     }
 
+    /**
+     * Transforms the output from the Tratto script into a json file containing a
+     * corresponding list of {@code OracleOutput} objects.
+     * Saves the output file in output/tratto/experiment.
+     * @see OracleOutput
+     * @param srcDirPath the path to the source code of the project under test
+     */
+    public static void mapTrattoOutputToOracleOutput(Path srcDirPath) {
+        javaParser = getJavaParser(srcDirPath);
+        Path prefixPath = output.resolve(Paths.get("tratto", "experiment"));
+        Path outputPath = output.resolve(Paths.get("tratto", "output"));
+        TypeReference<List<OracleDatapoint>> typeReference = new TypeReference<>(){};
+        List<OracleDatapoint> oracleDatapoints = (List<OracleDatapoint>) FileUtils.readJSON(
+                outputPath.resolve("oracle_datapoints.json"),
+                typeReference
+        );
+        List<OracleOutput> oracleOutputs = new ArrayList<>();
+        for (OracleDatapoint oracleDatapoint : oracleDatapoints) {
+            CompilationUnit cu = new CompilationUnit();
+            // Parse the method string and add it to the CompilationUnit
+
+            MethodDeclaration mut = javaParser.parseMethodDeclaration(oracleDatapoint.methodSourceCode()).getResult().orElseThrow();
+            String methodSignature = getMethodSignature(mut);
+            OracleOutput oracleOutput = new OracleOutput(
+                    oracleDatapoint.className(),
+                    methodSignature,
+                    oracleDatapoint.oracleType(),
+                    "",
+                    oracleDatapoint.oracleType() != OracleType.EXCEPT_POST ? oracleDatapoint.oracle() : "",
+                    oracleDatapoint.oracleType() == OracleType.EXCEPT_POST ? oracleDatapoint.oracle() : "",
+                    ""
+            );
+            oracleOutputs.add(oracleOutput);
+        }
+        FileUtils.writeJSON(prefixPath.resolve("oracle_outputs.json"), oracleOutputs);
+    }
+
     public static void main(String[] args) {
-        generateTOGAInput(
+        /*generateTOGAInput(
                 Paths.get("src","test","resources","project","src"),
                 "tutorial.Stack"
-        );
+        );*/
+        mapTrattoOutputToOracleOutput(Paths.get("src","test","resources","project","src"));
     }
 }
