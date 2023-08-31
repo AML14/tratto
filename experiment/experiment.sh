@@ -21,7 +21,7 @@ BIN_DIR=$4
 QUALIFIERS="${TARGET_CLASS%.*}"
 EVOSUITE_OUTPUT="${ROOT_DIR}${SEPARATOR}output${SEPARATOR}evosuite-tests${SEPARATOR}${QUALIFIERS//./$SEPARATOR}"
 
-echo $EVOSUITE_OUTPUT
+echo "$EVOSUITE_OUTPUT"
 
 
 # check if given directories exist
