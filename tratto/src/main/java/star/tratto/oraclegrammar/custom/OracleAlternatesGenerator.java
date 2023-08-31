@@ -16,17 +16,18 @@ import static star.tratto.util.StringUtils.compactExpression;
  * DISCLAIMER: The code quality of this class is very poor. It contains a lot of
  * repeated code, long methods, hardly readable code, etc. It is also not unit-tested.
  * For the moment, it will remain as it is, since its only purpose is to generate
- * variants of the oracles for data augmentation (i.e., not widely used functionality
+ * variants of the oracles for data augmentation (i.e., not widely used functionality,
  * and dispensable). However, it is integrated into the E2E test
- * {@code star.tratto.E2ETests#datasetsE2ETest()}, which checks that, for each oracle
- * variant generated, it can be reconstructed based on the token datapoints generated
- * from it.
+ * {@code star.tratto.E2ETests#datasetsE2ETest()}, which checks two things for each
+ * oracle variant generated, namely: 1) it can be parsed (i.e., the result of parsing
+ * and reconstructing it is the same as the original); and 2) it can be reconstructed
+ * based on the token datapoints generated from it.
  * <br><br>
  * This class relies on TrattoGrammar and on the
  * {@link star.tratto.oraclegrammar.custom.Parser} to analyze and manipulate the
  * oracles in multiple ways. All public methods are transformation rules that take
  * as input a given oracle as a String and return as output a list of alternate
- * versions of the oracle (as Strings as well), which are semantically equivalent.
+ * versions of the oracle (as Strings as well), which are syntactically equivalent.
  */
 public class OracleAlternatesGenerator {
     private static final Parser parser = Parser.getInstance();
@@ -68,6 +69,7 @@ public class OracleAlternatesGenerator {
         if (firstPredicateNoTrue.getClauseContinuations() != null && !firstPredicateNoTrue.getClauseContinuations().isEmpty()) {
             firstPredicateNoTrue.getClause().setPredicateNoTrue(EcoreUtil.copy(firstPredicateNoTrue));
             firstPredicateNoTrue.getClauseContinuations().clear();
+            firstPredicateNoTrue.getClause().setClauseTrue(null);
         }
         if (firstClause.getEqOperator() == null) {
             if (firstClause.getClauseTrue() != null) {

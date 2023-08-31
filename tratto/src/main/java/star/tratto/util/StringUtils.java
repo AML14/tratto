@@ -1,5 +1,7 @@
 package star.tratto.util;
 
+import static org.plumelib.util.CollectionsPlume.mapList;
+
 import edu.stanford.nlp.ling.CoreAnnotations.LemmaAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.TokensAnnotation;
 import edu.stanford.nlp.ling.CoreLabel;
@@ -10,12 +12,15 @@ import org.apache.commons.math3.linear.RealVector;
 import org.javatuples.Pair;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -25,16 +30,17 @@ import java.util.stream.IntStream;
  * of two inputs.
  */
 public class StringUtils {
-    /** A suite of NLP tools for pre-processing text inputs */
+    /** A suite of NLP tools for pre-processing text inputs. */
     private static final StanfordCoreNLP stanfordCoreNLP = getStanfordCoreNLP();
+    private static final Pattern instanceofPattern = Pattern.compile(" instanceof( |$)");
 
-    /** Private constructor to avoid creating an instance of this class */
+    /** Private constructor to avoid creating an instance of this class. */
     private StringUtils() {
         throw new UnsupportedOperationException("This class cannot be instantiated.");
     }
 
     /**
-     * @return a new StanfordCoreNLP object with the necessary properties for
+     * @return a new StanfordCoreNLP object for
      * preprocessing two strings for semantic comparison. We use the following
      * modifiers:
      * <ul>
@@ -50,13 +56,33 @@ public class StringUtils {
     }
 
     /**
-     * Remove spaces and add spaces around "instanceof".
+     * Remove spaces, except around "instanceof".
      */
     public static String compactExpression(String expression) {
-        return expression.replace(" ", "").replace("instanceof", " instanceof ");
+        if (expression == null) {
+            return "";
+        }
+        if (instanceofPattern.matcher(expression).find()) {
+            String[] segments = instanceofPattern.split(expression, -1);
+            List<String> compactedSegments = mapList(StringUtils::removeSpaces, segments);
+            return String.join(" instanceof ", compactedSegments);
+        } else {
+            return removeSpaces(expression);
+        }
     }
 
+    /** Returns the string, with all spaces removed. */
+    private static String removeSpaces(String s) {
+        return s.replace(" ", "");
+    }
+
+    /**
+     * Join the given strings by spaces, then call {@link #compactExpression(String)} on the result.
+     */
     public static String compactExpression(List<String> expressionTokens) {
+        if (expressionTokens == null) {
+            return "";
+        }
         return compactExpression(String.join(" ", expressionTokens));
     }
 
@@ -74,7 +100,6 @@ public class StringUtils {
                     "Token: " + oracleTokens.get(openingParenthesisIndex));
         }
 
-        Integer closingParenthesisIndex = null;
         int openingParenthesisCounter = 1;
         for (int i = openingParenthesisIndex + 1; i < oracleTokens.size(); i++) {
             String token = oracleTokens.get(i);
@@ -84,39 +109,39 @@ public class StringUtils {
                 openingParenthesisCounter--;
             }
             if (openingParenthesisCounter == 0) {
-                closingParenthesisIndex = i;
-                break;
+                return i;
             }
         }
 
-        return closingParenthesisIndex;
+        return null;
     }
 
-    /** Returns the indexes of the oracleTokens list where then tokens are found. Empty if tokens is null.
+    /** Returns the indexes of the oracleTokens list where the tokens are found. Empty if tokens is null.
      * All indexes if tokens is empty.
      * @param oracleTokens list of tokens in the (partial) oracle
      * @param tokens list of tokens to find in the oracle
-     * @return the indexes of the oracleTokens list where then tokens are found. Empty if tokens is null.
-     * All indexes if tokens is empty 
+     * @return the indexes of the oracleTokens list where the tokens are found. Empty if tokens is null.
+     * All indexes if tokens is empty.
      */
     public static List<Integer> getIndexesOfTokensInOracleTokens(List<String> oracleTokens, List<String> tokens) {
-        List<Integer> indexesOfTokensInOracle = new ArrayList<>();
-
         if (tokens == null) {
-            return indexesOfTokensInOracle;
+            return Collections.emptyList();
         } else if (tokens.isEmpty()) {
             return IntStream.rangeClosed(0, oracleTokens.size() - 1).boxed().collect(Collectors.toList());
         }
 
+        List<Integer> indexesOfTokensInOracle = new ArrayList<>();
         for (int i = 0; i < oracleTokens.size(); i++) {
             if (tokens.contains(oracleTokens.get(i))) {
                 indexesOfTokensInOracle.add(i);
             }
         }
-
         return indexesOfTokensInOracle;
     }
 
+    /**
+     * @param packageName is never null, but may be ""
+     */
     public static String fullyQualifiedClassName(String packageName, String className) {
         if (packageName.isEmpty()) {
             return className;
@@ -165,14 +190,12 @@ public class StringUtils {
         Annotation processedText = new Annotation(words);
         stanfordCoreNLP.annotate(processedText);
         List<CoreLabel> tokens = processedText.get(TokensAnnotation.class);
-        return tokens
-                .stream()
-                .map(t -> t.get(LemmaAnnotation.class))
-                .collect(Collectors.toList());
+        return mapList(t -> t.get(LemmaAnnotation.class),
+                       tokens);
     }
 
     /**
-     * Creates a map from each String to its corresponding frequency in a
+     * Creates a map from each String to its corresponding frequency in the
      * given list of Strings.
      *
      * @param strings a list of Strings
@@ -192,13 +215,14 @@ public class StringUtils {
      * Converts a histogram of word frequencies to a vector.
      *
      * @param frequencies a map of word frequencies
-     * @param words the set of all words to be considered in the vector
+     * @param words the ordered set of all words to be considered in the vector
      * @return a vector representation of the word frequencies. Each entry
      * corresponds to a different word, where the value of the entry
      * corresponds to the word frequency. If a word does not appear in the
-     * histogram, then it is assigned a value of 0.
+     * histogram, then it is assigned a value of 0. The length and order of the vector
+     * corresponds to {@code words}.
      */
-    private static RealVector wordFrequencyToVector(Map<String, Integer> frequencies, TreeSet<String> words) {
+    private static RealVector wordFrequencyToVector(Map<String, Integer> frequencies, SortedSet<String> words) {
         double[] vector = new double[words.size()];
         int i = 0;
         for (String word : words) {
@@ -213,9 +237,9 @@ public class StringUtils {
      *
      * @param set1 a set of words
      * @param set2 a set of words
-     * @return the words in both sets 
+     * @return the words in both sets
      */
-    private static TreeSet<String> getSetIntersection(Set<String> set1, Set<String> set2) {
+    private static SortedSet<String> setIntersection(Set<String> set1, Set<String> set2) {
         TreeSet<String> intersectionKeys = new TreeSet<>(set1);
         intersectionKeys.retainAll(set2);
         return intersectionKeys;
@@ -239,7 +263,18 @@ public class StringUtils {
     }
 
     /**
-     * Computes the cosine similarity from two lists.
+     * Computes the cosine similarity of two lists of Strings. <br>
+     * Note: This  implementation uses the set intersection, rather than the
+     * set union, due to the nature of the use case: comparing pre-processed
+     * JDoctor tags and tags from source code. JDoctor removes several words
+     * to simplify a tag. Notably, no NEW words are added (although some may
+     * be repeated). Therefore, the set of JDoctor tag words is a strict
+     * subset of the set of source code tag words. If we use the set union, it
+     * does not identify tags as accurately. Attempts were made using both the
+     * set union and intersection. When using the set intersection, all
+     * correct tags were found. However, when using the set union, some
+     * JDoctor tags were matched to incorrect source code tags. This behavior
+     * was tested via randomly sampling 50 tags.
      *
      * @param strings1 list of strings
      * @param strings2 list of strings
@@ -248,7 +283,7 @@ public class StringUtils {
     private static double cosineSimilarity(List<String> strings1, List<String> strings2) {
         Map<String, Integer> wordsFreq1 = getHistogram(strings1);
         Map<String, Integer> wordsFreq2 = getHistogram(strings2);
-        TreeSet<String> intersectionKeys = getSetIntersection(wordsFreq1.keySet(), wordsFreq2.keySet());
+        SortedSet<String> intersectionKeys = setIntersection(wordsFreq1.keySet(), wordsFreq2.keySet());
         RealVector wordVector1 = wordFrequencyToVector(wordsFreq1, intersectionKeys);
         RealVector wordVector2 = wordFrequencyToVector(wordsFreq2, intersectionKeys);
         return cosineSimilarity(wordVector1, wordVector2);
@@ -271,5 +306,15 @@ public class StringUtils {
         List<String> lemmas1 = toLemmas(s1);
         List<String> lemmas2 = toLemmas(s2);
         return cosineSimilarity(lemmas1, lemmas2);
+    }
+
+    /**
+     * Checks if expression contains word as a whole (i.e., not as a substring).
+     * @param expression expression to check
+     * @param word word potentially contained in expression
+     * @return true if expression contains word as a whole, false otherwise
+     */
+    public static boolean containsWord(String expression, String word) {
+        return expression.matches(".*\\b" + word + "\\b.*");
     }
 }

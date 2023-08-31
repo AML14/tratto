@@ -522,7 +522,7 @@ public class Parser {
     }
 
     /** Returns null if the element has no method modifiers.
-@param elementWithModifiers must be an element with modifiers, i.e., VarOrClassWithModifiers,
+     * @param elementWithModifiers must be an element with modifiers, i.e., VarOrClassWithModifiers,
      *                             IsolableVarOrClassWithModifiers, or ThisWithMandatoryModifiers
      * @return null if the element has no method modifiers 
      */

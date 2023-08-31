@@ -79,8 +79,12 @@ public class E2ETests {
                 TokensDataset.main(new String[] {});
             });
         } catch (AssertionFailedError e) {
-            logger.warn("This test could not finish before 6 hours, but no exceptions were thrown " +
-                    "during its execution, so we'll assume it passed.");
+            logger.warn("Exception: " + e);
+            if (e.getMessage().contains("execution timed out after")) {
+                logger.warn("Maybe this means that this test could not finish within 6 hours.  We'll assume it passed.");
+            } else {
+                throw e;
+            }
         }
 
         // Delete datasets and recreate folders
