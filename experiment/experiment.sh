@@ -20,6 +20,7 @@ SRC_DIR=$3
 BIN_DIR=$4
 QUALIFIERS="${TARGET_CLASS%.*}"
 EVOSUITE_OUTPUT="${ROOT_DIR}${SEPARATOR}output${SEPARATOR}evosuite-tests${SEPARATOR}${QUALIFIERS//./$SEPARATOR}"
+EXPERIMENT="java -jar ./generator/resources/experiment.jar"
 
 echo "$EVOSUITE_OUTPUT"
 
@@ -49,13 +50,17 @@ fi
 # generate EvoSuite tests
 bash ./generator/evosuite.sh "${TARGET_CLASS}" "${BIN_DIR}"
 # generate EvoSuite prefixes
-
+$EXPERIMENT "$TOG" "remove_oracles" "$EVOSUITE_OUTPUT" "$TARGET_CLASS"
 # generate oracles using TOG
 if [ "${TOG}" == "jdoctor" ]; then
   bash ./generator/jdoctor.sh "${TARGET_CLASS}" "${SRC_DIR}" "${BIN_DIR}"
+  ORACLE_OUTPUT="./output/jdoctor/oracle_outputs.json"
 elif [ "${TOG}" == "toga" ]; then
   bash ./generator/toga.sh "${TARGET_CLASS}" "${SRC_DIR}" "${EVOSUITE_OUTPUT}"
+  ORACLE_OUTPUT="./output/toga/oracle_outputs.json"
 elif [ "${TOG}" == "tratto" ]; then
   bash ./generator/tratto.sh "${TARGET_CLASS}" "${SRC_DIR}"
+  ORACLE_OUTPUT=""
 fi
 # insert oracles into EvoSuite prefixes
+$EXPERIMENT "$TOG" "insert_oracles" "$ORACLE_OUTPUT"
