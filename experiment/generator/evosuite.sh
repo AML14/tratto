@@ -2,22 +2,23 @@
 # experiment/output/evosuite-test.
 RESOURCES_DIR="$(dirname "$0")/resources"
 
-JDK_OLD_PATH=$(find $RESOURCES_DIR -type d -name 'jdk*.jdk' -print -quit)
+JDK_OLD_PATH=$(find "$RESOURCES_DIR" -type d -name 'jdk*.jdk' -print -quit)
 
 if [ -n "$JDK_OLD_PATH" ]; then
     # Extract the directory name from the path
+    # shellcheck disable=SC2034
     JDK_OLD_NAME=$(basename "$JDK_OLD_PATH")
     # Rename the folder
     JDK_NEW_NAME="jdk-1.8.jdk"
     JDK_NEW_PATH=$(dirname "$JDK_OLD_PATH")"/$JDK_NEW_NAME"
 
-    if [ $JDK_OLD_PATH != $JDK_NEW_PATH ]; then
+    if [ "$JDK_OLD_PATH" != "$JDK_NEW_PATH" ]; then
       mv "$JDK_OLD_PATH" "$JDK_NEW_PATH"
     fi
     JAVA8_HOME="$JDK_NEW_PATH/Contents/Home"
 else
     echo "No matching folder found. Please provide the complete path to the Java 1.8 JDK folder:"
-    read JAVA8_FOLDER
+    read -r JAVA8_FOLDER
     JAVA8_HOME="${JAVA8_FOLDER}/Contents/Home"
 fi
 
