@@ -41,6 +41,11 @@ OUTPUT_DIR="$ROOT_DIR/output"
 EVOSUITE="$JAVA8_HOME/bin/java -jar $RESOURCES_DIR/evosuite-1.0.6.jar"
 
 # generate tests using EvoSuite
+(export JAVA_HOME=$JAVA8_HOME; $EVOSUITE -class "$TARGET_CLASS" -projectCP "$TARGET_DIR")
+# move to output directory
+CURRENT_DIR=$(realpath .)
+rm -r "$CURRENT_DIR/evosuite-report"  # delete statistics
+rm -r "$OUTPUT_DIR/evosuite-tests"  # overwrites previous output
 mkdir -p "$OUTPUT_DIR"
-(export JAVA_HOME=$JAVA8_HOME; $EVOSUITE -class "$TARGET_CLASS" -projectCP "$TARGET_DIR" -base_dir="$OUTPUT_DIR")
-rm -r "$ROOT_DIR/generator/evosuite-report"
+mkdir -p "$OUTPUT_DIR/evosuite-tests"
+mv -f "$CURRENT_DIR/evosuite-tests" "$OUTPUT_DIR"
