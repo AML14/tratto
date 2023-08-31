@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.nio.file.*;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Stream;
 
 
@@ -26,20 +25,24 @@ public class FileUtils {
     }
 
     /**
-     * Gets the "experiment" project root directory.
+     * Gets the root project directory, "experiment", from the absolute path
+     * of a file or directory in the project.
      *
+     * @param absolutePath the absolute path of a file or directory in the
+     *                     project
      * @return the path to the project root directory
-     * @throws IllegalStateException if unable to resolve the project root
+     * @throws IllegalArgumentException if the given path is not contained in
+     * the project
      */
-    public static Path getProjectRoot() {
-        Path currentPath = Paths.get(Objects.requireNonNull(FileUtils.class.getResource("FileUtils.class")).getPath()).toAbsolutePath();
+    public static Path getProjectRoot(Path absolutePath) {
+        Path currentPath = absolutePath;
         while (currentPath != null) {
             if (currentPath.endsWith("experiment")) {
                 return currentPath;
             }
             currentPath = currentPath.getParent();
         }
-        throw new IllegalStateException("Unable to find project root from current working directory");
+        throw new IllegalArgumentException("Unable to find \"experiment\" in the path " + absolutePath);
     }
 
     /**

@@ -408,7 +408,7 @@ public class TogUtils {
         if (!Files.exists(jDoctorPath)) {
             throw new IllegalArgumentException("Unable to find JDoctor output file " + jDoctorPath);
         }
-        Path oraclePath = FileUtils.getProjectRoot()
+        Path oraclePath = FileUtils.getProjectRoot(jDoctorPath.toAbsolutePath())
                 .resolve("output")
                 .resolve("jdoctor")
                 .resolve("oracle_outputs.json");
