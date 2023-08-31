@@ -270,7 +270,7 @@ public class TogUtils {
      */
     public static void mapTrattoOutputToOracleOutput(Path srcDirPath) {
         javaParser = getJavaParser(srcDirPath);
-        Path prefixPath = output.resolve(Paths.get("tratto", "experiment"));
+        Path prefixPath = output.resolve(Paths.get("tratto", "oracle"));
         Path outputPath = output.resolve(Paths.get("tratto", "output"));
         TypeReference<List<OracleDatapoint>> typeReference = new TypeReference<>(){};
         List<OracleDatapoint> oracleDatapoints = (List<OracleDatapoint>) FileUtils.readJSON(
@@ -296,13 +296,5 @@ public class TogUtils {
             oracleOutputs.add(oracleOutput);
         }
         FileUtils.writeJSON(prefixPath.resolve("oracle_outputs.json"), oracleOutputs);
-    }
-
-    public static void main(String[] args) {
-        /*generateTOGAInput(
-                Paths.get("src","test","resources","project","src"),
-                "tutorial.Stack"
-        );*/
-        mapTrattoOutputToOracleOutput(Paths.get("src","test","resources","project","src"));
     }
 }

@@ -25,7 +25,7 @@ PORT=5000
 
 cd ../tratto
 
-#java -jar "${ROOT_DIR}/generator${SEPARATOR}resources${SEPARATOR}tratto.jar" $FULLY_QUALIFIED_NAME $SRC_PATH $PROJECT_JAR_PATH
+java -jar "${ROOT_DIR}${SEPARATOR}generator${SEPARATOR}resources${SEPARATOR}tratto.jar" $FULLY_QUALIFIED_NAME $SRC_PATH $PROJECT_JAR_PATH
 
 if [ ! -d "${TRATTO_OUTPUT}" ]; then
     # If it doesn't exist, create the folder
@@ -35,4 +35,6 @@ fi
 
 mv "${TRATTO_PROJECT}${SEPARATOR}src${SEPARATOR}main${SEPARATOR}resources${SEPARATOR}oracle_datapoints.json" "${TRATTO_OUTPUT}"
 
-#java -jar "generator${SEPARATOR}resources${SEPARATOR}experiment.jar" toga generate_oracle_outputs $SRC_PATH
+cd ../experiment
+
+java -jar "generator${SEPARATOR}resources${SEPARATOR}experiment.jar" tratto generate_oracle_outputs $SRC_PATH
