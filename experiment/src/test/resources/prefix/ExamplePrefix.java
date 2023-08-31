@@ -51,4 +51,13 @@ public class ExamplePrefix {
         String input = "input";
         input = input.substring(0, 2);
     }
+
+    @Test
+    @DIsabled
+    public void assertionTypeParameterTest() throws Throwable {
+        List<String> words = new ArrayList<>();
+        words.add("hello");
+        words.add("uh oh");
+        words.get(2);
+    }
 }

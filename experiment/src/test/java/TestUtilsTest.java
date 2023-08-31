@@ -163,6 +163,24 @@ public class TestUtilsTest {
                         "(methodResultID == null) == false",
                         "",
                         ""
+                ),
+                new OracleOutput(
+                        "java.util.List",
+                        "add(E e)",
+                        OracleType.NORMAL_POST,
+                        "",
+                        "methodResultID == true",
+                        "",
+                        ""
+                ),
+                new OracleOutput(
+                        "java.util.List",
+                        "get(int index)",
+                        OracleType.EXCEPT_POST,
+                        "",
+                        "index >= receiverObjectID.size()",
+                        "java.lang.IndexOutOfBoundsException",
+                        ""
                 )
         );
     }
