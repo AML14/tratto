@@ -1583,8 +1583,4 @@ public class TestUtils {
         }
 
     }
-
-    public static void main(String[] args) {
-        removeOracles(Paths.get("output", "evosuite-tests", "example", "tutorial"), "tutorial.Stack");
-    }
 }
