@@ -52,7 +52,7 @@ bash ./generator/evosuite.sh "${TARGET_CLASS}" "${BIN_DIR}"
 
 # generate oracles using TOG
 if [ "${TOG}" == "jdoctor" ]; then
-  bash ./generator/jdoctor.sh "${TARGET_CLASS}" "${SRC_DIR}"
+  bash ./generator/jdoctor.sh "${TARGET_CLASS}" "${SRC_DIR}" "${BIN_DIR}"
 elif [ "${TOG}" == "toga" ]; then
   bash ./generator/toga.sh "${TARGET_CLASS}" "${SRC_DIR}" "${EVOSUITE_OUTPUT}"
 elif [ "${TOG}" == "tratto" ]; then
