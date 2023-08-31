@@ -22,11 +22,11 @@ TOGA_PROJECT="${ROOT_DIR}${SEPARATOR}generator${SEPARATOR}resources${SEPARATOR}t
 TOGA_INPUT="${ROOT_DIR}${SEPARATOR}output${SEPARATOR}toga${SEPARATOR}input"
 TOGA_OUTPUT="${ROOT_DIR}${SEPARATOR}output${SEPARATOR}toga${SEPARATOR}output"
 
-java -jar "generator${SEPARATOR}resources${SEPARATOR}experiment.jar" toga remove_oracles $EVOSUITE_OUTPUT $FULLY_QUALIFIED_NAME
+java -jar "generator${SEPARATOR}resources${SEPARATOR}experiment.jar" toga remove_oracles "$EVOSUITE_OUTPUT" "$FULLY_QUALIFIED_NAME"
 
-java -jar "generator${SEPARATOR}resources${SEPARATOR}experiment.jar" toga generate_tog_inputs $SRC_PATH $FULLY_QUALIFIED_NAME
+java -jar "generator${SEPARATOR}resources${SEPARATOR}experiment.jar" toga generate_tog_inputs "$SRC_PATH" "$FULLY_QUALIFIED_NAME"
 
-cd "${TOGA_PROJECT}"
+cd "${TOGA_PROJECT}" || { echo "(TOGA) Unable to access folder $TOGA_PROJECT"; exit; }
 
 python3 toga.py "${TOGA_INPUT}${SEPARATOR}toga_input.csv" "${TOGA_INPUT}${SEPARATOR}toga_metadata.csv"
 
@@ -38,6 +38,6 @@ fi
 
 mv "${TOGA_PROJECT}${SEPARATOR}oracle_preds.csv" "${TOGA_OUTPUT}"
 
-cd "${ROOT_DIR}"
+cd "${ROOT_DIR}" || { echo "(TOGA) Unable to access folder $ROOT_DIR"; exit; }
 
-java -jar "generator${SEPARATOR}resources${SEPARATOR}experiment.jar" toga generate_oracle_outputs $SRC_PATH
+java -jar "generator${SEPARATOR}resources${SEPARATOR}experiment.jar" toga generate_oracle_outputs "$SRC_PATH"
