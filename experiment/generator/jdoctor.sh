@@ -3,8 +3,25 @@
 RESOURCES_DIR="$(dirname "$0")/resources"
 
 # ----- SETUP -----
-# Set this path to the "Home" directory in a local JDK8.
-JAVA8_HOME="$RESOURCES_DIR/jdk-1.8.jdk/Contents/Home"
+# After adding the local JDK8 to the generator/resources directory...
+# Set this field to the directory name.
+JDK8_NAME="jdk-1.8.jdk"
+
+# find JDK8 directory
+ROOT_DIR=$(dirname "$(dirname "$(realpath "$0")")")
+RESOURCES_DIR="$ROOT_DIR/generator/resources"
+JDK_DEFAULT_PATH=$(find "$RESOURCES_DIR" -type d -name 'jdk*.jdk' -print -quit)
+if [ -n "$JDK_DEFAULT_PATH" ]; then
+  JDK_PATH=$(dirname "$JDK_DEFAULT_PATH")"/$JDK8_NAME"
+  if [ "$JDK_DEFAULT_PATH" != "$JDK_PATH" ]; then
+    mv "$JDK_DEFAULT_PATH" "$JDK_PATH"
+  fi
+  JAVA8_HOME="$JDK_PATH/Contents/Home"
+else
+  echo "(EVOSUITE) Unable to find a jdk directory. Please provide the complete path to the Java 8 JDK directory:"
+  read -r JAVA8_FOLDER
+  JAVA8_HOME="$JAVA8_FOLDER/Contents/Home"
+fi
 
 # argument check
 if [ ! $# -eq 3 ]; then
@@ -24,7 +41,7 @@ fi
 TARGET_CLASS="$1"  # fully-qualified name of target class
 SRC_DIR="$2"  # project source directory
 CLASS_DIR="$3"  # path to binary files of the system under test
-OUTPUT_DIR="$RESOURCES_DIR/../../output"
+OUTPUT_DIR="$ROOT_DIR/output"
 JDOCTOR="$JAVA8_HOME/bin/java -jar $RESOURCES_DIR/toradocu-1.0-all.jar"
 mkdir -p "$OUTPUT_DIR"
 mkdir -p "$OUTPUT_DIR/jdoctor"
@@ -39,5 +56,5 @@ $JDOCTOR \
 # convert JDoctor JSON to OracleOutput
 java -jar "$RESOURCES_DIR/experiment.jar" "jdoctor" "generate_oracle_outputs" "$OUTPUT_DIR/jdoctor/jdoctor_output.json"
 # move to output
-mv "$RESOURCES_DIR/../output/jdoctor/oracle_outputs.json" "$OUTPUT_DIR/jdoctor"
-rm -r "$RESOURCES_DIR/../output"
+#mv "$RESOURCES_DIR/../output/jdoctor/oracle_outputs.json" "$OUTPUT_DIR/jdoctor"
+#rm -r "$RESOURCES_DIR/../output"
