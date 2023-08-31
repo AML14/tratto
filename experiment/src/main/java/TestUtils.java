@@ -368,6 +368,7 @@ public class TestUtils {
         try (Stream<Path> walk = Files.walk(prefixPath)) {
             walk
                     .filter(FileUtils::isJavaFile)
+                    .filter(p -> !FileUtils.isScaffolding(p))
                     .forEach(testFile -> {
                         try {
                             CompilationUnit cu = StaticJavaParser.parse(testFile);
@@ -1408,6 +1409,7 @@ public class TestUtils {
         try (Stream<Path> walk = Files.walk(dir)) {
             walk
                     .filter(FileUtils::isJavaFile)
+                    .filter(p -> !FileUtils.isScaffolding(p))
                     .forEach(testFile -> {
                         try {
                             CompilationUnit cu = StaticJavaParser.parse(testFile);
@@ -1531,6 +1533,7 @@ public class TestUtils {
         try (Stream<Path> walk = Files.walk(dir)) {
             walk
                     .filter(FileUtils::isJavaFile)
+                    .filter(p -> !FileUtils.isScaffolding(p))
                     .forEach(testFile -> {
                         try {
                             CompilationUnit cu = StaticJavaParser.parse(testFile);
