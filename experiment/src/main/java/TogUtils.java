@@ -417,11 +417,4 @@ public class TogUtils {
                 .toList();
         FileUtils.writeJSON(oraclePath, oracleOutputs);
     }
-
-    public static void main(String[] args) {
-        generateTOGAInput(
-                Paths.get("src","test","resources","project","src"),
-                "tutorial.Stack"
-        );
-    }
 }
