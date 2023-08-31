@@ -309,7 +309,7 @@ public class TogUtils {
                 jDoctorOutput.targetClass(),
                 jDoctorOutput.signature(),
                 OracleType.PRE,
-                "" ,
+                "",
                 oracle,
                 "",
                 ""
@@ -333,7 +333,7 @@ public class TogUtils {
                 jDoctorOutput.targetClass(),
                 jDoctorOutput.signature(),
                 OracleType.NORMAL_POST,
-                "" ,
+                "",
                 oracle,
                 "",
                 ""
@@ -357,7 +357,7 @@ public class TogUtils {
                 jDoctorOutput.targetClass(),
                 jDoctorOutput.signature(),
                 OracleType.EXCEPT_POST,
-                "" ,
+                "",
                 oracle,
                 throwsTag.exceptionType().fullyQualifiedName(),
                 ""
