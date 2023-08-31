@@ -1432,7 +1432,7 @@ public class TestUtils {
                     .filter(p -> !FileUtils.isScaffolding(p))
                     .forEach(testFile -> {
                         try {
-                            CompilationUnit cu = StaticJavaParser.parse(testFile);
+                            CompilationUnit cu = javaParser.parse(testFile).getResult().orElseThrow();
                             insertAxiomaticOracles(cu, oracles);
                             FileUtils.writeString(testFile, cu.toString());
                         } catch (IOException e) {
