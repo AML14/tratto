@@ -1581,6 +1581,5 @@ public class TestUtils {
         } else {
             insertNonAxiomaticOracles(testPath, oracles);
         }
-
     }
 }
