@@ -4,7 +4,7 @@ RESOURCES_DIR="$(dirname "$0")/resources"
 
 # ----- SETUP -----
 # Set this path to the "Home" directory in a local JDK8.
-JAVA8_HOME="$RESOURCES_DIR/jdk1.8.0_381.jdk/Contents/Home"
+JAVA8_HOME="$RESOURCES_DIR/jdk-1.8.jdk/Contents/Home"
 
 # argument check
 if [ ! $# -eq 3 ]; then
