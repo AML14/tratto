@@ -20,7 +20,7 @@ import java.util.List;
  *     <li>{@code java -jar experiment.jar toga remove_oracles
  *     "path/to/evosuite-tests" tutorial.Stack}</li>
  *     <li>{@code java -jar experiment.jar jdoctor insert_oracles
- *     "path/to/oracle/output.json"}</li>
+ *     "path/to/src/main" "path/to/oracle/output.json"}</li>
  *     <li>{@code java -jar experiment.jar toga generate_tog_inputs
  *     "path/to/src/main" tutorial.Stack}</li>
  *     <li>{@code java -jar experiment.jar jdoctor generate_oracle_outputs
@@ -35,10 +35,10 @@ public class Tog {
      * @param togType a TOG
      * @param oraclesPath the path to the OracleOutput JSON file
      */
-    private static void insertOraclesOperation(TogType togType, Path oraclesPath) {
+    private static void insertOraclesOperation(TogType togType, Path srcDir, Path oraclesPath) {
         Path prefixPath = Paths.get("output", "evosuite-prefix");
         List<OracleOutput> oracleOutputs = FileUtils.readJSONList(oraclesPath, OracleOutput.class);
-        TestUtils.insertOracles(prefixPath, prefixPath, togType, oracleOutputs);
+        TestUtils.insertOracles(srcDir, prefixPath, togType, oracleOutputs);
     }
 
     /**
@@ -79,7 +79,7 @@ public class Tog {
         OperationType operationType = OperationType.valueOf(args[1].toUpperCase());
         switch (operationType) {
             case REMOVE_ORACLES -> TestUtils.removeOracles(Paths.get(args[2]), args[3]);
-            case INSERT_ORACLES -> insertOraclesOperation(togType, Paths.get(args[2]));
+            case INSERT_ORACLES -> insertOraclesOperation(togType, Paths.get(args[2]), Paths.get(args[3]));
             case GENERATE_TOG_INPUTS -> generateTogInputOperation(togType, Paths.get(args[2]), args[3]);
             case GENERATE_ORACLE_OUTPUTS -> generateOracleOutputOperation(togType, Paths.get(args[2]));
             default -> throw new IllegalArgumentException("Unknown operation " + operationType);
