@@ -3,11 +3,10 @@
 RESOURCES_DIR="$(dirname "$0")/resources"
 
 JDK_OLD_PATH=$(find $RESOURCES_DIR -type d -name 'jdk*.jdk' -print -quit)
-echo $JDK_OLD_PATH
+echo "$JDK_OLD_PATH"
 if [ -n "$JDK_OLD_PATH" ]; then
     # Extract the directory name from the path
     JDK_OLD_NAME=$(basename "$JDK_OLD_PATH")
-
     # Rename the folder
     JDK_NEW_NAME="jdk-1.8.jdk"
     JDK_NEW_PATH=$(dirname "$JDK_OLD_PATH")"/$JDK_NEW_NAME"
