@@ -15,6 +15,7 @@ import com.github.javaparser.resolution.types.ResolvedArrayType;
 import com.github.javaparser.resolution.types.ResolvedPrimitiveType;
 import com.github.javaparser.resolution.types.ResolvedType;
 import org.javatuples.Pair;
+import org.javatuples.Triplet;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -25,6 +26,9 @@ import star.tratto.data.JPClassNotFoundException;
 import star.tratto.data.PackageDeclarationNotFoundException;
 import star.tratto.data.ResolvedTypeNotFound;
 import star.tratto.data.records.MethodArgumentTokens;
+import star.tratto.data.JPClassNotFoundException;
+import star.tratto.data.PackageDeclarationNotFoundException;
+import star.tratto.data.ResolvedTypeNotFound;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -32,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -235,6 +240,8 @@ public class JavaParserUtilsTest {
         assertTrue(doesInstanceofCompile("T", "java.lang.Object", oracleDatapoints.get(0)));
         assertFalse(doesInstanceofCompile("java.lang.Object", "T", null));
         assertFalse(doesInstanceofCompile("java.lang.Object", "T", oracleDatapoints.get(0)));
+        assertTrue(doesInstanceofCompile("T", "org.apache.commons.collections4.Equator", oracleDatapoints.get(0)));
+        assertTrue(doesInstanceofCompile("T", "java.lang.String", oracleDatapoints.get(0)));
         assertFalse(doesInstanceofCompile("java.lang.Object", "non.existing.Clazz", null));
         assertFalse(doesInstanceofCompile("java.lang.Object", "non.existing.Clazz", oracleDatapoints.get(0)));
         assertFalse(doesInstanceofCompile("non.existing.Clazz", "java.lang.Object", null));
@@ -261,7 +268,7 @@ public class JavaParserUtilsTest {
         assertFalse(isType1AssignableToType2(Pair.with("java.lang", "String"), Pair.with("java.lang", "StringBuilder"), null));
         assertTrue(isType1AssignableToType2(Pair.with("", "boolean"), Pair.with("", "boolean"), null));
         assertTrue(isType1AssignableToType2(Pair.with("", "boolean"), Pair.with("java.lang", "Boolean"), null));
-        assertFalse(isType1AssignableToType2(Pair.with("java.lang", "Boolean"), Pair.with("", "boolean"), null));
+        assertTrue(isType1AssignableToType2(Pair.with("java.lang", "Boolean"), Pair.with("", "boolean"), null));
         assertTrue(isType1AssignableToType2(Pair.with("java.lang", "Boolean"), Pair.with("java.lang", "Boolean"), null));
         assertTrue(isType1AssignableToType2(Pair.with("", "int"), Pair.with("", "int"), null));
         assertTrue(isType1AssignableToType2(Pair.with("", "int"), Pair.with("java.lang", "Integer"), null));
@@ -578,5 +585,21 @@ public class JavaParserUtilsTest {
                 Arguments.of("test8", "java.lang.Class", "newInstance", true), // "public T newInstance() throws InstantiationException, IllegalAccessException")
                 Arguments.of("test9", "java.lang.Class", "getInterfaces", false) // "private Class<? extends Object>[] getInterfaces(boolean arg0)")
         );
+    }
+
+    @Test
+    public void getObjectMethodsTest() {
+        Set<MethodUsage> objectMethods = getObjectMethods();
+        Set<String> objectMethodsNames = objectMethods.stream().map(MethodUsage::getName).collect(Collectors.toSet());
+        assertTrue(objectMethodsNames.contains("equals"));
+        assertTrue(objectMethodsNames.contains("hashCode"));
+        assertTrue(objectMethodsNames.contains("toString"));
+        assertTrue(objectMethodsNames.contains("getClass"));
+        assertTrue(objectMethodsNames.contains("notify"));
+        assertTrue(objectMethodsNames.contains("notifyAll"));
+        assertTrue(objectMethodsNames.contains("wait"));
+        assertTrue(objectMethodsNames.contains("finalize"));
+        assertTrue(objectMethodsNames.contains("clone"));
+        assertFalse(objectMethodsNames.contains("someMethod"));
     }
 }

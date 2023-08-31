@@ -7,6 +7,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static star.tratto.util.StringUtils.getCorrespondingClosingParenthesisIndex;
 import static star.tratto.util.StringUtils.semanticSimilarity;
+import static star.tratto.util.StringUtils.containsWord;
 
 public class StringUtilsTest {
 
@@ -17,6 +18,10 @@ public class StringUtilsTest {
         assertEquals("this instanceof SomeClass", StringUtils.compactExpression("this instanceof SomeClass"));
         assertEquals("this instanceof ", StringUtils.compactExpression("this instanceof"));
         assertEquals("this instanceof SomeClass&&someArg instanceof ", StringUtils.compactExpression("this instanceof SomeClass && someArg instanceof"));
+        assertEquals("instanceofVar instanceof MyClass", StringUtils.compactExpression("instanceofVar instanceof MyClass"));
+        assertEquals("x&&instanceofVar instanceof MyClass", StringUtils.compactExpression("x && instanceofVar instanceof MyClass"));
+        assertEquals("", StringUtils.compactExpression((String) null));
+        assertEquals("", StringUtils.compactExpression((List<String>) null));
     }
 
     @Test
@@ -84,5 +89,20 @@ public class StringUtilsTest {
     public void semanticSimilarityTest() {
         assertEquals(1.0, semanticSimilarity("the", "the"));
         assertEquals(0.0, semanticSimilarity("the", "bratwurst"));
+    }
+
+    @Test
+    public void containsWordTest() {
+        assertFalse(containsWord("some expression", "word"));
+        assertTrue(containsWord("some expression", "some"));
+        assertTrue(containsWord("some expression", "expression"));
+        assertTrue(containsWord("some expression", "some expression"));
+        assertTrue(containsWord("This is an expression. That's it.", "expression"));
+        assertFalse(containsWord("This is an expression. That's it.", "expression."));
+        assertFalse(containsWord("This is an expression. That's it.", "exp"));
+        assertFalse(containsWord("java.util.ArrayList", "List"));
+        assertTrue(containsWord("java.util.ArrayList", "ArrayList"));
+        assertTrue(containsWord("BagUtils.contains(bag);", "BagUtils"));
+        assertTrue(containsWord("this instanceof Bag && methodResultID != null;", "Bag"));
     }
 }
