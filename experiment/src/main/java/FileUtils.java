@@ -32,10 +32,10 @@ public class FileUtils {
      * @throws IllegalStateException if unable to resolve the project root
      */
     public static Path getProjectRoot() {
-        Path currentPath = Paths.get(Objects.requireNonNull(FileUtils.class.getResource("FileUtils.class")).getPath());
+        Path currentPath = Paths.get(Objects.requireNonNull(FileUtils.class.getResource("FileUtils.class")).getPath()).toAbsolutePath();
         while (currentPath != null) {
             if (currentPath.endsWith("experiment")) {
-                return currentPath.toAbsolutePath();
+                return currentPath;
             }
             currentPath = currentPath.getParent();
         }
