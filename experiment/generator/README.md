@@ -8,11 +8,13 @@ To use EvoSuite (which is written in Java 8), the user must set a path to a home
 
 ### JDoctor
 
-Follow the setup instructions on the [ToRaDoCu](https://github.com/albertogoffi/toradocu) GitHub page. After the build is complete, add the `toradocu-1.0-all.jar` file to the `experiment/generator/resources` directory.
+Follow the setup instructions on the [ToRaDoCu](https://github.com/albertogoffi/toradocu) GitHub page. After the build is complete (this may take a few minutes), add the `toradocu-1.0-all.jar` file to the `experiment/generator/resources` directory.
 
 ## Overview
-This module:
- * generates test oracles using a test oracle generator (TOG).  Each TOG script produces oracles as a list of [`OracleOutput`](../src/main/java/OracleOutput.java)'s.
+
+This module...
+
+ * generates test oracles using a test oracle generator (TOG).  Each TOG script produces oracles as a list of [`OracleOutput`](../src/main/java/data/OracleOutput.java)'s.
     - `jdoctor.sh`: Generates oracles using JDoctor
     - `toga.sh`: Generates oracles using TOGA
     - `tratto.sh`: Generates oracles using Tratto
@@ -34,3 +36,19 @@ bash evosuite.sh tutorial.Stack ../src/test/resources/project/target/classes
 ```
 
 For further detail about the EvoSuite calls abstracted by this script, see the [EvoSuite Tutorial](https://www.evosuite.org/documentation/tutorial-part-1/).
+
+### JDoctor
+
+To use `jdoctor.sh`, run
+
+```shell
+bash jdoctor.sh [fully qualified name] [path to source] [path to binaries]
+```
+
+For example,
+
+```shell
+bash jdoctor.sh tutorial.Stack ../src/test/resources/project/src/main/java ../src/test/resources/project/target/classes
+```
+
+The JSON output is stored in `output/jdoctor/jdoctor_output.json`.
