@@ -35,7 +35,7 @@ public class FileUtils {
         Path currentPath = Paths.get(Objects.requireNonNull(FileUtils.class.getResource("FileUtils.class")).getPath());
         while (currentPath != null) {
             if (currentPath.endsWith("experiment")) {
-                return currentPath;
+                return currentPath.toAbsolutePath();
             }
             currentPath = currentPath.getParent();
         }
