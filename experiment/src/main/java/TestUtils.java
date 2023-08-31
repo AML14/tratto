@@ -1,3 +1,4 @@
+import com.github.javaparser.JavaParser;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.ImportDeclaration;
@@ -42,6 +43,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
+import com.github.javaparser.resolution.SymbolResolver;
+import com.github.javaparser.symbolsolver.utils.SymbolSolverCollectionStrategy;
 import data.OracleOutput;
 import data.OracleType;
 import data.TogType;
@@ -82,10 +85,27 @@ public class TestUtils {
     );
     /** A list of all supported axiomatic test oracle generators. */
     private static final List<TogType> axiomaticTogs = List.of(TogType.JDOCTOR, TogType.TRATTO);
+    /** A shared JavaParser for resolving class and method names. */
+    private static JavaParser javaParser;
 
     /** Private constructor to avoid creating an instance of this class. */
     private TestUtils() {
         throw new UnsupportedOperationException("This class cannot be instantiated.");
+    }
+
+    /**
+     * Initializes a new JavaParser for the given source directory.
+     *
+     * @param srcDir the project source directory
+     * @return a JavaParser object
+     */
+    private static JavaParser getJavaParser(Path srcDir) {
+        SymbolSolverCollectionStrategy strategy = new SymbolSolverCollectionStrategy();
+        strategy.collect(srcDir);
+        JavaParser javaParser = new JavaParser();
+        SymbolResolver symbolResolver = strategy.getParserConfiguration().getSymbolResolver().orElseThrow();
+        javaParser.getParserConfiguration().setSymbolResolver(symbolResolver);
+        return javaParser;
     }
 
     /**
@@ -1567,15 +1587,22 @@ public class TestUtils {
      * output/tog-test/[tog], where [tog] is the given test oracle generator.
      * Does not override original test prefixes.
      *
-     * @param dir a directory with Java test prefixes
+     * @param srcDir the source directory to resolve classes
+     * @param prefixDir a directory with Java test prefixes
      * @param tog a test oracle generator
      * @param oracles a list of test oracles made by the given tog
      * @see TestUtils#insertAxiomaticOracles(Path, List)
      * @see TestUtils#insertNonAxiomaticOracles(Path, List)
      */
-    public static void insertOracles(Path dir, TogType tog, List<OracleOutput> oracles) {
+    public static void insertOracles(
+            Path srcDir,
+            Path prefixDir,
+            TogType tog,
+            List<OracleOutput> oracles
+    ) {
+        javaParser = getJavaParser(srcDir);
         Path testPath = output.resolve("tog-tests/" + tog);
-        FileUtils.copy(dir, testPath);
+        FileUtils.copy(prefixDir, testPath);
         if (isAxiomatic(tog)) {
             insertAxiomaticOracles(testPath, oracles);
         } else {
