@@ -134,7 +134,7 @@ public class FileUtils {
             int classNameIdx = fullyQualifiedClassNameSplitted.length - 1;
             String className = fullyQualifiedClassNameSplitted[classNameIdx];
             fullyQualifiedClassNameSplitted[classNameIdx] = className + ".java";
-            Path relativePath = Paths.get(
+            return Paths.get(
                     fullyQualifiedClassNameSplitted[0],
                     Arrays.copyOfRange(
                             fullyQualifiedClassNameSplitted,
@@ -142,7 +142,6 @@ public class FileUtils {
                             fullyQualifiedClassNameSplitted.length
                     )
             );
-            return relativePath;
         }
         return Paths.get(fullyQualifiedClassName);
     }
@@ -289,8 +288,7 @@ public class FileUtils {
      */
     public static CSVParser readCSV(Path path) {
         try {
-            CSVParser parser = new CSVParser(new FileReader(path.toString()), CSVFormat.DEFAULT);
-            return parser;
+            return new CSVParser(new FileReader(path.toString()), CSVFormat.DEFAULT);
         } catch (IOException e) {
             throw new Error("Error in processing file " + path, e);
         }
@@ -399,8 +397,7 @@ public class FileUtils {
         String[] fullyQualifiedClassNameSplitted = fullyQualifiedClassName.split("\\.");
         if (fullyQualifiedClassNameSplitted.length > 1) {
             int classNameIdx = fullyQualifiedClassNameSplitted.length - 1;
-            String className = fullyQualifiedClassNameSplitted[classNameIdx];
-            return className;
+            return fullyQualifiedClassNameSplitted[classNameIdx];
         }
         return fullyQualifiedClassName;
     }
