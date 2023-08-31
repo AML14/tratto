@@ -27,7 +27,7 @@ assert sum(a, b) == (a + b)
 To generate test prefixes, we use [EvoSuite](https://www.evosuite.org/), which generates complete unit tests (including the oracle), and remove the generated oracles (assertions) using [JavaParser](https://javaparser.org/). Then, we generate new oracles using an arbitrary TOG, and add these assertions to the test prefixes. Finally, we use [PITest](https://pitest.org/) to report mutation score of the generated tests, and also record the number of positive/negative (failing/passing) test cases.
 
 To analyze a TOG, run
-```
+```shell
 experiment.sh [tog] [target-class] [source-dir] [bin-dir]
 ```
 where,
@@ -38,8 +38,8 @@ where,
 - `[bin-dir]` is the path to the project binary files
 
 For example,
-```
-experiment.sh tratto example.Stack ../path/to/src ../path/to/target/classes
+```shell
+experiment.sh jdoctor tutorial.Stack ./src/test/resources/project/src/main/java ./src/test/resources/project/target/classes
 ```
 
 ## Research Questions
