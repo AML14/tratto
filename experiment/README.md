@@ -28,7 +28,7 @@ To generate test prefixes, we use [EvoSuite](https://www.evosuite.org/), which g
 
 To analyze a TOG, run
 ```shell
-experiment.sh [tog] [target-class] [source-dir] [bin-dir]
+bash experiment.sh [tog] [target-class] [source-dir] [bin-dir]
 ```
 where,
 
@@ -39,7 +39,7 @@ where,
 
 For example,
 ```shell
-experiment.sh jdoctor tutorial.Stack ./src/test/resources/project/src/main/java ./src/test/resources/project/target/classes
+bash experiment.sh jdoctor tutorial.Stack ./src/test/resources/project/src/main/java ./src/test/resources/project/target/classes
 ```
 
 ## Research Questions
