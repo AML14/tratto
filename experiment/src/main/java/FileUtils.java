@@ -25,6 +25,27 @@ public class FileUtils {
     }
 
     /**
+     * Gets the root project directory, "experiment", from the absolute path
+     * of a file or directory in the project.
+     *
+     * @param absolutePath the absolute path of a file or directory in the
+     *                     project
+     * @return the path to the project root directory
+     * @throws IllegalArgumentException if the given path is not contained in
+     * the project
+     */
+    public static Path getProjectRoot(Path absolutePath) {
+        Path currentPath = absolutePath;
+        while (currentPath != null) {
+            if (currentPath.endsWith("experiment")) {
+                return currentPath;
+            }
+            currentPath = currentPath.getParent();
+        }
+        throw new IllegalArgumentException("Unable to find \"experiment\" in the path " + absolutePath);
+    }
+
+    /**
      * Creates an empty directory. Creates parent directories if necessary. If
      * the directory already exists, then this method does nothing.
      *
