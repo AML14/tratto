@@ -227,13 +227,13 @@ public class TogUtils {
      * Transforms the output from the TOGA script (a .csv file where each row contains the
      * assertion for a given focal method and test prefix) into a json file containing a
      * corresponding list of {@code OracleOutput} objects.
-     * Saves the output file in output/toga/experiment.
+     * Saves the output file in output/toga/oracle.
      * @see OracleOutput
      * @param srcDirPath the path to the source code of the project under test
      */
     public static void mapTOGAOutputToOracleOutput(Path srcDirPath) {
         javaParser = getJavaParser(srcDirPath);
-        Path prefixPath = output.resolve(Paths.get("toga", "experiment"));
+        Path prefixPath = output.resolve(Paths.get("toga", "oracle"));
         Path inputPath = output.resolve(Paths.get("toga", "input"));
         Path outputPath = output.resolve(Paths.get("toga", "output"));
         TypeReference<Map<String, Map<String, String>>> typeReference = new TypeReference<>(){};

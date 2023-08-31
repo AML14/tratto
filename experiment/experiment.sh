@@ -22,9 +22,6 @@ QUALIFIERS="${TARGET_CLASS%.*}"
 EVOSUITE_OUTPUT="${ROOT_DIR}${SEPARATOR}output${SEPARATOR}evosuite-tests${SEPARATOR}${QUALIFIERS//./$SEPARATOR}"
 EXPERIMENT="java -jar ./generator/resources/experiment.jar"
 
-echo "$EVOSUITE_OUTPUT"
-
-
 # check if given directories exist
 if [ ! -d "$SRC_DIR" ]; then
   echo -e "The project source directory \"$SRC_DIR\" does not exist."
@@ -54,10 +51,10 @@ $EXPERIMENT "$TOG" "remove_oracles" "$EVOSUITE_OUTPUT" "$TARGET_CLASS"
 # generate oracles using TOG
 if [ "${TOG}" == "jdoctor" ]; then
   bash ./generator/jdoctor.sh "${TARGET_CLASS}" "${SRC_DIR}" "${BIN_DIR}"
-  ORACLE_OUTPUT="./output/jdoctor/oracle_outputs.json"
+  ORACLE_OUTPUT="./output/jdoctor/oracle/oracle_outputs.json"
 elif [ "${TOG}" == "toga" ]; then
   bash ./generator/toga.sh "${TARGET_CLASS}" "${SRC_DIR}" "${EVOSUITE_OUTPUT}"
-  ORACLE_OUTPUT="./output/toga/oracle_outputs.json"
+  ORACLE_OUTPUT="./output/toga/oracle/oracle_outputs.json"
 elif [ "${TOG}" == "tratto" ]; then
   bash ./generator/tratto.sh "${TARGET_CLASS}" "${SRC_DIR}"
   ORACLE_OUTPUT=""
