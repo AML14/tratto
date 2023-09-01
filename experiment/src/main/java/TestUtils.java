@@ -344,6 +344,22 @@ public class TestUtils {
     }
 
     /**
+     * Gets the path to the output directory for a given fully qualified name.
+     * The FQN path converts the package names as subdirectories for a given
+     * output base directory. For example,
+     * {@code "baseDir", "com.example.MyClass"}    -&gt;
+     * {@code output/baseDir/com/example/MyClass}
+     *
+     * @param fullyQualifiedName a fully qualified name
+     * @return the output path for a given fully qualified name
+     */
+    private static Path getFQNOutputPath(String baseDir, String fullyQualifiedName) {
+        Path fqnPath = FileUtils.getRelativePathFromFullyQualifiedClassName(baseDir + "." + fullyQualifiedName);
+        int classNameIdx = fqnPath.getNameCount() - 1;
+        return fqnPath.subpath(0, classNameIdx);
+    }
+
+    /**
      * Removes all assertions from all test files in a given directory. The
      * approach for removing oracles depends on whether an oracle is
      * exceptional (e.g. throws an exception) or a normal assertion. Firstly,
@@ -360,14 +376,8 @@ public class TestUtils {
      * @see TestUtils#removeAssertionOracles(CompilationUnit)
      */
     public static void removeOracles(Path dir, String fullyQualifiedName) {
-        Path fullyQualifiedNamePath = FileUtils.getRelativePathFromFullyQualifiedClassName(fullyQualifiedName);
-        int classNameIdx = fullyQualifiedNamePath.getNameCount() - 1;
-        Path simplePath = classNameIdx > 0 ?
-                output.resolve("evosuite-tests-simple").resolve(fullyQualifiedNamePath.subpath(0, classNameIdx)) :
-                output.resolve("evosuite-tests-simple");
-        Path prefixPath = classNameIdx > 0 ?
-                output.resolve("evosuite-prefix").resolve(fullyQualifiedNamePath.subpath(0, classNameIdx)) :
-                output.resolve("evosuite-prefix");
+        Path simplePath = getFQNOutputPath("evosuite-tests-simple", fullyQualifiedName);
+        Path prefixPath = getFQNOutputPath("evosuite-tests-prefix", fullyQualifiedName);
         FileUtils.copy(dir, simplePath);
         FileUtils.copy(dir, prefixPath);
         try (Stream<Path> walk = Files.walk(prefixPath)) {
