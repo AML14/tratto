@@ -852,6 +852,10 @@ public class TestUtils {
                 className = fqnToClassGetName(className);
                 return Class.forName(className, true, classLoader);
             } catch (ClassNotFoundException e) {
+                // return "java.lang.Object" for type parameters
+                if (!className.contains(".")) {
+                    return Object.class;
+                }
                 throw new Error("Unable to find class " + className);
             }
         }
