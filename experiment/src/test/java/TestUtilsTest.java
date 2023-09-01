@@ -240,27 +240,26 @@ public class TestUtilsTest {
                     @Disabled
                     public void everythingTest() throws Throwable {
                         Class<?> clazz = Integer.class;
-                        String methodName = "compare";
                         Class<?>[] parameters = { int.class, int.class };
-                        assertTrue((methodName == null) == false);
+                        assertTrue(("compare" == null) == false);
                         assertTrue((parameters == null) == false);
                         java.lang.reflect.Method method;
-                        if (methodName == null) {
+                        if ("compare" == null) {
                             try {
-                                method = clazz.getMethod(methodName, parameters);
+                                method = clazz.getMethod("compare", parameters);
                                 fail();
                             } catch (java.lang.IllegalArgumentException e) {
                                 // Successfully thrown exception
                             }
                         } else if (parameters == null) {
                             try {
-                                method = clazz.getMethod(methodName, parameters);
+                                method = clazz.getMethod("compare", parameters);
                                 fail();
                             } catch (java.lang.IllegalArgumentException e) {
                                 // Successfully thrown exception
                             }
                         } else {
-                            method = clazz.getMethod(methodName, parameters);
+                            method = clazz.getMethod("compare", parameters);
                             assertTrue((method == null) == false);
                             assertTrue(method.getDeclaringClass() == clazz);
                         }

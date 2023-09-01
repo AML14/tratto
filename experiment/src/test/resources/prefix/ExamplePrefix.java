@@ -32,9 +32,8 @@ public class ExamplePrefix {
     @Disabled
     public void everythingTest() throws Throwable {
         Class<?> clazz = Integer.class;
-        String methodName = "compare";
         Class<?>[] parameters = { int.class, int.class };
-        Method method = clazz.getMethod(methodName, parameters);
+        Method method = clazz.getMethod("compare", parameters);
     }
 
     @Test
