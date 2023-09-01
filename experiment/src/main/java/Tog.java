@@ -35,10 +35,10 @@ public class Tog {
      * @param togType a TOG
      * @param oraclesPath the path to the OracleOutput JSON file
      */
-    private static void insertOraclesOperation(TogType togType, Path srcDir, Path oraclesPath) {
+    private static void insertOraclesOperation(TogType togType, Path binDir, Path oraclesPath) {
         Path prefixPath = Paths.get("output", "evosuite-prefix");
         List<OracleOutput> oracleOutputs = FileUtils.readJSONList(oraclesPath, OracleOutput.class);
-        TestUtils.insertOracles(srcDir, prefixPath, togType, oracleOutputs);
+        TestUtils.insertOracles(binDir, prefixPath, togType, oracleOutputs);
     }
 
     /**
