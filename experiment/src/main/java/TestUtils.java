@@ -1633,6 +1633,12 @@ public class TestUtils {
         return axiomaticTogs.contains(tog);
     }
 
+    /**
+     * Gets a ClassLoader that corresponds to the given system binaries.
+     *
+     * @param binDir a path to system binaries (e.g. ".class" files)
+     * @return a ClassLoader object
+     */
     private static ClassLoader getClassLoader(Path binDir) {
         try {
             URL binaryURL = binDir.toUri().toURL();
