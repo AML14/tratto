@@ -9,7 +9,7 @@ import java.util.List;
  * passes or fails.
  */
 public class TestAnalyzer {
-    // private constructor to avoid creating an instance of this class
+    /** Private constructor to avoid creating an instance of this class. */
     private TestAnalyzer() {
         throw new UnsupportedOperationException("This class cannot be instantiated.");
     }
