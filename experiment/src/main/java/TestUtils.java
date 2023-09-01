@@ -423,6 +423,43 @@ public class TestUtils {
     }
 
     /**
+     * Gets the type names of all parameters from the method signature. If a
+     * parameter is a generic type parameter, then uses "java.lang.Object".
+     *
+     * @param methodSignature a method signature
+     * @return all parameter type names in the method signature
+     */
+    private static List<String> getParameterTypeNames(String methodSignature) {
+        String parameters = methodSignature.substring(methodSignature.indexOf('(') + 1, methodSignature.indexOf(')'));
+        if (parameters.length() == 0) {
+            return new ArrayList<>();
+        }
+        return Stream.of(parameters.split(","))
+                .map(p -> {
+                    String paramTypeFQN = p.trim().split(" ")[0].trim();
+                    Class<?> paramClass = getClass(paramTypeFQN);
+                    return paramClass.getTypeName();
+                })
+                .toList();
+    }
+
+    /**
+     * Gets the variable names of all parameters from the method signature.
+     *
+     * @param methodSignature a method signature
+     * @return all variable parameter names in the method signature
+     */
+    private static List<String> getParameterNames(String methodSignature) {
+        String parameters = methodSignature.substring(methodSignature.indexOf('(') + 1, methodSignature.indexOf(')'));
+        if (parameters.length() == 0) {
+            return new ArrayList<>();
+        }
+        return Stream.of(parameters.split(","))
+                .map(p -> p.trim().split(" ")[1].trim())
+                .toList();
+    }
+
+    /**
      * Gets the array level of a fully qualified name.
      *
      * @param fullyQualifiedName a fully qualified name
@@ -802,42 +839,6 @@ public class TestUtils {
             // get literal value
             return getTypeOfLiteral(expr.asLiteralExpr());
         }
-    }
-
-    /**
-     * Gets the type names of all parameters from the method signature.
-     *
-     * @param methodSignature a method signature
-     * @return all parameter type names in the method signature
-     */
-    private static List<String> getParameterTypeNames(String methodSignature) {
-        String parameters = methodSignature.substring(methodSignature.indexOf('(') + 1, methodSignature.indexOf(')'));
-        if (parameters.length() == 0) {
-            return new ArrayList<>();
-        }
-        return Stream.of(parameters.split(","))
-                .map(p -> {
-                    String paramTypeFQN = p.trim().split(" ")[0].trim();
-                    Class<?> paramClass = getClass(paramTypeFQN);
-                    return paramClass.getTypeName();
-                })
-                .toList();
-    }
-
-    /**
-     * Gets the variable names of all parameters from the method signature.
-     *
-     * @param methodSignature a method signature
-     * @return all variable parameter names in the method signature
-     */
-    private static List<String> getParameterNames(String methodSignature) {
-        String parameters = methodSignature.substring(methodSignature.indexOf('(') + 1, methodSignature.indexOf(')'));
-        if (parameters.length() == 0) {
-            return new ArrayList<>();
-        }
-        return Stream.of(parameters.split(","))
-                .map(p -> p.trim().split(" ")[1].trim())
-                .toList();
     }
 
     /**
