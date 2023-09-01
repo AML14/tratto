@@ -395,6 +395,144 @@ public class TestUtils {
     }
 
     /**
+     * Gets the Class of a given primitive type name.
+     *
+     * @param primitiveName a primitive type name
+     * @return the Class corresponding to the primitive type
+     * @throws IllegalArgumentException if the given type name is not a
+     * primitive type
+     */
+    private static Class<?> getPrimitiveClass(String primitiveName) {
+        switch (primitiveName) {
+            case "boolean" -> {
+                return boolean.class;
+            }
+            case "byte" -> {
+                return byte.class;
+            }
+            case "char" -> {
+                return char.class;
+            }
+            case "short" -> {
+                return short.class;
+            }
+            case "int" -> {
+                return int.class;
+            }
+            case "long" -> {
+                return long.class;
+            }
+            case "float" -> {
+                return float.class;
+            }
+            case "double" -> {
+                return double.class;
+            }
+            default -> throw new IllegalArgumentException("Unrecognized primitive type " + primitiveName);
+        }
+    }
+
+    /**
+     * Gets the Class of a given type name.
+     *
+     * @param className a fully qualified type name
+     * @return the Class corresponding to the type name
+     */
+    private static Class<?> getClassOfName(String className) {
+        if (primitiveTypes.contains(className)) {
+            return getPrimitiveClass(className);
+        } else {
+            try {
+                className = removeTypeParameters(className);
+                className = fqnToClassGetName(className);
+                return Class.forName(className, true, classLoader);
+            } catch (ClassNotFoundException e) {
+                // return "java.lang.Object" for type parameters
+                if (!className.contains(".")) {
+                    return Object.class;
+                }
+                throw new Error("Unable to find class " + className);
+            }
+        }
+    }
+
+    /**
+     * Gets all Class objects of a given list of types.
+     *
+     * @param classNames a list of fully qualified type names
+     * @return the Class objects corresponding to the type names
+     * @see TestUtils#getClassOfName(String)
+     */
+    private static List<Class<?>> getClassesOfNames(List<String> classNames) {
+        List<Class<?>> classes = new ArrayList<>();
+        for (String className : classNames) {
+            classes.add(getClassOfName(className));
+        }
+        return classes;
+    }
+
+    /**
+     * Gets the reflection {@link Method} representation of a method.
+     *
+     * @param className the fully qualified name of the declaring class
+     * @param methodSignature the method signature
+     * @return the reflection representation of the method
+     */
+    private static Method getReflectionMethod(String className, String methodSignature) {
+        String methodName = getMethodName(methodSignature);
+        List<Class<?>> parameterTypes = getClassesOfNames(getParameterTypeNames(methodSignature));
+        Class<?> receiverObjectID = getClassOfName(className);
+        try {
+            return receiverObjectID.getMethod(methodName, parameterTypes.toArray(Class[]::new));
+        } catch (NoSuchMethodException e) {
+            throw new Error("Unable to find method " + methodSignature + " in " + className);
+        }
+    }
+
+    /**
+     * Gets the return type of a method.
+     *
+     * @param className the fully qualified name of the declaring class
+     * @param methodSignature the method signature
+     * @return the return type of the given method
+     */
+    private static Type getReturnType(String className, String methodSignature) {
+        Method method = getReflectionMethod(className, methodSignature);
+        Class<?> returnType = method.getReturnType();
+        return StaticJavaParser.parseType(returnType.getName());
+    }
+
+    /**
+     * Checks if a given method is static.
+     *
+     * @param className the fully qualified name of the declaring class
+     * @param methodSignature the method signature
+     * @return true iff the given method is static
+     */
+    private static boolean isStatic(String className, String methodSignature) {
+        Method method = getReflectionMethod(className, methodSignature);
+        return Modifier.isStatic(method.getModifiers());
+    }
+
+    /**
+     * Removes type arguments from a parameterized type name.
+     *
+     * @param parameterizedType a type name
+     * @return the base type without type arguments
+     */
+    private static String removeTypeParameters(String parameterizedType) {
+        String regex = "<[^<>]*>";
+        // repeatedly remove all type arguments.
+        String previous;
+        String current = parameterizedType;
+        do {
+            previous = current;
+            current = previous.replaceAll(regex, "");
+        } while (!current.equals(previous));
+        return current;
+    }
+
+    /**
      * Gets the name of a method from the method signature.
      *
      * @param methodSignature a method signature
@@ -416,7 +554,11 @@ public class TestUtils {
             return new ArrayList<>();
         }
         return Stream.of(parameters.split(","))
-                .map(p -> p.trim().split(" ")[0].trim())
+                .map(p -> {
+                    String paramTypeFQN = p.trim().split(" ")[0].trim();
+                    Class<?> paramClass = getClassOfName(paramTypeFQN);
+                    return paramClass.getTypeName();
+                })
                 .toList();
     }
 
@@ -434,24 +576,6 @@ public class TestUtils {
         return Stream.of(parameters.split(","))
                 .map(p -> p.trim().split(" ")[1].trim())
                 .toList();
-    }
-
-    /**
-     * Removes type arguments from a parameterized type name.
-     *
-     * @param parameterizedType a type name
-     * @return the base type without type arguments
-     */
-    private static String removeTypeParameters(String parameterizedType) {
-        String regex = "<[^<>]*>";
-        // repeatedly remove all type arguments.
-        String previous;
-        String current = parameterizedType;
-        do {
-            previous = current;
-            current = previous.replaceAll(regex, "");
-        } while (!current.equals(previous));
-        return current;
     }
 
     /**
@@ -715,7 +839,8 @@ public class TestUtils {
                     if (type == null) {
                         return null;
                     }
-                    return getFullyQualifiedName(cu, type);
+                    String fqn = getFullyQualifiedName(cu, type);
+                    return removeTypeParameters(fqn);
                 })
                 .toList();
     }
@@ -743,9 +868,26 @@ public class TestUtils {
         for (int i = 0; i < methodSignatureTypes.size(); i++) {
             String signatureType = methodSignatureTypes.get(i);
             String callType = methodCallTypes.get(i);
-            if (callType == null && !primitiveTypes.contains(signatureType)) {
+            // handle null value case
+            if (callType == null) {
+                if (primitiveTypes.contains(signatureType)) {
+                    continue;
+                } else {
+                    return false;
+                }
+            }
+            // handle type parameter case
+            int signatureArrayLevel = getArrayLevel(signatureType);
+            int callArrayLevel = getArrayLevel(callType);
+            if (callArrayLevel != signatureArrayLevel) {
+                return false;
+            }
+            String signatureElementType = signatureType.replaceAll("\\[]", "");
+            String callElementType = callType.replaceAll("\\[]", "");
+            if (signatureElementType.equals("java.lang.Object") && !primitiveTypes.contains(callElementType)) {
                 continue;
             }
+            // handle base case
             if (!signatureType.equals(callType)) {
                 return false;
             }
@@ -803,126 +945,6 @@ public class TestUtils {
                 .stream()
                 .filter(o -> isMatchingMethod(cu, body, methodCalls.get(0), o.methodSignature()))
                 .toList();
-    }
-
-    /**
-     * Gets the Class of a given primitive type name.
-     *
-     * @param primitiveName a primitive type name
-     * @return the Class corresponding to the primitive type
-     * @throws IllegalArgumentException if the given type name is not a
-     * primitive type
-     */
-    private static Class<?> getPrimitiveClass(String primitiveName) {
-        switch (primitiveName) {
-            case "boolean" -> {
-                return boolean.class;
-            }
-            case "byte" -> {
-                return byte.class;
-            }
-            case "char" -> {
-                return char.class;
-            }
-            case "short" -> {
-                return short.class;
-            }
-            case "int" -> {
-                return int.class;
-            }
-            case "long" -> {
-                return long.class;
-            }
-            case "float" -> {
-                return float.class;
-            }
-            case "double" -> {
-                return double.class;
-            }
-            default -> throw new IllegalArgumentException("Unrecognized primitive type " + primitiveName);
-        }
-    }
-
-    /**
-     * Gets the Class of a given type name.
-     *
-     * @param className a fully qualified type name
-     * @return the Class corresponding to the type name
-     */
-    private static Class<?> getClassOfName(String className) {
-        if (primitiveTypes.contains(className)) {
-            return getPrimitiveClass(className);
-        } else {
-            try {
-                className = removeTypeParameters(className);
-                className = fqnToClassGetName(className);
-                return Class.forName(className, true, classLoader);
-            } catch (ClassNotFoundException e) {
-                // return "java.lang.Object" for type parameters
-                if (!className.contains(".")) {
-                    return Object.class;
-                }
-                throw new Error("Unable to find class " + className);
-            }
-        }
-    }
-
-    /**
-     * Gets all Class objects of a given list of types.
-     *
-     * @param classNames a list of fully qualified type names
-     * @return the Class objects corresponding to the type names
-     * @see TestUtils#getClassOfName(String)
-     */
-    private static List<Class<?>> getClassesOfNames(List<String> classNames) {
-        List<Class<?>> classes = new ArrayList<>();
-        for (String className : classNames) {
-            classes.add(getClassOfName(className));
-        }
-        return classes;
-    }
-
-    /**
-     * Gets the reflection {@link Method} representation of a method.
-     *
-     * @param className the fully qualified name of the declaring class
-     * @param methodSignature the method signature
-     * @return the reflection representation of the method
-     */
-    private static Method getReflectionMethod(String className, String methodSignature) {
-        String methodName = getMethodName(methodSignature);
-        List<Class<?>> parameterTypes = getClassesOfNames(getParameterTypeNames(methodSignature));
-        Class<?> receiverObjectID = getClassOfName(className);
-        try {
-            return receiverObjectID.getMethod(methodName, parameterTypes.toArray(Class[]::new));
-        } catch (NoSuchMethodException e) {
-            throw new Error("Unable to find method " + methodSignature + " in " + className);
-        }
-    }
-
-    /**
-     * Gets the return type of a method.
-     *
-     * @param className the fully qualified name of the declaring class
-     * @param methodSignature the method signature
-     * @return the return type of the given method
-     */
-    private static Type getReturnType(String className, String methodSignature) {
-        Method method = getReflectionMethod(className, methodSignature);
-        Class<?> returnType = method.getReturnType();
-        return StaticJavaParser.parseType(returnType.getName());
-    }
-
-    /**
-     * Checks if a given method is static.
-     *
-     * @param className the fully qualified name of the declaring class
-     * @param methodSignature the method signature
-     * @return true iff the given method is static
-     */
-    private static boolean isStatic(String className, String methodSignature) {
-        Method method = getReflectionMethod(className, methodSignature);
-        return Modifier.isStatic(method.getModifiers());
     }
 
     /**
