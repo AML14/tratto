@@ -672,7 +672,14 @@ public class TestUtils {
      * @return the type of the given expression
      */
     private static Type getTypeOfExpression(List<Statement> body, Expression expr) {
-        if (expr.isNameExpr()) {
+        if (expr.isCastExpr()) {
+            Type baseType = getTypeOfExpression(body, expr.asCastExpr().getExpression());
+            if (baseType == null) {
+                return null;
+            } else {
+                return expr.asCastExpr().getType();
+            }
+        } else if (expr.isNameExpr()) {
             return getTypeOfName(body, expr.asNameExpr().getNameAsString());
         } else {
             return getTypeOfLiteral(expr.asLiteralExpr());
