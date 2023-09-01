@@ -356,7 +356,7 @@ public class TestUtils {
     private static Path getFQNOutputPath(String baseDir, String fullyQualifiedName) {
         Path fqnPath = FileUtils.getRelativePathFromFullyQualifiedClassName(baseDir + "." + fullyQualifiedName);
         int classNameIdx = fqnPath.getNameCount() - 1;
-        return fqnPath.subpath(0, classNameIdx);
+        return output.resolve(fqnPath.subpath(0, classNameIdx));
     }
 
     /**
@@ -377,7 +377,7 @@ public class TestUtils {
      */
     public static void removeOracles(Path dir, String fullyQualifiedName) {
         Path simplePath = getFQNOutputPath("evosuite-tests-simple", fullyQualifiedName);
-        Path prefixPath = getFQNOutputPath("evosuite-tests-prefix", fullyQualifiedName);
+        Path prefixPath = getFQNOutputPath("evosuite-prefix", fullyQualifiedName);
         FileUtils.copy(dir, simplePath);
         FileUtils.copy(dir, prefixPath);
         try (Stream<Path> walk = Files.walk(prefixPath)) {
