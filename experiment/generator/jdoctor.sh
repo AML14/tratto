@@ -1,6 +1,11 @@
 # This script generates a list of axiomatic oracles using JDoctor.
 # Should output a list of OracleOutput.
 
+# ----- SETUP -----
+# After adding the local JDK8 to the generator/resources directory...
+# Set this field to the directory name.
+JDK8_NAME="jdk-1.8.jdk"
+
 if [[ $(uname) == "Darwin" || $(uname) == "Linux" ]]; then
     SEPARATOR="/"
 else
@@ -8,11 +13,6 @@ else
 fi
 
 RESOURCES_DIR="$(dirname "$0")${SEPARATOR}resources"
-
-# ----- SETUP -----
-# After adding the local JDK8 to the generator/resources directory...
-# Set this field to the directory name.
-JDK8_NAME="jdk-1.8.jdk"
 
 # find JDK8 directory
 ROOT_DIR=$(dirname "$(dirname "$(realpath "$0")")")
