@@ -17,7 +17,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestUtilsTest {
-    private static final Path srcPath = Paths.get("src", "main", "java");
+    private static final Path srcPath = Paths.get("src", "test", "java", "resources", "project", "target", "classes");
     private static final Path resourcesPath = Paths.get("src/test/resources");
     private static final Path outputPath = Paths.get("output");
     private static final List<String> allJUnitTestMethods = List.of(

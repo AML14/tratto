@@ -1,4 +1,3 @@
-import com.github.javaparser.JavaParser;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.ImportDeclaration;
@@ -36,6 +35,9 @@ import com.github.javaparser.ast.type.Type;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -43,8 +45,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
-import com.github.javaparser.resolution.SymbolResolver;
-import com.github.javaparser.symbolsolver.utils.SymbolSolverCollectionStrategy;
 import data.OracleOutput;
 import data.OracleType;
 import data.TogType;
@@ -54,6 +54,8 @@ import data.TogType;
  * and inserting oracles into test prefixes.
  */
 public class TestUtils {
+    /** A ClassLoader used to load classes outside the JVM. */
+    private static ClassLoader classLoader;
     /** A global unique ID to avoid duplicate test names. */
     private static int testID = 0;
     /** A unique id for placeholder variable names when inserting oracles. */
@@ -85,27 +87,10 @@ public class TestUtils {
     );
     /** A list of all supported axiomatic test oracle generators. */
     private static final List<TogType> axiomaticTogs = List.of(TogType.JDOCTOR, TogType.TRATTO);
-    /** A shared JavaParser for resolving class and method names. */
-    private static JavaParser javaParser;
 
     /** Private constructor to avoid creating an instance of this class. */
     private TestUtils() {
         throw new UnsupportedOperationException("This class cannot be instantiated.");
-    }
-
-    /**
-     * Initializes a new JavaParser for the given source directory.
-     *
-     * @param srcDir the project source directory
-     * @return a JavaParser object
-     */
-    private static JavaParser getJavaParser(Path srcDir) {
-        SymbolSolverCollectionStrategy strategy = new SymbolSolverCollectionStrategy();
-        strategy.collect(srcDir);
-        JavaParser javaParser = new JavaParser();
-        SymbolResolver symbolResolver = strategy.getParserConfiguration().getSymbolResolver().orElseThrow();
-        javaParser.getParserConfiguration().setSymbolResolver(symbolResolver);
-        return javaParser;
     }
 
     /**
@@ -858,7 +843,7 @@ public class TestUtils {
             try {
                 className = removeTypeParameters(className);
                 className = fqnToClassGetName(className);
-                return Class.forName(className);
+                return Class.forName(className, true, classLoader);
             } catch (ClassNotFoundException e) {
                 throw new Error("Unable to find class " + className);
             }
@@ -1432,7 +1417,7 @@ public class TestUtils {
                     .filter(p -> !FileUtils.isScaffolding(p))
                     .forEach(testFile -> {
                         try {
-                            CompilationUnit cu = javaParser.parse(testFile).getResult().orElseThrow();
+                            CompilationUnit cu = StaticJavaParser.parse(testFile);
                             insertAxiomaticOracles(cu, oracles);
                             FileUtils.writeString(testFile, cu.toString());
                         } catch (IOException e) {
@@ -1580,6 +1565,15 @@ public class TestUtils {
         return axiomaticTogs.contains(tog);
     }
 
+    private static ClassLoader getClassLoader(Path binDir) {
+        try {
+            URL binaryURL = binDir.toUri().toURL();
+            return new URLClassLoader(new URL[]{binaryURL});
+        } catch (MalformedURLException e) {
+            throw new Error("Unable to get URL for system binaries " + binDir);
+        }
+    }
+
     /**
      * Adds oracles to test prefixes in a given directory. The approach for
      * adding oracles varies based on whether the oracles are axiomatic or
@@ -1587,20 +1581,15 @@ public class TestUtils {
      * output/tog-test/[tog], where [tog] is the given test oracle generator.
      * Does not override original test prefixes.
      *
-     * @param srcDir the source directory to resolve classes
+     * @param binDir path to the system binaries
      * @param prefixDir a directory with Java test prefixes
      * @param tog a test oracle generator
      * @param oracles a list of test oracles made by the given tog
      * @see TestUtils#insertAxiomaticOracles(Path, List)
      * @see TestUtils#insertNonAxiomaticOracles(Path, List)
      */
-    public static void insertOracles(
-            Path srcDir,
-            Path prefixDir,
-            TogType tog,
-            List<OracleOutput> oracles
-    ) {
-        javaParser = getJavaParser(srcDir);
+    public static void insertOracles(Path binDir, Path prefixDir, TogType tog, List<OracleOutput> oracles) {
+        classLoader = getClassLoader(binDir);
         Path testPath = output.resolve("tog-tests/" + tog);
         FileUtils.copy(prefixDir, testPath);
         if (isAxiomatic(tog)) {
