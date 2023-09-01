@@ -119,7 +119,7 @@ public class Tratto {
             }
         }
         // Remove all the oracle datapoints for which it has been impossible to produce an oracle
-        oracleDatapoints = oracleDatapoints.stream().filter(oracleDatapoint -> oracleDatapoint.getOracle() == null).collect(Collectors.toList());
+        oracleDatapoints = oracleDatapoints.stream().filter(oracleDatapoint -> oracleDatapoint.getOracle() != null).collect(Collectors.toList());
         // Save final oracleDatapoints to file
         File oracleDatapointsFile = new File(ORACLE_DATAPOINTS_PATH);
         FileOutputStream oracleDatapointsOutputStream = new FileOutputStream(oracleDatapointsFile);

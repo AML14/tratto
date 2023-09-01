@@ -421,8 +421,6 @@ public class TogUtils {
                 .toList();
         FileUtils.writeJSON(oraclePath, oracleOutputs);
     }
-<<<<<<< HEAD
-=======
 
     /**
      * Transforms the output from the Tratto script into a json file containing a
@@ -460,5 +458,4 @@ public class TogUtils {
         }
         FileUtils.writeJSON(prefixPath.resolve("oracle_outputs.json"), oracleOutputs);
     }
->>>>>>> experiment-end-to-end-Davide
 }
