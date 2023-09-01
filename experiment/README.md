@@ -2,13 +2,17 @@
 
 ## Setup
 
-### EvoSuite
+After completing all setup instructions, the example command in [Overview](#Overview) should run without error. 
 
-We use EvoSuite to generate test prefixes, which is written in Java 8. However, the experiment module uses Java 17, such that the user must configure a home directory for a local JDK 8. See [Oracle](https://www.oracle.com/java/technologies/downloads/#java8-linux) for JDK downloads. Afterward, configure the path to the JDK Home directory in [`evosuite.sh`](generator/evosuite.sh). By default, this path is set to the `resources` subdirectory in the `generator` directory.
+### JDK 8
+
+We use EvoSuite to generate test prefixes, which is written in Java 8. However, the remainder of the experiment module uses Java 17. To run EvoSuite (and similarly, JDoctor), the user must configure a home directory for a local JDK 8. See [Oracle](https://www.oracle.com/java/technologies/downloads/#java8-linux) for JDK downloads. Then, add the downloaded JDK 8 directory to `generator/resources`. 
+
+In **both** `evosuite.sh` and `jdoctor.sh`, there is a variable at the top of the script called `JDK8_NAME`. Set this variable to the name of the downloaded JDK directory (e.g. `jdk-1.8.jdk`).
 
 ### JDoctor
 
-To set up JDoctor for analysis, visit the [ToRaDoCu](https://github.com/albertogoffi/toradocu) GitHub page, and follow instructions to build the `toradocu-1.0-all.jar` file. Then, add the file to the `experiment/generator/resources` directory.
+To set up JDoctor for analysis, visit the [ToRaDoCu](https://github.com/albertogoffi/toradocu) GitHub page, and follow instructions to build the `toradocu-1.0-all.jar` file. Then, add the JAR file to the `experiment/generator/resources` directory.
 
 ## Overview
 
@@ -102,16 +106,17 @@ The user provides two arguments as input: the TOG and the source path. For refer
 
 We provide a brief description of the relevant files:
 
-- `generator`: this package contains scripts for generating test prefixes and test oracles 
-  - `evosuite.sh`: a script that invokes EvoSuite for a given source file
-  - `jdoctor.sh`: a script that invokes JDoctor for a given source file
-  - `toga.sh`: a script that invokes TOGA for a given source file and test prefix
-  - `tratto.sh`: a script that invokes Tratto for a given source file
-- `src/main/java`: this package contains all Java functionality, including mutation testing, file IO, JavaParser utilities, etc.
-  - `FileUtils.java`: a class with all necessary utilities to read and write to files 
+- `generator`: this package contains scripts for generating test prefixes and test oracles
+  - `README.md`: a small Markdown file with example script invocations
+  - `evosuite.sh`: a script that creates a test suite using EvoSuite for a given class
+  - `jdoctor.sh`: a script that creates oracles using JDoctor
+  - `toga.sh`: a script that creates oracles using TOGA
+  - `tratto.sh`: a script that creates oracles using Tratto
+- `src/main/java`: this directory contains all Java functionality for the end-to-end experimental pipeline
+  - `data`: a package with all records use to represent input and output
+  - `FileUtils.java`: a class with all necessary utilities to read and write to files
   - `TestAnalyzer.java`: a class for reporting the statistics of a test suite. Includes the number of passing/failing tests and mutation score.
   - `TestUtils.java`: a class for test suite utilities, such as removing/adding assertions
-  - `data.TestOutput.java`: a record for storing a test case and its contextual information
 - `experiment.sh`: the end-to-end script which performs the experiment
 
 ### Prefix
