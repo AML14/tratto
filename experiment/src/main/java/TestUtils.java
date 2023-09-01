@@ -703,7 +703,7 @@ public class TestUtils {
      * @param type a type
      * @return the base component type of the given type
      */
-    private static Type getComponentType(Type type) {
+    private static Type getElementType(Type type) {
         while (type.isArrayType()) {
             type = type.asArrayType().getComponentType();
         }
@@ -719,7 +719,7 @@ public class TestUtils {
      * @see TestUtils#getPackageName(CompilationUnit, Type)
      */
     private static String getFullyQualifiedName(CompilationUnit cu, Type type) {
-        if (getComponentType(type).isClassOrInterfaceType()) {
+        if (getElementType(type).isClassOrInterfaceType()) {
             return getPackageName(cu, type) + "." + type.asString();
         } else {
             return type.asString();
