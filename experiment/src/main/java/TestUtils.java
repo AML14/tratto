@@ -674,14 +674,20 @@ public class TestUtils {
     private static Type getTypeOfExpression(List<Statement> body, Expression expr) {
         if (expr.isCastExpr()) {
             Type baseType = getTypeOfExpression(body, expr.asCastExpr().getExpression());
+            // null types should always be null, otherwise use cast type
             if (baseType == null) {
                 return null;
             } else {
                 return expr.asCastExpr().getType();
             }
         } else if (expr.isNameExpr()) {
+            // get type corresponding to variable name
             return getTypeOfName(body, expr.asNameExpr().getNameAsString());
+        } else if (expr.isBinaryExpr()) {
+            // binary expressions are booleans
+            return PrimitiveType.booleanType();
         } else {
+            // get literal value
             return getTypeOfLiteral(expr.asLiteralExpr());
         }
     }
