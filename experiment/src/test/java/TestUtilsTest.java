@@ -305,7 +305,7 @@ public class TestUtilsTest {
                                     int primitiveInt = 5;
                                     Integer objectInt = Integer.valueOf(primitiveInt);
                                 }""",
-                        "assertTrue(primitiveInt == objectInt.intValue());",
+                        "assertTrue(primitiveInt == objectInt.intValue())",
                         "",
                         "assertionTest"
                 ),
