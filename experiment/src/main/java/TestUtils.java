@@ -405,6 +405,24 @@ public class TestUtils {
     }
 
     /**
+     * Removes type arguments from a parameterized type name.
+     *
+     * @param parameterizedType a type name
+     * @return the base type without type arguments
+     */
+    private static String removeTypeParameters(String parameterizedType) {
+        String regex = "<[^<>]*>";
+        // repeatedly remove all type arguments.
+        String previous;
+        String current = parameterizedType;
+        do {
+            previous = current;
+            current = previous.replaceAll(regex, "");
+        } while (!current.equals(previous));
+        return current;
+    }
+
+    /**
      * Gets the Class of a given primitive type name.
      *
      * @param primitiveName a primitive type name
@@ -522,24 +540,6 @@ public class TestUtils {
         Method method = getMethod(className, methodSignature);
         Class<?> returnType = method.getReturnType();
         return StaticJavaParser.parseType(returnType.getName());
-    }
-
-    /**
-     * Removes type arguments from a parameterized type name.
-     *
-     * @param parameterizedType a type name
-     * @return the base type without type arguments
-     */
-    private static String removeTypeParameters(String parameterizedType) {
-        String regex = "<[^<>]*>";
-        // repeatedly remove all type arguments.
-        String previous;
-        String current = parameterizedType;
-        do {
-            previous = current;
-            current = previous.replaceAll(regex, "");
-        } while (!current.equals(previous));
-        return current;
     }
 
     /**
