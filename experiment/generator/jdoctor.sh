@@ -12,8 +12,6 @@ else
     SEPARATOR="\\"
 fi
 
-RESOURCES_DIR="$(dirname "$0")${SEPARATOR}resources"
-
 # find JDK8 directory
 ROOT_DIR=$(dirname "$(dirname "$(realpath "$0")")")
 RESOURCES_DIR="$ROOT_DIR${SEPARATOR}generator${SEPARATOR}resources"
