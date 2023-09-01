@@ -136,4 +136,21 @@ public class FileUtilsTest {
             fail();
         }
     }
+
+    @Test
+    public void getRelativePathFromFullyQualifiedClassNameTest() {
+        Path singlePath = FileUtils.getRelativePathFromFullyQualifiedClassName("Class");
+        Path doublePath = FileUtils.getRelativePathFromFullyQualifiedClassName("package1.Class");
+        Path multiplePath = FileUtils.getRelativePathFromFullyQualifiedClassName("package1.package2.package3.Class");
+        Path emptyPath = FileUtils.getRelativePathFromFullyQualifiedClassName("");
+        try {
+            assertTrue(singlePath.toString().equals("Class.java"));
+            assertTrue(doublePath.toString().equals("package1/Class.java"));
+            assertTrue(multiplePath.toString().equals("package1/package2/package3/Class.java"));
+            assertTrue(emptyPath.toString().equals(""));
+        } catch (Error e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
 }
