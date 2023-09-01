@@ -12,6 +12,7 @@ import star.tratto.data.OracleType;
 import star.tratto.data.TokenDPType;
 import star.tratto.data.TokenDatapoint;
 import star.tratto.input.ClassAnalyzer;
+import star.tratto.util.FileUtils;
 import star.tratto.util.javaparser.JavaParserUtils;
 
 import java.io.File;
@@ -20,10 +21,12 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static star.tratto.data.OracleDP2TokenDPs.oracleSoFarAndTokenToTokenDatapoints;
 import static star.tratto.util.FileUtils.readString;
@@ -46,20 +49,36 @@ public class Tratto {
     public static String ORACLE_DATAPOINTS_PATH = "src/main/resources/oracle_datapoints.json";
 
     public static void main(String[] args) throws IOException {
+        Path fullyQualifiedClassNamePath = FileUtils.getRelativePathFromFullyQualifiedClassName(args[0]);
+        Path projectSourcePath = Paths.get(args[1]);
+        Path projectJarPath = Paths.get(args[2]);
+        Path classPath = projectSourcePath.resolve(fullyQualifiedClassNamePath);
+
+        if (!Files.exists(classPath)){
+            Path commonPatternPath = Paths.get(projectSourcePath.toString(), "main", "java");
+            classPath = commonPatternPath.resolve(fullyQualifiedClassNamePath);
+            if (!Files.exists(classPath)) {
+                classPath = FileUtils.searchClassFile(projectSourcePath, fullyQualifiedClassNamePath);
+                if (classPath == null) {
+                    throw new RuntimeException("The full path to the class file has not been found.");
+                }
+            }
+        }
+
         logger.info("Starting Tratto...");
         logger.info("Starting up ML models local server...");
         // TODO: Start up ML models local server
-        logger.info("Generating oracles for: \n\tClass: {}\n\tProject source: {}\n\tProject JAR: {}", CLASS_PATH, PROJECT_SOURCE_PATH, PROJECT_JAR_PATH);
+        logger.info("Generating oracles for: \n\tClass: {}\n\tProject source: {}\n\tProject JAR: {}", classPath, projectSourcePath, projectJarPath);
 
         // Configure JavaParser to resolve symbols from project under test
-        JavaParserUtils.updateSymbolSolver(PROJECT_JAR_PATH);
+        JavaParserUtils.updateSymbolSolver(projectJarPath.toString());
 
         // Set up OracleDatapointBuilder within ClassAnalyzer based on project and class under test
-        String className = getClassNameFromPath(CLASS_PATH);
-        String classSourceCode = readString(Paths.get(CLASS_PATH));
+        String className = getClassNameFromPath(classPath.toString());
+        String classSourceCode = readString(Paths.get(classPath.toString()));
         CompilationUnit classCu = javaParser.parse(classSourceCode).getResult().get();
         TypeDeclaration<?> classTd = getClassOrInterface(classCu, className);
-        classAnalyzer.setProjectPath(PROJECT_SOURCE_PATH);
+        classAnalyzer.setProjectPath(projectSourcePath.toString());
         classAnalyzer.setClassFeatures(className, classSourceCode, classCu, classTd);
 
         List<OracleDatapoint> oracleDatapoints = classAnalyzer.getOracleDatapointsFromClass();
@@ -74,7 +93,7 @@ public class Tratto {
                     oracleDatapoint.getJavadocTag(),
                     oracleDatapoint.getOracleType());
 
-            while (!oracleDatapoint.getOracle().endsWith(";")) {
+            while (!(oracleDatapoint.getOracle().endsWith(";") && oracleDatapoint.getOracle().length() < 50)) {
                 // Generate token datapoints and save to file
                 List<TokenDatapoint> tokenDatapoints = oracleSoFarAndTokenToTokenDatapoints(oracleDatapoint, oracleSoFarTokens, tokenClassesSoFar, "", TokenDPType.TOKEN);
                 FileOutputStream tokenDatapointsOutputStream = new FileOutputStream(TOKEN_DATAPOINTS_PATH);
@@ -89,10 +108,18 @@ public class Tratto {
 
                 logger.info("Oracle so far: {}", oracleDatapoint.getOracle());
             }
-            logger.info("Final oracle: {}", oracleDatapoint.getOracle());
-            logger.info("-------------------------------------------------------------------------");
-        }
 
+            if (oracleDatapoint.getOracle().endsWith(";")) {
+                logger.info("Final oracle: {}", oracleDatapoint.getOracle());
+                logger.info("-------------------------------------------------------------------------");
+            } else {
+                logger.info("Unable to generate oracle. Oracle removed.");
+                logger.info("-------------------------------------------------------------------------");
+                oracleDatapoint.setOracle(null);
+            }
+        }
+        // Remove all the oracle datapoints for which it has been impossible to produce an oracle
+        oracleDatapoints = oracleDatapoints.stream().filter(oracleDatapoint -> oracleDatapoint.getOracle() == null).collect(Collectors.toList());
         // Save final oracleDatapoints to file
         File oracleDatapointsFile = new File(ORACLE_DATAPOINTS_PATH);
         FileOutputStream oracleDatapointsOutputStream = new FileOutputStream(oracleDatapointsFile);
@@ -100,7 +127,7 @@ public class Tratto {
         oracleDatapointsOutputStream.close();
         new File(TOKEN_DATAPOINTS_PATH).delete();
 
-        logger.info("Finished generating oracles for: \n\tClass: {}\n\tProject source: {}\n\tProject JAR: {}", CLASS_PATH, PROJECT_SOURCE_PATH, PROJECT_JAR_PATH);
+        logger.info("Finished generating oracles for: \n\tClass: {}\n\tProject source: {}\n\tProject JAR: {}", classPath, projectSourcePath, projectJarPath);
     }
 
     private static Pair<String, String> getNextTokenValueClass() throws IOException {

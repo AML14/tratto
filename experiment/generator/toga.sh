@@ -4,7 +4,7 @@
 
 # argument and setup check
 if [ ! $# -eq 3 ]; then
-  echo -e "(TOGA) Incorrect number of arguments. Expected 2 arguments, but got $#".
+  echo -e "(TOGA) Incorrect number of arguments. Expected 3 arguments, but got $#".
   exit 1
 fi
 

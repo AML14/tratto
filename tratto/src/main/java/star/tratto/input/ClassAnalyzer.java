@@ -159,9 +159,9 @@ public class ClassAnalyzer {
         }
 
         // If no Javadoc is present, we generate one OracleDatapoint for each type, with empty javadocTag and methodJavadoc
-        addOracleToList(oracleDatapoints, OracleType.PRE, "");
-        addOracleToList(oracleDatapoints, OracleType.NORMAL_POST, "");
-        addOracleToList(oracleDatapoints, OracleType.EXCEPT_POST, "");
+        //addOracleToList(oracleDatapoints, OracleType.PRE, "");
+        //addOracleToList(oracleDatapoints, OracleType.NORMAL_POST, "");
+        //addOracleToList(oracleDatapoints, OracleType.EXCEPT_POST, "");
 
         return oracleDatapoints;
     }
@@ -198,7 +198,7 @@ public class ClassAnalyzer {
         }
 
         // If there's some missing tag, generate OracleDatapoint without associated tag
-        if (!hasParamTag) {
+        /*if (!hasParamTag) {
             addOracleToList(oracleDatapoints, OracleType.PRE, "");
         }
         if (!hasReturnTag) {
@@ -206,7 +206,7 @@ public class ClassAnalyzer {
         }
         if (!hasThrowsOrExceptionTag) {
             addOracleToList(oracleDatapoints, OracleType.EXCEPT_POST, "");
-        }
+        }*/
 
         return oracleDatapoints;
     }

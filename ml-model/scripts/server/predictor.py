@@ -50,6 +50,8 @@ _, classificator_converter_in_label = utils.import_json(
 classificator_converter_out_category = {k: i for i, k in classificator_converter_in_category.items()}
 classificator_converter_out_label = {k: i for i, k in classificator_converter_in_label.items()}
 
+SINGLE_PUNCTUATION_SEMICOLON = "single_punctuation_semiColon"
+
 def predict_next(
         device,
         model,
@@ -63,7 +65,8 @@ def predict_next(
     # Model in evaluation mode
     model.eval()
     num_beams = 1
-    predictions = []
+    true_predictions = []
+    false_predictions = []
     # The prediction is performed without accumulating the gradient descent and without updating the weights of the model
     with torch.no_grad():
         for batch_id, batch in enumerate(dl_src, 1):
@@ -90,7 +93,7 @@ def predict_next(
 
                 if classification_type == ClassificationType.CATEGORY_PREDICTION:
                     # First-choice beam search
-                    predictions.append((predicted_generate[0], 1.0))
+                    true_predictions.append((predicted_generate[0], 1.0))
                 else:
                     assert len(outputs_generate['scores']) == 3
                     ids_max_logits_predicted = [
@@ -102,9 +105,12 @@ def predict_next(
                         for i, k in enumerate(ids_max_logits_predicted)
                     ]
                     for i, p in enumerate(predicted_generate):
+                        tgt_decoded = tokenizer.decode(tgt[i], skip_special_tokens=True)
                         if p == 'True':
-                            tgt_decoded = tokenizer.decode(tgt[i],skip_special_tokens=True)
-                            predictions.append((tgt_decoded, max_logits_predicted[i]))
+                            true_predictions.append((tgt_decoded, max_logits_predicted[i]))
+                        else:
+                            false_predictions.append((tgt_decoded, max_logits_predicted[i]))
+
             else:
                 # Model predictions with ranking
                 outputs_generate = model(
@@ -124,21 +130,21 @@ def predict_next(
                 for i, p in enumerate(predicted_generate_encoded):
                     if classification_type == ClassificationType.CATEGORY_PREDICTION:
                         predicted_generate = classificator_converter_out_category[p.item()]
-                        predictions.append((
+                        true_predictions.append((
                             probabilities[i][p.item()].item(),
                             predicted_generate
                         ))
                     elif classification_type == ClassificationType.LABEL_PREDICTION:
                         if classificator_converter_out_label[predicted_generate_encoded[p.item()]] == 'True':
                             predicted_generate = tgt_decoded[i]
-                            predictions.append((
+                            true_predictions.append((
                                 probabilities[i][p.item()].item(),
                                 predicted_generate
                             ))
 
-        if len(predictions) > 0:
-            sorted_predictions = sorted(predictions, key=lambda p: p[0])
-            first_choice = sorted_predictions[0][0]
+        if len(true_predictions) > 0:
+            sorted_true_predictions = sorted(true_predictions, key=lambda p: p[1], reverse=True)
+            first_choice = sorted_true_predictions[0][0]
 
             if classification_type == ClassificationType.CATEGORY_PREDICTION:
                 # Heuristics to mitigate knowns prediction errors
@@ -179,7 +185,14 @@ def predict_next(
                     best_distance = distance
                     most_probable_token = eligible
             return most_probable_token
-        return ""
+        else:
+            sorted_false_predictions = sorted(false_predictions, key=lambda p: p[1])
+            found = any('single_punctuation_semiColon' in tup for tup in sorted_false_predictions)
+            assert 'single_punctuation_semiColon' in value_mappings.values()
+            if found:
+                return 'single_punctuation_semiColon'
+            first_choice = sorted_false_predictions[0][0]
+            return first_choice
 
 
 
