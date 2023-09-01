@@ -60,4 +60,4 @@ elif [ "${TOG}" == "tratto" ]; then
   ORACLE_OUTPUT=""
 fi
 # insert oracles into EvoSuite prefixes
-$EXPERIMENT "$TOG" "insert_oracles" "$SRC_DIR" "$ORACLE_OUTPUT"
+$EXPERIMENT "$TOG" "insert_oracles" "$BIN_DIR" "$ORACLE_OUTPUT"
