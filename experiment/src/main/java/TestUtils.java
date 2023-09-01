@@ -658,7 +658,7 @@ public class TestUtils {
                 literalExpr instanceof StringLiteralExpr ||
                 literalExpr instanceof TextBlockLiteralExpr
         ) {
-            return StaticJavaParser.parseType("java.lang.String");
+            return StaticJavaParser.parseType("String");
         } else {
             throw new IllegalArgumentException("Unknown literal expression type " + literalExpr);
         }
