@@ -874,9 +874,10 @@ public class TestUtils {
      * Checks if a list of parameter types from a method signature is
      * equivalent to a list of parameters from a method call. These two lists
      * cannot be directly compared (e.g.
-     * {@code methodSignatureTypes.equals(methodCallTypes)}) because the
-     * method call may use null literal expressions, which may apply to any
-     * object type.
+     * {@code methodSignatureTypes.equals(methodCallTypes)}) as the method
+     * call may use null literal expressions, which may apply to any object
+     * types. Similarly, the method signature may use generic type parameters,
+     * which also may apply to any object types.
      *
      * @param methodSignatureTypes all parameter types from a method signature
      * @param methodCallTypes all parameter types from a method call. May
@@ -896,21 +897,24 @@ public class TestUtils {
             // handle null value case
             if (callType == null) {
                 if (primitiveTypes.contains(signatureType)) {
-                    continue;
-                } else {
                     return false;
+                } else {
+                    continue;
                 }
             }
-            // handle type parameter case
+            // handle generic type parameter case
             int signatureArrayLevel = getArrayLevel(signatureType);
             int callArrayLevel = getArrayLevel(callType);
-            if (callArrayLevel != signatureArrayLevel) {
-                return false;
-            }
             String signatureElementType = signatureType.replaceAll("\\[]", "");
             String callElementType = callType.replaceAll("\\[]", "");
-            if (signatureElementType.equals("java.lang.Object") && !primitiveTypes.contains(callElementType)) {
-                continue;
+            if (signatureElementType.equals("java.lang.Object")) {
+                if (callArrayLevel > signatureArrayLevel) {
+                    // if the call type has a larger array level than the given signature, then continue
+                    continue;
+                } else if (callArrayLevel == signatureArrayLevel && !primitiveTypes.contains(callElementType)) {
+                    // if base types are both objects of equal array level, then continue
+                    continue;
+                }
             }
             // handle base case
             if (!signatureType.equals(callType)) {
