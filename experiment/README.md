@@ -171,44 +171,70 @@ Consequently, each test case may have multiple oracles, and each oracle may be u
 
 If the oracles are non-axiomatic, meaning they correspond to a test prefix, then we simply insert the oracle into its corresponding test prefix. In contrast to the axiomatic oracles, each test case contains precisely one oracle, and each oracle is used exactly once. Therefore, we will have an equal number of oracles and prefixes.
 
-### Analysis
+[//]: # ()
+[//]: # (### Analysis)
 
-We use the generated tests in `experiment/output/tog-test/[tog]/` and report statistics using `TestAnalyzer.java`. The class `TestAnalyzer.java` computes the mutation score using PITest, and invokes each test case to determine the number of positive/negative samples by the number of failing/passing tests, respectively.
+[//]: # ()
+[//]: # (We use the generated tests in `experiment/output/tog-test/[tog]/` and report statistics using `TestAnalyzer.java`. The class `TestAnalyzer.java` computes the mutation score using PITest, and invokes each test case to determine the number of positive/negative samples by the number of failing/passing tests, respectively.)
 
-## Output
+[//]: # (## Output)
 
-We save the output as a JSON file. The output follows the format,
+[//]: # (We save the output as a JSON file. The output follows the format,)
 
-```json lines
-{
-  "tog": "tratto",
-  "source": "path/to/source/File.java",
-  "positive": 10,
-  "negative": 24,
-  "mutation-score": 85.42,
-  "tests": [
-    {
-      "class": "File",
-      "methodSignature": "sum(int a, int b)",
-      "isPositive": false,
-      "test": "int a = 2;\nassert a != null; ..."
-    },
-    ...,
-    {
-      "class": "File",
-      "methodSignature": "sum(int a, int b)",
-      "isPositive": false,
-      "test": "int a = -1;\nassert != null; ..."
-    }
-  ]
-}
-```
+[//]: # ()
+[//]: # (```json lines)
 
-We report the TOG, the source path, the number of failing tests (positive), the number of passing test (negative), the mutation score, and information for each test case. For each test case, we report the class under test, the method under test, whether the test passes or fails (`isPositive` is `true` if the test fails), and the test case as a String (see `data.TestOutput.java` for further detail).
+[//]: # ({)
+
+[//]: # (  "tog": "tratto",)
+
+[//]: # (  "source": "path/to/source/File.java",)
+
+[//]: # (  "positive": 10,)
+
+[//]: # (  "negative": 24,)
+
+[//]: # (  "mutation-score": 85.42,)
+
+[//]: # (  "tests": [)
+
+[//]: # (    {)
+
+[//]: # (      "class": "File",)
+
+[//]: # (      "methodSignature": "sum&#40;int a, int b&#41;",)
+
+[//]: # (      "isPositive": false,)
+
+[//]: # (      "test": "int a = 2;\nassert a != null; ...")
+
+[//]: # (    },)
+
+[//]: # (    ...,)
+
+[//]: # (    {)
+
+[//]: # (      "class": "File",)
+
+[//]: # (      "methodSignature": "sum&#40;int a, int b&#41;",)
+
+[//]: # (      "isPositive": false,)
+
+[//]: # (      "test": "int a = -1;\nassert != null; ...")
+
+[//]: # (    })
+
+[//]: # (  ])
+
+[//]: # (})
+
+[//]: # (```)
+
+[//]: # (We report the TOG, the source path, the number of failing tests &#40;positive&#41;, the number of passing test &#40;negative&#41;, the mutation score, and information for each test case. For each test case, we report the class under test, the method under test, whether the test passes or fails &#40;`isPositive` is `true` if the test fails&#41;, and the test case as a String &#40;see `data.TestOutput.java` for further detail&#41;.)
 
 ## Related Resources
 
-[`TestAnalyzer` and `TestUtils` README.md](./src/README.md): Further description of how test suites are modified and analyzed
+[//]: # ([`TestAnalyzer` and `TestUtils` README.md]&#40;./src/README.md&#41;: Further description of how test suites are modified and analyzed)
 
 [`generator` README.md](./generator/README.md): Brief descriptions of each shell script involved with generating EvoSuite tests and TOG oracles. 
 
