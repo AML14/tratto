@@ -96,7 +96,39 @@ To analyze the "effectiveness" of the generated oracles, we compute the mutation
 
 ## Implementation
 
-The user provides two arguments as input: the TOG and the source path. For reference, we provide an overview of the experimental pipeline.
+### How to run the experiments
+
+Run the command
+
+  ```shell
+  bash experiment.sh [tog_name] [fully_qualified_class_name] [source_path] [binary_path] {[jar_path]}
+  ```
+
+providing four arguments as input: 
+1. the TOG name [`jdoctor`,`tratto`,`toga`]
+2. the fully qualified name of the class under test
+3. the absolute path to the source of the project
+4. the absolute path to the binary classes of the project
+`tratto` requires a fifth parameter:
+5. the absolute path to the jar file of the project 
+
+For example, to run the experiment with `toga` on the provided `Stack` project, run the following command:
+
+  ```shell
+  bash experiment.sh toga tutorial.Stack [path_to_experiment]/src/test/resources/project/src/main/java [path_to_experiment]/src/test/resources/project/target/classes
+  ```
+
+substituting the `[path_to_experiment]` with the absolute path to the `experiment` root folder.
+
+Instead, to run the experiment with `tratto`, generate the jar file of the project to test (for the provided Stack project,
+move with `cd ./src/test/resources/project` and execute `mvn clean package`). Then run the command:
+
+  ```shell
+  bash experiment.sh tratto tutorial.Stack [path_to_experiment]/src/test/resources/project/src/main/java [path_to_experiment]/src/test/resources/project/target/classes [path_to_experiment]/src/test/resources/project/target/classes [path_to_experiment]/src/test/resources/project/target
+  ```
+where the fifth parameter is the absolute path to the folder where the jar file is saved.
+
+For reference, we provide an overview of the experimental pipeline.
 
 ![experiment pipeline](./doc/experiment-pipeline.png)
 

@@ -1,12 +1,6 @@
 # This script manages the end-to-end experimental analysis.
 # To run the experiment, the user provides a specific TOG and a source file.
 
-# check if the number of arguments is correct
-if [ ! $# -eq 4 ]; then
-  echo -e "Incorrect number of arguments. Expected 4 arguments, but got $#."
-  exit 1
-fi
-
 if [[ $(uname) == "Darwin" || $(uname) == "Linux" ]]; then
     SEPARATOR="/"
 else
@@ -45,7 +39,7 @@ if [ ! $found -eq 1 ]; then
 fi
 
 # generate EvoSuite tests
-bash ./generator/evosuite.sh "${TARGET_CLASS}" "${BIN_DIR}"
+ #bash ./generator/evosuite.sh "${TARGET_CLASS}" "${BIN_DIR}"
 # generate EvoSuite prefixes
 $EXPERIMENT "$TOG" "remove_oracles" "$EVOSUITE_OUTPUT" "$TARGET_CLASS"
 # generate oracles using TOG
@@ -53,7 +47,7 @@ if [ "${TOG}" == "jdoctor" ]; then
   bash ./generator/jdoctor.sh "${TARGET_CLASS}" "${SRC_DIR}" "${BIN_DIR}"
   ORACLE_OUTPUT="$ROOT_DIR/output/jdoctor/oracle_outputs.json"
 elif [ "${TOG}" == "toga" ]; then
-  bash ./generator/toga.sh "${TARGET_CLASS}" "${SRC_DIR}" "${EVOSUITE_OUTPUT}"
+  #bash ./generator/toga.sh "${TARGET_CLASS}" "${SRC_DIR}" "${EVOSUITE_OUTPUT}"
   ORACLE_OUTPUT="$ROOT_DIR/output/toga/oracle/oracle_outputs.json"
 elif [ "${TOG}" == "tratto" ]; then
   PROJECT_JAR=$5

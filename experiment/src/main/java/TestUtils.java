@@ -1453,7 +1453,8 @@ public class TestUtils {
      * @param assertion the string representation of the assertion to add
      */
     private static void insertNonAxiomaticAssertion(MethodDeclaration testCase, String assertion) {
-        ExpressionStmt statement = StaticJavaParser.parseStatement(assertion).asExpressionStmt();
+        System.out.println(assertion);
+        ExpressionStmt statement = new ExpressionStmt(StaticJavaParser.parseExpression(assertion));
         testCase
                 .getBody().orElseThrow()
                 .getStatements().add(statement);
