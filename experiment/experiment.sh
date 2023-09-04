@@ -1,3 +1,4 @@
+#!/bin/bash
 # This script manages the end-to-end experimental analysis.
 # To run the experiment, the user provides a specific TOG and a source file.
 
@@ -39,7 +40,7 @@ if [ ! $found -eq 1 ]; then
 fi
 
 # generate EvoSuite tests
- #bash ./generator/evosuite.sh "${TARGET_CLASS}" "${BIN_DIR}"
+bash ./generator/evosuite.sh "${TARGET_CLASS}" "${BIN_DIR}"
 # generate EvoSuite prefixes
 $EXPERIMENT "$TOG" "remove_oracles" "$EVOSUITE_OUTPUT" "$TARGET_CLASS"
 # generate oracles using TOG
@@ -47,11 +48,11 @@ if [ "${TOG}" == "jdoctor" ]; then
   bash ./generator/jdoctor.sh "${TARGET_CLASS}" "${SRC_DIR}" "${BIN_DIR}"
   ORACLE_OUTPUT="$ROOT_DIR/output/jdoctor/oracle_outputs.json"
 elif [ "${TOG}" == "toga" ]; then
-  #bash ./generator/toga.sh "${TARGET_CLASS}" "${SRC_DIR}" "${EVOSUITE_OUTPUT}"
+  bash ./generator/toga.sh "${TARGET_CLASS}" "${SRC_DIR}" "${EVOSUITE_OUTPUT}"
   ORACLE_OUTPUT="$ROOT_DIR/output/toga/oracle/oracle_outputs.json"
 elif [ "${TOG}" == "tratto" ]; then
   PROJECT_JAR=$5
   bash ./generator/tratto.sh "${TARGET_CLASS}" "${SRC_DIR}" ${PROJECT_JAR}
 fi
 # insert oracles into EvoSuite prefixes
-$EXPERIMENT "$TOG" "insert_oracles" "$BIN_DIR" "$ORACLE_OUTPUT"
+#$EXPERIMENT "$TOG" "insert_oracles" "$BIN_DIR" "$ORACLE_OUTPUT"

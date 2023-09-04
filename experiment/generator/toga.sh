@@ -22,7 +22,7 @@ TOGA_PROJECT="${ROOT_DIR}${SEPARATOR}generator${SEPARATOR}resources${SEPARATOR}t
 TOGA_INPUT="${ROOT_DIR}${SEPARATOR}output${SEPARATOR}toga${SEPARATOR}input"
 TOGA_OUTPUT="${ROOT_DIR}${SEPARATOR}output${SEPARATOR}toga${SEPARATOR}output"
 
-bash ".${SEPARATOR}utils${SEPARATOR}toga_setup.sh"
+bash ".${SEPARATOR}generator${SEPARATOR}utils${SEPARATOR}toga_setup.sh"
 
 java -jar "generator${SEPARATOR}resources${SEPARATOR}experiment.jar" toga remove_oracles "$EVOSUITE_OUTPUT" "$FULLY_QUALIFIED_NAME"
 
