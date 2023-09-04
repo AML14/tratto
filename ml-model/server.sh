@@ -1,6 +1,7 @@
 export PYTHONPATH="./"
+PORT="${1:-5000}"
 python3 scripts/server/server.py \
---port 5000 \
+--port "$PORT" \
 --model_type_token_classes codet5+ \
 --model_type_token_values codet5+ \
 --classification_type_token_classes LABEL_PREDICTION \

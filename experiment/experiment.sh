@@ -2,13 +2,16 @@
 # This script manages the end-to-end experimental analysis.
 # To run the experiment, the user provides a specific TOG and a source file.
 
+# Exit from the program if any error is arose from another bash script or another command executed within this bash script.
+set -e
+
 if [[ $(uname) == "Darwin" || $(uname) == "Linux" ]]; then
     SEPARATOR="/"
 else
     SEPARATOR="\\"
 fi
 
-ROOT_DIR=$(dirname "$(realpath "$0")")
+ROOT_DIR=$(pwd)
 TOG=$1
 TARGET_CLASS=$2
 SRC_DIR=$3
@@ -39,8 +42,11 @@ if [ ! $found -eq 1 ]; then
   exit 1
 fi
 
-# generate EvoSuite tests
-bash ./generator/evosuite.sh "${TARGET_CLASS}" "${BIN_DIR}"
+# Generate EvoSuite tests
+echo "[1] Generate EvoSuite tests for class ${TARGET_CLASS}"
+#{
+  #bash ./generator/evosuite.sh "${TARGET_CLASS}" "${BIN_DIR}"
+#} > /dev/null 2>&1
 # generate EvoSuite prefixes
 $EXPERIMENT "$TOG" "remove_oracles" "$EVOSUITE_OUTPUT" "$TARGET_CLASS"
 # generate oracles using TOG

@@ -41,7 +41,7 @@ public class Tratto {
     private static final ClassAnalyzer classAnalyzer = ClassAnalyzer.getInstance();
     private static final JavaParser javaParser = JavaParserUtils.getJavaParser();
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    private static final String ML_MODEL_API_URL = String.format("http://127.0.0.1:5000/api/next_token?filename=%s/src/main/resources/token_datapoints.json", System.getProperty("user.dir"));
+    private static final String ML_MODEL_ENDPOINT = String.format("/api/next_token?filename=%s/src/main/resources/token_datapoints.json", System.getProperty("user.dir"));
     public static String CLASS_PATH = "src/main/resources/projects-source/commons-collections4-4.1/raw/src/main/java/org/apache/commons/collections4/BagUtils.java";
     public static String PROJECT_SOURCE_PATH = "src/main/resources/projects-source/commons-collections4-4.1/raw/src/main/java/";
     public static String PROJECT_JAR_PATH = "src/main/resources/projects-packaged/commons-collections4-4.1-jar-with-dependencies.jar";
@@ -53,6 +53,9 @@ public class Tratto {
         Path projectSourcePath = Paths.get(args[1]);
         Path projectJarPath = Paths.get(args[2]);
         Path classPath = projectSourcePath.resolve(fullyQualifiedClassNamePath);
+        String port = args[3];
+        String http_domain = String.format("http://127.0.0.1:%s",port);
+
 
         if (!Files.exists(classPath)){
             Path commonPatternPath = Paths.get(projectSourcePath.toString(), "main", "java");
@@ -100,7 +103,7 @@ public class Tratto {
                 tokenDatapointsOutputStream.write(objectMapper.writeValueAsBytes(tokenDatapoints));
                 tokenDatapointsOutputStream.close();
 
-                Pair<String, String> nextTokenValueClass = getNextTokenValueClass(); // HTTP call to ML-model API to get next token and class
+                Pair<String, String> nextTokenValueClass = getNextTokenValueClass(http_domain); // HTTP call to ML-model API to get next token and class
 
                 oracleDatapoint.setOracle(compactExpression(oracleDatapoint.getOracle() + " " + nextTokenValueClass.getValue0()));
                 oracleSoFarTokens.add(nextTokenValueClass.getValue0());
@@ -130,8 +133,8 @@ public class Tratto {
         logger.info("Finished generating oracles for: \n\tClass: {}\n\tProject source: {}\n\tProject JAR: {}", classPath, projectSourcePath, projectJarPath);
     }
 
-    private static Pair<String, String> getNextTokenValueClass() throws IOException {
-        HttpURLConnection mlModelApiConn = (HttpURLConnection) new URL(ML_MODEL_API_URL).openConnection();
+    private static Pair<String, String> getNextTokenValueClass(String http_domain) throws IOException {
+        HttpURLConnection mlModelApiConn = (HttpURLConnection) new URL(http_domain.concat(ML_MODEL_ENDPOINT)).openConnection();
         mlModelApiConn.setRequestMethod("GET");
         mlModelApiConn.connect();
         Pair<String, String> nextTokenValueClass = Pair.fromArray(new String(mlModelApiConn.getInputStream().readAllBytes(), StandardCharsets.UTF_8).split("\n"));
