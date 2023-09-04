@@ -175,16 +175,7 @@ public class JavaParserUtils {
     private static void addNewMethodWithExpression(
             TypeDeclaration<?> jpClass,
             CallableDeclaration<?> originalMethod,
-<<<<<<< HEAD
-            // NOTE: This is MethodArgumentTokens in the next pull request where records are integrated.
             List<MethodArgumentTokens> methodArgs,
-||||||| merged common ancestors
-            // NOTE: This is MethodArgumentTokens in the next pull request where records are integrated.
-            List<Triplet<String, String, String>> methodArgs,
->>>>>>>>> Temporary merge branch 2
-=======
-            List<MethodArgumentTokens> methodArgs,
->>>>>>> ee7db5f822cc9547497b8df7809107f1ca79f7f8
             String expression
     ) throws ResolvedTypeNotFound {
         // throw error when given a constructor due to JavaParser behavior differences
