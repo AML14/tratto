@@ -35,9 +35,9 @@ if [ ! -d "${RESOURCES_DIR}${SEPARATOR}toga" ]; then
   cd "$RESOURCES_DIR"
   echo "          TOGA project not found."
   echo "          Downloading TOGA project into '.${SEPARATOR}generator${SEPARATOR}resources'..."
-  {
-    git clone https://github.com/microsoft/toga.git
-  } > /dev/null 2>&1
+  #{
+  git clone https://github.com/microsoft/toga.git
+  #} > /dev/null 2>&1
   cd "$ROOT_DIR"
 
   STARTING_NAME="toga"
@@ -79,9 +79,9 @@ if [ ! -e "${TOGA_ASSERTIONS_DIR}${SEPARATOR}pytorch_model.bin" ]; then
     fi
     pip install -q gdown
   fi
-  {
-    gdown "https://drive.google.com/u/0/uc?id=1TvZMlpXeN3DQUwwgOhlCRkn5-v1l_ZSK&export=download" -O "${TOGA_ASSERTIONS_DIR}${SEPARATOR}pytorch_model.bin"
-  } > /dev/null 2>&1
+  #{
+  gdown "https://drive.google.com/u/0/uc?id=1TvZMlpXeN3DQUwwgOhlCRkn5-v1l_ZSK&export=download" -O "${TOGA_ASSERTIONS_DIR}${SEPARATOR}pytorch_model.bin"
+  #} > /dev/null 2>&1
   echo "          Download of TOGA assertion model complete!"
 fi
 if [ ! -e "${TOGA_EXCEPTIONS_DIR}${SEPARATOR}pytorch_model.bin" ]; then
@@ -95,8 +95,8 @@ if [ ! -e "${TOGA_EXCEPTIONS_DIR}${SEPARATOR}pytorch_model.bin" ]; then
     fi
     pip install -q gdown
   fi
-  {
-    gdown "https://drive.google.com/u/0/uc?id=1JeRod7jtR8CdWTB_wn-HRNMgtgoRFpc7&export=download" -O "${TOGA_EXCEPTIONS_DIR}${SEPARATOR}pytorch_model.bin"
-  } > /dev/null 2>&1
+  #{
+  gdown "https://drive.google.com/u/0/uc?id=1JeRod7jtR8CdWTB_wn-HRNMgtgoRFpc7&export=download" -O "${TOGA_EXCEPTIONS_DIR}${SEPARATOR}pytorch_model.bin"
+  #} > /dev/null 2>&1
   echo "          Download of TOGA exceptions model complete!"
 fi

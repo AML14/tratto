@@ -45,7 +45,7 @@ fi
 # Generate EvoSuite tests
 echo "[1] Generate EvoSuite tests for class ${TARGET_CLASS}"
 #{
-  #bash ./generator/evosuite.sh "${TARGET_CLASS}" "${BIN_DIR}"
+bash ./generator/evosuite.sh "${TARGET_CLASS}" "${BIN_DIR}"
 #} > /dev/null 2>&1
 # generate EvoSuite prefixes
 $EXPERIMENT "$TOG" "remove_oracles" "$EVOSUITE_OUTPUT" "$TARGET_CLASS"
