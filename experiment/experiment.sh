@@ -18,7 +18,19 @@ SRC_DIR=$3
 BIN_DIR=$4
 QUALIFIERS="${TARGET_CLASS%.*}"
 EVOSUITE_OUTPUT="${ROOT_DIR}${SEPARATOR}output${SEPARATOR}evosuite-tests${SEPARATOR}${QUALIFIERS//./$SEPARATOR}"
-EXPERIMENT="java -jar $ROOT_DIR/generator/resources/experiment.jar"
+EXPERIMENT_JAR="${ROOT_DIR}${SEPARATOR}generator${SEPARATOR}resources${SEPARATOR}experiment.jar"
+EXPERIMENT="java -jar ${EXPERIMENT_JAR}"
+
+if [ ! -f "$EXPERIMENT_JAR" ]; then
+  mvn clean package -DskipTests
+  TARGET_JAR=$(find "${ROOT_DIR}${SEPARATOR}target" -type f -name "experiment*-jar-with-dependencies.jar")
+    # Check if a file was found
+    if [ -z "$TARGET_JAR" ]; then
+      echo "Unexpected error: experiment jar not found."
+      exit 1
+    fi
+    mv "$TARGET_JAR" "$RESOURCES_DIR/experiment.jar"
+fi
 
 # check if given directories exist
 if [ ! -d "$SRC_DIR" ]; then

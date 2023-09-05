@@ -23,7 +23,7 @@ if [ ! -e "${TRATTO_JAR_FILE}" ]; then
   TARGET_JAR=$(find "${TRATTO_PROJECT_DIR}${SEPARATOR}target" -type f -name "tratto*-jar-with-dependencies.jar")
 
   # Check if a file was found
-  if [ ! -n "$TARGET_JAR" ]; then
+  if [ -z "$TARGET_JAR" ]; then
     echo "Unexpected error: tratto jar not found."
     exit 1
   fi
