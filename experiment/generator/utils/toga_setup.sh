@@ -71,13 +71,23 @@ bash "${UTILS_DIR}${SEPARATOR}install_requirements.sh" "${RESOURCES_DIR}${SEPARA
 if [ ! -e "${TOGA_ASSERTIONS_DIR}${SEPARATOR}pytorch_model.bin" ]; then
   echo "          Assertion model not found."
   echo "          Downloading toga assertions model..."
-  if ! python -c "import gdown" &> /dev/null; then
+  if ! pip show "gdown" > /dev/null 2>&1; then
     CHOICE=$(bash "${UTILS_DIR}${SEPARATOR}y_n.sh" "          To proceed it is necessary to install gdown python package to download the model from a google drive link. Proceed? (Y/n): ")
     if [ ! "$CHOICE" == "Y" ]; then
       echo "          ERROR - Impossible to proceed without authorization to install gdown package. Terminate program."
       exit 1
     fi
-    pip install -q gdown
+    sudo pip install gdown
+    # Check if a Conda environment is activated
+    if [ -z "$CONDA_DEFAULT_ENV" ]; then
+      # Determine the location where gdown is installed
+      GDOWN_PATH=$(which gdown)
+      # Add the directory containing gdown to PATH
+      GDOWN_DIR=$(dirname "$GDOWN_PATH")
+      if [[ ":$PATH:" != *":$GDOWN_DIR:"* ]]; then
+         export PATH="$PATH:$GDOWN_DIR"
+      fi
+    fi
   fi
   #{
   gdown "https://drive.google.com/u/0/uc?id=1TvZMlpXeN3DQUwwgOhlCRkn5-v1l_ZSK&export=download" -O "${TOGA_ASSERTIONS_DIR}${SEPARATOR}pytorch_model.bin"
@@ -87,13 +97,23 @@ fi
 if [ ! -e "${TOGA_EXCEPTIONS_DIR}${SEPARATOR}pytorch_model.bin" ]; then
   echo "Exceptions model not found."
   echo "Downloading toga exceptions model..."
-  if ! python -c "import gdown" &> /dev/null; then
+  if ! pip show "gdown" > /dev/null 2>&1; then
     CHOICE=$(bash "${UTILS_DIR}${SEPARATOR}y_n.sh" "          To proceed it is necessary to install gdown python package to download the model from a google drive link. Proceed? (Y/n): ")
     if [ ! "$CHOICE" == "Y" ]; then
       echo "          ERROR - Impossible to proceed without authorization to install gdown package. Terminate program."
       exit 1
     fi
-    pip install -q gdown
+    sudo pip install gdown
+    # Check if a Conda environment is activated
+    if [ -z "$CONDA_DEFAULT_ENV" ]; then
+      # Determine the location where gdown is installed
+      GDOWN_PATH=$(which gdown)
+      # Add the directory containing gdown to PATH
+      GDOWN_DIR=$(dirname "$GDOWN_PATH")
+      if [[ ":$PATH:" != *":$GDOWN_DIR:"* ]]; then
+        export PATH="$PATH:$GDOWN_DIR"
+      fi
+    fi
   fi
   #{
   gdown "https://drive.google.com/u/0/uc?id=1JeRod7jtR8CdWTB_wn-HRNMgtgoRFpc7&export=download" -O "${TOGA_EXCEPTIONS_DIR}${SEPARATOR}pytorch_model.bin"

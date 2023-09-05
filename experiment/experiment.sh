@@ -17,6 +17,7 @@ TARGET_CLASS=$2
 SRC_DIR=$3
 BIN_DIR=$4
 QUALIFIERS="${TARGET_CLASS%.*}"
+RESOURCES_DIR="${ROOT_DIR}${SEPARATOR}generator${SEPARATOR}resources"
 EVOSUITE_OUTPUT="${ROOT_DIR}${SEPARATOR}output${SEPARATOR}evosuite-tests${SEPARATOR}${QUALIFIERS//./$SEPARATOR}"
 EXPERIMENT_JAR="${ROOT_DIR}${SEPARATOR}generator${SEPARATOR}resources${SEPARATOR}experiment.jar"
 EXPERIMENT="java -jar ${EXPERIMENT_JAR}"
@@ -29,8 +30,9 @@ if [ ! -f "$EXPERIMENT_JAR" ]; then
       echo "Unexpected error: experiment jar not found."
       exit 1
     fi
-    mv "$TARGET_JAR" "$RESOURCES_DIR/experiment.jar"
+    sudo mv "$TARGET_JAR" "$RESOURCES_DIR/experiment.jar"
 fi
+
 
 # check if given directories exist
 if [ ! -d "$SRC_DIR" ]; then

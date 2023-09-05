@@ -17,6 +17,7 @@ TRATTO_JAR_FILE="${RESOURCES_DIR}${SEPARATOR}tratto.jar"
 TRATTO_PROJECT_DIR="${ROOT_DIR}${SEPARATOR}..${SEPARATOR}tratto"
 
 if [ ! -e "${TRATTO_JAR_FILE}" ]; then
+  echo "[0] Generate experiment jar from java project."
   cd "${TRATTO_PROJECT_DIR}"
   mvn clean package -DskipTests
   cd "${ROOT_DIR}"
