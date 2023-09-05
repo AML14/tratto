@@ -26,7 +26,11 @@ if [ -n "$JDK_DEFAULT_PATH" ]; then
   if [ "$JDK_DEFAULT_PATH" != "$JDK_PATH" ]; then
     mv "$JDK_DEFAULT_PATH" "$JDK_PATH"
   fi
-  JAVA8_HOME="${JDK_PATH}${SEPARATOR}Contents${SEPARATOR}Home"
+  JAVA8_HOME=$(find "$folder_to_search" -type f -name "java" -print -quit)
+
+  if [ ! -n "$result" ]; then
+    echo -e "(EVOSUITE) Error: JDK8 not found within \"${JDK_PATH}\"."
+  fi
 else
   echo "(EVOSUITE) Unable to find a jdk directory. Please provide the complete path to the Java 8 JDK directory:"
   read -r JAVA8_FOLDER
