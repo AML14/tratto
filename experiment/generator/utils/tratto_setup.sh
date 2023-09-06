@@ -19,6 +19,7 @@ TRATTO_PROJECT_DIR="${ROOT_DIR}${SEPARATOR}..${SEPARATOR}tratto"
 if [ ! -e "${TRATTO_JAR_FILE}" ]; then
   echo "[0] Generate experiment jar from java project."
   cd "${TRATTO_PROJECT_DIR}"
+  bash scripts/install_dependencies.sh
   mvn clean package -DskipTests
   cd "${ROOT_DIR}"
   TARGET_JAR=$(find "${TRATTO_PROJECT_DIR}${SEPARATOR}target" -type f -name "tratto*-jar-with-dependencies.jar")
