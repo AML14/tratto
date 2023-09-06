@@ -58,11 +58,11 @@ The JSON output is stored in `output/jdoctor/jdoctor_output.json`.
 To use `runner.sh`, run
 
 ```shell
-bash runner.sh [fully qualified name] [path to source] [path to binaries]
+bash runner.sh [tog] [path to source] [path to binaries]
 ```
 
 For example,
 
 ```shell
-bash runner.sh tutorial.Stack ../src/test/resources/project/src/main/java ../src/test/resources/project/target/classes
+bash runner.sh toga ../src/test/resources/project/src/main/java ../src/test/resources/project/target/classes
 ```
