@@ -73,6 +73,7 @@ elif [ "${TOG}" == "toga" ]; then
 elif [ "${TOG}" == "tratto" ]; then
   PROJECT_JAR=$5
   bash ./generator/tratto.sh "${TARGET_CLASS}" "${SRC_DIR}" "${PROJECT_JAR}"
+  ORACLE_OUTPUT="$ROOT_DIR/output/tratto/oracle/oracle_outputs.json"
 fi
 # insert oracles into EvoSuite prefixes
 $EXPERIMENT "$TOG" "insert_oracles" "$BIN_DIR" "$ORACLE_OUTPUT"

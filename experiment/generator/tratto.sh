@@ -42,4 +42,4 @@ fi
 
 mv "${TRATTO_PROJECT_DIR}${SEPARATOR}src${SEPARATOR}main${SEPARATOR}resources${SEPARATOR}oracle_datapoints.json" "${TRATTO_OUTPUT_DIR}"
 
-java -jar "${RESOURCES_DIR}${SEPARATOR}experiment.jar" tratto generate_oracle_outputs "${TRATTO_OUTPUT_DIR}${SEPARATOR}oracle_datapoints.json"
+java -jar "${RESOURCES_DIR}${SEPARATOR}experiment.jar" tratto generate_oracle_outputs "$SRC_PATH"

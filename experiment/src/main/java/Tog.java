@@ -66,6 +66,8 @@ public class Tog {
             TogUtils.mapTOGAOutputToOracleOutput(dir);
         } else if (togType == TogType.JDOCTOR) {
             TogUtils.jDoctorToOracleOutput(dir);
+        } else if (togType == TogType.TRATTO) {
+            TogUtils.mapTrattoOutputToOracleOutput(dir);
         }
     }
 
