@@ -5,11 +5,10 @@
 # ----- SETUP -----
 # After adding the local JDK8 to the generator/resources directory...
 # Set this field to the directory name.
+JDK8_NAME="jdk-1.8.jdk"
 
 # Exit from the program if any error is arose from another bash script or another command executed within this bash script.
 set -e
-
-JDK8_NAME="jdk-1.8.jdk"
 
 if [[ $(uname) == "Darwin" || $(uname) == "Linux" ]]; then
     SEPARATOR="/"
@@ -27,7 +26,7 @@ if [ -n "$JDK_DEFAULT_PATH" ]; then
   if [ "$JDK_DEFAULT_PATH" != "$JDK_PATH" ]; then
     mv "$JDK_DEFAULT_PATH" "$JDK_PATH"
   fi
-  if [ $(uname) == "Linux" ]; then
+  if [ "$(uname)" == "Linux" ]; then
       JAVA8_HOME="${JDK_PATH}"
   else
       JAVA8_HOME="${JDK_PATH}${SEPARATOR}Contents${SEPARATOR}Home"

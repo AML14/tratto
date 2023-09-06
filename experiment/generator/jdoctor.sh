@@ -5,6 +5,7 @@
 # After adding the local JDK8 to the generator/resources directory...
 # Set this field to the directory name.
 JDK8_NAME="jdk-1.8.jdk"
+
 # Exit from the program if any error is arose from another bash script or another command executed within this bash script.
 set -e
 
