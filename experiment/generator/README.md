@@ -64,5 +64,5 @@ bash runner.sh [tog] [path to source] [path to binaries]
 For example,
 
 ```shell
-bash runner.sh toga ../src/test/resources/project/src/main/java ../src/test/resources/project/target/classes
+bash runner.sh TOGA ../src/test/resources/project/src/main/java ../src/test/resources/project/target/classes
 ```
