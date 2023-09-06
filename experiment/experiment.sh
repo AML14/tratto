@@ -76,4 +76,6 @@ elif [ "${TOG}" == "tratto" ]; then
   ORACLE_OUTPUT="$ROOT_DIR/output/tratto/oracle/oracle_outputs.json"
 fi
 # insert oracles into EvoSuite prefixes
+echo "[7] Insert oracles in test prefixes"
 $EXPERIMENT "$TOG" "insert_oracles" "$BIN_DIR" "$ORACLE_OUTPUT"
+echo "[8] Experiment complete!"
