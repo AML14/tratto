@@ -11,7 +11,6 @@ public record TestOutput(
         @JsonProperty("binDir") String binDir,
         @JsonProperty("numPass") int numPass,
         @JsonProperty("numFail") int numFail,
-        @JsonProperty("mutationScore") double mutationScore,
         @JsonProperty("tests") List<TestCase> tests
 ) {
 }
