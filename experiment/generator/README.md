@@ -52,17 +52,3 @@ bash jdoctor.sh tutorial.Stack ../src/test/resources/project/src/main/java ../sr
 ```
 
 The JSON output is stored in `output/jdoctor/jdoctor_output.json`.
-
-### Runner
-
-To use `runner.sh`, run
-
-```shell
-bash runner.sh [tog] [path to source] [path to binaries]
-```
-
-For example,
-
-```shell
-bash runner.sh TOGA ../src/test/resources/project/src/main/java ../src/test/resources/project/target/classes
-```
