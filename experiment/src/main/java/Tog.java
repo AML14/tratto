@@ -79,11 +79,13 @@ public class Tog {
             Path binDir,
             Path testPath,
             Path testFailsPath,
-            Path testOutputpath
+            Path testOutputPath
     ) {
+        Path projectRoot = FileUtils.getProjectRoot(testFailsPath.toAbsolutePath());
+        testFailsPath = projectRoot.resolve("output").resolve("");
         System.out.println(testFailsPath);
         TogUtils.writeTestOutput(
-                testOutputpath,
+                testOutputPath,
                 tog,
                 className,
                 srcDir,

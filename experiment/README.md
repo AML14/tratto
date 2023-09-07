@@ -1,5 +1,9 @@
 # Tog
 
+```shell
+bash runner.sh TOGA ./src/test/resources/project/src/main/java ./src/test/resources/project/target/classes
+```
+
 ## Setup
 
 After completing all setup instructions, the example command in [Overview](#Overview) should run without error. 
@@ -209,60 +213,60 @@ If the oracles are non-axiomatic, meaning they correspond to a test prefix, then
 [//]: # ()
 [//]: # (We use the generated tests in `experiment/output/tog-test/[tog]/` and report statistics using `TestAnalyzer.java`. The class `TestAnalyzer.java` computes the mutation score using PITest, and invokes each test case to determine the number of positive/negative samples by the number of failing/passing tests, respectively.)
 
-[//]: # (## Output)
+## Output
 
-[//]: # (We save the output as a JSON file. The output follows the format,)
+We save the output as a JSON file. The output follows the format,
 
-[//]: # ()
-[//]: # (```json lines)
 
-[//]: # ({)
+```json lines
 
-[//]: # (  "tog": "tratto",)
+{
 
-[//]: # (  "source": "path/to/source/File.java",)
+  "tog": "tratto",
 
-[//]: # (  "positive": 10,)
+  "source": "path/to/source/File.java",
 
-[//]: # (  "negative": 24,)
+  "positive": 10,
 
-[//]: # (  "mutation-score": 85.42,)
+  "negative": 24,
 
-[//]: # (  "tests": [)
+  "mutation-score": 85.42,
 
-[//]: # (    {)
+  "tests": [
 
-[//]: # (      "class": "File",)
+    {
 
-[//]: # (      "methodSignature": "sum&#40;int a, int b&#41;",)
+      "class": "File",
 
-[//]: # (      "isPositive": false,)
+      "methodSignature": "sum(int a, int b)",
 
-[//]: # (      "test": "int a = 2;\nassert a != null; ...")
+      "isPositive": false,
 
-[//]: # (    },)
+      "test": "int a = 2;\nassert a != null; ..."
 
-[//]: # (    ...,)
+    },
 
-[//]: # (    {)
+    ...,
 
-[//]: # (      "class": "File",)
+    {
 
-[//]: # (      "methodSignature": "sum&#40;int a, int b&#41;",)
+      "class": "File",
 
-[//]: # (      "isPositive": false,)
+      "methodSignature": "sum(int a, int b)",
 
-[//]: # (      "test": "int a = -1;\nassert != null; ...")
+      "isPositive": false,
 
-[//]: # (    })
+      "test": "int a = -1;\nassert != null; ..."
 
-[//]: # (  ])
+    }
 
-[//]: # (})
+  ]
 
-[//]: # (```)
+}
 
-[//]: # (We report the TOG, the source path, the number of failing tests &#40;positive&#41;, the number of passing test &#40;negative&#41;, the mutation score, and information for each test case. For each test case, we report the class under test, the method under test, whether the test passes or fails &#40;`isPositive` is `true` if the test fails&#41;, and the test case as a String &#40;see `data.TestOutput.java` for further detail&#41;.)
+```
+
+We report the TOG, the source path, the number of failing tests (positive), the number of passing test (negative), the mutation score, and information for each test case. For each test case, we report the class under test, the method under test, whether the test passes or fails (`isPositive` is `true` if the test fails), and the test case as a String (see `data.data.TestOutput.java` for further detail).
 
 ## Related Resources
 

@@ -84,6 +84,20 @@ public class FileUtils {
     }
 
     /**
+     * Deletes a given file.
+     *
+     * @param path a path
+     * @throws Error if an error occurs while deleting the file
+     */
+    public static void deleteFile(Path path) {
+        try {
+            Files.delete(path);
+        } catch (IOException e) {
+            throw new Error("Error when trying to delete the file " + path, e);
+        }
+    }
+
+    /**
      * Recursively deletes a directory and its contents. If the file does not
      * exist, then this method does nothing.
      *
@@ -101,11 +115,7 @@ public class FileUtils {
                         if (Files.isDirectory(p)) {
                             deleteDirectory(p);
                         } else {
-                            try {
-                                Files.delete(p);
-                            } catch (IOException e) {
-                                throw new Error("Error when trying to delete the file " + p, e);
-                            }
+                            deleteFile(p);
                         }
                     });
             // delete root directory last

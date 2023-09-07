@@ -45,15 +45,26 @@ while read -r java_test; do
   $JAVA8_C "$java_test"
 done < java_tests.txt
 # run JUnit
+TEST_FAILS="test_fails.txt"
 while read -r java_test; do
   test_class="${java_test#$PROJECT_DIR/evosuite-tests/}"  # remove project prefix
   test_class="${test_class%.java}"  # remove java suffix
   test_class="${test_class//\//.}"  # convert to package name
   # do not run scaffolding files
   if [[ "$test_class" == *ESTest ]]; then
-    $JAVA8_BIN org.junit.runner.JUnitCore "$test_class"
+    junit_output=$($JAVA8_BIN org.junit.runner.JUnitCore "$test_class")
+    if [[ $junit_output == *"FAILURES!!!"* ]]; then
+      # get names of all failing tests
+      while IFS= read -r line; do
+        regex="^[0-9]+\) test[0-9]+\(.*\)$"
+        if [[ "$line" =~ $regex ]]; then
+          echo "$line" >> "$TEST_FAILS"
+        fi
+      done <<< "$junit_output"
+    fi
   fi
 done < java_tests.txt;
+mv "$TEST_FAILS" "$OUTPUT_DIR"
 )
 
 # cleanup
