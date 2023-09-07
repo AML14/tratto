@@ -35,9 +35,10 @@ cp "$RESOURCES_DIR/evosuite-1.0.6.jar" "$PROJECT_DIR"
 cp "$RESOURCES_DIR/evosuite-standalone-runtime-1.0.6.jar" "$PROJECT_DIR"
 cd "$PROJECT_DIR" || exit 1
 
-#(export JAVA_HOME=$JAVA8_HOME;
-#mvn dependency:copy-dependencies
-#export CLASSPATH="target/classes:evosuite-standalone-runtime-1.0.6.jar:evosuite-tests:target/dependency/junit-4.12.jar:target/dependency/hamcrest-core-1.3.jar"
-#$JAVA8_C "$PROJECT_DIR/evosuite-tests/tutorial/"*".java"
-#$JAVA8_BIN org.junit.runner.JUnitCore tutorial.Stack_ESTest
-#)
+(export JAVA_HOME=$JAVA8_HOME;
+mvn dependency:copy-dependencies
+export CLASSPATH=target/classes:evosuite-standalone-runtime-1.0.6.jar:evosuite-tests:target/dependency/junit-4.12.jar:target/dependency/hamcrest-core-1.3.jar
+$JAVA8_C "$PROJECT_DIR/evosuite-tests/tutorial/"*".java"
+echo "$CLASSPATH"
+$JAVA8_BIN org.junit.runner.JUnitCore tutorial.Stack_ESTest
+)
