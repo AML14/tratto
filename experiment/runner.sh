@@ -35,6 +35,7 @@ cp "$RESOURCES_DIR/evosuite-1.0.6.jar" "$PROJECT_DIR"
 cp "$RESOURCES_DIR/evosuite-standalone-runtime-1.0.6.jar" "$PROJECT_DIR"
 cd "$PROJECT_DIR" || exit 1
 
+# run tests
 (export JAVA_HOME=$JAVA8_HOME;
 mvn dependency:copy-dependencies
 export CLASSPATH=target/classes:evosuite-standalone-runtime-1.0.6.jar:evosuite-tests:target/dependency/junit-4.12.jar:target/dependency/hamcrest-core-1.3.jar
@@ -43,11 +44,11 @@ find "$PROJECT_DIR/evosuite-tests" -type f -name "*.java" > java_tests.txt
 while read -r java_test; do
   $JAVA8_C "$java_test"
 done < java_tests.txt
-# run tests
+# run JUnit
 while read -r java_test; do
-  test_class="${java_test#$PROJECT_DIR/evosuite-tests/}"
-  test_class="${test_class%.java}"
-  test_class="${test_class//\//.}"
+  test_class="${java_test#$PROJECT_DIR/evosuite-tests/}"  # remove project prefix
+  test_class="${test_class%.java}"  # remove java suffix
+  test_class="${test_class//\//.}"  # convert to package name
   # do not run scaffolding files
   if [[ "$test_class" == *ESTest ]]; then
     $JAVA8_BIN org.junit.runner.JUnitCore tutorial.Stack_ESTest
