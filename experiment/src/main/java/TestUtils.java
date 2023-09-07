@@ -1666,7 +1666,7 @@ public class TestUtils {
      */
     public static void insertOracles(Path binDir, Path prefixDir, TogType tog, List<OracleOutput> oracles) {
         classLoader = getClassLoader(binDir);
-        Path testPath = output.resolve("tog-tests/" + tog);
+        Path testPath = output.resolve("tog-tests/" + tog.toString().toLowerCase());
         FileUtils.copy(prefixDir, testPath);
         if (isAxiomatic(tog)) {
             insertAxiomaticOracles(testPath, oracles);
