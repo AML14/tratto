@@ -4,6 +4,7 @@ import data.TogType;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -76,10 +77,20 @@ public class Tog {
             String className,
             Path srcDir,
             Path binDir,
-            Path testFile,
-            Path testFailFile
+            Path testPath,
+            Path testFailsPath,
+            Path testOutputpath
     ) {
-
+        System.out.println(testFailsPath);
+        TogUtils.writeTestOutput(
+                testOutputpath,
+                tog,
+                className,
+                srcDir,
+                binDir,
+                testPath,
+                new ArrayList<>()
+        );
     }
 
     /**
@@ -115,7 +126,8 @@ public class Tog {
                     Paths.get(args[3]),
                     Paths.get(args[4]),
                     Paths.get(args[5]),
-                    Paths.get(args[6])
+                    Paths.get(args[6]),
+                    Paths.get(args[7])
             );
             default -> throw new IllegalArgumentException("Unknown operation " + operationType);
         }
