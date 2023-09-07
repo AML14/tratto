@@ -51,7 +51,7 @@ while read -r java_test; do
   test_class="${test_class//\//.}"  # convert to package name
   # do not run scaffolding files
   if [[ "$test_class" == *ESTest ]]; then
-    $JAVA8_BIN org.junit.runner.JUnitCore tutorial.Stack_ESTest
+    $JAVA8_BIN org.junit.runner.JUnitCore "$test_class"
   fi
 done < java_tests.txt;
 )
