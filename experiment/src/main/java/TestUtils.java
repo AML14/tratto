@@ -1688,17 +1688,17 @@ public class TestUtils {
      * @param testOutputPath the path to save the test output
      * @param tog the tog generating tests
      * @param className the fully qualified name of the class under test
-     * @param sourceDir the path to the project source directory
+     * @param srcDir the path to the project source directory
      * @param binDir the path to the project system binaries
      * @param testFile a test file of JUnit test methods
      * @param fails a list of all failing tests names
      */
     public static void writeTestOutput(
             Path testOutputPath,
-            String tog,
+            TogType tog,
             String className,
-            String sourceDir,
-            String binDir,
+            Path srcDir,
+            Path binDir,
             Path testFile,
             List<String> fails
     ) {
@@ -1719,10 +1719,10 @@ public class TestUtils {
                 }
             });
             TestOutput testOutput = new TestOutput(
-                    tog,
+                    tog.toString(),
                     className,
-                    sourceDir,
-                    binDir,
+                    srcDir.toString(),
+                    binDir.toString(),
                     testCases.size() - fails.size(),
                     fails.size(),
                     testCases
