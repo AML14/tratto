@@ -27,23 +27,12 @@ for i in "${!SRC_ARR[@]}" "${!BIN_ARR[@]}"; do
 done
 PROJECT_DIR="${PROJECT_DIR#/}"
 
-echo "$TOG"
-echo "$TEST_DIR"
-echo "$PROJECT_DIR"
-
-#find "$TEST_DIR" -type f -exec mv {} "$PROJECT_DIR" \;
-cp "$TEST_DIR" "$PROJECT_DIR"
+cp -r "$TEST_DIR" "$PROJECT_DIR"
 cd "$PROJECT_DIR" || exit 1
 
-#
-#mv "$TEST_DIR" "$PROJECT_DIR"
-#cd .. || exit 1
-#cd "$PROJECT_DIR" || exit 1
-#
-#(export JAVA_HOME=$JAVA8_HOME;
-#mvn dependency:copy-dependencies
-#export CLASSPATH="target/classes:evosuite-standalone-runtime-1.0.6.jar:evosuite-tests:target/dependency/junit-4.12.jar:target/dependency/hamcrest-core-1.3.jar"
-#$JAVA8_C "$ROOT_DIR/evosuite-tests/tutorial/"*".java"
-#echo "$ROOT_DIR/evosuite-tests/tutorial/"*".java"
-#$JAVA8_BIN org.junit.runner.JUnitCore tutorial.Stack_ESTest
-#)
+(export JAVA_HOME=$JAVA8_HOME;
+mvn dependency:copy-dependencies
+export CLASSPATH="target/classes:evosuite-standalone-runtime-1.0.6.jar:evosuite-tests:target/dependency/junit-4.12.jar:target/dependency/hamcrest-core-1.3.jar"
+$JAVA8_C "$PROJECT_DIR/evosuite-tests/tutorial/"*".java"
+$JAVA8_BIN org.junit.runner.JUnitCore tutorial.Stack_ESTest
+)
