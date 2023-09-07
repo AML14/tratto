@@ -71,6 +71,17 @@ public class Tog {
         }
     }
 
+    private static void generateTestOutputOperation(
+            TogType tog,
+            String className,
+            Path srcDir,
+            Path binDir,
+            Path testFile,
+            Path testFailFile
+    ) {
+
+    }
+
     /**
      * The main method handles all invocations of the JAR file.
      *
@@ -80,10 +91,32 @@ public class Tog {
         TogType togType = TogType.valueOf(args[0].toUpperCase());
         OperationType operationType = OperationType.valueOf(args[1].toUpperCase());
         switch (operationType) {
-            case REMOVE_ORACLES -> TestUtils.removeOracles(Paths.get(args[2]), args[3]);
-            case INSERT_ORACLES -> insertOraclesOperation(togType, Paths.get(args[2]), Paths.get(args[3]));
-            case GENERATE_TOG_INPUTS -> generateTogInputOperation(togType, Paths.get(args[2]), args[3]);
-            case GENERATE_ORACLE_OUTPUTS -> generateOracleOutputOperation(togType, Paths.get(args[2]));
+            case REMOVE_ORACLES -> TestUtils.removeOracles(
+                    Paths.get(args[2]),
+                    args[3]
+            );
+            case INSERT_ORACLES -> insertOraclesOperation(
+                    togType,
+                    Paths.get(args[2]),
+                    Paths.get(args[3])
+            );
+            case GENERATE_TOG_INPUTS -> generateTogInputOperation(
+                    togType,
+                    Paths.get(args[2]),
+                    args[3]
+            );
+            case GENERATE_ORACLE_OUTPUTS -> generateOracleOutputOperation(
+                    togType,
+                    Paths.get(args[2])
+            );
+            case GENERATE_TEST_OUTPUT -> generateTestOutputOperation(
+                    togType,
+                    args[2],
+                    Paths.get(args[3]),
+                    Paths.get(args[4]),
+                    Paths.get(args[5]),
+                    Paths.get(args[6])
+            );
             default -> throw new IllegalArgumentException("Unknown operation " + operationType);
         }
     }
