@@ -14,8 +14,9 @@ JAVA8_BIN="$JAVA8_HOME/bin/java"
 JAVA8_C="$JAVA8_HOME/bin/javac"
 # get given variables
 TOG=$1
-SRC_DIR=$(realpath "$2")
-BIN_DIR=$(realpath "$3")
+TARGET_CLASS=$2
+SRC_DIR=$(realpath "$3")
+BIN_DIR=$(realpath "$4")
 TEST_DIR="$OUTPUT_DIR/tog-tests/$TOG"
 # get project root directory
 IFS='/' read -ra SRC_ARR <<< "$SRC_DIR"
