@@ -5,17 +5,19 @@
 # set this field to the directory name.
 JDK8_NAME="jdk-1.8.jdk"
 
+# get global path variables
 ROOT_DIR="$(dirname "$(realpath "$0")")"
 RESOURCES_DIR="$ROOT_DIR/generator/resources"
 OUTPUT_DIR="$ROOT_DIR/output"
 JAVA8_HOME="$RESOURCES_DIR/$JDK8_NAME/Contents/Home"
 JAVA8_BIN="$JAVA8_HOME/bin/java"
 JAVA8_C="$JAVA8_HOME/bin/javac"
+# get given variables
 TOG=$1
 SRC_DIR=$(realpath "$2")
 BIN_DIR=$(realpath "$3")
 TEST_DIR="$OUTPUT_DIR/tog-tests/$TOG"
-
+# get project root directory
 IFS='/' read -ra SRC_ARR <<< "$SRC_DIR"
 IFS='/' read -ra BIN_ARR <<< "$BIN_DIR"
 PROJECT_DIR=""
@@ -26,8 +28,6 @@ for i in "${!SRC_ARR[@]}" "${!BIN_ARR[@]}"; do
   PROJECT_DIR="${PROJECT_DIR}/${SRC_ARR[i]}"
 done
 PROJECT_DIR="${PROJECT_DIR#/}"
-
-echo "$PROJECT_DIR"
 
 #cp -r "$TEST_DIR" "$PROJECT_DIR"
 #cd "$PROJECT_DIR" || exit 1
