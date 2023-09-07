@@ -65,7 +65,7 @@ while read -r java_test; do
     fi
   fi
 done < java_tests.txt;
-mv "$TEST_FAILS" "$OUTPUT_DIR"
+mv "$TEST_FAILS" "$OUTPUT_DIR/tog-tests/$TOG"
 )
 
 # cleanup
