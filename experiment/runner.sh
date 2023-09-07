@@ -29,8 +29,9 @@ for i in "${!SRC_ARR[@]}" "${!BIN_ARR[@]}"; do
 done
 PROJECT_DIR="${PROJECT_DIR#/}"
 
-#cp -r "$TEST_DIR" "$PROJECT_DIR"
-#cd "$PROJECT_DIR" || exit 1
+# copy tests into project directory
+cp -r "$TEST_DIR" "$PROJECT_DIR/evosuite-tests"
+cd "$PROJECT_DIR" || exit 1
 
 #(export JAVA_HOME=$JAVA8_HOME;
 #mvn dependency:copy-dependencies
