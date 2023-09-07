@@ -29,8 +29,10 @@ for i in "${!SRC_ARR[@]}" "${!BIN_ARR[@]}"; do
 done
 PROJECT_DIR="${PROJECT_DIR#/}"
 
-# copy tests into project directory
+# copy tests and utilities into target project
 cp -r "$TEST_DIR" "$PROJECT_DIR/evosuite-tests"
+cp "$RESOURCES_DIR/evosuite-1.0.6.jar" "$PROJECT_DIR"
+cp "$RESOURCES_DIR/evosuite-standalone-runtime-1.0.6.jar" "$PROJECT_DIR"
 cd "$PROJECT_DIR" || exit 1
 
 #(export JAVA_HOME=$JAVA8_HOME;
