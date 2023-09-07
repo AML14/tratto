@@ -84,15 +84,6 @@ public class Tog {
         Path projectRoot = FileUtils.getProjectRoot(testFailsPath.toAbsolutePath());
         testFailsPath = projectRoot.resolve("output").resolve("");
         System.out.println(testFailsPath);
-        TogUtils.writeTestOutput(
-                testOutputPath,
-                tog,
-                className,
-                srcDir,
-                binDir,
-                testPath,
-                new ArrayList<>()
-        );
     }
 
     /**
