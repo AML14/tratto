@@ -21,6 +21,7 @@ import data.JDoctorOutput.ThrowsTag;
 import data.OracleDatapoint;
 import data.OracleOutput;
 import data.OracleType;
+import data.TestCase;
 import data.TestOutput;
 import data.TogType;
 import org.apache.commons.csv.CSVParser;
@@ -40,6 +41,7 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * This class provides static methods for generating the input for each specific TOG.
@@ -489,6 +491,50 @@ public class TogUtils {
         return testFails;
     }
 
+    private static List<TestCase> getTestCases(
+            CompilationUnit cu,
+            List<String> testFails
+    ) {
+        List<TestCase> testCases = new ArrayList<>();
+        cu.findAll(MethodDeclaration.class).forEach(test -> {
+            if (testFails.contains(test.getNameAsString())) {
+                testCases.add(new TestCase(
+                        test.toString(),
+                        TestCase.TestResult.FAIL
+                ));
+            } else {
+                testCases.add(new TestCase(
+                        test.toString(),
+                        TestCase.TestResult.PASS
+                ));
+            }
+        });
+        return testCases;
+    }
+
+    private static List<TestCase> getTestCases(
+            Path testPath,
+            List<String> testFails
+    ) {
+        List<TestCase> testCases = new ArrayList<>();
+        try (Stream<Path> walk = Files.walk(testPath)) {
+            walk
+                    .filter(FileUtils::isJavaFile)
+                    .filter(p -> !FileUtils.isScaffolding(p))
+                    .forEach(testFile -> {
+                        try {
+                            CompilationUnit cu = StaticJavaParser.parse(testFile);
+                            testCases.addAll(getTestCases(cu, testFails));
+                        } catch (IOException e) {
+                            throw new Error("Unable to parse test file " + testFile, e);
+                        }
+                    });
+        } catch (IOException e) {
+            throw new Error("Error when parsing files in directory " + testPath, e);
+        }
+        return testCases;
+    }
+
     /**
      * Writes a {@link TestOutput} object to a given path. The output contains
      * information about the TOG which generated the test, the fully qualified
@@ -510,44 +556,26 @@ public class TogUtils {
             Path srcDir,
             Path binDir
     ) {
+        String togName = togType.toString().toLowerCase();
         Path rootPath = FileUtils.getProjectRoot(relativeRoot.toAbsolutePath());
         Path togTestPath = rootPath
                 .resolve("output")
                 .resolve("tog-tests")
-                .resolve(togType.toString().toLowerCase());
+                .resolve(togName);
+        Path outputPath = rootPath
+                .resolve("output")
+                .resolve(togName + "-tests.json");
         List<String> testFails = getTestFails(togTestPath.resolve("test_fails.txt"));
-
-        System.out.println(testFails);
-
-//
-//        try {
-//            CompilationUnit cu = StaticJavaParser.parse(testFile);
-//            List<TestCase> testCases = new ArrayList<>();
-//            cu.findAll(MethodDeclaration.class).forEach(jUnitMethod -> {
-//                if (fails.contains(jUnitMethod.getNameAsString())) {
-//                    testCases.add(new TestCase(
-//                            jUnitMethod.toString(),
-//                            TestCase.TestResult.FAIL
-//                    ));
-//                } else {
-//                    testCases.add(new TestCase(
-//                            jUnitMethod.toString(),
-//                            TestCase.TestResult.PASS
-//                    ));
-//                }
-//            });
-//            TestOutput testOutput = new TestOutput(
-//                    tog.toString(),
-//                    className,
-//                    srcDir.toAbsolutePath().toString(),
-//                    binDir.toAbsolutePath().toString(),
-//                    testCases.size() - fails.size(),
-//                    fails.size(),
-//                    testCases
-//            );
-//            FileUtils.writeJSON(testOutputPath, testOutput);
-//        } catch (IOException e) {
-//            throw new Error("Unable to parse test file " + testFile.getFileName().toString());
-//        }
+        List<TestCase> testCases = getTestCases(togTestPath, testFails);
+        TestOutput testOutput = new TestOutput(
+                togName,
+                className,
+                srcDir.toString(),
+                binDir.toString(),
+                testCases.size() - testFails.size(),
+                testFails.size(),
+                testCases
+        );
+        FileUtils.writeJSON(outputPath, testOutput);
     }
 }
