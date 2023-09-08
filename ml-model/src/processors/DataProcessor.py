@@ -457,7 +457,7 @@ class DataProcessor:
             self._df_dataset = self._df_dataset[self._df_dataset['label'] == 'True']
 
         # Remove method source code (keep only signature)
-        self._df_dataset['methodSourceCode'] = self._df_dataset['methodSourceCode'].str.split('{').str[0]
+        #self._df_dataset['methodSourceCode'] = self._df_dataset['methodSourceCode'].str.split('{').str[0]
 
         # Delete the tgt labels from the input dataset, and others less relevant columns
         df_src = self._df_dataset.drop(['label', 'oracleId'], axis=1)
