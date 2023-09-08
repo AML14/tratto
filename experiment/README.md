@@ -10,8 +10,6 @@ This module has all scripts necessary to reproduce the experimental results desc
 
 ----
 
-After completing all setup instructions, the example command in [Overview](#Overview) should run without error.
-
 ## 1.1. Requirements
 
 Both Evosuite and each TOG used for the experiments (`jdoctor`, `toga`, `tratto`) need their own requirements to be
@@ -66,7 +64,7 @@ isolated environment where to run the oracle generator component (python server)
 
 ## 1.2. Run the experiments
 
-Check that all the requirements listed in [Section 2.1](#21-requirements) are full-filled.
+Check that all the requirements listed in [Section 1.1](#11-requirements) are full-filled.
 Then, run the command:
 
   ```shell
@@ -78,15 +76,13 @@ providing four arguments as input:
 2. the fully qualified name of the class under test
 3. the absolute path to the source of the project
 4. the absolute path to the binary classes of the project
-
-Running the experiments with `tratto` requires a fifth parameter:
-5. the absolute path to the jar file of the project
+5. the absolute path to the jar file of the project (only for `tratto`)
 
 We provide a toy example of a project composed of a single class which represents the implementation of a stack (`Stack.java`).
 The java project is collocated under the path `experiment/src/test/resources/project`.
 
 We provide an example on how to generate test oracles with each of the TOG, for the given project. The commands are
-generizable to any class of a given java project.
+generalizable to any class of a given java project.
 
 ### 1.2.1. JDoctor
 
@@ -183,7 +179,7 @@ Then, we remove the oracles (assertions): for each oracle found within the origi
 a dedicated test. Therefore, if an original Evosuite test has 4 oracles, we generate 4 corresponding tests, each of which
 is dedicated to a specific oracle. This process does not impact the effectiveness of the test but simplify the
 generation of the test prefixes and the re-insertion of the generated oracles.
-After splitting each oracles from the original Evosuite tests, the generated tests are saved in
+After splitting all oracles from the original Evosuite tests, the generated tests are saved in
 `experiment/output/evosuite-tests-simple/`, while the same tests without oracles (test prefixes) are saved in
 `experiment/output/evosuite-prefix/`.
 
@@ -194,7 +190,7 @@ We use the test prefixes to generate oracles using a specified TOG.
 Each TOG has a corresponding script invoking the TOG (as a jar file or a python script).
 
 After being generated, the new oracles are inserted as assertions in the test prefixes. Our method for inserting oracles
-varies based on whether the TOG generates [axiomatic](#axiomatic) or [non-axiomatic](#non-axiomatic) oracles.
+varies based on whether the TOG generates [axiomatic](#a-axiomatic) or [non-axiomatic](#b-non-axiomatic) oracles.
 
 The new tests are saved as separate files in `experiment/output/tog-test/[tog]/`, where `[tog]` is the given TOG.
 
@@ -319,7 +315,7 @@ In our experimental analysis, we seek to answer the following research questions
 
 ## 2.3. Metrics
 
-To answer the above research questions, we perform two experiments: [Classification](#classification) (RQ 1, 3) and [Mutation](#mutation) (RQ 2).
+To answer the above research questions, we perform two experiments: [Classification](#231-classification) (RQ 1, 3) and [Mutation](#232-mutation) (RQ 2).
 
 
 ### 2.3.1. Classification
