@@ -68,6 +68,10 @@ done < java_tests.txt;
 mv "$TEST_FAILS" "$OUTPUT_DIR/tog-tests/$TOG"
 )
 
+# generate TestOutput record
+EXPERIMENT="java -jar $RESOURCES_DIR/experiment.jar"
+$EXPERIMENT "$TOG" "generate_test_output" "$TARGET_CLASS" "$SRC_DIR" "$BIN_DIR" "$ROOT_DIR"
+
 # cleanup
 rm -f "java_tests.txt"
 rm -r "evosuite-tests"

@@ -79,4 +79,6 @@ cp "$ORACLE_OUTPUT" "$ROOT_DIR/output/$TOG-oracles.json"
 # insert oracles into EvoSuite prefixes
 echo "[7] Insert oracles in test prefixes"
 $EXPERIMENT "$TOG" "insert_oracles" "$BIN_DIR" "$ORACLE_OUTPUT"
-echo "[8] Experiment complete!"
+echo "[8] Running tests and generating test output"
+bash ./runner.sh "$TOG" "$TARGET_CLASS" "$SRC_DIR" "$BIN_DIR"
+echo "[9] Experiment complete!"
