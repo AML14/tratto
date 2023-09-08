@@ -3,6 +3,130 @@
 The current repository contains the material to reproduce the experiments described in the paper Tratto: A Neuro-Symbolic
 Approach to Deriving Axiomatic Test Oracles.
 
+## 2. Setup
+
+----
+
+After completing all setup instructions, the example command in [Overview](#Overview) should run without error.
+
+## 2.1. Requirements
+
+Both Evosuite and each TOG used for the experiments (`jdoctor`, `toga`, `tratto`) need their own requirements to be
+executed properly. The following is the list of all the requirements, divided for each tool used.
+
+### 2.1.1. Evosuite
+
+#### A. Java 8
+To generate test prefixes we use EvoSuite, which is written in `Java 8`. However, the main corpus of the experiment module
+uses `Java 17`. To run EvoSuite (and similarly, JDoctor), the user must configure a home directory for a local JDK 8.
+See [Oracle](https://www.oracle.com/java/technologies/downloads/#java8-linux) for JDK downloads.
+
+By default, the script that execute Evosuite (`evosuite.sh`) searches the path to the JDK within the relative path
+`./generator/resources` (the recommendation is to place the jdk-1.8 under the relative path `./generator/resources`,
+renaming it `jdk-1.8.jdk`, in order to speed up the search process and minimize the risk of error).
+If the `jdk-1.8` is not found, the script will ask the user to prompt the absolute path to the executable binary
+java file of the JDK.
+
+### 1.1.2. JDoctor
+
+#### A. Java 8
+
+To set up JDoctor for analysis, visit the [ToRaDoCu](https://github.com/albertogoffi/toradocu) GitHub page, and follow
+instructions to build the `toradocu-1.0-all.jar` file.
+JDoctor also requires `Java 8`. Therefore, to run JDoctor the user must configure a home directory for a local JDK 8.
+By default, the script that execute Evosuite (`jdoctor.sh`) searches the path to the JDK within the relative path
+`./generator/resources` (the recommendation is to place the jdk-1.8 under the relative path `./generator/resources`,
+renaming it `jdk-1.8.jdk`, in order to speed up the search process and minimize the risk of error).
+If the `jdk-1.8` is not found, the script will ask the user to prompt the absolute path to the executable binary
+java file of the JDK.
+
+### 1.1.3. Toga
+
+#### A. Python
+Toga is written in `Python 3.8`. It requires to install python packages as well. The process to download the repository
+and set up the Toga environment is completely automatized in the `toga.sh` script. A package and management system like
+`Conda` is not required, but recommended to create an isolated environment where to run the Toga experiments.
+
+#### B. Git Large File Storage
+
+Toga relies on `Git Large File Storage (Git LFS)` to set up its environment. The user have to install `Git LFS` before to
+run the experiments with Toga, following the instructions provided in the official webpage ([link](https://git-lfs.com/)).
+
+### 1.1.4. Tratto
+
+Tratto is divided in two main components: an oracle-datapoints generator, written in `Java 17`, and an oracles generator
+written in `Python 3.8`. The oracle-datapoints generator produces all the candidate inputs for the model that have to
+produce the oracle incrementally, and the two components communicate through an API endpoints, exploiting a client-server
+paradigm. The set-up of the corresponding environments is completely automatized in the `tratto.sh` and `ml_model_server_setup.sh`
+scripts, respectively. A package and management system like `Conda` is not required, but recommended to create an
+isolated environment where to run the oracle generator component (python server) for the Tratto experiments.
+
+### 3. Run the experiments
+
+Check that all the requirements listed in [Section 2.1](#21-requirements) are full-filled.
+Then, run the command:
+
+  ```shell
+  bash experiment.sh [tog_name] [fully_qualified_class_name] [source_path] [binary_path] {[jar_path]}
+  ```
+
+providing four arguments as input:
+1. the TOG name [`jdoctor`,`tratto`,`toga`]
+2. the fully qualified name of the class under test
+3. the absolute path to the source of the project
+4. the absolute path to the binary classes of the project
+
+Running the experiments with `tratto` requires a fifth parameter:
+5. the absolute path to the jar file of the project
+
+We provide a toy example of a project composed of a single class which represents the implementation of a stack (`Stack.java`).
+The java project is collocated under the path `experiment/src/test/resources/project`.
+
+We provide an example on how to generate test oracles with each of the TOG, for the given project. The commands are
+generizable to any class of a given java project.
+
+### 3.1. JDoctor
+
+Run:
+
+  ```shell
+  bash experiment.sh jdoctor tutorial.Stack [path_to_experiment]/src/test/resources/project/src/main/java [path_to_experiment]/src/test/resources/project/target/classes
+  ```
+
+substituting the `[path_to_experiment]` with the absolute path to the `experiment` root folder.
+
+### 3.2. Toga
+
+Run:
+
+  ```shell
+  bash experiment.sh toga tutorial.Stack [path_to_experiment]/src/test/resources/project/src/main/java [path_to_experiment]/src/test/resources/project/target/classes
+  ```
+
+substituting the `[path_to_experiment]` with the absolute path to the `experiment` root folder.
+
+### 3.3. Tratto
+
+Move to the Stack project folder from the root directory (`experiment`):
+
+  ```shell
+  cd src/test/resources/project
+  ```
+
+Generate the jar of the project with `Maven`:
+
+  ```shell
+  mvn clean package
+  ```
+
+Run:
+
+  ```shell
+  bash experiment.sh tratto tutorial.Stack [path_to_experiment]/src/test/resources/project/src/main/java [path_to_experiment]/src/test/resources/project/target/classes [path_to_experiment]/src/test/resources/project/target/[project_jar_name].jar
+  ```
+
+substituting the `[path_to_experiment]` with the absolute path to the `experiment` root folder, and `[project_jar_name]` with the name of the jar generated by Maven.
+
 
 ## 1. Overview
 
@@ -233,129 +357,3 @@ This corresponds to a high precision and a low FPR.
 ### 1.3.2. Mutation
 
 To analyze the "effectiveness" of the generated oracles, we compute the mutation score of the generated test suite. Consider the previous example, `sum`, and two corresponding oracles: `sum(a, b) == (a + b)` and `sum(a, b) != null`. We say the first assertion (1) is more "effective" than the second assertion (2). We quantify "effective"-ness via mutation score, which indicates how robust the test suite is to changes in source code. Intuitively, because (1) implies (2), we know that (1) will always kill more mutants than (2) and have a better mutation score.
-
-
-## 2. Setup
-
-----
-
-After completing all setup instructions, the example command in [Overview](#Overview) should run without error.
-
-## 2.1. Requirements
-
-Both Evosuite and each TOG used for the experiments (`jdoctor`, `toga`, `tratto`) need their own requirements to be
-executed properly. The following is the list of all the requirements, divided for each tool used.
-
-### 2.1.1. Evosuite
-
-#### A. Java 8
-To generate test prefixes we use EvoSuite, which is written in `Java 8`. However, the main corpus of the experiment module
-uses `Java 17`. To run EvoSuite (and similarly, JDoctor), the user must configure a home directory for a local JDK 8.
-See [Oracle](https://www.oracle.com/java/technologies/downloads/#java8-linux) for JDK downloads.
-
-By default, the script that execute Evosuite (`evosuite.sh`) searches the path to the JDK within the relative path
-`./generator/resources` (the recommendation is to place the jdk-1.8 under the relative path `./generator/resources`,
-renaming it `jdk-1.8.jdk`, in order to speed up the search process and minimize the risk of error).
-If the `jdk-1.8` is not found, the script will ask the user to prompt the absolute path to the executable binary
-java file of the JDK.
-
-### 1.1.2. JDoctor
-
-#### A. Java 8
-
-To set up JDoctor for analysis, visit the [ToRaDoCu](https://github.com/albertogoffi/toradocu) GitHub page, and follow
-instructions to build the `toradocu-1.0-all.jar` file.
-JDoctor also requires `Java 8`. Therefore, to run JDoctor the user must configure a home directory for a local JDK 8.
-By default, the script that execute Evosuite (`jdoctor.sh`) searches the path to the JDK within the relative path
-`./generator/resources` (the recommendation is to place the jdk-1.8 under the relative path `./generator/resources`,
-renaming it `jdk-1.8.jdk`, in order to speed up the search process and minimize the risk of error).
-If the `jdk-1.8` is not found, the script will ask the user to prompt the absolute path to the executable binary
-java file of the JDK.
-
-### 1.1.3. Toga
-
-#### A. Python
-Toga is written in `Python 3.8`. It requires to install python packages as well. The process to download the repository
-and set up the Toga environment is completely automatized in the `toga.sh` script. A package and management system like
-`Conda` is not required, but recommended to create an isolated environment where to run the Toga experiments.
-
-#### B. Git Large File Storage
-
-Toga relies on `Git Large File Storage (Git LFS)` to set up its environment. The user have to install `Git LFS` before to
-run the experiments with Toga, following the instructions provided in the official webpage ([link](https://git-lfs.com/)).
-
-### 1.1.4. Tratto
-
-Tratto is divided in two main components: an oracle-datapoints generator, written in `Java 17`, and an oracles generator
-written in `Python 3.8`. The oracle-datapoints generator produces all the candidate inputs for the model that have to
-produce the oracle incrementally, and the two components communicate through an API endpoints, exploiting a client-server
-paradigm. The set-up of the corresponding environments is completely automatized in the `tratto.sh` and `ml_model_server_setup.sh`
-scripts, respectively. A package and management system like `Conda` is not required, but recommended to create an
-isolated environment where to run the oracle generator component (python server) for the Tratto experiments.
-
-### 3. Run the experiments
-
-Check that all the requirements listed in [Section 2.1](#21-requirements) are full-filled.
-Then, run the command:
-
-  ```shell
-  bash experiment.sh [tog_name] [fully_qualified_class_name] [source_path] [binary_path] {[jar_path]}
-  ```
-
-providing four arguments as input:
-1. the TOG name [`jdoctor`,`tratto`,`toga`]
-2. the fully qualified name of the class under test
-3. the absolute path to the source of the project
-4. the absolute path to the binary classes of the project
-
-Running the experiments with `tratto` requires a fifth parameter:
-5. the absolute path to the jar file of the project
-
-We provide a toy example of a project composed of a single class which represents the implementation of a stack (`Stack.java`).
-The java project is collocated under the path `experiment/src/test/resources/project`.
-
-We provide an example on how to generate test oracles with each of the TOG, for the given project. The commands are
-generizable to any class of a given java project.
-
-### 3.1. JDoctor
-
-Run:
-
-  ```shell
-  bash experiment.sh jdoctor tutorial.Stack [path_to_experiment]/src/test/resources/project/src/main/java [path_to_experiment]/src/test/resources/project/target/classes
-  ```
-
-substituting the `[path_to_experiment]` with the absolute path to the `experiment` root folder.
-
-### 3.2. Toga
-
-Run:
-
-  ```shell
-  bash experiment.sh toga tutorial.Stack [path_to_experiment]/src/test/resources/project/src/main/java [path_to_experiment]/src/test/resources/project/target/classes
-  ```
-
-substituting the `[path_to_experiment]` with the absolute path to the `experiment` root folder.
-
-### 3.3. Tratto
-
-Move to the Stack project folder from the root directory (`experiment`):
-
-  ```shell
-  cd src/test/resources/project
-  ```
-
-Generate the jar of the project with `Maven`:
-
-  ```shell
-  mvn clean package
-  ```
-
-Run:
-
-  ```shell
-  bash experiment.sh tratto tutorial.Stack [path_to_experiment]/src/test/resources/project/src/main/java [path_to_experiment]/src/test/resources/project/target/classes [path_to_experiment]/src/test/resources/project/target/[project_jar_name].jar
-  ```
-
-substituting the `[path_to_experiment]` with the absolute path to the `experiment` root folder, and `[project_jar_name]` with the name of the jar generated by Maven.
-
