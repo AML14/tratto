@@ -11,7 +11,7 @@ else
     SEPARATOR="\\"
 fi
 
-ROOT_DIR=$(pwd)
+ROOT_DIR="$(dirname "$(realpath "$0")")"
 TOG=$1
 TARGET_CLASS=$2
 SRC_DIR=$3
