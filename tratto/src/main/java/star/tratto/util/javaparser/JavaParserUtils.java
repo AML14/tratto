@@ -23,6 +23,8 @@ import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.type.ReferenceType;
 import com.github.javaparser.ast.type.TypeParameter;
+import com.github.javaparser.javadoc.Javadoc;
+import com.github.javaparser.javadoc.JavadocBlockTag;
 import com.github.javaparser.resolution.MethodUsage;
 import com.github.javaparser.resolution.TypeSolver;
 import com.github.javaparser.resolution.UnsolvedSymbolException;
@@ -1329,5 +1331,49 @@ public class JavaParserUtils {
         } else {
             throw new IllegalArgumentException("Not a constructor or method body:" + System.lineSeparator() + bodyDeclaration);
         }
+    }
+
+    // Variables used in the next method
+    private static final String javadocBeginning = "/**\n * ";
+    private static final String javadocEnding = "\n */";
+    private static final String javadocMethod = "\nvoid someMethod();";
+    private static final String javadocIndent = "    ";
+    /**
+     * Change the Javadoc of a method so that it contains the new Javadoc tag instead
+     * of the old one.
+     * @param methodJavadoc the whole Javadoc of the method
+     * @param oldJavadocTag the Javadoc tag that we want to replace
+     * @param newJavadocTag the new Javadoc tag to replace the old one
+     * @throws IllegalArgumentException if the old Javadoc tag is not present in the method Javadoc
+     * @throws IllegalStateException should never be thrown, if it is, this method is probably buggy
+     * @return the new Javadoc of the method
+     */
+    public static String updateMethodJavadoc(String methodJavadoc, String oldJavadocTag, String newJavadocTag) {
+        if (oldJavadocTag.equals(newJavadocTag)) {
+            return methodJavadoc;
+        }
+
+        // Can't update Javadoc as String, so need to parse, modify and stringify it
+        Javadoc javadoc = javaParser.parseMethodDeclaration(methodJavadoc + javadocMethod).getResult().get().getJavadoc().get();
+        List<JavadocBlockTag> oldJavadocBlockTags = javadoc.getBlockTags();
+        JavadocBlockTag oldJavadocBlockTag = oldJavadocBlockTags.stream()
+                .filter(t -> t.toText().equals(oldJavadocTag))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("The old Javadoc tag is not present in the method Javadoc."));
+
+        if (newJavadocTag.equals("")) {
+            // Remove tag from Javadoc
+            oldJavadocBlockTags.remove(oldJavadocBlockTag);
+        } else {
+            // Replace tag in Javadoc
+            JavadocBlockTag newJavadocBlockTag = javaParser.parseMethodDeclaration(javadocBeginning + newJavadocTag + javadocEnding + javadocMethod)
+                    .getResult().get().getJavadoc().get().getBlockTags().get(0);
+            oldJavadocBlockTags.set(oldJavadocBlockTags.indexOf(oldJavadocBlockTag), newJavadocBlockTag);
+        }
+        if (!javadoc.toText().contains(newJavadocTag) || (javadoc.toText().contains(oldJavadocTag) && !newJavadocTag.contains(oldJavadocTag))) {
+            throw new IllegalStateException("The Javadoc tag could not be correctly updated.");
+        }
+
+        return javadocIndent + javadoc.toComment(javadocIndent).asString();
     }
 }
