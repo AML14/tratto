@@ -1,10 +1,8 @@
 package data;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public record TestCase(
-        @JsonProperty("test") String testCase,
-        @JsonProperty("result") TestResult testResult
+        String testCase,
+        TestResult testResult
 ) {
     public enum TestResult {
         PASS,
