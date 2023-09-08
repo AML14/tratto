@@ -1,7 +1,10 @@
-# Tog
+# Experiment
 
-The current repository contains the material to reproduce the experiments described in the paper Tratto: A Neuro-Symbolic
-Approach to Deriving Axiomatic Test Oracles.
+----
+
+This module has all scripts necessary to reproduce the experimental results described in the paper "Tratto: A Neuro-Symbolic Approach to Deriving Axiomatic Test Oracles". 
+
+[//]: # (Add link to paper when available)
 
 # 1. Setup
 
