@@ -29,7 +29,7 @@ for d_path, c_path in zip(d_paths, c_paths):
             # map empty cells to empty strings
             df_dataset.fillna('', inplace=True)
             # Remove method source code (keep only signature)
-            df_dataset['methodSourceCode'] = df_dataset['methodSourceCode'].str.split('{').str[0]
+            #df_dataset['methodSourceCode'] = df_dataset['methodSourceCode'].str.split('{').str[0]
             # Delete the tgt labels from the input dataset, and others less relevant columns
             df_dataset = df_dataset.drop(['projectName', 'classJavadoc', 'classSourceCode'], axis=1)
             df_dataset.to_json(os.path.join(c_path, file_name))
