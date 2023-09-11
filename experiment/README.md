@@ -8,60 +8,40 @@ This module has all scripts necessary to reproduce the experimental results desc
 
 # 1. Setup
 
-----
+Both EvoSuite and each TOG (`jdoctor`, `toga`, `tratto`) have their own requirements to be executed properly. This section outlines all requirements and setup instructions for each tool used.
 
-## 1.1. Requirements
+## 1.1. Evosuite
 
-Both Evosuite and each TOG used for the experiments (`jdoctor`, `toga`, `tratto`) need their own requirements to be
-executed properly. The following is the list of all the requirements, divided for each tool used.
+### 1.1.1. Java 8
 
-### 1.1.1. Evosuite
+We use EvoSuite to generate test prefixes, which is written in Java 8. However, the experiment module uses Java 17. To run EvoSuite (and similarly, JDoctor), the user must configure a home directory for a local JDK 8 version. See [Oracle](https://www.oracle.com/java/technologies/downloads/#java8-linux) for JDK downloads (you may need an Oracle account to download older versions). Then, add the JDK to the `./generator/resources` directory. In `evosuite.sh`, modify the field at the top of the script, `JDK8_NAME`, to the name of the local JDK directory. By default, the script searches for `jdk-1.8.jdk` (alternatively, you may rename your local JDK directory to match this name).
 
-#### A. Java 8
-To generate test prefixes we use EvoSuite, which is written in `Java 8`. However, the main corpus of the experiment module
-uses `Java 17`. To run EvoSuite (and similarly, JDoctor), the user must configure a home directory for a local JDK 8.
-See [Oracle](https://www.oracle.com/java/technologies/downloads/#java8-linux) for JDK downloads.
+## 1.2. JDoctor
 
-By default, the script that execute Evosuite (`evosuite.sh`) searches the path to the JDK within the relative path
-`./generator/resources` (the recommendation is to place the jdk-1.8 under the relative path `./generator/resources`,
-renaming it `jdk-1.8.jdk`, in order to speed up the search process and minimize the risk of error).
-If the `jdk-1.8` is not found, the script will ask the user to prompt the absolute path to the executable binary
-java file of the JDK.
-
-### 1.1.2. JDoctor
-
-#### A. Java 8
+### 1.2.1. ToRaDoCu
 
 To set up JDoctor for analysis, visit the [ToRaDoCu](https://github.com/albertogoffi/toradocu) GitHub page, and follow
-instructions to build the `toradocu-1.0-all.jar` file.
-JDoctor also requires `Java 8`. Therefore, to run JDoctor the user must configure a home directory for a local JDK 8.
-By default, the script that execute Evosuite (`jdoctor.sh`) searches the path to the JDK within the relative path
-`./generator/resources` (the recommendation is to place the jdk-1.8 under the relative path `./generator/resources`,
-renaming it `jdk-1.8.jdk`, in order to speed up the search process and minimize the risk of error).
-If the `jdk-1.8` is not found, the script will ask the user to prompt the absolute path to the executable binary
-java file of the JDK.
+instructions to build the `toradocu-1.0-all.jar` file (may take a few minutes). Then, move the jar file to the `./generator/resources` directory.
 
-### 1.1.3. Toga
+### 1.2.2. Java 8
 
-#### A. Python
-Toga is written in `Python 3.8`. It requires to install python packages as well. The process to download the repository
-and set up the Toga environment is completely automatized in the `toga.sh` script. A package and management system like
-`Conda` is not required, but recommended to create an isolated environment where to run the Toga experiments.
+JDoctor also requires Java 8. To run JDoctor, the user must configure a home directory for a local JDK 8 version. After downloading a local JDK 8 (as described in the [EvoSuite Java 8 setup](#111-java-8)), modify the field at the top of the `jdoctor.sh` script, `JDK8_NAME`, to the name of the local JDK directory.
 
-#### B. Git Large File Storage
+## 1.3. Toga
 
-Toga relies on `Git Large File Storage (Git LFS)` to set up its environment. The user have to install `Git LFS` before to
-run the experiments with Toga, following the instructions provided in the official webpage ([link](https://git-lfs.com/)).
+### 1.3.1. Git Large File Storage
 
-### 1.1.4. Tratto
+Toga requires Git Large File Storage (Git LFS) to set up its environment. See the [Git LFS homepage](https://git-lfs.com/) for setup instructions.
 
-Tratto is divided in two main components: an oracle-datapoints generator, written in `Java 17`, and an oracles generator
-written in `Python 3.8`. The oracle-datapoints generator produces all the candidate inputs for the model that have to
-produce the oracle incrementally, and the two components communicate through an API endpoints, exploiting a client-server
-paradigm. The set-up of the corresponding environments is completely automatized in the `tratto.sh` and `ml_model_server_setup.sh`
-scripts, respectively. A package and management system like `Conda` is not required, but recommended to create an
-isolated environment where to run the oracle generator component (python server) for the Tratto experiments.
+### 1.3.2. Conda (recommended)
 
+Toga is written in `Python 3.8` and requires the user to install various python packages (automated by `toga.sh` script). A package management system, such as conda, is recommended (but not required) to create an isolated environment to run the Toga experiments (and debug any potential errors). See the [Miniconda homepage](https://docs.conda.io/projects/miniconda/en/latest/) for setup instructions.
+
+## 1.4. Tratto
+
+### 1.4.1 Conda (recommended)
+
+Similar to Toga, A package management system, such as conda, is recommended (but not required) to create an isolated environment to run the Tratto experiments (and debug any potential errors). See the [Miniconda homepage](https://docs.conda.io/projects/miniconda/en/latest/) for setup instructions. Otherwise, the setup is fully automated by `tratto.sh` and `ml_model_server_setup.sh`.
 
 # 2. Overview
 
@@ -297,7 +277,7 @@ To analyze the "effectiveness" of the generated oracles, we compute the mutation
 
 ----
 
-First, check that all requirements in [Section 1.1](#11-requirements) have been complete. Then, to perform an experiment, run the command:
+First, check that all steps in [Section 1.1](#1-setup) have been complete. Then, to perform an experiment, run the command:
 
   ```shell
   bash experiment.sh [tog_name] [fully_qualified_class_name] [source_path] [binary_path] {[jar_path]}
