@@ -38,7 +38,7 @@ defects4j compile
 MODIFIED_CLASSES_PATH="${DEFECTS4J_PATH}/framework/projects/${PROJECT}/modified_classes/${BUG_ID}.src"
 echo "To generate tests using experiment.sh, run the following commands:"
 while IFS= read -r fqn; do
-  echo "experiment.sh [tog] ${fqn} ${BUGGY_PATH}/src/main/java ${BUGGY_PATH}/target/classes"
+  echo "bash experiment.sh [tog] ${fqn} ${BUGGY_PATH}/src/main/java ${BUGGY_PATH}/target/classes"
 done < "${MODIFIED_CLASSES_PATH}"
 #echo "To compare the tests against the fixed versions, run the following commands:"
 #while IFS= read -r fqn; do
