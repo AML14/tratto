@@ -77,24 +77,27 @@ Then, we generate new oracles using an arbitrary TOG, and add these assertions t
 
 ## 2.1 Experimental Pipeline
 
-For reference, we provide an overview of the experimental pipeline:
+For reference, we provide a simplified graphic of the experimental pipeline:
 
 ![experiment pipeline](./doc/experiment-pipeline.png)
 
-And a brief description of the relevant files:
+and a brief description of the relevant files:
 
 - `generator`: this package contains scripts for generating test prefixes and test oracles
-  - `README.md`: a small Markdown file with example script invocations
   - `evosuite.sh`: a script that creates a test suite using EvoSuite for a given class
   - `jdoctor.sh`: a script that creates oracles using JDoctor
   - `toga.sh`: a script that creates oracles using TOGA
   - `tratto.sh`: a script that creates oracles using Tratto
 - `src/main/java`: this directory contains all Java functionality for the end-to-end experimental pipeline
-  - `data`: a package with all records use to represent input and output
-  - `FileUtils.java`: a class with all necessary utilities to read and write to files
-  - `TestAnalyzer.java`: a class for reporting the statistics of a test suite. Includes the number of passing/failing tests and mutation score.
-  - `TestUtils.java`: a class for test suite utilities, such as removing/adding assertions
+  - `data`: a package with records for representing input and output
+  - `FileUtils.java`: a class with all necessary utilities to read, write, and move files
+  - `TestUtils.java`: a class for test suite utilities, such as removing/inserting oracles
+  - `Tog.java`: the main file for the `experiment.jar` build
+  - `TogUtils.java`: a class for tog utilities, such as preprocessing input and postprocessing output
 - `experiment.sh`: the end-to-end script which performs the experiment
+- `runner.sh`: a script that compiles and runs a test suite
+
+Note that in the previous diagram, the script `tog.sh` is a placeholder for the user-specified tog (e.g. `jdoctor.sh`, `toga.sh`, `tratto.sh`).
 
 
 ### 2.1.1. Prefix
