@@ -58,19 +58,21 @@ Please complete the above [EvoSuite Java 8 setup](#111-java-8) instructions befo
 This module automates the experimental analysis of a test oracle generator (TOG) for the task of automated test generation.
 A unit test is composed of two parts: **the prefix** and **the oracle**.
 
-```agsl
-// prefix
-int a = 5;
-int b = 1;
-// oracle
-assert sum(a, b) == (a + b)
+```java
+public class Example {
+    public void exampleTest() {
+        // prefix
+        int a = 5;
+        int b = 1;
+        // oracle
+        assertTrue(sum(a, b) == (a + b));
+    }
+}
 ```
 
 To generate test prefixes, we use [EvoSuite](https://www.evosuite.org/), which generates complete unit tests (including
-the oracle), and remove the generated oracles (assertions) using [JavaParser](https://javaparser.org/).
-Then, we generate new oracles using an arbitrary TOG, and add these assertions to the test prefixes.
-Finally, we use [PITest](https://pitest.org/) to report mutation score of the generated tests, and also record the
-number of positive/negative (failing/passing) test cases.
+oracles), and remove the generated oracles (assertions) using [JavaParser](https://javaparser.org/).
+Then, we generate new oracles using an arbitrary TOG, and add these assertions to the test prefixes. Finally, we run the tests using EvoSuite and record the number of passing/failing test cases, and report mutation score using [PITest](https://pitest.org/).
 
 
 ## 2.1 Experimental Pipeline
