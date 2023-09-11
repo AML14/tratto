@@ -34,9 +34,16 @@ cd "${BUGGY_PATH}" || exit 1
 defects4j compile
 cd "${FIXED_PATH}" || exit 1
 defects4j compile
-# get modified classes
+# get experiment.sh and runner.sh analysis commands
 MODIFIED_CLASSES_PATH="${DEFECTS4J_PATH}/framework/projects/${PROJECT}/modified_classes/${BUG_ID}.src"
-echo "Modified classes:$(cat "${MODIFIED_CLASSES_PATH}")"
+echo "To generate tests using experiment.sh, run the following commands:"
+while IFS= read -r fqn; do
+  echo "experiment.sh [tog] ${fqn} ${BUGGY_PATH}/src/main/java ${BUGGY_PATH}/target/classes"
+done < "${MODIFIED_CLASSES_PATH}"
+#echo "To compare the tests against the fixed versions, run the following commands:"
+#while IFS= read -r fqn; do
+#  echo "${fqn}"
+#done < "${MODIFIED_CLASSES_PATH}"
 )
 
 echo "[4] Setup complete"
