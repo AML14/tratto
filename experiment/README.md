@@ -8,6 +8,8 @@ This module has all scripts necessary to reproduce the experimental results desc
 
 # 1. Setup
 
+---
+
 This section outlines all requirements and corresponding setup instructions for each tool used in the experimental pipeline. After the setup is complete, the user should be able to run each example command in the [Run the experiments](#3-run-the-experiments) section.
 
 ## 1.1. Evosuite
