@@ -7,6 +7,8 @@ DEFECTS4J_PATH="$(pwd)/../../defects4j"
 JDK8_NAME="jdk-1.8.jdk"
 
 # configure Defects4J and setup variables
+# we provide the following example invocation:
+#     "bash defects4j.sh Csv 1"
 DEFECTS4J_PATH=$(realpath "${DEFECTS4J_PATH}")
 export PATH=${PATH}:${DEFECTS4J_PATH}"/framework/bin"
 PROJECT="${1}"
