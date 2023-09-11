@@ -34,6 +34,9 @@ cd "${BUGGY_PATH}" || exit 1
 defects4j compile
 cd "${FIXED_PATH}" || exit 1
 defects4j compile
+# get modified classes
+MODIFIED_CLASSES_PATH="${DEFECTS4J_PATH}/framework/projects/${PROJECT}/modified_classes/${BUG_ID}.src"
+echo "Modified classes:$(cat "${MODIFIED_CLASSES_PATH}")"
 )
 
 echo "[4] Setup complete"
