@@ -43,7 +43,6 @@ done < "${MODIFIED_CLASSES_PATH}"
 echo "To compare the tests against the fixed versions, run the following commands:"
 while IFS= read -r fqn; do
   echo "bash runner.sh [tog] ${fqn} ${FIXED_PATH}/src/main/java ${FIXED_PATH}/target/classes"
-  echo "${fqn}"
 done < "${MODIFIED_CLASSES_PATH}"
 )
 
