@@ -40,7 +40,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -49,12 +48,11 @@ import java.util.stream.Stream;
 public class TogUtils {
     /** The path to the output directory */
     private static final Path output = Paths.get("output");
-    private static final Path evosuitePath = output.resolve("evosuite-tests");
     private static final Path evosuitePrefixPath = output.resolve("evosuite-prefix");
     private static final Path evosuiteTestsSimplePath = output.resolve("evosuite-tests-simple");
 
     /** The pattern to extract the text prefix (removing comments and decorators) */
-    private static final Pattern testPrefixPattern = Pattern.compile("(public|protected|private)(.|\s)*");
+    private static final Pattern testPrefixPattern = Pattern.compile("(public|protected|private)(.| )*");
     private static JavaParser javaParser;
 
     /** Private constructor to avoid creating an instance of this class. */
@@ -126,7 +124,7 @@ public class TogUtils {
                             .findAll(MethodDeclaration.class)
                             .stream()
                             .filter(t -> t.getNameAsString().equals(testName))
-                            .collect(Collectors.toList())
+                            .toList()
                             .get(0);
                     String methodName = mut.getNameAsString();
                     String focalMethod = getMethodSignature(mut);
@@ -207,7 +205,7 @@ public class TogUtils {
         SymbolSolverCollectionStrategy strategy = new SymbolSolverCollectionStrategy();
         strategy.collect(srcDirPath);
         JavaParser javaParser = new JavaParser();
-        javaParser.getParserConfiguration().setSymbolResolver(strategy.getParserConfiguration().getSymbolResolver().get());
+        javaParser.getParserConfiguration().setSymbolResolver(strategy.getParserConfiguration().getSymbolResolver().orElseThrow());
         return javaParser;
     }
 
@@ -270,7 +268,6 @@ public class TogUtils {
                     togaTest.get("className"),
                     togaTest.get("methodSignature"),
                     OracleType.NON_AXIOMATIC,
-                    togaTest.get("testPrefix"),
                     assertPred,
                     isException ? "java.lang.Exception" : "",
                     testName
@@ -320,7 +317,6 @@ public class TogUtils {
                 jDoctorOutput.targetClass(),
                 jDoctorOutput.signature(),
                 OracleType.PRE,
-                "",
                 oracle,
                 "",
                 ""
@@ -344,7 +340,6 @@ public class TogUtils {
                 jDoctorOutput.targetClass(),
                 jDoctorOutput.signature(),
                 OracleType.NORMAL_POST,
-                "",
                 oracle,
                 "",
                 ""
@@ -368,7 +363,6 @@ public class TogUtils {
                 jDoctorOutput.targetClass(),
                 jDoctorOutput.signature(),
                 OracleType.EXCEPT_POST,
-                "",
                 oracle,
                 throwsTag.exceptionType().fullyQualifiedName(),
                 ""
@@ -450,7 +444,6 @@ public class TogUtils {
                     trattoOutput.className(),
                     methodSignature,
                     trattoOutput.oracleType(),
-                    "",
                     trattoOutput.oracleType() != OracleType.EXCEPT_POST ? trattoOutput.oracle() : "",
                     trattoOutput.oracleType() == OracleType.EXCEPT_POST ? trattoOutput.oracle() : "",
                     ""
@@ -496,11 +489,13 @@ public class TogUtils {
         cu.findAll(MethodDeclaration.class).forEach(test -> {
             if (testFails.contains(test.getNameAsString())) {
                 testCases.add(new TestCase(
+                        test.getNameAsString(),
                         test.toString(),
                         TestCase.TestResult.FAIL
                 ));
             } else {
                 testCases.add(new TestCase(
+                        test.getNameAsString(),
                         test.toString(),
                         TestCase.TestResult.PASS
                 ));
