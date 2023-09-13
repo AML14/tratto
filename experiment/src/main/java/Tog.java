@@ -38,7 +38,7 @@ public class Tog {
     private static void insertOraclesOperation(TogType togType, Path binDir, Path oraclesPath) {
         Path prefixPath = Paths.get("output", "evosuite-prefix");
         List<OracleOutput> oracleOutputs = FileUtils.readJSONList(oraclesPath, OracleOutput.class);
-        TestUtils.insertOracles(binDir, prefixPath, togType, oracleOutputs);
+        TestUtils.insertOracles(prefixPath, togType, oracleOutputs, binDir);
     }
 
     /**

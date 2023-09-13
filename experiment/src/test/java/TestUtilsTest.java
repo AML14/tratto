@@ -189,7 +189,7 @@ public class TestUtilsTest {
     @Test
     public void insertAxiomaticOraclesTest() {
         List<OracleOutput> axiomaticOracles = getAxiomaticOracles();
-        TestUtils.insertOracles(binPath, resourcesPath.resolve("prefix"), TogType.JDOCTOR, axiomaticOracles);
+        TestUtils.insertOracles(resourcesPath.resolve("prefix"), TogType.JDOCTOR, axiomaticOracles, binPath);
         try {
             CompilationUnit cu = StaticJavaParser.parse(outputPath.resolve("tog-tests/jdoctor/ExamplePrefix.java"));
             List<MethodDeclaration> testCases = cu.findAll(MethodDeclaration.class);
@@ -330,7 +330,7 @@ public class TestUtilsTest {
     @Test
     public void insertNonAxiomaticOraclesTest() {
         List<OracleOutput> nonAxiomaticOracles = getNonAxiomaticOracles();
-        TestUtils.insertOracles(binPath, resourcesPath.resolve("prefix"), TogType.TOGA, nonAxiomaticOracles);
+        TestUtils.insertOracles(resourcesPath.resolve("prefix"), TogType.TOGA, nonAxiomaticOracles, binPath);
         String expectedAssertionTest = """
                                 @Test
                                 @Disabled
