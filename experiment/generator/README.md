@@ -30,4 +30,6 @@ For example,
 bash evosuite.sh tutorial.Stack ../src/test/resources/project/target/classes
 ```
 
+The `evosuite.sh` script generates a full test suite using EvoSuite, and saves the output to `experiment/output/evosuite-test/`.
+
 For further detail about the EvoSuite calls abstracted by this script, see the [EvoSuite Tutorial](https://www.evosuite.org/documentation/tutorial-part-1/).
