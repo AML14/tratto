@@ -17,7 +17,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestUtilsTest {
-    private static final Path binPath = Paths.get("src", "test", "java", "resources", "project", "target", "classes");
+    private static final Path projectJarPath = Paths.get("src", "test", "java", "resources", "project", "target", "Tutorial_Stack-1.0-SNAPSHOT.jar");
     private static final Path resourcesPath = Paths.get("src/test/resources");
     private static final Path outputPath = Paths.get("output");
     private static final List<String> allJUnitTestMethods = List.of(
@@ -189,7 +189,7 @@ public class TestUtilsTest {
     @Test
     public void insertAxiomaticOraclesTest() {
         List<OracleOutput> axiomaticOracles = getAxiomaticOracles();
-        TestUtils.insertOracles(resourcesPath.resolve("prefix"), TogType.JDOCTOR, axiomaticOracles, binPath);
+        TestUtils.insertOracles(resourcesPath.resolve("prefix"), TogType.JDOCTOR, axiomaticOracles, projectJarPath);
         try {
             CompilationUnit cu = StaticJavaParser.parse(outputPath.resolve("tog-tests/jdoctor/ExamplePrefix.java"));
             List<MethodDeclaration> testCases = cu.findAll(MethodDeclaration.class);
@@ -330,7 +330,7 @@ public class TestUtilsTest {
     @Test
     public void insertNonAxiomaticOraclesTest() {
         List<OracleOutput> nonAxiomaticOracles = getNonAxiomaticOracles();
-        TestUtils.insertOracles(resourcesPath.resolve("prefix"), TogType.TOGA, nonAxiomaticOracles, binPath);
+        TestUtils.insertOracles(resourcesPath.resolve("prefix"), TogType.TOGA, nonAxiomaticOracles, projectJarPath);
         String expectedAssertionTest = """
                                 @Test
                                 @Disabled
