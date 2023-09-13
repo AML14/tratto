@@ -4,7 +4,7 @@
 
 This module experimentally evaluates a test oracle generator (TOG).
 
-A unit test is composed of two parts: **the prefix** and **the oracle**. 
+A unit test is composed of two parts: **the prefix** and **the oracle**.
 
 ```java
 // prefix
@@ -93,12 +93,12 @@ Here is the experimental pipeline:
 
 We provide a brief description of the relevant files:
 
-- `generator`: this package contains scripts for generating test prefixes and test oracles 
+- `generator`: this package contains scripts for generating test prefixes and test oracles
   - `evosuite.sh`: a script that invokes EvoSuite for a given source file
   - `jdoctor.sh`: a script that invokes JDoctor for a given source file
   - `tog.sh`: invokes a TOG such as TOGA or Tratto
 - `src/main/java`: this package contains all Java functionality, including mutation testing, file IO, JavaParser utilities, etc.
-  - `FileUtils.java`: a class with all necessary utilities to read and write to files 
+  - `FileUtils.java`: a class with all necessary utilities to read and write to files
   - `TestAnalyzer.java`: a class for reporting the statistics of a test suite. Includes the number of passing/failing tests and mutation score.
   - `TestUtils.java`: a class for test suite utilities, such as removing/adding assertions
   - `TestOutput.java`: a record for storing a test case and its contextual information
@@ -203,5 +203,4 @@ We save the output as a JSON file. The output follows the format,
 
 [`TestAnalyzer` and `TestUtils` README.md](./src/README.md): Further description of how test suites are modified and analyzed
 
-[`generator` README.md](./generator/README.md): Brief descriptions of each shell script involved with generating EvoSuite tests and TOG oracles. 
-
+[`generator` README.md](./generator/README.md): Brief descriptions of each shell script involved with generating EvoSuite tests and TOG oracles.

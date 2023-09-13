@@ -1,12 +1,12 @@
 # TRATTO Neural Module
 
-TRATTO neural module is a PyTorch model fine-tuned on the task of generating assertion oracles, from the pre-trained 
+TRATTO neural module is a PyTorch model fine-tuned on the task of generating assertion oracles, from the pre-trained
 [CodeBERT](https://huggingface.co/microsoft/codebert-base) model (publicly available on [HuggingFace](https://huggingface.co/)).
 
 ## Installation
 
-In order to set up the environment is not strictly necessary, but recommended to create a [_venv_](https://docs.python.org/3/library/venv.html) 
-or [_conda_](https://docs.conda.io/en/latest/) environment. 
+In order to set up the environment is not strictly necessary, but recommended to create a [_venv_](https://docs.python.org/3/library/venv.html)
+or [_conda_](https://docs.conda.io/en/latest/) environment.
 In the following section we will provide the general information to configure the project on a _conda_ environment.
 
 ### Install Conda
@@ -52,7 +52,7 @@ macOS and Windows systems.
     conda activate [name_of_the_environment]
     ```
 
- 
+
 6. Install [_pip_](https://pip.pypa.io/en/stable/) if not already installed within _conda_
     ```bash
     conda install pip
@@ -60,13 +60,13 @@ macOS and Windows systems.
 
 
 ### Install the requirements
-  
+
 7. Move to the `ml-model` folder of the `tratto` project
     ```bash
     cd [path_to_the_ml-model_folder]
     ```
    * **path_to_the_ml-model_folder** - to path to the folder, like for examples `~/Users/johndoe/.../tratto/ml-model`
- 
+
 
 8. Install all the required dependencies
     ```bash
@@ -77,11 +77,11 @@ macOS and Windows systems.
 ## Training
 
 Run the following command to start training the model
-    
+
 ```bash
 python3 cb_finetuning.py
 ```
-   
+
 
 If you want to run the training as a background process:
 
@@ -90,7 +90,7 @@ nohup python3 cb_finetuning.py > log.out 2>&1 & echo $! > run.pid
 ```
 
 
-The command will run the training in background and will save the logs in the `log.out` file and the pid of the process 
+The command will run the training in background and will save the logs in the `log.out` file and the pid of the process
 in the `run.pid` file.
 
 
@@ -101,10 +101,10 @@ in the `run.pid` file.
    * Removing the less relevant features to see how it behaves with respect to whole set of features
    These experiments could help us to understand the importance given by the model to the relevant and less relevant features.
 
-2. Moreover, it would be nice if we could mutate slightly some inputs in the test dataset, 
-   to check if the model generalize well or not. 
+2. Moreover, it would be nice if we could mutate slightly some inputs in the test dataset,
+   to check if the model generalize well or not.
 
-3. We could make individual encoders for separate groups of data (e.g. one for “more relevant” features and one 
-   for “less relevant” features) and concatenate/weight their outputs. This could also help overcome the limitations of 
-   token size (512) on CodeBert. Using multiple transformers could potentially create better results (although it may 
+3. We could make individual encoders for separate groups of data (e.g. one for “more relevant” features and one
+   for “less relevant” features) and concatenate/weight their outputs. This could also help overcome the limitations of
+   token size (512) on CodeBert. Using multiple transformers could potentially create better results (although it may
    just cause overfitting), but it would definitely be more costly.
