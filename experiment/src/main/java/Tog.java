@@ -63,11 +63,11 @@ public class Tog {
      */
     private static void generateOracleOutputOperation(TogType togType, Path dir) {
         if (togType == TogType.TOGA) {
-            TogUtils.mapTOGAOutputToOracleOutput(dir);
+            TogUtils.togaToOracleOutput(dir);
         } else if (togType == TogType.JDOCTOR) {
             TogUtils.jDoctorToOracleOutput(dir);
         } else if (togType == TogType.TRATTO) {
-            TogUtils.mapTrattoOutputToOracleOutput(dir);
+            TogUtils.trattoToOracleOutput(dir);
         }
     }
 

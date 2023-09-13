@@ -241,7 +241,7 @@ public class TogUtils {
      * @see OracleOutput
      * @param srcDirPath the path to the source code of the project under test
      */
-    public static void mapTOGAOutputToOracleOutput(Path srcDirPath) {
+    public static void togaToOracleOutput(Path srcDirPath) {
         javaParser = getJavaParser(srcDirPath);
         Path prefixPath = output.resolve(Paths.get("toga", "oracle"));
         Path inputPath = output.resolve(Paths.get("toga", "input"));
@@ -428,7 +428,7 @@ public class TogUtils {
      * @see OracleOutput
      * @param srcDirPath the path to the source code of the project under test
      */
-    public static void mapTrattoOutputToOracleOutput(Path srcDirPath) {
+    public static void trattoToOracleOutput(Path srcDirPath) {
         javaParser = getJavaParser(srcDirPath);
         Path prefixPath = output.resolve(Paths.get("tratto", "oracle"));
         Path outputPath = output.resolve(Paths.get("tratto", "output"));
