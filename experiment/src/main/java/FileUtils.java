@@ -315,7 +315,7 @@ public class FileUtils {
     }
 
     /**
-     * Returns the file contents as a CSV parser.
+     * Returns the contents of a file as a {@link CSVParser}.
      *
      * @param path a file
      * @return the CSV parser of the file
