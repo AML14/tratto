@@ -164,17 +164,17 @@ public class FileUtils {
      * @return the relative path corresponding to the fully qualified class name.
      */
     public static Path getRelativePathFromFullyQualifiedClassName(String fullyQualifiedClassName) {
-        String[] fullyQualifiedClassNameSplitted = fullyQualifiedClassName.split("\\.");
-        if (fullyQualifiedClassNameSplitted.length > 1) {
-            int classNameIdx = fullyQualifiedClassNameSplitted.length - 1;
-            String className = fullyQualifiedClassNameSplitted[classNameIdx];
-            fullyQualifiedClassNameSplitted[classNameIdx] = className + ".java";
+        String[] fullyQualifiedClassNameSplit = fullyQualifiedClassName.split("\\.");
+        if (fullyQualifiedClassNameSplit.length > 1) {
+            int classNameIdx = fullyQualifiedClassNameSplit.length - 1;
+            String className = fullyQualifiedClassNameSplit[classNameIdx];
+            fullyQualifiedClassNameSplit[classNameIdx] = className + ".java";
             return Paths.get(
-                    fullyQualifiedClassNameSplitted[0],
+                    fullyQualifiedClassNameSplit[0],
                     Arrays.copyOfRange(
-                            fullyQualifiedClassNameSplitted,
+                            fullyQualifiedClassNameSplit,
                             1,
-                            fullyQualifiedClassNameSplitted.length
+                            fullyQualifiedClassNameSplit.length
                     )
             );
         }
@@ -281,13 +281,11 @@ public class FileUtils {
     }
 
     /**
-     * Reads the JSON file.
-     * The method only works with standard Java classes. To read custom
-     * objects a parser must be implemented.
+     * Reads the JSON contents of a file as a standard Java Object.
      *
      * @param path a file
-     * @return the file contents as a Object
-     * @throws Error if unable to process the file
+     * @param typeReference the file JSON contents as an Object
+     * @return if unable to process the file
      */
     public static Object readJSON(Path path, TypeReference<?> typeReference) {
         try {
@@ -416,10 +414,10 @@ public class FileUtils {
      * @return the class name.
      */
     public static String getClassNameFromFullyQualifiedName(String fullyQualifiedClassName) {
-        String[] fullyQualifiedClassNameSplitted = fullyQualifiedClassName.split("\\.");
-        if (fullyQualifiedClassNameSplitted.length > 1) {
-            int classNameIdx = fullyQualifiedClassNameSplitted.length - 1;
-            return fullyQualifiedClassNameSplitted[classNameIdx];
+        String[] fullyQualifiedClassNameSplit = fullyQualifiedClassName.split("\\.");
+        if (fullyQualifiedClassNameSplit.length > 1) {
+            int classNameIdx = fullyQualifiedClassNameSplit.length - 1;
+            return fullyQualifiedClassNameSplit[classNameIdx];
         }
         return fullyQualifiedClassName;
     }
