@@ -12,6 +12,7 @@ import com.github.javaparser.ast.expr.ArrayAccessExpr;
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.NameExpr;
+import com.github.javaparser.resolution.SymbolResolver;
 import com.github.javaparser.symbolsolver.utils.SymbolSolverCollectionStrategy;
 import data.JDoctorOutput;
 import data.JDoctorOutput.Parameter;
@@ -44,21 +45,39 @@ import java.util.stream.Stream;
 
 /**
  * This class provides static methods for pre-processing inputs for a given
- * TOG, and converting its output into other {@link data} outputs.
+ * TOG and converting its output into other {@link data} outputs.
  */
 public class TogUtils {
-    /** The path to the output directory */
+    /** The path of the output directory. */
     private static final Path output = Paths.get("output");
+    /** The path of the EvoSuite prefixes directory. */
     private static final Path evosuitePrefixPath = output.resolve("evosuite-prefix");
+    /** The path of the EvoSuite simple tests directory (tests with one assertion).  */
     private static final Path evosuiteTestsSimplePath = output.resolve("evosuite-tests-simple");
-
-    /** The pattern to extract the text prefix (removing comments and decorators) */
+    /** A regex pattern to extract a text prefix (removes comments and decorators). */
     private static final Pattern testPrefixPattern = Pattern.compile("(public|protected|private)(.| )*");
+    /** A JavaParser used to pre-process source code to be converted into TOGA input. */
     private static JavaParser javaParser;
 
     /** Private constructor to avoid creating an instance of this class. */
     private TogUtils() {
         throw new UnsupportedOperationException("This class cannot be instantiated.");
+    }
+
+    /**
+     * Creates a JavaParser object capable of resolving symbols from a given
+     * source directory.
+     *
+     * @param srcDirPath a project source directory
+     * @return the corresponding JavaParser
+     */
+    public static JavaParser getJavaParser(Path srcDirPath) {
+        SymbolSolverCollectionStrategy strategy = new SymbolSolverCollectionStrategy();
+        strategy.collect(srcDirPath);
+        SymbolResolver symbolResolver = strategy.getParserConfiguration().getSymbolResolver().orElseThrow();
+        JavaParser javaParser = new JavaParser();
+        javaParser.getParserConfiguration().setSymbolResolver(symbolResolver);
+        return javaParser;
     }
 
     /**
@@ -200,14 +219,6 @@ public class TogUtils {
             }
         }
         return "";
-    }
-
-    public static JavaParser getJavaParser(Path srcDirPath) {
-        SymbolSolverCollectionStrategy strategy = new SymbolSolverCollectionStrategy();
-        strategy.collect(srcDirPath);
-        JavaParser javaParser = new JavaParser();
-        javaParser.getParserConfiguration().setSymbolResolver(strategy.getParserConfiguration().getSymbolResolver().orElseThrow());
-        return javaParser;
     }
 
     /**
