@@ -1636,17 +1636,17 @@ public class TestUtils {
     }
 
     /**
-     * Gets a ClassLoader that corresponds to the given system binaries.
+     * Gets a ClassLoader that corresponds to a given JAR file.
      *
-     * @param binDir a path to system binaries (e.g. ".class" files)
+     * @param jarDir a path to a JAR file
      * @return a ClassLoader object
      */
-    private static ClassLoader getClassLoader(Path binDir) {
+    private static ClassLoader getClassLoader(Path jarDir) {
         try {
-            URL binaryURL = binDir.toUri().toURL();
-            return new URLClassLoader(new URL[]{binaryURL});
+            URL jarURL = jarDir.toUri().toURL();
+            return new URLClassLoader(new URL[]{jarURL});
         } catch (MalformedURLException e) {
-            throw new Error("Unable to get URL for system binaries " + binDir);
+            throw new Error("Unable to get URL for JAR " + jarDir);
         }
     }
 
