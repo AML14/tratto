@@ -7,8 +7,8 @@ import star.tratto.data.OracleDatapoint;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static star.tratto.util.JavaParserUtils.getMethodDeclaration;
-import static star.tratto.util.JavaParserUtils.getReturnTypeOfExpression;
+import static star.tratto.util.javaparser.JavaParserUtils.getMethodDeclaration;
+import static star.tratto.util.javaparser.JavaParserUtils.getReturnTypeOfExpression;
 
 /**
  * Forbid "Arrays" if nor methodResultID or some method argument is an array.
