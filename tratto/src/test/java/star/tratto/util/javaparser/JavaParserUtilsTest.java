@@ -1,31 +1,83 @@
-package star.tratto.util;
+package star.tratto.util.javaparser;
 
 import com.github.javaparser.JavaParser;
+import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.PackageDeclaration;
+import com.github.javaparser.ast.body.CallableDeclaration;
+import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.TypeDeclaration;
+import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.resolution.MethodUsage;
 import com.github.javaparser.resolution.UnsolvedSymbolException;
+import com.github.javaparser.resolution.declarations.ResolvedDeclaration;
+import com.github.javaparser.resolution.types.ResolvedArrayType;
+import com.github.javaparser.resolution.types.ResolvedPrimitiveType;
+import com.github.javaparser.resolution.types.ResolvedType;
 import org.javatuples.Pair;
+import org.javatuples.Triplet;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleDatapointTest;
+import star.tratto.data.JPClassNotFoundException;
+import star.tratto.data.PackageDeclarationNotFoundException;
+import star.tratto.data.ResolvedTypeNotFound;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static star.tratto.TestUtilities.readOracleDatapointsFromOraclesDataset;
-import static star.tratto.util.JavaParserUtils.*;
+import static star.tratto.util.javaparser.JavaParserUtils.*;
 
 public class JavaParserUtilsTest {
 
     private static final List<OracleDatapoint> oracleDatapoints = readOracleDatapointsFromOraclesDataset();
     private static final JavaParser javaParser = JavaParserUtils.getJavaParser();
+
+    @Test
+    public void getResolvedTypeOfExpressionPrimitiveTest() {
+        OracleDatapoint oracleDatapoint = oracleDatapoints.get(0);
+        TypeDeclaration<?> jpClass = getClassOrInterface(oracleDatapoint.getClassSourceCode(), oracleDatapoint.getClassName());
+        CallableDeclaration<?> jpCallable = getMethodDeclaration(oracleDatapoint.getMethodSourceCode());
+        List<Triplet<String, String, String>> methodArgs = oracleDatapoint.getTokensMethodArguments();
+        String subExpression = oracleDatapoint.getOracle().substring(0, 20);
+        try {
+            ResolvedType resolvedType = getResolvedTypeOfExpression(jpClass, jpCallable, methodArgs, subExpression);
+            String typeName = resolvedType.describe();
+            assertEquals("boolean", typeName);
+        } catch (ResolvedTypeNotFound e) {
+            fail();
+        }
+    }
+
+    @Test
+    public void getResolvedTypeOfExpressionObjectTest() {
+        OracleDatapoint oracleDatapoint = oracleDatapoints.get(1);
+        TypeDeclaration<?> jpClass = getClassOrInterface(oracleDatapoint.getClassSourceCode(), oracleDatapoint.getClassName());
+        CallableDeclaration<?> jpCallable = getMethodDeclaration(oracleDatapoint.getMethodSourceCode());
+        List<Triplet<String, String, String>> methodArgs = oracleDatapoint.getTokensMethodArguments();
+        String subExpression = oracleDatapoint.getOracle().substring(0, 4);
+        try {
+            ResolvedType resolvedType = getResolvedTypeOfExpression(jpClass, jpCallable, methodArgs, subExpression);
+            String typeName = resolvedType.describe();
+            assertEquals("org.apache.commons.math3.analysis.polynomials.PolynomialFunction", typeName);
+        } catch (ResolvedTypeNotFound e) {
+            fail();
+        }
+    }
+
 
     // TODO: Once the oracles dataset is ready, test this method with all oracles, which should evaluate to boolean
     @Test
@@ -184,6 +236,8 @@ public class JavaParserUtilsTest {
         assertTrue(doesInstanceofCompile("T", "java.lang.Object", oracleDatapoints.get(0)));
         assertFalse(doesInstanceofCompile("java.lang.Object", "T", null));
         assertFalse(doesInstanceofCompile("java.lang.Object", "T", oracleDatapoints.get(0)));
+        assertTrue(doesInstanceofCompile("T", "org.apache.commons.collections4.Equator", oracleDatapoints.get(0)));
+        assertTrue(doesInstanceofCompile("T", "java.lang.String", oracleDatapoints.get(0)));
         assertFalse(doesInstanceofCompile("java.lang.Object", "non.existing.Clazz", null));
         assertFalse(doesInstanceofCompile("java.lang.Object", "non.existing.Clazz", oracleDatapoints.get(0)));
         assertFalse(doesInstanceofCompile("non.existing.Clazz", "java.lang.Object", null));
@@ -210,7 +264,7 @@ public class JavaParserUtilsTest {
         assertFalse(isType1AssignableToType2(Pair.with("java.lang", "String"), Pair.with("java.lang", "StringBuilder"), null));
         assertTrue(isType1AssignableToType2(Pair.with("", "boolean"), Pair.with("", "boolean"), null));
         assertTrue(isType1AssignableToType2(Pair.with("", "boolean"), Pair.with("java.lang", "Boolean"), null));
-        assertFalse(isType1AssignableToType2(Pair.with("java.lang", "Boolean"), Pair.with("", "boolean"), null));
+        assertTrue(isType1AssignableToType2(Pair.with("java.lang", "Boolean"), Pair.with("", "boolean"), null));
         assertTrue(isType1AssignableToType2(Pair.with("java.lang", "Boolean"), Pair.with("java.lang", "Boolean"), null));
         assertTrue(isType1AssignableToType2(Pair.with("", "int"), Pair.with("", "int"), null));
         assertTrue(isType1AssignableToType2(Pair.with("", "int"), Pair.with("java.lang", "Integer"), null));
@@ -248,6 +302,12 @@ public class JavaParserUtilsTest {
     }
 
     @Test
+    public void getGenericTypeTest() {
+        ResolvedType genericType = getObjectType();
+        assertEquals("java.lang.Object", genericType.describe());
+    }
+
+    @Test
     public void getMethodsOfTypeTest() {
         assertTrue(getMethodsOfType("org.apache.commons.math3.analysis.polynomials.PolynomialFunction").stream().map(MethodUsage::getName).collect(Collectors.toList()).contains("polynomialDerivative"));
         assertTrue(getMethodsOfType("org.apache.commons.math3.linear.RealMatrix").stream().map(MethodUsage::getName).collect(Collectors.toList()).contains("equals"));
@@ -259,6 +319,36 @@ public class JavaParserUtilsTest {
         assertThrows(IllegalArgumentException.class, () -> getMethodsOfType("long"));
         assertTrue(getMethodsOfType("long[]").stream().map(MethodUsage::getName).collect(Collectors.toList()).contains("clone"));
         assertTrue(getMethodsOfType("java.lang.Long[]").stream().map(MethodUsage::getName).collect(Collectors.toList()).contains("clone"));
+    }
+
+    @Test
+    public void getVariableSignatureTest() {
+        OracleDatapoint oracleDatapoint = oracleDatapoints.get(1);
+        TypeDeclaration<?> jpClass = getClassOrInterface(oracleDatapoint.getClassSourceCode(), oracleDatapoint.getClassName());
+        FieldDeclaration jpField = jpClass.getFields().get(0);
+        VariableDeclarator jpVariable = jpField.getVariable(0);
+        String variableSignature = getVariableDeclaration(jpField, jpVariable);
+        assertEquals("private static final long serialVersionUID = -7726511984200295583L;", variableSignature);
+    }
+
+    @Test
+    public void getFieldSignatureTest() {
+        OracleDatapoint oracleDatapoint = oracleDatapoints.get(1);
+        TypeDeclaration<?> jpClass = getClassOrInterface(oracleDatapoint.getClassSourceCode(), oracleDatapoint.getClassName());
+        FieldDeclaration jpField = jpClass.getFields().get(0);
+        String fieldSignature = getFieldDeclaration(jpField.resolve());
+        // not able to retrieve "final" keyword and assignment value from ResolvedFieldDeclaration.
+        assertEquals("private static long serialVersionUID;", fieldSignature);
+    }
+
+    @Test
+    public void getCallableSignatureTest() {
+        OracleDatapoint oracleDatapoint = oracleDatapoints.get(1);
+        CallableDeclaration<?> jpCallable = getMethodDeclaration(oracleDatapoint.getMethodSourceCode());
+        assertNotNull(jpCallable);
+        String actualSignature = getCallableSignature(jpCallable);
+        String expectedSignature = "public DerivativeStructure value(final DerivativeStructure t) throws NullArgumentException, NoDataException";
+        assertEquals(expectedSignature, actualSignature);
     }
 
     @ParameterizedTest(name = "{0}")
@@ -285,28 +375,28 @@ public class JavaParserUtilsTest {
                 Arguments.of("test5", "import star.tratto.dataset.OracleDatapoint; " + classSource.replaceAll("XXX", "synchronized OracleDatapoint " + methodName + "() { return null; }"),
                         className, methodName, "synchronized OracleDatapoint someMethod()"),
                 Arguments.of("test6", "import org.jgrapht.graph.*; " + classSource
-                        .replaceAll("public class", "public abstract class")
-                        .replaceAll("XXX", "\n    // *** Constructors ***\n    // another comment\n    /**\n     * hello\n     */\n    public static <V, E> E addEdgeWithVertices(Graph<V, E> g, V sourceVertex, V targetVertex) {\n" +
-                                "        g.addVertex(sourceVertex);\n" +
-                                "        g.addVertex(targetVertex);\n" +
-                                "        return g.addEdge(sourceVertex, targetVertex);\n" +
-                                "    }\n"),
+                                .replaceAll("public class", "public abstract class")
+                                .replaceAll("XXX", "\n    // *** Constructors ***\n    // another comment\n    /**\n     * hello\n     */\n    public static <V, E> E addEdgeWithVertices(Graph<V, E> g, V sourceVertex, V targetVertex) {\n" +
+                                        "        g.addVertex(sourceVertex);\n" +
+                                        "        g.addVertex(targetVertex);\n" +
+                                        "        return g.addEdge(sourceVertex, targetVertex);\n" +
+                                        "    }\n"),
                         className, "addEdgeWithVertices", "public static <V, E> E addEdgeWithVertices(Graph<V, E> g, V sourceVertex, V targetVertex)"),
                 Arguments.of("test7", "import org.jgrapht.graph.*; " + classSource
-                        .replaceAll("public class", "public abstract class")
-                        .replaceAll("XXX", "\n    /**\n     * hello\n     */\n    // *** Constructors ***\n    // another comment\n    public static <V, E> E addEdgeWithVertices(Graph<V, E> g, V sourceVertex, V targetVertex) {\n" +
-                                "        g.addVertex(sourceVertex);\n" +
-                                "        g.addVertex(targetVertex);\n" +
-                                "        return g.addEdge(sourceVertex, targetVertex);\n" +
-                                "    }"),
+                                .replaceAll("public class", "public abstract class")
+                                .replaceAll("XXX", "\n    /**\n     * hello\n     */\n    // *** Constructors ***\n    // another comment\n    public static <V, E> E addEdgeWithVertices(Graph<V, E> g, V sourceVertex, V targetVertex) {\n" +
+                                        "        g.addVertex(sourceVertex);\n" +
+                                        "        g.addVertex(targetVertex);\n" +
+                                        "        return g.addEdge(sourceVertex, targetVertex);\n" +
+                                        "    }"),
                         className, "addEdgeWithVertices", "public static <V, E> E addEdgeWithVertices(Graph<V, E> g, V sourceVertex, V targetVertex)"),
                 Arguments.of("test8", "import org.jgrapht.graph.*; " + classSource
-                        .replaceAll("public class", "public abstract class")
-                        .replaceAll("XXX", "\n    /**\n     * hello\n     */\n    public static <V, E> E addEdgeWithVertices(Graph<V, E> g, V sourceVertex, V targetVertex) {\n" +
-                                "        g.addVertex(sourceVertex);\n" +
-                                "        g.addVertex(targetVertex);\n" +
-                                "        return g.addEdge(sourceVertex, targetVertex);\n" +
-                                "    }"),
+                                .replaceAll("public class", "public abstract class")
+                                .replaceAll("XXX", "\n    /**\n     * hello\n     */\n    public static <V, E> E addEdgeWithVertices(Graph<V, E> g, V sourceVertex, V targetVertex) {\n" +
+                                        "        g.addVertex(sourceVertex);\n" +
+                                        "        g.addVertex(targetVertex);\n" +
+                                        "        return g.addEdge(sourceVertex, targetVertex);\n" +
+                                        "    }"),
                         className, "addEdgeWithVertices", "public static <V, E> E addEdgeWithVertices(Graph<V, E> g, V sourceVertex, V targetVertex)"),
                 Arguments.of("test9", "import org.jgrapht.graph.*; " + classSource
                                 .replaceAll("public class", "public abstract class")
@@ -329,7 +419,7 @@ public class JavaParserUtilsTest {
                                         "            @Nullable String param1,\n" +
                                         "            /* this is another param: */ int param2\n" +
                                         "    ) { return \"\"; }"
-                                        ),
+                                ),
                         className, "someMethod", "private static String someMethod(@Nullable String param1, int param2)")
         );
     }
@@ -341,7 +431,7 @@ public class JavaParserUtilsTest {
         MethodUsage methodUsage = new ArrayList<>(getResolvedReferenceTypeDeclaration(packageClass).getAllMethods()
                 .stream()
                 .sorted(Comparator.comparing(MethodUsage::toString))
-                .collect(Collectors.toList()))
+                .toList())
                 .stream()
                 .filter(method -> method.getName().equals(methodName))
                 .findFirst().get();
@@ -364,6 +454,100 @@ public class JavaParserUtilsTest {
         );
     }
 
+    @Test
+    public void getPackageDeclarationFromCompilationUnitTest() {
+        OracleDatapoint oracleDatapoint = oracleDatapoints.get(1);
+        CompilationUnit cu = javaParser.parse(oracleDatapoint.getClassSourceCode()).getResult().get();
+        try {
+            PackageDeclaration packageDeclaration = getPackageDeclaration(cu);
+            assertEquals("org.apache.commons.math3.analysis.polynomials", packageDeclaration.getNameAsString());
+        } catch (PackageDeclarationNotFoundException e) {
+            fail();
+        }
+    }
+
+    @Test
+    public void getElementTypeTest() {
+        ResolvedType intType = ResolvedPrimitiveType.byName("int");
+        ResolvedType arrayType = new ResolvedArrayType(intType);
+        assertEquals(intType.toString(), getElementType(arrayType).toString());
+    }
+
+    @Test
+    public void isGenericTest() {
+        OracleDatapoint oracleDatapoint = oracleDatapoints.get(0);
+        TypeDeclaration<?> jpClass = getClassOrInterface(oracleDatapoint.getClassSourceCode(), oracleDatapoint.getClassName());
+        CallableDeclaration<?> jpCallable = getMethodDeclaration(oracleDatapoint.getMethodSourceCode());
+        String typeName = "T";
+        assertNotNull(jpCallable);
+        assertTrue(isTypeVariable(typeName, jpCallable, jpClass));
+    }
+
+    @Test
+    public void getAllAvailableMethodUsagesTest() {
+        OracleDatapoint oracleDatapoint = oracleDatapoints.get(1);
+        TypeDeclaration<?> jpClass = getClassOrInterface(oracleDatapoint.getClassSourceCode(), oracleDatapoint.getClassName());
+        try {
+            List<String> availableMethodList = JavaParserUtils.getAllMethods(jpClass)
+                    .stream()
+                    .map(MethodUsage::getName)
+                    .collect(Collectors.toList());
+            availableMethodList = new ArrayList<>(new LinkedHashSet<>(availableMethodList)).stream().sorted().collect(Collectors.toList());
+            String expected = "[add, clone, degree, " +
+                    "derivative, differentiate, equals, " +
+                    "evaluate, finalize, getClass, " +
+                    "getCoefficients, hashCode, multiply, " +
+                    "negate, notify, notifyAll, " +
+                    "polynomialDerivative, subtract, toString, " +
+                    "value, wait]";
+            String actual = availableMethodList.toString();
+            assertEquals(expected, actual);
+        } catch (JPClassNotFoundException e) {
+            fail();
+        }
+    }
+
+    @Test
+    public void getAllAvailableResolvedFieldsTest() {
+        OracleDatapoint oracleDatapoint = oracleDatapoints.get(1);
+        TypeDeclaration<?> jpClass = getClassOrInterface(oracleDatapoint.getClassSourceCode(), oracleDatapoint.getClassName());
+        try {
+            List<String> availableFieldsList = getAllFields(jpClass)
+                    .stream()
+                    .map(ResolvedDeclaration::getName)
+                    .collect(Collectors.toList());
+            availableFieldsList = new ArrayList<>(new LinkedHashSet<>(availableFieldsList)).stream().sorted().collect(Collectors.toList());
+            String expected = "[coefficients, serialVersionUID]";
+            String actual = availableFieldsList.toString();
+            assertEquals(expected, actual);
+        } catch (JPClassNotFoundException e) {
+            fail();
+        }
+    }
+
+    @Test
+    public void getCompilationUnitFromFileTest() {
+        Path projectsPath = Paths.get("src", "main", "java", "star", "tratto", "data", "OracleType.java");
+        Optional<CompilationUnit> optionalCu = getCompilationUnit(projectsPath);
+        assertTrue(optionalCu.isPresent());
+        CompilationUnit cu = optionalCu.get();
+        try {
+            PackageDeclaration packageDeclaration = getPackageDeclaration(cu);
+            String packageName = packageDeclaration.getNameAsString();
+            assertEquals("star.tratto.data", packageName);
+        } catch (PackageDeclarationNotFoundException e) {
+            fail();
+        }
+    }
+
+    @Test
+    public void isNonPrivateNonStaticAttributeTest() {
+        OracleDatapoint oracleDatapoint = oracleDatapoints.get(1);
+        TypeDeclaration<?> jpClass = getClassOrInterface(oracleDatapoint.getClassSourceCode(), oracleDatapoint.getClassName());
+        FieldDeclaration jpField = jpClass.getFields().get(0);
+        assertFalse(isNonPrivateNonStaticAttribute(jpField.resolve()));
+    }
+
     @ParameterizedTest(name = "{0}")
     @MethodSource("isNonStaticNonVoidNonPrivateMethodParameterizedTestData")
     public void isNonStaticNonVoidNonPrivateMethodTest(String testName, String packageClass, String methodName, boolean expected) {
@@ -374,7 +558,7 @@ public class JavaParserUtilsTest {
                 .stream()
                 .filter(method -> method.getName().equals(methodName))
                 .findFirst().get();
-        assertEquals(expected, isNonStaticNonVoidNonPrivateMethod(methodUsage));
+        assertEquals(expected, isNonPrivateNonStaticNonVoidMethod(methodUsage));
     }
 
     private static Stream<Arguments> isNonStaticNonVoidNonPrivateMethodParameterizedTestData() {
@@ -389,5 +573,21 @@ public class JavaParserUtilsTest {
                 Arguments.of("test8", "java.lang.Class", "newInstance", true), // "public T newInstance() throws InstantiationException, IllegalAccessException")
                 Arguments.of("test9", "java.lang.Class", "getInterfaces", false) // "private Class<? extends Object>[] getInterfaces(boolean arg0)")
         );
+    }
+
+    @Test
+    public void getObjectMethodsTest() {
+        Set<MethodUsage> objectMethods = getObjectMethods();
+        Set<String> objectMethodsNames = objectMethods.stream().map(MethodUsage::getName).collect(Collectors.toSet());
+        assertTrue(objectMethodsNames.contains("equals"));
+        assertTrue(objectMethodsNames.contains("hashCode"));
+        assertTrue(objectMethodsNames.contains("toString"));
+        assertTrue(objectMethodsNames.contains("getClass"));
+        assertTrue(objectMethodsNames.contains("notify"));
+        assertTrue(objectMethodsNames.contains("notifyAll"));
+        assertTrue(objectMethodsNames.contains("wait"));
+        assertTrue(objectMethodsNames.contains("finalize"));
+        assertTrue(objectMethodsNames.contains("clone"));
+        assertFalse(objectMethodsNames.contains("someMethod"));
     }
 }

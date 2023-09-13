@@ -39,12 +39,12 @@ public class Splitter {
             EObject eObject = (EObject) dslFragment;
             // Get all features (i.e., attributes) of the current object:
             EList<EStructuralFeature> eObjectFeatures = eObject.eClass().getEAllStructuralFeatures();
-            for (EStructuralFeature feature : eObjectFeatures) { // Process each feature
+            for (EStructuralFeature feature : eObjectFeatures) {
                 Object objectFeature = eObject.eGet(feature);
                 tokens.addAll(split(objectFeature));
             }
         } else if (dslFragment instanceof List) {
-            for (Object listObjectElement : (List<?>) dslFragment) { // Process each element of the list
+            for (Object listObjectElement : (List<?>) dslFragment) {
                 tokens.addAll(split(listObjectElement));
             }
         } else if (dslFragment instanceof String) { // Simply add string to the list of tokens
