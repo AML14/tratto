@@ -16,7 +16,7 @@ public class OracleRemoverTest {
 
     @Test
     public void removeOraclesTest() {
-        TestUtils.removeOracles(testPath, "example.ExampleTest");
+        OracleRemover.removeOracles(testPath, "example.ExampleTest");
         try {
             CompilationUnit cu = StaticJavaParser.parse(Paths.get("output", "evosuite-prefix", "example", "ExampleTest.java"));
             List<MethodDeclaration> testCases = cu.findAll(MethodDeclaration.class);
