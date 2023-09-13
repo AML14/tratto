@@ -33,7 +33,8 @@ public class TokensDataset {
         FileUtils.deleteDirectory(tokensDatasetFolder);
         tokensDatasetFolder.mkdir();
         File[] oraclesDatasetFiles = new File(ORACLES_DATASET_FOLDER).listFiles();
-        for (File oraclesDatasetFile : oraclesDatasetFiles) { // Assume that only dataset files are in the folder
+        // Assume that only dataset files are in the folder
+        for (File oraclesDatasetFile : oraclesDatasetFiles) {
             logger.info("------------------------------------------------------------");
             logger.info("Processing file: {}", oraclesDatasetFile.getName());
             logger.info("------------------------------------------------------------");
@@ -84,14 +85,16 @@ public class TokensDataset {
     private static void validateArgs(String[] args) {
         if (args.length == 0 && DATASET_TYPE == null) {
             logger.error("DATASET_TYPE not set. Pass one argument, which must be one of TOKENS, TOKEN_CLASSES or TOKEN_VALUES.");
+            System.exit(1);
         } else if (args.length > 1) {
             logger.error("Wrong number of arguments. Expected 0 or 1, got {}", args.length);
+            System.exit(1);
         } else if (args.length == 1 && !Arrays.stream(TokenDPType.values()).map(Enum::name).collect(Collectors.toList()).contains(args[0])) {
             logger.error("Wrong argument. Expected TOKENS or TOKEN_CLASSES or TOKEN_VALUES, got {}", args[0]);
-        } else {
-            if (args.length == 1) DATASET_TYPE = TokenDPType.valueOf(args[0]);
-            return;
+            System.exit(1);
         }
-        System.exit(1);
+        if (args.length == 1) {
+            DATASET_TYPE = TokenDPType.valueOf(args[0]);
+        }
     }
 }

@@ -137,7 +137,9 @@ public class ParserTest {
     @MethodSource("findElementPrecedingLastInstanceOfParameterizedTestData")
     public void findElementPrecedingLastInstanceOfTest(String testName, String partialOracle, String expectedElementPrecedingLastInstanceOf) {
         Object elementPrecedingLastInstanceOf = parser.findElementPrecedingLastInstanceOf(partialOracle);
-        assertEquals(compactExpression(expectedElementPrecedingLastInstanceOf), compactExpression(split(elementPrecedingLastInstanceOf)));
+        String expected = compactExpression(expectedElementPrecedingLastInstanceOf);
+        String actual = compactExpression(split(elementPrecedingLastInstanceOf));
+        assertEquals(expected, actual);
     }
 
     private static Stream<Arguments> findElementPrecedingLastInstanceOfParameterizedTestData() {

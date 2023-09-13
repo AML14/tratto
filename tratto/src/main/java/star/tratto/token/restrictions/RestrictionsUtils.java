@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 import static star.tratto.oraclegrammar.custom.Parser.*;
 import static star.tratto.oraclegrammar.custom.Splitter.split;
-import static star.tratto.util.JavaParserUtils.*;
+import static star.tratto.util.javaparser.JavaParserUtils.*;
 import static star.tratto.util.StringUtils.compactExpression;
 import static star.tratto.util.StringUtils.fullyQualifiedClassName;
 
@@ -59,7 +59,7 @@ public class RestrictionsUtils {
                 return true;
             } else {
                 Pair<String, String> currentArgType = getReturnTypeOfExpression(compactExpression(split(getLastArgument(methodCall))), oracleDatapoint);
-                Pair<String, String> nArgsArgType = getTypeFromResolvedType(m.getParamType(nArgsSoFar-1));
+                Pair<String, String> nArgsArgType = getTypePairFromResolvedType(m.getParamType(nArgsSoFar-1));
                 return !isType1AssignableToType2(currentArgType, nArgsArgType, oracleDatapoint);
             }
         });
@@ -80,7 +80,8 @@ public class RestrictionsUtils {
         // non-private and non-void
         List<MethodUsage> matchingMethods = new ArrayList<>(); // TODO: Don't consider method under test
 
-        if (!precedingExpr.contains(".") && oracleDatapoint.isProjectClass(precedingExpr)) { // Preceding expression is a project class
+        if (!precedingExpr.contains(".") && oracleDatapoint.isProjectClass(precedingExpr)) {
+            // Preceding expression is a project class
             List<Pair<String, String>> matchingClasses = oracleDatapoint.getTokensProjectClasses()
                     .stream()
                     .filter(c -> c.getValue0().equals(precedingExpr))
@@ -88,7 +89,7 @@ public class RestrictionsUtils {
             matchingClasses.forEach(c -> matchingMethods.addAll(
                     getMethodsOfType(fullyQualifiedClassName(c.getValue1(), c.getValue0()))
                             .stream()
-                            .filter(m -> m.getName().equals(methodName) && isStaticNonVoidNonPrivateMethod(m))
+                            .filter(m -> m.getName().equals(methodName) && isNonPrivateStaticNonVoidMethod(m))
                             .collect(Collectors.toList())
             ));
         } else {
@@ -96,7 +97,7 @@ public class RestrictionsUtils {
             matchingMethods.addAll(
                     getMethodsOfType(fullyQualifiedClassName(precedingExprReturnType))
                             .stream()
-                            .filter(m -> m.getName().equals(methodName) && isNonStaticNonVoidNonPrivateMethod(m))
+                            .filter(m -> m.getName().equals(methodName) && isNonPrivateNonStaticNonVoidMethod(m))
                             .collect(Collectors.toList())
             );
         }
