@@ -1146,7 +1146,6 @@ public class TestUtils {
                 oracleOutput.className(),
                 oracleOutput.methodSignature(),
                 oracleOutput.oracleType(),
-                oracleOutput.prefix(),
                 contextOracle,
                 oracleOutput.exception(),
                 oracleOutput.testName()
@@ -1183,7 +1182,6 @@ public class TestUtils {
                 oracleOutput.className(),
                 oracleOutput.methodSignature(),
                 oracleOutput.oracleType(),
-                oracleOutput.prefix(),
                 contextOracle,
                 oracleOutput.exception(),
                 oracleOutput.testName()
@@ -1225,7 +1223,6 @@ public class TestUtils {
                 oracleOutput.className(),
                 oracleOutput.methodSignature(),
                 oracleOutput.oracleType(),
-                oracleOutput.prefix(),
                 contextOracle,
                 oracleOutput.exception(),
                 oracleOutput.testName()
@@ -1551,20 +1548,20 @@ public class TestUtils {
     }
 
     /**
-     * Gets the oracle corresponding to a given prefix from a list of oracles.
+     * Gets the non-axiomatic oracle corresponding to a given test from a list
+     * of oracles.
      *
-     * @param prefix a test prefix
+     * @param testName a test name
      * @param oracles a list of oracle records
-     * @return the oracle record with the given prefix. Returns null if no
+     * @return the oracle record with the given test name. Returns null if no
      * such oracle exists.
      */
-    private static OracleOutput getOracleWithPrefix(String prefix, List<OracleOutput> oracles) {
-        List<String> allPrefix = oracles
+    private static OracleOutput getOracleWithTestName(String testName, List<OracleOutput> oracles) {
+        List<String> allTestNames = oracles
                 .stream()
-                .map(OracleOutput::prefix)
-                .map(String::trim)
+                .map(OracleOutput::testName)
                 .toList();
-        int indexOfOracle = allPrefix.indexOf(prefix.trim());
+        int indexOfOracle = allTestNames.indexOf(testName);
         if (indexOfOracle == -1) {
             return null;
         }
@@ -1574,8 +1571,8 @@ public class TestUtils {
     /**
      * Adds non-axiomatic oracles to test prefixes in a given test file.
      * Non-axiomatic oracles are specific to a given test prefix. Each oracle
-     * is matched to its corresponding prefix using the
-     * {@link OracleOutput#prefix()} value.
+     * is matched to its corresponding test prefix using the
+     * {@link OracleOutput#testName()} value.
      *
      * @param testFile a Java file of test prefixes
      * @param oracles a list of test oracles made by a non-axiomatic tog
@@ -1583,8 +1580,8 @@ public class TestUtils {
     private static void insertNonAxiomaticOracles(CompilationUnit testFile, List<OracleOutput> oracles) {
         testFile.findAll(MethodDeclaration.class)
                 .forEach(testCase -> {
-                    String prefix = testCase.toString();
-                    OracleOutput oracle = getOracleWithPrefix(prefix, oracles);
+                    String testName = testCase.getNameAsString();
+                    OracleOutput oracle = getOracleWithTestName(testName, oracles);
                     if (oracle != null) {
                         if (isExceptional(oracle)) {
                             insertNonAxiomaticException(testCase, oracle.exception());
@@ -1598,8 +1595,8 @@ public class TestUtils {
     /**
      * Adds non-axiomatic oracles to test prefixes in a given directory.
      * Non-axiomatic oracles are specific to a given test prefix. Each oracle
-     * is matched to its corresponding prefix using the
-     * {@link OracleOutput#prefix()} value.
+     * is matched to its corresponding test prefix using the
+     * {@link OracleOutput#testName()} value.
      *
      * @param dir a directory with Java test prefixes
      * @param oracles a list of test oracles made by a non-axiomatic tog

@@ -70,7 +70,6 @@ public class TestUtilsTest {
                         "java.lang.Integer",
                         "valueOf(int i)",
                         OracleType.PRE,
-                        "",
                         "i > 0",
                         "",
                         ""
@@ -79,7 +78,6 @@ public class TestUtilsTest {
                         "java.lang.Integer",
                         "parseInt(java.lang.String s)",
                         OracleType.EXCEPT_POST,
-                        "",
                         "s == null",
                         "java.lang.NumberFormatException",
                         ""
@@ -88,7 +86,6 @@ public class TestUtilsTest {
                         "java.lang.Integer",
                         "intValue()",
                         OracleType.NORMAL_POST,
-                        "",
                         "(receiverObjectID == null) == false",
                         "",
                         ""
@@ -97,7 +94,6 @@ public class TestUtilsTest {
                         "java.lang.Class",
                         "getMethod(java.lang.String name, java.lang.Class<?>[] parameterTypes)",
                         OracleType.PRE,
-                        "",
                         "(name == null) == false",
                         "",
                         ""
@@ -106,7 +102,6 @@ public class TestUtilsTest {
                         "java.lang.Class",
                         "getMethod(java.lang.String name, java.lang.Class<?>[] parameterTypes)",
                         OracleType.PRE,
-                        "",
                         "(parameterTypes == null) == false",
                         "",
                         ""
@@ -115,7 +110,6 @@ public class TestUtilsTest {
                         "java.lang.Class",
                         "getMethod(java.lang.String name, java.lang.Class<?>[] parameterTypes)",
                         OracleType.EXCEPT_POST,
-                        "",
                         "name == null",
                         "java.lang.IllegalArgumentException",
                         ""
@@ -124,7 +118,6 @@ public class TestUtilsTest {
                         "java.lang.Class",
                         "getMethod(java.lang.String name, java.lang.Class<?>[] parameterTypes)",
                         OracleType.EXCEPT_POST,
-                        "",
                         "parameterTypes == null",
                         "java.lang.IllegalArgumentException",
                         ""
@@ -133,7 +126,6 @@ public class TestUtilsTest {
                         "java.lang.Class",
                         "getMethod(java.lang.String name, java.lang.Class<?>[] parameterTypes)",
                         OracleType.NORMAL_POST,
-                        "",
                         "(methodResultID == null) == false",
                         "",
                         ""
@@ -142,7 +134,6 @@ public class TestUtilsTest {
                         "java.lang.Class",
                         "getMethod(java.lang.String name, java.lang.Class<?>[] parameterTypes)",
                         OracleType.NORMAL_POST,
-                        "",
                         "methodResultID.getDeclaringClass() == receiverObjectID",
                         "",
                         ""
@@ -151,7 +142,6 @@ public class TestUtilsTest {
                         "java.lang.String",
                         "getChars(int srcBegin, int srcEnd, char[] dst, int dstBegin)",
                         OracleType.NORMAL_POST,
-                        "",
                         "receiverObjectID.charAt(srcBegin) == dst[dstBegin]",
                         "",
                         ""
@@ -160,7 +150,6 @@ public class TestUtilsTest {
                         "java.lang.String",
                         "substring(int beginIndex, int endIndex)",
                         OracleType.NORMAL_POST,
-                        "",
                         "(methodResultID == null) == false",
                         "",
                         ""
@@ -169,7 +158,6 @@ public class TestUtilsTest {
                         "java.util.List",
                         "add(E e)",
                         OracleType.NORMAL_POST,
-                        "",
                         "methodResultID == true",
                         "",
                         ""
@@ -178,7 +166,6 @@ public class TestUtilsTest {
                         "java.util.List",
                         "get(int index)",
                         OracleType.EXCEPT_POST,
-                        "",
                         "index >= receiverObjectID.size()",
                         "java.lang.IndexOutOfBoundsException",
                         ""
@@ -298,13 +285,6 @@ public class TestUtilsTest {
                         "java.lang.Integer",
                         "valueOf(int i)",
                         OracleType.NON_AXIOMATIC,
-                        """
-                                @Test
-                                @Disabled
-                                public void assertionTest() throws Throwable {
-                                    int primitiveInt = 5;
-                                    Integer objectInt = Integer.valueOf(primitiveInt);
-                                }""",
                         "assertTrue(primitiveInt == objectInt.intValue())",
                         "",
                         "assertionTest"
@@ -313,13 +293,6 @@ public class TestUtilsTest {
                         "java.lang.Integer",
                         "parseInt(java.lang.String s)",
                         OracleType.NON_AXIOMATIC,
-                        """
-                                @Test
-                                @Disabled
-                                public void exceptionalTest() throws Throwable {
-                                    String integerToParse = null;
-                                    int correspondingInteger = Integer.parseInt(integerToParse);
-                                }""",
                         "",
                         "java.lang.NumberFormatException",
                         "exceptionalTest"

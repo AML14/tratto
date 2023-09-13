@@ -35,7 +35,6 @@ public class TogUtilsTest {
             assertEquals("tutorial.Stack", oracleOutput.className());
             assertTrue(List.of("push(T o)", "pop()").contains(oracleOutput.methodSignature()));
             assertTrue(List.of(OracleType.PRE, OracleType.EXCEPT_POST).contains(oracleOutput.oracleType()));
-            assertTrue(oracleOutput.prefix().isEmpty());
             assertTrue(oracleOutput.testName().isEmpty());
         }
         FileUtils.deleteDirectory(Paths.get("output", "jdoctor"));
