@@ -6,8 +6,23 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static star.tratto.util.StringUtils.getCorrespondingClosingParenthesisIndex;
+import static star.tratto.util.StringUtils.semanticSimilarity;
+import static star.tratto.util.StringUtils.containsWord;
 
 public class StringUtilsTest {
+
+    @Test
+    public void compactExpressionTest()  {
+        assertEquals("", StringUtils.compactExpression(""));
+        assertEquals("this", StringUtils.compactExpression("this"));
+        assertEquals("this instanceof SomeClass", StringUtils.compactExpression("this instanceof SomeClass"));
+        assertEquals("this instanceof ", StringUtils.compactExpression("this instanceof"));
+        assertEquals("this instanceof SomeClass&&someArg instanceof ", StringUtils.compactExpression("this instanceof SomeClass && someArg instanceof"));
+        assertEquals("instanceofVar instanceof MyClass", StringUtils.compactExpression("instanceofVar instanceof MyClass"));
+        assertEquals("x&&instanceofVar instanceof MyClass", StringUtils.compactExpression("x && instanceofVar instanceof MyClass"));
+        assertEquals("", StringUtils.compactExpression((String) null));
+        assertEquals("", StringUtils.compactExpression((List<String>) null));
+    }
 
     @Test
     public void getCorrespondingClosingParenthesisIndex_IndexEqualToListSizeThrowExceptionTest()  {
@@ -38,7 +53,7 @@ public class StringUtilsTest {
     public void getCorrespondingClosingParenthesisIndex_Test1() {
         List<String> oracleTokens = List.of("this", ".", "someMethod", "(", "someArg");
         int openingParenthesisIndex = 3;
-        assertEquals(null, getCorrespondingClosingParenthesisIndex(oracleTokens, openingParenthesisIndex));
+        assertNull(getCorrespondingClosingParenthesisIndex(oracleTokens, openingParenthesisIndex));
     }
 
     @Test
@@ -53,7 +68,7 @@ public class StringUtilsTest {
         List<String> oracleTokens = List.of("this", ".", "someMethod", "(", "(", "someArg", ")");
         int openingParenthesisIndex1 = 3;
         int openingParenthesisIndex2 = 4;
-        assertEquals(null, getCorrespondingClosingParenthesisIndex(oracleTokens, openingParenthesisIndex1));
+        assertNull(getCorrespondingClosingParenthesisIndex(oracleTokens, openingParenthesisIndex1));
         assertEquals(6, getCorrespondingClosingParenthesisIndex(oracleTokens, openingParenthesisIndex2));
     }
 
@@ -64,9 +79,30 @@ public class StringUtilsTest {
         int openingParenthesisIndex2 = 4;
         int openingParenthesisIndex3 = 8;
         int openingParenthesisIndex4 = 9;
-        assertEquals(null, getCorrespondingClosingParenthesisIndex(oracleTokens, openingParenthesisIndex1));
+        assertNull(getCorrespondingClosingParenthesisIndex(oracleTokens, openingParenthesisIndex1));
         assertEquals(6, getCorrespondingClosingParenthesisIndex(oracleTokens, openingParenthesisIndex2));
         assertEquals(16, getCorrespondingClosingParenthesisIndex(oracleTokens, openingParenthesisIndex3));
         assertEquals(13, getCorrespondingClosingParenthesisIndex(oracleTokens, openingParenthesisIndex4));
+    }
+
+    @Test
+    public void semanticSimilarityTest() {
+        assertEquals(1.0, semanticSimilarity("the", "the"));
+        assertEquals(0.0, semanticSimilarity("the", "bratwurst"));
+    }
+
+    @Test
+    public void containsWordTest() {
+        assertFalse(containsWord("some expression", "word"));
+        assertTrue(containsWord("some expression", "some"));
+        assertTrue(containsWord("some expression", "expression"));
+        assertTrue(containsWord("some expression", "some expression"));
+        assertTrue(containsWord("This is an expression. That's it.", "expression"));
+        assertFalse(containsWord("This is an expression. That's it.", "expression."));
+        assertFalse(containsWord("This is an expression. That's it.", "exp"));
+        assertFalse(containsWord("java.util.ArrayList", "List"));
+        assertTrue(containsWord("java.util.ArrayList", "ArrayList"));
+        assertTrue(containsWord("BagUtils.contains(bag);", "BagUtils"));
+        assertTrue(containsWord("this instanceof Bag && methodResultID != null;", "Bag"));
     }
 }
