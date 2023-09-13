@@ -1,5 +1,8 @@
 package data;
 
+/**
+ * This enum defines all possible operations of the main Tog class.
+ */
 public enum OperationType {
     REMOVE_ORACLES,
     INSERT_ORACLES,
