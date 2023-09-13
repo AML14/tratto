@@ -2,10 +2,12 @@ package star.tratto;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.javaparser.JavaParser;
 import org.javatuples.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import star.tratto.data.OracleDatapoint;
+import star.tratto.util.javaparser.JavaParserUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,6 +18,7 @@ import java.util.*;
 
 import static star.tratto.data.TrattoPath.ORACLES_DATASET;
 import static star.tratto.util.StringUtils.compactExpression;
+import static star.tratto.util.javaparser.JavaParserUtils.updateMethodJavadoc;
 
 /**
  * This class augments the oracles dataset as follows: 1) it reads the existing oracles
@@ -64,9 +67,16 @@ public class DataAugmentation {
                     OracleDatapoint newOracleDatapoint = new OracleDatapoint(oracleDatapoint);
                     newOracleDatapoint.setOracle(oracleTagCombo.getValue0());
                     newOracleDatapoint.setJavadocTag(oracleTagCombo.getValue1());
+                    newOracleDatapoint.setMethodJavadoc(updateMethodJavadoc(oracleDatapoint.getMethodJavadoc(), oracleDatapoint.getJavadocTag(), oracleTagCombo.getValue1()));
                     newOracleDatapoints.add(newOracleDatapoint);
                     oracleDPsAugmented++;
                 }
+                // Add one more Oracle Datapoint where we remove completely the method Javadoc
+                OracleDatapoint newOracleDatapoint = new OracleDatapoint(oracleDatapoint);
+                newOracleDatapoint.setJavadocTag("");
+                newOracleDatapoint.setMethodJavadoc("");
+                newOracleDatapoints.add(newOracleDatapoint);
+                oracleDPsAugmented++;
                 oracleDPsOriginal++;
             }
 

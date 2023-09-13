@@ -166,7 +166,7 @@ public class DatasetUtils {
     ) {
         Optional<JavadocComment> optionalJavadocComment = jpCallable.getJavadocComment();
         return optionalJavadocComment
-                .map(javadocComment -> "    /**" + javadocComment.getContent() + "*/")
+                .map(javadocComment -> "    /**" + javadocComment.getContent().replaceAll("@exception ", "@throws ") + "*/")
                 .orElseGet(() -> getJavadocByPattern(jpCallable));
     }
 

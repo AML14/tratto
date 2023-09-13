@@ -620,4 +620,29 @@ public class JavaParserUtilsTest {
         assertTrue(objectMethodsNames.contains("clone"));
         assertFalse(objectMethodsNames.contains("someMethod"));
     }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("updateMethodJavadocTestData")
+    public void updateMethodJavadocTest(String testName, String newJavadocTag) {
+        String oldMethodJavadoc =
+                "    /**\n" +
+                "     * Create a simple cycle finder for the specified graph.\n" +
+                "     *\n" +
+                "     * @param graph - the DirectedGraph in which to find cycles.\n" +
+                "     *\n" +
+                "     * @throws IllegalArgumentException if the graph argument is <code>\n" +
+                "     * null</code>.\n" +
+                "     */";
+        String oldJavadocTag = "@throws IllegalArgumentException if the graph argument is <code>\nnull</code>.";
+        updateMethodJavadoc(oldMethodJavadoc, oldJavadocTag, newJavadocTag);
+        // Assertions (exceptions) included within method body
+    }
+
+    private static Stream<Arguments> updateMethodJavadocTestData() {
+        return Stream.of(
+                Arguments.of("test1", "@throws IllegalArgumentException if the graph argument is null"),
+                Arguments.of("test2", "@throws IllegalArgumentException if the graph argument is\nnull"),
+                Arguments.of("test2", "@throws IllegalArgumentException if the graph argument is\n    null")
+        );
+    }
 }
