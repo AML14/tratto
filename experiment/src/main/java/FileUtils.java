@@ -289,7 +289,7 @@ public class FileUtils {
      * @return the file contents as a Object
      * @throws Error if unable to process the file
      */
-    public static Object readJSON(Path path, TypeReference typeReference) {
+    public static Object readJSON(Path path, TypeReference<?> typeReference) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             File jsonFile = new File(path.toString());

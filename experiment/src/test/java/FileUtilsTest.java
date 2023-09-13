@@ -24,6 +24,12 @@ public class FileUtilsTest {
     }
 
     @Test
+    public void isScaffoldingTest() {
+        assertTrue(FileUtils.isScaffolding(Paths.get("Stack_ESTest_scaffolding.java")));
+        assertFalse(FileUtils.isScaffolding(Paths.get("Stack_ESTest.java")));
+    }
+
+    @Test
     public void createFileTest() {
         Path path = tempRoot.resolve("tempFile.json");
         try {
