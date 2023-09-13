@@ -38,7 +38,7 @@ public class Tog {
     private static void insertOraclesOperation(TogType togType, Path binDir, Path oraclesPath) {
         Path prefixPath = Paths.get("output", "evosuite-prefix");
         List<OracleOutput> oracleOutputs = FileUtils.readJSONList(oraclesPath, OracleOutput.class);
-        TestUtils.insertOracles(prefixPath, togType, oracleOutputs, binDir);
+        OracleInserter.insertOracles(prefixPath, togType, oracleOutputs, binDir);
     }
 
     /**
@@ -107,7 +107,7 @@ public class Tog {
         TogType togType = TogType.valueOf(args[0].toUpperCase());
         OperationType operationType = OperationType.valueOf(args[1].toUpperCase());
         switch (operationType) {
-            case REMOVE_ORACLES -> TestUtils.removeOracles(
+            case REMOVE_ORACLES -> OracleRemover.removeOracles(
                     Paths.get(args[2]),
                     args[3]
             );
