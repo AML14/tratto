@@ -1,6 +1,6 @@
 # TRATTO Neural module
 
-TRATTO neural module is a PyTorch model fine-tuned on the task of predicting the next token-class and the next token, given a partial oracle. 
+TRATTO neural module is a PyTorch model fine-tuned on the task of predicting the next token-class and the next token, given a partial oracle.
 The model is fine-tuned from the pre-trained [CodeT5+](https://github.com/salesforce/CodeT5/tree/main/CodeT5+). Different
 pre-trained models of the Codet5+ family are available (`200m`, `700m`, `2b`, `6b`, `16b`). Given our hardware resources,
 we operated the finetuning  on the `200m` and `700m`, achieving the best results on the `700m` version.
@@ -9,8 +9,8 @@ we operated the finetuning  on the `200m` and `700m`, achieving the best results
 
 ## 1. Environment
 
-In order to set up the environment is not strictly necessary, but recommended to create a [_venv_](https://docs.python.org/3/library/venv.html) 
-or [_conda_](https://docs.conda.io/en/latest/) environment. 
+In order to set up the environment is not strictly necessary, but recommended to create a [_venv_](https://docs.python.org/3/library/venv.html)
+or [_conda_](https://docs.conda.io/en/latest/) environment.
 In the following section we will provide the general information to configure the project on a _conda_ environment.
 
 ### 1.1 Install Conda
@@ -57,12 +57,12 @@ macOS and Windows systems.
     ```
 
 ### 1.3 Install the requirements
-  
+
 7. Move to the `ml-model` folder of the `tratto` project
     ```bash
     cd [path_to_the_tratto_folder]/ml-model
     ```
-    
+
 8. Install all the required dependencies
     ```shell
     pip install -r requirements.txt
@@ -91,17 +91,17 @@ the process. The downloaded datasets are exactly the same the main **Tratto** pr
 **Important note**: if you skipped the instructions to configure the enviroment (`section 1`), remember to execute the command described
 at `section 1.4` to grant the permissions to run the bash scripts.
 
-The datasets and checkpoints will be saved within the `ml-model` root directory, with the homonym names 
+The datasets and checkpoints will be saved within the `ml-model` root directory, with the homonym names
 (`ml-model/datasets` and `ml-model/checkpoints`).
 
 # Training
 
-The model can be trained both on a CPU (highly not recommended), on a single GPU or multi-GPUs. 
-The training process requires a lot of **RAM** memory. In the current implementation, the more the number of GPUs used, 
+The model can be trained both on a CPU (highly not recommended), on a single GPU or multi-GPUs.
+The training process requires a lot of **RAM** memory. In the current implementation, the more the number of GPUs used,
 the more the **RAM** required to upload all the data on the memory.
 
 Run one of the following commands to replicate the training of the `token-classes` or the `token-values` model on a `CPU` or on a single `GPU`
-   
+
    ```shell
    ./train_token_classes_decoder.sh
    ```
@@ -109,7 +109,7 @@ Run one of the following commands to replicate the training of the `token-classe
    ./train_token_values_decoder.sh
    ```
 
-Run one of the following commands to replicate the training of the `token-classes` model on multi GPUs with 
+Run one of the following commands to replicate the training of the `token-classes` model on multi GPUs with
 [accelerate](https://huggingface.co/docs/accelerate/index) and [Fully-Sharded Data Parallel](https://huggingface.co/blog/pytorch-fsdp).
 
    ```shell
@@ -121,7 +121,7 @@ Run one of the following commands to replicate the training of the `token-classe
 
 **Important Note**: The accelerate script is highly recommended to finetune the **CodeT5+** `700m` version, due to the huge dimension of the pre-trained model.
 The script reads the `accelerate_config_fsdp.yaml` configuration file to split the model on the GPUs available. We provide
-the configuration file that we set up to finetune the model on Google Cloud Platform instance equipped with **340GB** of 
+the configuration file that we set up to finetune the model on Google Cloud Platform instance equipped with **340GB** of
 system RAM and 4 GPUs **Tesla A-100** with **40GB**. The configuration file can be generated running the accelerate plugin.
 The reader can find more information on the FSDP accelerate documentation webpage ([link](https://huggingface.co/docs/accelerate/usage_guides/fsdp)).
 If the system fail to run the script with accelerate try to upgrade the torch and torchvision versions with the following
