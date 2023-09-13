@@ -5,6 +5,7 @@ import com.github.javaparser.ParserConfiguration;
 import com.github.javaparser.ParseResult;
 import com.github.javaparser.ast.body.AnnotationDeclaration;
 import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
+import com.github.javaparser.ParseResult;
 import com.github.javaparser.ast.AccessSpecifier;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Modifier;
@@ -44,7 +45,6 @@ import com.github.javaparser.symbolsolver.javassistmodel.JavassistMethodDeclarat
 import com.github.javaparser.symbolsolver.reflectionmodel.ReflectionMethodDeclaration;
 import com.github.javaparser.symbolsolver.utils.SymbolSolverCollectionStrategy;
 import org.javatuples.Pair;
-import org.javatuples.Triplet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import star.tratto.data.OracleDatapoint;
@@ -91,7 +91,7 @@ public class JavaParserUtils {
     private static final String SYNTHETIC_METHOD_NAME = "__tratto__auxiliaryMethod";
     /** Cache ResolvedType of Object to make subsequent accesses free. */
     private static ResolvedType objectType;
-    /** Cache Set<MethodUsage> of Object methods to make subsequent accesses free. */
+    /** Cache Set&lt;MethodUsage&gt; of Object methods to make subsequent accesses free. */
     private static Set<MethodUsage> objectMethods;
 
     /** Private constructor to avoid creating an instance of this class. */
