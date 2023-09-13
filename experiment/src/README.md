@@ -17,7 +17,7 @@ public class ExampleTest {
         List<String> nonEmptyList = List.of("example");
         assertEquals("example", nonEmptyList.get(0));
     }
-    
+
     @Test
     public void exceptionalTest() {  // an example of an exceptional oracle
         List<String> emptyList = new ArrayList<>();
@@ -39,7 +39,7 @@ public class ExamplePrefix {
     public void assertionTest() {  // an example of an assertion oracle
         List<String> nonEmptyList = List.of("example");
     }
-    
+
     @Test
     public void exceptionalTest() {  // an example of an exceptional oracle
         List<String> emptyList = new ArrayList<>();
@@ -59,5 +59,3 @@ Our approach for inserting oracles into test prefixes varies based on whether th
 We use the PITest API to easily calculate the mutation score of a given test suite.
 
 For classification, we invoke each test case and store output as a list of `TestOutput` records.
-
-
