@@ -18,7 +18,7 @@ import data.JDoctorOutput.Parameter;
 import data.JDoctorOutput.ParamTag;
 import data.JDoctorOutput.ReturnTag;
 import data.JDoctorOutput.ThrowsTag;
-import data.OracleDatapoint;
+import data.TrattoOutput;
 import data.OracleOutput;
 import data.OracleType;
 import data.TestCase;
@@ -437,25 +437,22 @@ public class TogUtils {
         javaParser = getJavaParser(srcDirPath);
         Path prefixPath = output.resolve(Paths.get("tratto", "oracle"));
         Path outputPath = output.resolve(Paths.get("tratto", "output"));
-        TypeReference<List<OracleDatapoint>> typeReference = new TypeReference<>(){};
-        List<OracleDatapoint> oracleDatapoints = (List<OracleDatapoint>) FileUtils.readJSON(
+        List<TrattoOutput> trattoOutputs = FileUtils.readJSONList(
                 outputPath.resolve("oracle_datapoints.json"),
-                typeReference
+                TrattoOutput.class
         );
         List<OracleOutput> oracleOutputs = new ArrayList<>();
-        for (OracleDatapoint oracleDatapoint : oracleDatapoints) {
-            CompilationUnit cu = new CompilationUnit();
+        for (TrattoOutput trattoOutput : trattoOutputs) {
             // Parse the method string and add it to the CompilationUnit
-
-            MethodDeclaration mut = javaParser.parseMethodDeclaration(oracleDatapoint.methodSourceCode()).getResult().orElseThrow();
+            MethodDeclaration mut = javaParser.parseMethodDeclaration(trattoOutput.methodSourceCode()).getResult().orElseThrow();
             String methodSignature = getMethodSignature(mut);
             OracleOutput oracleOutput = new OracleOutput(
-                    oracleDatapoint.className(),
+                    trattoOutput.className(),
                     methodSignature,
-                    oracleDatapoint.oracleType(),
+                    trattoOutput.oracleType(),
                     "",
-                    oracleDatapoint.oracleType() != OracleType.EXCEPT_POST ? oracleDatapoint.oracle() : "",
-                    oracleDatapoint.oracleType() == OracleType.EXCEPT_POST ? oracleDatapoint.oracle() : "",
+                    trattoOutput.oracleType() != OracleType.EXCEPT_POST ? trattoOutput.oracle() : "",
+                    trattoOutput.oracleType() == OracleType.EXCEPT_POST ? trattoOutput.oracle() : "",
                     ""
             );
             oracleOutputs.add(oracleOutput);
