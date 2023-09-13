@@ -1638,34 +1638,34 @@ public class TestUtils {
     /**
      * Gets a ClassLoader that corresponds to a given JAR file.
      *
-     * @param jarDir a path to a JAR file
+     * @param jarPath a path to a JAR file
      * @return a ClassLoader object
      */
-    private static ClassLoader getClassLoader(Path jarDir) {
+    private static ClassLoader getClassLoader(Path jarPath) {
         try {
-            URL jarURL = jarDir.toUri().toURL();
+            URL jarURL = jarPath.toUri().toURL();
             return new URLClassLoader(new URL[]{jarURL});
         } catch (MalformedURLException e) {
-            throw new Error("Unable to get URL for JAR " + jarDir);
+            throw new Error("Unable to get URL for JAR " + jarPath);
         }
     }
 
     /**
-     * Adds oracles to test prefixes in a given directory. The approach for
+     * Adds oracles to a given collection of test prefixes. The approach for
      * adding oracles varies based on whether the oracles are axiomatic or
      * non-axiomatic. Saves the modified test prefixes in
-     * output/tog-test/[tog], where [tog] is the given test oracle generator.
-     * Does not override original test prefixes.
+     * "output/tog-tests/[tog]", where [tog] is the given test oracle
+     * generator. This method does not override the original test prefixes.
      *
-     * @param binDir path to the system binaries
      * @param prefixDir a directory with Java test prefixes
      * @param tog a test oracle generator
-     * @param oracles a list of test oracles made by the given tog
+     * @param oracles a list of test oracles made by {@code tog}
+     * @param jarPath a JAR file
      * @see TestUtils#insertAxiomaticOracles(Path, List)
      * @see TestUtils#insertNonAxiomaticOracles(Path, List)
      */
-    public static void insertOracles(Path binDir, Path prefixDir, TogType tog, List<OracleOutput> oracles) {
-        classLoader = getClassLoader(binDir);
+    public static void insertOracles(Path prefixDir, TogType tog, List<OracleOutput> oracles, Path jarPath) {
+        classLoader = getClassLoader(jarPath);
         Path testPath = output.resolve("tog-tests/" + tog.toString().toLowerCase());
         FileUtils.copy(prefixDir, testPath);
         if (isAxiomatic(tog)) {
