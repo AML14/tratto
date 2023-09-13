@@ -43,7 +43,8 @@ import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 /**
- * This class provides static methods for generating the input for each specific TOG.
+ * This class provides static methods for pre-processing inputs for a given
+ * TOG, and converting its output into other {@link data} outputs.
  */
 public class TogUtils {
     /** The path to the output directory */
