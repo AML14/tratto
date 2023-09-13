@@ -8,4 +8,3 @@ This module:
     - `toga.sh`: Generates oracles using TOGA
     - `tratto.sh`: Generates oracles using Tratto
  * generates a test suite using EvoSuite.  The `evosuite.sh` script produces output in `experiment/output/evosuite-test/`.
-
