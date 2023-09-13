@@ -19,4 +19,4 @@ public record TrattoOutput(
         String packageName,
         String className,
         String methodSourceCode
-) { }
+) {}

@@ -24,5 +24,4 @@ public record TestOutput(
         @JsonProperty("numPass") int numPass,
         @JsonProperty("numFail") int numFail,
         @JsonProperty("tests") List<TestCase> tests
-) {
-}
+) {}
