@@ -58,7 +58,7 @@ We say an oracle <span style="color:green">"passes"</span> the specification if 
 | True Negative (TN)  | <span style="color:green">Pass</span> | <span style="color:green">Pass</span> |
 | False Negative (FN) | <span style="color:green">Pass</span> | <span style="color:red">Fail</span>   |
 
-For clarification, consider the following (buggy) code snippet:
+As an example, consider the following (buggy) code snippet:
 
 ```java
 /**
@@ -71,7 +71,7 @@ int sum(int a, int b) {
 }
 ```
 
-We provide an example of each class of oracle below:
+Here is an example of each class of oracle:
 - True Positive: `sum(a, b) == (a + b)`
 - False Positive: `sum(a, b) == null`
 - True Negative: `sum(a, b) != null`
@@ -81,11 +81,14 @@ Intuitively, we hope to maximize True Positives and True Negatives, and minimize
 
 ### Mutation
 
-To analyze the "effectiveness" of the generated oracles, we compute the mutation score of the generated test suite. Consider the previous example, `sum`, and two corresponding oracles: `sum(a, b) == (a + b)` and `sum(a, b) != null`. We say the first assertion (1) is more "effective" than the second assertion (2). We quantify "effective"-ness via mutation score, which indicates how robust the test suite is to changes in source code. Intuitively, because (1) implies (2), we know that (1) will always kill more mutants than (2) and have a better mutation score.
+Mutation score is a proxy for the quality of the generated oracles, in terms of their effectiveness in alarming about incorrect code or their sensitivity to changes in source code.
+The oracle `sum(a, b) == (a + b)` has a higher mutatation score than `sum(a, b) != null`.
 
 ## Implementation
 
-The user provides two arguments as input: the TOG and the source path. For reference, we provide an overview of the experimental pipeline.
+The user provides, as input, the TOG and the source path.
+
+Here is the experimental pipeline:
 
 ![experiment pipeline](./doc/experiment-pipeline.png)
 
