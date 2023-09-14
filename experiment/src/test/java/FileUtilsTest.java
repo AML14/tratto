@@ -33,12 +33,6 @@ public class FileUtilsTest {
     }
 
     @Test
-    public void isScaffoldingTest() {
-        assertTrue(FileUtils.isScaffolding(Paths.get("Stack_ESTest_scaffolding.java")));
-        assertFalse(FileUtils.isScaffolding(Paths.get("Stack_ESTest.java")));
-    }
-
-    @Test
     public void createFileTest() {
         Path path = tempRoot.resolve("tempFile.json");
         try {
@@ -117,17 +111,23 @@ public class FileUtilsTest {
     }
 
     @Test
-    public void isJavaFileTest() {
-        assertTrue(FileUtils.isJavaFile(Paths.get("com", "example", "MyClass.java")));
-        assertFalse(FileUtils.isJavaFile(Paths.get("resources", "projects.json")));
-    }
-
-    @Test
     public void findClassPathTest() {
         Path baseDir = Paths.get("src");
         Path packageClass = Paths.get("data", "OracleOutput.java");
         assertEquals(Paths.get("src", "main", "java", "data", "OracleOutput.java"), FileUtils.findClassPath(baseDir, packageClass));
         Path simpleClass = Paths.get("FileUtils.java");
         assertEquals(Paths.get("src", "main", "java", "FileUtils.java"), FileUtils.findClassPath(baseDir, simpleClass));
+    }
+
+    @Test
+    public void isJavaFileTest() {
+        assertTrue(FileUtils.isJavaFile(Paths.get("com", "example", "MyClass.java")));
+        assertFalse(FileUtils.isJavaFile(Paths.get("resources", "projects.json")));
+    }
+
+    @Test
+    public void isScaffoldingTest() {
+        assertTrue(FileUtils.isScaffolding(Paths.get("Stack_ESTest_scaffolding.java")));
+        assertFalse(FileUtils.isScaffolding(Paths.get("Stack_ESTest.java")));
     }
 }
