@@ -350,12 +350,7 @@ public class FileUtils {
         }
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            return (type == null)
-                    // if type is null, return List<?>
-                    ? objectMapper.readValue(jsonPath.toFile(), new TypeReference<>() {
-            })
-                    // otherwise, return List<T> of the given type
-                    : objectMapper.readValue(
+            return objectMapper.readValue(
                     jsonPath.toFile(),
                     objectMapper.getTypeFactory().constructCollectionType(List.class, type)
             );
