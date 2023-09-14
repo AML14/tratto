@@ -5,8 +5,8 @@ import star.tratto.data.OracleDatapoint;
 
 import java.util.List;
 
-import static star.tratto.util.JavaParserUtils.getReturnTypeOfExpression;
-import static star.tratto.util.JavaParserUtils.isInstanceOf;
+import static star.tratto.util.javaparser.JavaParserUtils.getReturnTypeOfExpression;
+import static star.tratto.util.javaparser.JavaParserUtils.isInstanceOf;
 import static star.tratto.util.StringUtils.fullyQualifiedClassName;
 
 /**

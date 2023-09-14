@@ -51,7 +51,8 @@ public class OracleDP2TokenDPs {
         // TokenDatapoints for when oracleSoFarTokens = []:
         List<TokenDatapoint> tokenDatapoints = oracleSoFarAndTokenToTokenDatapoints(oracleDatapoint, oracleSoFarTokens, oracleTokens.get(0), tokenDPType);
 
-        for (int i = 0; i < oracleTokens.size() - 1; i++) { // Skip last token because it is not followed by anything
+        // Skip last token because it is not followed by anything
+        for (int i = 0; i < oracleTokens.size() - 1; i++) {
             String oracleToken = oracleTokens.get(i);
             String nextOracleToken = oracleTokens.get(i + 1);
 
@@ -128,7 +129,8 @@ public class OracleDP2TokenDPs {
     }
 
     private static void assertTokenLegal(boolean nextTokenActuallyLegal, String token, List<String> oracleSoFarTokens) {
-        if (!nextTokenActuallyLegal && !token.equals("")) { // If token is "", this is oracle-generation time, so the next token is not known a priori.
+        // If token is "", this is oracle-generation time, so the next token is not known a priori.
+        if (!nextTokenActuallyLegal && !token.equals("")) {
             String message = "Token '" + token + "' is not legal after partial oracle '" + compactExpression(oracleSoFarTokens) + "'";
             if (CRASH_WRONG_ORACLE) {
                 throw new RuntimeException(message);

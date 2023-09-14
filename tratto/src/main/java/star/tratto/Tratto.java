@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static star.tratto.data.OracleDP2TokenDPs.oracleSoFarAndTokenToTokenDatapoints;
-import static star.tratto.util.JavaParserUtils.getClassOrInterface;
+import static star.tratto.util.javaparser.JavaParserUtils.getClassOrInterface;
 import static star.tratto.util.StringUtils.compactExpression;
 
 public class Tratto {
@@ -53,7 +53,8 @@ public class Tratto {
         String classSourceCode = "TODO";
 
         List<OracleDatapoint> oracleDatapoints = classAnalyzer.getOracleDatapointsFromClass(getClassOrInterface(classSourceCode, className));
-        for (OracleDatapoint oracleDatapoint : oracleDatapoints) { // Update each OracleDatapoint until the oracle is complete (ends with ';')
+        // Update each OracleDatapoint until the oracle is complete (ends with ';')
+        for (OracleDatapoint oracleDatapoint : oracleDatapoints) {
             List<String> oracleSoFarTokens = new ArrayList<>();
             while (!oracleDatapoint.getOracle().endsWith(";")) {
                 // Generate token datapoints and save to file
