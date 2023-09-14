@@ -1,10 +1,8 @@
 import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.stmt.Statement;
 
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
