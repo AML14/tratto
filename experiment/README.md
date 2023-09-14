@@ -248,10 +248,7 @@ In our experimental analysis, we seek to answer the following research questions
 
 ## 2.3. Metrics
 
-To answer the above research questions, we perform two experiments: [Classification](#231-classification) (RQ 1, 3) and [Mutation](#232-mutation) (RQ 2).
-
-
-### 2.3.1. Classification
+To evaluate 
 
 We say an oracle <span style="color:red">"fails"</span> the code if its corresponding test assertion fails using the current implementation. We say an oracle <span style="color:green">"passes"</span> the specification if the assertion *should* pass according to the specification.
 
@@ -285,11 +282,6 @@ We provide an example of each class of oracle below:
 
 Intuitively, we hope to maximize True Positives and True Negatives, and minimize False Positives and False Negatives.
 This corresponds to a high precision and a low FPR.
-
-
-### 2.3.2. Mutation
-
-To analyze the "effectiveness" of the generated oracles, we compute the mutation score of the generated test suite. Consider the previous example, `sum`, and two corresponding oracles: `sum(a, b) == (a + b)` and `sum(a, b) != null`. We say the first assertion (1) is more "effective" than the second assertion (2). We quantify "effective"-ness via mutation score, which indicates how robust the test suite is to changes in source code. Intuitively, because (1) implies (2), we know that (1) will always kill more mutants than (2) and have a better mutation score.
 
 # 3. Run the experiments
 
