@@ -245,7 +245,7 @@ public class FileUtils {
      * file and parent directories if necessary. If file already exists,
      * then this method overrides any previous content.
      *
-     * @param path    a file
+     * @param path a file
      * @param content an object to be written in JSON content
      * @throws Error if unable to create files/directories or unable to write
      *               content to file
