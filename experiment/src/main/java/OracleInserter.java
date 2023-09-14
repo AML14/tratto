@@ -37,8 +37,6 @@ public class OracleInserter {
             "float",
             "double"
     );
-    /** The path to the output directory. */
-    private static final Path output = Paths.get("output");
     /** A list of all supported axiomatic test oracle generators. */
     private static final List<TogType> axiomaticTogs = List.of(TogType.JDOCTOR, TogType.TRATTO);
 
