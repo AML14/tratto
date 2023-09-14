@@ -191,17 +191,17 @@ public class OracleInserter {
     }
 
     /**
-     * Adds an assertion to a given test case.
+     * Adds an assertion to the end of a given test prefix.
      *
-     * @param testCase a method representation of a test case
-     * @param assertion the string representation of the assertion to add
+     * @param testCase a test case
+     * @param assertion the assertion to add
      */
     private static void insertNonAxiomaticAssertion(MethodDeclaration testCase, String assertion) {
     }
 
     /**
-     * Wraps a given test case in a try/catch block where the catch block
-     * expects a given exception class.
+     * Wraps a test prefix with a try/catch block, where the catch block
+     * expects a given exception type.
      *
      * @param testCase a test case
      * @param exception the exception to catch
