@@ -20,9 +20,7 @@ import java.util.stream.Stream;
  * reading, etc.
  */
 public class FileUtils {
-    /**
-     * Private constructor to avoid creating an instance of this class.
-     */
+    /** Private constructor to avoid creating an instance of this class. */
     private FileUtils() {
         throw new UnsupportedOperationException("This class cannot be instantiated.");
     }
