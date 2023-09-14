@@ -101,8 +101,7 @@ public class Tog {
         OperationType operationType = OperationType.valueOf(args[1].toUpperCase());
         switch (operationType) {
             case REMOVE_ORACLES -> OracleRemover.removeOracles(
-                    Paths.get(args[2]),
-                    args[3]
+                    args[2]
             );
             case INSERT_ORACLES -> insertOraclesOperation(
                     togType,
