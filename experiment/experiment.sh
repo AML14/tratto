@@ -1,3 +1,4 @@
+#!/bin/bash
 # This script generates a test suite for a class in a given project using
 # every supported TOG. An invocation follows the format,
 #     "bash experiment.sh [target-class] [src-dir] [bin-dir]"
