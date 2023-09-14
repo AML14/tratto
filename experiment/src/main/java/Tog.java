@@ -14,17 +14,24 @@ import java.nio.file.Paths;
  *     <li>Postprocessing TOG output</li>
  *     <li>Summarizing test suite results</li>
  *     <li>Summarizing Defects4J results</li>
+ *     <li>Combining Defects4J results into a complete summary</li>
  * </ul>
  * The various operations require different arguments, following the format:
  * <ul>
- *     <li>{@code java -jar experiment.jar toga remove_oracles
- *     tutorial.Stack}</li>
- *     <li>{@code java -jar experiment.jar jdoctor insert_oracles
- *     "path/to/src/main" "path/to/oracle/output.json"}</li>
- *     <li>{@code java -jar experiment.jar toga generate_tog_inputs
- *     "path/to/src/main" tutorial.Stack}</li>
- *     <li>{@code java -jar experiment.jar jdoctor generate_oracle_outputs
- *     path/to/jdoctor/output.json}</li>
+ *     <li>{@code java -jar experiment.jar remove_oracles
+ *     [fullyQualifiedName]}</li>
+ *     <li>{@code java -jar experiment.jar insert_oracles
+ *     [togType] [jarPath]}</li>
+ *     <li>{@code java -jar experiment.jar generate_tog_input
+ *     [togType] [fullyQualifiedName] [srcDir]}</li>
+ *     <li>{@code java -jar experiment.jar generate_oracle_output
+ *     [togType] [srcDir]}</li>
+ *     <li>{@code java -jar experiment.jar generate_test_output
+ *     [togType] [fullyQualifiedName] [srcDir] [binDir]}</li>
+ *     <li>{@code java -jar experiment.jar generate_defects4j_output
+ *     [togType] [projectName] [bugID] [fullyQualifiedName]}</li>
+ *     <li>{@code java -jar experiment.jar combine_defects4j_output
+ *     [togType]}</li>
  * </ul>
  */
 public class Tog {
