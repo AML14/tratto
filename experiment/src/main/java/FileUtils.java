@@ -84,7 +84,7 @@ public class FileUtils {
      * @param fullyQualifiedName a fully qualified class name
      * @return the corresponding Class.getSimpleName
      */
-    public static String getClassNameFromFullyQualifiedName(String fullyQualifiedName) {
+    public static String getSimpleNameFromFQN(String fullyQualifiedName) {
         int classNameIdx = fullyQualifiedName.lastIndexOf(".");
         if (classNameIdx != -1) {
             return fullyQualifiedName.substring(classNameIdx + 1);

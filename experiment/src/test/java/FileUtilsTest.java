@@ -44,6 +44,12 @@ public class FileUtilsTest {
     }
 
     @Test
+    public void getSimpleNameFromFQN() {
+        assertEquals("MyClass", FileUtils.getSimpleNameFromFQN("com.example.MyClass"));
+        assertEquals("MyClass", FileUtils.getSimpleNameFromFQN("MyClass"));
+    }
+
+    @Test
     public void createFileTest() {
         Path path = tempRoot.resolve("tempFile.json");
         try {
