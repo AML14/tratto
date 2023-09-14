@@ -63,7 +63,7 @@ public class FileUtils {
      *     {@code com.example.MyClass}    -&gt;    {@code MyClass}
      *
      * @param fullyQualifiedName a fully qualified class name
-     * @return the corresponding Class.getSimpleName
+     * @return the corresponding simple name without packages
      */
     public static String getSimpleNameFromFQN(String fullyQualifiedName) {
         int classNameIdx = fullyQualifiedName.lastIndexOf(".");
