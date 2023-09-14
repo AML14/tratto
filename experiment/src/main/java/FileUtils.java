@@ -50,6 +50,22 @@ public class FileUtils {
     }
 
     /**
+     * Gets the path to the output directory for a given fully qualified name.
+     * The FQN path converts the package names as subdirectories for a given
+     * output base directory. For example:
+     * {@code "baseDir", "com.example.MyClass"}    -&gt;
+     * {@code output/baseDir/com/example/MyClass}
+     *
+     * @param fullyQualifiedName a fully qualified name
+     * @return the output path for a given fully qualified name
+     */
+    public static Path getFQNOutputPath(String baseDir, String fullyQualifiedName) {
+        Path fqnPath = FileUtils.getRelativePathFromFullyQualifiedClassName(baseDir + "." + fullyQualifiedName);
+        int classNameIdx = fqnPath.getNameCount() - 1;
+        return Paths.get("output").resolve(fqnPath.subpath(0, classNameIdx));
+    }
+
+    /**
      * Creates an empty directory. Creates parent directories if necessary. If
      * the directory already exists, then this method does nothing.
      *

@@ -16,8 +16,6 @@ import java.util.List;
 public class OracleRemover {
     /** A global unique ID to avoid duplicate test names. */
     private static int testID = 0;
-    /** The path to the output directory. */
-    private static final Path output = Paths.get("output");
     /** A list of all JUnit Assertions assert methods. */
     private static final List<String> allJUnitAssertionsMethods = List.of(
             "assertArrayEquals",
@@ -191,20 +189,6 @@ public class OracleRemover {
      * @param testFile a JavaParser representation of a test file
      */
     private static void splitTests(CompilationUnit testFile) {
-    }
-
-    /**
-     * Gets the path to the output directory for a given fully qualified name.
-     * The FQN path converts the package names as subdirectories for a given
-     * output base directory. For example,
-     * {@code "baseDir", "com.example.MyClass"}    -&gt;
-     * {@code output/baseDir/com/example/MyClass}
-     *
-     * @param fullyQualifiedName a fully qualified name
-     * @return the output path for a given fully qualified name
-     */
-    private static Path getFQNOutputPath(String baseDir, String fullyQualifiedName) {
-        return null;
     }
 
     /**
