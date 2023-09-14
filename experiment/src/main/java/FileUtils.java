@@ -55,22 +55,8 @@ public class FileUtils {
      * @param fullyQualifiedName the fully qualified class name.
      * @return the relative path corresponding to the fully qualified class name.
      */
-    public static Path getRelativePathFromFullyQualifiedClassName(String fullyQualifiedName) {
-        String[] fullyQualifiedClassNameSplit = fullyQualifiedName.split("\\.");
-        if (fullyQualifiedClassNameSplit.length > 1) {
-            int classNameIdx = fullyQualifiedClassNameSplit.length - 1;
-            String className = fullyQualifiedClassNameSplit[classNameIdx];
-            fullyQualifiedClassNameSplit[classNameIdx] = className + ".java";
-            return Paths.get(
-                    fullyQualifiedClassNameSplit[0],
-                    Arrays.copyOfRange(
-                            fullyQualifiedClassNameSplit,
-                            1,
-                            fullyQualifiedClassNameSplit.length
-                    )
-            );
-        }
-        return Paths.get(fullyQualifiedName);
+    public static Path getFQNPath(String fullyQualifiedName) {
+        return Paths.get(fullyQualifiedName.replaceAll("[.]", "/") + ".java");
     }
 
     /**
@@ -84,7 +70,7 @@ public class FileUtils {
      * @return the output path for a given fully qualified name
      */
     public static Path getFQNOutputPath(String baseDir, String fullyQualifiedName) {
-        Path fqnPath = FileUtils.getRelativePathFromFullyQualifiedClassName(baseDir + "." + fullyQualifiedName);
+        Path fqnPath = FileUtils.getFQNPath(baseDir + "." + fullyQualifiedName);
         int classNameIdx = fqnPath.getNameCount() - 1;
         return Paths.get("output").resolve(fqnPath.subpath(0, classNameIdx));
     }

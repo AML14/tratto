@@ -27,6 +27,12 @@ public class FileUtilsTest {
     }
 
     @Test
+    public void getFQNPathTest() {
+        assertEquals(Paths.get("com", "example", "github", "MyClass.java"), FileUtils.getFQNPath("com.example.github.MyClass"));
+        assertEquals(Paths.get("MyClass.java"), FileUtils.getFQNPath("MyClass"));
+    }
+
+    @Test
     public void isScaffoldingTest() {
         assertTrue(FileUtils.isScaffolding(Paths.get("Stack_ESTest_scaffolding.java")));
         assertFalse(FileUtils.isScaffolding(Paths.get("Stack_ESTest.java")));
