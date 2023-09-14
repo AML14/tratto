@@ -5,8 +5,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
- * This class represents the main file used in {@code experiment.jar}, with
- * all necessary operations for the end-to-end experiment process, including:
+ * This class is the main file used in the build {@code experiment.jar}, with
+ * all necessary operations for the experiment pipeline, including:
  * <ul>
  *     <li>Removing oracles</li>
  *     <li>Inserting oracles</li>
