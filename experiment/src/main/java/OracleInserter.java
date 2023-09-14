@@ -5,6 +5,7 @@ import com.github.javaparser.ast.expr.LiteralExpr;
 import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.type.Type;
 import data.OracleOutput;
+import data.OracleType;
 import data.TogType;
 
 import java.nio.file.Path;
@@ -167,9 +168,9 @@ public class OracleInserter {
     }
 
     /**
-     * Adds axiomatic oracles to test prefixes in a given Java file. Axiomatic
-     * oracles are not specific to a given test prefix. This method iterates
-     * through each line in each test case, and adds all applicable oracles.
+     * Adds axiomatic oracles to test prefixes in a given Java file. This
+     * method iterates through each line in each test case, and adds all
+     * related oracles.
      *
      * @param testFile a Java test file
      * @param oracles a list of test oracles made by an axiomatic tog
@@ -178,11 +179,14 @@ public class OracleInserter {
     }
 
     /**
-     * Adds axiomatic oracles to test prefixes in a given directory. Axiomatic
-     * oracles are not specific to a given test prefix. Therefore, we insert
-     * the axiomatic oracles wherever they may be applicable in source code.
-     * For example, if an axiomatic oracle involves class Foo, then the oracle
-     * is added after every instance of Foo in all test prefixes.
+     * Adds axiomatic oracles to a given collection of test prefixes.
+     * Axiomatic oracles are not specific to a given test prefix. The oracles
+     * are inserted wherever they may be applicable in source code. For
+     * example, if an axiomatic oracle involves a method "foo", then the
+     * oracle is added after every call to "bar" in the test prefix. The
+     * approach for inserting an axiomatic oracle differs on the
+     * {@link OracleType} (e.g. PRE, NORMAL_POST, EXCEPT_POST). See the
+     * corresponding test file for examples.
      *
      * @param dir a directory with Java test prefixes
      * @param oracles a list of test oracles made by an axiomatic tog
