@@ -38,6 +38,12 @@ public class FileUtilsTest {
     }
 
     @Test
+    public void getFQNOutputPathTest() {
+        assertEquals(Paths.get("output", "evosuite-prefix", "example"), FileUtils.getFQNOutputPath("evosuite-prefix", "example.MyClass"));
+        assertEquals(Paths.get("output", "tog-tests"), FileUtils.getFQNOutputPath("tog-tests", "MyClass"));
+    }
+
+    @Test
     public void createFileTest() {
         Path path = tempRoot.resolve("tempFile.json");
         try {
