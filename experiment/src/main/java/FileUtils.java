@@ -39,11 +39,14 @@ public class FileUtils {
     }
 
     /**
-     * Gets the path to the output directory for a given fully qualified name.
-     * The FQN path converts the package names as subdirectories for a given
-     * output base directory. For example:
-     * {@code "baseDir", "com.example.MyClass"}    -&gt;
-     * {@code output/baseDir/com/example/MyClass}
+     * Gets the output path for a given fully qualified name. The output
+     * directory contains multiple subdirectories for various functionality.
+     * The {@code baseDir} corresponds to the main subdirectory in which the
+     * class path is added. For example:
+     *     {@code "evosuite-prefixes", "com.example.MyClass"}    -&gt;
+     *     {@code output/evosuite-prefixes/com/example}
+     * The class name is removed to get the directory in which to add the
+     * output.
      *
      * @param fullyQualifiedName a fully qualified name
      * @return the output path for a given fully qualified name
