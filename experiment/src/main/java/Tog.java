@@ -27,7 +27,7 @@ import java.nio.file.Paths;
  *     <li>{@code java -jar experiment.jar generate_oracle_output
  *     [togType] [srcDir]}</li>
  *     <li>{@code java -jar experiment.jar generate_test_output
- *     [togType] [fullyQualifiedName] [srcDir] [binDir] [fileName]}</li>
+ *     [togType] [fullyQualifiedName] [srcDir] [binDir] [fileSuffix]}</li>
  *     <li>{@code java -jar experiment.jar generate_defects4j_output
  *     [togType] [projectName] [bugID] [fullyQualifiedName]}</li>
  *     <li>{@code java -jar experiment.jar combine_defects4j_output
@@ -93,14 +93,14 @@ public class Tog {
      * @param fullyQualifiedName the class under test
      * @param srcDir the source directory of the project under test
      * @param binDir the system binaries of the project under test
-     * @param fileName the name of the saved TestOutput record
+     * @param fileSuffix a suffix to append to the TestOutput JSON file name
      */
     private static void generateTestOutput(
             TogType togType,
             String fullyQualifiedName,
             Path srcDir,
             Path binDir,
-            String fileName
+            String fileSuffix
     ) {
     }
 
