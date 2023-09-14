@@ -101,7 +101,7 @@ public class FileUtilsTest {
     }
 
     @Test
-    public void writeTest() {
+    public void writeJSONTest() {
         Path path = tempRoot.resolve("tempFile.json");
         try {
             FileUtils.writeJSON(path, List.of("input1", "input2", "input3"));
