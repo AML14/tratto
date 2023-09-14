@@ -60,7 +60,6 @@ public class OracleRemover {
         return false;
     }
 
-
     /**
      * Gets all method calls in a Java statement.
      *
@@ -79,8 +78,8 @@ public class OracleRemover {
      * or,
      *     {@code assertTrue(booleanVar}    -&gt;    {@code null}
      * </pre>
-     * This method assumes that a JUnit Assertions only has a single method
-     * call in its condition.
+     * This method assumes each JUnit Assertions method call contains at most
+     * one other method call.
      *
      * @param jUnitAssertion a JUnit Assertion statement
      * @return the method call in the JUnit Assertion condition. Returns null
@@ -99,7 +98,8 @@ public class OracleRemover {
      * Assertions condition contains a method call, then the method call is
      * kept in the prefix. For example,
      *     {@code assertTrue(stack.isEmpty())}    -&gt;    {@code stack.isEmpty()}.
-     * This method does not modify the actual source file.
+     * This method assumes each JUnit Assertions method call contains at most
+     * one method call. This method does not modify the actual source file.
      *
      * @param testFile a JavaParser representation of a test file
      */
@@ -132,23 +132,6 @@ public class OracleRemover {
     }
 
     /**
-     * Creates a related method based on a given original method. The original
-     * method is given a new body and a new name. The new name is the same as
-     * the original method name, but with a global ID appended to avoid
-     * repeating a method name.
-     *
-     * @param original the original method
-     * @param newBody the new method body
-     * @return the new method
-     */
-    private static MethodDeclaration createRelatedMethod(
-            MethodDeclaration original,
-            NodeList<Statement> newBody
-    ) {
-        return new MethodDeclaration();
-    }
-
-    /**
      * Gets a new test case corresponding to a specific assertion in the
      * original test case. An EvoSuite test may contain multiple assertions.
      * For compatibility with TOGA, each test is split into multiple subtests,
@@ -162,7 +145,7 @@ public class OracleRemover {
      * assertion index
      */
     private static MethodDeclaration getSimpleTestCase(MethodDeclaration testCase, int assertionIdx) {
-        return new MethodDeclaration();
+        return null;
     }
 
     /**
