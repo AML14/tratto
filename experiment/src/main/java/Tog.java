@@ -12,6 +12,8 @@ import java.nio.file.Paths;
  *     <li>Inserting oracles</li>
  *     <li>Preprocessing TOG input</li>
  *     <li>Postprocessing TOG output</li>
+ *     <li>Summarizing test suite results</li>
+ *     <li>Summarizing Defects4J results</li>
  * </ul>
  * The various operations require different arguments, following the format:
  * <ul>
@@ -107,12 +109,12 @@ public class Tog {
                     Paths.get(args[2]),
                     Paths.get(args[3])
             );
-            case GENERATE_TOG_INPUTS -> generateTogInputOperation(
+            case GENERATE_TOG_INPUT -> generateTogInputOperation(
                     togType,
                     Paths.get(args[2]),
                     args[3]
             );
-            case GENERATE_ORACLE_OUTPUTS -> generateOracleOutputOperation(
+            case GENERATE_ORACLE_OUTPUT -> generateOracleOutputOperation(
                     togType,
                     Paths.get(args[2])
             );
