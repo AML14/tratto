@@ -297,9 +297,9 @@ To analyze the "effectiveness" of the generated oracles, we compute the mutation
 
 First, check that all steps in [Section 1.1](#1-setup) have been complete. Then, to perform an experiment, run the command:
 
-  ```shell
-  bash experiment.sh [tog_name] [fully_qualified_class_name] [source_path] [binary_path] {[jar_path]}
-  ```
+```shell
+bash experiment.sh [fully-qualified-name] [source-dir] [bin-dir] [project-jar]
+```
 
 providing four arguments as input:
 1. the TOG name [`jdoctor`,`tratto`,`toga`]
