@@ -20,25 +20,7 @@ fi
 ROOT_DIR=$(dirname "$(dirname "$(realpath "$0")")")
 RESOURCES_DIR="${ROOT_DIR}${SEPARATOR}generator${SEPARATOR}resources"
 JDK_DEFAULT_PATH=$(find "$RESOURCES_DIR" -type d -name 'jdk-*' -print -quit)
-JAVA8_BIN=""
-if [ -n "$JDK_DEFAULT_PATH" ]; then
-  JDK_PATH=$(dirname "$JDK_DEFAULT_PATH")"${SEPARATOR}${JDK8_NAME}"
-  if [ "$JDK_DEFAULT_PATH" != "$JDK_PATH" ]; then
-    mv "$JDK_DEFAULT_PATH" "$JDK_PATH"
-  fi
-  if [ "$(uname)" == "Linux" ]; then
-      JAVA8_HOME="${JDK_PATH}"
-  else
-      JAVA8_HOME="${JDK_PATH}${SEPARATOR}Contents${SEPARATOR}Home"
-  fi
-  JAVA8_BIN="${JAVA8_HOME}${SEPARATOR}bin${SEPARATOR}java"
-fi
-
-if [ ! -e "$JAVA8_BIN" ] || [ -z "$JAVA8_BIN" ]; then
-  echo "(EVOSUITE) Unable to find a jdk directory. Please provide the complete path to the Java 8 JDK binary ([path_to_jdk]${SEPARATOR}Contents${SEPARATOR}Home${SEPARATOR}bin${SEPARATOR}java or [path_to_jdk]${SEPARATOR}bin${SEPARATOR}java):"
-  read -r USER_INPUT
-  JAVA8_BIN="${USER_INPUT}"
-fi
+JAVA8_BIN=$(bash "${ROOT_DIR}${SEPARATOR}generator${SEPARATOR}utils${SEPARATOR}java_version.sh" "$JDK8_NAME" "EVOSUITE")
 
 # argument and setup check
 if [ ! $# -eq 2 ]; then
