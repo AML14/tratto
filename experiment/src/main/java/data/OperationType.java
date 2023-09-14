@@ -15,5 +15,7 @@ public enum OperationType {
     /** Converts an {@link OracleOutput} into a {@link TestOutput}. */
     GENERATE_TEST_OUTPUT,
     /** Converts a collection of {@link TestOutput} into a {@link Defects4JOutput}. */
-    GENERATE_DEFECTS4J_OUTPUT
+    GENERATE_DEFECTS4J_OUTPUT,
+    /** Combines all {@link Defects4JOutput} records into a single summary. */
+    COMBINE_DEFECTS4J_OUTPUT
 }
