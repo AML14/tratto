@@ -1,12 +1,15 @@
 compile:
+	tratto/scripts/install_dependencies.sh
 	cd oracle-grammar/MavenVersion/oracle-grammar && mvn -q compile
 	cd tratto && mvn -q compile
 
 clean:
+	tratto/scripts/install_dependencies.sh
 	cd oracle-grammar/MavenVersion/oracle-grammar && mvn -q clean
 	cd tratto && mvn -q clean
 
 test:
+	tratto/scripts/install_dependencies.sh
 	cd oracle-grammar/MavenVersion/oracle-grammar && mvn -q package
 	cd tratto && mvn -q package
 
