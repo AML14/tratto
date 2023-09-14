@@ -397,31 +397,23 @@ public class FileUtils {
     }
 
     /**
-     * Searches a file within all the subdirectories of a given directory.
+     * Searches for a class file in a given directory and its
+     * subdirectories.
      *
-     * @param dir the root directory.
-     * @param fullyQualifiedClassFilePath the fully qualified name of the class file.
-     * @return the full path to the file. Returns null if the path is not found.
+     * @param dir the root directory
+     * @param fqnPath the fully qualified name of the class as a Path
+     * @return the path to the class in the given root directory. Returns null
+     * if no such class is found.
+     * @see FileUtils#getFQNPath(String)
      */
-    public static Path getClassPath(Path dir, Path fullyQualifiedClassFilePath) {
-        File dirFile = new File(dir.toString());
-        int classNameIdx = fullyQualifiedClassFilePath.getNameCount() - 1;
-        Path className = fullyQualifiedClassFilePath.getName(classNameIdx);
-        File[] files = dirFile.listFiles();
-        if (files != null) {
-            for (File file : files) {
-                if (file.isDirectory()) {
-                    Path path = getClassPath(file.toPath(), fullyQualifiedClassFilePath);
-                    if (!(path == null)) {
-                        return path;
-                    }
-                } else if (file.getName().equals(className.toString())) {
-                    if (file.toPath().endsWith(fullyQualifiedClassFilePath)) {
-                        return file.toPath();
-                    }
-                }
-            }
+    public static Path findClassPath(Path dir, Path fqnPath) {
+        try (Stream<Path> walk = Files.walk(dir)) {
+            return walk
+                    .filter(p -> p.endsWith(fqnPath))
+                    .findFirst()
+                    .orElse(null);
+        } catch (IOException e) {
+            throw new Error("Unable to parse files in directory " + dir);
         }
-        return null;
     }
 }
