@@ -57,12 +57,12 @@ public class TogUtils {
     }
 
     /**
-     * Transforms the output from the TOGA script (a .csv file where each row contains the
-     * assertion for a given focal method and test prefix) into a json file containing a
-     * corresponding list of {@code OracleOutput} objects.
-     * Saves the output file in output/toga/oracle.
+     * Converts TOGA output (a .csv file where each row contains an assertion
+     * for a given focal method and test prefix) to a JSON file of
+     * {@link OracleOutput} records. Saves the output to "output/toga/oracle".
+     *
+     * @param srcDirPath the source directory of the project under test
      * @see OracleOutput
-     * @param srcDirPath the path to the source code of the project under test
      */
     public static void togaToOracleOutput(Path srcDirPath) {
     }
