@@ -10,7 +10,6 @@ import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -50,10 +49,13 @@ public class FileUtils {
     }
 
     /**
-     * Generates a relative path to a class file from a fully qualified class name.
+     * Converts a fully qualified class name into a relative file Path. For
+     * example,
+     *     {@code com.example.MyClass}    -&gt;
+     *     {@code com/example/MyClass.java}
      *
-     * @param fullyQualifiedName the fully qualified class name.
-     * @return the relative path corresponding to the fully qualified class name.
+     * @param fullyQualifiedName a fully qualified class name
+     * @return the path corresponding to the fully qualified class name
      */
     public static Path getFQNPath(String fullyQualifiedName) {
         return Paths.get(fullyQualifiedName.replaceAll("[.]", "/") + ".java");
