@@ -398,11 +398,12 @@ public class FileUtils {
 
     /**
      * Searches a file within all the subdirectories of a given directory.
+     *
      * @param dir the root directory.
      * @param fullyQualifiedClassFilePath the fully qualified name of the class file.
      * @return the full path to the file. Returns null if the path is not found.
      */
-    public static Path searchClassFile(Path dir, Path fullyQualifiedClassFilePath) {
+    public static Path getClassPath(Path dir, Path fullyQualifiedClassFilePath) {
         File dirFile = new File(dir.toString());
         int classNameIdx = fullyQualifiedClassFilePath.getNameCount() - 1;
         Path className = fullyQualifiedClassFilePath.getName(classNameIdx);
@@ -410,7 +411,7 @@ public class FileUtils {
         if (files != null) {
             for (File file : files) {
                 if (file.isDirectory()) {
-                    Path path = searchClassFile(file.toPath(), fullyQualifiedClassFilePath);
+                    Path path = getClassPath(file.toPath(), fullyQualifiedClassFilePath);
                     if (!(path == null)) {
                         return path;
                     }
