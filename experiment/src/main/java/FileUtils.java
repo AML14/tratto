@@ -26,26 +26,6 @@ public class FileUtils {
     }
 
     /**
-     * Gets the root project directory, "experiment", from a child path in the
-     * project.
-     *
-     * @param childPath the path of a file or directory in "experiment"
-     * @return the path of the experiment root directory
-     * @throws IllegalArgumentException if the given path is not contained in
-     * the experiment project
-     */
-    public static Path getExperimentRoot(Path childPath) {
-        Path currentPath = childPath;
-        while (currentPath != null) {
-            if (currentPath.endsWith("experiment")) {
-                return currentPath;
-            }
-            currentPath = currentPath.getParent();
-        }
-        throw new IllegalArgumentException("Unable to find \"experiment\" in the path " + childPath);
-    }
-
-    /**
      * Converts a fully qualified class name into a relative file Path. For
      * example,
      *     {@code com.example.MyClass}    -&gt;

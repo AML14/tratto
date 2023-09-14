@@ -27,11 +27,6 @@ public class FileUtilsTest {
     }
 
     @Test
-    public void getExperimentRootTest() {
-        assertEquals(Paths.get("root", "experiment"), FileUtils.getExperimentRoot(Paths.get("root", "experiment", "com", "example", "MyClass.java")));
-    }
-
-    @Test
     public void getFQNPathTest() {
         assertEquals(Paths.get("com", "example", "github", "MyClass.java"), FileUtils.getFQNPath("com.example.github.MyClass"));
         assertEquals(Paths.get("MyClass.java"), FileUtils.getFQNPath("MyClass"));
