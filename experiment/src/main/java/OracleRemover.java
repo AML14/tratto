@@ -191,21 +191,21 @@ public class OracleRemover {
     }
 
     /**
-     * Removes all assertions from all test files in a given directory. The
-     * approach for removing oracles depends on whether an oracle is
-     * exceptional (e.g. throws an exception) or a normal assertion. Firstly,
-     * this method splits any test case with multiple assertions into multiple
-     * simple tests, each with a single JUnit assertion. These smaller
-     * subtests are saved in "output/evosuite-tests-simple/". Then, all
-     * oracles are removed from each test case to create test prefixes. The
-     * test prefixes are saved in "output/evosuite-prefix". This method does
-     * not override the original test files.
+     * Removes all assertions from all EvoSuite tests generated for a given
+     * class. The approach for removing oracles depends on whether an oracle
+     * is exceptional or a normal assertion. Firstly, this method splits any
+     * test case with multiple assertions into multiple simple tests, each
+     * with a single JUnit assertion. The smaller subtests are saved in
+     * "output/evosuite-tests-simple" and the test prefixes are saved in
+     * "output/evosuite-prefix". This method does not override the original
+     * test files.
      *
-     * @param dir a directory with Java test files
+     * @param fullyQualifiedName the fully qualified name of the class under
+     *                           test
      * @see OracleRemover#splitTests(CompilationUnit)
      * @see OracleRemover#removeExceptionalOracles(CompilationUnit)
      * @see OracleRemover#removeAssertionOracles(CompilationUnit)
      */
-    public static void removeOracles(Path dir, String fullyQualifiedName) {
+    public static void removeOracles(String fullyQualifiedName) {
     }
 }
