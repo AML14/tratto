@@ -1,16 +1,14 @@
 import com.github.javaparser.JavaParser;
-import data.Defects4JOutput;
 import data.OracleOutput;
 import data.TestOutput;
 import data.TogType;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.regex.Pattern;
 
 /**
  * This class provides static methods for pre-processing inputs for a given
- * TOG and converting its output into other {@link data} outputs.
+ * TOG and converting its output into other {@link data} output records.
  */
 public class TogUtils {
     /** The path of the output directory. */
@@ -19,8 +17,6 @@ public class TogUtils {
     private static final Path evosuitePrefixPath = output.resolve("evosuite-prefix");
     /** The path of the EvoSuite simple tests directory (tests with one assertion).  */
     private static final Path evosuiteTestsSimplePath = output.resolve("evosuite-tests-simple");
-    /** A regex pattern to extract a text prefix (removes comments and decorators). */
-    private static final Pattern testPrefixPattern = Pattern.compile("(public|protected|private)(.| )*");
     /** A JavaParser used to pre-process source code to be converted into TOGA input. */
     private static JavaParser javaParser;
 
@@ -30,8 +26,8 @@ public class TogUtils {
     }
 
     /**
-     * Creates a JavaParser object capable of resolving symbols from a given
-     * source directory.
+     * Creates a JavaParser object able to resolve symbols from a given source
+     * directory.
      *
      * @param srcDirPath a project source directory
      * @return the corresponding JavaParser
@@ -41,23 +37,23 @@ public class TogUtils {
     }
 
     /**
-     * Generates the input file for the TOGA tog. As required by TOGA, the input is a .csv file
-     * composed of three columns:
+     * Generates the input file for TOGA. As required by TOGA, the input is a
+     * .csv file composed of three columns:
      * <ol>
-     *     <li>the focal method (i.e. the signature of the method for which TOGA have to generate
-     *     the exceptional and assertion oracles).</li>
-     *     <li>the test prefix of the method under test.</li>
+     *     <li>the focal method (i.e. the signature of the method for which
+     *     TOGA has to generate oracles)</li>
+     *     <li>the test prefix of the method under test</li>
      *     <li>the docstring of the method under test</li>
      * </ol>
-     * Extracts each method under test from the test prefixes and generate triples of
-     * (focalMethod, testPrefix, docstring).
-     * Saves the output file in output/toga/input.
+     * This method extracts each method under test from the test prefixes and
+     * generates triples of (focalMethod, testPrefix, docString). Saves the
+     * output to "output/toga/input".
      *
-     * @param srcDirPath the path to the source code of the project under test
-     * @param fullyQualifiedClassName the fully qualified name of the class under test
+     * @param srcDirPath the source directory of the project under test
+     * @param fullyQualifiedName the class under test
      *
      */
-    public static void generateTOGAInput(Path srcDirPath, String fullyQualifiedClassName) {
+    public static void generateTOGAInput(Path srcDirPath, String fullyQualifiedName) {
     }
 
     /**
@@ -115,10 +111,6 @@ public class TogUtils {
     ) {
     }
 
-    /**
-     * Write a {@link Defects4JOutput} to the output directory. Combines
-     *
-     */
     public static void writeDefects4JOutput(
     ) {
     }
