@@ -377,7 +377,8 @@ public class FileUtils {
 
     /**
      * Searches for a class file in a given directory and its
-     * subdirectories.
+     * subdirectories. Returns the path to the class from the root directory
+     * if found, otherwise, returns null.
      *
      * @param dir the root directory
      * @param fqnPath the fully qualified name of the class as a Path
