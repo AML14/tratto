@@ -117,6 +117,12 @@ public class FileUtilsTest {
     }
 
     @Test
+    public void isJavaFileTest() {
+        assertTrue(FileUtils.isJavaFile(Paths.get("com", "example", "MyClass.java")));
+        assertFalse(FileUtils.isJavaFile(Paths.get("resources", "projects.json")));
+    }
+
+    @Test
     public void findClassPathTest() {
         Path baseDir = Paths.get("src");
         Path packageClass = Paths.get("data", "OracleOutput.java");
