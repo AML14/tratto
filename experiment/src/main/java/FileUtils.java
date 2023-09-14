@@ -78,6 +78,22 @@ public class FileUtils {
     }
 
     /**
+     * Gets the ClassGetSimpleName from a fully qualified class name. For
+     * example:
+     *     {@code com.example.MyClass}    -&gt;    {@code MyClass}
+     *
+     * @param fullyQualifiedName a fully qualified class name
+     * @return the corresponding Class.getSimpleName
+     */
+    public static String getClassNameFromFullyQualifiedName(String fullyQualifiedName) {
+        int classNameIdx = fullyQualifiedName.lastIndexOf(".");
+        if (classNameIdx != -1) {
+            return fullyQualifiedName.substring(classNameIdx + 1);
+        }
+        return fullyQualifiedName;
+    }
+
+    /**
      * Creates an empty directory. Creates parent directories if necessary. If
      * the directory already exists, then this method does nothing.
      *
@@ -406,19 +422,5 @@ public class FileUtils {
             }
         }
         return null;
-    }
-
-    /**
-     * Extracts the class name from a fully qualified class name and returns it as a string.
-     * @param fullyQualifiedClassName the fully qualified class name.
-     * @return the class name.
-     */
-    public static String getClassNameFromFullyQualifiedName(String fullyQualifiedClassName) {
-        String[] fullyQualifiedClassNameSplit = fullyQualifiedClassName.split("\\.");
-        if (fullyQualifiedClassNameSplit.length > 1) {
-            int classNameIdx = fullyQualifiedClassNameSplit.length - 1;
-            return fullyQualifiedClassNameSplit[classNameIdx];
-        }
-        return fullyQualifiedClassName;
     }
 }
