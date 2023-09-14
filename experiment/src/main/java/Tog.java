@@ -27,7 +27,7 @@ import java.nio.file.Paths;
  *     <li>{@code java -jar experiment.jar generate_oracle_output
  *     [togType] [srcDir]}</li>
  *     <li>{@code java -jar experiment.jar generate_test_output
- *     [togType] [fullyQualifiedName] [srcDir] [binDir]}</li>
+ *     [togType] [fullyQualifiedName] [srcDir] [binDir] [fileName]}</li>
  *     <li>{@code java -jar experiment.jar generate_defects4j_output
  *     [togType] [projectName] [bugID] [fullyQualifiedName]}</li>
  *     <li>{@code java -jar experiment.jar combine_defects4j_output
