@@ -100,12 +100,14 @@ public class TogUtils {
      * @param className the class under test
      * @param srcDir the source directory of the project under test
      * @param binDir the system binaries of the project under test
+     * @param fileName the name of the saved TestOutput record
      */
     public static void writeTestOutput(
             TogType togType,
             String className,
             Path srcDir,
-            Path binDir
+            Path binDir,
+            String fileName
     ) {
     }
 

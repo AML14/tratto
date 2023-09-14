@@ -93,12 +93,14 @@ public class Tog {
      * @param fullyQualifiedName the class under test
      * @param srcDir the source directory of the project under test
      * @param binDir the system binaries of the project under test
+     * @param fileName the name of the saved TestOutput record
      */
     private static void generateTestOutput(
             TogType togType,
             String fullyQualifiedName,
             Path srcDir,
-            Path binDir
+            Path binDir,
+            String fileName
     ) {
     }
 
@@ -158,7 +160,8 @@ public class Tog {
                     TogType.valueOf(args[1].toUpperCase()),
                     args[2],
                     Paths.get(args[3]),
-                    Paths.get(args[4])
+                    Paths.get(args[4]),
+                    args[5]
             );
             case GENERATE_DEFECTS4J_OUTPUT -> generateDefects4JOutput(
                     TogType.valueOf(args[1].toUpperCase()),
