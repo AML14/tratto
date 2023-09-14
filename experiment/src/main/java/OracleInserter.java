@@ -71,60 +71,6 @@ public class OracleInserter {
     }
 
     /**
-     * Gets the type of a given variable. Iterates through all statements in
-     * the parent method to find the variable declaration.
-     *
-     * @param name a variable name
-     * @param body all statements in the parent method that declares
-     *             {@code name}
-     * @return the type of {@code name}
-     */
-    private static Type getTypeOfName(List<Statement> body, String name) {
-        return null;
-    }
-
-    /**
-     * Gets the type of a literal expression. For example,
-     *     {@code 0}    ->    {@code int}
-     *     {@code "hello"}    ->    {@code java.lang.String}
-     * If the literal is {@code null}, then this method returns null, as
-     * JavaParser does not have a {@link Type} representation for null types.
-     *
-     * @param literalExpr a literal value expression
-     * @return the corresponding type of the expression. Returns null if the
-     * literal is a null expression.
-     * @throws IllegalArgumentException if the literal expression is an
-     * unknown type
-     */
-    private static Type getTypeOfLiteral(LiteralExpr literalExpr) {
-        return null;
-    }
-
-    /**
-     * Gets the type of a given expression. This method handles four types of
-     * expressions:
-     * <ul>
-     *     <li>Cast (e.g. "{@code (double) 1}"): If the value
-     *     being cast is null, then returns null. Otherwise, returns the type
-     *     of the cast expression.</li>
-     *     <li>Name (e.g. "{@code x}"): Searches the body of the declaring
-     *     method to find the variable type.</li>
-     *     <li>Binary (e.g. "{@code y == null}"): Returns boolean.</li>
-     *     <li>Literal (e.g. "{@code "Hello, world"}): Parses the type of the
-     *     literal expression. Returns null if the literal value is null.</li>
-     * </ul>
-     *
-     * @param body all statements in the parent method
-     * @param expr a Java variable or literal expression
-     * @return the type of the given expression
-     * @see OracleInserter#getTypeOfName(List, String)
-     * @see OracleInserter#getTypeOfLiteral(LiteralExpr)
-     */
-    private static Type getTypeOfExpression(List<Statement> body, Expression expr) {
-        return null;
-    }
-
-    /**
      * Gets all oracles applicable to a Java statement. An oracle is
      * applicable to a statement if and only if it corresponds to the method
      * call in the given statement.
@@ -143,28 +89,6 @@ public class OracleInserter {
             List<OracleOutput> allOracles
     ) {
         return new ArrayList<>();
-    }
-
-    /**
-     * Replaces all instances of original names in an oracle with their
-     * corresponding instance names in a test statement. The original oracle
-     * uses the parameter names from the method signature, "receiverObjectID"
-     * for the instance of the declaring class, and "methodResultID" for the
-     * instance of the method return type.
-     *
-     * @param postStmt a Java statement that assigns the return value of the
-     *                 method under test to a variable
-     * @param testStmt a Java test statement
-     * @param oracleOutput an original oracle record
-     * @return an equivalent oracle record with contextual names from a test
-     * statement
-     */
-    private static OracleOutput contextualizeOracle(
-            Statement postStmt,
-            Statement testStmt,
-            OracleOutput oracleOutput
-    )  {
-        return null;
     }
 
     /**
