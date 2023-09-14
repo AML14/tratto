@@ -50,6 +50,30 @@ public class FileUtils {
     }
 
     /**
+     * Generates a relative path to a class file from a fully qualified class name.
+     *
+     * @param fullyQualifiedName the fully qualified class name.
+     * @return the relative path corresponding to the fully qualified class name.
+     */
+    public static Path getRelativePathFromFullyQualifiedClassName(String fullyQualifiedName) {
+        String[] fullyQualifiedClassNameSplit = fullyQualifiedName.split("\\.");
+        if (fullyQualifiedClassNameSplit.length > 1) {
+            int classNameIdx = fullyQualifiedClassNameSplit.length - 1;
+            String className = fullyQualifiedClassNameSplit[classNameIdx];
+            fullyQualifiedClassNameSplit[classNameIdx] = className + ".java";
+            return Paths.get(
+                    fullyQualifiedClassNameSplit[0],
+                    Arrays.copyOfRange(
+                            fullyQualifiedClassNameSplit,
+                            1,
+                            fullyQualifiedClassNameSplit.length
+                    )
+            );
+        }
+        return Paths.get(fullyQualifiedName);
+    }
+
+    /**
      * Gets the path to the output directory for a given fully qualified name.
      * The FQN path converts the package names as subdirectories for a given
      * output base directory. For example:
@@ -172,29 +196,6 @@ public class FileUtils {
         Path suffix = target.subpath(source.getNameCount(), target.getNameCount());
         // add remaining suffix to destination
         return destination.resolve(suffix);
-    }
-
-    /**
-     * Generates a relative path to a class file from a fully qualified class name.
-     * @param fullyQualifiedClassName the fully qualified class name.
-     * @return the relative path corresponding to the fully qualified class name.
-     */
-    public static Path getRelativePathFromFullyQualifiedClassName(String fullyQualifiedClassName) {
-        String[] fullyQualifiedClassNameSplit = fullyQualifiedClassName.split("\\.");
-        if (fullyQualifiedClassNameSplit.length > 1) {
-            int classNameIdx = fullyQualifiedClassNameSplit.length - 1;
-            String className = fullyQualifiedClassNameSplit[classNameIdx];
-            fullyQualifiedClassNameSplit[classNameIdx] = className + ".java";
-            return Paths.get(
-                    fullyQualifiedClassNameSplit[0],
-                    Arrays.copyOfRange(
-                            fullyQualifiedClassNameSplit,
-                            1,
-                            fullyQualifiedClassNameSplit.length
-                    )
-            );
-        }
-        return Paths.get(fullyQualifiedClassName);
     }
 
     /**
