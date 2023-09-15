@@ -1,10 +1,21 @@
+import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.TypeDeclaration;
+import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.MethodCallExpr;
+import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.stmt.ExpressionStmt;
 import com.github.javaparser.ast.stmt.Statement;
+import com.github.javaparser.ast.stmt.TryStmt;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * This class provides the functionality for removing oracles from a test
@@ -43,6 +54,13 @@ public class OracleRemover {
      * @see OracleRemover#isFail(Statement)
      */
     private static boolean isJUnitAssertion(Statement statement) {
+        if (statement.isExpressionStmt()) {
+            Expression expression = statement.asExpressionStmt().getExpression();
+            if (expression.isMethodCallExpr()) {
+                MethodCallExpr methodCall = expression.asMethodCallExpr();
+                return allJUnitAssertionsMethods.contains(methodCall.getNameAsString());
+            }
+        }
         return false;
     }
 
@@ -55,6 +73,13 @@ public class OracleRemover {
      * @return true iff the statement is a {@code fail()} method call
      */
     private static boolean isFail(Statement statement) {
+        if (statement.isExpressionStmt()) {
+            Expression expression = statement.asExpressionStmt().getExpression();
+            if (expression.isMethodCallExpr()) {
+                MethodCallExpr methodCall = expression.asMethodCallExpr();
+                return methodCall.getNameAsString().equals("fail");
+            }
+        }
         return false;
     }
 
@@ -65,7 +90,9 @@ public class OracleRemover {
      * @return all method calls present in the statement
      */
     private static List<MethodCallExpr> getAllMethodCallsOfStatement(Statement statement) {
-        return new ArrayList<>();
+        List<MethodCallExpr> methodCalls = new ArrayList<>();
+        statement.clone().walk(MethodCallExpr.class, methodCalls::add);
+        return methodCalls;
     }
 
     /**
@@ -86,7 +113,18 @@ public class OracleRemover {
      * Assertion
      */
     private static MethodCallExpr getMethodCallOfJUnitAssertion(Statement jUnitAssertion) {
-        return null;
+        if (!isJUnitAssertion(jUnitAssertion)) {
+            throw new IllegalArgumentException(jUnitAssertion + " is not a JUnit Assertion method call");
+        }
+        List<MethodCallExpr> nonJUnitMethods = getAllMethodCallsOfStatement(jUnitAssertion)
+                .stream()
+                .filter(methodCallExpr -> !allJUnitAssertionsMethods.contains(methodCallExpr.getNameAsString()))
+                .toList();
+        if (nonJUnitMethods.isEmpty()) {
+            return null;
+        } else {
+            return nonJUnitMethods.get(0);
+        }
     }
 
     /**
@@ -102,6 +140,16 @@ public class OracleRemover {
      * @param testFile a JavaParser representation of a test file
      */
     private static void removeAssertionOracles(CompilationUnit testFile) {
+        testFile.findAll(Statement.class).forEach(testStmt -> {
+            if (isJUnitAssertion(testStmt)) {
+                MethodCallExpr conditionMethodCall = getMethodCallOfJUnitAssertion(testStmt);
+                if (conditionMethodCall != null) {
+                    testStmt.replace(new ExpressionStmt(conditionMethodCall));
+                } else {
+                    testStmt.remove();
+                }
+            }
+        });
     }
 
     /**
@@ -127,48 +175,94 @@ public class OracleRemover {
      * @param testFile a JavaParser representation of a test file
      */
     private static void removeExceptionalOracles(CompilationUnit testFile) {
+        // remove all try/catch blocks
+        testFile.findAll(TryStmt.class).forEach(tryStmt -> {
+            BlockStmt testCase = (BlockStmt) tryStmt.getParentNode().orElseThrow();
+            NodeList<Statement> prefix = tryStmt.getTryBlock().getStatements();
+            int prefixLocation = testCase.getStatements().indexOf(tryStmt);
+            testCase.getStatements().addAll(prefixLocation, prefix);
+            tryStmt.remove();
+        });
+        // remove "fail()" statements
+        testFile.findAll(Statement.class).forEach(stmt -> {
+            if (isFail(stmt)) {
+                stmt.remove();
+            }
+        });
     }
 
     /**
-     * Gets a new test case corresponding to a specific assertion in the
-     * original test case. An EvoSuite test may contain multiple assertions.
-     * For compatibility with TOGA, each test is split into multiple subtests,
-     * each corresponding to a single assertion in the original test case.
+     * Gets a new test case corresponding to a specific oracle in the original
+     * EvoSuite test case. An EvoSuite test may contain multiple oracles. For
+     * compatibility with TOGA, each test is split into multiple subtests,
+     * each corresponding to a single oracle in the original test case.
      *
      * @param testCase a test case
-     * @param assertionIdx the index of the assertion in the test case. Must
-     *                     be less than the number of assertions in the test
-     *                     case.
-     * @return a test case with a single assertion, corresponding to the given
-     * assertion index
+     * @param oracleIdx the index of the oracle in the test case. Must be
+     *                  less than the number of oracles in the test case.
+     * @return a test case with a single oracle, corresponding to the given
+     * index
      */
-    private static MethodDeclaration getSimpleTestCase(MethodDeclaration testCase, int assertionIdx) {
-        return null;
+    private static MethodDeclaration getSimpleTestCase(MethodDeclaration testCase, int oracleIdx) {
+        NodeList<Statement> originalBody = testCase.getBody().orElseThrow().getStatements();
+        NodeList<Statement> newBody = new NodeList<>();
+        int currentIdx = 0;
+        for (Statement testStmt : originalBody) {
+            if (isJUnitAssertion(testStmt) || testStmt.isTryStmt()) {
+                if (currentIdx == oracleIdx) {
+                    newBody.add(testStmt);
+                    break;
+                }
+                currentIdx++;
+            } else {
+                newBody.add(testStmt);
+            }
+        }
+        String simpleTestName = testCase.getNameAsString() + testID++;
+        return testCase.clone()
+                .setBody(new BlockStmt(newBody))
+                .setName(simpleTestName);
     }
 
     /**
-     * Gets the number of JUnit Assertions assert method calls in a given test
-     * case. This method does NOT count {@code fail()} calls.
+     * Gets the number of oracles in a given EvoSuite test case. In an
+     * EvoSuite test case, an assertion oracle is represented by a JUnit
+     * Assertions assert method call and an exceptional oracle is represented
+     * by a try/catch block.
      *
      * @param testCase a test case
-     * @return the number of JUnit Assertions assert method calls in the test
-     * case
+     * @return the number of oracles in the test case
      */
-    private static int getNumberOfAssertions(MethodDeclaration testCase) {
-        return -1;
+    private static int getNumberOfOracles(MethodDeclaration testCase) {
+        List<Statement> testStmts = testCase.getBody().orElseThrow().getStatements();
+        int numOracles = 0;
+        for (Statement testStmt : testStmts) {
+            if (isJUnitAssertion(testStmt) || testStmt.isTryStmt()) {
+                numOracles++;
+            }
+        }
+        return numOracles;
     }
 
     /**
      * Splits all test cases in a given test file into smaller subtests, each
-     * with a single assertion from the original test case. If a test case
-     * does not contain a JUnit Assertions assert method call (e.g.
-     * exceptional oracle), then it is not modified. The original tests with
-     * multiple assertions are removed. This method does not modify the actual
-     * source file.
+     * with a single oracle from the original test case. The original tests
+     * with multiple assertions are removed. This method does not modify the
+     * actual source file.
      *
      * @param testFile a JavaParser representation of a test file
      */
     private static void splitTests(CompilationUnit testFile) {
+        TypeDeclaration<?> testClass = testFile.getPrimaryType().orElseThrow();
+        List<MethodDeclaration> testCases = testFile.findAll(MethodDeclaration.class);
+        for (MethodDeclaration testCase : testCases) {
+            int numOracles = getNumberOfOracles(testCase);
+            for (int i = 0; i < numOracles; i++) {
+                MethodDeclaration simpleTest = getSimpleTestCase(testCase, i);
+                testClass.addMember(simpleTest);
+            }
+            testCase.remove();
+        }
     }
 
     /**
@@ -188,5 +282,32 @@ public class OracleRemover {
      * @see OracleRemover#removeAssertionOracles(CompilationUnit)
      */
     public static void removeOracles(String fullyQualifiedName) {
+        Path testsPath = FileUtils.getFQNOutputPath("evosuite-tests", fullyQualifiedName);
+        Path simplePath = FileUtils.getFQNOutputPath("evosuite-tests-simple", fullyQualifiedName);
+        Path prefixPath = FileUtils.getFQNOutputPath("evosuite-prefix", fullyQualifiedName);
+        FileUtils.copy(testsPath, simplePath);
+        FileUtils.copy(testsPath, prefixPath);
+        try (Stream<Path> walk = Files.walk(prefixPath)) {
+            walk
+                    .filter(FileUtils::isJavaFile)
+                    .filter(p -> !FileUtils.isScaffolding(p))
+                    .forEach(testFile -> {
+                        try {
+                            CompilationUnit cu = StaticJavaParser.parse(testFile);
+                            // save simple tests to separate output for other use case
+                            splitTests(cu);
+                            Path simpleTestPath = FileUtils.getRelativePath(prefixPath, simplePath, testFile);
+                            FileUtils.writeString(simpleTestPath, cu.toString());
+                            // then, remove oracles for future insertion
+                            removeExceptionalOracles(cu);
+                            removeAssertionOracles(cu);
+                            FileUtils.writeString(testFile, cu.toString());
+                        } catch (IOException e) {
+                            throw new Error("Unable to parse EvoSuite test " + testFile.getFileName().toString());
+                        }
+                    });
+        } catch (IOException e) {
+            throw new Error("Unable to parse files in directory " + testsPath);
+        }
     }
 }
