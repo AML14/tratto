@@ -130,41 +130,39 @@ public class OracleRemover {
     }
 
     /**
-     * Gets a new test case corresponding to a specific assertion in the
-     * original test case. An EvoSuite test may contain multiple assertions.
-     * For compatibility with TOGA, each test is split into multiple subtests,
-     * each corresponding to a single assertion in the original test case.
+     * Gets a new test case corresponding to a specific oracle in the original
+     * EvoSuite test case. An EvoSuite test may contain multiple oracles. For
+     * compatibility with TOGA, each test is split into multiple subtests,
+     * each corresponding to a single oracle in the original test case.
      *
      * @param testCase a test case
-     * @param assertionIdx the index of the assertion in the test case. Must
-     *                     be less than the number of assertions in the test
-     *                     case.
-     * @return a test case with a single assertion, corresponding to the given
-     * assertion index
+     * @param oracleIdx the index of the oracle in the test case. Must be
+     *                  less than the number of oracles in the test case.
+     * @return a test case with a single oracle, corresponding to the given
+     * index
      */
-    private static MethodDeclaration getSimpleTestCase(MethodDeclaration testCase, int assertionIdx) {
+    private static MethodDeclaration getSimpleTestCase(MethodDeclaration testCase, int oracleIdx) {
         return null;
     }
 
     /**
-     * Gets the number of JUnit Assertions assert method calls in a given test
-     * case. This method does NOT count {@code fail()} calls.
+     * Gets the number of oracles in a given EvoSuite test case. In an
+     * EvoSuite test case, an assertion oracle is represented by a JUnit
+     * Assertions assert method call and an exceptional oracle is represented
+     * by a try/catch block.
      *
      * @param testCase a test case
-     * @return the number of JUnit Assertions assert method calls in the test
-     * case
+     * @return the number of oracles in the test case
      */
-    private static int getNumberOfAssertions(MethodDeclaration testCase) {
+    private static int getNumberOfOracles(MethodDeclaration testCase) {
         return -1;
     }
 
     /**
      * Splits all test cases in a given test file into smaller subtests, each
-     * with a single assertion from the original test case. If a test case
-     * does not contain a JUnit Assertions assert method call (e.g.
-     * exceptional oracle), then it is not modified. The original tests with
-     * multiple assertions are removed. This method does not modify the actual
-     * source file.
+     * with a single oracle from the original test case. The original tests
+     * with multiple assertions are removed. This method does not modify the
+     * actual source file.
      *
      * @param testFile a JavaParser representation of a test file
      */
