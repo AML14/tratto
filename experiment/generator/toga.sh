@@ -1,2 +1,3 @@
-# This script generates a list of non-axiomatic oracles using TOGA.
-# Should output a list of OracleOutput.
+#!/bin/bash
+# This script generates a list of non-axiomatic oracles using TOGA. Saves the
+# output to "output/toga/oracle" as a list of OracleOutput records.
