@@ -52,7 +52,7 @@ public class TogUtils {
     /** The path of the output directory. */
     private static final Path output = Paths.get("output");
     /** The path of the EvoSuite prefixes directory. */
-    private static final Path evosuitePrefixPath = output.resolve("evosuite-prefix");
+    private static final Path evosuitePrefixPath = output.resolve("evosuite-prefixes");
     /** The path of the EvoSuite simple tests directory (tests with one assertion).  */
     private static final Path evosuiteTestsSimplePath = output.resolve("evosuite-tests-simple");
     /** A regex pattern to extract a text prefix (removes comments and decorators). */

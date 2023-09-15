@@ -110,7 +110,7 @@ is dedicated to a specific oracle. This process does not impact the effectivenes
 generation of the test prefixes and the re-insertion of the generated oracles.
 After splitting all oracles from the original Evosuite tests, the generated tests are saved in
 `experiment/output/evosuite-tests-simple/`, while the same tests without oracles (test prefixes) are saved in
-`experiment/output/evosuite-prefix/`.
+`experiment/output/evosuite-prefixes/`.
 
 
 ### 2.1.2. Oracle
