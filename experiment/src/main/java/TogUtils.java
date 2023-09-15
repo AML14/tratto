@@ -287,7 +287,7 @@ public class TogUtils {
             );
             oracleOutputs.add(oracleOutput);
         }
-        FileUtils.writeJSON(prefixPath.resolve("oracle_outputs.json"), oracleOutputs);
+        FileUtils.writeJSON(prefixPath.resolve("oracle_output.json"), oracleOutputs);
     }
 
     /**
@@ -454,7 +454,7 @@ public class TogUtils {
             );
             oracleOutputs.add(oracleOutput);
         }
-        FileUtils.writeJSON(prefixPath.resolve("oracle_outputs.json"), oracleOutputs);
+        FileUtils.writeJSON(prefixPath.resolve("oracle_output.json"), oracleOutputs);
     }
 
     /**
