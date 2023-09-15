@@ -4,6 +4,7 @@ import data.TogType;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 /**
  * This class is the main file used in the build {@code experiment.jar}, with
@@ -116,20 +117,19 @@ public class Tog {
         OperationType operationType = OperationType.valueOf(args[1].toUpperCase());
         switch (operationType) {
             case REMOVE_ORACLES -> OracleRemover.removeOracles(
-                    Paths.get(args[2]),
-                    args[3]
+                    args[2]
             );
             case INSERT_ORACLES -> insertOraclesOperation(
                     togType,
                     Paths.get(args[2]),
                     Paths.get(args[3])
             );
-            case GENERATE_TOG_INPUTS -> generateTogInputOperation(
+            case GENERATE_TOG_INPUT -> generateTogInputOperation(
                     togType,
                     Paths.get(args[2]),
                     args[3]
             );
-            case GENERATE_ORACLE_OUTPUTS -> generateOracleOutputOperation(
+            case GENERATE_ORACLE_OUTPUT -> generateOracleOutputOperation(
                     togType,
                     Paths.get(args[2])
             );
