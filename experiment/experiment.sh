@@ -30,7 +30,7 @@ QUALIFIERS="${TARGET_CLASS%.*}"
 
 # get useful directories
 ROOT_DIR="$(dirname "$(realpath "${0}")")"
-OUTPUT_DIR="${ROOT_DIR}${SEPARATOR}${OUTPUT_DIR}"
+OUTPUT_DIR="${ROOT_DIR}${SEPARATOR}output"
 EVOSUITE_OUTPUT="${OUTPUT_DIR}${SEPARATOR}evosuite-tests${SEPARATOR}${QUALIFIERS//./${SEPARATOR}}"
 RESOURCES_DIR="${ROOT_DIR}${SEPARATOR}generator${SEPARATOR}resources"
 # get experiment jar
@@ -65,34 +65,19 @@ bash ./generator/evosuite.sh "${TARGET_CLASS}" "${BIN_DIR}"
 echo "[2] Removing oracles from EvoSuite tests"
 $EXPERIMENT "remove_oracles" "$TARGET_CLASS"
 
+echo "[3] Generating new test suite using TOGs"
 for TOG in "${TOGS[@]}"; do
-  echo "[3] Generating oracles using ${TOG}"
+  # generate oracles
   if [ "${TOG}" == "jdoctor" ]; then
     bash ./generator/jdoctor.sh "${TARGET_CLASS}" "${SRC_DIR}" "${BIN_DIR}"
   elif [ "${TOG}" == "toga" ]; then
     bash ./generator/toga.sh "${TARGET_CLASS}" "${SRC_DIR}" "${EVOSUITE_OUTPUT}"
   elif [ "${TOG}" == "tratto" ]; then
-    bash ./generator/tratto.sh "${TARGET_CLASS}" "${SRC_DIR}" "${PROJECT_JAR}"
+#    bash ./generator/tratto.sh "${TARGET_CLASS}" "${SRC_DIR}" "${PROJECT_JAR}"
+    exit 1
   fi
-  ORACLE_OUTPUT="${OUTPUT_DIR}${SEPARATOR}${TOG}${SEPARATOR}oracle${SEPARATOR}oracle_output.json"
-#  cat "${ORACLE_OUTPUT}"
+  # insert oracles into test prefixes
+  $EXPERIMENT "insert_oracles" "${TOG}" "${PROJECT_JAR}"
 done
 
-## generate oracles using TOG
-#if [ "${TOG}" == "jdoctor" ]; then
-#  bash ./generator/jdoctor.sh "${TARGET_CLASS}" "${SRC_DIR}" "${BIN_DIR}"
-#  ORACLE_OUTPUT="$ROOT_DIR/output/jdoctor/oracle_outputs.json"
-#elif [ "${TOG}" == "toga" ]; then
-#  bash ./generator/toga.sh "${TARGET_CLASS}" "${SRC_DIR}" "${EVOSUITE_TESTS_DIR}"
-#  ORACLE_OUTPUT="$ROOT_DIR/output/toga/oracle/oracle_outputs.json"
-#elif [ "${TOG}" == "tratto" ]; then
-#  bash ./generator/tratto.sh "${TARGET_CLASS}" "${SRC_DIR}" "${PROJECT_JAR}"
-#  ORACLE_OUTPUT="$ROOT_DIR/output/tratto/oracle/oracle_outputs.json"
-#fi
-#cp "$ORACLE_OUTPUT" "$ROOT_DIR/output/$TOG-oracles.json"
-## insert oracles into EvoSuite prefixes
-#echo "[7] Insert oracles in test prefixes"
-#$EXPERIMENT "$TOG" "insert_oracles" "$BIN_DIR" "$ORACLE_OUTPUT"
-#echo "[8] Running tests and generating test output"
-#bash ./runner.sh "$TOG" "$TARGET_CLASS" "$SRC_DIR" "$BIN_DIR"
-#echo "[9] Experiment complete!"
+echo "[4] Successfully created test suite in \"output/tog-tests\""
