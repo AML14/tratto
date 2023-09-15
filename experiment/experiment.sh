@@ -31,6 +31,7 @@ QUALIFIERS="${TARGET_CLASS%.*}"
 # get useful directories
 ROOT_DIR="$(dirname "$(realpath "${0}")")"
 OUTPUT_DIR="${ROOT_DIR}${SEPARATOR}${OUTPUT_DIR}"
+EVOSUITE_OUTPUT="${OUTPUT_DIR}${SEPARATOR}evosuite-tests${SEPARATOR}${QUALIFIERS//./${SEPARATOR}}"
 RESOURCES_DIR="${ROOT_DIR}${SEPARATOR}generator${SEPARATOR}resources"
 # get experiment jar
 EXPERIMENT_JAR="${RESOURCES_DIR}${SEPARATOR}experiment.jar"
@@ -65,7 +66,16 @@ echo "[2] Removing oracles from EvoSuite tests"
 $EXPERIMENT "remove_oracles" "$TARGET_CLASS"
 
 for TOG in "${TOGS[@]}"; do
-  echo "${TOG}"
+  echo "[3] Generating oracles using ${TOG}"
+  if [ "${TOG}" == "jdoctor" ]; then
+    bash ./generator/jdoctor.sh "${TARGET_CLASS}" "${SRC_DIR}" "${BIN_DIR}"
+  elif [ "${TOG}" == "toga" ]; then
+    bash ./generator/toga.sh "${TARGET_CLASS}" "${SRC_DIR}" "${EVOSUITE_OUTPUT}"
+  elif [ "${TOG}" == "tratto" ]; then
+    bash ./generator/tratto.sh "${TARGET_CLASS}" "${SRC_DIR}" "${PROJECT_JAR}"
+  fi
+  ORACLE_OUTPUT="${OUTPUT_DIR}${SEPARATOR}${TOG}${SEPARATOR}oracle${SEPARATOR}oracle_output.json"
+#  cat "${ORACLE_OUTPUT}"
 done
 
 ## generate oracles using TOG
