@@ -164,7 +164,7 @@ public class Tog {
         OperationType operationType = OperationType.valueOf(args[0].toUpperCase());
         switch (operationType) {
             case REMOVE_ORACLES -> removeOracles(
-                    args[2]
+                    args[1]
             );
             case INSERT_ORACLES -> insertOracles(
                     TogType.valueOf(args[1].toUpperCase()),
