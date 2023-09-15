@@ -42,8 +42,7 @@ SRC_DIR="${2}"  # project source directory
 CLASS_DIR="${3}"  # path to binary files of the system under test
 OUTPUT_DIR="${ROOT_DIR}${SEPARATOR}output"
 JDOCTOR="${JAVA8_BIN} -jar ${RESOURCES_DIR}${SEPARATOR}toradocu-1.0-all.jar"
-mkdir -p "${OUTPUT_DIR}"
-mkdir -p "${OUTPUT_DIR}${SEPARATOR}jdoctor"
+mkdir -p "${OUTPUT_DIR}${SEPARATOR}jdoctor${SEPARATOR}output"
 # use JDoctor to generate oracles
 (
   export JAVA_HOME=${JAVA8_BIN};
