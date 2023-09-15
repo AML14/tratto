@@ -24,13 +24,13 @@ TOGA_PROJECT_DIR="${ROOT_DIR}${SEPARATOR}generator${SEPARATOR}resources${SEPARAT
 TOGA_INPUT_DIR="${ROOT_DIR}${SEPARATOR}output${SEPARATOR}toga${SEPARATOR}input"
 TOGA_OUTPUT_DIR="${ROOT_DIR}${SEPARATOR}output${SEPARATOR}toga${SEPARATOR}output"
 
-echo "[2] Setup TOGA project"
+echo "(TOGA) Setup TOGA project"
 bash ".${SEPARATOR}generator${SEPARATOR}utils${SEPARATOR}toga_setup.sh"
 
-echo "[4] Generate TOGA input files."
+echo "(TOGA) Generate TOGA input files."
 java -jar "generator${SEPARATOR}resources${SEPARATOR}experiment.jar" "generate_tog_input" "toga" "${FULLY_QUALIFIED_NAME}" "${SRC_PATH}"
 
-echo "[5] Generate oracles with TOGA."
+echo "(TOGA) Generate oracles with TOGA."
 cd "${TOGA_PROJECT_DIR}"
 
 python3 toga.py "${TOGA_INPUT_DIR}${SEPARATOR}toga_input.csv" "${TOGA_INPUT_DIR}${SEPARATOR}toga_metadata.csv"
@@ -45,5 +45,5 @@ fi
 
 mv "${TOGA_PROJECT_DIR}${SEPARATOR}oracle_preds.csv" "${TOGA_OUTPUT_DIR}"
 
-echo "[6] Map oracles generated with TOGA into OracleOutputs."
+echo "(TOGA) Map oracles generated with TOGA into OracleOutputs."
 java -jar "generator${SEPARATOR}resources${SEPARATOR}experiment.jar" "generate_oracle_output" "toga" "${SRC_PATH}"
