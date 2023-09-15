@@ -13,3 +13,4 @@ test:
 tags:
 	cd oracle-grammar && etags `find . -name '*.java'`
 	cd tratto && etags `find . -name '*.java'`
+	etags --include oracle-grammar/TAGS --include tratto/TAGS
