@@ -190,7 +190,7 @@ public class TogUtils {
      */
     public static void jDoctorToOracleOutput() {
         Path jDoctorPath = output.resolve(Paths.get("jdoctor", "output", "jdoctor_output.json"));
-        Path oraclePath = output.resolve(Paths.get("jdoctor", "oracle"));
+        Path oraclePath = output.resolve(Paths.get("jdoctor", "oracle", "oracle_output.json"));
         List<JDoctorOutput> jDoctorOutputs = FileUtils.readJSONList(jDoctorPath, JDoctorOutput.class);
         List<OracleOutput> oracleOutputs = jDoctorOutputs
                 .stream()
