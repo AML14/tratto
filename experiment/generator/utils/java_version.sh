@@ -5,11 +5,10 @@
 # After adding the local JDK to the generator/resources directory...
 # Set this field to the directory name.
 JDK_NAME="$1"
-TOOL="$2"
+
 
 # Exit from the program if any error is arose from another bash script or another command executed within this bash script.
 set -e
-
 if [[ $(uname) == "Darwin" || $(uname) == "Linux" ]]; then
     SEPARATOR="/"
 else
@@ -35,8 +34,7 @@ if [ -n "$JDK_DEFAULT_PATH" ]; then
 fi
 
 if [ ! -e "$JAVA_BIN" ] || [ -z "$JAVA_BIN" ]; then
-  echo "($TOOL) Unable to find a jdk directory. Please provide the complete path to the Java JDK binary ([path_to_jdk]${SEPARATOR}Contents${SEPARATOR}Home${SEPARATOR}bin${SEPARATOR}java or [path_to_jdk]${SEPARATOR}bin${SEPARATOR}java):"
+  echo "(JAVA SETUP) Unable to find a jdk directory. Please provide the complete path to the Java JDK binary ([path_to_jdk]${SEPARATOR}Contents${SEPARATOR}Home${SEPARATOR}bin${SEPARATOR}java or [path_to_jdk]${SEPARATOR}bin${SEPARATOR}java):"
   read -r USER_INPUT
   JAVA_BIN="${USER_INPUT}"
 fi
-echo "$JAVA_BIN"

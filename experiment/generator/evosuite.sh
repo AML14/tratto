@@ -18,7 +18,7 @@ fi
 
 ROOT_DIR=$(dirname "$(dirname "$(realpath "$0")")")
 RESOURCES_DIR="${ROOT_DIR}${SEPARATOR}generator${SEPARATOR}resources"
-JAVA8_BIN=$(bash "${ROOT_DIR}${SEPARATOR}generator${SEPARATOR}utils${SEPARATOR}java_version.sh" "$JDK8_NAME" "EVOSUITE")
+JAVA8_BIN=$(bash "${ROOT_DIR}${SEPARATOR}generator${SEPARATOR}utils${SEPARATOR}java_version.sh" "$JDK8_NAME")
 
 # argument and setup check
 if [ ! $# -eq 2 ]; then
