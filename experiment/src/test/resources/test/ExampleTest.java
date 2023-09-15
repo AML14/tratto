@@ -31,9 +31,6 @@ public class ExampleTest {
     public void multipleAssertionTest() {
         List<String> nonEmptyList = new ArrayList<>(List.of("example"));
         assertEquals("example", nonEmptyList.get(0));
-        assertTrue(nonEmptyList.size() != 0);
-        assertFalse(nonEmptyList.size() == 0);
-        assertNull(null);
         nonEmptyList.add("Random statement to complicate things");
         assertNotNull(nonEmptyList);
     }
