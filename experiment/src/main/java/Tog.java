@@ -4,27 +4,35 @@ import data.TogType;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 
 /**
- * This class represents the main file used in {@code experiment.jar}, with
- * all necessary operations for the end-to-end experiment process, including:
+ * This class is the main file used in the build {@code experiment.jar}, with
+ * all necessary operations for the experiment pipeline, including:
  * <ul>
  *     <li>Removing oracles</li>
  *     <li>Inserting oracles</li>
  *     <li>Preprocessing TOG input</li>
  *     <li>Postprocessing TOG output</li>
+ *     <li>Summarizing test suite results</li>
+ *     <li>Summarizing Defects4J results</li>
+ *     <li>Combining Defects4J results into a complete summary</li>
  * </ul>
  * The various operations require different arguments, following the format:
  * <ul>
- *     <li>{@code java -jar experiment.jar toga remove_oracles
- *     "path/to/evosuite-tests" tutorial.Stack}</li>
- *     <li>{@code java -jar experiment.jar jdoctor insert_oracles
- *     "path/to/src/main" "path/to/oracle/output.json"}</li>
- *     <li>{@code java -jar experiment.jar toga generate_tog_inputs
- *     "path/to/src/main" tutorial.Stack}</li>
- *     <li>{@code java -jar experiment.jar jdoctor generate_oracle_outputs
- *     path/to/jdoctor/output.json}</li>
+ *     <li>{@code java -jar experiment.jar remove_oracles
+ *     [fullyQualifiedName]}</li>
+ *     <li>{@code java -jar experiment.jar insert_oracles
+ *     [togType] [jarPath]}</li>
+ *     <li>{@code java -jar experiment.jar generate_tog_input
+ *     [togType] [fullyQualifiedName] [srcDir]}</li>
+ *     <li>{@code java -jar experiment.jar generate_oracle_output
+ *     [togType] [srcDir]}</li>
+ *     <li>{@code java -jar experiment.jar generate_test_output
+ *     [togType] [fullyQualifiedName] [srcDir] [binDir] [fileSuffix]}</li>
+ *     <li>{@code java -jar experiment.jar generate_defects4j_output
+ *     [togType] [projectName] [bugID] [fullyQualifiedName]}</li>
+ *     <li>{@code java -jar experiment.jar combine_defects4j_output
+ *     [togType]}</li>
  * </ul>
  */
 public class Tog {
