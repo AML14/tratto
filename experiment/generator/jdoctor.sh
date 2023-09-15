@@ -51,8 +51,8 @@ mkdir -p "${OUTPUT_DIR}${SEPARATOR}jdoctor"
   --target-class "${TARGET_CLASS}" \
   --source-dir "${SRC_DIR}" \
   --class-dir "${CLASS_DIR}" \
-  --condition-translator-output "${OUTPUT_DIR}${SEPARATOR}jdoctor${SEPARATOR}jdoctor_output.json"  # location of JDoctor output in JSON format
+  --condition-translator-output "${OUTPUT_DIR}${SEPARATOR}jdoctor${SEPARATOR}output${SEPARATOR}jdoctor_output.json"  # location of JDoctor output in JSON format
 )
 
 # convert JDoctor JSON to OracleOutput
-java -jar "${RESOURCES_DIR}${SEPARATOR}experiment.jar" "jdoctor" "generate_oracle_outputs" "${OUTPUT_DIR}${SEPARATOR}jdoctor${SEPARATOR}oracle${SEPARATOR}jdoctor_output.json"
+java -jar "${RESOURCES_DIR}${SEPARATOR}experiment.jar" "jdoctor" "generate_oracle_outputs" ""  # empty argument for compatibility

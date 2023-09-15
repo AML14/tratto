@@ -83,6 +83,9 @@ public class Tog {
             TogType togType,
             Path srcDir
     ) {
+        if (togType.equals(TogType.JDOCTOR)) {
+            TogUtils.jDoctorToOracleOutput();
+        }
     }
 
     /**
