@@ -39,6 +39,6 @@ public class Stack<T> {
      * @return true if there are no items in the stack, false otherwise
      */
     public boolean isEmpty() {
-	    return pointer <= 0;
+        return pointer <= 0;
     }
 }
