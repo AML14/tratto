@@ -54,4 +54,4 @@ mkdir -p "${OUTPUT_DIR}${SEPARATOR}jdoctor${SEPARATOR}output"
 )
 
 # convert JDoctor JSON to OracleOutput
-java -jar "${RESOURCES_DIR}${SEPARATOR}experiment.jar" "jdoctor" "generate_oracle_outputs" ""  # empty argument for compatibility
+java -jar "${RESOURCES_DIR}${SEPARATOR}experiment.jar" "generate_oracle_output" "jdoctor" ""  # empty argument for compatibility
