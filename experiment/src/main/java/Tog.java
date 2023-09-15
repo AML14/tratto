@@ -45,9 +45,8 @@ public class Tog {
      * @param oraclesPath the path to the OracleOutput JSON file
      */
     private static void insertOraclesOperation(TogType togType, Path binDir, Path oraclesPath) {
-        Path prefixPath = Paths.get("output", "evosuite-prefix");
         List<OracleOutput> oracleOutputs = FileUtils.readJSONList(oraclesPath, OracleOutput.class);
-        OracleInserter.insertOracles(prefixPath, togType, oracleOutputs, binDir);
+        OracleInserter.insertOracles(togType, oracleOutputs, binDir);
     }
 
     /**
@@ -89,17 +88,14 @@ public class Tog {
      *                           test
      * @param srcDir the source directory of the project under test
      * @param binDir the binaries directory of the project under test
-     * @param experimentRoot the experiment module root directory
      */
     private static void generateTestOutputOperation(
             TogType tog,
             String fullyQualifiedName,
             Path srcDir,
-            Path binDir,
-            Path experimentRoot
+            Path binDir
     ) {
         TogUtils.writeTestOutput(
-                experimentRoot,
                 tog,
                 fullyQualifiedName,
                 srcDir,
@@ -137,8 +133,7 @@ public class Tog {
                     togType,
                     args[2],
                     Paths.get(args[3]),
-                    Paths.get(args[4]),
-                    Paths.get(args[5])
+                    Paths.get(args[4])
             );
             default -> throw new IllegalArgumentException("Unknown operation " + operationType);
         }
