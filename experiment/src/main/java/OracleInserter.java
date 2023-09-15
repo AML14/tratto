@@ -47,6 +47,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
+/**
+ * This class provides the functionality for inserting oracles into test
+ * prefixes.
+ */
 public class OracleInserter {
     /** A ClassLoader used to load classes outside the JVM. */
     private static ClassLoader classLoader;
