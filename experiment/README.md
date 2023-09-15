@@ -98,29 +98,15 @@ and a brief description of the relevant files:
 
 Note that in the previous diagram, the script `tog.sh` is a placeholder for the user-specified tog (e.g. `jdoctor.sh`, `toga.sh`, `tratto.sh`).
 
-
 ### 2.1.1. Prefix
 
-We run `evosuite.sh` to generate a test suite using EvoSuite. These full test cases
-include both the test prefix and the test oracle, and are saved in `experiment/output/evosuite-tests/`.
-Then, we remove the oracles (assertions): for each oracle found within the original Evosuite tests, we generate
-a dedicated test. Therefore, if an original Evosuite test has 4 oracles, we generate 4 corresponding tests, each of which
-is dedicated to a specific oracle. This process does not impact the effectiveness of the test but simplify the
-generation of the test prefixes and the re-insertion of the generated oracles.
-After splitting all oracles from the original Evosuite tests, the generated tests are saved in
-`experiment/output/evosuite-tests-simple/`, while the same tests without oracles (test prefixes) are saved in
-`experiment/output/evosuite-prefix/`.
-
+We run `evosuite.sh` to generate a test suite using EvoSuite. These full test cases include both the test prefix and the test oracle, and are saved in `experiment/output/evosuite-tests/`. The EvoSuite tests are split such that each test contains exactly one assertion per test. These single-assertion tests are saved in `experiment/output/evosuite-simple-tests`. Then, we remove the oracles (assertions) and save the test prefixes in `experiment/output/evosuite-prefixes`. If an original EvoSuite test has 4 assertions, then we create 4 corresponding simple tests, and 4 test prefixes.
 
 ### 2.1.2. Oracle
 
-We use the test prefixes to generate oracles using a specified TOG.
-Each TOG has a corresponding script invoking the TOG (as a jar file or a python script).
+After creating test prefixes, we generate oracles using each supported TOG: `jdoctor`, `toga`, and `tratto`. Each TOG has a corresponding script invoking the TOG (as a JAR or python script). Then, the new oracles are inserted into the test prefixes as assertions. The new tests are saved as separate files in `experiment/output/tog-tests/[tog]`.
 
-After being generated, the new oracles are inserted as assertions in the test prefixes. Our method for inserting oracles
-varies based on whether the TOG generates [axiomatic](#a-axiomatic) or [non-axiomatic](#b-non-axiomatic) oracles.
-
-The new tests are saved as separate files in `experiment/output/tog-test/[tog]/`, where `[tog]` is the given TOG.
+Our method for inserting oracles varies based on whether the TOG generates [axiomatic](#a-axiomatic) or [non-axiomatic](#b-non-axiomatic) oracles.
 
 #### A. Axiomatic
 
