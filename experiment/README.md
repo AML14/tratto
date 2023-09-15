@@ -71,6 +71,20 @@ public class Example {
 
 To generate test prefixes, we use [EvoSuite](https://www.evosuite.org/), which generates complete unit tests (including oracles), and removes the generated oracles (assertions) using [JavaParser](https://javaparser.org/). Then, we generate new oracles using an arbitrary TOG, and add these assertions to the test prefixes. Finally, we run the tests using EvoSuite and record the number of passing/failing tests. Additionally, we use [Defects4J](https://github.com/rjust/defects4j) to compute the precision and FPR of a TOG. 
 
+As a running example, we consider the following toy method:
+```java
+public class Example {
+    /**
+     * @param a an integer
+     * @param b an integer
+     * @return the sum of the two integer values
+     */
+    int sum(int a, int b) {
+        return a - b;
+    }
+}
+```
+
 ## 2.1 Experimental Pipeline
 
 For reference, we provide a simplified graphic of the experimental pipeline:
@@ -110,7 +124,7 @@ Our method for inserting oracles varies based on whether the TOG generates [axio
 
 #### A. Axiomatic
 
-If the oracles are axiomatic, then we insert the oracles wherever they are applicable. Consider the following oracles for the
+If the oracles are axiomatic, then we insert the oracles wherever they are applicable. Consider the following oracles from the
 aforementioned `sum` example method: `sum(a, b) != null` and `a != null`. We may interpret these oracles as "method
 output must not be null" and "first method argument must not be null". Consequently, we should add the assertions after
 every appearance of the method output or first method argument, respectively. Consider the following test prefixes
@@ -186,19 +200,6 @@ We say an oracle <span style="color:red">"fails"</span> the code if its correspo
 | False Negative (FN) | <span style="color:green">Pass</span> | <span style="color:red">Fail</span>   |
 
 For clarification, consider the following (buggy) code snippet:
-
-```java
-public class Example {
-    /**
-     * @param a an integer
-     * @param b an integer
-     * @return the sum of the two integer values
-     */
-    int sum(int a, int b) {
-        return a - b;
-    }
-}
-```
 
 We provide an example of each class of oracle below:
 - True Positive: `sum(a, b) == (a + b)`
