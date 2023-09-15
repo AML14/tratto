@@ -165,7 +165,7 @@ public class FileUtils {
      *     relativePath = [destinationPath]/[internalDirectories]/[fileName]
      * </pre>
      */
-    private static Path getRelativePath(Path sourceDir, Path destination, Path target) {
+    public static Path getRelativePath(Path sourceDir, Path destination, Path target) {
         if (sourceDir.equals(target)) {
             return destination;
         }
