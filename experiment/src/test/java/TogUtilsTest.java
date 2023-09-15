@@ -10,7 +10,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TogUtilsTest {
-    private Path setupJDoctorOutput() throws IOException, InterruptedException {
+    private void setupJDoctorOutput() throws IOException, InterruptedException {
         Path jDoctorSh = Paths.get("generator", "jdoctor.sh");
         Path projectSrc = Paths.get("src", "test", "resources", "project", "src", "main", "java");
         Path projectBin = Paths.get("src", "test", "resources", "project", "target", "classes");
@@ -22,14 +22,13 @@ public class TogUtilsTest {
                 projectBin.toString()
         );
         processBuilder.start().waitFor();
-        return Paths.get("output", "jdoctor", "jdoctor_output.json");
     }
 
     @Test
     public void jDoctorToOracleOutputTest() throws Throwable {
-        Path jDoctorPath = setupJDoctorOutput();
-        TogUtils.jDoctorToOracleOutput(jDoctorPath);
-        Path oraclePath = Paths.get("output", "jdoctor", "oracle_outputs.json");
+        setupJDoctorOutput();
+        TogUtils.jDoctorToOracleOutput();
+        Path oraclePath = Paths.get("output", "jdoctor", "oracle", "oracle_output.json");
         List<OracleOutput> oracleOutputList = FileUtils.readJSONList(oraclePath, OracleOutput.class);
         for (OracleOutput oracleOutput : oracleOutputList) {
             assertEquals("tutorial.Stack", oracleOutput.className());
@@ -37,6 +36,6 @@ public class TogUtilsTest {
             assertTrue(List.of(OracleType.PRE, OracleType.EXCEPT_POST).contains(oracleOutput.oracleType()));
             assertTrue(oracleOutput.testName().isEmpty());
         }
-        FileUtils.deleteDirectory(Paths.get("output", "jdoctor"));
+        FileUtils.deleteDirectory(Paths.get("output"));
     }
 }
