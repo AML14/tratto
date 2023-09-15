@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 import static star.tratto.token.TokenEnricher.getEnrichedTokensPlusInfo;
 import static star.tratto.token.Tokens.*;
 import static star.tratto.token.restrictions.single.SingleTokenRestrictions.getSingleTokenRestriction;
-import static star.tratto.util.JavaParserUtils.getReturnTypeOfExpression;
+import static star.tratto.util.javaparser.JavaParserUtils.getReturnTypeOfExpression;
 import static star.tratto.util.StringUtils.*;
 
 /**
