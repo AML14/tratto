@@ -282,11 +282,11 @@ public class OracleRemover {
      * @see OracleRemover#removeAssertionOracles(CompilationUnit)
      */
     public static void removeOracles(String fullyQualifiedName) {
-        Path testsPath = FileUtils.getFQNOutputPath("evosuite-tests", fullyQualifiedName);
+        Path testPath = FileUtils.getFQNOutputPath("evosuite-tests", fullyQualifiedName);
         Path simplePath = FileUtils.getFQNOutputPath("evosuite-tests-simple", fullyQualifiedName);
-        Path prefixPath = FileUtils.getFQNOutputPath("evosuite-prefix", fullyQualifiedName);
-        FileUtils.copy(testsPath, simplePath);
-        FileUtils.copy(testsPath, prefixPath);
+        Path prefixPath = FileUtils.getFQNOutputPath("evosuite-prefixes", fullyQualifiedName);
+        FileUtils.copy(testPath, simplePath);
+        FileUtils.copy(testPath, prefixPath);
         try (Stream<Path> walk = Files.walk(prefixPath)) {
             walk
                     .filter(FileUtils::isJavaFile)
@@ -307,7 +307,7 @@ public class OracleRemover {
                         }
                     });
         } catch (IOException e) {
-            throw new Error("Unable to parse files in directory " + testsPath);
+            throw new Error("Unable to parse files in directory " + testPath);
         }
     }
 }
