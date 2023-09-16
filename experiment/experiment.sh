@@ -63,7 +63,7 @@ echo "[1] Generating EvoSuite tests for class ${TARGET_CLASS}"
 bash ./generator/evosuite.sh "${TARGET_CLASS}" "${BIN_DIR}"
 
 echo "[2] Removing oracles from EvoSuite tests"
-$EXPERIMENT "remove_oracles" "$TARGET_CLASS"
+$EXPERIMENT "remove_oracles" "${TARGET_CLASS}"
 
 echo "[3] Generating new test suite using TOGs"
 for TOG in "${TOGS[@]}"; do
