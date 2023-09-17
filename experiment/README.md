@@ -1,61 +1,28 @@
 # Experiment
 
-----
-
 This module has all scripts necessary to reproduce the experimental results described in the paper "Tratto: A Neuro-Symbolic Approach to Deriving Axiomatic Test Oracles".
 
 [//]: # (Add link to paper when available)
 
 # 1. Setup
 
----
+Set environment variable `JAVA8_HOME` to the `JAVA_HOME` for a JDK 8 installation.
+(Rationale: EvoSuite and JDoctor are written in Java 8.)
 
-This section outlines all requirements and corresponding setup instructions for each tool used in the experimental pipeline. After the setup is complete, the user should be able to run each example command in the [Run the experiments](#3-run-the-experiments) section.
+Set up [Git Large File Storage (Git LFS)](https://git-lfs.com/).
+(Rationale: Toga uses Git LFS.)
 
-## 1.1. Evosuite
+Toga and Tratto use Python.  A package management system, such as conda, is recommended (but not required) to create an isolated environment to run the Toga experiments (and debug any potential errors). See the [Miniconda homepage](https://docs.conda.io/projects/miniconda/en/latest/) for setup instructions.
 
-### 1.1.1. Java 8
-
-We use EvoSuite to generate test prefixes, which is written in Java 8. However, the experiment module uses Java 17. To run EvoSuite (and similarly, JDoctor), the user must configure a home directory for a local JDK 8 version. See [Oracle](https://www.oracle.com/java/technologies/downloads/#java8-linux) for JDK downloads (you may need an Oracle account to download older versions). Then, add the JDK to the `./generator/resources` directory. In `./generator/evosuite.sh`, modify the field at the top of the script, `JDK8_NAME`, to the name of the local JDK directory in `./generator/resources`. By default, the script searches for `jdk-1.8.jdk` (alternatively, you may rename your local JDK directory to match this name).
-
-## 1.2. JDoctor
-
-### 1.2.1. ToRaDoCu
-
-To set up JDoctor for analysis, visit the [ToRaDoCu](https://github.com/albertogoffi/toradocu) GitHub page, and follow the setup
+To set up JDoctor, visit the [ToRaDoCu](https://github.com/albertogoffi/toradocu) GitHub page, and follow the setup
 instructions to build the `toradocu-1.0-all.jar` file (may take a few minutes). Then, move the jar file to the `./generator/resources` directory.
 
-### 1.2.2. Java 8
-
-JDoctor is written in Java 8. Please complete the above [EvoSuite Java 8 setup](#111-java-8) instructions before continuing. Similar to the EvoSuite setup, modify the field at the top of the `./generator/jdoctor.sh` script, `JDK8_NAME`, to the name of the local JDK 8 directory in `./generator/resources`.
-
-## 1.3. Toga
-
-### 1.3.1. Git Large File Storage
-
-Toga requires Git Large File Storage (Git LFS) to set up its environment. See the [Git LFS homepage](https://git-lfs.com/) for setup instructions.
-
-### 1.3.2. Conda (recommended)
-
-Toga is written in `Python 3.8` and requires the user to install various python packages (automated by `./generator/toga.sh` script). A package management system, such as conda, is recommended (but not required) to create an isolated environment to run the Toga experiments (and debug any potential errors). See the [Miniconda homepage](https://docs.conda.io/projects/miniconda/en/latest/) for setup instructions.
-
-## 1.4. Tratto
-
-### 1.4.1 Conda (recommended)
-
-Similar to Toga, a package management system, such as conda, is recommended (but not required) to create an isolated environment to run the Tratto experiments (and debug any potential errors). See the [Miniconda homepage](https://docs.conda.io/projects/miniconda/en/latest/) for setup instructions. Otherwise, the setup is fully automated by `./generator/tratto.sh`.
-
-## 1.5 Runner
-
-### 1.5.1 Java 8
-
-Please complete the above [EvoSuite Java 8 setup](#111-java-8) instructions before continuing. Similar to the EvoSuite and JDoctor setup, modify the field at the top of the `./runner.sh` script, `JDK8_NAME`, to the name of the local JDK 8 directory in `./generator/resources`.
 
 # 2. Overview
 
-----
+This module automates the experimental analysis of a test oracle generator (TOG) for the task of automated test generation.
 
-This module automates the experimental analysis of a test oracle generator (TOG) for the task of automated test generation. A unit test is composed of two parts: **the prefix** and **the oracle**.
+A unit test is composed of two parts: **the prefix** and **the oracle**.
 
 ```java
 public class Example {
@@ -319,8 +286,6 @@ We provide the following example of such a record,
 ```
 
 # 3. Run the experiments
-
-----
 
 **NOTE:** Check that all steps in [Section 1](#1-setup) have been complete before running an experiment.
 
