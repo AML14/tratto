@@ -18,6 +18,5 @@ fi
 ROOT_DIR=$(dirname "$(dirname "$(realpath "$0")")")
 RESOURCES_DIR="$ROOT_DIR${SEPARATOR}generator${SEPARATOR}resources"
 JDK_DEFAULT_PATH=$(find "$RESOURCES_DIR" -type d -name 'jdk*.jdk' -print -quit)
-JAVA8_BIN=$(bash "${ROOT_DIR}${SEPARATOR}generator${SEPARATOR}utils${SEPARATOR}java_version.sh" "$JDK8_NAME" "JDOCTOR")
 
 defects4j checkout -p Lang -v 1b -w /tmp/lang_1_buggy
