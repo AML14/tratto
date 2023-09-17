@@ -26,7 +26,7 @@ public class OracleRemoverTest {
         );
         OracleRemover.removeOracles("example.ExampleTest");
         try {
-            CompilationUnit cu = StaticJavaParser.parse(Paths.get("output", "evosuite-prefix", "example", "ExampleTest.java"));
+            CompilationUnit cu = StaticJavaParser.parse(Paths.get("output", "evosuite-prefixes", "example", "ExampleTest.java"));
             List<MethodDeclaration> testCases = cu.findAll(MethodDeclaration.class);
             assertEquals(4, testCases.size());
             String expectedAssertionTest0 = """
