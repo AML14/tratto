@@ -2,7 +2,6 @@
 # This script generates a list of axiomatic oracles using JDoctor. Saves the
 # output to "output/jdoctor/oracle" as a list of OracleOutput records.
 
-
 # Exit from the program if any error is arose from another bash script or another command executed within this bash script.
 set -e
 

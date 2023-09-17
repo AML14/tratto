@@ -1,14 +1,10 @@
 # Experiment
 
-----
-
 This module has all scripts necessary to reproduce the experimental results described in the paper "Tratto: A Neuro-Symbolic Approach to Deriving Axiomatic Test Oracles".
 
 [//]: # (Add link to paper when available)
 
 # 1. Setup
-
----
 
 This section outlines all requirements and corresponding setup instructions for each tool used in the experimental pipeline. After the setup is complete, the user should be able to run each example command in the [Run the experiments](#3-run-the-experiments) section.
 
@@ -52,8 +48,6 @@ Similar to Toga, a package management system, such as conda, is recommended (but
 Please complete the above [EvoSuite Java 8 setup](#111-java-8) instructions before continuing. Similar to the EvoSuite and JDoctor setup, modify the field at the top of the `./runner.sh` script, `JDK8_NAME`, to the name of the local JDK 8 directory in `./generator/resources`.
 
 # 2. Overview
-
-----
 
 This module automates the experimental analysis of a test oracle generator (TOG) for the task of automated test generation. A unit test is composed of two parts: **the prefix** and **the oracle**.
 
@@ -319,8 +313,6 @@ We provide the following example of such a record,
 ```
 
 # 3. Run the experiments
-
-----
 
 **NOTE:** Check that all steps in [Section 1](#1-setup) have been complete before running an experiment.
 
