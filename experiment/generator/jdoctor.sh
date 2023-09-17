@@ -2,7 +2,14 @@
 # This script generates a list of axiomatic oracles using JDoctor. Saves the
 # output to "output/jdoctor/oracle" as a list of OracleOutput records.
 
-# ----- SETUP -----
-# After adding the local JDK8 to the generator/resources directory...
-# Set this field to the directory name.
-JDK8_NAME="jdk-1.8.jdk"
+# ----- Check environment variables -----
+
+if [ ! -d "${JAVA8_HOME}" ] ; then
+  echo "JAVA8_HOME is not set."
+  exit 1
+fi
+
+if [ ! -d "${JAVA8_HOME}" ] ; then
+  echo "JAVA8_HOME is not set to an existing directory: ${JAVA8_HOME}"
+  exit 1
+fi
