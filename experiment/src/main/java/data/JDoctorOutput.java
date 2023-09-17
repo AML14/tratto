@@ -4,6 +4,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
+/**
+ * This record represents the JSON output of JDoctor.
+ *
+ * @param signature the signature of the method under test
+ * @param name the name of the method under test
+ * @param containingClass the declaring class {@link Type}
+ * @param targetClass the fully qualified declaring class name
+ * @param isVarArgs true iff the method is a varargs
+ * @param returnType the method return type
+ * @param parameters the method parameters
+ * @param paramTags the method param tags
+ * @param returnTag the method return tag
+ * @param throwsTags the method throws tags
+ * @see Type
+ * @see Parameter
+ * @see ParamTag
+ * @see ReturnTag
+ * @see ThrowsTag
+ */
 public record JDoctorOutput(
         @JsonProperty("signature") String signature,
         @JsonProperty("name") String name,
