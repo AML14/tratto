@@ -2,7 +2,6 @@
 # This script generates a test suite using EvoSuite and saves the output to
 # "output/evosuite-tests".
 
-
 # Exit from the program if any error is arose from another bash script or another command executed within this bash script.
 set -e
 
