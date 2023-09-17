@@ -1,63 +1,32 @@
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.MethodDeclaration;
-import com.github.javaparser.ast.expr.Expression;
-import com.github.javaparser.ast.expr.MethodCallExpr;
-import com.github.javaparser.ast.stmt.Statement;
+import data.OracleOutput;
+import data.OracleType;
+import data.TogType;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
-public class TestUtilsTest {
-    private static final Path resourcesPath = Paths.get("src/test/resources");
-    private static final Path outputPath = Paths.get("output");
-    private static final List<String> allJUnitTestMethods = List.of(
-            "assertArrayEquals",
-            "assertEquals",
-            "assertFalse",
-            "assertNotNull",
-            "assertNotSame",
-            "assertNull",
-            "assertSame",
-            "assertThat",
-            "assertTrue",
-            "fail"
-    );
+public class OracleInserterTest {
+    private static final Path projectJarPath = Paths.get("src", "test", "java", "resources", "project", "target", "Tutorial_Stack-1.0-SNAPSHOT.jar");
+    private static final Path resourcesPath = Paths.get("src", "test", "resources");
+    private static final Path output = Paths.get("output");
 
-    @Test
-    public void removeOraclesTest() {
-        TestUtils.removeOracles(resourcesPath.resolve("test"));
-        try {
-            CompilationUnit cu = StaticJavaParser.parse(outputPath.resolve("evosuite-prefix/ExampleTest.java"));
-            cu.findAll(Statement.class)
-                    .forEach(statement -> {
-                        // check all assert statements have been removed
-                        if (statement.isAssertStmt()) {
-                            fail();
-                        }
-                        // check all JUnit methods have been removed
-                        if (statement.isExpressionStmt()) {
-                            Expression expression = statement.asExpressionStmt().getExpression();
-                            if (expression.isMethodCallExpr()) {
-                                MethodCallExpr methodCallExpr = expression.asMethodCallExpr();
-                                if (allJUnitTestMethods.contains(methodCallExpr.getNameAsString())) {
-                                    fail();
-                                }
-                            }
-                        }
-                    });
-            List<MethodDeclaration> testCases = cu.getType(0).getMethods();
-            assertEquals(7, testCases.size());
-        } catch (IOException e) {
-            fail();
-        }
-        FileUtils.deleteDirectory(outputPath.resolve("evosuite-tests-simple"));
-        FileUtils.deleteDirectory(outputPath.resolve("evosuite-prefix"));
+    private void setup() throws Throwable {
+        FileUtils.deleteDirectory(output);
+        FileUtils.createDirectories(output.resolve("evosuite-prefixes").resolve("example"));
+        Files.copy(
+                resourcesPath.resolve("prefix").resolve("ExamplePrefix.java"),
+                output.resolve("evosuite-prefixes").resolve("example").resolve("ExamplePrefix.java")
+        );
     }
 
     private List<OracleOutput> getAxiomaticOracles() {
@@ -66,99 +35,116 @@ public class TestUtilsTest {
                         "java.lang.Integer",
                         "valueOf(int i)",
                         OracleType.PRE,
-                        "",
                         "i > 0",
+                        "",
                         ""
                 ),
                 new OracleOutput(
                         "java.lang.Integer",
                         "parseInt(java.lang.String s)",
                         OracleType.EXCEPT_POST,
-                        "",
                         "s == null",
-                        "java.lang.NumberFormatException"
+                        "java.lang.NumberFormatException",
+                        ""
                 ),
                 new OracleOutput(
                         "java.lang.Integer",
                         "intValue()",
                         OracleType.NORMAL_POST,
-                        "",
                         "(receiverObjectID == null) == false",
+                        "",
                         ""
                 ),
                 new OracleOutput(
                         "java.lang.Class",
                         "getMethod(java.lang.String name, java.lang.Class<?>[] parameterTypes)",
                         OracleType.PRE,
-                        "",
                         "(name == null) == false",
+                        "",
                         ""
                 ),
                 new OracleOutput(
                         "java.lang.Class",
                         "getMethod(java.lang.String name, java.lang.Class<?>[] parameterTypes)",
                         OracleType.PRE,
-                        "",
                         "(parameterTypes == null) == false",
+                        "",
                         ""
                 ),
                 new OracleOutput(
                         "java.lang.Class",
                         "getMethod(java.lang.String name, java.lang.Class<?>[] parameterTypes)",
                         OracleType.EXCEPT_POST,
-                        "",
                         "name == null",
-                        "java.lang.IllegalArgumentException"
+                        "java.lang.IllegalArgumentException",
+                        ""
                 ),
                 new OracleOutput(
                         "java.lang.Class",
                         "getMethod(java.lang.String name, java.lang.Class<?>[] parameterTypes)",
                         OracleType.EXCEPT_POST,
-                        "",
                         "parameterTypes == null",
-                        "java.lang.IllegalArgumentException"
-                ),
-                new OracleOutput(
-                        "java.lang.Class",
-                        "getMethod(java.lang.String name, java.lang.Class<?>[] parameterTypes)",
-                        OracleType.NORMAL_POST,
-                        "",
-                        "(methodResultID == null) == false",
+                        "java.lang.IllegalArgumentException",
                         ""
                 ),
                 new OracleOutput(
                         "java.lang.Class",
                         "getMethod(java.lang.String name, java.lang.Class<?>[] parameterTypes)",
                         OracleType.NORMAL_POST,
+                        "(methodResultID == null) == false",
                         "",
+                        ""
+                ),
+                new OracleOutput(
+                        "java.lang.Class",
+                        "getMethod(java.lang.String name, java.lang.Class<?>[] parameterTypes)",
+                        OracleType.NORMAL_POST,
                         "methodResultID.getDeclaringClass() == receiverObjectID",
+                        "",
                         ""
                 ),
                 new OracleOutput(
                         "java.lang.String",
                         "getChars(int srcBegin, int srcEnd, char[] dst, int dstBegin)",
                         OracleType.NORMAL_POST,
-                        "",
                         "receiverObjectID.charAt(srcBegin) == dst[dstBegin]",
+                        "",
                         ""
                 ),
                 new OracleOutput(
                         "java.lang.String",
                         "substring(int beginIndex, int endIndex)",
                         OracleType.NORMAL_POST,
-                        "",
                         "(methodResultID == null) == false",
+                        "",
+                        ""
+                ),
+                new OracleOutput(
+                        "java.util.List",
+                        "add(E e)",
+                        OracleType.NORMAL_POST,
+                        "methodResultID == true",
+                        "",
+                        ""
+                ),
+                new OracleOutput(
+                        "java.util.List",
+                        "get(int index)",
+                        OracleType.EXCEPT_POST,
+                        "index >= receiverObjectID.size()",
+                        "java.lang.IndexOutOfBoundsException",
                         ""
                 )
         );
     }
 
     @Test
-    public void insertAxiomaticOraclesTest() {
+    public void insertAxiomaticOraclesTest() throws Throwable {
+        setup();
         List<OracleOutput> axiomaticOracles = getAxiomaticOracles();
-        TestUtils.insertOracles(resourcesPath.resolve("prefix"), "jdoctor", axiomaticOracles);
+        OracleInserter.insertOracles(TogType.JDOCTOR, axiomaticOracles, projectJarPath);
         try {
-            CompilationUnit cu = StaticJavaParser.parse(outputPath.resolve("tog-tests/jdoctor/ExamplePrefix.java"));
+            CompilationUnit cu = StaticJavaParser.parse(output.resolve("tog-tests/jdoctor/example/ExamplePrefix.java"));
             List<MethodDeclaration> testCases = cu.findAll(MethodDeclaration.class);
             MethodDeclaration assertionTest = testCases.get(0);
             String expectedAssertionTest = """
@@ -207,27 +193,26 @@ public class TestUtilsTest {
                     @Disabled
                     public void everythingTest() throws Throwable {
                         Class<?> clazz = Integer.class;
-                        String methodName = "compare";
                         Class<?>[] parameters = { int.class, int.class };
-                        assertTrue((methodName == null) == false);
+                        assertTrue(("compare" == null) == false);
                         assertTrue((parameters == null) == false);
                         java.lang.reflect.Method method;
-                        if (methodName == null) {
+                        if ("compare" == null) {
                             try {
-                                method = clazz.getMethod(methodName, parameters);
+                                method = clazz.getMethod("compare", parameters);
                                 fail();
                             } catch (java.lang.IllegalArgumentException e) {
                                 // Successfully thrown exception
                             }
                         } else if (parameters == null) {
                             try {
-                                method = clazz.getMethod(methodName, parameters);
+                                method = clazz.getMethod("compare", parameters);
                                 fail();
                             } catch (java.lang.IllegalArgumentException e) {
                                 // Successfully thrown exception
                             }
                         } else {
-                            method = clazz.getMethod(methodName, parameters);
+                            method = clazz.getMethod("compare", parameters);
                             assertTrue((method == null) == false);
                             assertTrue(method.getDeclaringClass() == clazz);
                         }
@@ -257,7 +242,7 @@ public class TestUtilsTest {
         } catch (IOException e) {
             fail();
         }
-        FileUtils.deleteDirectory(outputPath.resolve("tog-tests"));
+        FileUtils.deleteDirectory(output);
     }
 
     private List<OracleOutput> getNonAxiomaticOracles() {
@@ -266,37 +251,26 @@ public class TestUtilsTest {
                         "java.lang.Integer",
                         "valueOf(int i)",
                         OracleType.NON_AXIOMATIC,
-                        """
-                                @Test
-                                @Disabled
-                                public void assertionTest() throws Throwable {
-                                    int primitiveInt = 5;
-                                    Integer objectInt = Integer.valueOf(primitiveInt);
-                                }""",
-                        "assertTrue(primitiveInt == objectInt.intValue());",
-                        ""
+                        "assertTrue(primitiveInt == objectInt.intValue())",
+                        "",
+                        "assertionTest"
                 ),
                 new OracleOutput(
                         "java.lang.Integer",
                         "parseInt(java.lang.String s)",
                         OracleType.NON_AXIOMATIC,
-                        """
-                                @Test
-                                @Disabled
-                                public void exceptionalTest() throws Throwable {
-                                    String integerToParse = null;
-                                    int correspondingInteger = Integer.parseInt(integerToParse);
-                                }""",
                         "",
-                        "java.lang.NumberFormatException"
+                        "java.lang.NumberFormatException",
+                        "exceptionalTest"
                 )
         );
     }
 
     @Test
-    public void insertNonAxiomaticOraclesTest() {
+    public void insertNonAxiomaticOraclesTest() throws Throwable {
+        setup();
         List<OracleOutput> nonAxiomaticOracles = getNonAxiomaticOracles();
-        TestUtils.insertOracles(resourcesPath.resolve("prefix"), "toga", nonAxiomaticOracles);
+        OracleInserter.insertOracles(TogType.TOGA, nonAxiomaticOracles, projectJarPath);
         String expectedAssertionTest = """
                                 @Test
                                 @Disabled
@@ -317,7 +291,7 @@ public class TestUtilsTest {
                                     }
                                 }""";
         try {
-            CompilationUnit cu = StaticJavaParser.parse(outputPath.resolve("tog-tests/toga/ExamplePrefix.java"));
+            CompilationUnit cu = StaticJavaParser.parse(output.resolve("tog-tests/toga/example/ExamplePrefix.java"));
             List<MethodDeclaration> testCases = cu.findAll(MethodDeclaration.class);
             MethodDeclaration assertionTest = testCases.get(0);
             assertEquals(expectedAssertionTest, assertionTest.toString());
@@ -326,6 +300,6 @@ public class TestUtilsTest {
         } catch (IOException e) {
             fail();
         }
-        FileUtils.deleteDirectory(outputPath.resolve("tog-tests"));
+        FileUtils.deleteDirectory(output);
     }
 }

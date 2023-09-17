@@ -1,2 +1,3 @@
-# This script generates a list of axiomatic oracles using Tratto.
-# Should output a list of OracleOutput.
+#!/bin/bash
+# This script generates a list of non-axiomatic oracles using Tratto. Saves the
+# output to "output/tratto/oracle" as a list of OracleOutput records.

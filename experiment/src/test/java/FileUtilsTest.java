@@ -6,7 +6,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class FileUtilsTest {
     private static final Path tempRoot = Paths.get("src/test/resources/temp");
@@ -21,6 +24,24 @@ public class FileUtilsTest {
         FileUtils.createFile(tempRoot.resolve("other1/nested_directory/tempFile_secret.json"));
         FileUtils.createFile(tempRoot.resolve("other3/bonus.txt"));
         return tempRoot;
+    }
+
+    @Test
+    public void getFQNPathTest() {
+        assertEquals(Paths.get("com", "example", "github", "MyClass.java"), FileUtils.getFQNPath("com.example.github.MyClass"));
+        assertEquals(Paths.get("MyClass.java"), FileUtils.getFQNPath("MyClass"));
+    }
+
+    @Test
+    public void getFQNOutputPathTest() {
+        assertEquals(Paths.get("output", "evosuite-prefix", "example"), FileUtils.getFQNOutputPath("evosuite-prefix", "example.MyClass"));
+        assertEquals(Paths.get("output", "tog-tests"), FileUtils.getFQNOutputPath("tog-tests", "MyClass"));
+    }
+
+    @Test
+    public void getSimpleNameFromFQN() {
+        assertEquals("MyClass", FileUtils.getSimpleNameFromFQN("com.example.MyClass"));
+        assertEquals("MyClass", FileUtils.getSimpleNameFromFQN("MyClass"));
     }
 
     @Test
@@ -75,7 +96,7 @@ public class FileUtilsTest {
     }
 
     @Test
-    public void writeTest() {
+    public void writeJSONTest() {
         Path path = tempRoot.resolve("tempFile.json");
         try {
             FileUtils.writeJSON(path, List.of("input1", "input2", "input3"));
@@ -99,5 +120,26 @@ public class FileUtilsTest {
             e.printStackTrace();
             fail();
         }
+    }
+
+    @Test
+    public void findClassPathTest() {
+        Path baseDir = Paths.get("src");
+        Path packageClass = Paths.get("data", "OracleOutput.java");
+        assertEquals(Paths.get("src", "main", "java", "data", "OracleOutput.java"), FileUtils.findClassPath(baseDir, packageClass));
+        Path simpleClass = Paths.get("FileUtils.java");
+        assertEquals(Paths.get("src", "main", "java", "FileUtils.java"), FileUtils.findClassPath(baseDir, simpleClass));
+    }
+
+    @Test
+    public void isJavaFileTest() {
+        assertTrue(FileUtils.isJavaFile(Paths.get("com", "example", "MyClass.java")));
+        assertFalse(FileUtils.isJavaFile(Paths.get("resources", "projects.json")));
+    }
+
+    @Test
+    public void isScaffoldingTest() {
+        assertTrue(FileUtils.isScaffolding(Paths.get("Stack_ESTest_scaffolding.java")));
+        assertFalse(FileUtils.isScaffolding(Paths.get("Stack_ESTest.java")));
     }
 }

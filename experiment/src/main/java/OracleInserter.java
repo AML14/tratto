@@ -5,7 +5,6 @@ import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.VariableDeclarator;
-import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.comments.Comment;
 import com.github.javaparser.ast.comments.LineComment;
 import com.github.javaparser.ast.expr.AssignExpr;
@@ -31,10 +30,16 @@ import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.stmt.TryStmt;
 import com.github.javaparser.ast.type.PrimitiveType;
 import com.github.javaparser.ast.type.Type;
+import data.OracleOutput;
+import data.OracleType;
+import data.TogType;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -43,12 +48,12 @@ import java.util.List;
 import java.util.stream.Stream;
 
 /**
- * This class provides static methods for removing oracles from a test suite,
- * and inserting oracles into test prefixes.
+ * This class provides the functionality for inserting oracles into test
+ * prefixes.
  */
-public class TestUtils {
-    /** A global unique ID to avoid duplicate test names. */
-    private static int testID = 0;
+public class OracleInserter {
+    /** A ClassLoader used to load classes outside the JVM. */
+    private static ClassLoader classLoader;
     /** A unique id for placeholder variable names when inserting oracles. */
     private static int variableID = 0;
     /** All primitive fully qualified type names.  */
@@ -64,70 +69,13 @@ public class TestUtils {
     );
     /** The path to the output directory. */
     private static final Path output = Paths.get("output");
-    /** A list of all JUnit Assertions assert methods. */
-    private static final List<String> allJUnitAssertionsMethods = List.of(
-            "assertArrayEquals",
-            "assertEquals",
-            "assertFalse",
-            "assertNotNull",
-            "assertNotSame",
-            "assertNull",
-            "assertSame",
-            "assertThat",
-            "assertTrue"
-    );
     /** A list of all supported axiomatic test oracle generators. */
-    private static final List<String> axiomaticTogs = List.of(
-            "jdoctor",
-            "tratto"
-    );
+    private static final List<TogType> axiomaticTogs = List.of(TogType.JDOCTOR, TogType.TRATTO);
 
     /** Private constructor to avoid creating an instance of this class. */
-    private TestUtils() {
+    private OracleInserter() {
         throw new UnsupportedOperationException("This class cannot be instantiated.");
     }
-
-    /**
-     * Checks if a given statement represents a method call to a JUnit Assert
-     * method (e.g. {@code assertEquals}). This does NOT include {@code fail},
-     * which is used by exceptional oracles.
-     *
-     * @param statement a Java statement
-     * @return true iff the statement is a method call of a JUnit Assertions
-     * assert method
-     * @see TestUtils#allJUnitAssertionsMethods
-     * @see TestUtils#isFail(Statement)
-     */
-    private static boolean isJUnitAssertion(Statement statement) {
-        if (statement.isExpressionStmt()) {
-            Expression expression = statement.asExpressionStmt().getExpression();
-            if (expression.isMethodCallExpr()) {
-                MethodCallExpr methodCall = expression.asMethodCallExpr();
-                return allJUnitAssertionsMethods.contains(methodCall.getNameAsString());
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Checks if a given statement is a JUnit Assertions fail statement. These
-     * are used in exceptional oracles to ensure that a program state throws
-     * an exception.
-     *
-     * @param statement a Java statement
-     * @return true iff the statement is a {@code fail()} method call
-     */
-    private static boolean isFail(Statement statement) {
-        if (statement.isExpressionStmt()) {
-            Expression expression = statement.asExpressionStmt().getExpression();
-            if (expression.isMethodCallExpr()) {
-                MethodCallExpr methodCall = expression.asMethodCallExpr();
-                return methodCall.getNameAsString().equals("fail");
-            }
-        }
-        return false;
-    }
-
 
     /**
      * Gets all method calls in a Java statement.
@@ -139,288 +87,6 @@ public class TestUtils {
         List<MethodCallExpr> methodCalls = new ArrayList<>();
         statement.clone().walk(MethodCallExpr.class, methodCalls::add);
         return methodCalls;
-    }
-
-    /**
-     * Returns the method call in a JUnit Assertions condition. Returns null
-     * if the condition does not have a method call. For example,
-     * <pre>
-     *     {@code assertEquals(stack.isEmpty()}    -&gt;    {@code stack.isEmpty()}
-     * or,
-     *     {@code assertTrue(booleanVar}    -&gt;    {@code null}
-     * </pre>
-     * This method assumes that a JUnit Assertions only has a single method
-     * call in its condition.
-     *
-     * @param jUnitAssertion a JUnit Assertion statement
-     * @return the method call in the JUnit Assertion condition. Returns null
-     * if the condition does not have a method call.
-     * @throws IllegalArgumentException if the given statement is not a JUnit
-     * Assertion
-     */
-    private static MethodCallExpr getMethodCallOfJUnitAssertion(Statement jUnitAssertion) {
-        if (!isJUnitAssertion(jUnitAssertion)) {
-            throw new IllegalArgumentException(jUnitAssertion + " is not a JUnit Assertion method call");
-        }
-        List<MethodCallExpr> nonJUnitMethods = getAllMethodCallsOfStatement(jUnitAssertion)
-                .stream()
-                .filter(methodCallExpr -> !allJUnitAssertionsMethods.contains(methodCallExpr.getNameAsString()))
-                .toList();
-        if (nonJUnitMethods.isEmpty()) {
-            return null;
-        } else {
-            return nonJUnitMethods.get(0);
-        }
-    }
-
-    /**
-     * Removes all assertion oracles from a given test file, represented by a
-     * JavaParser compilation unit. Assertion oracles are represented by JUnit
-     * Assertions method calls (e.g. {@code assertEquals}). If a JUnit
-     * Assertions condition contains a method call, then the method call is
-     * kept in the prefix. For example,
-     *     {@code assertTrue(stack.isEmpty())}    -&gt;    {@code stack.isEmpty()}.
-     * This method does not modify the actual source file.
-     *
-     * @param testFile a JavaParser representation of a test file
-     */
-    private static void removeAssertionOracles(CompilationUnit testFile) {
-        testFile.findAll(Statement.class).forEach(testStmt -> {
-            if (isJUnitAssertion(testStmt)) {
-                MethodCallExpr conditionMethodCall = getMethodCallOfJUnitAssertion(testStmt);
-                if (conditionMethodCall != null) {
-                    testStmt.replace(new ExpressionStmt(conditionMethodCall));
-                } else {
-                    testStmt.remove();
-                }
-            }
-        });
-    }
-
-    /**
-     * Removes all exceptional oracles from a given test file, represented by
-     * a JavaParser compilation unit. The prefix in the try/catch block is
-     * kept, but any {@code fail()} method calls are removed. For example,
-     * <pre>
-     * {@code
-     *     int x = 5;
-     *     try {
-     *         int y = 10;
-     *         fail();
-     *     } catch (Exception e) {}
-     * }
-     * becomes,
-     * {@code
-     *     int x = 5;
-     *     int y = 10;
-     * }
-     * </pre>
-     * This method does not modify the actual source file.
-     *
-     * @param testFile a JavaParser representation of a test file
-     */
-    private static void removeExceptionalOracles(CompilationUnit testFile) {
-        // remove all try/catch blocks
-        testFile.findAll(TryStmt.class).forEach(tryStmt -> {
-            BlockStmt testCase = (BlockStmt) tryStmt.getParentNode().orElseThrow();
-            NodeList<Statement> prefix = tryStmt.getTryBlock().getStatements();
-            int prefixLocation = testCase.getStatements().indexOf(tryStmt);
-            testCase.getStatements().addAll(prefixLocation, prefix);
-            tryStmt.remove();
-        });
-        // remove "fail()" statements
-        testFile.findAll(Statement.class).forEach(stmt -> {
-            if (isFail(stmt)) {
-                stmt.remove();
-            }
-        });
-    }
-
-    /**
-     * Creates a related method based on a given original method. The original
-     * method is given a new body and a new name. The new name is the same as
-     * the original method name, but with a global ID appended to avoid
-     * repeating a method name.
-     *
-     * @param original the original method
-     * @param newBody the new method body
-     * @return the new method
-     */
-    private static MethodDeclaration createRelatedMethod(
-            MethodDeclaration original,
-            NodeList<Statement> newBody
-    ) {
-        String newName = original.getNameAsString() + testID;
-        testID++;
-        return original.clone()
-                .setBody(new BlockStmt(newBody))
-                .setName(newName);
-    }
-
-    /**
-     * Gets a new test case corresponding to a specific assertion in the
-     * original test case. An EvoSuite test may contain multiple assertions.
-     * For compatibility with TOGA, each test is split into multiple subtests,
-     * each corresponding to a single assertion in the original test case.
-     *
-     * @param testCase a test case
-     * @param assertionIdx the index of the assertion in the test case. Must
-     *                     be less than the number of assertions in the test
-     *                     case.
-     * @return a test case with a single assertion, corresponding to the given
-     * assertion index
-     */
-    private static MethodDeclaration getSimpleTestCase(MethodDeclaration testCase, int assertionIdx) {
-        NodeList<Statement> originalBody = testCase.getBody().orElseThrow().getStatements();
-        NodeList<Statement> newBody = new NodeList<>();
-        int currentIdx = 0;
-        for (Statement testStmt : originalBody) {
-            if (isJUnitAssertion(testStmt)) {
-                if (currentIdx == assertionIdx) {
-                    newBody.add(testStmt);
-                    break;
-                }
-                currentIdx++;
-            } else {
-                newBody.add(testStmt);
-            }
-        }
-        return createRelatedMethod(testCase, newBody);
-    }
-
-    /**
-     * Gets the number of JUnit Assertions assert method calls in a given test
-     * case. This method does NOT count {@code fail()} calls.
-     *
-     * @param testCase a test case
-     * @return the number of JUnit Assertions assert method calls in the test
-     * case
-     */
-    private static int getNumberOfAssertions(MethodDeclaration testCase) {
-        NodeList<Statement> testBody = testCase.getBody().orElseThrow().getStatements();
-        int numAssertions = 0;
-        for (Statement testStmt : testBody) {
-            if (isJUnitAssertion(testStmt)) {
-                numAssertions++;
-            }
-        }
-        return numAssertions;
-    }
-
-    /**
-     * Splits all test cases in a given test file into smaller subtests, each
-     * with a single assertion from the original test case. If a test case
-     * does not contain a JUnit Assertions assert method call (e.g.
-     * exceptional oracle), then it is not modified. The original tests with
-     * multiple assertions are removed. This method does not modify the actual
-     * source file.
-     *
-     * @param testFile a JavaParser representation of a test file
-     */
-    private static void splitTests(CompilationUnit testFile) {
-        TypeDeclaration<?> testClass = testFile.getType(0);
-        List<MethodDeclaration> testCases = testFile.findAll(MethodDeclaration.class);
-        for (MethodDeclaration testCase : testCases) {
-            int numAssertions = getNumberOfAssertions(testCase);
-            for (int i = 0; i < numAssertions; i++) {
-                MethodDeclaration simpleTest = getSimpleTestCase(testCase, i);
-                testClass.addMember(simpleTest);
-            }
-            // keep exceptional oracles
-            if (numAssertions == 0) {
-                NodeList<Statement> originalBody = testCase.getBody().orElseThrow()
-                        .getStatements();
-                MethodDeclaration exceptionalTest = createRelatedMethod(testCase, originalBody);
-                testClass.addMember(exceptionalTest);
-            }
-            testCase.remove();
-        }
-    }
-
-    /**
-     * Removes all assertions from all test files in a given directory. The
-     * approach for removing oracles depends on whether an oracle is
-     * exceptional (e.g. throws an exception) or a normal assertion. Firstly,
-     * this method splits any test case with multiple assertions into multiple
-     * simple tests, each with a single JUnit assertion. These smaller
-     * subtests are saved in "output/evosuite-tests-simple/". Then, all
-     * oracles are removed from each test case to create test prefixes. The
-     * test prefixes are saved in "output/evosuite-prefix". This method does
-     * not override the original test files.
-     *
-     * @param dir a directory with Java test files
-     * @see TestUtils#splitTests(CompilationUnit)
-     * @see TestUtils#removeExceptionalOracles(CompilationUnit)
-     * @see TestUtils#removeAssertionOracles(CompilationUnit)
-     */
-    public static void removeOracles(Path dir) {
-        Path simplePath = output.resolve("evosuite-tests-simple");
-        Path prefixPath = output.resolve("evosuite-prefix");
-        FileUtils.copy(dir, simplePath);
-        FileUtils.copy(dir, prefixPath);
-        try (Stream<Path> walk = Files.walk(prefixPath)) {
-            walk
-                    .filter(FileUtils::isJavaFile)
-                    .forEach(testFile -> {
-                        try {
-                            CompilationUnit cu = StaticJavaParser.parse(testFile);
-                            // save simple tests to separate output for later analysis
-                            splitTests(cu);
-                            Path simpleTestPath = FileUtils.getRelativePath(prefixPath, simplePath, testFile);
-                            FileUtils.writeString(simpleTestPath, cu.toString());
-                            // then, remove oracles for future insertion
-                            removeExceptionalOracles(cu);
-                            removeAssertionOracles(cu);
-                            FileUtils.writeString(testFile, cu.toString());
-                        } catch (IOException e) {
-                            throw new Error("Unable to parse test file " + testFile.getFileName().toString());
-                        }
-                    });
-        } catch (IOException e) {
-            throw new Error("Unable to parse files in directory " + dir.toString());
-        }
-    }
-
-    /**
-     * Gets the name of a method from the method signature.
-     *
-     * @param methodSignature a method signature
-     * @return the method name
-     */
-    private static String getMethodName(String methodSignature) {
-        return methodSignature.substring(0, methodSignature.indexOf('('));
-    }
-
-    /**
-     * Gets the type names of all parameters from the method signature.
-     *
-     * @param methodSignature a method signature
-     * @return all parameter type names in the method signature
-     */
-    private static List<String> getParameterTypeNames(String methodSignature) {
-        String parameters = methodSignature.substring(methodSignature.indexOf('(') + 1, methodSignature.indexOf(')'));
-        if (parameters.length() == 0) {
-            return new ArrayList<>();
-        }
-        return Stream.of(parameters.split(","))
-                .map(p -> p.trim().split(" ")[0].trim())
-                .toList();
-    }
-
-    /**
-     * Gets the variable names of all parameters from the method signature.
-     *
-     * @param methodSignature a method signature
-     * @return all variable parameter names in the method signature
-     */
-    private static List<String> getParameterNames(String methodSignature) {
-        String parameters = methodSignature.substring(methodSignature.indexOf('(') + 1, methodSignature.indexOf(')'));
-        if (parameters.length() == 0) {
-            return new ArrayList<>();
-        }
-        return Stream.of(parameters.split(","))
-                .map(p -> p.trim().split(" ")[1].trim())
-                .toList();
     }
 
     /**
@@ -439,6 +105,43 @@ public class TestUtils {
             current = previous.replaceAll(regex, "");
         } while (!current.equals(previous));
         return current;
+    }
+
+    /**
+     * Gets the type names of all parameters from the method signature. If a
+     * parameter is a generic type parameter, then uses "java.lang.Object".
+     *
+     * @param methodSignature a method signature
+     * @return all parameter type names in the method signature
+     */
+    private static List<String> getParameterTypeNames(String methodSignature) {
+        String parameters = methodSignature.substring(methodSignature.indexOf('(') + 1, methodSignature.indexOf(')'));
+        if (parameters.length() == 0) {
+            return new ArrayList<>();
+        }
+        return Stream.of(parameters.split(","))
+                .map(p -> {
+                    String paramTypeFQN = p.trim().split(" ")[0].trim();
+                    Class<?> paramClass = getClass(paramTypeFQN);
+                    return paramClass.getTypeName();
+                })
+                .toList();
+    }
+
+    /**
+     * Gets the variable names of all parameters from the method signature.
+     *
+     * @param methodSignature a method signature
+     * @return all variable parameter names in the method signature
+     */
+    private static List<String> getParameterNames(String methodSignature) {
+        String parameters = methodSignature.substring(methodSignature.indexOf('(') + 1, methodSignature.indexOf(')'));
+        if (parameters.length() == 0) {
+            return new ArrayList<>();
+        }
+        return Stream.of(parameters.split(","))
+                .map(p -> p.trim().split(" ")[1].trim())
+                .toList();
     }
 
     /**
@@ -524,6 +227,136 @@ public class TestUtils {
     }
 
     /**
+     * Gets the Class of a given primitive type name.
+     *
+     * @param primitiveName a primitive type name
+     * @return the Class corresponding to the primitive type
+     * @throws IllegalArgumentException if the given type name is not a
+     * primitive type
+     */
+    private static Class<?> getPrimitiveClass(String primitiveName) {
+        switch (primitiveName) {
+            case "boolean" -> {
+                return boolean.class;
+            }
+            case "byte" -> {
+                return byte.class;
+            }
+            case "char" -> {
+                return char.class;
+            }
+            case "short" -> {
+                return short.class;
+            }
+            case "int" -> {
+                return int.class;
+            }
+            case "long" -> {
+                return long.class;
+            }
+            case "float" -> {
+                return float.class;
+            }
+            case "double" -> {
+                return double.class;
+            }
+            default -> throw new IllegalArgumentException("Unrecognized primitive type " + primitiveName);
+        }
+    }
+
+    /**
+     * Gets the Class of a given type name.
+     *
+     * @param className a fully qualified type name
+     * @return the Class corresponding to the type name
+     */
+    private static Class<?> getClass(String className) {
+        if (primitiveTypes.contains(className)) {
+            return getPrimitiveClass(className);
+        } else {
+            try {
+                className = removeTypeParameters(className);
+                className = fqnToClassGetName(className);
+                return Class.forName(className, true, classLoader);
+            } catch (ClassNotFoundException e) {
+                // return "java.lang.Object" for type parameters
+                if (!className.contains(".")) {
+                    return Object.class;
+                }
+                throw new Error("Unable to find class " + className);
+            }
+        }
+    }
+
+    /**
+     * Gets all Class objects of a given list of types.
+     *
+     * @param classNames a list of fully qualified type names
+     * @return the Class objects corresponding to the type names
+     * @see OracleInserter#getClass(String)
+     */
+    private static List<Class<?>> getClasses(List<String> classNames) {
+        List<Class<?>> classes = new ArrayList<>();
+        for (String className : classNames) {
+            classes.add(getClass(className));
+        }
+        return classes;
+    }
+
+    /**
+     * Gets the reflection {@link Method} representation of a method.
+     *
+     * @param className the fully qualified name of the declaring class
+     * @param methodSignature the method signature
+     * @return the reflection representation of the method
+     */
+    private static Method getMethod(String className, String methodSignature) {
+        String methodName = getMethodName(methodSignature);
+        List<Class<?>> parameterTypes = getClasses(getParameterTypeNames(methodSignature));
+        Class<?> receiverObjectID = getClass(className);
+        try {
+            return receiverObjectID.getMethod(methodName, parameterTypes.toArray(Class[]::new));
+        } catch (NoSuchMethodException e) {
+            throw new Error("Unable to find method " + methodSignature + " in " + className);
+        }
+    }
+
+    /**
+     * Checks if a given method is static.
+     *
+     * @param className the fully qualified name of the declaring class
+     * @param methodSignature the method signature
+     * @return true iff the given method is static
+     */
+    private static boolean isStatic(String className, String methodSignature) {
+        Method method = getMethod(className, methodSignature);
+        return Modifier.isStatic(method.getModifiers());
+    }
+
+    /**
+     * Gets the return type of a method.
+     *
+     * @param className the fully qualified name of the declaring class
+     * @param methodSignature the method signature
+     * @return the return type of the given method
+     */
+    private static Type getReturnType(String className, String methodSignature) {
+        Method method = getMethod(className, methodSignature);
+        Class<?> returnType = method.getReturnType();
+        return StaticJavaParser.parseType(returnType.getName());
+    }
+
+    /**
+     * Gets the name of a method from the method signature.
+     *
+     * @param methodSignature a method signature
+     * @return the method name
+     */
+    private static String getMethodName(String methodSignature) {
+        return methodSignature.substring(0, methodSignature.indexOf('('));
+    }
+
+    /**
      * Gets the package name of a given JavaParser type. This method assumes
      * that all types (including types from the same package) have
      * corresponding import statements in the compilation unit. This is TRUE
@@ -532,9 +365,9 @@ public class TestUtils {
      * package. EvoSuite also requires each class to have a package, which
      * avoids the default package.
      *
-     * @param cu the Java file importing the given type
+     * @param cu the Java file that imports {@code type}
      * @param type a type
-     * @return the package of the given type. Returns an empty string for
+     * @return the package of {@code type}. Returns an empty string for
      * primitive types.
      */
     private static String getPackageName(CompilationUnit cu, Type type) {
@@ -556,7 +389,7 @@ public class TestUtils {
     }
 
     /**
-     * Gets the component type of a given type. If the type is an array, then
+     * Gets the element type of a given type. If the type is an array, then
      * all outer arrays are removed. Otherwise, the type is not modified. For
      * example,
      *     "int[][]"    ->    "int"
@@ -564,9 +397,9 @@ public class TestUtils {
      *     "T[]"    ->    "T"
      *
      * @param type a type
-     * @return the base component type of the given type
+     * @return the element type of the given type
      */
-    private static Type getComponentType(Type type) {
+    private static Type getElementType(Type type) {
         while (type.isArrayType()) {
             type = type.asArrayType().getComponentType();
         }
@@ -576,13 +409,13 @@ public class TestUtils {
     /**
      * Gets the fully qualified name of a given type.
      *
-     * @param cu the Java file importing the given type
+     * @param cu the Java file that imports {@code type}
      * @param type a type
-     * @return the fully qualified name of the given type
-     * @see TestUtils#getPackageName(CompilationUnit, Type)
+     * @return the fully qualified name of {@code type}
+     * @see OracleInserter#getPackageName(CompilationUnit, Type)
      */
     private static String getFullyQualifiedName(CompilationUnit cu, Type type) {
-        if (getComponentType(type).isClassOrInterfaceType()) {
+        if (getElementType(type).isClassOrInterfaceType()) {
             return getPackageName(cu, type) + "." + type.asString();
         } else {
             return type.asString();
@@ -594,21 +427,22 @@ public class TestUtils {
      * the parent method to find the variable declaration.
      *
      * @param name a variable name
-     * @param body all statements in the parent method
-     * @return the type of the given variable name
+     * @param body all statements in the parent method that declares
+     *             {@code name}
+     * @return the type of {@code name}
      */
     private static Type getTypeOfName(List<Statement> body, String name) {
-        for (Statement statement : body) {
-            if (!statement.isExpressionStmt()) {
+        for (Statement stmt : body) {
+            if (!stmt.isExpressionStmt()) {
                 continue;
             }
-            Expression expression = statement.asExpressionStmt().getExpression();
-            if (!expression.isVariableDeclarationExpr()) {
+            Expression expr = stmt.asExpressionStmt().getExpression();
+            if (!expr.isVariableDeclarationExpr()) {
                 continue;
             }
-            for (VariableDeclarator variableDeclarator : expression.asVariableDeclarationExpr().getVariables()) {
-                if (name.equals(variableDeclarator.getNameAsString())) {
-                    return variableDeclarator.getType();
+            for (VariableDeclarator varDecl : expr.asVariableDeclarationExpr().getVariables()) {
+                if (name.equals(varDecl.getNameAsString())) {
+                    return varDecl.getType();
                 }
             }
         }
@@ -619,8 +453,8 @@ public class TestUtils {
      * Gets the type of a literal expression. For example,
      *     {@code 0}    ->    {@code int}
      *     {@code "hello"}    ->    {@code java.lang.String}
-     * If the literal is "null", then this method returns null, as JavaParser
-     * does not have a {@link Type} representation for null types.
+     * If the literal is {@code null}, then this method returns null, as
+     * JavaParser does not have a {@link Type} representation for null types.
      *
      * @param literalExpr a literal value expression
      * @return the corresponding type of the expression. Returns null if the
@@ -643,25 +477,51 @@ public class TestUtils {
             return PrimitiveType.longType();
         } else if (
                 literalExpr instanceof StringLiteralExpr ||
-                literalExpr instanceof TextBlockLiteralExpr
+                        literalExpr instanceof TextBlockLiteralExpr
         ) {
-            return StaticJavaParser.parseType("java.lang.String");
+            return StaticJavaParser.parseType("String");
         } else {
             throw new IllegalArgumentException("Unknown literal expression type " + literalExpr);
         }
     }
 
     /**
-     * Gets the type of a given expression.
+     * Gets the type of a given expression. This method handles four types of
+     * expressions:
+     * <ul>
+     *     <li>Cast (e.g. "{@code (double) 1}"): If the value
+     *     being cast is null, then returns null. Otherwise, returns the type
+     *     of the cast expression.</li>
+     *     <li>Name (e.g. "{@code x}"): Searches the body of the declaring
+     *     method to find the variable type.</li>
+     *     <li>Binary (e.g. "{@code y == null}"): Returns boolean.</li>
+     *     <li>Literal (e.g. "{@code "Hello, world"}): Parses the type of the
+     *     literal expression. Returns null if the literal value is null.</li>
+     * </ul>
      *
      * @param body all statements in the parent method
      * @param expr a Java variable or literal expression
      * @return the type of the given expression
+     * @see OracleInserter#getTypeOfName(List, String)
+     * @see OracleInserter#getTypeOfLiteral(LiteralExpr)
      */
     private static Type getTypeOfExpression(List<Statement> body, Expression expr) {
-        if (expr.isNameExpr()) {
+        if (expr.isCastExpr()) {
+            // recursively search until reaching the base type
+            Type baseType = getTypeOfExpression(body, expr.asCastExpr().getExpression());
+            if (baseType == null) {
+                return null;
+            } else {
+                return expr.asCastExpr().getType();
+            }
+        } else if (expr.isNameExpr()) {
+            // get type corresponding to variable name
             return getTypeOfName(body, expr.asNameExpr().getNameAsString());
+        } else if (expr.isBinaryExpr()) {
+            // binary expressions are booleans
+            return PrimitiveType.booleanType();
         } else {
+            // get literal value
             return getTypeOfLiteral(expr.asLiteralExpr());
         }
     }
@@ -689,7 +549,8 @@ public class TestUtils {
                     if (type == null) {
                         return null;
                     }
-                    return getFullyQualifiedName(cu, type);
+                    String fqn = getFullyQualifiedName(cu, type);
+                    return removeTypeParameters(fqn);
                 })
                 .toList();
     }
@@ -698,9 +559,10 @@ public class TestUtils {
      * Checks if a list of parameter types from a method signature is
      * equivalent to a list of parameters from a method call. These two lists
      * cannot be directly compared (e.g.
-     * {@code methodSignatureTypes.equals(methodCallTypes)}) because the
-     * method call may use null literal expressions, which may apply to any
-     * object type.
+     * {@code methodSignatureTypes.equals(methodCallTypes)}) as the method
+     * call may use null literal expressions, which may apply to any object
+     * types. Similarly, the method signature may use generic type parameters,
+     * which also may apply to any object types.
      *
      * @param methodSignatureTypes all parameter types from a method signature
      * @param methodCallTypes all parameter types from a method call. May
@@ -717,9 +579,29 @@ public class TestUtils {
         for (int i = 0; i < methodSignatureTypes.size(); i++) {
             String signatureType = methodSignatureTypes.get(i);
             String callType = methodCallTypes.get(i);
-            if (callType == null && !primitiveTypes.contains(signatureType)) {
-                continue;
+            // handle null value case
+            if (callType == null) {
+                if (primitiveTypes.contains(signatureType)) {
+                    return false;
+                } else {
+                    continue;
+                }
             }
+            // handle generic type parameter case
+            int signatureArrayLevel = getArrayLevel(signatureType);
+            int callArrayLevel = getArrayLevel(callType);
+            String signatureElementType = signatureType.replaceAll("\\[]", "");
+            String callElementType = callType.replaceAll("\\[]", "");
+            if (signatureElementType.equals("java.lang.Object")) {
+                if (callArrayLevel > signatureArrayLevel) {
+                    // if the call type has a larger array level than the given signature, then continue
+                    continue;
+                } else if (callArrayLevel == signatureArrayLevel && !primitiveTypes.contains(callElementType)) {
+                    // if base types are both objects of equal array level, then continue
+                    continue;
+                }
+            }
+            // handle base case
             if (!signatureType.equals(callType)) {
                 return false;
             }
@@ -777,122 +659,6 @@ public class TestUtils {
                 .stream()
                 .filter(o -> isMatchingMethod(cu, body, methodCalls.get(0), o.methodSignature()))
                 .toList();
-    }
-
-    /**
-     * Gets the Class of a given primitive type name.
-     *
-     * @param primitiveName a primitive type name
-     * @return the Class corresponding to the primitive type
-     * @throws IllegalArgumentException if the given type name is not a
-     * primitive type
-     */
-    private static Class<?> getPrimitiveClass(String primitiveName) {
-        switch (primitiveName) {
-            case "boolean" -> {
-                return boolean.class;
-            }
-            case "byte" -> {
-                return byte.class;
-            }
-            case "char" -> {
-                return char.class;
-            }
-            case "short" -> {
-                return short.class;
-            }
-            case "int" -> {
-                return int.class;
-            }
-            case "long" -> {
-                return long.class;
-            }
-            case "float" -> {
-                return float.class;
-            }
-            case "double" -> {
-                return double.class;
-            }
-            default -> throw new IllegalArgumentException("Unrecognized primitive type " + primitiveName);
-        }
-    }
-
-    /**
-     * Gets the Class of a given type name.
-     *
-     * @param className a fully qualified type name
-     * @return the Class corresponding to the type name
-     */
-    private static Class<?> getClassOfName(String className) {
-        if (primitiveTypes.contains(className)) {
-            return getPrimitiveClass(className);
-        } else {
-            try {
-                className = removeTypeParameters(className);
-                className = fqnToClassGetName(className);
-                return Class.forName(className);
-            } catch (ClassNotFoundException e) {
-                throw new Error("Unable to find class " + className);
-            }
-        }
-    }
-
-    /**
-     * Gets all Class objects of a given list of types.
-     *
-     * @param classNames a list of fully qualified type names
-     * @return the Class objects corresponding to the type names
-     * @see TestUtils#getClassOfName(String)
-     */
-    private static List<Class<?>> getClassesOfNames(List<String> classNames) {
-        List<Class<?>> classes = new ArrayList<>();
-        for (String className : classNames) {
-            classes.add(getClassOfName(className));
-        }
-        return classes;
-    }
-
-    /**
-     * Gets the reflection {@link Method} representation of a method.
-     *
-     * @param className the fully qualified name of the declaring class
-     * @param methodSignature the method signature
-     * @return the reflection representation of the method
-     */
-    private static Method getReflectionMethod(String className, String methodSignature) {
-        String methodName = getMethodName(methodSignature);
-        List<Class<?>> parameterTypes = getClassesOfNames(getParameterTypeNames(methodSignature));
-        Class<?> receiverObjectID = getClassOfName(className);
-        try {
-            return receiverObjectID.getMethod(methodName, parameterTypes.toArray(Class[]::new));
-        } catch (NoSuchMethodException e) {
-            throw new Error("Unable to find method " + methodSignature + " in " + className);
-        }
-    }
-
-    /**
-     * Gets the return type of a method.
-     *
-     * @param className the fully qualified name of the declaring class
-     * @param methodSignature the method signature
-     * @return the return type of the given method
-     */
-    private static Type getReturnType(String className, String methodSignature) {
-        Method method = getReflectionMethod(className, methodSignature);
-        Class<?> returnType = method.getReturnType();
-        return StaticJavaParser.parseType(returnType.getName());
-    }
-
-    /**
-     * Checks if a given method is static.
-     *
-     * @param className the fully qualified name of the declaring class
-     * @param methodSignature the method signature
-     * @return true iff the given method is static
-     */
-    private static boolean isStatic(String className, String methodSignature) {
-        Method method = getReflectionMethod(className, methodSignature);
-        return Modifier.isStatic(method.getModifiers());
     }
 
     /**
@@ -1065,9 +831,9 @@ public class TestUtils {
                 oracleOutput.className(),
                 oracleOutput.methodSignature(),
                 oracleOutput.oracleType(),
-                oracleOutput.prefix(),
                 contextOracle,
-                oracleOutput.exception()
+                oracleOutput.exception(),
+                oracleOutput.testName()
         );
     }
 
@@ -1101,9 +867,9 @@ public class TestUtils {
                 oracleOutput.className(),
                 oracleOutput.methodSignature(),
                 oracleOutput.oracleType(),
-                oracleOutput.prefix(),
                 contextOracle,
-                oracleOutput.exception()
+                oracleOutput.exception(),
+                oracleOutput.testName()
         );
     }
 
@@ -1142,9 +908,9 @@ public class TestUtils {
                 oracleOutput.className(),
                 oracleOutput.methodSignature(),
                 oracleOutput.oracleType(),
-                oracleOutput.prefix(),
                 contextOracle,
-                oracleOutput.exception()
+                oracleOutput.exception(),
+                oracleOutput.testName()
         );
     }
 
@@ -1361,9 +1127,9 @@ public class TestUtils {
     }
 
     /**
-     * Adds axiomatic oracles to test prefixes in a given Java file. Axiomatic
-     * oracles are not specific to a given test prefix. This method iterates
-     * through each line in each test case, and adds all applicable oracles.
+     * Adds axiomatic oracles to test prefixes in a given Java file. This
+     * method iterates through each line in each test case, and adds all
+     * related oracles.
      *
      * @param testFile a Java test file
      * @param oracles a list of test oracles made by an axiomatic tog
@@ -1385,11 +1151,14 @@ public class TestUtils {
     }
 
     /**
-     * Adds axiomatic oracles to test prefixes in a given directory. Axiomatic
-     * oracles are not specific to a given test prefix. Therefore, we insert
-     * the axiomatic oracles wherever they may be applicable in source code.
-     * For example, if an axiomatic oracle involves class Foo, then the oracle
-     * is added after every instance of Foo in all test prefixes.
+     * Adds axiomatic oracles to a given collection of test prefixes.
+     * Axiomatic oracles are not specific to a given test prefix. The oracles
+     * are inserted wherever they may be applicable in source code. For
+     * example, if an axiomatic oracle involves a method "foo", then the
+     * oracle is added after every call to "bar" in the test prefix. The
+     * approach for inserting an axiomatic oracle differs on the
+     * {@link OracleType} (e.g. PRE, NORMAL_POST, EXCEPT_POST). See the
+     * corresponding test file for examples.
      *
      * @param dir a directory with Java test prefixes
      * @param oracles a list of test oracles made by an axiomatic tog
@@ -1398,6 +1167,7 @@ public class TestUtils {
         try (Stream<Path> walk = Files.walk(dir)) {
             walk
                     .filter(FileUtils::isJavaFile)
+                    .filter(p -> !FileUtils.isScaffolding(p))
                     .forEach(testFile -> {
                         try {
                             CompilationUnit cu = StaticJavaParser.parse(testFile);
@@ -1413,21 +1183,23 @@ public class TestUtils {
     }
 
     /**
-     * Adds an assertion to a given test case.
+     * Adds an assertion to the end of a given test prefix.
      *
-     * @param testCase a method representation of a test case
-     * @param assertion the string representation of the assertion to add
+     * @param testCase a test case
+     * @param assertion the assertion to add
      */
     private static void insertNonAxiomaticAssertion(MethodDeclaration testCase, String assertion) {
-        ExpressionStmt statement = StaticJavaParser.parseStatement(assertion).asExpressionStmt();
-        testCase
-                .getBody().orElseThrow()
-                .getStatements().add(statement);
+        if (!assertion.equals("")) {
+            Statement statement = StaticJavaParser.parseStatement(assertion + ";");
+            testCase
+                    .getBody().orElseThrow()
+                    .getStatements().add(statement);
+        }
     }
 
     /**
-     * Wraps a given test case in a try/catch block where the catch block
-     * expects a given exception class.
+     * Wraps a test prefix with a try/catch block, where the catch block
+     * expects a given exception type.
      *
      * @param testCase a test case
      * @param exception the exception to catch
@@ -1464,20 +1236,20 @@ public class TestUtils {
     }
 
     /**
-     * Gets the oracle corresponding to a given prefix from a list of oracles.
+     * Gets the non-axiomatic oracle corresponding to a given test from a list
+     * of oracles.
      *
-     * @param prefix a test prefix
+     * @param testName a test name
      * @param oracles a list of oracle records
-     * @return the oracle record with the given prefix. Returns null if no
+     * @return the oracle record with the given test name. Returns null if no
      * such oracle exists.
      */
-    private static OracleOutput getOracleWithPrefix(String prefix, List<OracleOutput> oracles) {
-        List<String> allPrefix = oracles
+    private static OracleOutput getOracleWithTestName(String testName, List<OracleOutput> oracles) {
+        List<String> allTestNames = oracles
                 .stream()
-                .map(OracleOutput::prefix)
-                .map(String::trim)
+                .map(OracleOutput::testName)
                 .toList();
-        int indexOfOracle = allPrefix.indexOf(prefix.trim());
+        int indexOfOracle = allTestNames.indexOf(testName);
         if (indexOfOracle == -1) {
             return null;
         }
@@ -1485,10 +1257,9 @@ public class TestUtils {
     }
 
     /**
-     * Adds non-axiomatic oracles to test prefixes in a given test file.
-     * Non-axiomatic oracles are specific to a given test prefix. Each oracle
-     * is matched to its corresponding prefix using the
-     * {@link OracleOutput#prefix()} value.
+     * Adds non-axiomatic oracles to test prefixes in a given test file. Each
+     * oracle is matched to its corresponding test prefix using the
+     * {@link OracleOutput#testName()} field.
      *
      * @param testFile a Java file of test prefixes
      * @param oracles a list of test oracles made by a non-axiomatic tog
@@ -1496,8 +1267,8 @@ public class TestUtils {
     private static void insertNonAxiomaticOracles(CompilationUnit testFile, List<OracleOutput> oracles) {
         testFile.findAll(MethodDeclaration.class)
                 .forEach(testCase -> {
-                    String prefix = testCase.toString();
-                    OracleOutput oracle = getOracleWithPrefix(prefix, oracles);
+                    String testName = testCase.getNameAsString();
+                    OracleOutput oracle = getOracleWithTestName(testName, oracles);
                     if (oracle != null) {
                         if (isExceptional(oracle)) {
                             insertNonAxiomaticException(testCase, oracle.exception());
@@ -1509,10 +1280,9 @@ public class TestUtils {
     }
 
     /**
-     * Adds non-axiomatic oracles to test prefixes in a given directory.
-     * Non-axiomatic oracles are specific to a given test prefix. Each oracle
-     * is matched to its corresponding prefix using the
-     * {@link OracleOutput#prefix()} value.
+     * Adds non-axiomatic oracles to a given collection of test prefixes. Each
+     * oracle is matched to its corresponding test prefix using the
+     * {@link OracleOutput#testName()} field.
      *
      * @param dir a directory with Java test prefixes
      * @param oracles a list of test oracles made by a non-axiomatic tog
@@ -1521,6 +1291,7 @@ public class TestUtils {
         try (Stream<Path> walk = Files.walk(dir)) {
             walk
                     .filter(FileUtils::isJavaFile)
+                    .filter(p -> !FileUtils.isScaffolding(p))
                     .forEach(testFile -> {
                         try {
                             CompilationUnit cu = StaticJavaParser.parse(testFile);
@@ -1541,28 +1312,45 @@ public class TestUtils {
      * @param tog a test oracle generator
      * @return true iff the given tog generates axiomatic test oracles (known
      * a priori)
-     * @see TestUtils#axiomaticTogs
+     * @see OracleInserter#axiomaticTogs
      */
-    private static boolean isAxiomatic(String tog) {
+    private static boolean isAxiomatic(TogType tog) {
         return axiomaticTogs.contains(tog);
     }
 
     /**
-     * Adds oracles to test prefixes in a given directory. The approach for
-     * adding oracles varies based on whether the oracles are axiomatic or
-     * non-axiomatic. Saves the modified test prefixes in
-     * output/tog-test/[tog], where [tog] is the given test oracle generator.
-     * Does not override original test prefixes.
+     * Gets a ClassLoader that corresponds to a given JAR file.
      *
-     * @param dir a directory with Java test prefixes
-     * @param tog the name of the test oracle generator being analyzed
-     * @param oracles a list of test oracles made by the given tog
-     * @see TestUtils#insertAxiomaticOracles(Path, List)
-     * @see TestUtils#insertNonAxiomaticOracles(Path, List)
+     * @param jarPath a path to a JAR file
+     * @return a ClassLoader object
      */
-    public static void insertOracles(Path dir, String tog, List<OracleOutput> oracles) {
-        Path testPath = output.resolve("tog-tests/" + tog);
-        FileUtils.copy(dir, testPath);
+    private static ClassLoader getClassLoader(Path jarPath) {
+        try {
+            URL jarURL = jarPath.toUri().toURL();
+            return new URLClassLoader(new URL[]{jarURL});
+        } catch (MalformedURLException e) {
+            throw new Error("Unable to get URL for JAR " + jarPath);
+        }
+    }
+
+    /**
+     * Adds oracles to the test prefixes generated by EvoSuite. The approach
+     * for adding oracles varies based on whether the oracles are axiomatic or
+     * non-axiomatic. Saves the new test suites to "output/tog-tests/[tog]",
+     * where [tog] is the given test oracle generator. This method does NOT
+     * override the original test prefixes.
+     *
+     * @param tog a test oracle generator
+     * @param oracles all test oracles generated by {@code tog}
+     * @param jarPath a JAR file of the project under test
+     * @see OracleInserter#insertAxiomaticOracles(Path, List)
+     * @see OracleInserter#insertNonAxiomaticOracles(Path, List)
+     */
+    public static void insertOracles(TogType tog, List<OracleOutput> oracles, Path jarPath) {
+        classLoader = getClassLoader(jarPath);
+        Path prefixPath = output.resolve("evosuite-prefixes");
+        Path testPath = output.resolve("tog-tests").resolve(tog.toString().toLowerCase());
+        FileUtils.copy(prefixPath, testPath);
         if (isAxiomatic(tog)) {
             insertAxiomaticOracles(testPath, oracles);
         } else {
