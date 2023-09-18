@@ -7,11 +7,10 @@ import java.nio.file.Path;
  * resources directory.
  *
  * @param projectName the name of the Java project
- * @param rootPath the path to the project root folder
- * @param jarPath the path to the directory with the project jar file
- * @param conditionsPath the path to the directory of JDoctor conditions for
- *                       the project
- * @param srcPath the path to the project source code directory
+ * @param rootPath the project root directory
+ * @param jarPath the directory with the project jar file
+ * @param conditionsPath the directory of JDoctor conditions for the project
+ * @param srcPath the project source code directory
  */
 public record Project(
         String projectName,
