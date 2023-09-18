@@ -446,9 +446,7 @@ public class DatasetUtils {
      * given compilation unit.
      *
      * @param cu a compilation unit of a Java file
-     * @return a list of information about each attribute. Each entry has the
-     * form:
-     *     [variableName, packageName, typeName, variableSignature]
+     * @return a list of attribute tokens
      * @throws PackageDeclarationNotFoundException if the package
      * {@link PackageDeclaration} of the compilation unit is not found
      */
@@ -489,11 +487,7 @@ public class DatasetUtils {
      *
      * @param cu a compilation unit of a Java file
      * @param fileContent the content of the Java file
-     * @return a list of information about each tag. Each entry has the form:
-     *     [fileContent, typeDeclaration, callableDeclaration, oracleType, name, content]
-     * where a Javadoc tag is interpreted as:
-     *  "@tag name content"
-     * and the value of "@tag" determines "oracleType".
+     * @return a list of JavadocTags
      * @throws PackageDeclarationNotFoundException if the package
      * {@link PackageDeclaration} of the compilation unit is not found
      */
@@ -591,9 +585,7 @@ public class DatasetUtils {
      * in a project from a given source path.
      *
      * @param sourceDir the project root directory
-     * @return a list of information about each method. Each entry has the
-     * form:
-     *  [methodName, packageName, typeName, methodSignature]
+     * @return a list of method tokens
      */
     public static List<MethodTokens> getProjectNonPrivateStaticNonVoidMethodsTokens(
             Path sourceDir
@@ -619,9 +611,7 @@ public class DatasetUtils {
      * in a project from a given source path.
      *
      * @param sourceDir the project root directory
-     * @return a list of information about each attribute. Each entry has the
-     * form:
-     *  [variableName, packageName, typeName, variableSignature]
+     * @return a list of attribute tokens
      */
     public static List<AttributeTokens> getProjectNonPrivateStaticAttributesTokens(
             Path sourceDir
@@ -647,11 +637,7 @@ public class DatasetUtils {
      * given source path.
      *
      * @param sourceDir the project root directory
-     * @return a list of information about each tag. Each entry has the form:
-     *  [typeDeclaration, callableDeclaration, oracleType, name, content]
-     * where a Javadoc tag is interpreted as:
-     *  "@tag name content"
-     * and the value of "@tag" determines "oracleType".
+     * @return a list of JavadocTags
      */
     public static List<JavadocTag> getProjectTagsTokens(
             Path sourceDir
@@ -683,7 +669,7 @@ public class DatasetUtils {
      * parameters, and exceptions.
      *
      * @param jpMethods a list of method usages
-     * @return the corresponding list of method tokens records
+     * @return the corresponding list of method tokens
      */
     private static List<MethodTokens> convertMethodUsageToMethodTokens(
             List<MethodUsage> jpMethods
@@ -706,10 +692,7 @@ public class DatasetUtils {
      * type.
      *
      * @param jpResolvedType a type
-     * @return a list of information about each method available to the type.
-     * Each entry has the form:
-     *     [methodName, packageName, typeName, methodSignature]
-     * Returns an empty list if the given type is primitive.
+     * @return a list of method tokens for all available methods
      */
     public static List<MethodTokens> getMethodsFromType(
             ResolvedType jpResolvedType
@@ -757,10 +740,7 @@ public class DatasetUtils {
      * to resolve the type.
      *
      * @param jpType a type
-     * @return a list of information about each method available to the type.
-     * Each entry has the form:
-     *     [methodName, packageName, typeName, methodSignature]
-     * Returns an empty list if the given type is primitive.
+     * @return a list of method tokens
      */
     private static List<MethodTokens> getMethodsFromType(
             Type jpType
@@ -785,7 +765,7 @@ public class DatasetUtils {
      * multiple fields are split into individual records.
      *
      * @param resolvedField a JavaParser resolved field declaration
-     * @return the corresponding list of attribute tokens records.
+     * @return the corresponding list of attribute tokens
      */
     private static List<AttributeTokens> convertJavaParserFieldDeclarationToAttributeTokens(
             JavaParserFieldDeclaration resolvedField
@@ -875,10 +855,7 @@ public class DatasetUtils {
      * to a given type.
      *
      * @param jpResolvedType the given type
-     * @return a list of attribute token records. Each entry has the form:
-     *     [fieldName, packageName, typeName, fieldSignature]
-     * where "typeName" refers to the name of the field type. If possible,
-     * declarations with multiple fields are split into individual records.
+     * @return a list of attribute tokens
      */
     public static List<AttributeTokens> getFieldsFromType(
             ResolvedType jpResolvedType
@@ -927,10 +904,7 @@ public class DatasetUtils {
      * given type.
      *
      * @param jpType the given type
-     * @return a list of attribute token records. Each entry has the form:
-     *     [fieldName, packageName, typeName, fieldSignature]
-     * where "typeName" refers to the name of the field type. If possible,
-     * declarations with multiple fields are split into individual records.
+     * @return a list of attribute tokens
      */
     private static List<AttributeTokens> getFieldsFromType(
             Type jpType
@@ -953,10 +927,7 @@ public class DatasetUtils {
      * identical to the aforementioned method.
      *
      * @param jpParameter the given parameter
-     * @return a list of attribute token records. Each entry has the form:
-     *     [fieldName, packageName, typeName, fieldSignature]
-     * where "typeName" refers to the name of the field type. If possible,
-     * declarations with multiple fields are split into individual records.
+     * @return a list of attribute tokens
      */
     public static List<AttributeTokens> getFieldsFromParameter(
             Parameter jpParameter
@@ -982,11 +953,7 @@ public class DatasetUtils {
      *
      * @param jpClass the declaring class
      * @param jpCallable a function
-     * @return a list of information about each method. Each entry has the
-     * form:
-     *     [methodName, packageName, typeName, methodSignature]
-     * @throws JPClassNotFoundException if the declaring class is not
-     * resolvable
+     * @return a list of method tokens
      */
     public static List<MethodTokens> getTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(
             TypeDeclaration<?> jpClass,
@@ -1026,9 +993,7 @@ public class DatasetUtils {
      *
      * @param jpClass the declaring class
      * @param jpCallable a function
-     * @return a list of information about each attribute. Each entry has the
-     * form:
-     *     [fieldName, packageName, typeName, fieldSignature]
+     * @return a list of attribute tokens
      * @throws JPClassNotFoundException if the declaring class is not
      * resolvable
      */
@@ -1062,9 +1027,7 @@ public class DatasetUtils {
      * @param jpCallable a function
      * @param methodArgs the arguments of the function
      * @param oracle an oracle corresponding to the function
-     * @return a list of information about each method. Each entry has the
-     * form:
-     *     [methodName, packageName, typeName, methodSignature]
+     * @return a list of method tokens
      */
     public static List<MethodTokens> getTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(
             TypeDeclaration<?> jpClass,
@@ -1107,9 +1070,7 @@ public class DatasetUtils {
      * @param jpCallable a function
      * @param methodArgs the arguments of the function
      * @param oracle an oracle corresponding to the function
-     * @return a list of information about each attribute. Each entry has the
-     * form:
-     *  [fieldName, packageName, typeName, fieldSignature]
+     * @return a list of attribute tokens
      */
     public static List<AttributeTokens> getTokensOracleVariablesNonPrivateNonStaticAttributes(
             TypeDeclaration<?> jpClass,
