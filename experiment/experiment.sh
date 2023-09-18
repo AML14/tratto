@@ -35,15 +35,14 @@ EVOSUITE_OUTPUT="${OUTPUT_DIR}${SEPARATOR}evosuite-tests${SEPARATOR}${QUALIFIERS
 RESOURCES_DIR="${ROOT_DIR}${SEPARATOR}generator${SEPARATOR}resources"
 # get experiment jar
 EXPERIMENT_JAR="${RESOURCES_DIR}${SEPARATOR}experiment.jar"
-
 if [ ! -f "${EXPERIMENT_JAR}" ]; then
   mvn clean package -DskipTests
   TEMP_JAR=$(find "${ROOT_DIR}${SEPARATOR}target" -type f -name 'experiment*-jar-with-dependencies.jar')
   if [ -z "${TEMP_JAR}" ]; then
-    echo "(EXPERIMENT) Unexpected error: experiment jar not found."
+    echo "experiment.sh: Unexpected error: experiment jar not found."
     exit 1
   fi
-  sudo mv "${TEMP_JAR}" "${RESOURCES_DIR}/experiment.jar"
+  sudo mv "${TEMP_JAR}" "${RESOURCES_DIR}${SEPARATOR}experiment.jar"
 fi
 
 # check if given directories exist
