@@ -167,7 +167,7 @@ public class DatasetUtils {
      * Gets all numeric value tokens in a Javadoc comment.
      *
      * @param javadocComment a Javadoc comment
-     * @return a list of value tokens
+     * @return a list of numeric value tokens
      */
     private static List<ValueTokens> findAllNumericValuesInJavadoc(
             String javadocComment
@@ -201,14 +201,10 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets all string value tokens in a Javadoc comment. The second value may
-     * seem redundant, but is added for consistency with the values of
-     * {@link DatasetUtils#findAllNumericValuesInJavadoc(String)}. Both method
-     * outputs follow this format for compatibility with the XText grammar.
+     * Gets all string value tokens in a Javadoc comment.
      *
      * @param javadocComment a Javadoc comment
-     * @return a list of value tokens. The first element is the numeric value,
-     * and the second element is the type of value (always "String").
+     * @return a list of string value tokens
      */
     private static List<ValueTokens> findAllStringValuesInJavadoc(
             String javadocComment
