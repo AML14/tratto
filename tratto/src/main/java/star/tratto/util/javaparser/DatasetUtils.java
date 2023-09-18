@@ -54,9 +54,8 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
- * This class provides static methods for generating features of the oracles
- * dataset, and the conversion of JavaParser objects into interpretable 
- * outputs.
+ * This class provides static methods for generating features in the oracles
+ * dataset.
  */
 public class DatasetUtils {
     private static final Logger logger = LoggerFactory.getLogger(DatasetUtils.class);
