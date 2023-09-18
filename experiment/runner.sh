@@ -1,17 +1,15 @@
 #!/bin/bash
 
-# ----- SETUP -----
-# After adding the local JDK8 to the generator/resources directory,
-# set this field to the directory name.
-JDK8_NAME="jdk-1.8.jdk"
+# Set and check environment variables
+SCRIPTDIR="$(cd "$(dirname "$0")" && pwd -P)"
+. "${SCRIPTDIR}${SEPARATOR}generator${SEPARATOR}utils${SEPARATOR}env.sh"
 
 # get global path variables
 ROOT_DIR="$(dirname "$(realpath "${0}")")"
 RESOURCES_DIR="${ROOT_DIR}/generator/resources"
 OUTPUT_DIR="${ROOT_DIR}/output"
-JAVA8_HOME="${RESOURCES_DIR}/${JDK8_NAME}/Contents/Home"
-JAVA8_BIN="${JAVA8_HOME}/bin/java"
-JAVA8_C="${JAVA8_HOME}/bin/javac"
+JAVA8_PROGRAM="${JAVA8_HOME}/bin/java"
+JAVA8_JAVAC="${JAVA8_HOME}/bin/javac"
 # get given variables
 TOG="jdoctor"
 TARGET_CLASS=${2}
@@ -43,7 +41,7 @@ export CLASSPATH=target/classes:evosuite-standalone-runtime-1.0.6.jar:evosuite-t
 # compile all tests
 find "${PROJECT_DIR}/evosuite-tests" -type f -name "*.java" > java_tests.txt
 while read -r java_test; do
-  $JAVA8_C "${java_test}"
+  $JAVA8_JAVAC "${java_test}"
 done < java_tests.txt
 # run JUnit
 TEST_FAILS="test_fails.txt"
@@ -53,7 +51,7 @@ while read -r java_test; do
   test_class="${test_class//\//.}"  # convert to package name
   # do not run scaffolding files
   if [[ "${test_class}" == *ESTest ]]; then
-    junit_output=$($JAVA8_BIN org.junit.runner.JUnitCore "${test_class}")
+    junit_output=$($JAVA8_PROGRAM org.junit.runner.JUnitCore "${test_class}")
     if [[ ${junit_output} == *"FAILURES!!!"* ]]; then
       # get names of all failing tests
       while IFS= read -r line; do
