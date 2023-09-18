@@ -1282,7 +1282,7 @@ public class DatasetUtils {
      * @return a list of lists of objects
      * @param <T> an arbitrary object
      */
-    public static <T> List<List<T>> splitListIntoChunks(List<T> list, int chunkSize) {
+    public static <T> List<List<T>> splitListIntoSubLists(List<T> list, int chunkSize) {
         List<List<T>> chunks = new ArrayList<>();
         for (int i = 0; i < list.size(); i += chunkSize) {
             int endIndex = Math.min(i + chunkSize, list.size());
