@@ -19,6 +19,7 @@ elif [ ! -d "${TARGET_DIR}" ]; then
   exit 1
 fi
 
+# Set and check environment variables
 SCRIPTDIR="$(cd "$(dirname "$0")" && pwd -P)"
 . "${SCRIPTDIR}${SEPARATOR}utils${SEPARATOR}env.sh"
 

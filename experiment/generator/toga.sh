@@ -1,9 +1,12 @@
 #!/bin/bash
 # This script generates a list of non-axiomatic oracles using TOGA.
-# Should output a list of OracleOutput.
+# It should saves the output to "output/toga/oracle" as a list of OracleOutput records.
 
 # Exit from the program if any error is arose from another bash script or another command executed within this bash script.
 set -e
+
+FULLY_QUALIFIED_NAME="${1}"
+SRC_PATH="${2}"
 
 # argument and setup check
 if [ ! $# -eq 3 ]; then
@@ -11,15 +14,11 @@ if [ ! $# -eq 3 ]; then
   exit 1
 fi
 
-if [[ $(uname) == "Darwin" || $(uname) == "Linux" ]]; then
-    SEPARATOR="/"
-else
-    SEPARATOR="\\"
-fi
+# Set and check environment variables
+SCRIPTDIR="$(cd "$(dirname "$0")" && pwd -P)"
+. "${SCRIPTDIR}${SEPARATOR}utils${SEPARATOR}env.sh"
 
 ROOT_DIR=$(pwd)
-FULLY_QUALIFIED_NAME="${1}"
-SRC_PATH="${2}"
 TOGA_PROJECT_DIR="${ROOT_DIR}${SEPARATOR}generator${SEPARATOR}resources${SEPARATOR}toga"
 TOGA_INPUT_DIR="${ROOT_DIR}${SEPARATOR}output${SEPARATOR}toga${SEPARATOR}input"
 TOGA_OUTPUT_DIR="${ROOT_DIR}${SEPARATOR}output${SEPARATOR}toga${SEPARATOR}output"

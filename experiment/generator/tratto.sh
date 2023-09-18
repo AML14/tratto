@@ -1,9 +1,13 @@
 #!/bin/bash
-# This script generates a list of axiomatic oracles using Tratto.
-# Should output a list of OracleOutput.
+# This script generates a list of non-axiomatic oracles using Tratto.
+# It should saves the output to "output/tratto/oracle" as a list of OracleOutput records.
 
 # Exit from the program if any error is arose from another bash script or another command executed within this bash script.
 set -e
+
+FULLY_QUALIFIED_NAME="$1"
+SRC_PATH="$2"
+PROJECT_JAR_PATH="$3"
 
 # argument and setup check
 if [ ! $# -eq 3 ]; then
@@ -17,10 +21,11 @@ else
     SEPARATOR="\\"
 fi
 
+# Set and check environment variables
+SCRIPTDIR="$(cd "$(dirname "$0")" && pwd -P)"
+. "${SCRIPTDIR}${SEPARATOR}utils${SEPARATOR}env.sh"
+
 ROOT_DIR=$(pwd)
-FULLY_QUALIFIED_NAME="$1"
-SRC_PATH="$2"
-PROJECT_JAR_PATH="$3"
 RESOURCES_DIR="${ROOT_DIR}${SEPARATOR}generator${SEPARATOR}resources"
 UTILS_DIR="${ROOT_DIR}${SEPARATOR}generator${SEPARATOR}utils"
 TRATTO_PROJECT_DIR="${ROOT_DIR}${SEPARATOR}..${SEPARATOR}tratto"
