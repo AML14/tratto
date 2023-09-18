@@ -6,26 +6,22 @@ import com.github.javaparser.ast.body.TypeDeclaration;
 import star.tratto.data.OracleType;
 
 /**
- * This record stores basic information of a JavaDoc method tag. Includes the
- * file where the tag is written (as a string), the type declaration of the
- * declaring class, the corresponding method, the type of tag (e.g. PRE, POST,
- * EXCEPT_POST), the "name" of the tag, and the tag content. For example, in
+ * A Javadoc method tag (e.g. "@throws", "@param", etc.). For reference, in
  * the tag,
- *  "@param fileContent String representation of the source file"
- * "fileContent" is the tag name, and "String representation of the source
- * file" is the tag content.
+ *     "@param box a default container"
+ * "box" is the tag name and "a default container" is the tag body.
  */
 public record JavadocTag(
-        /* String representation of the source file */
+        /* String representation of the whole source file (declaring class, imports, etc.). */
         String fileContent,
-        /* the declaring class */
+        /* The declaring class. */
         TypeDeclaration<?> jpClass,
-        /* the corresponding method */
+        /* The corresponding method. */
         CallableDeclaration<?> jpCallable,
-        /* the type of JavaDoc tag (e.g. PRE, POST, EXCEPT_POST) */
+        /* The type of oracle corresponding to the JavaDoc tag (e.g. @param->PRE, @throws->EXCEPT_POST, etc.). */
         OracleType oracleType,
-        /* parameter name or exception type ("" if oracleType is POST) */
+        /* Parameter name or exception type (empty string if oracleType is NORMAL_POST). */
         String tagName,
-        /* the content of the tag */
+        /* The content of the tag. */
         String tagBody
 ) {}
