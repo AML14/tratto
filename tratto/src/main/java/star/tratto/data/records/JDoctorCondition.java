@@ -8,15 +8,15 @@ import java.util.List;
  * A JDoctor condition for a method.
  */
 public record JDoctorCondition(
-        /* The contextual information of a method under test */
+        /* The contextual information of a method under test. */
         @JsonProperty("operation") Operation operation,
-        /* Additional contextual identifier of the method under test */
+        /* Additional contextual identifier of the method under test. */
         @JsonProperty("identifiers") Identifiers identifiers,
-        /* Exceptional post-conditions */
+        /* Exceptional post-conditions. */
         @JsonProperty("throws") List<ThrowsCondition> throwsConditions,
-        /* Normal post-conditions */
+        /* Normal post-conditions. */
         @JsonProperty("post") List<PostCondition> postConditions,
-        /* Pre-conditions */
+        /* Pre-conditions. */
         @JsonProperty("pre") List<PreCondition> preConditions
 ) {
     /**
@@ -26,17 +26,17 @@ public record JDoctorCondition(
     public record Operation(
             /*
              * The qualified name for the declaring class of the method which
-             * the JDoctor condition refers to
+             * the JDoctor condition refers to.
              */
             @JsonProperty("classname") String className,
             /*
              * The qualified name of the method which the JDoctor condition
-             * refers to
+             * refers to.
              */
             @JsonProperty("name") String methodName,
             /*
              * The list of parameter type names for the method which the
-             * JDoctor condition refers to
+             * JDoctor condition refers to.
              */
             @JsonProperty("parameterTypes") List<String> parameterTypes
     ) {}
@@ -66,12 +66,12 @@ public record JDoctorCondition(
      * Defines an exceptional JDoctor condition.
      */
     public record ThrowsCondition(
-            /* The exception captured by JDoctor */
+            /* The exception captured by JDoctor. */
             @JsonProperty("exception") String exception,
             /*
              * The @throws tag description of the exception in the
              * corresponding Javadoc comment of the method to which the
-             * JDoctor condition refers
+             * JDoctor condition refers.
              */
             @JsonProperty("description") String description,
             /*
@@ -94,7 +94,7 @@ public record JDoctorCondition(
              * post-condition.
              */
             @JsonProperty("property") Property property,
-            /* The textual description of the JDoctor post-condition */
+            /* The textual description of the JDoctor post-condition. */
             @JsonProperty("description") String description,
             /*
              * The guard of the JDoctor post-condition. It contains the
@@ -110,7 +110,7 @@ public record JDoctorCondition(
      * A JDoctor pre-condition.
      */
     public record PreCondition(
-            /* The textual description of the JDoctor pre-condition */
+            /* The textual description of the JDoctor pre-condition. */
             @JsonProperty("description") String description,
             /*
              * The guard of the JDoctor pre-condition. It contains the
@@ -130,7 +130,7 @@ public record JDoctorCondition(
              * exceptional condition must be thrown
              */
             @JsonProperty("condition") String condition,
-            /* The textual description of the guard condition */
+            /* The textual description of the guard condition. */
             @JsonProperty("description") String description
     ) {}
 
@@ -138,9 +138,9 @@ public record JDoctorCondition(
      * A property of a JDoctor post-condition.
      */
     public record Property(
-            /* The oracle that must be true if the corresponding Guard condition is true */
+            /* The oracle that must be true if the corresponding Guard condition is true. */
             @JsonProperty("condition") String condition,
-            /* The textual description of the JDoctor post-condition oracle */
+            /* The textual description of the JDoctor post-condition oracle. */
             @JsonProperty("description") String description
     ) {}
 }
