@@ -442,8 +442,8 @@ public class DatasetUtils {
     }
 
     /**
-     * Collects information about all non-private, static attributes of a
-     * given compilation unit.
+     * Collects information about all non-private, static attributes (fields)
+     * in a given compilation unit.
      *
      * @param cu a compilation unit of a Java file
      * @return a list of attribute tokens
@@ -456,14 +456,11 @@ public class DatasetUtils {
         List<AttributeTokens> attributeList = new ArrayList<>();
         // get package name.
         String packageName = JavaParserUtils.getPackageDeclaration(cu).getNameAsString();
-        // get all classes in compilation unit.
-        List<TypeDeclaration<?>> jpClasses = cu.getTypes();
-        // iterate over all classes.
-        for (TypeDeclaration<?> jpClass : jpClasses) {
+        // iterate over each class (including inner classes) in the compilation unit.
+        for (TypeDeclaration<?> jpClass : cu.findAll(TypeDeclaration.class)) {
             String className = jpClass.getNameAsString();
-            List<FieldDeclaration> jpFields = jpClass.findAll(FieldDeclaration.class);
             // add all non-private, static attributes.
-            for (FieldDeclaration jpField : jpFields) {
+            for (FieldDeclaration jpField : jpClass.findAll(FieldDeclaration.class)) {
                 // check if field declaration is non-private and static.
                 if (!jpField.isPrivate() && jpField.isStatic()) {
                     // add each variable in declaration.
