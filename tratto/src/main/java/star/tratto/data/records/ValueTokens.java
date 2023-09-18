@@ -3,10 +3,12 @@ package star.tratto.data.records;
 import java.util.List;
 
 /**
- * This record stores basic information of a variable value. Includes the
- * value (value) and the type of the value (type). For example,
- *  "1"    =>    ("1", "int")
- * Used for XText grammar.
+ * This record stores basic information of a simple value. Includes the value
+ * (value) and the type of the value (type). For example,
+ *     "1"    =>    ("1", "int")
+ * Used for XText grammar. Only considers basic Javadoc values, such as
+ * numerical values or strings. Therefore, the XText grammar does not use a
+ * package name when processing this record.
  *
  * @param value the Javadoc value
  * @param type the type of the Javadoc value
