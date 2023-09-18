@@ -31,7 +31,7 @@ SCRIPT_DIR="$(cd "$(dirname "${0}")" && pwd -P)"
 # shellcheck source=generator/utils/env.sh
 . "${SCRIPT_DIR}${SEPARATOR}utils${SEPARATOR}env.sh"
 
-ROOT_DIR="$(dirname "$(dirname "${0}")")"
+ROOT_DIR="$(dirname "${SCRIPT_DIR}")"
 OUTPUT_DIR="${ROOT_DIR}${SEPARATOR}output"
 RESOURCES_DIR="${ROOT_DIR}${SEPARATOR}generator${SEPARATOR}resources"
 JDOCTOR="${JAVA8_PROGRAM} -jar ${RESOURCES_DIR}${SEPARATOR}toradocu-1.0-all.jar"
