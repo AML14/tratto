@@ -655,31 +655,6 @@ public class DatasetUtils {
     }
 
     /**
-     * Converts a list of method usages to a list of method tokens records,
-     * where each record has the form:
-     *     [methodName, packageName, typeName, methodSignature]
-     * where "typeName" refers to the declaring class, "methodSignature"
-     * includes modifiers, type parameters, return type, method name,
-     * parameters, and exceptions.
-     *
-     * @param jpMethods a list of method usages
-     * @return the corresponding list of method tokens
-     */
-    private static List<MethodTokens> convertMethodUsageToMethodTokens(
-            List<MethodUsage> jpMethods
-    ) {
-        return new ArrayList<>(jpMethods)
-                .stream()
-                .map(jpMethod -> new MethodTokens(
-                        jpMethod.getName(),
-                        jpMethod.declaringType().getPackageName(),
-                        jpMethod.declaringType().getClassName(),
-                        JavaParserUtils.getMethodSignature(jpMethod)
-                ))
-                .toList();
-    }
-
-    /**
      * Collects information for all non-private, non-static, non-void methods
      * available to a given type. Handles three cases for either (1) an array
      * type, (2) a generic Object type (e.g. "T"), and (3) a normal reference
@@ -713,7 +688,7 @@ public class DatasetUtils {
                     .map(MethodUsage::new)
                     .filter(JavaParserUtils::isNonPrivateNonStaticNonVoidMethod)
                     .toList();
-            methodList.addAll(convertMethodUsageToMethodTokens(genericMethods));
+            methodList.addAll(genericMethods.stream().map(MethodTokens::new).toList());
         } else if (jpResolvedType.isReferenceType()) {
             // base type.
             List<MethodUsage> allMethods = jpResolvedType.asReferenceType().getAllMethods()
@@ -721,7 +696,7 @@ public class DatasetUtils {
                     .map(MethodUsage::new)
                     .filter(JavaParserUtils::isNonPrivateNonStaticNonVoidMethod)
                     .toList();
-            methodList.addAll(convertMethodUsageToMethodTokens(allMethods));
+            methodList.addAll(allMethods.stream().map(MethodTokens::new).toList());
         }
         return methodList;
     }
@@ -958,7 +933,7 @@ public class DatasetUtils {
                 .stream()
                 .filter(JavaParserUtils::isNonPrivateNonStaticNonVoidMethod)
                 .toList();
-        List<MethodTokens> methodList = new ArrayList<>(convertMethodUsageToMethodTokens(allReceiverMethods));
+        List<MethodTokens> methodList = new ArrayList<>(allReceiverMethods.stream().map(MethodTokens::new).toList());
         // add all methods of parameters.
         for (Parameter jpParam : jpCallable.getParameters()) {
             methodList.addAll(getMethodsFromType(jpParam.getType()));
@@ -968,13 +943,13 @@ public class DatasetUtils {
             methodList.addAll(getMethodsFromType(((MethodDeclaration) jpCallable).getType()));
         }
         // add Object methods.
-        methodList.addAll(convertMethodUsageToMethodTokens(
-                JavaParserUtils.getObjectType().asReferenceType().getAllMethods()
-                        .stream()
-                        .map(MethodUsage::new)
-                        .filter(JavaParserUtils::isNonPrivateNonStaticNonVoidMethod)
-                        .toList()
-        ));
+        methodList.addAll(JavaParserUtils.getObjectType().asReferenceType().getAllMethods()
+                .stream()
+                .map(MethodUsage::new)
+                .filter(JavaParserUtils::isNonPrivateNonStaticNonVoidMethod)
+                .map(MethodTokens::new)
+                .toList()
+        );
         return withoutDuplicates(methodList);
     }
 
