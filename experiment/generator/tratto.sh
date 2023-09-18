@@ -21,10 +21,11 @@ if [ ! $# -eq 3 ]; then
 fi
 
 # Set and check environment variables
-SCRIPTDIR="$(cd "$(dirname "$0")" && pwd -P)"
-. "${SCRIPTDIR}${SEPARATOR}utils${SEPARATOR}env.sh"
+SCRIPT_DIR="$(cd "$(dirname "${0}")" && pwd -P)"
+# shellcheck source=generator/utils/env.sh
+. "${SCRIPT_DIR}${SEPARATOR}utils${SEPARATOR}env.sh"
 
-ROOT_DIR=$(pwd)
+ROOT_DIR="$(dirname "${SCRIPT_DIR}")"
 RESOURCES_DIR="${ROOT_DIR}${SEPARATOR}generator${SEPARATOR}resources"
 UTILS_DIR="${ROOT_DIR}${SEPARATOR}generator${SEPARATOR}utils"
 TRATTO_PROJECT_DIR="${ROOT_DIR}${SEPARATOR}..${SEPARATOR}tratto"
