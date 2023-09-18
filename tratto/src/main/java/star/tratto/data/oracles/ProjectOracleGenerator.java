@@ -91,7 +91,7 @@ public class ProjectOracleGenerator {
         for (JDoctorCondition jDoctorCondition : this.jDoctorConditions) {
             Operation operation = jDoctorCondition.operation();
             // Add all ThrowsCondition oracles to dataset.
-            List<ThrowsCondition> throwsConditions = jDoctorCondition.throwsCondition();
+            List<ThrowsCondition> throwsConditions = jDoctorCondition.throwsConditions();
             for (ThrowsCondition condition : throwsConditions) {
                 OracleDatapoint nextDatapoint = getNextDatapoint(operation, condition);
                 if (nextDatapoint != null) oracleDPs.add(nextDatapoint);

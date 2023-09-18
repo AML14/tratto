@@ -13,7 +13,7 @@ public record JDoctorCondition(
         /* Additional contextual identifier of the method under test */
         @JsonProperty("identifiers") Identifiers identifiers,
         /* Exceptional post-conditions */
-        @JsonProperty("throws") List<ThrowsCondition> throwsCondition,
+        @JsonProperty("throws") List<ThrowsCondition> throwsConditions,
         /* Normal post-conditions */
         @JsonProperty("post") List<PostCondition> postConditions,
         /* Pre-conditions */
