@@ -102,13 +102,15 @@ public class DatasetUtils {
     private static final Pattern javadocPattern = Pattern.compile("/\\*\\*(.*?)\\*/", Pattern.DOTALL);
 
     /**
-     * Gets the Javadoc comment of a body declaration using regex patterns.
-     * Use ONLY IF Javadoc comment is not recoverable using JavaParser API,
-     * such as {@link DatasetUtils#getClassJavadoc(TypeDeclaration)} or
-     * {@link DatasetUtils#getCallableJavadoc(CallableDeclaration)}.
+     * Gets the Javadoc comment of a class or method using a regex. This
+     * method should ONLY be called by
+     * {@link DatasetUtils#getCallableJavadoc(CallableDeclaration)} or
+     * {@link DatasetUtils#getClassJavadoc(TypeDeclaration)} (e.g. after
+     * attempting to recover the Javadoc using the JavaParser API).
      *
      * @param jpBody a member in a Java class
-     * @return the matched Javadoc comment (empty string if not found)
+     * @return the matched Javadoc comment surrounded by
+     * "&#47;&#42; ... &#42;&#47;" (empty string if not found)
      */
     private static String getJavadocByPattern(BodyDeclaration<?> jpBody) {
         String input = jpBody.toString();
@@ -130,7 +132,8 @@ public class DatasetUtils {
      * Gets the Javadoc comment of a given class.
      * 
      * @param jpClass a JavaParser class
-     * @return the class Javadoc comment
+     * @return the class Javadoc comment surrounded by
+     * "&#47;&#42; ... &#42;&#47;" (empty string if not found)
      */
     public static String getClassJavadoc(
             TypeDeclaration<?> jpClass
@@ -145,7 +148,8 @@ public class DatasetUtils {
      * Gets the Javadoc comment of a given function.
      *
      * @param jpCallable a JavaParser function
-     * @return the method/constructor Javadoc comment
+     * @return the method/constructor Javadoc comment surrounded by
+     * "&#47;&#42; ... &#42;&#47;" (empty string if not found)
      */
     public static String getCallableJavadoc(
             CallableDeclaration<?> jpCallable
