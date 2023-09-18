@@ -414,9 +414,7 @@ public class DatasetUtils {
      * of a given compilation unit.
      *
      * @param cu a compilation unit of a Java file
-     * @return a list of information about each method. Each entry has the
-     * form:
-     *     [methodName, packageName, typeName, methodSignature]
+     * @return a list of method tokens
      * @throws PackageDeclarationNotFoundException if the package
      * {@link PackageDeclaration} of the compilation unit is not found
      */
@@ -426,12 +424,10 @@ public class DatasetUtils {
         List<MethodTokens> methodList = new ArrayList<>();
         // get package name.
         String packageName = JavaParserUtils.getPackageDeclaration(cu).getNameAsString();
-        // iterate over each class in the compilation unit.
-        List<TypeDeclaration<?>> jpClasses = cu.getTypes();
-        for (TypeDeclaration<?> jpClass : jpClasses) {
+        // iterate over each class (including inner classes) in the compilation unit.
+        for (TypeDeclaration<?> jpClass : cu.findAll(TypeDeclaration.class)) {
             String className = jpClass.getNameAsString();
-            List<MethodDeclaration> jpMethods = jpClass.findAll(MethodDeclaration.class);
-            for (MethodDeclaration jpMethod : jpMethods) {
+            for (MethodDeclaration jpMethod : jpClass.findAll(MethodDeclaration.class)) {
                 if (!jpMethod.isPrivate() && jpMethod.isStatic() && !jpMethod.getType().isVoidType()) {
                     methodList.add(new MethodTokens(
                             jpMethod.getNameAsString(),
