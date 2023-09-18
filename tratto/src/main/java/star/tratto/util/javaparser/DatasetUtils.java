@@ -98,6 +98,9 @@ public class DatasetUtils {
         return classList;
     }
 
+    /** Regex to match the Javadoc of a class or method. */
+    private static final Pattern javadocPattern = Pattern.compile("/\\*\\*(.*?)\\*/", Pattern.DOTALL);
+
     /**
      * Gets the Javadoc comment of a body declaration using regex patterns.
      * Use ONLY IF Javadoc comment is not recoverable using JavaParser API,
@@ -109,8 +112,7 @@ public class DatasetUtils {
      */
     private static String getJavadocByPattern(BodyDeclaration<?> jpBody) {
         String input = jpBody.toString();
-        Pattern pattern = Pattern.compile("/\\*\\*(.*?)\\*/", Pattern.DOTALL);
-        Matcher matcher = pattern.matcher(input);
+        Matcher matcher = javadocPattern.matcher(input);
         if (matcher.find()) {
             String content = matcher.group(1);
             if (jpBody instanceof TypeDeclaration<?>) {
