@@ -161,7 +161,7 @@ public class DatasetUtils {
     }
 
     /** Regex to match the values in a Javadoc comment. */
-    private static final Pattern javadocValuePattern = Pattern.compile("-?\\d+(\\.\\d+)?");
+    private static final Pattern numericValuePattern = Pattern.compile("-?\\d+(\\.\\d+)?");
 
     /**
      * Gets all numeric value tokens in a Javadoc comment.
@@ -173,7 +173,7 @@ public class DatasetUtils {
             String javadocComment
     ) {
         // Defines regex to find integers and doubles within a string.
-        Matcher matcher = javadocValuePattern.matcher(javadocComment);
+        Matcher matcher = numericValuePattern.matcher(javadocComment);
         // Iterate through all occurrences.
         List<ValueTokens> numericValues = new ArrayList<>();
         while (matcher.find()) {
