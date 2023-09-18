@@ -3,7 +3,7 @@ package star.tratto.token;
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
 import star.tratto.data.OracleDatapoint;
-import star.tratto.data.records.TypeTokens;
+import star.tratto.data.records.ClassTokens;
 import star.tratto.data.records.MethodArgumentTokens;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.oraclegrammar.trattoGrammar.CanEvaluateToPrimitive;
@@ -113,8 +113,8 @@ public class TokenEnricher {
         // For each project class, check if return type of preceding expression is instanceof it. If so, add it to the list
         enrichedTokensPlusInfo.addAll(oracleDatapoint.getTokensProjectClasses()
                 .stream()
-                .filter(pair -> doesInstanceofCompile(fullyQualifiedClassName(exprReturnType.getValue0(), exprReturnType.getValue1()), fullyQualifiedClassName(pair.packageName(), pair.typeName()), oracleDatapoint))
-                .map(pair -> Triplet.with(pair.typeName(), "Class", List.of(pair.packageName(), pair.typeName())))
+                .filter(pair -> doesInstanceofCompile(fullyQualifiedClassName(exprReturnType.getValue0(), exprReturnType.getValue1()), fullyQualifiedClassName(pair.packageName(), pair.className()), oracleDatapoint))
+                .map(pair -> Triplet.with(pair.className(), "Class", List.of(pair.packageName(), pair.className())))
                 .collect(Collectors.toList())
         );
 
@@ -143,7 +143,7 @@ public class TokenEnricher {
         if (nTokens >= 2) {
             lastToken = partialExpressionTokens.get(nTokens - 1);
             previousToken = partialExpressionTokens.get(nTokens - 2);
-            if (!".".equals(lastToken) || !oracleDatapoint.getTokensProjectClasses().stream().map(TypeTokens::typeName).collect(Collectors.toList()).contains(previousToken)) {
+            if (!".".equals(lastToken) || !oracleDatapoint.getTokensProjectClasses().stream().map(ClassTokens::className).collect(Collectors.toList()).contains(previousToken)) {
                 return enrichedTokensPlusInfo;
             }
         } else {
@@ -184,7 +184,7 @@ public class TokenEnricher {
         if (nTokens >= 2) {
             lastToken = partialExpressionTokens.get(nTokens - 1);
             previousToken = partialExpressionTokens.get(nTokens - 2);
-            if (!".".equals(lastToken) || oracleDatapoint.getTokensProjectClasses().stream().map(TypeTokens::typeName).collect(Collectors.toList()).contains(previousToken)) {
+            if (!".".equals(lastToken) || oracleDatapoint.getTokensProjectClasses().stream().map(ClassTokens::className).collect(Collectors.toList()).contains(previousToken)) {
                 return enrichedTokensPlusInfo;
             }
         } else {
@@ -251,7 +251,7 @@ public class TokenEnricher {
         // Get class names
         enrichedTokensPlusInfo.addAll(oracleDatapoint.getTokensProjectClasses()
                 .stream()
-                .map(pair -> Triplet.with(pair.typeName(), "Class", List.of(pair.packageName(), pair.typeName())))
+                .map(pair -> Triplet.with(pair.className(), "Class", List.of(pair.packageName(), pair.className())))
                 .collect(Collectors.toList())
         );
 

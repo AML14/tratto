@@ -3,9 +3,10 @@ package star.tratto.token.restrictions;
 import com.github.javaparser.resolution.MethodUsage;
 import org.eclipse.emf.ecore.EObject;
 import org.javatuples.Pair;
+import org.javatuples.Quartet;
 import star.tratto.data.OracleDatapoint;
 import star.tratto.data.records.AttributeTokens;
-import star.tratto.data.records.TypeTokens;
+import star.tratto.data.records.ClassTokens;
 import star.tratto.data.records.MethodTokens;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.oraclegrammar.trattoGrammar.MethodCall;
@@ -84,7 +85,7 @@ public class RestrictionsUtils {
 
         if (!precedingExpr.contains(".") && oracleDatapoint.isProjectClass(precedingExpr)) {
             // Preceding expression is a project class
-            List<TypeTokens> matchingClasses = oracleDatapoint.getTokensProjectClasses()
+            List<ClassTokens> matchingClasses = oracleDatapoint.getTokensProjectClasses()
                     .stream()
                     .filter(c -> c.typeName().equals(precedingExpr))
                     .collect(Collectors.toList());

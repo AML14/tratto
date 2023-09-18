@@ -3,7 +3,7 @@ package star.tratto.data.oracles;
 import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleType;
 import star.tratto.data.records.AttributeTokens;
-import star.tratto.data.records.TypeTokens;
+import star.tratto.data.records.ClassTokens;
 import star.tratto.data.records.JDoctorCondition.Guard;
 import star.tratto.data.records.JDoctorCondition.PostCondition;
 import star.tratto.data.records.JDoctorCondition.PreCondition;
@@ -188,7 +188,7 @@ public class OracleDatapointBuilder {
         this.datapoint.setTokensGeneralValuesGlobalDictionary(tokensGeneralValuesGlobalDictionary);
     }
 
-    public void setTokensProjectClasses(List<TypeTokens> tokensProjectClasses) {
+    public void setTokensProjectClasses(List<ClassTokens> tokensProjectClasses) {
         this.datapoint.setTokensProjectClasses(tokensProjectClasses);
     }
 
