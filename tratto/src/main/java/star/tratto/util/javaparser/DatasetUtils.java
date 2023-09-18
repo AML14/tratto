@@ -1156,25 +1156,19 @@ public class DatasetUtils {
             List<String> targetParamList
     ) {
         // iterate through each member in the class.
-        for (BodyDeclaration<?> member : jpClass.getMembers()) {
-            // check if member is a function (method or constructor).
-            if (member.isCallableDeclaration()) {
-                CallableDeclaration<?> currentCallable = member.asCallableDeclaration();
-                // check if the function names are equal.
-                if (currentCallable.getNameAsString().equals(targetName)) {
-                    // check if parameters are equal.
-                    List<String> currentParamList = currentCallable.getParameters()
-                            .stream()
-                            .map(p -> TypeUtils.getJDoctorSimpleNameFromSourceCode(jpClass, currentCallable, p))
-                            .toList();
-                    if (jpParamListEqualsJDoctorParamList(
-                            targetParamList,
-                            currentParamList,
-                            currentCallable,
-                            jpClass
-                    )) {
-                        return currentCallable;
-                    }
+        for (CallableDeclaration<?> callableDeclaration : jpClass.findAll(CallableDeclaration.class)) {
+            if (callableDeclaration.getNameAsString().equals(targetName)) {
+                List<String> paramList = callableDeclaration.getParameters()
+                        .stream()
+                        .map(p -> TypeUtils.getJDoctorSimpleNameFromSourceCode(jpClass, callableDeclaration, p))
+                        .toList();
+                if (jpParamListEqualsJDoctorParamList(
+                        targetParamList,
+                        paramList,
+                        callableDeclaration,
+                        jpClass
+                )) {
+                    return callableDeclaration;
                 }
             }
         }
