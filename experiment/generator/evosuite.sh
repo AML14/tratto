@@ -15,7 +15,7 @@ elif [ ! -f "${TARGET_CLASS}" ]; then
   echo -e "evosuite.sh: Class file does not exist: ${TARGET_CLASS}"
   exit 1
 elif [ ! -d "${TARGET_DIR}" ]; then
-  echo -e "evosuite.sh: The system binaries path does not exist: \"${2}\" "
+  echo -e "evosuite.sh: The system binaries path does not exist: ${TARGET_DIR}"
   exit 1
 fi
 
