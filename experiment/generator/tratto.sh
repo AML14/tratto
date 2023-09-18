@@ -4,21 +4,20 @@
 
 # Exit from the program if any error is arose from another bash script or another command executed within this bash script.
 set -e
-
-FULLY_QUALIFIED_NAME="$1"
-SRC_PATH="$2"
-PROJECT_JAR_PATH="$3"
-
-# argument and setup check
-if [ ! $# -eq 3 ]; then
-  echo -e "(TRATTO) Incorrect number of arguments. Expected 3 arguments, but got $#".
-  exit 1
-fi
-
 if [[ $(uname) == "Darwin" || $(uname) == "Linux" ]]; then
     SEPARATOR="/"
 else
     SEPARATOR="\\"
+fi
+
+FULLY_QUALIFIED_NAME="${1}"
+SRC_PATH="${2}"
+PROJECT_JAR_PATH="${3}"
+
+# argument and setup check
+if [ ! $# -eq 3 ]; then
+  echo -e "tratto.sh Incorrect number of arguments. Expected 3 arguments, but got ${#}".
+  exit 1
 fi
 
 # Set and check environment variables
