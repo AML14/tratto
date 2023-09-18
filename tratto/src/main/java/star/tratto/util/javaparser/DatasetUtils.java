@@ -160,19 +160,20 @@ public class DatasetUtils {
                 .orElseGet(() -> getJavadocByPattern(jpCallable));
     }
 
+    /** Regex to match the values in a Javadoc comment. */
+    private static final Pattern javadocValuePattern = Pattern.compile("-?\\d+(\\.\\d+)?");
+
     /**
      * Gets all numeric value tokens in a Javadoc comment.
      *
      * @param javadocComment a Javadoc comment
-     * @return a list of value tokens. The first element is the numeric value,
-     * and the second element is the type of numeric value ("int" or "double").
+     * @return a list of value tokens
      */
     private static List<ValueTokens> findAllNumericValuesInJavadoc(
             String javadocComment
     ) {
         // Defines regex to find integers and doubles within a string.
-        Pattern pattern = Pattern.compile("-?\\d+(\\.\\d+)?");
-        Matcher matcher = pattern.matcher(javadocComment);
+        Matcher matcher = javadocValuePattern.matcher(javadocComment);
         // Iterate through all occurrences.
         List<ValueTokens> numericValues = new ArrayList<>();
         while (matcher.find()) {
@@ -183,15 +184,16 @@ public class DatasetUtils {
                     double realValue = Double.parseDouble(match);
                     numericValues.add(new ValueTokens(Double.toString(realValue), "double"));
                 } catch (Exception e) {
-                    logger.error(String.format("Number exceed maximum float value: %s%n", match));
+                    logger.error(String.format("Number exceeds maximum double value: %s%n", match));
                 }
             } else {
                 // integer (no decimal).
                 try {
+                    // "long" is used to parse larger integers for the XText grammar.
                     long longIntValue = Long.parseLong(match);
                     numericValues.add(new ValueTokens(Long.toString(longIntValue), "int"));
                 } catch (NumberFormatException e) {
-                    logger.error(String.format("Number exceed maximum integer value: %s", match));
+                    logger.error(String.format("Number exceeds maximum long value: %s", match));
                 }
             }
         }
