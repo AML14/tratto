@@ -528,22 +528,23 @@ public class DatasetUtils {
         return tagList;
     }
 
+    /** A collection of all files that should be ignored. */
+    private static final Set<String> ignoreFiles = Set.of(".DS_Store", "package-info.java");
+
     /**
      * Finds all ".java" files in a given directory. Files are filtered by an
-     * ad-hoc list of files to ignore (see dataset/repos/ignore_file.json).
+     * ad-hoc list of files to ignore (see "data/repos/ignore_file.json").
      *
      * @param sourceDir the path to the project root directory
-     * @return a list of all valid files
+     * @return a list of all valid files as Paths with parent directory names
+     * @see DatasetUtils#ignoreFiles
      */
     private static List<Path> getValidJavaFiles(Path sourceDir) {
         List<Path> allJavaFiles = FileUtils.getAllJavaFilesUnderDirectory(sourceDir);
-        // Get list of files to ignore.
-        Path ignoreFilePath = TrattoPath.IGNORE_FILE.getPath();
-        List<String> ignoreFileList = FileUtils.readJSONList(ignoreFilePath, String.class);
         // filter files.
         return allJavaFiles
                 .stream()
-                .filter(f -> !ignoreFileList.contains(f.getFileName().toString()))
+                .filter(f -> !ignoreFiles.contains(f.getFileName().toString()))
                 .collect(Collectors.toList());
     }
 
