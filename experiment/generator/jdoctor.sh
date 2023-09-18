@@ -4,6 +4,11 @@
 
 # Exit from the program if any error is arose from another bash script or another command executed within this bash script.
 set -e
+if [[ $(uname) == "Darwin" || $(uname) == "Linux" ]]; then
+  export SEPARATOR="/"
+else
+  export SEPARATOR="\\"
+fi
 
 TARGET_CLASS="${1}"  # fully-qualified name of target class
 SRC_DIR="${2}"  # project source directory
