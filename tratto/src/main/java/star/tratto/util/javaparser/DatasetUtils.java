@@ -494,13 +494,9 @@ public class DatasetUtils {
     ) throws PackageDeclarationNotFoundException {
         List<JavadocTag> tagList = new ArrayList<>();
         // iterate through each class.
-        List<TypeDeclaration<?>> jpClasses = cu.getTypes();
-        for (TypeDeclaration<?> jpClass : jpClasses) {
-            // iterate through each function.
-            List<CallableDeclaration<?>> jpCallables = new ArrayList<>();
-            jpCallables.addAll(jpClass.getMethods());
-            jpCallables.addAll(jpClass.getConstructors());
-            for (CallableDeclaration<?> jpCallable : jpCallables) {
+        for (TypeDeclaration<?> jpClass : cu.findAll(TypeDeclaration.class)) {
+            // iterate through each method.
+            for (CallableDeclaration<?> jpCallable : jpClass.findAll(CallableDeclaration.class)) {
                 // iterate through each Javadoc tag.
                 Optional<Javadoc> optionalJavadoc = jpCallable.getJavadoc();
                 if (optionalJavadoc.isPresent()) {
