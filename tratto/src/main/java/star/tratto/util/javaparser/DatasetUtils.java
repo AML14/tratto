@@ -237,11 +237,11 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets the class name of a given parameter type. Handles special cases
-     * with generic types, primitives, arrays, and reference types. Uses an
-     * upper bound for generic types if possible. Includes enclosing classes
-     * for inner classes, but removes package names. These modifications are
-     * made for compatibility with the XText grammar.
+     * Gets the type name of a given parameter. Handles special cases with
+     * generic types, primitives, arrays, and reference types. Uses an upper
+     * bound for generic types if possible. Includes enclosing classes for
+     * inner classes (separated by "."), but removes package names. These
+     * modifications are made for compatibility with the XText grammar.
      *
      * @param jpClass the declaring class of {@code jpCallable}
      * @param jpCallable the method with a parameter {@code jpParameter}
@@ -289,11 +289,7 @@ public class DatasetUtils {
      *
      * @param jpClass the declaring class
      * @param jpCallable a method
-     * @return a list of information about each argument. Each entry has the
-     * form:
-     *     [parameterName, packageName, parameterTypeName]
-     * where "packageName" refers to the package of the parameter type (empty
-     * if the parameter is not a reference type).
+     * @return a list of method argument tokens
      */
     public static List<MethodArgumentTokens> getTokensMethodArguments(
             TypeDeclaration<?> jpClass,
