@@ -41,46 +41,23 @@ This corresponds to a high precision and a low FPR.
 
 # 2. Setup
 
-This section outlines all requirements and corresponding setup instructions for each tool used in the experimental pipeline. After the setup is complete, the user should be able to run each example command in the [Run the experiments](#3-run-the-experiments) section.
+Set environment variable `JAVA8_HOME` to the JDK 8 installation.
+(Rationale: Evosuite and JDoctor require Java 8.)
 
-## 2.1. Evosuite
-
-### 2.1.1. Java 8
-
-We use EvoSuite to generate test prefixes, which is written in Java 8. However, the experiment module uses Java 17. To run EvoSuite (and similarly, JDoctor), the user must configure a home directory for a local JDK 8 version. See [Oracle](https://www.oracle.com/java/technologies/downloads/#java8-linux) for JDK downloads (you may need an Oracle account to download older versions). Then, add the JDK to the `./generator/resources` directory. In `./generator/evosuite.sh`, modify the field at the top of the script, `JDK8_NAME`, to the name of the local JDK directory in `./generator/resources`. By default, the script searches for `jdk-1.8.jdk` (alternatively, you may rename your local JDK directory to match this name).
-
-## 2.2. JDoctor
-
-### 2.2.1. ToRaDoCu
-
+(TODO: To simplify setup, how about committing this file to the repository?)
 To set up JDoctor for analysis, visit the [ToRaDoCu](https://github.com/albertogoffi/toradocu) GitHub page, and follow the setup
 instructions to build the `toradocu-1.0-all.jar` file (may take a few minutes). Then, move the jar file to the `./generator/resources` directory.
 
-### 2.2.2. Java 8
+Set up [Git Large File Storage (Git LFS)](https://git-lfs.com/).
+(Rationale: Toga requires Git LFS.)
 
-JDoctor is written in Java 8. Please complete the above [EvoSuite Java 8 setup](#111-java-8) instructions before continuing. Similar to the EvoSuite setup, modify the field at the top of the `./generator/jdoctor.sh` script, `JDK8_NAME`, to the name of the local JDK 8 directory in `./generator/resources`.
+(TODO: This requires an explanation of the exact commands to run.
+Also, avoid giving users an option to use Conda or not, which invites setup errors.
+Dictate either use of it, or no use of it, to simplify the instructions.)
+Set up Conda.
+Toga and Tratto use Python.
+A package management system, such as conda, is recommended (but not required) to create an isolated environment to run the Toga experiments (and debug any potential errors). See the [Miniconda homepage](https://docs.conda.io/projects/miniconda/en/latest/) for setup instructions.
 
-## 2.3. Toga
-
-### 2.3.1. Git Large File Storage
-
-Toga requires Git Large File Storage (Git LFS) to set up its environment. See the [Git LFS homepage](https://git-lfs.com/) for setup instructions.
-
-### 2.3.2. Conda (recommended)
-
-Toga is written in `Python 3.8` and requires the user to install various python packages (automated by `./generator/toga.sh` script). A package management system, such as conda, is recommended (but not required) to create an isolated environment to run the Toga experiments (and debug any potential errors). See the [Miniconda homepage](https://docs.conda.io/projects/miniconda/en/latest/) for setup instructions.
-
-## 2.4. Tratto
-
-### 2.4.1 Conda (recommended)
-
-Similar to Toga, a package management system, such as conda, is recommended (but not required) to create an isolated environment to run the Tratto experiments (and debug any potential errors). See the [Miniconda homepage](https://docs.conda.io/projects/miniconda/en/latest/) for setup instructions. Otherwise, the setup is fully automated by `./generator/tratto.sh`.
-
-## 2.5 Runner
-
-### 2.5.1 Java 8
-
-Please complete the above [EvoSuite Java 8 setup](#111-java-8) instructions before continuing. Similar to the EvoSuite and JDoctor setup, modify the field at the top of the `./runner.sh` script, `JDK8_NAME`, to the name of the local JDK 8 directory in `./generator/resources`.
 
 # 3. Overview
 
@@ -98,7 +75,7 @@ public class Example {
 }
 ```
 
-To generate test prefixes, we use [EvoSuite](https://www.evosuite.org/), which generates complete unit tests (including oracles), and removes the generated oracles (assertions) using [JavaParser](https://javaparser.org/). Then, we generate new oracles using an arbitrary TOG, and add these assertions to the test prefixes. Finally, we run the tests using EvoSuite and record the number of passing/failing tests. Additionally, we use [Defects4J](https://github.com/rjust/defects4j) to compute the precision and FPR of a TOG. 
+To generate test prefixes, we use [EvoSuite](https://www.evosuite.org/), which generates complete unit tests (including oracles), and removes the generated oracles (assertions) using [JavaParser](https://javaparser.org/). Then, we generate new oracles using an arbitrary TOG, and add these assertions to the test prefixes. Finally, we run the tests using EvoSuite and record the number of passing/failing tests. Additionally, we use [Defects4J](https://github.com/rjust/defects4j) to compute the precision and FPR of a TOG.
 
 As a running example, we consider the following toy method:
 ```java
@@ -125,7 +102,7 @@ and a brief description of the relevant files:
 
 - `defects4j/`: this directory contains python scripts for running the Defects4J analysis
   - `defects4j.py`: a script that analyzes all bugs in all projects of Defects4J
-  - `setup.py`: a script that sets up a Defects4J project bug for analysis 
+  - `setup.py`: a script that sets up a Defects4J project bug for analysis
 - `generator/`: this directory contains scripts for generating test prefixes and test oracles
 - `src/main/java/`: this directory contains all Java functionality for the end-to-end experimental pipeline
 - `experiment.sh`: the end-to-end script which performs the experiment
@@ -146,7 +123,7 @@ Our method for inserting oracles varies based on whether the TOG generates [axio
 If the oracles are axiomatic, then we insert the oracles wherever they are applicable. Consider the following oracles for the
 aforementioned `sum` example method: `sum(a, b) != null` and `a != null`. We may interpret these oracles as "method
 output must not be null" and "first method argument must not be null". Consequently, we should add the assertions after
-every appearance of the method output or first method argument, respectively. 
+every appearance of the method output or first method argument, respectively.
 
 Consider the following test prefixes
 generated by EvoSuite.
@@ -209,7 +186,7 @@ We store three primary output JSON records: [OracleOutput](#241-OracleOutput), [
   - `evosuite-simple-tests`: the test suite generated by EvoSuite, with each test split to have one assertion
   - `evosuite-prefixes`: the EvoSuite simple tests with all assertions and try/catch blocks removed
   - `[tog]`: a tog-specific directory for various intermediate outputs
-    - `input`: pre-processed input to be passed to the tog 
+    - `input`: pre-processed input to be passed to the tog
     - `oracle`: the `OracleOutput` generated by a tog
     - `test`: the `TestOutput` generated by a tog
   - `tog-tests`: a test suite generated by each tog (with subdirectories for each tog)

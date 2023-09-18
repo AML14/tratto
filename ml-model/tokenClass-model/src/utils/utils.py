@@ -171,5 +171,5 @@ def cleanup():
 
 def release_memory():
     # Release memory on GPU
-    torch.cuda.empty_cache() 
+    torch.cuda.empty_cache()
     gc.collect()
