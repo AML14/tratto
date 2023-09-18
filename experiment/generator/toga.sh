@@ -1,6 +1,6 @@
 #!/bin/bash
 # This script generates a list of non-axiomatic oracles using TOGA.
-# It should saves the output to "output/toga/oracle" as a list of OracleOutput records.
+# It should save the output to "output/toga/oracle" as a list of OracleOutput records.
 
 # Exit from the program if any error is arose from another bash script or another command executed within this bash script.
 set -e
