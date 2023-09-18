@@ -27,8 +27,9 @@ elif [ ! -d "${CLASS_DIR}" ]; then
 fi
 
 # Set and check environment variables
-SCRIPTDIR="$(cd "$(dirname "$0")" && pwd -P)"
-. "${SCRIPTDIR}${SEPARATOR}utils${SEPARATOR}env.sh"
+SCRIPT_DIR="$(cd "$(dirname "${0}")" && pwd -P)"
+# shellcheck source=generator/utils/env.sh
+. "${SCRIPT_DIR}${SEPARATOR}utils${SEPARATOR}env.sh"
 
 OUTPUT_DIR="${ROOT_DIR}${SEPARATOR}output"
 JDOCTOR="${JAVA8_PROGRAM} -jar ${RESOURCES_DIR}${SEPARATOR}toradocu-1.0-all.jar"
