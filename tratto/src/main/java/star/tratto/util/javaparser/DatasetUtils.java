@@ -78,7 +78,8 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets a list of class tokens corresponding to each class in a Java file.
+     * Gets a list of class tokens corresponding to each class defined in a
+     * Java file.
      *
      * @param cu a Java file
      * @return a list of class tokens: (className, packageName)
@@ -88,9 +89,9 @@ public class DatasetUtils {
     private static List<ClassTokens> getClassTokens(
             CompilationUnit cu
     ) throws PackageDeclarationNotFoundException {
-        List<ClassTokens> classList = new ArrayList<>();
-        String packageName = JavaParserUtils.getPackageDeclaration(cu).getNameAsString();
         List<TypeDeclaration<?>> jpClasses = cu.getTypes();
+        String packageName = JavaParserUtils.getPackageDeclaration(cu).getNameAsString();
+        List<ClassTokens> classList = new ArrayList<>(jpClasses.size());
         for (TypeDeclaration<?> jpClass : jpClasses) {
             classList.add(new ClassTokens(jpClass.getNameAsString(), packageName));
         }
