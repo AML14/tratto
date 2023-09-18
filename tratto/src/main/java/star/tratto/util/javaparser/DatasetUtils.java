@@ -215,7 +215,7 @@ public class DatasetUtils {
         // Iterate through all occurrences.
         List<ValueTokens> stringValues = new ArrayList<>();
         while (matcher.find()) {
-            String value = String.format("\"%s\"",!(matcher.group(1) == null) ? matcher.group(1) : matcher.group(2));
+            String value = String.format("\"%s\"", !(matcher.group(1) == null) ? matcher.group(1) : matcher.group(2));
             stringValues.add(new ValueTokens(value, "String"));
         }
         return stringValues;
