@@ -478,7 +478,7 @@ public class DatasetUtils {
 
     /**
      * Collects information about all Javadoc tags in a given compilation
-     * unit.
+     * unit. Does not traverse inner classes or methods for tags.
      *
      * @param cu a compilation unit of a Java file
      * @param fileContent the content of the Java file
@@ -501,29 +501,32 @@ public class DatasetUtils {
             for (CallableDeclaration<?> jpCallable : jpCallables) {
                 // iterate through each Javadoc tag.
                 Optional<Javadoc> optionalJavadoc = jpCallable.getJavadoc();
-                if (optionalJavadoc.isPresent()) {
-                    List<JavadocBlockTag> blockTags = optionalJavadoc.get().getBlockTags();
-                    for (JavadocBlockTag blockTag : blockTags) {
-                        // get info for each Javadoc tag.
-                        String name = blockTag.getName().orElse("");
-                        String content = blockTag.getContent().toText();
-                        OracleType oracleType = switch (blockTag.getTagName()) {
-                            case "param" -> OracleType.PRE;
-                            case "return" -> OracleType.NORMAL_POST;
-                            case "throws", "exception" -> OracleType.EXCEPT_POST;
-                            default -> null;
-                        };
-                        if (oracleType == null) continue;
-                        // add new tag.
-                        tagList.add(new JavadocTag(
-                                fileContent,
-                                jpClass,
-                                jpCallable,
-                                oracleType,
-                                name,
-                                content
-                        ));
+                if (optionalJavadoc.isEmpty()) {
+                    continue;
+                }
+                List<JavadocBlockTag> blockTags = optionalJavadoc.get().getBlockTags();
+                for (JavadocBlockTag blockTag : blockTags) {
+                    // get info for each Javadoc tag.
+                    String name = blockTag.getName().orElse("");
+                    String content = blockTag.getContent().toText();
+                    OracleType oracleType = switch (blockTag.getTagName()) {
+                        case "param" -> OracleType.PRE;
+                        case "return" -> OracleType.NORMAL_POST;
+                        case "throws", "exception" -> OracleType.EXCEPT_POST;
+                        default -> null;
+                    };
+                    if (oracleType == null) {
+                        continue;
                     }
+                    // add new tag.
+                    tagList.add(new JavadocTag(
+                            fileContent,
+                            jpClass,
+                            jpCallable,
+                            oracleType,
+                            name,
+                            content
+                    ));
                 }
             }
         }
