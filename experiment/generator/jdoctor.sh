@@ -4,6 +4,11 @@
 
 # Exit from the program if any error is arose from another bash script or another command executed within this bash script.
 set -e
+if [[ $(uname) == "Darwin" || $(uname) == "Linux" ]]; then
+  export SEPARATOR="/"
+else
+  export SEPARATOR="\\"
+fi
 
 TARGET_CLASS="${1}"  # fully-qualified name of target class
 SRC_DIR="${2}"  # project source directory
@@ -22,10 +27,13 @@ elif [ ! -d "${CLASS_DIR}" ]; then
 fi
 
 # Set and check environment variables
-SCRIPTDIR="$(cd "$(dirname "$0")" && pwd -P)"
-. "${SCRIPTDIR}${SEPARATOR}utils${SEPARATOR}env.sh"
+SCRIPT_DIR="$(cd "$(dirname "${0}")" && pwd -P)"
+# shellcheck source=generator/utils/env.sh
+. "${SCRIPT_DIR}${SEPARATOR}utils${SEPARATOR}env.sh"
 
+ROOT_DIR="$(dirname "$(dirname "${0}")")"
 OUTPUT_DIR="${ROOT_DIR}${SEPARATOR}output"
+RESOURCES_DIR="${ROOT_DIR}${SEPARATOR}generator${SEPARATOR}resources"
 JDOCTOR="${JAVA8_PROGRAM} -jar ${RESOURCES_DIR}${SEPARATOR}toradocu-1.0-all.jar"
 mkdir -p "${OUTPUT_DIR}${SEPARATOR}jdoctor${SEPARATOR}output"
 # use JDoctor to generate oracles
