@@ -90,10 +90,10 @@ public class OraclesDataset {
         Path oraclesPath = TrattoPath.OUTPUT.getPath().resolve(project.projectName()).resolve(oraclesFileName);
         FileUtils.write(oraclesPath, oracles);
         // write oracle datapoints as chunks
-        List<List<OracleDatapoint>> oracleDPChunks = DatasetUtils.splitListIntoChunks(oracleDPs, chunkSize);
+        List<List<OracleDatapoint>> oracleDPSubLists = DatasetUtils.splitListIntoSubLists(oracleDPs, chunkSize);
         String oracleDPFileName = String.format("oracle_datapoints_%s.json", project.projectName());
         Path oracleDPPath = TrattoPath.OUTPUT_DATASET.getPath().resolve(oracleDPFileName);
-        writeChunks(oracleDPPath, oracleDPChunks);
+        writeChunks(oracleDPPath, oracleDPSubLists);
     }
 
     public static void main(String[] args) throws IOException {

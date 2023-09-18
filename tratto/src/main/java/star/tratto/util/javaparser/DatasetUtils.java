@@ -442,13 +442,11 @@ public class DatasetUtils {
     }
 
     /**
-     * Collects information about all non-private, static attributes of a
-     * given compilation unit.
+     * Collects information about all non-private, static attributes (fields)
+     * in a given compilation unit.
      *
      * @param cu a compilation unit of a Java file
-     * @return a list of information about each attribute. Each entry has the
-     * form:
-     *     [variableName, packageName, typeName, variableSignature]
+     * @return a list of attribute tokens
      * @throws PackageDeclarationNotFoundException if the package
      * {@link PackageDeclaration} of the compilation unit is not found
      */
@@ -489,11 +487,7 @@ public class DatasetUtils {
      *
      * @param cu a compilation unit of a Java file
      * @param fileContent the content of the Java file
-     * @return a list of information about each tag. Each entry has the form:
-     *     [fileContent, typeDeclaration, callableDeclaration, oracleType, name, content]
-     * where a Javadoc tag is interpreted as:
-     *  "@tag name content"
-     * and the value of "@tag" determines "oracleType".
+     * @return a list of JavadocTags
      * @throws PackageDeclarationNotFoundException if the package
      * {@link PackageDeclaration} of the compilation unit is not found
      */
@@ -541,22 +535,23 @@ public class DatasetUtils {
         return tagList;
     }
 
+    /** A collection of all files that should be ignored. */
+    private static final Set<String> ignoreFiles = Set.of(".DS_Store", "package-info.java");
+
     /**
      * Finds all ".java" files in a given directory. Files are filtered by an
-     * ad-hoc list of files to ignore (see dataset/repos/ignore_file.json).
+     * ad-hoc list of files to ignore (see "data/repos/ignore_file.json").
      *
-     * @param sourceDir the path to the project root directory
-     * @return a list of all valid files
+     * @param dir the root directory
+     * @return a list of all valid files as Paths with parent directory names
+     * @see DatasetUtils#ignoreFiles
      */
-    private static List<Path> getValidJavaFiles(Path sourceDir) {
-        List<Path> allJavaFiles = FileUtils.getAllJavaFilesUnderDirectory(sourceDir);
-        // Get list of files to ignore.
-        Path ignoreFilePath = TrattoPath.IGNORE_FILE.getPath();
-        List<String> ignoreFileList = FileUtils.readJSONList(ignoreFilePath, String.class);
+    private static List<Path> getValidJavaFiles(Path dir) {
+        List<Path> allJavaFiles = FileUtils.getAllJavaFilesUnderDirectory(dir);
         // filter files.
         return allJavaFiles
                 .stream()
-                .filter(f -> !ignoreFileList.contains(f.getFileName().toString()))
+                .filter(f -> !ignoreFiles.contains(f.getFileName().toString()))
                 .collect(Collectors.toList());
     }
 
@@ -565,7 +560,7 @@ public class DatasetUtils {
      * source path.
      *
      * @param sourceDir the project root directory
-     * @return a list of (typeName, packageName) pairs
+     * @return a list of class tokens
      */
     public static List<ClassTokens> getProjectClassTokens(
             Path sourceDir
@@ -591,9 +586,7 @@ public class DatasetUtils {
      * in a project from a given source path.
      *
      * @param sourceDir the project root directory
-     * @return a list of information about each method. Each entry has the
-     * form:
-     *  [methodName, packageName, typeName, methodSignature]
+     * @return a list of method tokens
      */
     public static List<MethodTokens> getProjectNonPrivateStaticNonVoidMethodsTokens(
             Path sourceDir
@@ -619,9 +612,7 @@ public class DatasetUtils {
      * in a project from a given source path.
      *
      * @param sourceDir the project root directory
-     * @return a list of information about each attribute. Each entry has the
-     * form:
-     *  [variableName, packageName, typeName, variableSignature]
+     * @return a list of attribute tokens
      */
     public static List<AttributeTokens> getProjectNonPrivateStaticAttributesTokens(
             Path sourceDir
@@ -647,11 +638,7 @@ public class DatasetUtils {
      * given source path.
      *
      * @param sourceDir the project root directory
-     * @return a list of information about each tag. Each entry has the form:
-     *  [typeDeclaration, callableDeclaration, oracleType, name, content]
-     * where a Javadoc tag is interpreted as:
-     *  "@tag name content"
-     * and the value of "@tag" determines "oracleType".
+     * @return a list of JavadocTags
      */
     public static List<JavadocTag> getProjectTagsTokens(
             Path sourceDir
@@ -675,41 +662,12 @@ public class DatasetUtils {
     }
 
     /**
-     * Converts a list of method usages to a list of method tokens records,
-     * where each record has the form:
-     *     [methodName, packageName, typeName, methodSignature]
-     * where "typeName" refers to the declaring class, "methodSignature"
-     * includes modifiers, type parameters, return type, method name,
-     * parameters, and exceptions.
-     *
-     * @param jpMethods a list of method usages
-     * @return the corresponding list of method tokens records
-     */
-    private static List<MethodTokens> convertMethodUsageToMethodTokens(
-            List<MethodUsage> jpMethods
-    ) {
-        return new ArrayList<>(jpMethods)
-                .stream()
-                .map(jpMethod -> new MethodTokens(
-                        jpMethod.getName(),
-                        jpMethod.declaringType().getPackageName(),
-                        jpMethod.declaringType().getClassName(),
-                        JavaParserUtils.getMethodSignature(jpMethod)
-                ))
-                .toList();
-    }
-
-    /**
      * Collects information for all non-private, non-static, non-void methods
-     * available to a given type. Handles three cases for either (1) an array
-     * type, (2) a generic Object type (e.g. "T"), and (3) a normal reference
-     * type.
+     * available to a given type.
      *
      * @param jpResolvedType a type
-     * @return a list of information about each method available to the type.
-     * Each entry has the form:
-     *     [methodName, packageName, typeName, methodSignature]
-     * Returns an empty list if the given type is primitive.
+     * @return a list of method tokens for all available methods. Returns an
+     * empty list if the given type is primitive.
      */
     public static List<MethodTokens> getMethodsFromType(
             ResolvedType jpResolvedType
@@ -736,7 +694,7 @@ public class DatasetUtils {
                     .map(MethodUsage::new)
                     .filter(JavaParserUtils::isNonPrivateNonStaticNonVoidMethod)
                     .toList();
-            methodList.addAll(convertMethodUsageToMethodTokens(genericMethods));
+            methodList.addAll(genericMethods.stream().map(MethodTokens::new).toList());
         } else if (jpResolvedType.isReferenceType()) {
             // base type.
             List<MethodUsage> allMethods = jpResolvedType.asReferenceType().getAllMethods()
@@ -744,7 +702,7 @@ public class DatasetUtils {
                     .map(MethodUsage::new)
                     .filter(JavaParserUtils::isNonPrivateNonStaticNonVoidMethod)
                     .toList();
-            methodList.addAll(convertMethodUsageToMethodTokens(allMethods));
+            methodList.addAll(allMethods.stream().map(MethodTokens::new).toList());
         }
         return methodList;
     }
@@ -757,10 +715,8 @@ public class DatasetUtils {
      * to resolve the type.
      *
      * @param jpType a type
-     * @return a list of information about each method available to the type.
-     * Each entry has the form:
-     *     [methodName, packageName, typeName, methodSignature]
-     * Returns an empty list if the given type is primitive.
+     * @return a list of method tokens for all available methods. Returns an
+     * empty list if the given type is primitive.
      */
     private static List<MethodTokens> getMethodsFromType(
             Type jpType
@@ -775,9 +731,7 @@ public class DatasetUtils {
     }
 
     /**
-     * Converts a field declaration to a list of records of attribute tokens,
-     * where each entry has the form:
-     *     [fieldName, packageName, typeName, fieldDeclaration]
+     * Converts a field declaration to a list of records of attribute tokens.
      * This method is a special case of
      * {@link DatasetUtils#convertFieldDeclarationToAttributeTokens(List)}
      * using available information from the implementation of
@@ -785,7 +739,7 @@ public class DatasetUtils {
      * multiple fields are split into individual records.
      *
      * @param resolvedField a JavaParser resolved field declaration
-     * @return the corresponding list of attribute tokens records.
+     * @return the corresponding list of attribute tokens
      */
     private static List<AttributeTokens> convertJavaParserFieldDeclarationToAttributeTokens(
             JavaParserFieldDeclaration resolvedField
@@ -875,10 +829,7 @@ public class DatasetUtils {
      * to a given type.
      *
      * @param jpResolvedType the given type
-     * @return a list of attribute token records. Each entry has the form:
-     *     [fieldName, packageName, typeName, fieldSignature]
-     * where "typeName" refers to the name of the field type. If possible,
-     * declarations with multiple fields are split into individual records.
+     * @return a list of attribute tokens
      */
     public static List<AttributeTokens> getFieldsFromType(
             ResolvedType jpResolvedType
@@ -927,10 +878,7 @@ public class DatasetUtils {
      * given type.
      *
      * @param jpType the given type
-     * @return a list of attribute token records. Each entry has the form:
-     *     [fieldName, packageName, typeName, fieldSignature]
-     * where "typeName" refers to the name of the field type. If possible,
-     * declarations with multiple fields are split into individual records.
+     * @return a list of attribute tokens
      */
     private static List<AttributeTokens> getFieldsFromType(
             Type jpType
@@ -953,10 +901,7 @@ public class DatasetUtils {
      * identical to the aforementioned method.
      *
      * @param jpParameter the given parameter
-     * @return a list of attribute token records. Each entry has the form:
-     *     [fieldName, packageName, typeName, fieldSignature]
-     * where "typeName" refers to the name of the field type. If possible,
-     * declarations with multiple fields are split into individual records.
+     * @return a list of attribute tokens
      */
     public static List<AttributeTokens> getFieldsFromParameter(
             Parameter jpParameter
@@ -982,11 +927,7 @@ public class DatasetUtils {
      *
      * @param jpClass the declaring class
      * @param jpCallable a function
-     * @return a list of information about each method. Each entry has the
-     * form:
-     *     [methodName, packageName, typeName, methodSignature]
-     * @throws JPClassNotFoundException if the declaring class is not
-     * resolvable
+     * @return a list of method tokens
      */
     public static List<MethodTokens> getTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(
             TypeDeclaration<?> jpClass,
@@ -997,7 +938,7 @@ public class DatasetUtils {
                 .stream()
                 .filter(JavaParserUtils::isNonPrivateNonStaticNonVoidMethod)
                 .toList();
-        List<MethodTokens> methodList = new ArrayList<>(convertMethodUsageToMethodTokens(allReceiverMethods));
+        List<MethodTokens> methodList = new ArrayList<>(allReceiverMethods.stream().map(MethodTokens::new).toList());
         // add all methods of parameters.
         for (Parameter jpParam : jpCallable.getParameters()) {
             methodList.addAll(getMethodsFromType(jpParam.getType()));
@@ -1007,13 +948,13 @@ public class DatasetUtils {
             methodList.addAll(getMethodsFromType(((MethodDeclaration) jpCallable).getType()));
         }
         // add Object methods.
-        methodList.addAll(convertMethodUsageToMethodTokens(
-                JavaParserUtils.getObjectType().asReferenceType().getAllMethods()
-                        .stream()
-                        .map(MethodUsage::new)
-                        .filter(JavaParserUtils::isNonPrivateNonStaticNonVoidMethod)
-                        .toList()
-        ));
+        methodList.addAll(JavaParserUtils.getObjectType().asReferenceType().getAllMethods()
+                .stream()
+                .map(MethodUsage::new)
+                .filter(JavaParserUtils::isNonPrivateNonStaticNonVoidMethod)
+                .map(MethodTokens::new)
+                .toList()
+        );
         return withoutDuplicates(methodList);
     }
 
@@ -1026,9 +967,7 @@ public class DatasetUtils {
      *
      * @param jpClass the declaring class
      * @param jpCallable a function
-     * @return a list of information about each attribute. Each entry has the
-     * form:
-     *     [fieldName, packageName, typeName, fieldSignature]
+     * @return a list of attribute tokens
      * @throws JPClassNotFoundException if the declaring class is not
      * resolvable
      */
@@ -1062,9 +1001,7 @@ public class DatasetUtils {
      * @param jpCallable a function
      * @param methodArgs the arguments of the function
      * @param oracle an oracle corresponding to the function
-     * @return a list of information about each method. Each entry has the
-     * form:
-     *     [methodName, packageName, typeName, methodSignature]
+     * @return a list of method tokens
      */
     public static List<MethodTokens> getTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(
             TypeDeclaration<?> jpClass,
@@ -1107,9 +1044,7 @@ public class DatasetUtils {
      * @param jpCallable a function
      * @param methodArgs the arguments of the function
      * @param oracle an oracle corresponding to the function
-     * @return a list of information about each attribute. Each entry has the
-     * form:
-     *  [fieldName, packageName, typeName, fieldSignature]
+     * @return a list of attribute tokens
      */
     public static List<AttributeTokens> getTokensOracleVariablesNonPrivateNonStaticAttributes(
             TypeDeclaration<?> jpClass,
@@ -1165,7 +1100,9 @@ public class DatasetUtils {
             CallableDeclaration<?> jpCallable,
             TypeDeclaration<?> jpClass
     ) {
-        if (jDoctorParam.equals(jpParam)) return true;
+        if (jDoctorParam.equals(jpParam)) {
+            return true;
+        }
         boolean jDoctorParamIsStandard = TypeUtils.isObjectOrComparable(jDoctorParam);
         boolean jDoctorParamIsStandardArray = TypeUtils.isObjectOrComparableArray(jDoctorParam);
         boolean jpParamIsStandard = TypeUtils.isObjectOrComparable(jpParam);
@@ -1193,11 +1130,15 @@ public class DatasetUtils {
             CallableDeclaration<?> jpCallable,
             TypeDeclaration<?> jpClass
     ) {
-        if (jDoctorParamList.size() != jpParamList.size()) return false;
+        if (jDoctorParamList.size() != jpParamList.size()) {
+            return false;
+        }
         for (int i = 0; i < jDoctorParamList.size(); i++) {
             String jDoctorParam = jDoctorParamList.get(i);
             String jpParam = jpParamList.get(i);
-            if (!jpParamEqualsJDoctorParam(jDoctorParam, jpParam, jpCallable, jpClass)) return false;
+            if (!jpParamEqualsJDoctorParam(jDoctorParam, jpParam, jpCallable, jpClass)) {
+                return false;
+            }
         }
         return true;
     }
@@ -1330,7 +1271,7 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets the method/constructor name of an operation
+     * Gets the method/constructor name of an operation.
      *
      * @param operation a JDoctor condition operation
      * @return the method/constructor name of the operation
@@ -1352,7 +1293,7 @@ public class DatasetUtils {
      * @return a list of lists of objects
      * @param <T> an arbitrary object
      */
-    public static <T> List<List<T>> splitListIntoChunks(List<T> list, int chunkSize) {
+    public static <T> List<List<T>> splitListIntoSubLists(List<T> list, int chunkSize) {
         List<List<T>> chunks = new ArrayList<>();
         for (int i = 0; i < list.size(); i += chunkSize) {
             int endIndex = Math.min(i + chunkSize, list.size());

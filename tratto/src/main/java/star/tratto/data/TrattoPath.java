@@ -16,7 +16,6 @@ public enum TrattoPath {
     RESOURCES(Paths.get("src", "main", "resources", "projects-source")),
     // files
     ARRAY_METHODS(TrattoPath.REPOS.getPath().resolve("array_methods.json")),
-    IGNORE_FILE(TrattoPath.REPOS.getPath().resolve("ignore_file.json")),
     INPUT_PROJECTS(TrattoPath.REPOS.getPath().resolve("input_projects.json")),
     NON_VARIABLE_TOKENS(TrattoPath.REPOS.getPath().resolve("non_variable_tokens.json")),
     TOKENS_GENERAL_VALUES(TrattoPath.REPOS.getPath().resolve("tokens_general_values.json")),
