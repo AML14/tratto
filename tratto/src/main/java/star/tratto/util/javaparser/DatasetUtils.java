@@ -31,7 +31,7 @@ import star.tratto.data.PackageDeclarationNotFoundException;
 import star.tratto.data.ResolvedTypeNotFound;
 import star.tratto.data.TrattoPath;
 import star.tratto.data.records.AttributeTokens;
-import star.tratto.data.records.ClassTokens;
+import star.tratto.data.records.TypeTokens;
 import star.tratto.data.records.JDoctorCondition.Operation;
 import star.tratto.data.records.JavadocTag;
 import star.tratto.data.records.ValueTokens;
@@ -86,14 +86,14 @@ public class DatasetUtils {
      * @throws PackageDeclarationNotFoundException if the package cannot be
      * retrieved
      */
-    private static List<ClassTokens> getClassTokens(
+    private static List<TypeTokens> getClassTokens(
             CompilationUnit cu
     ) throws PackageDeclarationNotFoundException {
-        List<ClassTokens> classList = new ArrayList<>();
+        List<TypeTokens> classList = new ArrayList<>();
         String packageName = JavaParserUtils.getPackageDeclaration(cu).getNameAsString();
         List<TypeDeclaration<?>> jpClasses = cu.getTypes();
         for (TypeDeclaration<?> jpClass : jpClasses) {
-            classList.add(new ClassTokens(jpClass.getNameAsString(), packageName));
+            classList.add(new TypeTokens(jpClass.getNameAsString(), packageName));
         }
         return classList;
     }
@@ -536,10 +536,10 @@ public class DatasetUtils {
      * @param sourceDir the project root directory
      * @return a list of (className, packageName) pairs
      */
-    public static List<ClassTokens> getProjectClassTokens(
+    public static List<TypeTokens> getProjectClassTokens(
             Path sourceDir
     ) {
-        List<ClassTokens> projectClasses = new ArrayList<>();
+        List<TypeTokens> projectClasses = new ArrayList<>();
         List<Path> javaFiles = getValidJavaFiles(sourceDir);
         // iterate through each file and add class tokens.
         for (Path javaFile : javaFiles) {

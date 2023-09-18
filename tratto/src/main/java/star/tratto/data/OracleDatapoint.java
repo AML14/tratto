@@ -1,7 +1,7 @@
 package star.tratto.data;
 
 import star.tratto.data.records.AttributeTokens;
-import star.tratto.data.records.ClassTokens;
+import star.tratto.data.records.TypeTokens;
 import star.tratto.data.records.ValueTokens;
 import star.tratto.data.records.MethodArgumentTokens;
 import star.tratto.data.records.MethodTokens;
@@ -45,7 +45,7 @@ public class OracleDatapoint {
     // default (token, type) pairs for the XText grammar
     private List<ValueTokens> tokensGeneralValuesGlobalDictionary;
     // all classes in the Java project (className, packageName)
-    private List<ClassTokens> tokensProjectClasses;
+    private List<TypeTokens> tokensProjectClasses;
     // all non-private, static methods in the Java project (methodName, packageName, className, methodSignature)
     private List<MethodTokens> tokensProjectClassesNonPrivateStaticNonVoidMethods;
     // all non-private, static attributes in the Java project (attributeName, packageName, className, attributeDeclaration)
@@ -85,7 +85,7 @@ public class OracleDatapoint {
         this.classSourceCode = (String) oracleDatapointMap.get("classSourceCode");
         this.tokensGeneralGrammar = (List<String>) oracleDatapointMap.get("tokensGeneralGrammar");
         this.tokensGeneralValuesGlobalDictionary = ((List<List<String>>) oracleDatapointMap.get("tokensGeneralValuesGlobalDictionary")).stream().map(ValueTokens::new).toList();
-        this.tokensProjectClasses = ((List<List<String>>) oracleDatapointMap.get("tokensProjectClasses")).stream().map(ClassTokens::new).toList();
+        this.tokensProjectClasses = ((List<List<String>>) oracleDatapointMap.get("tokensProjectClasses")).stream().map(TypeTokens::new).toList();
         this.tokensProjectClassesNonPrivateStaticNonVoidMethods = ((List<List<String>>) oracleDatapointMap.get("tokensProjectClassesNonPrivateStaticNonVoidMethods")).stream().map(MethodTokens::new).toList();
         this.tokensProjectClassesNonPrivateStaticAttributes = ((List<List<String>>) oracleDatapointMap.get("tokensProjectClassesNonPrivateStaticAttributes")).stream().map(AttributeTokens::new).toList();
         this.tokensMethodJavadocValues = ((List<List<String>>) oracleDatapointMap.get("tokensMethodJavadocValues")).stream().map(ValueTokens::new).toList();
@@ -110,7 +110,7 @@ public class OracleDatapoint {
             String classSourceCode,
             List<String> tokensGeneralGrammar,
             List<ValueTokens> tokensGeneralValuesGlobalDictionary,
-            List<ClassTokens> tokensProjectClasses,
+            List<TypeTokens> tokensProjectClasses,
             List<MethodTokens> tokensProjectClassesNonPrivateStaticNonVoidMethods,
             List<AttributeTokens> tokensProjectClassesNonPrivateStaticAttributes,
             List<ValueTokens> tokensMethodJavadocValues,
@@ -164,7 +164,7 @@ public class OracleDatapoint {
         oracleDatapointMap.put("classSourceCode", classSourceCode);
         oracleDatapointMap.put("tokensGeneralGrammar", tokensGeneralGrammar);
         oracleDatapointMap.put("tokensGeneralValuesGlobalDictionary", tokensGeneralValuesGlobalDictionary.stream().map(ValueTokens::toList).collect(Collectors.toList()));
-        oracleDatapointMap.put("tokensProjectClasses", tokensProjectClasses.stream().map(ClassTokens::toList).collect(Collectors.toList()));
+        oracleDatapointMap.put("tokensProjectClasses", tokensProjectClasses.stream().map(TypeTokens::toList).collect(Collectors.toList()));
         oracleDatapointMap.put("tokensProjectClassesNonPrivateStaticNonVoidMethods", tokensProjectClassesNonPrivateStaticNonVoidMethods.stream().map(MethodTokens::toList).collect(Collectors.toList()));
         oracleDatapointMap.put("tokensProjectClassesNonPrivateStaticAttributes", tokensProjectClassesNonPrivateStaticAttributes.stream().map(AttributeTokens::toList).collect(Collectors.toList()));
         oracleDatapointMap.put("tokensMethodJavadocValues", tokensMethodJavadocValues.stream().map(ValueTokens::toList).collect(Collectors.toList()));
@@ -287,11 +287,11 @@ public class OracleDatapoint {
         this.tokensGeneralValuesGlobalDictionary = tokensGeneralValuesGlobalDictionary;
     }
 
-    public List<ClassTokens> getTokensProjectClasses() {
+    public List<TypeTokens> getTokensProjectClasses() {
         return tokensProjectClasses;
     }
 
-    public void setTokensProjectClasses(List<ClassTokens> tokensProjectClasses) {
+    public void setTokensProjectClasses(List<TypeTokens> tokensProjectClasses) {
         this.tokensProjectClasses = tokensProjectClasses;
     }
 

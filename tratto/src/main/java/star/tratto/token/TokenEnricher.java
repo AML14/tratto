@@ -3,7 +3,7 @@ package star.tratto.token;
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
 import star.tratto.data.OracleDatapoint;
-import star.tratto.data.records.ClassTokens;
+import star.tratto.data.records.TypeTokens;
 import star.tratto.data.records.MethodArgumentTokens;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.oraclegrammar.trattoGrammar.CanEvaluateToPrimitive;
@@ -143,7 +143,7 @@ public class TokenEnricher {
         if (nTokens >= 2) {
             lastToken = partialExpressionTokens.get(nTokens - 1);
             previousToken = partialExpressionTokens.get(nTokens - 2);
-            if (!".".equals(lastToken) || !oracleDatapoint.getTokensProjectClasses().stream().map(ClassTokens::className).collect(Collectors.toList()).contains(previousToken)) {
+            if (!".".equals(lastToken) || !oracleDatapoint.getTokensProjectClasses().stream().map(TypeTokens::className).collect(Collectors.toList()).contains(previousToken)) {
                 return enrichedTokensPlusInfo;
             }
         } else {
@@ -184,7 +184,7 @@ public class TokenEnricher {
         if (nTokens >= 2) {
             lastToken = partialExpressionTokens.get(nTokens - 1);
             previousToken = partialExpressionTokens.get(nTokens - 2);
-            if (!".".equals(lastToken) || oracleDatapoint.getTokensProjectClasses().stream().map(ClassTokens::className).collect(Collectors.toList()).contains(previousToken)) {
+            if (!".".equals(lastToken) || oracleDatapoint.getTokensProjectClasses().stream().map(TypeTokens::className).collect(Collectors.toList()).contains(previousToken)) {
                 return enrichedTokensPlusInfo;
             }
         } else {

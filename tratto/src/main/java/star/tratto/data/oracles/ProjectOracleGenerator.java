@@ -8,7 +8,7 @@ import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleType;
 import star.tratto.data.JPClassNotFoundException;
 import star.tratto.data.records.AttributeTokens;
-import star.tratto.data.records.ClassTokens;
+import star.tratto.data.records.TypeTokens;
 import star.tratto.data.records.JDoctorCondition;
 import star.tratto.data.records.JDoctorCondition.Operation;
 import star.tratto.data.records.JDoctorCondition.PostCondition;
@@ -42,7 +42,7 @@ public class ProjectOracleGenerator {
     /** All JDoctor conditions of the current project. */
     private List<JDoctorCondition> jDoctorConditions;
     /** All classes in the current project. */
-    private List<ClassTokens> projectClassesTokens;
+    private List<TypeTokens> projectClassesTokens;
     /** All non-private, static methods in the current project. */
     private List<MethodTokens> projectMethodsTokens;
     /** All non-private, static attributes in the current project. */

@@ -6,14 +6,14 @@ import java.util.List;
  * A Java class. Includes the class name (className) and package name
  * (packageName).
  */
-public record ClassTokens(
+public record TypeTokens(
         /* The name of a Java class. */
         String className,
         /* The package of the Java class. */
         String packageName
 ) {
     /** Non-canonical constructor using List to read JSON. */
-    public ClassTokens(List<String> tokens) {
+    public TypeTokens(List<String> tokens) {
         this(tokens.get(0), tokens.get(1));
     }
 
