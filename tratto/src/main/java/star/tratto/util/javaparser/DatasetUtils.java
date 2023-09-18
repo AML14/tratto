@@ -553,7 +553,7 @@ public class DatasetUtils {
      * source path.
      *
      * @param sourceDir the project root directory
-     * @return a list of (typeName, packageName) pairs
+     * @return a list of class tokens
      */
     public static List<ClassTokens> getProjectClassTokens(
             Path sourceDir
