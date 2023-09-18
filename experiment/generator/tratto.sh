@@ -34,10 +34,10 @@ TRATTO_OUTPUT_DIR="${ROOT_DIR}${SEPARATOR}output${SEPARATOR}tratto${SEPARATOR}ou
 bash "${UTILS_DIR}${SEPARATOR}tratto_setup.sh"
 
 read -rp "In which port is running the server? (default: 5050): " SERVER_PORT
-[ -z "$SERVER_PORT" ] && SERVER_PORT="5050"
-cd "$TRATTO_PROJECT_DIR"
-java -jar "${RESOURCES_DIR}${SEPARATOR}tratto.jar" "$FULLY_QUALIFIED_NAME" "$SRC_PATH" "$PROJECT_JAR_PATH" "$SERVER_PORT"
-cd "$ROOT_DIR"
+[ -z "${SERVER_PORT}" ] && SERVER_PORT="5050"
+cd "${TRATTO_PROJECT_DIR}"
+java -jar "${RESOURCES_DIR}${SEPARATOR}tratto.jar" "${FULLY_QUALIFIED_NAME}" "${SRC_PATH}" "${PROJECT_JAR_PATH}" "${SERVER_PORT}"
+cd "${ROOT_DIR}"
 
 if [ ! -d "${TRATTO_OUTPUT_DIR}" ]; then
     # If it doesn't exist, create the folder
@@ -47,4 +47,4 @@ fi
 
 mv "${TRATTO_PROJECT_DIR}${SEPARATOR}src${SEPARATOR}main${SEPARATOR}resources${SEPARATOR}oracle_datapoints.json" "${TRATTO_OUTPUT_DIR}"
 
-java -jar "${RESOURCES_DIR}${SEPARATOR}experiment.jar" tratto generate_oracle_outputs "$SRC_PATH"
+java -jar "${RESOURCES_DIR}${SEPARATOR}experiment.jar" tratto generate_oracle_outputs "${SRC_PATH}"
