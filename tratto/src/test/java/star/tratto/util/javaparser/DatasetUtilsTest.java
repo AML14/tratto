@@ -11,7 +11,7 @@ import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleType;
 import star.tratto.data.JPClassNotFoundException;
 import star.tratto.data.records.AttributeTokens;
-import star.tratto.data.records.JavadocTagTokens;
+import star.tratto.data.records.JavadocTag;
 import star.tratto.data.records.ValueTokens;
 import star.tratto.data.records.MethodArgumentTokens;
 import star.tratto.data.records.MethodTokens;
@@ -85,9 +85,9 @@ public class DatasetUtilsTest {
 
     @Test
     public void reconstructTagTest() {
-        assertEquals("@throws IllegalArgumentException if username is null", DatasetUtils.reconstructTag(new JavadocTagTokens("", null, null, OracleType.EXCEPT_POST, "IllegalArgumentException", "if username is null")));
-        assertEquals("@return the number of users", DatasetUtils.reconstructTag(new JavadocTagTokens("", null, null, OracleType.NORMAL_POST, "", "the number of users")));
-        assertEquals("@param password the user's security key", DatasetUtils.reconstructTag(new JavadocTagTokens("", null, null, OracleType.PRE, "password", "the user's security key")));
+        assertEquals("@throws IllegalArgumentException if username is null", DatasetUtils.reconstructTag(new JavadocTag("", null, null, OracleType.EXCEPT_POST, "IllegalArgumentException", "if username is null")));
+        assertEquals("@return the number of users", DatasetUtils.reconstructTag(new JavadocTag("", null, null, OracleType.NORMAL_POST, "", "the number of users")));
+        assertEquals("@param password the user's security key", DatasetUtils.reconstructTag(new JavadocTag("", null, null, OracleType.PRE, "password", "the user's security key")));
     }
 
     @Test

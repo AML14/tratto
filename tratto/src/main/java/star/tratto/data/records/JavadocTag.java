@@ -15,7 +15,7 @@ import star.tratto.data.OracleType;
  * "fileContent" is the tag name, and "String representation of the source
  * file" is the tag content.
  */
-public record JavadocTagTokens(
+public record JavadocTag(
         /* String representation of the source file */
         String fileContent,
         /* the declaring class */

@@ -33,7 +33,7 @@ import star.tratto.data.TrattoPath;
 import star.tratto.data.records.AttributeTokens;
 import star.tratto.data.records.ClassTokens;
 import star.tratto.data.records.JDoctorCondition.Operation;
-import star.tratto.data.records.JavadocTagTokens;
+import star.tratto.data.records.JavadocTag;
 import star.tratto.data.records.ValueTokens;
 import star.tratto.data.records.MethodArgumentTokens;
 import star.tratto.data.records.MethodTokens;
@@ -343,7 +343,7 @@ public class DatasetUtils {
      * @return the original tag in source code as a String.
      */
     public static String reconstructTag(
-            JavadocTagTokens jpTag
+            JavadocTag jpTag
     ) {
         StringBuilder sb = new StringBuilder();
         switch (jpTag.oracleType()) {
@@ -466,11 +466,11 @@ public class DatasetUtils {
      * @throws PackageDeclarationNotFoundException if the package
      * {@link PackageDeclaration} of the compilation unit is not found
      */
-    private static List<JavadocTagTokens> getCuTags(
+    private static List<JavadocTag> getCuTags(
             CompilationUnit cu,
             String fileContent
     ) throws PackageDeclarationNotFoundException {
-        List<JavadocTagTokens> tagList = new ArrayList<>();
+        List<JavadocTag> tagList = new ArrayList<>();
         // iterate through each class.
         List<TypeDeclaration<?>> jpClasses = cu.getTypes();
         for (TypeDeclaration<?> jpClass : jpClasses) {
@@ -495,7 +495,7 @@ public class DatasetUtils {
                         };
                         if (oracleType == null) continue;
                         // add new tag.
-                        tagList.add(new JavadocTagTokens(
+                        tagList.add(new JavadocTag(
                                 fileContent,
                                 jpClass,
                                 jpCallable,
@@ -622,10 +622,10 @@ public class DatasetUtils {
      *  "@tag name content"
      * and the value of "@tag" determines "oracleType".
      */
-    public static List<JavadocTagTokens> getProjectTagsTokens(
+    public static List<JavadocTag> getProjectTagsTokens(
             Path sourceDir
     ) {
-        List<JavadocTagTokens> tagList = new ArrayList<>();
+        List<JavadocTag> tagList = new ArrayList<>();
         List<Path> javaFiles = getValidJavaFiles(sourceDir);
         // iterate through each file and add Javadoc tags.
         for (Path javaFile : javaFiles) {
