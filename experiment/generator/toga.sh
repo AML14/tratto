@@ -15,7 +15,7 @@ SRC_PATH="${2}"
 
 # argument and setup check
 if [ ! $# -eq 2 ]; then
-  echo -e "toga.sh: Incorrect number of arguments. Expected 3 arguments, but got ${#}".
+  echo -e "toga.sh: Incorrect number of arguments. Expected 2 arguments, but got ${#}".
   exit 1
 fi
 

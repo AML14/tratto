@@ -26,12 +26,9 @@ TARGET_CLASS=${1}
 SRC_DIR=${2}
 BIN_DIR=${3}
 PROJECT_JAR=${4}
-QUALIFIERS="${TARGET_CLASS%.*}"
 
 # get useful directories
 ROOT_DIR="$(dirname "$(realpath "${0}")")"
-OUTPUT_DIR="${ROOT_DIR}${SEPARATOR}output"
-EVOSUITE_OUTPUT="${OUTPUT_DIR}${SEPARATOR}evosuite-tests${SEPARATOR}${QUALIFIERS//./${SEPARATOR}}"
 RESOURCES_DIR="${ROOT_DIR}${SEPARATOR}generator${SEPARATOR}resources"
 # get experiment jar
 EXPERIMENT_JAR="${RESOURCES_DIR}${SEPARATOR}experiment.jar"
@@ -70,7 +67,7 @@ for TOG in "${TOGS[@]}"; do
   if [ "${TOG}" == "jdoctor" ]; then
     bash ./generator/jdoctor.sh "${TARGET_CLASS}" "${SRC_DIR}" "${BIN_DIR}"
   elif [ "${TOG}" == "toga" ]; then
-    bash ./generator/toga.sh "${TARGET_CLASS}" "${SRC_DIR}" "${EVOSUITE_OUTPUT}"
+    bash ./generator/toga.sh "${TARGET_CLASS}" "${SRC_DIR}"
   elif [ "${TOG}" == "tratto" ]; then
 #    bash ./generator/tratto.sh "${TARGET_CLASS}" "${SRC_DIR}" "${PROJECT_JAR}"
     exit 1
