@@ -535,12 +535,12 @@ public class DatasetUtils {
      * Finds all ".java" files in a given directory. Files are filtered by an
      * ad-hoc list of files to ignore (see "data/repos/ignore_file.json").
      *
-     * @param sourceDir the path to the project root directory
+     * @param dir the root directory
      * @return a list of all valid files as Paths with parent directory names
      * @see DatasetUtils#ignoreFiles
      */
-    private static List<Path> getValidJavaFiles(Path sourceDir) {
-        List<Path> allJavaFiles = FileUtils.getAllJavaFilesUnderDirectory(sourceDir);
+    private static List<Path> getValidJavaFiles(Path dir) {
+        List<Path> allJavaFiles = FileUtils.getAllJavaFilesUnderDirectory(dir);
         // filter files.
         return allJavaFiles
                 .stream()
