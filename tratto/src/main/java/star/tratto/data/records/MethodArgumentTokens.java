@@ -7,7 +7,7 @@ import java.util.List;
  *
  * @param argumentName the argument variable name
  * @param packageName the package of the corresponding type
- * @param typeName the name of the corresponding type
+ * @param typeName the simple name of the corresponding type
  */
 public record MethodArgumentTokens(String argumentName, String packageName, String typeName) {
     /** Non-canonical constructor using List to read JSON. */
