@@ -19,9 +19,9 @@ elif [ ! -d "${TARGET_DIR}" ]; then
   exit 1
 fi
 
-. "${ROOT_DIR}${SEPARATOR}generator${SEPARATOR}utils${SEPARATOR}env.sh"
-
 SCRIPTDIR="$(cd "$(dirname "$0")" && pwd -P)"
+. "${SCRIPTDIR}${SEPARATOR}utils${SEPARATOR}env.sh"
+
 # ROOT_DIR is "experiment/".
 ROOT_DIR="$(dirname "${SCRIPTDIR}")"
 RESOURCES_DIR="${ROOT_DIR}${SEPARATOR}generator${SEPARATOR}resources"
