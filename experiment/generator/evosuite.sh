@@ -8,12 +8,14 @@ set -e
 TARGET_CLASS="${1}"  # fully-qualified name of target class
 TARGET_DIR="${2}"  # directory of binary files of the system under test
 
-# argument and setup check
 if [ ! $# -eq 2 ]; then
   echo -e "evosuite.sh: Incorrect number of arguments. Expected 2 arguments, but got ${#}".
   exit 1
+elif [ ! -f "${TARGET_CLASS}" ]; then
+  echo -e "evosuite.sh: Class file does not exist: ${TARGET_CLASS}"
+  exit 1
 elif [ ! -d "${TARGET_DIR}" ]; then
-  echo -e "evosuite.sh: The system binaries path \"${TARGET_CLASS}\" does not exist."
+  echo -e "evosuite.sh: The system binaries path does not exist: ${TARGET_DIR}"
   exit 1
 fi
 
@@ -21,9 +23,9 @@ fi
 SCRIPTDIR="$(cd "$(dirname "$0")" && pwd -P)"
 . "${SCRIPTDIR}${SEPARATOR}utils${SEPARATOR}env.sh"
 
-ROOT_DIR=$(dirname "$(dirname "$(realpath "${0}")")")
+# ROOT_DIR is "experiment/".
+ROOT_DIR="$(dirname "${SCRIPTDIR}")"
 RESOURCES_DIR="${ROOT_DIR}${SEPARATOR}generator${SEPARATOR}resources"
-
 OUTPUT_DIR="${ROOT_DIR}${SEPARATOR}output"
 EVOSUITE="${JAVA8_BIN} -jar ${RESOURCES_DIR}${SEPARATOR}evosuite-1.0.6.jar"
 
