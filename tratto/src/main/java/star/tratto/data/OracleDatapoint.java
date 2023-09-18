@@ -52,19 +52,19 @@ public class OracleDatapoint {
     private List<AttributeTokens> tokensProjectClassesNonPrivateStaticAttributes;
     // all values in the corresponding method Javadoc (value, type)
     private List<ValueTokens> tokensMethodJavadocValues;
-    // all arguments of the corresponding method (argumentName, packageName, className)
+    // all arguments of the corresponding method (argumentName, packageName, typeName)
     private List<MethodArgumentTokens> tokensMethodArguments;
     // all non-private, non-static, non-void methods from:
     //  (1) the declaring class,
     //  (2) each method argument,
     //  (3) the method return type
-    // (methodName, packageName, className, methodSignature)
+    // (methodName, packageName, typeName, methodSignature)
     private List<MethodTokens> tokensMethodVariablesNonPrivateNonStaticNonVoidMethods;
     // all non-private, non-static, attributes from:
     //  (1) the declaring class,
     //  (2) each method argument,
     //  (3) the method return type
-    // (attributeName, packageName, className, attributeDeclaration)
+    // (attributeName, packageName, typeName, attributeDeclaration)
     private List<AttributeTokens> tokensMethodVariablesNonPrivateNonStaticAttributes;
     // all non-private, non-static, non-void method from the return type of each possible oracle sub-expression
     private List<MethodTokens> tokensOracleVariablesNonPrivateNonStaticNonVoidMethods;
@@ -77,7 +77,7 @@ public class OracleDatapoint {
         this.oracleType = OracleType.valueOf((String) oracleDatapointMap.get("oracleType"));
         this.projectName = (String) oracleDatapointMap.get("projectName");
         this.packageName = (String) oracleDatapointMap.get("packageName");
-        this.className = (String) oracleDatapointMap.get("className");
+        this.className = (String) oracleDatapointMap.get("typeName");
         this.javadocTag = (String) oracleDatapointMap.get("javadocTag");
         this.methodJavadoc = (String) oracleDatapointMap.get("methodJavadoc");
         this.methodSourceCode = (String) oracleDatapointMap.get("methodSourceCode");
@@ -156,7 +156,7 @@ public class OracleDatapoint {
         oracleDatapointMap.put("oracleType", oracleType);
         oracleDatapointMap.put("projectName", projectName);
         oracleDatapointMap.put("packageName", packageName);
-        oracleDatapointMap.put("className", className);
+        oracleDatapointMap.put("typeName", className);
         oracleDatapointMap.put("javadocTag", javadocTag);
         oracleDatapointMap.put("methodJavadoc", methodJavadoc);
         oracleDatapointMap.put("methodSourceCode", methodSourceCode);
@@ -180,7 +180,7 @@ public class OracleDatapoint {
     }
 
     public boolean isProjectClass(String clazz) {
-        return tokensProjectClasses.stream().anyMatch(projectClass -> projectClass.className().equals(clazz));
+        return tokensProjectClasses.stream().anyMatch(projectClass -> projectClass.typeName().equals(clazz));
     }
 
     public Integer getId() {

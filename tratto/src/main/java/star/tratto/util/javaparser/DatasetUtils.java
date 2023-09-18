@@ -381,7 +381,7 @@ public class DatasetUtils {
      * @param cu a compilation unit of a Java file
      * @return a list of information about each method. Each entry has the
      * form:
-     *     [methodName, packageName, className, methodSignature]
+     *     [methodName, packageName, typeName, methodSignature]
      * @throws PackageDeclarationNotFoundException if the package
      * {@link PackageDeclaration} of the compilation unit is not found
      */
@@ -417,7 +417,7 @@ public class DatasetUtils {
      * @param cu a compilation unit of a Java file
      * @return a list of information about each attribute. Each entry has the
      * form:
-     *     [variableName, packageName, className, variableSignature]
+     *     [variableName, packageName, typeName, variableSignature]
      * @throws PackageDeclarationNotFoundException if the package
      * {@link PackageDeclaration} of the compilation unit is not found
      */
@@ -534,7 +534,7 @@ public class DatasetUtils {
      * source path.
      *
      * @param sourceDir the project root directory
-     * @return a list of (className, packageName) pairs
+     * @return a list of (typeName, packageName) pairs
      */
     public static List<TypeTokens> getProjectClassTokens(
             Path sourceDir
@@ -562,7 +562,7 @@ public class DatasetUtils {
      * @param sourceDir the project root directory
      * @return a list of information about each method. Each entry has the
      * form:
-     *  [methodName, packageName, className, methodSignature]
+     *  [methodName, packageName, typeName, methodSignature]
      */
     public static List<MethodTokens> getProjectNonPrivateStaticNonVoidMethodsTokens(
             Path sourceDir
@@ -590,7 +590,7 @@ public class DatasetUtils {
      * @param sourceDir the project root directory
      * @return a list of information about each attribute. Each entry has the
      * form:
-     *  [variableName, packageName, className, variableSignature]
+     *  [variableName, packageName, typeName, variableSignature]
      */
     public static List<AttributeTokens> getProjectNonPrivateStaticAttributesTokens(
             Path sourceDir
@@ -646,8 +646,8 @@ public class DatasetUtils {
     /**
      * Converts a list of method usages to a list of method tokens records,
      * where each record has the form:
-     *     [methodName, packageName, className, methodSignature]
-     * where "className" refers to the declaring class, "methodSignature"
+     *     [methodName, packageName, typeName, methodSignature]
+     * where "typeName" refers to the declaring class, "methodSignature"
      * includes modifiers, type parameters, return type, method name,
      * parameters, and exceptions.
      *
@@ -677,7 +677,7 @@ public class DatasetUtils {
      * @param jpResolvedType a type
      * @return a list of information about each method available to the type.
      * Each entry has the form:
-     *     [methodName, packageName, className, methodSignature]
+     *     [methodName, packageName, typeName, methodSignature]
      * Returns an empty list if the given type is primitive.
      */
     public static List<MethodTokens> getMethodsFromType(
@@ -728,7 +728,7 @@ public class DatasetUtils {
      * @param jpType a type
      * @return a list of information about each method available to the type.
      * Each entry has the form:
-     *     [methodName, packageName, className, methodSignature]
+     *     [methodName, packageName, typeName, methodSignature]
      * Returns an empty list if the given type is primitive.
      */
     private static List<MethodTokens> getMethodsFromType(
@@ -746,7 +746,7 @@ public class DatasetUtils {
     /**
      * Converts a field declaration to a list of records of attribute tokens,
      * where each entry has the form:
-     *     [fieldName, packageName, className, fieldDeclaration]
+     *     [fieldName, packageName, typeName, fieldDeclaration]
      * This method is a special case of
      * {@link DatasetUtils#convertFieldDeclarationToAttributeTokens(List)}
      * using available information from the implementation of
@@ -774,7 +774,7 @@ public class DatasetUtils {
 
     /**
      * Converts a field declaration to a record with the form:
-     *     [fieldName, packageName, className, fieldDeclaration]
+     *     [fieldName, packageName, typeName, fieldDeclaration]
      * This method is a special case of
      * {@link DatasetUtils#convertFieldDeclarationToAttributeTokens(List)}
      * using available information from the implementation of
@@ -806,8 +806,8 @@ public class DatasetUtils {
     /**
      * Converts a list of field declarations to a list of records of attribute
      * tokens, where each record has the form:
-     *     [fieldName, packageName, className, fieldDeclaration]
-     * where "className" refers to the field type name. If possible,
+     *     [fieldName, packageName, typeName, fieldDeclaration]
+     * where "typeName" refers to the field type name. If possible,
      * declarations with multiple fields are split into individual records.
      * The "fieldDeclaration" includes modifiers, type, name, and initial
      * value (if applicable).
@@ -845,8 +845,8 @@ public class DatasetUtils {
      *
      * @param jpResolvedType the given type
      * @return a list of attribute token records. Each entry has the form:
-     *     [fieldName, packageName, className, fieldSignature]
-     * where "className" refers to the name of the field type. If possible,
+     *     [fieldName, packageName, typeName, fieldSignature]
+     * where "typeName" refers to the name of the field type. If possible,
      * declarations with multiple fields are split into individual records.
      */
     public static List<AttributeTokens> getFieldsFromType(
@@ -897,8 +897,8 @@ public class DatasetUtils {
      *
      * @param jpType the given type
      * @return a list of attribute token records. Each entry has the form:
-     *     [fieldName, packageName, className, fieldSignature]
-     * where "className" refers to the name of the field type. If possible,
+     *     [fieldName, packageName, typeName, fieldSignature]
+     * where "typeName" refers to the name of the field type. If possible,
      * declarations with multiple fields are split into individual records.
      */
     private static List<AttributeTokens> getFieldsFromType(
@@ -923,8 +923,8 @@ public class DatasetUtils {
      *
      * @param jpParameter the given parameter
      * @return a list of attribute token records. Each entry has the form:
-     *     [fieldName, packageName, className, fieldSignature]
-     * where "className" refers to the name of the field type. If possible,
+     *     [fieldName, packageName, typeName, fieldSignature]
+     * where "typeName" refers to the name of the field type. If possible,
      * declarations with multiple fields are split into individual records.
      */
     public static List<AttributeTokens> getFieldsFromParameter(
@@ -953,7 +953,7 @@ public class DatasetUtils {
      * @param jpCallable a function
      * @return a list of information about each method. Each entry has the
      * form:
-     *     [methodName, packageName, className, methodSignature]
+     *     [methodName, packageName, typeName, methodSignature]
      * @throws JPClassNotFoundException if the declaring class is not
      * resolvable
      */
@@ -997,7 +997,7 @@ public class DatasetUtils {
      * @param jpCallable a function
      * @return a list of information about each attribute. Each entry has the
      * form:
-     *     [fieldName, packageName, className, fieldSignature]
+     *     [fieldName, packageName, typeName, fieldSignature]
      * @throws JPClassNotFoundException if the declaring class is not
      * resolvable
      */
@@ -1033,7 +1033,7 @@ public class DatasetUtils {
      * @param oracle an oracle corresponding to the function
      * @return a list of information about each method. Each entry has the
      * form:
-     *     [methodName, packageName, className, methodSignature]
+     *     [methodName, packageName, typeName, methodSignature]
      */
     public static List<MethodTokens> getTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(
             TypeDeclaration<?> jpClass,
@@ -1078,7 +1078,7 @@ public class DatasetUtils {
      * @param oracle an oracle corresponding to the function
      * @return a list of information about each attribute. Each entry has the
      * form:
-     *  [fieldName, packageName, className, fieldSignature]
+     *  [fieldName, packageName, typeName, fieldSignature]
      */
     public static List<AttributeTokens> getTokensOracleVariablesNonPrivateNonStaticAttributes(
             TypeDeclaration<?> jpClass,
