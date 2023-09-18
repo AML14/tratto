@@ -1260,7 +1260,7 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets the method/constructor name of an operation
+     * Gets the method/constructor name of an operation.
      *
      * @param operation a JDoctor condition operation
      * @return the method/constructor name of the operation
