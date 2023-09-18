@@ -456,15 +456,10 @@ public class DatasetUtils {
         List<AttributeTokens> attributeList = new ArrayList<>();
         // get package name.
         String packageName = JavaParserUtils.getPackageDeclaration(cu).getNameAsString();
-        // get all classes in compilation unit.
-        List<TypeDeclaration<?>> jpClasses = cu.getTypes();
-        // iterate over all classes.
-        for (TypeDeclaration<?> jpClass : jpClasses) {
+        // iterate over each class in the compilation unit.
+        for (TypeDeclaration<?> jpClass : cu.findAll(TypeDeclaration.class)) {
             String className = jpClass.getNameAsString();
-            List<FieldDeclaration> jpFields = jpClass.findAll(FieldDeclaration.class);
-            // add all non-private, static attributes.
-            for (FieldDeclaration jpField : jpFields) {
-                // check if field declaration is non-private and static.
+            for (FieldDeclaration jpField : jpClass.findAll(FieldDeclaration.class)) {
                 if (!jpField.isPrivate() && jpField.isStatic()) {
                     // add each variable in declaration.
                     for (VariableDeclarator jpVariable : jpField.getVariables()) {
