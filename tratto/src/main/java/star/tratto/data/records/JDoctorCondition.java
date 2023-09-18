@@ -8,7 +8,7 @@ import java.util.List;
  * A JDoctor condition for a method.
  */
 public record JDoctorCondition(
-        /* The contextual information of a method under test. */
+        /* The identifying information of the method under test (e.g. declaring class, name, etc.) */
         @JsonProperty("operation") Operation operation,
         /* Additional contextual identifier of the method under test. */
         @JsonProperty("identifiers") Identifiers identifiers,
