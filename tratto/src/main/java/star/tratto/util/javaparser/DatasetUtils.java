@@ -225,9 +225,7 @@ public class DatasetUtils {
      * Gets all value tokens in a Javadoc comment via pattern matching.
      *
      * @param javadocComment a Javadoc comment
-     * @return a list of records describing each numerical and string value.
-     * Each entry has the form: [value, type]. For example:
-     *     [["name", "String"], ["64", "int"]]
+     * @return a list of value tokens
      */
     public static List<ValueTokens> getJavadocValues(
             String javadocComment
