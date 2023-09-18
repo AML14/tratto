@@ -726,9 +726,7 @@ public class DatasetUtils {
     }
 
     /**
-     * Converts a field declaration to a list of records of attribute tokens,
-     * where each entry has the form:
-     *     [fieldName, packageName, typeName, fieldDeclaration]
+     * Converts a field declaration to a list of records of attribute tokens.
      * This method is a special case of
      * {@link DatasetUtils#convertFieldDeclarationToAttributeTokens(List)}
      * using available information from the implementation of
