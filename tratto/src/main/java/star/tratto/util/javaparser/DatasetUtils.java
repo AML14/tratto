@@ -44,6 +44,7 @@ import star.tratto.util.FileUtils;
 import java.lang.reflect.Field;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -708,18 +709,20 @@ public class DatasetUtils {
      * to resolve the type.
      *
      * @param jpType a type
-     * @return a list of method tokens
+     * @return a list of method tokens for all available methods. Returns an
+     * empty list if the given type is primitive.
      */
     private static List<MethodTokens> getMethodsFromType(
             Type jpType
     ) {
+        ResolvedType jpResolvedType;
         try {
-            ResolvedType jpResolvedType = jpType.resolve();
-            return getMethodsFromType(jpResolvedType);
+            jpResolvedType = jpType.resolve();
         } catch (UnsolvedSymbolException e) {
             logger.error(String.format("Unable to generate method tokens from type %s", jpType));
-            return new ArrayList<>();
+            return Collections.emptyList();
         }
+        return getMethodsFromType(jpResolvedType);
     }
 
     /**
