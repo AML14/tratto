@@ -345,23 +345,47 @@ public class DatasetUtils {
     }
 
     /**
-     * Reconstructs the original tag in source code from a record of tag
-     * information.
+     * Gets the Javadoc tag corresponding to a given oracle type. For
+     * reference,
+     * <ul>
+     *     <li>PRE -&gt; @param</li>
+     *     <li>NORMAL_POST -&gt; @return</li>
+     *     <li>EXCEPT_POST -&gt; @throws</li>
+     * </ul>
+     *
+     * @param oracleType a type of oracle
+     * @return an equivalent Javadoc tag corresponding to the oracle type
+     */
+    private static String oracleTypeToJavadocTag(
+            OracleType oracleType
+    ) {
+        switch (oracleType) {
+            case PRE -> {
+                return "@param ";
+            }
+            case NORMAL_POST -> {
+                return "@return ";
+            }
+            case EXCEPT_POST -> {
+                return "@throws ";
+            }
+            default -> throw new IllegalArgumentException("Unknown oracle type " + oracleType);
+        }
+    }
+
+    /**
+     * Gets an equivalent String representation of a Javadoc tag.
      *
      * @param jpTag a record of tag information, including: file source code,
      *              JavaParser class, JavaParser method/constructor, oracle
      *              type, name, and content.
-     * @return the original tag in source code as a String.
+     * @return an equivalent String representation of the Javadoc tag
      */
-    public static String reconstructTag(
+    public static String getTagAsString(
             JavadocTag jpTag
     ) {
         StringBuilder sb = new StringBuilder();
-        switch (jpTag.oracleType()) {
-            case PRE -> sb.append("@param ");
-            case NORMAL_POST -> sb.append("@return ");
-            case EXCEPT_POST -> sb.append("@throws ");
-        }
+        sb.append(oracleTypeToJavadocTag(jpTag.oracleType()));
         if (!jpTag.tagName().equals("")) {
             sb.append(jpTag.tagName()).append(" ");
         }

@@ -313,7 +313,7 @@ public class ProjectOracleGenerator {
         // set data point information.
         builder.setConditionInfo(condition);
         // override JavaDoc tag with tag from source code.
-        builder.setJavadocTag(DatasetUtils.reconstructTag(findMaximumSimilarityTag(
+        builder.setJavadocTag(DatasetUtils.getTagAsString(findMaximumSimilarityTag(
                 this.projectTagsTokens,
                 jpClass,
                 jpCallable,
