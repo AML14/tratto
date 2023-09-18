@@ -656,12 +656,11 @@ public class DatasetUtils {
 
     /**
      * Collects information for all non-private, non-static, non-void methods
-     * available to a given type. Handles three cases for either (1) an array
-     * type, (2) a generic Object type (e.g. "T"), and (3) a normal reference
-     * type.
+     * available to a given type.
      *
      * @param jpResolvedType a type
-     * @return a list of method tokens for all available methods
+     * @return a list of method tokens for all available methods. Returns an
+     * empty list if the given type is primitive.
      */
     public static List<MethodTokens> getMethodsFromType(
             ResolvedType jpResolvedType
