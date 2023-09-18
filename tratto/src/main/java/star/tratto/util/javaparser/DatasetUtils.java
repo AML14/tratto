@@ -66,13 +66,13 @@ public class DatasetUtils {
     }
 
     /**
-     * Removes all duplicate elements in a list.
+     * Removes all duplicate elements in a list, according to equals.
      * 
      * @param list a list of elements 
-     * @return the same list with all duplicates removed
-     * @param <T> the type of object in the list
+     * @return a new list without duplicate elements
+     * @param <T> the type of object in the lists
      */
-    public static <T> List<T> removeDuplicates(List<T> list) {
+    public static <T> List<T> withoutDuplicates(List<T> list) {
         Set<T> set = new LinkedHashSet<>(list);
         return new ArrayList<>(set);
     }
@@ -982,7 +982,7 @@ public class DatasetUtils {
                         .filter(JavaParserUtils::isNonPrivateNonStaticNonVoidMethod)
                         .toList()
         ));
-        return removeDuplicates(methodList);
+        return withoutDuplicates(methodList);
     }
 
     /**
@@ -1018,7 +1018,7 @@ public class DatasetUtils {
         if (jpCallable instanceof MethodDeclaration) {
             attributeList.addAll(getFieldsFromType(((MethodDeclaration) jpCallable).getType()));
         }
-        return removeDuplicates(attributeList);
+        return withoutDuplicates(attributeList);
     }
 
     /**
@@ -1063,7 +1063,7 @@ public class DatasetUtils {
                 methodList.addAll(getMethodsFromType(genericType));
             }
         }
-        return removeDuplicates(methodList);
+        return withoutDuplicates(methodList);
     }
 
     /**
@@ -1105,7 +1105,7 @@ public class DatasetUtils {
                 attributeList.addAll(getFieldsFromType(genericType));
             }
         }
-        return removeDuplicates(attributeList);
+        return withoutDuplicates(attributeList);
     }
 
     /**

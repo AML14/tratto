@@ -33,7 +33,7 @@ public class DatasetUtilsTest {
     public void removeDuplicatesTest() {
         List<String> original = List.of("first", "second", "first", "first", "third", "third");
         List<String> expected = List.of("first", "second", "third");
-        assertEquals(expected, removeDuplicates(original));
+        assertEquals(expected, withoutDuplicates(original));
     }
 
     @Test
