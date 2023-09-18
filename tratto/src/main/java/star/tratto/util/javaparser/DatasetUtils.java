@@ -1095,7 +1095,9 @@ public class DatasetUtils {
             CallableDeclaration<?> jpCallable,
             TypeDeclaration<?> jpClass
     ) {
-        if (jDoctorParam.equals(jpParam)) return true;
+        if (jDoctorParam.equals(jpParam)) {
+            return true;
+        }
         boolean jDoctorParamIsStandard = TypeUtils.isObjectOrComparable(jDoctorParam);
         boolean jDoctorParamIsStandardArray = TypeUtils.isObjectOrComparableArray(jDoctorParam);
         boolean jpParamIsStandard = TypeUtils.isObjectOrComparable(jpParam);
@@ -1123,11 +1125,15 @@ public class DatasetUtils {
             CallableDeclaration<?> jpCallable,
             TypeDeclaration<?> jpClass
     ) {
-        if (jDoctorParamList.size() != jpParamList.size()) return false;
+        if (jDoctorParamList.size() != jpParamList.size()) {
+            return false;
+        }
         for (int i = 0; i < jDoctorParamList.size(); i++) {
             String jDoctorParam = jDoctorParamList.get(i);
             String jpParam = jpParamList.get(i);
-            if (!jpParamEqualsJDoctorParam(jDoctorParam, jpParam, jpCallable, jpClass)) return false;
+            if (!jpParamEqualsJDoctorParam(jDoctorParam, jpParam, jpCallable, jpClass)) {
+                return false;
+            }
         }
         return true;
     }
