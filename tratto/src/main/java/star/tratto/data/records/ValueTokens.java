@@ -9,17 +9,19 @@ import java.util.List;
  * Used for XText grammar. Only considers basic Javadoc values, such as
  * numerical values or strings. Therefore, the XText grammar does not use a
  * package name when processing this record.
- *
- * @param value the Javadoc value
- * @param type the type of the Javadoc value
  */
-public record ValueTokens(String value, String type) {
-    // Non-canonical constructor using List to read from file
+public record ValueTokens(
+        /* The value. */
+        String value,
+        /* The type of the value. */
+        String type
+) {
+    /** Non-canonical constructor using List to read JSON. */
     public ValueTokens(List<String> tokens) {
         this(tokens.get(0), tokens.get(1));
     }
 
-    // Converts record to List to write to file
+    /** Converts record to List for JSON compatibility. */
     public List<String> toList() {
         return List.of(this.value, this.type);
     }
