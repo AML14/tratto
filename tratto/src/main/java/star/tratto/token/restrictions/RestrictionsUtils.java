@@ -87,10 +87,10 @@ public class RestrictionsUtils {
             // Preceding expression is a project class
             List<ClassTokens> matchingClasses = oracleDatapoint.getTokensProjectClasses()
                     .stream()
-                    .filter(c -> c.typeName().equals(precedingExpr))
+                    .filter(c -> c.className().equals(precedingExpr))
                     .collect(Collectors.toList());
             matchingClasses.forEach(c -> matchingMethods.addAll(
-                    getMethodsOfType(fullyQualifiedClassName(c.packageName(), c.typeName()))
+                    getMethodsOfType(fullyQualifiedClassName(c.packageName(), c.className()))
                             .stream()
                             .filter(m -> m.getName().equals(methodName) && isNonPrivateStaticNonVoidMethod(m))
                             .collect(Collectors.toList())
