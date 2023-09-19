@@ -78,6 +78,8 @@ public class ProjectOracleGenerator {
 
     /**
      * Gets all OracleDatapoint objects for the project under analysis.
+     * Generates empty oracle datapoints for tags without a JDoctor condition,
+     * representing tags which cannot have a corresponding oracle.
      *
      * @return a list of oracle datapoints
      */
@@ -109,6 +111,7 @@ public class ProjectOracleGenerator {
             if (postConditions.size() > 0) {
                 OracleDatapoint nextDatapoint = getNextDatapoint(operation, postConditions);
                 if (nextDatapoint != null) oracleDPs.add(nextDatapoint);
+                // first description corresponds to source tag.
                 removeProjectClassesTag(operation, OracleType.NORMAL_POST, postConditions.get(0).description());
             }
         }
