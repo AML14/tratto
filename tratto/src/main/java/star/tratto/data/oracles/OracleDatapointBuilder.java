@@ -82,25 +82,39 @@ public class OracleDatapointBuilder {
         this.setOracle((condition.guard().condition() + ";").replaceAll("receiverObjectID", "this"));
     }
 
+    /**
+     * Gets the oracle of a non-exceptional JDoctor post-condition. The oracle
+     * is represented by a ternary expression, where each method may satisfy
+     * UP TO two possible final states. If the post-condition does not have an
+     * alternative final state, then the false result of the ternary
+     * expression is "true".
+     *
+     * @param conditionList a JDoctor post-condition
+     * @return the oracle corresponding to the post-condition
+     */
     private String getPostConditionOracle(List<PostCondition> conditionList) {
         PostCondition mainCondition = conditionList.get(0);
         String mainTag = mainCondition.description();
         Guard mainGuard = mainCondition.guard();
         Property mainProperty = mainCondition.property();
-        // start building oracle.
-        String oracle = String.format("%s ? %s : ", mainGuard.condition(), mainProperty.condition());
-        // add to oracle.
+        StringBuilder sb = new StringBuilder();
+        // get true result
+        sb.append(mainGuard.condition());
+        sb.append(" ? ");
+        sb.append(mainProperty.condition());
+        sb.append(" : ");
+        // get false result
         if (conditionList.size() == 2) {
-            PostCondition secondCondition = conditionList.get(1);
-            String secondTag = secondCondition.description();
-            assert mainTag.equals(secondTag);
-            Property secondProperty = secondCondition.property();
-            oracle += String.format("%s;", secondProperty.condition());
+            PostCondition altCondition = conditionList.get(1);
+            String altTag = altCondition.description();
+            assert mainTag.equals(altTag);
+            Property altProperty = altCondition.property();
+            sb.append(altProperty.condition());
         } else {
-            oracle += "true;";
+            sb.append("true");
         }
-        oracle = oracle.replaceAll("receiverObjectID", "this");
-        return oracle;
+        sb.append(";");
+        return sb.toString().replaceAll("receiverObjectID", "this");
     }
 
     private void setPostConditionInfo(List<PostCondition> conditionList) {
