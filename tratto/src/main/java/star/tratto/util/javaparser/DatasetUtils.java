@@ -1160,26 +1160,25 @@ public class DatasetUtils {
             String targetName,
             List<String> targetParamList
     ) {
+        List<CallableDeclaration<?>> jpCallables = new ArrayList<>();
+        jpCallables.addAll(jpClass.getMethods());
+        jpCallables.addAll(jpClass.getConstructors());
         // iterate through each member in the class.
-        for (BodyDeclaration<?> member : jpClass.getMembers()) {
-            // check if member is a function (method or constructor).
-            if (member.isCallableDeclaration()) {
-                CallableDeclaration<?> currentCallable = member.asCallableDeclaration();
-                // check if the function names are equal.
-                if (currentCallable.getNameAsString().equals(targetName)) {
-                    // check if parameters are equal.
-                    List<String> currentParamList = currentCallable.getParameters()
-                            .stream()
-                            .map(p -> TypeUtils.getJDoctorSimpleNameFromSourceCode(jpClass, currentCallable, p))
-                            .toList();
-                    if (jpParamListEqualsJDoctorParamList(
-                            targetParamList,
-                            currentParamList,
-                            currentCallable,
-                            jpClass
-                    )) {
-                        return currentCallable;
-                    }
+        for (CallableDeclaration<?> jpCallable : jpCallables) {
+            // check if the method names are equal.
+            if (jpCallable.getNameAsString().equals(targetName)) {
+                // check if parameters are equal.
+                List<String> currentParamList = jpCallable.getParameters()
+                        .stream()
+                        .map(p -> TypeUtils.getJDoctorSimpleNameFromSourceCode(jpClass, jpCallable, p))
+                        .toList();
+                if (jpParamListEqualsJDoctorParamList(
+                        targetParamList,
+                        currentParamList,
+                        jpCallable,
+                        jpClass
+                )) {
+                    return jpCallable;
                 }
             }
         }
