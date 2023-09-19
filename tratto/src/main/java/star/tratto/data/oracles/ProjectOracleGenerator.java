@@ -224,11 +224,12 @@ public class ProjectOracleGenerator {
     }
 
     /**
-     * Removes the Javadoc tag of a JDoctor condition from a list of Javadoc
-     * tags from source code.
+     * Removes a Javadoc tag of a JDoctor condition from a list Javadoc tags
+     * from the project source code (created in
+     * {@link ProjectOracleGenerator#loadProject(Project, List)}).
      *
      * @param operation the operation of the JDoctor condition
-     * @param oracleType the type of oracle (e.g. PRE/NORMAL_POST/EXCEPT_POST)
+     * @param oracleType the type of oracle (PRE, NORMAL_POST, EXCEPT_POST)
      * @param javaDocTag the (JDoctor simplified) JavaDoc tag to be removed
      */
     private void removeProjectClassesTag(
