@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.plumelib.util.CollectionsPlume.mapList;
+
 /**
  * This class is a builder class for {@link OracleDatapoint}.
  */
@@ -59,16 +61,7 @@ public class OracleDatapointBuilder {
      */
     private void setDefaultGeneralValues() {
         Path tokensGeneralValuesPath = TrattoPath.TOKENS_GENERAL_VALUES.getPath();
-        List<ValueTokens> tokenGeneralValues = FileUtils.readJSONList(tokensGeneralValuesPath)
-                .stream()
-                .map(e -> ((List<?>) e)
-                        .stream()
-                        .map(o -> (String) o)
-                        .collect(Collectors.toList()))
-                .toList()
-                .stream()
-                .map(ValueTokens::new)
-                .collect(Collectors.toList());
+        List<ValueTokens> tokenGeneralValues = mapList(ValueTokens::new, FileUtils.readJSONList(tokensGeneralValuesPath, List.class));
         this.setTokensGeneralValuesGlobalDictionary(tokenGeneralValues);
     }
 
