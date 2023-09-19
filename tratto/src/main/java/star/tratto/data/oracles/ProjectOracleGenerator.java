@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.nio.file.Path;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -130,15 +129,39 @@ public class ProjectOracleGenerator {
     }
 
     /**
-     * Gets the most similar tag in a given list to a target tag. Only
-     * considers tags of a given type from a given method in a given class.
-     * Otherwise, uses semantic similarity to compare valid tags.
+     * Checks if a preprocessed JDoctor Javadoc tag matches a given name.
+     *
+     * @param targetTag a preprocessed JDoctor javadoc tag
+     * @param name a Javadoc tag name (parameter name or exception type)
+     * @return true iff the target tag matches the given name or the target
+     * tag has no name (and {@code name} is empty)
+     */
+    private boolean tagHasName(
+            String targetTag,
+            String name
+    ) {
+        // check if target tag has no name
+        if (!targetTag.startsWith("@param") && !targetTag.startsWith("@throws")) {
+            if (name.isEmpty()) {
+                return true;
+            }
+        }
+        // check if target tag matches given name
+        Pattern tagNamePattern = Pattern.compile("@(param|return|throws)\\s+(.*\\.)*" + name + "\\b");
+        return tagNamePattern.matcher(targetTag).find();
+    }
+
+    /**
+     * Gets the most similar tag from source code to a target preprocessed
+     * JDoctor tag. Only considers tags of a target type from a target method
+     * in a target class. Otherwise, uses semantic similarity to find the most
+     * similar source code tag in comparison to the preprocessed JDoctor tag.
      *
      * @param tagList list of tags
      * @param targetClass target class
      * @param targetCallable target method/constructor
      * @param targetOracleType target oracle type (e.g. pre-condition)
-     * @param targetTag target JDoctor tag
+     * @param targetTag the preprocessed JDoctor Javadoc tag
      * @return tag with the greatest similarity to {@code targetTag}
      * @see StringUtils#semanticSimilarity(String, String)
      */
@@ -152,15 +175,10 @@ public class ProjectOracleGenerator {
         // filter tags by TypeDeclaration, CallableDeclaration, OracleType, and Pattern matching.
         List<JavadocTag> filteredTags = tagList
                 .stream()
-                .filter(tagInfo -> {
-                    if (!tagInfo.jpClass().equals(targetClass) ||
-                        !tagInfo.jpCallable().equals(targetCallable) ||
-                        !tagInfo.oracleType().equals(targetOracleType)) return false;
-                    boolean tagHasNoName = !targetTag.contains("@param") && !targetTag.contains("@throws") && tagInfo.tagName().length() == 0;
-                    Pattern pattern = Pattern.compile(String.format("@(param|return|throws)\\s+(.*\\.)*%s\\b", tagInfo.tagName()));
-                    Matcher matcher = pattern.matcher(targetTag);
-                    return matcher.find() || tagHasNoName;
-                })
+                .filter(tagInfo -> tagInfo.jpClass().equals(targetClass) &&
+                        tagInfo.jpCallable().equals(targetCallable) &&
+                        tagInfo.oracleType().equals(targetOracleType) &&
+                        tagHasName(targetTag, tagInfo.tagName()))
                 .toList();
         // find index of most semantically similar tag (cosine similarity).
         JavadocTag mostSimilarTag = null;
