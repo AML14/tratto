@@ -49,8 +49,9 @@ public class OracleDatapointBuilder {
 
     /**
      * Sets default general tokens for symbolic grammar. This represents
-     * tokens that are available to every project (e.g. "+", ";', etc.). See
-     * "data/repos/tokens_grammar.json" for the full list.
+     * tokens that are available to every project (e.g. "+", ";", etc.). See
+     * "data/repos/tokens_grammar.json" for the full list. Used for the XText
+     * grammar.
      */
     private void setDefaultGrammarTokens() {
         Path tokensGrammarPath = TrattoPath.TOKENS_GRAMMAR.getPath();
@@ -59,8 +60,9 @@ public class OracleDatapointBuilder {
     }
 
     /**
-     * Sets default global values for tokens. This represents a dictionary of
-     * default values and their corresponding types.
+     * Sets default global values for commonly observed tokens and their
+     * corresponding types (e.g. [1, int], [0.0, double], etc.). Used for the
+     * XText grammar.
      */
     private void setDefaultGeneralValues() {
         Path tokensGeneralValuesPath = TrattoPath.TOKENS_GENERAL_VALUES.getPath();
