@@ -84,12 +84,12 @@ public class ProjectInitializer {
     }
 
     /**
-     * Gets a list of project objects from a JSON list of project paths.
+     * Gets a list of {@link Project} records from a JSON file.
      *
-     * @param jsonProjects file of projects to analyze
-     * @return list of project information
+     * @param jsonPath path to the JSON representation of projects
+     * @return the corresponding {@link Project} records
      */
-    public static List<Project> initialize(Path jsonProjects) {
+    public static List<Project> initialize(Path jsonPath) {
         // initialize ObjectMapper with custom deserializer
         ObjectMapper objectMapper = new ObjectMapper();
         SimpleModule module = new SimpleModule();
@@ -110,7 +110,7 @@ public class ProjectInitializer {
         // read JSON object to Project
         try {
             List<Project> projectList = objectMapper.readValue(
-                    jsonProjects.toFile(),
+                    jsonPath.toFile(),
                     new TypeReference<>() {}
             );
             return projectList
@@ -121,7 +121,7 @@ public class ProjectInitializer {
                     })
                     .collect(Collectors.toList());
         } catch (IOException e) {
-            throw new Error("Error in processing the JSON file " + jsonProjects, e);
+            throw new Error("Error in processing the JSON file " + jsonPath, e);
         }
     }
 }
