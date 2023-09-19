@@ -57,7 +57,7 @@ public class ProjectOracleGenerator {
 
     /**
      * Sets the project under analysis and corresponding project-level
-     * features. This avoids reloading the features for each
+     * features. This avoids repeatedly reloading shared features.
      *
      * @param project the project under analysis
      * @param jDoctorConditions the JDoctor conditions associated with the
@@ -77,9 +77,7 @@ public class ProjectOracleGenerator {
     }
 
     /**
-     * Gets all OracleDatapoint objects for the project under analysis. Use
-     * {@link ProjectOracleGenerator#loadProject(Project, List)} before this
-     * method.
+     * Gets all OracleDatapoint objects for the project under analysis.
      *
      * @return a list of oracle datapoints
      */
