@@ -48,7 +48,9 @@ public class OracleDatapointBuilder {
     }
 
     /**
-     * Sets default general tokens for symbolic grammar.
+     * Sets default general tokens for symbolic grammar. This represents
+     * tokens that are available to every project (e.g. "+", ";', etc.). See
+     * "data/repos/tokens_grammar.json" for the full list.
      */
     private void setDefaultGrammarTokens() {
         Path tokensGrammarPath = TrattoPath.TOKENS_GRAMMAR.getPath();
@@ -57,7 +59,8 @@ public class OracleDatapointBuilder {
     }
 
     /**
-     * Sets default global values for tokens.
+     * Sets default global values for tokens. This represents a dictionary of
+     * default values and their corresponding types.
      */
     private void setDefaultGeneralValues() {
         Path tokensGeneralValuesPath = TrattoPath.TOKENS_GENERAL_VALUES.getPath();
