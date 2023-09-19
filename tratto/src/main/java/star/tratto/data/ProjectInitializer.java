@@ -22,19 +22,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * A helper class that deserializes an array of project information in JSON
- * format, and generates the corresponding {@link Project} representation.
+ * A helper class that provides a static method to initialize all projects as
+ * a list of {@link Project} records from a JSON file.
  */
 public class ProjectInitializer {
     /**
-     * This helper class deserializes a JSON object into a {@link Project}.
+     * This helper class uses the Jackson framework to deserialize a JSON
+     * object into a {@link Project}.
      */
     private static class ProjectDeserializer extends JsonDeserializer<Project> {
         /**
-         * Gets a Path from a JSON list of strings.
+         * Gets a Path from a JSON list of path elements.
          *
-         * @param arrayNode the Jackson array node representing the JSON list of
-         *                  strings to deserialize
+         * @param arrayNode an array node representing a list of path elements
          * @return the path corresponding to the joined elements of the JSON list
          */
         private Path arrayNodeToPath(ArrayNode arrayNode) {
@@ -47,14 +47,13 @@ public class ProjectInitializer {
         }
 
         /**
-         * Deserializes a JSON project object into a record.
+         * Deserializes a JSON object into a {@link Project} record.
          *
-         * @param jsonParser the json parser used to deserialize the JSON
-         *                   project object
+         * @param jsonParser a parser used to deserialize a JSON object
          * @param deserializationContext the deserialization context requested
          *                               to override the method
-         * @return a Project record, corresponding to the deserialization of a
-         * JSON project object
+         * @return a {@link Project} record, corresponding to the given JSON
+         * object
          * @throws IOException if an error occurs reading the tree of the
          * json parser
          */
@@ -79,7 +78,7 @@ public class ProjectInitializer {
         }
     }
 
-    // private constructor to avoid creating an instance of this class.
+    /** Private constructor to avoid creating an instance of this class. */
     private ProjectInitializer() {
         throw new UnsupportedOperationException("This class cannot be instantiated.");
     }
