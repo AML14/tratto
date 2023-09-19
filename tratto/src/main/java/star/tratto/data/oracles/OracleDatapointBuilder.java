@@ -80,9 +80,7 @@ public class OracleDatapointBuilder {
         this.setOracle((condition.guard().condition() + ";").replaceAll("receiverObjectID", "this"));
     }
 
-    private void setPostConditionInfo(List<PostCondition> conditionList) {
-        assert conditionList.size() <= 2;
-        // get base information from first post-condition.
+    private String getPostConditionOracle(List<PostCondition> conditionList) {
         PostCondition mainCondition = conditionList.get(0);
         String mainTag = mainCondition.description();
         Guard mainGuard = mainCondition.guard();
@@ -100,10 +98,14 @@ public class OracleDatapointBuilder {
             oracle += "true;";
         }
         oracle = oracle.replaceAll("receiverObjectID", "this");
-        // add information to datapoint.
+        return oracle;
+    }
+
+    private void setPostConditionInfo(List<PostCondition> conditionList) {
+        assert conditionList.size() <= 2 && !conditionList.isEmpty();
         this.setOracleType(OracleType.NORMAL_POST);
-        this.setJavadocTag(mainTag);
-        this.setOracle(oracle);
+        this.setJavadocTag(conditionList.get(0).description());
+        this.setOracle(getPostConditionOracle(conditionList));
     }
 
     /**
