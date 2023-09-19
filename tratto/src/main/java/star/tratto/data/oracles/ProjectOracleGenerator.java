@@ -182,13 +182,13 @@ public class ProjectOracleGenerator {
                 .toList();
         // find index of most semantically similar tag (cosine similarity).
         JavadocTag mostSimilarTag = null;
-        double maxSimilarity = -1.0;
+        double maxSimilaritySoFar = -1.0;
         for (JavadocTag tag : filteredTags) {
             String simpleTargetTag = targetTag.replaceAll(String.format("@(param|return|throws)\\s+(.*\\.)*%s\\b", tag.tagName()),"").replaceAll("<[^>]*>|@code|@link|\\{|}|\\n|\\r|\\t", " ");
             String simpleActualTag = tag.tagBody().replaceAll("<[^>]*>|@code|@link|\\{|}|\\n|\\r|\\t", " ");
             double currentSimilarity = StringUtils.semanticSimilarity(simpleTargetTag, simpleActualTag);
-            if (currentSimilarity > maxSimilarity) {
-                maxSimilarity = currentSimilarity;
+            if (currentSimilarity > maxSimilaritySoFar) {
+                maxSimilaritySoFar = currentSimilarity;
                 mostSimilarTag = tag;
             }
         }
