@@ -121,7 +121,7 @@ public class ProjectInitializer {
                     })
                     .collect(Collectors.toList());
         } catch (IOException e) {
-            throw new Error("Error in processing the JSON file of input projects.", e);
+            throw new Error("Error in processing the JSON file " + jsonProjects, e);
         }
     }
 }
