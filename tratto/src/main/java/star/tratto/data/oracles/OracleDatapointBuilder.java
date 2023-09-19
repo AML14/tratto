@@ -125,8 +125,8 @@ public class OracleDatapointBuilder {
     }
 
     /**
-     * Gets all information from a JDoctor condition (e.g. ThrowsCondition,
-     * PreCondition, or a list of PostCondition's). Sets the oracle type,
+     * Gets all information from a JDoctor condition (ThrowsCondition,
+     * PreCondition, or a list of PostConditions). Sets the oracle type,
      * JavaDoc tag, and oracle.
      *
      * @param condition a JDoctor condition
