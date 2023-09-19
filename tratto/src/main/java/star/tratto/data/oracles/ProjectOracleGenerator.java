@@ -152,6 +152,33 @@ public class ProjectOracleGenerator {
     }
 
     /**
+     * Removes all special characters from a Javadoc tag. For example,
+     *     "removes all {&#64;code links} from a document" -&gt;
+     *     "removes all links from a document"
+     *
+     * @param unprocessedTag a Javadoc tag
+     * @return a Javadoc tag without "&#64;code", "&#64;link", "{", "}", "\n",
+     * "\r", "\t", or HTML tags (angle brackets)
+     */
+    private String removeTagSpecialCharacters(String unprocessedTag) {
+        return unprocessedTag.replaceAll("<[^>]*>|@code|@link|\\{|}|\\n|\\r|\\t", " ");
+    }
+
+    /**
+     * Removes a tag prefix from a Javadoc tag (includes tag type and name).
+     * For example,
+     *     "@param name the student name" -&gt;
+     *     "the student name"
+     *
+     * @param unprocessedTag a Javadoc tag
+     * @param tagName the name of the Javadoc tag
+     * @return a Javadoc tag without the tag type or tag name
+     */
+    private String removeTagPrefix(String unprocessedTag, String tagName) {
+        return unprocessedTag.replaceAll("@(param|return|throws)\\s+(.*\\.)*" + tagName + "\\b", "");
+    }
+
+    /**
      * Gets the most similar tag from source code to a target preprocessed
      * JDoctor tag. Only considers tags of a target type from a target method
      * in a target class. Otherwise, uses semantic similarity to find the most
@@ -184,9 +211,9 @@ public class ProjectOracleGenerator {
         JavadocTag mostSimilarTag = null;
         double maxSimilaritySoFar = -1.0;
         for (JavadocTag tag : filteredTags) {
-            String simpleTargetTag = targetTag.replaceAll(String.format("@(param|return|throws)\\s+(.*\\.)*%s\\b", tag.tagName()),"").replaceAll("<[^>]*>|@code|@link|\\{|}|\\n|\\r|\\t", " ");
-            String simpleActualTag = tag.tagBody().replaceAll("<[^>]*>|@code|@link|\\{|}|\\n|\\r|\\t", " ");
-            double currentSimilarity = StringUtils.semanticSimilarity(simpleTargetTag, simpleActualTag);
+            String simpleTargetBody = removeTagSpecialCharacters(removeTagPrefix(targetTag, tag.tagName()));
+            String simpleActualBody = removeTagSpecialCharacters(tag.tagBody());
+            double currentSimilarity = StringUtils.semanticSimilarity(simpleTargetBody, simpleActualBody);
             if (currentSimilarity > maxSimilaritySoFar) {
                 maxSimilaritySoFar = currentSimilarity;
                 mostSimilarTag = tag;
