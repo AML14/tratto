@@ -329,12 +329,12 @@ public class ProjectOracleGenerator {
      * operation.
      *
      * @param operation a JDoctor operation
-     * @param condition a JDoctor condition (e.g. ThrowsCondition,
-     *                  PreCondition, or a list of PostCondition's).
+     * @param condition a JDoctor condition (i.e. ThrowsCondition,
+     *                  PreCondition, or a list of PostCondition's)
      * @return a fully populated OracleDatapoint. Returns null if error
      * occurs during information collection.
      */
-    private OracleDatapoint getNextDatapoint(JDoctorCondition.Operation operation, Object condition) {
+    private OracleDatapoint getNextDatapoint(Operation operation, Object condition) {
         OracleDatapointBuilder builder = new OracleDatapointBuilder();
         // get basic information of operation.
         Path sourcePath = this.project.srcPath();
