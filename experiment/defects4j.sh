@@ -15,6 +15,7 @@ PROJECT="${1}"
 BUG_ID="${2}"
 ROOT_DIR="$(dirname "$(realpath "$0")")"
 RESOURCES_DIR="${ROOT_DIR}/generator/resources"
+JAVA8_HOME="${RESOURCES_DIR}/${JDK8_NAME}/Contents/Home"
 
 echo "[1] Gathering project info for bug #${BUG_ID} in ${PROJECT}"
 defects4j info -p "${PROJECT}" -b "${BUG_ID}"
