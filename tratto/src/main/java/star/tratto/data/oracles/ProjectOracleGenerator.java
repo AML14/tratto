@@ -63,7 +63,7 @@ public class ProjectOracleGenerator {
      * @param jDoctorConditions the JDoctor conditions associated with the
      *                          project under analysis
      */
-    public void loadProject(
+    private void loadProject(
             Project project,
             List<JDoctorCondition> jDoctorConditions
     ) {
@@ -83,7 +83,11 @@ public class ProjectOracleGenerator {
      *
      * @return a list of oracle datapoints
      */
-    public List<OracleDatapoint> generate() {
+    public List<OracleDatapoint> generate(
+            Project project,
+            List<JDoctorCondition> jDoctorConditions
+    ) {
+        this.loadProject(project, jDoctorConditions);
         List<OracleDatapoint> oracleDPs = new ArrayList<>();
         // Generate an OracleDatapoint for each JDoctor condition.
         for (JDoctorCondition jDoctorCondition : this.jDoctorConditions) {
