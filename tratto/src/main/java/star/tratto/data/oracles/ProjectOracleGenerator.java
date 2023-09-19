@@ -73,6 +73,7 @@ public class ProjectOracleGenerator {
         this.projectMethodsTokens = DatasetUtils.getProjectNonPrivateStaticNonVoidMethodsTokens(this.project.srcPath());
         this.projectAttributesTokens = DatasetUtils.getProjectNonPrivateStaticAttributesTokens(this.project.srcPath());
         this.projectTagsTokens = DatasetUtils.getProjectTagsTokens(this.project.srcPath());
+        System.out.printf("Identified %s total JavaDoc tags.%n", this.projectTagsTokens.size());
     }
 
     /**
@@ -83,7 +84,6 @@ public class ProjectOracleGenerator {
      * @return a list of oracle datapoints
      */
     public List<OracleDatapoint> generate() {
-        System.out.printf("Identified %s total JavaDoc tags.%n", this.projectTagsTokens.size());
         List<OracleDatapoint> oracleDPs = new ArrayList<>();
         // Generate an OracleDatapoint for each JDoctor condition.
         for (JDoctorCondition jDoctorCondition : this.jDoctorConditions) {
