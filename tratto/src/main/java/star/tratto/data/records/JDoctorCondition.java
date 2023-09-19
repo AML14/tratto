@@ -6,6 +6,11 @@ import java.util.List;
 
 /**
  * A JDoctor condition for a method.
+ * Note: Both the overall data structure (including all precondition,
+ * post-condition, and exceptional oracles) and the oracle itself are
+ * referred to as a "condition". This is a consequence of the JDoctor output
+ * used to generate the Oracles Dataset and should NOT be changed, despite
+ * redundancy.
  */
 public record JDoctorCondition(
         /* The identifying information of the method under test (e.g. declaring class, name, etc.) */
