@@ -35,6 +35,10 @@ We provide an example of each class of oracle below:
 - True Negative: `sum(a, b) != null`
 - False Negative: `sum(a, b) == (a - b)`
 
+Similarly, we define precision and FPR in terms of these classifications as:
+
+$$\texttt{precision} = \frac{\texttt{True Positives}}{\texttt{True Positives} + \texttt{False Positives}}$$
+
 Intuitively, we hope to maximize True Positives and True Negatives, and minimize False Positives and False Negatives.
 This corresponds to a high precision and a low FPR.
 
