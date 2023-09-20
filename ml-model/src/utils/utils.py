@@ -101,22 +101,20 @@ def export_stats(file_path: str, content: dict, mode: str = "w"):
 
 def import_json(file_path: str):
     """
-    The method imports the dataset to use to train and validate the model.
-    The methods accept only the format .json
+    The method imports a json file as an object
+    The method accepts only the format .json
 
     Parameters
     ----------
     file_path: str
-        The path to the dataset file
-    file_format: FileFormat
-        The extension of the file
+        The path to the json file
 
     Returns
     -------
     input_file: File
         The file opened
     input_obj:
-        The content of the file:
+        The content of the file as a python dictionary object
     """
     with open(file_path) as input_file:
         input_obj = json.load(input_file)
