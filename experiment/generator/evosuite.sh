@@ -15,33 +15,26 @@ elif [ ! -f "$JAVA8_BIN" ]; then
 fi
 
 # Get current directory
-CURRENT_DIR=$(realpath "$(dirname "$BASH_SOURCE")")
+current_dir=$(realpath "$(dirname "$BASH_SOURCE")")
 
 # Setup global variables
 if ! [ -v ROOT_DIR ]; then
-    source "${CURRENT_DIR}/utils/global_variables.sh"
+    source "${current_dir}/utils/global_variables.sh"
 else
     echo "Global variables already defined."
 fi
 
 # Setup local variables
-TARGET_CLASS="$1"  # Fully-qualified name of target class
-TARGET_DIR="$2"    # Directory of binary files of the system under test
+target_class="$1"  # Fully-qualified name of target class
+target_dir="$2"    # Directory of binary files of the system under test
 
 # Setup sdkman
 source "${UTILS_DIR}/sdkman_init.sh" "$SDKMAN_DIR"
 
-# Generate tests using EvoSuite
-java -jar "$EVOSUITE_JAR" -class "$TARGET_CLASS" -projectCP "$TARGET_DIR"
-
-# Move to output directory
-CURRENT_DIR=$(realpath .)
-# Delete statistics
-rm -r "${CURRENT_DIR}/evosuite-report"
-# Overwrites previous output
-if [ -d "${OUTPUT_DIR}/evosuite-tests" ]; then
-  rm -r "${OUTPUT_DIR}/evosuite-tests"
+# Generate output dir if it does not exists
+if ! [ -d "$OUTPUT_DIR" ]; then
+  mkdir "$OUTPUT_DIR"
 fi
-# Move evosuite tests into output directory
-mkdir -p "$OUTPUT_DIR/evosuite-tests"
-mv -f "${CURRENT_DIR}/evosuite-tests" "${OUTPUT_DIR}"
+
+# Generate tests using EvoSuite
+java -jar "$EVOSUITE_JAR" -class "$target_class" -projectCP "$target_dir" -base_dir="${OUTPUT_DIR}" -seed=42

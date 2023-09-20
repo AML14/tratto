@@ -21,5 +21,9 @@ source "${UTILS_DIR}/sdkman_init.sh"
 
 sdk use java "$JAVA8"
 
+if ! [ -d "$OUTPUT_DIR" ]; then
+  mkdir "$OUTPUT_DIR"
+fi
+
 # Generate tests using EvoSuite
-java -jar "$EVOSUITE_JAR" -class "$TARGET_CLASS" -projectCP "$TARGET_DIR"
+java -jar "$EVOSUITE_JAR" -class "$TARGET_CLASS" -projectCP "$TARGET_DIR" -base_dir="${OUTPUT_DIR}" -seed=42
