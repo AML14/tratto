@@ -14,7 +14,6 @@ import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.resolution.SymbolResolver;
 import com.github.javaparser.symbolsolver.utils.SymbolSolverCollectionStrategy;
-import data.Defects4JOutput;
 import data.JDoctorOutput;
 import data.JDoctorOutput.Parameter;
 import data.JDoctorOutput.ParamTag;
@@ -565,16 +564,5 @@ public class TogUtils {
                 testCases
         );
         FileUtils.writeJSON(outputPath, testOutput);
-    }
-
-    /**
-     * Combines all {@link Defects4JOutput} records for a given TOG into one
-     * record.
-     *
-     * @param togType a tog
-     */
-    public static void combineDefects4JOutput(
-        TogType togType
-    ) {
     }
 }
