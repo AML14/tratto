@@ -1,14 +1,15 @@
 #!/bin/bash
 
 # Set and check environment variables
-SCRIPTDIR="$(cd "$(dirname "$0")" && pwd -P)"
-. "${SCRIPTDIR}${SEPARATOR}generator${SEPARATOR}utils${SEPARATOR}env.sh"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd -P)"
+# shellcheck source=generator/utils/env.sh
+. "${SCRIPT_DIR}${SEPARATOR}generator${SEPARATOR}utils${SEPARATOR}env.sh"
 
 # get global path variables
 ROOT_DIR="$(dirname "$(realpath "${0}")")"
 RESOURCES_DIR="${ROOT_DIR}/generator/resources"
 OUTPUT_DIR="${ROOT_DIR}/output"
-JAVA8_PROGRAM="${JAVA8_HOME}/bin/java"
+JAVA8_HOME="$(dirname "$(dirname JAVA8_PROGRAM)")"
 JAVA8_JAVAC="${JAVA8_HOME}/bin/javac"
 # get given variables
 TOG="jdoctor"
