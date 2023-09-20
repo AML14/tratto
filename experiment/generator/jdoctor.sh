@@ -15,7 +15,7 @@ SRC_DIR="${2}"  # project source directory
 CLASS_DIR="${3}"  # path to binary files of the system under test
 
 # argument check
-if [ ! $# -eq 3 ]; then
+if [ ! ${#} -eq 3 ]; then
   echo -e "jdoctor.sh: Expected 3 arguments, but got ${#}".
   exit 1
 elif [ ! -d "${SRC_DIR}" ]; then
