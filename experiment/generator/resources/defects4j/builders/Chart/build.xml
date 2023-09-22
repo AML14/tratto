@@ -1,0 +1,122 @@
+<!-- An ANT build file for JFreeChart -->
+
+<!-- Written by David Gilbert. -->
+<!-- 2-Jan-2003 -->
+
+<!-- Tested with Ant 1.6.5 -->
+<!-- To run this script, you need to make sure the libraries used by -->
+<!-- JFreeChart are copied to the ../lib directory (or edit the -->
+<!-- initialise task to point to the appropriate jar files). -->
+
+<!-- This script will create temporary directories ../build and -->
+<!-- ../distribution, as working areas.  A ../javadoc directory will -->
+<!-- be created for the Javadoc HTML pages. -->
+
+<!-- If you have comments about this script, please post a message -->
+<!-- on the JFreeChart developers mailing list. -->
+
+<project name="jfreechart" default="compile" basedir=".">
+    <!-- Initialisation. -->
+    <target name="initialise" description="Initialise required settings.">
+        <tstamp />
+        <property name="builddir" value="${basedir}/target" />
+        <property name="jfreechart.label" value="jfreechart" />
+        <property name="itext.jar" value="${basedir}/lib/itext.jar"/>
+        <property name="servlet.jar" value="${basedir}/lib/servlet.jar"/>
+        <property name="junit.jar" value="${basedir}/lib/junit.jar"/>
+        <path id="build.classpath">
+            <pathelement location="${servlet.jar}"/>
+        </path>
+    </target>
+
+    <!-- Compile the JFreeChart classes -->
+    <target name="compile" depends="initialise" description="Compile the JFreeChart source code.">
+
+        <!-- create a temp build directory -->
+        <mkdir dir="${basedir}/target" />
+        <mkdir dir="${basedir}/target/classes" />
+
+        <!-- compile the source -->
+        <javac srcdir="${basedir}/source"
+               destdir="${basedir}/target/classes"
+               debug="on"
+               deprecation="false"
+               source="1.4"
+               target="1.4">
+            <classpath refid="build.classpath" />
+            <include name="org/jfree/**"/>
+        </javac>
+
+        <!-- copy across .properties files -->
+        <copy todir="${basedir}/target/properties/org/jfree/chart/">
+            <fileset dir="${basedir}/source/org/jfree/chart">
+                <include name="*.properties" />
+            </fileset>
+        </copy>
+        <copy todir="${basedir}/target/properties/org/jfree/chart/plot">
+            <fileset dir="${basedir}/source/org/jfree/chart/plot">
+                <include name="*.properties" />
+            </fileset>
+        </copy>
+        <copy todir="${basedir}/target/properties/org/jfree/chart/editor">
+            <fileset dir="${basedir}/source/org/jfree/chart/editor">
+                <include name="*.properties" />
+            </fileset>
+        </copy>
+        <copy todir="${basedir}/target/properties/org/jfree/chart/ui">
+            <fileset dir="${basedir}/source/org/jfree/chart/ui">
+                <include name="*.properties" />
+            </fileset>
+        </copy>
+
+        <!-- make the jar -->
+        <jar jarfile="${basedir}/target/${jfreechart.label}.jar"
+             basedir="${basedir}/target" >
+        </jar>
+    </target>
+
+    <!-- Download and setup evosuite tests -->
+    <target name="evosuite" depends="initialise" description="Download and setup evosuite tests.">
+
+        <!-- create the folder that will contain all the evosuite dependencies needed to run the tests -->
+        <mkdir dir="${basedir}/evosuite-lib" />
+
+        <!-- compile the source -->
+        <javac srcdir="${basedir}/source"
+               destdir="${basedir}/target/classes"
+               debug="on"
+               deprecation="false"
+               source="1.4"
+               target="1.4">
+            <classpath refid="build.classpath" />
+            <include name="org/jfree/**"/>
+        </javac>
+
+        <!-- copy across .properties files -->
+        <copy todir="${basedir}/target/properties/org/jfree/chart/">
+            <fileset dir="${basedir}/source/org/jfree/chart">
+                <include name="*.properties" />
+            </fileset>
+        </copy>
+        <copy todir="${basedir}/target/properties/org/jfree/chart/plot">
+            <fileset dir="${basedir}/source/org/jfree/chart/plot">
+                <include name="*.properties" />
+            </fileset>
+        </copy>
+        <copy todir="${basedir}/target/properties/org/jfree/chart/editor">
+            <fileset dir="${basedir}/source/org/jfree/chart/editor">
+                <include name="*.properties" />
+            </fileset>
+        </copy>
+        <copy todir="${basedir}/target/properties/org/jfree/chart/ui">
+            <fileset dir="${basedir}/source/org/jfree/chart/ui">
+                <include name="*.properties" />
+            </fileset>
+        </copy>
+
+        <!-- make the jar -->
+        <jar jarfile="${basedir}/target/${jfreechart.label}.jar"
+             basedir="${basedir}/target" >
+        </jar>
+    </target>
+</project>

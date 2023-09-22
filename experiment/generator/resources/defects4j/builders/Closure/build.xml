@@ -1,0 +1,155 @@
+<!--
+ Copyright 2009 Google Inc.
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<project name="compiler" basedir="." default="jar">
+  <!-- Force java 7 -->
+  <property name="ant.build.javac.source" value="1.7" />
+  <property name="ant.build.javac.target" value="1.7" />
+
+  <!-- define other variables -->
+  <property name="src.dir" value="${basedir}/src" />
+  <property name="gen.dir" value="${basedir}/gen" />
+  <property name="test.dir" value="${basedir}/test" />
+  <property name="externs.dir" value="${basedir}/externs" />
+  <!-- To workaround Ant limitation on overriding properties set on the
+       command-line, define a unique property to allow "build.dir" to
+       be change without forcing the build of Rhino to the same directory.
+  -->
+  <property name="closure.build.dir" value="${basedir}/target" />
+  <property name="build.dir" value="${closure.build.dir}" />
+  <property name="buildlib.dir" value="${build.dir}/lib" />
+  <property name="classes.dir" value="${build.dir}/classes" />
+  <property name="testClasses.dir" value="${build.dir}/test" />
+  <property name="javadoc.dir" value="${build.dir}/javadoc" />
+  <property name="lib.dir" value="${basedir}/lib" />
+  <property name="compiler-jarfile" value="${build.dir}/Closure.jar" />
+
+  <!--<property file="build.properties" />-->
+
+  <!-- set the classpath for the project              -->
+  <!-- this includes the generated source class files -->
+  <!-- and every jar in the /lib directory            -->
+
+  <path id="srcclasspath.path">
+    <pathelement location="${classes.dir}" />
+    <fileset dir="${lib.dir}">
+      <include name="args4j.jar"/>
+      <include name="guava.jar"/>
+      <include name="json.jar"/>
+      <include name="jsr305.jar"/>
+      <include name="protobuf-java.jar"/>
+    </fileset>
+    <fileset dir="${buildlib.dir}">
+      <include name="rhino.jar"/>
+    </fileset>
+  </path>
+
+  <target name="compile"
+          description="compile the source code"
+          depends="rhino-jarjar,relversion">
+    <mkdir dir="${classes.dir}" />
+    <javac debug="true" srcdir="${gen.dir}"
+           destdir="${classes.dir}"
+           excludes=".svn,.git"
+           >
+      <classpath refid="srcclasspath.path" />
+    </javac>
+    <javac debug="true" srcdir="${src.dir}"
+           destdir="${classes.dir}"
+           excludes=".svn,.git,**/jsonml/**,**/webservice/**,**/testing/**"
+           >
+      <classpath refid="srcclasspath.path" />
+    </javac>
+
+    <!-- Move Messages.properties where ScriptRuntime.java expects it. -->
+    <mkdir dir="${classes.dir}/rhino_ast/java/com/google/javascript/rhino/" />
+    <copy file="${src.dir}/com/google/javascript/rhino/Messages.properties"
+          todir="${classes.dir}/rhino_ast/java/com/google/javascript/rhino/" />
+
+    <!-- Move ParserConfig.properties where ParserRunner.java expects it. -->
+    <copy file="${src.dir}/com/google/javascript/jscomp/parsing/ParserConfig.properties"
+          todir="${classes.dir}/com/google/javascript/jscomp/parsing" />
+
+    <propertyfile
+        file="${classes.dir}/com/google/javascript/jscomp/parsing/ParserConfig.properties"
+        comment="Parser properties">
+      <entry key="compiler.date" type="date" value="now"/>
+      <entry key="compiler.version" value="${build.relVersion}"/>
+    </propertyfile>
+
+    <!-- Move runtime_type_check.js where RuntimeTypeCheck.java expects it. -->
+    <mkdir dir="${classes.dir}/com/google/javascript/jscomp/js" />
+    <copy todir="${classes.dir}/com/google/javascript/jscomp/js">
+      <fileset dir="${src.dir}/com/google/javascript/jscomp/js" />
+    </copy>
+  </target>
+
+  <target name="jar"
+          depends="compile"
+          description="package compiler as an executable jar">
+    <zip destfile="${build.dir}/externs.zip" basedir="${externs.dir}" includes="*.js" />
+    <jar destfile="${compiler-jarfile}" update="true">
+      <fileset dir="${classes.dir}" />
+      <fileset dir="${build.dir}" includes="externs.zip" />
+      <zipfileset src="${lib.dir}/args4j.jar"/>
+      <zipfileset src="${lib.dir}/guava.jar"/>
+      <zipfileset src="${lib.dir}/json.jar"/>
+      <zipfileset src="${lib.dir}/jsr305.jar"/>
+      <zipfileset src="${lib.dir}/protobuf-java.jar"/>
+
+      <zipfileset src="${buildlib.dir}/rhino.jar"/>
+
+      <manifest>
+        <attribute name="Main-Class"
+                   value="com.google.javascript.jscomp.CommandLineRunner" />
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="rhino">
+    <ant antfile="build.xml"
+         inheritAll="false"
+         dir="lib/rhino/"
+         target="jar">
+      <property name="build.dir" value="${buildlib.dir}"/>
+      <property name="no-e4x" value="true"/>
+    </ant>
+  </target>
+
+  <target name="rhino-jarjar"
+          depends="rhino"
+          description="Renamespaces Rhino">
+    <taskdef name="jarjar"
+             classname="com.tonicsystems.jarjar.JarJarTask"
+             classpath="lib/jarjar.jar"/>
+    <jarjar destfile="${buildlib.dir}/rhino.jar" update="true">
+      <zipfileset src="${buildlib.dir}/rhino1_7R5pre/js.jar"/>
+      <rule pattern="org.mozilla.javascript.**"
+            result="com.google.javascript.rhino.head.@1"/>
+    </jarjar>
+  </target>
+
+  <target name="relversion">
+    <exec outputproperty="build.relVersion"
+          executable="git"
+          failonerror="false"
+          failifexecutionfails="false"
+          dir=".">
+      <arg value="describe"/>
+      <arg value="--tag"/>
+      <arg value="--always"/>
+    </exec>
+  </target>
+</project>
