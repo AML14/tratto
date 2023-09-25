@@ -3,5 +3,6 @@
 # output to "output/jdoctor/oracle" as a list of OracleOutput records.
 
 # Set and check environment variables
-SCRIPTDIR="$(cd "$(dirname "$0")" && pwd -P)"
-. "${SCRIPTDIR}${SEPARATOR}utils${SEPARATOR}env.sh"
+SCRIPT_DIR="$(cd "$(dirname "${0}")" && pwd -P)"
+# shellcheck source=generator/utils/env.sh
+. "${SCRIPT_DIR}${SEPARATOR}utils${SEPARATOR}env.sh"
