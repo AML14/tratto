@@ -273,7 +273,7 @@ public class OracleRemover {
      * with a single JUnit assertion. The smaller subtests are saved in
      * "output/evosuite-tests-simple" and the test prefixes are saved in
      * "output/evosuite-prefix". This method does not override the original
-     * test files.
+     * test file.
      *
      * @param fullyQualifiedName the fully qualified name of the class under
      *                           test
