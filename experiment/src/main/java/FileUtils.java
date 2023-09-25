@@ -40,22 +40,19 @@ public class FileUtils {
     }
 
     /**
-     * Gets the output path for a given fully qualified name. The output
-     * directory contains multiple subdirectories for various functionality.
-     * The {@code baseDir} corresponds to the main subdirectory in which the
-     * class path is added. For example:
+     * Gets the output path for a given fully qualified name. Each package
+     * is converted into a subdirectory of a given base directory. For
+     * example:
      *     {@code "evosuite-prefixes", "com.example.MyClass"}    -&gt;
-     *     {@code output/evosuite-prefixes/com/example}
-     * The class name is removed to get the directory in which to add the
-     * output.
+     *     {@code output/evosuite-prefixes/com/example/MyClass.java}
      *
      * @param fullyQualifiedName a fully qualified name
-     * @return the output path for a given fully qualified name
+     * @return the output path for a given fully qualified name in the given
+     * base directory
      */
     public static Path getFQNOutputPath(String baseDir, String fullyQualifiedName) {
-        Path fqnPath = FileUtils.getFQNPath(baseDir + "." + fullyQualifiedName);
-        int classNameIdx = fqnPath.getNameCount() - 1;
-        return Paths.get("output").resolve(fqnPath.subpath(0, classNameIdx));
+        return Paths.get("output")
+                .resolve(FileUtils.getFQNPath(baseDir + "." + fullyQualifiedName));
     }
 
     /**
