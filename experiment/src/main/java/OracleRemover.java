@@ -1,6 +1,8 @@
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.ImportDeclaration;
 import com.github.javaparser.ast.NodeList;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.expr.Expression;
@@ -11,11 +13,9 @@ import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.stmt.TryStmt;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 /**
  * This class provides the functionality for removing oracles from a test
@@ -266,6 +266,37 @@ public class OracleRemover {
     }
 
     /**
+     * Removes all import statements from the {@code org.evosuite} package.
+     * This method does not override the original file.
+     *
+     * @param testFile a JavaParser representation of a test file
+     */
+    private static void removeEvosuiteImports(CompilationUnit testFile) {
+        NodeList<ImportDeclaration> newImports = new NodeList<>();
+        for (ImportDeclaration importDeclaration : testFile.getImports()) {
+            if (!importDeclaration.getNameAsString().startsWith("org.evosuite")) {
+                newImports.add(importDeclaration);
+            }
+        }
+        testFile.setImports(newImports);
+    }
+
+    /**
+     * Removes all import statements, annotations, and superclasses from an
+     * EvoSuite test. This method does not override the original file.
+     *
+     * @param testFile a JavaParser representation of a test file
+     */
+    private static void removeEvosuiteDependency(CompilationUnit testFile) {
+        removeEvosuiteImports(testFile);
+        ClassOrInterfaceDeclaration testClass = testFile.getPrimaryType()
+                .orElseThrow()
+                .asClassOrInterfaceDeclaration();
+        testClass.setAnnotations(new NodeList<>());
+        testClass.setExtendedTypes(new NodeList<>());
+    }
+
+    /**
      * Removes all assertions from all EvoSuite tests generated for a given
      * class. The approach for removing oracles depends on whether an oracle
      * is exceptional or a normal assertion. Firstly, this method splits any
@@ -282,32 +313,23 @@ public class OracleRemover {
      * @see OracleRemover#removeAssertionOracles(CompilationUnit)
      */
     public static void removeOracles(String fullyQualifiedName) {
-        Path testsPath = FileUtils.getFQNOutputPath("evosuite-tests", fullyQualifiedName);
+        Path testPath = FileUtils.getFQNOutputPath("evosuite-tests", fullyQualifiedName);
         Path simplePath = FileUtils.getFQNOutputPath("evosuite-tests-simple", fullyQualifiedName);
         Path prefixPath = FileUtils.getFQNOutputPath("evosuite-prefix", fullyQualifiedName);
-        FileUtils.copy(testsPath, simplePath);
-        FileUtils.copy(testsPath, prefixPath);
-        try (Stream<Path> walk = Files.walk(prefixPath)) {
-            walk
-                    .filter(FileUtils::isJavaFile)
-                    .filter(p -> !FileUtils.isScaffolding(p))
-                    .forEach(testFile -> {
-                        try {
-                            CompilationUnit cu = StaticJavaParser.parse(testFile);
-                            // save simple tests to separate output for other use case
-                            splitTests(cu);
-                            Path simpleTestPath = FileUtils.getRelativePath(prefixPath, simplePath, testFile);
-                            FileUtils.writeString(simpleTestPath, cu.toString());
-                            // then, remove oracles for future insertion
-                            removeExceptionalOracles(cu);
-                            removeAssertionOracles(cu);
-                            FileUtils.writeString(testFile, cu.toString());
-                        } catch (IOException e) {
-                            throw new Error("Unable to parse EvoSuite test " + testFile.getFileName().toString());
-                        }
-                    });
+        CompilationUnit cu;
+        try {
+            cu = StaticJavaParser.parse(testPath);
         } catch (IOException e) {
-            throw new Error("Unable to parse files in directory " + testsPath);
+            throw new Error("Unable to parse EvoSuite test " + testPath);
         }
+        // split EvoSuite tests into simple tests
+        splitTests(cu);
+        FileUtils.writeString(simplePath, cu.toString());
+        // remove EvoSuite runner dependency
+        removeEvosuiteDependency(cu);
+        // remove oracles
+        removeExceptionalOracles(cu);
+        removeAssertionOracles(cu);
+        FileUtils.writeString(prefixPath, cu.toString());
     }
 }
