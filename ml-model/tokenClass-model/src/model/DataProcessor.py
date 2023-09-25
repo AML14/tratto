@@ -111,7 +111,7 @@ class DataProcessor:
         ----------
         column_name: str
             The name of the column of the dataset to process
-        
+./tratto-branch-tratto-program/tratto/scripts/data-augmentation/change_newlines_javadoc_tags.py
         Returns
         -------
         weights : list[float]
@@ -253,12 +253,12 @@ class DataProcessor:
         t_dataset = ConcatDataset(t_dataset_list)
         # return the dataset
         return t_dataset
-        
+./tratto-branch-tratto-program/tratto/scripts/data-augmentation/change_newlines_javadoc_tags.py
     def map_column_values_to_one_shot_vectors(self, column_name: str, new_column_name: str):
         """
         The method insert a new column to the dataset, containing the corrispondent one-shot vector representation
         of the unique values of the column of the dataset to which the column name passed to the function refers.
-        The new column inserted to the dataset will have the name equals to the string represented by the parameter 
+        The new column inserted to the dataset will have the name equals to the string represented by the parameter./tratto-branch-tratto-program/tratto/scripts/data-augmentation/change_newlines_javadoc_tags.py
         *new_column_name* passed to the function.
 
         Parameters
@@ -337,7 +337,7 @@ class DataProcessor:
         })
         # delete the oracle ids and the tgt labels from the input dataset
         df_src = self._df_dataset.drop(['label','oracleId','projectName','classJavadoc','classSourceCode','token','tokenInfo'], axis=1)
-        
+./tratto-branch-tratto-program/tratto/scripts/data-augmentation/change_newlines_javadoc_tags.py
         # if the model predicts classes, remove the label from the input
         if classification_type == ClassificationType.CATEGORY_PREDICTION:
             df_src = df_src.drop(['tokenClass'], axis=1)
