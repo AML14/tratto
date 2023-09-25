@@ -316,6 +316,8 @@ public class OracleRemover {
         Path testPath = FileUtils.getFQNOutputPath("evosuite-tests", fullyQualifiedName);
         Path simplePath = FileUtils.getFQNOutputPath("evosuite-tests-simple", fullyQualifiedName);
         Path prefixPath = FileUtils.getFQNOutputPath("evosuite-prefix", fullyQualifiedName);
+        FileUtils.copy(testPath, simplePath);
+        FileUtils.copy(testPath, prefixPath);
         CompilationUnit cu;
         try {
             cu = StaticJavaParser.parse(testPath);
