@@ -272,13 +272,13 @@ public class OracleRemover {
      * @param testFile a JavaParser representation of a test file
      */
     private static void removeEvosuiteImports(CompilationUnit testFile) {
-        NodeList<ImportDeclaration> newImports = new NodeList<>();
+        NodeList<ImportDeclaration> nonEvoImports = new NodeList<>();
         for (ImportDeclaration importDeclaration : testFile.getImports()) {
             if (!importDeclaration.getNameAsString().startsWith("org.evosuite")) {
-                newImports.add(importDeclaration);
+                nonEvoImports.add(importDeclaration);
             }
         }
-        testFile.setImports(newImports);
+        testFile.setImports(nonEvoImports);
     }
 
     /**
@@ -325,7 +325,7 @@ public class OracleRemover {
         // split EvoSuite tests into simple tests
         splitTests(cu);
         FileUtils.writeString(simplePath, cu.toString());
-        // remove EvoSuite runner dependency
+        // remove EvoSuite dependencies
         removeEvosuiteDependency(cu);
         // remove oracles
         removeExceptionalOracles(cu);
