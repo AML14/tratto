@@ -11,7 +11,6 @@ import com.github.javaparser.ast.stmt.ExpressionStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.stmt.TryStmt;
 
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -318,9 +317,6 @@ public class OracleRemover {
         Path testPath = FileUtils.getFQNOutputPath("evosuite-tests", fullyQualifiedName)
                 .getParent()
                 .resolve(simpleName + "_ESTest.java");
-        if (!Files.exists(testPath)) {
-            throw new Error("Unable to find EvoSuite test file " + testPath);
-        }
         CompilationUnit cu = FileUtils.getCompilationUnit(testPath);
         splitTests(cu);
         removeEvosuiteDependency(cu);
