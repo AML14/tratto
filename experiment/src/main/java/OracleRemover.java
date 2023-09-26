@@ -272,17 +272,17 @@ public class OracleRemover {
      *                           test
      */
     private static void generateSimpleTests(String fullyQualifiedName) {
-        Path testPath = FileUtils.getFQNOutputPath("evosuite-tests", fullyQualifiedName).getParent();
-        Path simplePath = FileUtils.getFQNOutputPath("evosuite-tests-simple", fullyQualifiedName).getParent();
-        try (Stream<Path> walk = Files.walk(testPath)) {
+        Path testDir = FileUtils.getFQNOutputPath("evosuite-tests", fullyQualifiedName).getParent();
+        Path simplePath = FileUtils.getFQNOutputPath("evosuite-tests-simple", fullyQualifiedName);
+        try (Stream<Path> walk = Files.walk(testDir)) {
             walk
                     .filter(FileUtils::isJavaFile)
-                    .filter(p -> !FileUtils.isScaffolding(p))
-                    .forEach(testFile -> {
-
+                    .filter(testPath -> !FileUtils.isScaffolding(testPath))
+                    .forEach(testPath -> {
+                        FileUtils.copyFile(testPath, simplePath);
                     });;
         } catch (IOException e) {
-            throw new Error("Unable to parse files in directory " + testPath);
+            throw new Error("Unable to parse files in directory " + testDir);
         }
     }
 
