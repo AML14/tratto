@@ -367,9 +367,8 @@ public class OracleRemover {
      *
      * @param fullyQualifiedName the fully qualified name of the class under
      *                           test
-     * @see OracleRemover#splitTests(CompilationUnit)
-     * @see OracleRemover#removeExceptionalOracles(CompilationUnit)
-     * @see OracleRemover#removeAssertionOracles(CompilationUnit)
+     * @see OracleRemover#generateSimpleTests(String)
+     * @see OracleRemover#generatePrefixes(String)
      */
     public static void removeOracles(String fullyQualifiedName) {
         generateSimpleTests(fullyQualifiedName);
