@@ -1,5 +1,7 @@
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.javaparser.StaticJavaParser;
+import com.github.javaparser.ast.CompilationUnit;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import java.io.File;
@@ -416,5 +418,23 @@ public class FileUtils {
      */
     public static boolean isScaffolding(Path path) {
         return path.getFileName().toString().endsWith("scaffolding.java");
+    }
+
+    /**
+     * Returns the JavaParser {@link CompilationUnit} corresponding to a given
+     * Java file. Uses StaticJavaParser to avoid configuring a symbol solver.
+     * <br> This method is a wrapper method of
+     * {@link StaticJavaParser#parse(Path)} to substitute {@link IOException}
+     * with {@link Error} and avoid superfluous try/catch blocks.
+     *
+     * @param path a Java file
+     * @return the CompilationUnit corresponding to the given file
+     */
+    public static CompilationUnit getCompilationUnit(Path path) {
+        try {
+            return StaticJavaParser.parse(path);
+        } catch (IOException e) {
+            throw new Error("Unable to parse the file " + path + " using JavaParser");
+        }
     }
 }
