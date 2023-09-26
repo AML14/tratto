@@ -311,23 +311,21 @@ public class OracleRemover {
         Path testDir = FileUtils.getFQNOutputPath("evosuite-tests", fullyQualifiedName).getParent();
         Path simplePath = FileUtils.getFQNOutputPath("evosuite-simple-tests", fullyQualifiedName);
         try (Stream<Path> walk = Files.walk(testDir)) {
-            walk
+            Path testPath = walk
                     .filter(FileUtils::isJavaFile)
-                    .filter(testPath -> !FileUtils.isScaffolding(testPath))
-                    .forEach(testPath -> {
-                        // copy and parse test file
-                        FileUtils.copyFile(testPath, simplePath);
-                        CompilationUnit cu;
-                        try {
-                            cu = StaticJavaParser.parse(testPath);
-                        } catch (IOException e) {
-                            throw new Error("Unable to parse EvoSuite test " + testPath);
-                        }
-                        // simplify test file
-                        splitTests(cu);
-                        removeEvosuiteDependency(cu, fullyQualifiedName);
-                        FileUtils.writeString(simplePath, cu.toString());
-                    });
+                    .filter(p -> !FileUtils.isScaffolding(p))
+                    .findFirst()
+                    .orElseThrow(() -> new Error("Unable to find EvoSuite test in " + testDir));
+            CompilationUnit cu;
+            try {
+                cu = StaticJavaParser.parse(testPath);
+            } catch (IOException e) {
+                throw new Error("Unable to parse EvoSuite test " + testPath);
+            }
+            // simplify test file
+            splitTests(cu);
+            removeEvosuiteDependency(cu, fullyQualifiedName);
+            FileUtils.writeString(simplePath, cu.toString());
         } catch (IOException e) {
             throw new Error("Unable to parse files in directory " + testDir);
         }
