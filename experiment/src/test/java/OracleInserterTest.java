@@ -7,7 +7,6 @@ import data.TogType;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -16,17 +15,22 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class OracleInserterTest {
-    private static final Path projectJarPath = Paths.get("src", "test", "java", "resources", "project", "target", "Tutorial_Stack-1.0-SNAPSHOT.jar");
-    private static final Path resourcesPath = Paths.get("src", "test", "resources");
     private static final Path output = Paths.get("output");
+    private static final Path resourcesPath = Paths.get("src", "test", "resources");
+    private static final Path projectPath = resourcesPath.resolve("project");
+    private static final Path projectJarPath = projectPath.resolve("target").resolve("Tutorial_Stack-1.0-SNAPSHOT.jar");
 
-    private void setup() throws Throwable {
+    private void setup() {
         FileUtils.deleteDirectory(output);
         FileUtils.createDirectories(output.resolve("evosuite-prefixes").resolve("example"));
-        Files.copy(
-                resourcesPath.resolve("prefix").resolve("ExamplePrefix.java"),
-                output.resolve("evosuite-prefixes").resolve("example").resolve("ExamplePrefix.java")
+        FileUtils.copyFile(
+                resourcesPath.resolve("prefix").resolve("tutorial").resolve("StackTest.java"),
+                output.resolve("evosuite-prefixes").resolve("tutorial").resolve("StackTest.java")
         );
+    }
+
+    private void cleanup() {
+        FileUtils.deleteDirectory(output);
     }
 
     private List<OracleOutput> getAxiomaticOracles() {
@@ -142,7 +146,7 @@ public class OracleInserterTest {
     public void insertAxiomaticOraclesTest() throws Throwable {
         setup();
         List<OracleOutput> axiomaticOracles = getAxiomaticOracles();
-        OracleInserter.insertOracles(TogType.JDOCTOR, axiomaticOracles, projectJarPath);
+        OracleInserter.insertOracles(TogType.JDOCTOR, "tutorial.Stack", axiomaticOracles, projectJarPath);
         try {
             CompilationUnit cu = StaticJavaParser.parse(output.resolve("tog-tests/jdoctor/example/ExamplePrefix.java"));
             List<MethodDeclaration> testCases = cu.findAll(MethodDeclaration.class);
@@ -270,7 +274,7 @@ public class OracleInserterTest {
     public void insertNonAxiomaticOraclesTest() throws Throwable {
         setup();
         List<OracleOutput> nonAxiomaticOracles = getNonAxiomaticOracles();
-        OracleInserter.insertOracles(TogType.TOGA, nonAxiomaticOracles, projectJarPath);
+        OracleInserter.insertOracles(TogType.TOGA, "tutorial.Stack", nonAxiomaticOracles, projectJarPath);
         String expectedAssertionTest = """
                                 @Test
                                 @Disabled
