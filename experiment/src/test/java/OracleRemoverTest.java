@@ -23,6 +23,10 @@ public class OracleRemoverTest {
         );
     }
 
+    private void cleanup() {
+        FileUtils.deleteDirectory(output);
+    }
+
     private void verifySimpleTests() {
         Path simplePath = FileUtils.getFQNOutputPath("tutorial.Stack", "evosuite-simple-tests");
         CompilationUnit cu;
@@ -191,6 +195,6 @@ public class OracleRemoverTest {
         OracleRemover.removeOracles("tutorial.Stack");
         verifySimpleTests();
         verifyPrefixes();
-        FileUtils.deleteDirectory(output);
+        cleanup();
     }
 }
