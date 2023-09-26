@@ -24,7 +24,7 @@ public class OracleRemoverTest {
     }
 
     private void verifySimpleTests() {
-        Path simplePath = FileUtils.getFQNOutputPath("evosuite-simple-tests", "tutorial.Stack");
+        Path simplePath = FileUtils.getFQNOutputPath("tutorial.Stack", "evosuite-simple-tests");
         CompilationUnit cu;
         try {
             cu = StaticJavaParser.parse(simplePath);
@@ -115,7 +115,7 @@ public class OracleRemoverTest {
     }
 
     private void verifyPrefixes() {
-        Path simplePath = FileUtils.getFQNOutputPath("evosuite-prefixes", "tutorial.Stack");
+        Path simplePath = FileUtils.getFQNOutputPath("tutorial.Stack", "evosuite-prefixes");
         CompilationUnit cu;
         try {
             cu = StaticJavaParser.parse(simplePath);

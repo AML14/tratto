@@ -316,14 +316,14 @@ public class OracleRemover {
      */
     private static void generateSimpleTests(String fullyQualifiedName) {
         String simpleName = FileUtils.getSimpleNameFromFQN(fullyQualifiedName);
-        Path testPath = FileUtils.getFQNOutputPath("evosuite-tests", fullyQualifiedName)
+        Path testPath = FileUtils.getFQNOutputPath(fullyQualifiedName, "evosuite-tests")
                 .resolveSibling(simpleName + "_ESTest.java");
         CompilationUnit cu = FileUtils.getCompilationUnit(testPath);
         splitTests(cu);
         removeEvosuiteDependency(cu);
         cu.getPrimaryType().orElseThrow()
                 .setName(simpleName + "Test");
-        Path simpleTestPath = FileUtils.getFQNOutputPath("evosuite-simple-tests", fullyQualifiedName);
+        Path simpleTestPath = FileUtils.getFQNOutputPath(fullyQualifiedName, "evosuite-simple-tests");
         FileUtils.writeString(simpleTestPath, cu.toString());
     }
 
@@ -338,12 +338,12 @@ public class OracleRemover {
      */
     private static void generatePrefixes(String fullyQualifiedName) {
         // remove oracles from simple tests
-        Path simpleTestPath = FileUtils.getFQNOutputPath("evosuite-simple-tests", fullyQualifiedName);
+        Path simpleTestPath = FileUtils.getFQNOutputPath(fullyQualifiedName, "evosuite-simple-tests");
         CompilationUnit cu = FileUtils.getCompilationUnit(simpleTestPath);
         removeExceptionalOracles(cu);
         removeAssertionOracles(cu);
         // write output to evosuite-prefixes
-        Path prefixPath = FileUtils.getFQNOutputPath("evosuite-prefixes", fullyQualifiedName);
+        Path prefixPath = FileUtils.getFQNOutputPath(fullyQualifiedName, "evosuite-prefixes");
         FileUtils.writeString(prefixPath, cu.toString());
     }
 
