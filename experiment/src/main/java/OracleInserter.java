@@ -1288,15 +1288,14 @@ public class OracleInserter {
     }
 
     /**
-     * Gets a ClassLoader that corresponds to a given JAR file.
+     * Sets the ClassLoader for the project under analysis.
      *
-     * @param jarPath a path to a JAR file
-     * @return a ClassLoader object
+     * @param jarPath the JAR of the project under analysis
      */
-    private static ClassLoader getClassLoader(Path jarPath) {
+    private static void setClassLoader(Path jarPath) {
         try {
             URL jarURL = jarPath.toUri().toURL();
-            return new URLClassLoader(new URL[]{jarURL});
+            classLoader = new URLClassLoader(new URL[]{jarURL});
         } catch (MalformedURLException e) {
             throw new Error("Unable to get URL for JAR " + jarPath);
         }
@@ -1323,7 +1322,7 @@ public class OracleInserter {
             List<OracleOutput> oracles,
             Path jarPath
     ) {
-        classLoader = getClassLoader(jarPath);
+        setClassLoader(jarPath);
         Path prefixPath = FileUtils.getFQNOutputPath(fullyQualifiedName, "evosuite-prefixes");
         Path testPath = FileUtils.getFQNOutputPath(fullyQualifiedName, "tog-tests", tog.toString().toLowerCase());
         FileUtils.copyFile(prefixPath, testPath);
