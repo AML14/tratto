@@ -327,7 +327,7 @@ public class OracleRemover {
                         splitTests(cu);
                         removeEvosuiteDependency(cu, fullyQualifiedName);
                         FileUtils.writeString(simplePath, cu.toString());
-                    });;
+                    });
         } catch (IOException e) {
             throw new Error("Unable to parse files in directory " + testDir);
         }
