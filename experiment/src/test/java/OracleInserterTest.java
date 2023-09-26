@@ -1,4 +1,3 @@
-import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import data.OracleOutput;
@@ -6,13 +5,11 @@ import data.OracleType;
 import data.TogType;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
 
 public class OracleInserterTest {
     private static final Path output = Paths.get("output");
@@ -143,15 +140,15 @@ public class OracleInserterTest {
     }
 
     @Test
-    public void insertAxiomaticOraclesTest() throws Throwable {
+    public void insertAxiomaticOraclesTest() {
         setup();
         List<OracleOutput> axiomaticOracles = getAxiomaticOracles();
         OracleInserter.insertOracles(TogType.JDOCTOR, "tutorial.Stack", axiomaticOracles, projectJarPath);
-        try {
-            CompilationUnit cu = StaticJavaParser.parse(output.resolve("tog-tests/jdoctor/example/ExamplePrefix.java"));
-            List<MethodDeclaration> testCases = cu.findAll(MethodDeclaration.class);
-            MethodDeclaration assertionTest = testCases.get(0);
-            String expectedAssertionTest = """
+        Path testPath = Paths.get("output", "tog-tests", "jdoctor", "tutorial", "StackTest.java");
+        CompilationUnit cu = FileUtils.getCompilationUnit(testPath);
+        List<MethodDeclaration> testCases = cu.findAll(MethodDeclaration.class);
+        MethodDeclaration assertionTest = testCases.get(5);
+        String expectedAssertionTest = """
                     @Test
                     @Disabled
                     public void assertionTest() throws Throwable {
@@ -160,9 +157,9 @@ public class OracleInserterTest {
                         java.lang.Integer objectInt;
                         objectInt = Integer.valueOf(primitiveInt);
                     }""";
-            assertEquals(expectedAssertionTest, assertionTest.toString());
-            MethodDeclaration assertionNonStaticTest = testCases.get(1);
-            String expectedAssertionNonStaticTest = """
+        assertEquals(expectedAssertionTest, assertionTest.toString());
+        MethodDeclaration assertionNonStaticTest = testCases.get(6);
+        String expectedAssertionNonStaticTest = """
                     @Test
                     @Disabled
                     public void assertionNonStaticTest() throws Throwable {
@@ -171,9 +168,9 @@ public class OracleInserterTest {
                         default0 = objectInt.intValue();
                         assertTrue((objectInt == null) == false);
                     }""";
-            assertEquals(expectedAssertionNonStaticTest, assertionNonStaticTest.toString());
-            MethodDeclaration exceptionalTest = testCases.get(2);
-            String expectedExceptionalTest = """
+        assertEquals(expectedAssertionNonStaticTest, assertionNonStaticTest.toString());
+        MethodDeclaration exceptionalTest = testCases.get(7);
+        String expectedExceptionalTest = """
                     @Test
                     @Disabled
                     public void exceptionalTest() throws Throwable {
@@ -190,9 +187,9 @@ public class OracleInserterTest {
                             correspondingInteger = Integer.parseInt(integerToParse);
                         }
                     }""";
-            assertEquals(expectedExceptionalTest, exceptionalTest.toString());
-            MethodDeclaration everythingTest = testCases.get(3);
-            String expectedEverythingTest = """
+        assertEquals(expectedExceptionalTest, exceptionalTest.toString());
+        MethodDeclaration everythingTest = testCases.get(8);
+        String expectedEverythingTest = """
                     @Test
                     @Disabled
                     public void everythingTest() throws Throwable {
@@ -221,9 +218,9 @@ public class OracleInserterTest {
                             assertTrue(method.getDeclaringClass() == clazz);
                         }
                     }""";
-            assertEquals(expectedEverythingTest, everythingTest.toString());
-            MethodDeclaration assertionVoidTest = testCases.get(4);
-            String expectedAssertionVoidTest = """
+        assertEquals(expectedEverythingTest, everythingTest.toString());
+        MethodDeclaration assertionVoidTest = testCases.get(9);
+        String expectedAssertionVoidTest = """
                     @Test
                     @Disabled
                     public void assertionVoidTest() throws Throwable {
@@ -232,9 +229,9 @@ public class OracleInserterTest {
                         input.getChars(0, 2, dst, 0);
                         assertTrue(input.charAt(0) == dst[0]);
                     }""";
-            assertEquals(expectedAssertionVoidTest, assertionVoidTest.toString());
-            MethodDeclaration assertionPreInitializedTest = testCases.get(5);
-            String expectedAssertionPreInitializedTest = """
+        assertEquals(expectedAssertionVoidTest, assertionVoidTest.toString());
+        MethodDeclaration assertionPreInitializedTest = testCases.get(10);
+        String expectedAssertionPreInitializedTest = """
                     @Test
                     @Disabled
                     public void assertionPreInitializedTest() throws Throwable {
@@ -242,10 +239,7 @@ public class OracleInserterTest {
                         input = input.substring(0, 2);
                         assertTrue((input == null) == false);
                     }""";
-            assertEquals(expectedAssertionPreInitializedTest, assertionPreInitializedTest.toString());
-        } catch (IOException e) {
-            fail();
-        }
+        assertEquals(expectedAssertionPreInitializedTest, assertionPreInitializedTest.toString());
         FileUtils.deleteDirectory(output);
     }
 
@@ -271,7 +265,7 @@ public class OracleInserterTest {
     }
 
     @Test
-    public void insertNonAxiomaticOraclesTest() throws Throwable {
+    public void insertNonAxiomaticOraclesTest() {
         setup();
         List<OracleOutput> nonAxiomaticOracles = getNonAxiomaticOracles();
         OracleInserter.insertOracles(TogType.TOGA, "tutorial.Stack", nonAxiomaticOracles, projectJarPath);
