@@ -340,16 +340,19 @@ public class OracleRemover {
      *                           test
      */
     private static void generateTestPrefixes(String fullyQualifiedName) {
+        // remove oracles from simple tests
         Path simplePath = FileUtils.getFQNOutputPath("evosuite-simple-tests", fullyQualifiedName);
-        Path prefixPath = FileUtils.getFQNOutputPath("evosuite-prefixes", fullyQualifiedName);
-        FileUtils.copy(simplePath, prefixPath);
         CompilationUnit cu;
         try {
-            cu = StaticJavaParser.parse(prefixPath);
+            cu = StaticJavaParser.parse(simplePath);
         } catch (IOException e) {
-            throw new Error("Unable to parse EvoSuite test " + prefixPath);
+            throw new Error("Unable to parse EvoSuite test " + simplePath);
         }
-        System.out.println(cu);
+        removeExceptionalOracles(cu);
+        removeAssertionOracles(cu);
+        // write output to evosuite-prefixes
+        Path prefixPath = FileUtils.getFQNOutputPath("evosuite-prefixes", fullyQualifiedName);
+        FileUtils.writeString(prefixPath, cu.toString());
     }
 
     /**
