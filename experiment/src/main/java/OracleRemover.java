@@ -289,13 +289,14 @@ public class OracleRemover {
      *
      * @param testFile a JavaParser representation of a test file
      */
-    private static void removeEvosuiteDependency(CompilationUnit testFile) {
+    private static void removeEvosuiteDependency(CompilationUnit testFile, String fullyQualifiedName) {
         removeEvosuiteImports(testFile);
         ClassOrInterfaceDeclaration testClass = testFile.getPrimaryType()
                 .orElseThrow()
                 .asClassOrInterfaceDeclaration();
         testClass.setAnnotations(new NodeList<>());
         testClass.setExtendedTypes(new NodeList<>());
+        testClass.setName(FileUtils.getSimpleNameFromFQN(fullyQualifiedName) + "Test");
     }
 
     /**
@@ -324,7 +325,7 @@ public class OracleRemover {
                         }
                         // simplify test file
                         splitTests(cu);
-                        removeEvosuiteDependency(cu);
+                        removeEvosuiteDependency(cu, fullyQualifiedName);
                         FileUtils.writeString(simplePath, cu.toString());
                     });;
         } catch (IOException e) {
@@ -341,7 +342,14 @@ public class OracleRemover {
     private static void generateTestPrefixes(String fullyQualifiedName) {
         Path simplePath = FileUtils.getFQNOutputPath("evosuite-simple-tests", fullyQualifiedName);
         Path prefixPath = FileUtils.getFQNOutputPath("evosuite-prefixes", fullyQualifiedName);
-
+        FileUtils.copy(simplePath, prefixPath);
+        CompilationUnit cu;
+        try {
+            cu = StaticJavaParser.parse(prefixPath);
+        } catch (IOException e) {
+            throw new Error("Unable to parse EvoSuite test " + prefixPath);
+        }
+        System.out.println(cu);
     }
 
     /**
