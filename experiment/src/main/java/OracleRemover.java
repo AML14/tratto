@@ -1,4 +1,3 @@
-import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.ImportDeclaration;
 import com.github.javaparser.ast.NodeList;
@@ -316,12 +315,7 @@ public class OracleRemover {
                     .filter(p -> !FileUtils.isScaffolding(p))
                     .findFirst()
                     .orElseThrow(() -> new Error("Unable to find EvoSuite test in " + testDir));
-            CompilationUnit cu;
-            try {
-                cu = StaticJavaParser.parse(testPath);
-            } catch (IOException e) {
-                throw new Error("Unable to parse EvoSuite test " + testPath);
-            }
+            CompilationUnit cu = FileUtils.getCompilationUnit(testPath);
             // simplify test file
             splitTests(cu);
             removeEvosuiteDependency(cu, fullyQualifiedName);
@@ -340,12 +334,7 @@ public class OracleRemover {
     private static void generatePrefixes(String fullyQualifiedName) {
         // remove oracles from simple tests
         Path simplePath = FileUtils.getFQNOutputPath("evosuite-simple-tests", fullyQualifiedName);
-        CompilationUnit cu;
-        try {
-            cu = StaticJavaParser.parse(simplePath);
-        } catch (IOException e) {
-            throw new Error("Unable to parse EvoSuite test " + simplePath);
-        }
+        CompilationUnit cu = FileUtils.getCompilationUnit(simplePath);
         removeExceptionalOracles(cu);
         removeAssertionOracles(cu);
         // write output to evosuite-prefixes
