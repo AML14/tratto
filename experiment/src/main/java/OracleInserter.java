@@ -64,8 +64,6 @@ public class OracleInserter {
             "float",
             "double"
     );
-    /** A list of all supported axiomatic test oracle generators. */
-    private static final List<TogType> axiomaticTogs = List.of(TogType.JDOCTOR, TogType.TRATTO);
 
     /** Private constructor to avoid creating an instance of this class. */
     private OracleInserter() {
@@ -1276,18 +1274,6 @@ public class OracleInserter {
     }
 
     /**
-     * Checks if a given TOG is axiomatic.
-     *
-     * @param tog a test oracle generator
-     * @return true iff the given tog generates axiomatic test oracles (known
-     * a priori)
-     * @see OracleInserter#axiomaticTogs
-     */
-    private static boolean isAxiomatic(TogType tog) {
-        return axiomaticTogs.contains(tog);
-    }
-
-    /**
      * Sets the ClassLoader for the project under analysis.
      *
      * @param jarPath the JAR of the project under analysis
@@ -1326,7 +1312,7 @@ public class OracleInserter {
         Path prefixPath = FileUtils.getFQNOutputPath(fullyQualifiedName, "evosuite-prefixes");
         Path testPath = FileUtils.getFQNOutputPath(fullyQualifiedName, "tog-tests", tog.toString().toLowerCase());
         FileUtils.copyFile(prefixPath, testPath);
-        if (isAxiomatic(tog)) {
+        if (tog.isAxiomatic()) {
             insertAxiomaticOracles(testPath, oracles);
         } else {
             insertNonAxiomaticOracles(testPath, oracles);
