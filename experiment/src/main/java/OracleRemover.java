@@ -283,8 +283,8 @@ public class OracleRemover {
     }
 
     /**
-     * Removes all import statements, annotations, and superclasses from an
-     * EvoSuite test. This method does not override the original file.
+     * Removes all import statements, annotations, and superclasses related to
+     * EvoSuite. This method does not override the original file.
      *
      * @param testFile a JavaParser representation of a test file
      */
