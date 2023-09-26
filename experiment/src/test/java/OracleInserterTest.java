@@ -19,7 +19,6 @@ public class OracleInserterTest {
 
     private void setup() {
         FileUtils.deleteDirectory(output);
-        FileUtils.createDirectories(output.resolve("evosuite-prefixes").resolve("example"));
         FileUtils.copyFile(
                 resourcesPath.resolve("prefix").resolve("tutorial").resolve("StackTest.java"),
                 output.resolve("evosuite-prefixes").resolve("tutorial").resolve("StackTest.java")

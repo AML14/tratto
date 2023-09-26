@@ -34,15 +34,12 @@ import data.OracleOutput;
 import data.OracleType;
 import data.TogType;
 
-import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -67,8 +64,6 @@ public class OracleInserter {
             "float",
             "double"
     );
-    /** The path to the output directory. */
-    private static final Path output = Paths.get("output");
     /** A list of all supported axiomatic test oracle generators. */
     private static final List<TogType> axiomaticTogs = List.of(TogType.JDOCTOR, TogType.TRATTO);
 
@@ -1160,26 +1155,13 @@ public class OracleInserter {
      * {@link OracleType} (e.g. PRE, NORMAL_POST, EXCEPT_POST). See the
      * corresponding test file for examples.
      *
-     * @param dir a directory with Java test prefixes
+     * @param testPath a directory with Java test prefixes
      * @param oracles a list of test oracles made by an axiomatic tog
      */
-    private static void insertAxiomaticOracles(Path dir, List<OracleOutput> oracles) {
-        try (Stream<Path> walk = Files.walk(dir)) {
-            walk
-                    .filter(FileUtils::isJavaFile)
-                    .filter(p -> !FileUtils.isScaffolding(p))
-                    .forEach(testFile -> {
-                        try {
-                            CompilationUnit cu = StaticJavaParser.parse(testFile);
-                            insertAxiomaticOracles(cu, oracles);
-                            FileUtils.writeString(testFile, cu.toString());
-                        } catch (IOException e) {
-                            throw new Error("Unable to parse test file " + testFile.getFileName().toString());
-                        }
-                    });
-        } catch (IOException e) {
-            throw new Error("Error when parsing files in directory " + dir, e);
-        }
+    private static void insertAxiomaticOracles(Path testPath, List<OracleOutput> oracles) {
+        CompilationUnit cu = FileUtils.getCompilationUnit(testPath);
+        insertAxiomaticOracles(cu, oracles);
+        FileUtils.writeString(testPath, cu.toString());
     }
 
     /**
@@ -1284,26 +1266,13 @@ public class OracleInserter {
      * oracle is matched to its corresponding test prefix using the
      * {@link OracleOutput#testName()} field.
      *
-     * @param dir a directory with Java test prefixes
+     * @param testPath a directory with Java test prefixes
      * @param oracles a list of test oracles made by a non-axiomatic tog
      */
-    private static void insertNonAxiomaticOracles(Path dir, List<OracleOutput> oracles) {
-        try (Stream<Path> walk = Files.walk(dir)) {
-            walk
-                    .filter(FileUtils::isJavaFile)
-                    .filter(p -> !FileUtils.isScaffolding(p))
-                    .forEach(testFile -> {
-                        try {
-                            CompilationUnit cu = StaticJavaParser.parse(testFile);
-                            insertNonAxiomaticOracles(cu, oracles);
-                            FileUtils.writeString(testFile, cu.toString());
-                        } catch (IOException e) {
-                            throw new Error("Unable to parse test file " + testFile.getFileName().toString());
-                        }
-                    });
-        } catch (IOException e) {
-            throw new Error("Error when parsing files in directory " + dir, e);
-        }
+    private static void insertNonAxiomaticOracles(Path testPath, List<OracleOutput> oracles) {
+        CompilationUnit cu = FileUtils.getCompilationUnit(testPath);
+        insertNonAxiomaticOracles(cu, oracles);
+        FileUtils.writeString(testPath, cu.toString());
     }
 
     /**
@@ -1355,9 +1324,9 @@ public class OracleInserter {
             Path jarPath
     ) {
         classLoader = getClassLoader(jarPath);
-        Path prefixPath = output.resolve("evosuite-prefixes");
-        Path testPath = output.resolve("tog-tests").resolve(tog.toString().toLowerCase());
-        FileUtils.copy(prefixPath, testPath);
+        Path prefixPath = FileUtils.getFQNOutputPath(fullyQualifiedName, "evosuite-prefixes");
+        Path testPath = FileUtils.getFQNOutputPath(fullyQualifiedName, "tog-tests", tog.toString().toLowerCase());
+        FileUtils.copyFile(prefixPath, testPath);
         if (isAxiomatic(tog)) {
             insertAxiomaticOracles(testPath, oracles);
         } else {
