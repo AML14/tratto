@@ -5,6 +5,7 @@ import org.apache.commons.csv.CSVParser;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.OpenOption;
 import java.nio.file.Path;
@@ -176,6 +177,24 @@ public class FileUtils {
     }
 
     /**
+     * Copies a source file to a target file. If the target file already
+     * exists, then it is overwritten. <br> This method is a wrapper method of
+     * {@link Files#copy(Path, Path, CopyOption...)} to substitute
+     * {@link IOException} with {@link Error} and avoid superfluous try/catch
+     * blocks.
+     *
+     * @param source the source file
+     * @param target the target file
+     */
+    public static void copyFile(Path source, Path target) {
+        try {
+            Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            throw new Error("Error when trying to copy the file " + source + " to " + target, e);
+        }
+    }
+
+    /**
      * Recursively copies all files and directories from the source directory
      * to the destination directory. If a file in the source directory already
      * exists in the destination directory, then the original file will be
@@ -202,11 +221,7 @@ public class FileUtils {
                         if (Files.isDirectory(p)) {
                             createDirectories(relativePath);
                         } else {
-                            try {
-                                Files.copy(p, relativePath, StandardCopyOption.REPLACE_EXISTING);
-                            } catch (IOException e) {
-                                throw new Error("Error when trying to copy the file " + p + " to " + relativePath, e);
-                            }
+                            copyFile(p, relativePath);
                         }
                     });
         } catch (IOException e) {
