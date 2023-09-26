@@ -1191,18 +1191,6 @@ public class OracleInserter {
     }
 
     /**
-     * Checks if an oracle record represents an exceptional oracle.
-     *
-     * @param oracle an oracle record
-     * @return true iff the oracle represents an exceptional oracle. This
-     * corresponds to an empty string in the {@link OracleOutput#exception()}
-     * value.
-     */
-    private static boolean isExceptional(OracleOutput oracle) {
-        return !oracle.exception().equals("");
-    }
-
-    /**
      * Gets the non-axiomatic oracle corresponding to a given test from a list
      * of oracles.
      *
@@ -1237,7 +1225,7 @@ public class OracleInserter {
                     String testName = testCase.getNameAsString();
                     OracleOutput oracle = getOracleWithTestName(testName, oracles);
                     if (oracle != null) {
-                        if (isExceptional(oracle)) {
+                        if (oracle.isExceptional()) {
                             insertNonAxiomaticException(testCase, oracle.exception());
                         } else {
                             insertNonAxiomaticAssertion(testCase, oracle.oracle());
