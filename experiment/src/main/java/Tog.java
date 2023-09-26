@@ -66,7 +66,7 @@ public class Tog {
     ) {
         Path oraclesPath = output.resolve(Paths.get(togType.toString().toLowerCase(), "oracle", "oracle_output.json"));
         List<OracleOutput> oracleOutputs = FileUtils.readJSONList(oraclesPath, OracleOutput.class);
-        OracleInserter.insertOracles(togType, oracleOutputs, jar);
+        OracleInserter.insertOracles(togType, fullyQualifiedName, oracleOutputs, jar);
     }
 
     /**
