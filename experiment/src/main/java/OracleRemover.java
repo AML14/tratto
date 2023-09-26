@@ -315,8 +315,7 @@ public class OracleRemover {
     private static void generateSimpleTests(String fullyQualifiedName) {
         String simpleName = FileUtils.getSimpleNameFromFQN(fullyQualifiedName);
         Path testPath = FileUtils.getFQNOutputPath("evosuite-tests", fullyQualifiedName)
-                .getParent()
-                .resolve(simpleName + "_ESTest.java");
+                .resolveSibling(simpleName + "_ESTest.java");
         CompilationUnit cu = FileUtils.getCompilationUnit(testPath);
         splitTests(cu);
         removeEvosuiteDependency(cu);
