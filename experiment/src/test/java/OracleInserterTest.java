@@ -289,7 +289,7 @@ public class OracleInserterTest {
         Path testPath = Paths.get("output", "tog-tests", "toga", "tutorial", "StackTest.java");
         CompilationUnit cu = FileUtils.getCompilationUnit(testPath);
         List<MethodDeclaration> testCases = cu.findAll(MethodDeclaration.class);
-        MethodDeclaration assertionTest = testCases.get(3);
+        MethodDeclaration assertionTest = testCases.get(5);
         assertEquals(
                 """
                 @Test
@@ -301,7 +301,7 @@ public class OracleInserterTest {
                 }""",
                 assertionTest.toString()
         );
-        MethodDeclaration exceptionTest = testCases.get(4);
+        MethodDeclaration exceptionTest = testCases.get(7);
         assertEquals(
         """
                 @Test
