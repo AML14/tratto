@@ -336,7 +336,10 @@ public class OracleRemover {
     }
 
     /**
-     * Removes all assertions and try/catch blocks from a simple test suite.
+     * Removes all assertion and exceptional oracles from a simple test suite.
+     * This method assumes that EvoSuite tests have been generated and saved
+     * in "output/evosuite-simple-tests". This method does not modify the
+     * original simple tests.
      *
      * @param fullyQualifiedName the fully qualified name of the class under
      *                           test
@@ -353,7 +356,7 @@ public class OracleRemover {
     }
 
     /**
-     * Removes all assertions from all EvoSuite tests generated for a given
+     * Removes all oracles from all EvoSuite tests generated for a given
      * class. The approach for removing oracles depends on whether an oracle
      * is exceptional or a normal assertion. Firstly, this method splits any
      * test case with multiple assertions into multiple simple tests, each
