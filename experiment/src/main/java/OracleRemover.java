@@ -271,7 +271,7 @@ public class OracleRemover {
      * is exceptional or a normal assertion. Firstly, this method splits any
      * test case with multiple assertions into multiple simple tests, each
      * with a single JUnit assertion. The smaller subtests are saved in
-     * "output/evosuite-tests-simple" and the test prefixes are saved in
+     * "output/evosuite-simple-tests" and the test prefixes are saved in
      * "output/evosuite-prefixes". This method does not override the original
      * test files.
      *
@@ -283,7 +283,7 @@ public class OracleRemover {
      */
     public static void removeOracles(String fullyQualifiedName) {
         Path testPath = FileUtils.getFQNOutputPath("evosuite-tests", fullyQualifiedName);
-        Path simplePath = FileUtils.getFQNOutputPath("evosuite-tests-simple", fullyQualifiedName);
+        Path simplePath = FileUtils.getFQNOutputPath("evosuite-simple-tests", fullyQualifiedName);
         Path prefixPath = FileUtils.getFQNOutputPath("evosuite-prefixes", fullyQualifiedName);
         FileUtils.copy(testPath, simplePath);
         FileUtils.copy(testPath, prefixPath);
