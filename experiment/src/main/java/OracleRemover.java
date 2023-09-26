@@ -266,6 +266,37 @@ public class OracleRemover {
     }
 
     /**
+     *
+     *
+     * @param fullyQualifiedName the fully qualified name of the class under
+     *                           test
+     */
+    private static void generateSimpleTests(String fullyQualifiedName) {
+        Path testPath = FileUtils.getFQNOutputPath("evosuite-tests", fullyQualifiedName).getParent();
+        Path simplePath = FileUtils.getFQNOutputPath("evosuite-tests-simple", fullyQualifiedName).getParent();
+        try (Stream<Path> walk = Files.walk(testPath)) {
+            walk
+                    .filter(FileUtils::isJavaFile)
+                    .filter(p -> !FileUtils.isScaffolding(p))
+                    .forEach(testFile -> {
+
+                    });;
+        } catch (IOException e) {
+            throw new Error("Unable to parse files in directory " + testPath);
+        }
+    }
+
+    /**
+     *
+     *
+     * @param fullyQualifiedName the fully qualified name of the class under
+     *                           test
+     */
+    private static void generateTestPrefixes(String fullyQualifiedName) {
+
+    }
+
+    /**
      * Removes all assertions from all EvoSuite tests generated for a given
      * class. The approach for removing oracles depends on whether an oracle
      * is exceptional or a normal assertion. Firstly, this method splits any
