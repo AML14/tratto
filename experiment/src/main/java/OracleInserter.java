@@ -1157,11 +1157,12 @@ public class OracleInserter {
      * @param assertion the assertion to add
      */
     private static void insertNonAxiomaticAssertion(MethodDeclaration testCase, String assertion) {
-        if (!assertion.equals("")) {
-            Statement statement = StaticJavaParser.parseStatement(assertion + ";");
+        if (!assertion.isEmpty()) {
             testCase
-                    .getBody().orElseThrow()
-                    .getStatements().add(statement);
+                    .getBody()
+                    .orElseThrow()
+                    .getStatements()
+                    .add(StaticJavaParser.parseStatement(assertion + ";"));
         }
     }
 
