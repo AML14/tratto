@@ -11,12 +11,10 @@ import com.github.javaparser.ast.stmt.ExpressionStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.stmt.TryStmt;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 /**
  * This class provides the functionality for removing oracles from a test
@@ -316,23 +314,20 @@ public class OracleRemover {
      *                           test
      */
     private static void generateSimpleTests(String fullyQualifiedName) {
-        Path testDir = FileUtils.getFQNOutputPath("evosuite-tests", fullyQualifiedName).getParent();
-        Path simplePath = FileUtils.getFQNOutputPath("evosuite-simple-tests", fullyQualifiedName);
-        try (Stream<Path> walk = Files.walk(testDir)) {
-            Path testPath = walk
-                    .filter(FileUtils::isJavaFile)
-                    .filter(p -> !FileUtils.isScaffolding(p))
-                    .findFirst()
-                    .orElseThrow(() -> new Error("Unable to find EvoSuite test in " + testDir));
-            CompilationUnit cu = FileUtils.getCompilationUnit(testPath);
-            splitTests(cu);
-            removeEvosuiteDependency(cu);
-            cu.getPrimaryType().orElseThrow()
-                    .setName(FileUtils.getSimpleNameFromFQN(fullyQualifiedName) + "Test");
-            FileUtils.writeString(simplePath, cu.toString());
-        } catch (IOException e) {
-            throw new Error("Unable to parse files in directory " + testDir);
+        String simpleName = FileUtils.getSimpleNameFromFQN(fullyQualifiedName);
+        Path testPath = FileUtils.getFQNOutputPath("evosuite-tests", fullyQualifiedName)
+                .getParent()
+                .resolve(simpleName + "_ESTest.java");
+        if (!Files.exists(testPath)) {
+            throw new Error("Unable to find EvoSuite test file " + testPath);
         }
+        CompilationUnit cu = FileUtils.getCompilationUnit(testPath);
+        splitTests(cu);
+        removeEvosuiteDependency(cu);
+        cu.getPrimaryType().orElseThrow()
+                .setName(simpleName + "Test");
+        Path simplePath = FileUtils.getFQNOutputPath("evosuite-simple-tests", fullyQualifiedName);
+        FileUtils.writeString(simplePath, cu.toString());
     }
 
     /**
