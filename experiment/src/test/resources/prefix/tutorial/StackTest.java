@@ -17,7 +17,6 @@ import tutorial.Stack;
 
 public class StackTest {
 
-    // Stack oracles
     @Test(timeout = 4000)
     public void test00() throws Throwable {
         Stack<String> stack0 = new Stack<String>();
@@ -62,7 +61,6 @@ public class StackTest {
         stack0.push("");
     }
 
-    // miscellaneous test prefixes
     @Test
     @Disabled
     public void assertionTest() throws Throwable {
