@@ -339,7 +339,7 @@ public class OracleRemover {
      * @param fullyQualifiedName the fully qualified name of the class under
      *                           test
      */
-    private static void generateTestPrefixes(String fullyQualifiedName) {
+    private static void generatePrefixes(String fullyQualifiedName) {
         // remove oracles from simple tests
         Path simplePath = FileUtils.getFQNOutputPath("evosuite-simple-tests", fullyQualifiedName);
         CompilationUnit cu;
@@ -373,6 +373,6 @@ public class OracleRemover {
      */
     public static void removeOracles(String fullyQualifiedName) {
         generateSimpleTests(fullyQualifiedName);
-        generateTestPrefixes(fullyQualifiedName);
+        generatePrefixes(fullyQualifiedName);
     }
 }
