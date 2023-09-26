@@ -186,7 +186,7 @@ public class OracleRemoverTest {
     }
 
     @Test
-    public void removeOraclesTest() throws Throwable {
+    public void removeOraclesTest() {
         setup();
         OracleRemover.removeOracles("tutorial.Stack");
         verifySimpleTests();
