@@ -1204,11 +1204,11 @@ public class OracleInserter {
                 .stream()
                 .map(OracleOutput::testName)
                 .toList();
-        int indexOfOracle = allTestNames.indexOf(testName);
-        if (indexOfOracle == -1) {
+        int oracleIdx = allTestNames.indexOf(testName);
+        if (oracleIdx == -1) {
             return null;
         }
-        return oracles.get(indexOfOracle);
+        return oracles.get(oracleIdx);
     }
 
     /**
