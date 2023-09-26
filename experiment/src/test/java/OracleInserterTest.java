@@ -147,100 +147,106 @@ public class OracleInserterTest {
         Path testPath = Paths.get("output", "tog-tests", "jdoctor", "tutorial", "StackTest.java");
         CompilationUnit cu = FileUtils.getCompilationUnit(testPath);
         List<MethodDeclaration> testCases = cu.findAll(MethodDeclaration.class);
-        MethodDeclaration assertionTest = testCases.get(5);
-        String expectedAssertionTest = """
-                    @Test
-                    @Disabled
-                    public void assertionTest() throws Throwable {
-                        int primitiveInt = 5;
-                        assertTrue(primitiveInt > 0);
-                        java.lang.Integer objectInt;
-                        objectInt = Integer.valueOf(primitiveInt);
-                    }""";
-        assertEquals(expectedAssertionTest, assertionTest.toString());
-        MethodDeclaration assertionNonStaticTest = testCases.get(6);
-        String expectedAssertionNonStaticTest = """
-                    @Test
-                    @Disabled
-                    public void assertionNonStaticTest() throws Throwable {
-                        Integer objectInt = 5;
-                        int default0;
-                        default0 = objectInt.intValue();
-                        assertTrue((objectInt == null) == false);
-                    }""";
-        assertEquals(expectedAssertionNonStaticTest, assertionNonStaticTest.toString());
-        MethodDeclaration exceptionalTest = testCases.get(7);
-        String expectedExceptionalTest = """
-                    @Test
-                    @Disabled
-                    public void exceptionalTest() throws Throwable {
-                        String integerToParse = null;
-                        int correspondingInteger;
-                        if (integerToParse == null) {
-                            try {
-                                correspondingInteger = Integer.parseInt(integerToParse);
-                                fail();
-                            } catch (java.lang.NumberFormatException e) {
-                                // Successfully thrown exception
-                            }
-                        } else {
+        assertEquals(
+        """
+                @Test
+                @Disabled
+                public void assertionTest() throws Throwable {
+                    int primitiveInt = 5;
+                    assertTrue(primitiveInt > 0);
+                    java.lang.Integer objectInt;
+                    objectInt = Integer.valueOf(primitiveInt);
+                }""",
+                testCases.get(5).toString())
+        ;
+        assertEquals(
+        """
+                @Test
+                @Disabled
+                public void assertionNonStaticTest() throws Throwable {
+                    Integer objectInt = 5;
+                    int default0;
+                    default0 = objectInt.intValue();
+                    assertTrue((objectInt == null) == false);
+                }""",
+                testCases.get(6).toString()
+        );
+        assertEquals(
+        """
+                @Test
+                @Disabled
+                public void exceptionalTest() throws Throwable {
+                    String integerToParse = null;
+                    int correspondingInteger;
+                    if (integerToParse == null) {
+                        try {
                             correspondingInteger = Integer.parseInt(integerToParse);
+                            fail();
+                        } catch (java.lang.NumberFormatException e) {
+                            // Successfully thrown exception
                         }
-                    }""";
-        assertEquals(expectedExceptionalTest, exceptionalTest.toString());
-        MethodDeclaration everythingTest = testCases.get(8);
-        String expectedEverythingTest = """
-                    @Test
-                    @Disabled
-                    public void everythingTest() throws Throwable {
-                        Class<?> clazz = Integer.class;
-                        Class<?>[] parameters = { int.class, int.class };
-                        assertTrue(("compare" == null) == false);
-                        assertTrue((parameters == null) == false);
-                        java.lang.reflect.Method method;
-                        if ("compare" == null) {
-                            try {
-                                method = clazz.getMethod("compare", parameters);
-                                fail();
-                            } catch (java.lang.IllegalArgumentException e) {
-                                // Successfully thrown exception
-                            }
-                        } else if (parameters == null) {
-                            try {
-                                method = clazz.getMethod("compare", parameters);
-                                fail();
-                            } catch (java.lang.IllegalArgumentException e) {
-                                // Successfully thrown exception
-                            }
-                        } else {
+                    } else {
+                        correspondingInteger = Integer.parseInt(integerToParse);
+                    }
+                }""",
+                testCases.get(7).toString()
+        );
+        assertEquals(
+        """
+                @Test
+                @Disabled
+                public void everythingTest() throws Throwable {
+                    Class<?> clazz = Integer.class;
+                    Class<?>[] parameters = { int.class, int.class };
+                    assertTrue(("compare" == null) == false);
+                    assertTrue((parameters == null) == false);
+                    java.lang.reflect.Method method;
+                    if ("compare" == null) {
+                        try {
                             method = clazz.getMethod("compare", parameters);
-                            assertTrue((method == null) == false);
-                            assertTrue(method.getDeclaringClass() == clazz);
+                            fail();
+                        } catch (java.lang.IllegalArgumentException e) {
+                            // Successfully thrown exception
                         }
-                    }""";
-        assertEquals(expectedEverythingTest, everythingTest.toString());
-        MethodDeclaration assertionVoidTest = testCases.get(9);
-        String expectedAssertionVoidTest = """
-                    @Test
-                    @Disabled
-                    public void assertionVoidTest() throws Throwable {
-                        String input = "input";
-                        char[] dst = new char[5];
-                        input.getChars(0, 2, dst, 0);
-                        assertTrue(input.charAt(0) == dst[0]);
-                    }""";
-        assertEquals(expectedAssertionVoidTest, assertionVoidTest.toString());
-        MethodDeclaration assertionPreInitializedTest = testCases.get(10);
-        String expectedAssertionPreInitializedTest = """
-                    @Test
-                    @Disabled
-                    public void assertionPreInitializedTest() throws Throwable {
-                        String input = "input";
-                        input = input.substring(0, 2);
-                        assertTrue((input == null) == false);
-                    }""";
-        assertEquals(expectedAssertionPreInitializedTest, assertionPreInitializedTest.toString());
-        FileUtils.deleteDirectory(output);
+                    } else if (parameters == null) {
+                        try {
+                            method = clazz.getMethod("compare", parameters);
+                            fail();
+                        } catch (java.lang.IllegalArgumentException e) {
+                            // Successfully thrown exception
+                        }
+                    } else {
+                        method = clazz.getMethod("compare", parameters);
+                        assertTrue((method == null) == false);
+                        assertTrue(method.getDeclaringClass() == clazz);
+                    }
+                }""",
+                testCases.get(8).toString()
+        );
+        assertEquals(
+        """
+                @Test
+                @Disabled
+                public void assertionVoidTest() throws Throwable {
+                    String input = "input";
+                    char[] dst = new char[5];
+                    input.getChars(0, 2, dst, 0);
+                    assertTrue(input.charAt(0) == dst[0]);
+                }""",
+                testCases.get(9).toString()
+        );
+        assertEquals(
+        """
+                @Test
+                @Disabled
+                public void assertionPreInitializedTest() throws Throwable {
+                    String input = "input";
+                    input = input.substring(0, 2);
+                    assertTrue((input == null) == false);
+                }""",
+                testCases.get(10).toString()
+        );
+        cleanup();
     }
 
     private List<OracleOutput> getNonAxiomaticOracles() {
