@@ -288,14 +288,13 @@ public class OracleRemover {
      *
      * @param testFile a JavaParser representation of a test file
      */
-    private static void removeEvosuiteDependency(CompilationUnit testFile, String fullyQualifiedName) {
+    private static void removeEvosuiteDependency(CompilationUnit testFile) {
         removeEvosuiteImports(testFile);
         ClassOrInterfaceDeclaration testClass = testFile.getPrimaryType()
                 .orElseThrow()
                 .asClassOrInterfaceDeclaration();
         testClass.setAnnotations(new NodeList<>());
         testClass.setExtendedTypes(new NodeList<>());
-        testClass.setName(FileUtils.getSimpleNameFromFQN(fullyQualifiedName) + "Test");
     }
 
     /**
@@ -316,9 +315,10 @@ public class OracleRemover {
                     .findFirst()
                     .orElseThrow(() -> new Error("Unable to find EvoSuite test in " + testDir));
             CompilationUnit cu = FileUtils.getCompilationUnit(testPath);
-            // simplify test file
             splitTests(cu);
-            removeEvosuiteDependency(cu, fullyQualifiedName);
+            removeEvosuiteDependency(cu);
+            cu.getPrimaryType().orElseThrow()
+                    .setName(FileUtils.getSimpleNameFromFQN(fullyQualifiedName) + "Test");
             FileUtils.writeString(simplePath, cu.toString());
         } catch (IOException e) {
             throw new Error("Unable to parse files in directory " + testDir);
