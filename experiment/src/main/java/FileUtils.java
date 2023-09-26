@@ -183,7 +183,8 @@ public class FileUtils {
 
     /**
      * Copies a source file to a target file. If the target file already
-     * exists, then it is overwritten. <br> This method is a wrapper method of
+     * exists, then it is overwritten. If target does not exist, then it will
+     * be created. <br> This method is a wrapper method of
      * {@link Files#copy(Path, Path, CopyOption...)} to substitute
      * {@link IOException} with {@link Error} and avoid superfluous try/catch
      * blocks.
@@ -192,6 +193,9 @@ public class FileUtils {
      * @param target the target file
      */
     public static void copyFile(Path source, Path target) {
+        if (!Files.exists(target)) {
+            createFile(target);
+        }
         try {
             Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
