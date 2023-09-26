@@ -275,14 +275,6 @@ public class OracleInserterTest {
         setup();
         List<OracleOutput> nonAxiomaticOracles = getNonAxiomaticOracles();
         OracleInserter.insertOracles(TogType.TOGA, "tutorial.Stack", nonAxiomaticOracles, projectJarPath);
-        String expectedAssertionTest = """
-                                @Test
-                                @Disabled
-                                public void assertionTest() throws Throwable {
-                                    int primitiveInt = 5;
-                                    Integer objectInt = Integer.valueOf(primitiveInt);
-                                    assertTrue(primitiveInt == objectInt.intValue());
-                                }""";
         String expectedExceptionTest = """
                                 @Test
                                 @Disabled
@@ -294,16 +286,36 @@ public class OracleInserterTest {
                                     } catch (java.lang.NumberFormatException e) {
                                     }
                                 }""";
-        try {
-            CompilationUnit cu = StaticJavaParser.parse(output.resolve("tog-tests/toga/example/ExamplePrefix.java"));
-            List<MethodDeclaration> testCases = cu.findAll(MethodDeclaration.class);
-            MethodDeclaration assertionTest = testCases.get(0);
-            assertEquals(expectedAssertionTest, assertionTest.toString());
-            MethodDeclaration exceptionTest = testCases.get(2);
-            assertEquals(expectedExceptionTest, exceptionTest.toString());
-        } catch (IOException e) {
-            fail();
-        }
+        Path testPath = Paths.get("output", "tog-tests", "toga", "tutorial", "StackTest.java");
+        CompilationUnit cu = FileUtils.getCompilationUnit(testPath);
+        List<MethodDeclaration> testCases = cu.findAll(MethodDeclaration.class);
+        MethodDeclaration assertionTest = testCases.get(3);
+        assertEquals(
+                """
+                @Test
+                @Disabled
+                public void assertionTest() throws Throwable {
+                    int primitiveInt = 5;
+                    Integer objectInt = Integer.valueOf(primitiveInt);
+                    assertTrue(primitiveInt == objectInt.intValue());
+                }""",
+                assertionTest.toString()
+        );
+        MethodDeclaration exceptionTest = testCases.get(4);
+        assertEquals(
+        """
+                @Test
+                @Disabled
+                public void exceptionalTest() throws Throwable {
+                    try {
+                        String integerToParse = null;
+                        int correspondingInteger = Integer.parseInt(integerToParse);
+                        fail();
+                    } catch (java.lang.NumberFormatException e) {
+                    }
+                }""",
+                exceptionTest.toString()
+        );
         FileUtils.deleteDirectory(output);
     }
 }
