@@ -73,7 +73,7 @@ for TOG in "${TOGS[@]}"; do
     exit 1
   fi
   # insert oracles into test prefixes
-  $EXPERIMENT "insert_oracles" "${TOG}" "${PROJECT_JAR}"
+  $EXPERIMENT "insert_oracles" "${TOG}" "${TARGET_CLASS}" "${PROJECT_JAR}"
 done
 
 echo "[4] Successfully created test suite in \"output/tog-tests\""

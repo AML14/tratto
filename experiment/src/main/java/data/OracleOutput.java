@@ -1,5 +1,7 @@
 package data;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * This record represents a generated oracles and its corresponding contextual
  * information.
@@ -31,6 +33,7 @@ public record OracleOutput(
      * corresponds to an empty string in the {@link OracleOutput#exception()}
      * value.
      */
+    @JsonIgnore
     public boolean isExceptional() {
         return !this.exception.equals("");
     }

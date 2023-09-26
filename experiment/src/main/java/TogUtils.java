@@ -107,7 +107,7 @@ public class TogUtils {
         String className = FileUtils.getSimpleNameFromFQN(fullyQualifiedClassName);
         int classNameIdx = fullyQualifiedClassNamePath.getNameCount() - 1;
         Path fullyQualifiedTestClassNamePath = classNameIdx > 0 ?
-                fullyQualifiedClassNamePath.subpath(0, classNameIdx).resolve(className + "_ESTest.java") :
+                fullyQualifiedClassNamePath.subpath(0, classNameIdx).resolve(className + "Test.java") :
                 Paths.get(className);
         Path classFilePath = srcDirPath.resolve(fullyQualifiedClassNamePath);
         Path testClassFilePath = evosuiteTestsSimplePath.resolve(fullyQualifiedTestClassNamePath);
