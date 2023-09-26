@@ -34,8 +34,8 @@ public class FileUtilsTest {
 
     @Test
     public void getFQNOutputPathTest() {
-        assertEquals(Paths.get("output", "evosuite-prefix", "example", "MyClassTest.java"), FileUtils.getFQNOutputPath("evosuite-prefix", "example.MyClass"));
-        assertEquals(Paths.get("output", "tog-tests", "MyClassTest.java"), FileUtils.getFQNOutputPath("tog-tests", "MyClass"));
+        assertEquals(Paths.get("output", "evosuite-prefixes", "example", "MyClassTest.java"), FileUtils.getFQNOutputPath("example.MyClass", "evosuite-prefixes"));
+        assertEquals(Paths.get("output", "tog-tests", "toga", "MyClassTest.java"), FileUtils.getFQNOutputPath("MyClass", "tog-tests", "toga"));
     }
 
     @Test
