@@ -16,7 +16,6 @@ import org.junit.runner.RunWith;
 import tutorial.Stack;
 
 public class StackTest {
-
     @Test(timeout = 4000)
     public void test00() throws Throwable {
         Stack<String> stack0 = new Stack<String>();
