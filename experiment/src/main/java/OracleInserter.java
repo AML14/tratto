@@ -1150,7 +1150,8 @@ public class OracleInserter {
     }
 
     /**
-     * Adds an assertion to the end of a given test prefix.
+     * Adds an assertion to the end of a given test prefix. This method does
+     * nothing if the assertion is an empty string.
      *
      * @param testCase a test case
      * @param assertion the assertion to add
