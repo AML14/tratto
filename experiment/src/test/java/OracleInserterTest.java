@@ -275,17 +275,6 @@ public class OracleInserterTest {
         setup();
         List<OracleOutput> nonAxiomaticOracles = getNonAxiomaticOracles();
         OracleInserter.insertOracles(TogType.TOGA, "tutorial.Stack", nonAxiomaticOracles, projectJarPath);
-        String expectedExceptionTest = """
-                                @Test
-                                @Disabled
-                                public void exceptionalTest() throws Throwable {
-                                    try {
-                                        String integerToParse = null;
-                                        int correspondingInteger = Integer.parseInt(integerToParse);
-                                        fail();
-                                    } catch (java.lang.NumberFormatException e) {
-                                    }
-                                }""";
         Path testPath = Paths.get("output", "tog-tests", "toga", "tutorial", "StackTest.java");
         CompilationUnit cu = FileUtils.getCompilationUnit(testPath);
         List<MethodDeclaration> testCases = cu.findAll(MethodDeclaration.class);
@@ -316,6 +305,6 @@ public class OracleInserterTest {
                 }""",
                 exceptionTest.toString()
         );
-        FileUtils.deleteDirectory(output);
+        cleanup();
     }
 }
