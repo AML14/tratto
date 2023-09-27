@@ -82,8 +82,6 @@ public class OracleRemoverTest {
                             } catch (IllegalArgumentException e) {
                                 //
                                 // The given object is null!
-                                //
-                                verifyException("tutorial.Stack", e);
                             }
                         }""",
                 simpleTests.get(3).toString()
@@ -110,8 +108,6 @@ public class OracleRemoverTest {
                             } catch (RuntimeException e) {
                                 //
                                 // Stack exceeded capacity!
-                                //
-                                verifyException("tutorial.Stack", e);
                             }
                         }""",
                 simpleTests.get(4).toString()
