@@ -4,6 +4,7 @@ import data.OracleOutput;
 import data.OracleType;
 import data.TogType;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -11,6 +12,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@ExtendWith({OutputManager.class})
 public class OracleInserterTest {
     private static final Path output = Paths.get("output");
     private static final Path resourcesPath = Paths.get("src", "test", "resources");
