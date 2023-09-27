@@ -6,6 +6,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import static org.junit.jupiter.api.extension.ExtensionContext.Namespace.GLOBAL;
+
 /**
  * This class temporarily moves the "output" directory to a temporary location
  * to avoid deleting previous results. All test files should have the class
@@ -23,6 +25,7 @@ public class OutputManager implements BeforeAllCallback, CloseableResource {
     public void beforeAll(ExtensionContext extensionContext) {
         if (!isStarted) {
             isStarted = true;
+            extensionContext.getRoot().getStore(GLOBAL).put("any unique name", this);
             if (Files.exists(outputPath)) {
                 FileUtils.move(outputPath, tempPath);
             }
