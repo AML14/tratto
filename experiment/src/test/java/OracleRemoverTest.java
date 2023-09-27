@@ -1,6 +1,7 @@
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.MethodDeclaration;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -10,6 +11,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@ExtendWith({OutputManager.class})
 public class OracleRemoverTest {
     /** The path to the output directory. */
     private static final Path output = Paths.get("output");

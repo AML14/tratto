@@ -1,4 +1,5 @@
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+@ExtendWith({OutputManager.class})
 public class FileUtilsTest {
     private static final Path tempRoot = Paths.get("src/test/resources/temp");
 
