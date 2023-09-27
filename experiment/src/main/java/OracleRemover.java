@@ -281,6 +281,34 @@ public class OracleRemover {
         testFile.setImports(nonEvoImports);
     }
 
+    /** A list of all assertions from the {@code EvoAssertions} class. */
+    private static final List<String> evosuiteAssertions = List.of(
+            "assertThrownBy",
+            "verifyException"
+    );
+
+    /**
+     * Removes all EvoAssertions method call statements.
+     *
+     * @param testFile a JavaParser representation of a test file
+     */
+    private static void removeEvosuiteAssertions(CompilationUnit testFile) {
+        testFile
+                .findAll(Statement.class)
+                .stream()
+                .filter(Statement::isExpressionStmt)
+                .map(Statement::asExpressionStmt)
+                .forEach(exprStmt -> {
+                    Expression expr = exprStmt.getExpression();
+                    if (expr.isMethodCallExpr()) {
+                        MethodCallExpr methodCallExpr = expr.asMethodCallExpr();
+                        if (evosuiteAssertions.contains(methodCallExpr.getNameAsString())) {
+                            exprStmt.remove();
+                        }
+                    }
+                });
+    }
+
     /**
      * Removes all import statements, annotations, and superclasses related to
      * EvoSuite. This method does not override the original file.
@@ -288,6 +316,7 @@ public class OracleRemover {
      * @param testFile a JavaParser representation of a test file
      */
     private static void removeEvosuiteDependency(CompilationUnit testFile) {
+        removeEvosuiteAssertions(testFile);
         removeEvosuiteImports(testFile);
         ClassOrInterfaceDeclaration testClass = testFile.getPrimaryType()
                 .orElseThrow()
