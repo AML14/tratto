@@ -1,10 +1,13 @@
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.javaparser.StaticJavaParser;
+import com.github.javaparser.ast.CompilationUnit;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.OpenOption;
 import java.nio.file.Path;
@@ -40,22 +43,26 @@ public class FileUtils {
     }
 
     /**
-     * Gets the output path for a given fully qualified name. The output
-     * directory contains multiple subdirectories for various functionality.
-     * The {@code baseDir} corresponds to the main subdirectory in which the
-     * class path is added. For example:
+     * Gets the output path for the fully qualified name of a given path. Each
+     * package is converted into a subdirectory of a given base directory.
+     * Then, the word "Test" is appended to the file name. For example:
      *     {@code "evosuite-prefixes", "com.example.MyClass"}    -&gt;
-     *     {@code output/evosuite-prefixes/com/example}
-     * The class name is removed to get the directory in which to add the
-     * output.
+     *     {@code output/evosuite-prefixes/com/example/MyClassTest.java}
+     * This format is consistent for all subdirectories within output (except
+     * "evosuite-tests", which uses "[simpleName]_ESTest.java" as the file
+     * name).
      *
      * @param fullyQualifiedName a fully qualified name
-     * @return the output path for a given fully qualified name
+     * @param baseDir the base subdirectories within the output directory
+     * @return the output path for a given fully qualified name in the given
+     * base directories
      */
-    public static Path getFQNOutputPath(String baseDir, String fullyQualifiedName) {
-        Path fqnPath = FileUtils.getFQNPath(baseDir + "." + fullyQualifiedName);
-        int classNameIdx = fqnPath.getNameCount() - 1;
-        return Paths.get("output").resolve(fqnPath.subpath(0, classNameIdx));
+    public static Path getFQNOutputPath(String fullyQualifiedName, String... baseDir) {
+        Path fqnPath = FileUtils.getFQNPath(String.join(".", baseDir) + "." + fullyQualifiedName);
+        String fileName = getSimpleNameFromFQN(fullyQualifiedName) + "Test.java";
+        return Paths.get("output")
+                .resolve(fqnPath)
+                .resolveSibling(fileName);
     }
 
     /**
@@ -179,6 +186,28 @@ public class FileUtils {
     }
 
     /**
+     * Copies a source file to a target file. If the target file already
+     * exists, then it is overwritten. If target does not exist, then it will
+     * be created. <br> This method is a wrapper method of
+     * {@link Files#copy(Path, Path, CopyOption...)} to substitute
+     * {@link IOException} with {@link Error} and avoid superfluous try/catch
+     * blocks.
+     *
+     * @param source the source file
+     * @param target the target file
+     */
+    public static void copyFile(Path source, Path target) {
+        if (!Files.exists(target)) {
+            createFile(target);
+        }
+        try {
+            Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            throw new Error("Error when trying to copy the file " + source + " to " + target, e);
+        }
+    }
+
+    /**
      * Recursively copies all files and directories from the source directory
      * to the destination directory. If a file in the source directory already
      * exists in the destination directory, then the original file will be
@@ -205,11 +234,7 @@ public class FileUtils {
                         if (Files.isDirectory(p)) {
                             createDirectories(relativePath);
                         } else {
-                            try {
-                                Files.copy(p, relativePath, StandardCopyOption.REPLACE_EXISTING);
-                            } catch (IOException e) {
-                                throw new Error("Error when trying to copy the file " + p + " to " + relativePath, e);
-                            }
+                            copyFile(p, relativePath);
                         }
                     });
         } catch (IOException e) {
@@ -395,5 +420,23 @@ public class FileUtils {
      */
     public static boolean isScaffolding(Path path) {
         return path.getFileName().toString().endsWith("scaffolding.java");
+    }
+
+    /**
+     * Returns the JavaParser {@link CompilationUnit} corresponding to a given
+     * Java file. Uses StaticJavaParser to avoid configuring a symbol solver.
+     * <br> This method is a wrapper method of
+     * {@link StaticJavaParser#parse(Path)} to substitute {@link IOException}
+     * with {@link Error} and avoid superfluous try/catch blocks.
+     *
+     * @param path a Java file
+     * @return the CompilationUnit corresponding to the given file
+     */
+    public static CompilationUnit getCompilationUnit(Path path) {
+        try {
+            return StaticJavaParser.parse(path);
+        } catch (IOException e) {
+            throw new Error("Unable to parse the file " + path + " using JavaParser");
+        }
     }
 }
