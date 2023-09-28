@@ -3,12 +3,11 @@
 
 # Get current directory
 current_dir=$(realpath "$(dirname "$BASH_SOURCE")")
-
-# Load global variables
+# Setup global variables
 source "${current_dir}/generator/utils/global_variables.sh"
 
 # Setup sdkman
-source "${UTILS_DIR}/sdkman_init.sh"
+source "${UTILS_DIR}/init_sdkman.sh"
 
 # Read the CSV file line by line and split into project_id, bug_id, and modified_classes fields
 while IFS=, read -r project_id bug_id modified_classes; do
@@ -27,54 +26,60 @@ while IFS=, read -r project_id bug_id modified_classes; do
   echo "Checkout complete."
   # Checkout fixed version of the project_id-bug_id project
   echo "Checkout fixed version: project ${project_id}-${bug_id}f."
-  #defects4j checkout -p "${project_id}" -v "${bug_id}f" -w "$fixed_project_bug_dir"
+  defects4j checkout -p "${project_id}" -v "${bug_id}f" -w "$fixed_project_bug_dir"
   echo "Checkout complete."
   # Get the directory to the maven/ant configuration file of the project_id
   project_builder_dir="${BUILDERS_DIR}/${project_id}"
-  # Check if the project uses ant to build the project, otherwise use maven
-  if [ -e "${project_builder_dir}/build.xml" ]; then
-    # Get the path to the source directory of the ant project_id-bug_id project
-    project_bug_source_path="${buggy_project_bug_dir}/source"
-    # Copy the configuration file within the buggy version of the project_id-bug_id project
-    cp "${project_builder_dir}/build.xml" "${buggy_project_bug_dir}/build.xml"
-    # Copy the configuration file within the fixed version of the project_id-bug_id project
-    cp "${project_builder_dir}/build.xml" "${fixed_project_bug_dir}/build.xml"
-    # Compile the buggy version of the ant project_id-bug_id project
-    echo "Compiling buggy version: project ${project_id}-${bug_id}b."
-    cd "$buggy_project_bug_dir"
-    #ant compile
-    # Compile the fixed version of the ant project_id-bug_id project
-    echo "Compiling fixed version: project ${project_id}-${bug_id}f."
-    cd "$fixed_project_bug_dir"
-    #ant compile
-  elif [ -e "${project_builder_dir}/pom.xml" ]; then
-    # Get the path to the source directory of the maven project_id-bug_id project
-    project_bug_source_path="${buggy_project_bug_dir}/src"
-    # Copy the configuration file within the buggy version of the project_id-bug_id project
-    cp "${project_builder_dir}/pom.xml" "${buggy_project_bug_dir}/pom.xml"
-    # Copy the configuration file within the fixed version of the project_id-bug_id project
-    cp "${project_builder_dir}/pom.xml" "${fixed_project_bug_dir}/pom.xml"
-    echo "Compiling buggy version: project ${project_id}-${bug_id}b."
-    # Compile the buggy version of the maven project_id-bug_id project
-    cd "$buggy_project_bug_dir"
-    mvn clean package -DskipTests
-    echo "Compiling fixed version: project ${project_id}-${bug_id}f."
-    # Compile the fixed version of the maven project_id-bug_id project
-    cd "$fixed_project_bug_dir"
-    mvn clean package -DskipTests
+  # Get the path to the source directory of the ant project_id-bug_id project
+  project_bug_source_path="${buggy_project_bug_dir}/source"
+  echo "Compiling buggy version: project ${project_id}-${bug_id}b."
+  defects4j compile -w "$buggy_project_bug_dir"
+  echo "Compilation complete."
+  # Compile the fixed version of the ant project_id-bug_id project
+  echo "Compiling fixed version: project ${project_id}-${bug_id}f."
+  defects4j compile -w "$fixed_project_bug_dir"
+  echo "Compilation complete."
+  # Set path path to binary files
+  if [ -d "$buggy_project_bug_dir/build/classes" ]; then
+    binary_path="build/classes"
+  elif [ -d "$buggy_project_bug_dir/build" ]; then
+    binary_path="build"
+  elif [ -d "${buggy_project_bug_dir}/target/classes" ]; then
+    binary_path="target/classes"
   else
-    echo "Project builder not found for project ${project_id}."
+    echo "Binary path for project $project_id not found."
     exit 1
   fi
-  # Move to the root directory to start the experiments
-  cd "$ROOT_DIR"
-  # Define the path to the binary classes
-  project_bug_binary_path="${buggy_project_bug_dir}/target/classes"
-  # Define the path to the jar file
-  project_bug_jar_path="${buggy_project_bug_dir}/target/${project_id}.jar"
+  if [ -d "$buggy_project_bug_dir/source" ]; then
+    src_path="source"
+  elif [ -d "$buggy_project_bug_dir/src/main/java" ]; then
+    src_path="src/main/java"
+  elif [ -d "$buggy_project_bug_dir/src/java" ]; then
+    src_path="src/java"
+  elif [ -d "${buggy_project_bug_dir}/src" ]; then
+    src_path="src"
+  elif [ -d "$buggy_project_bug_dir/src/main/java" ]; then
+    src_path="gson/src/main/java"
+  else
+    echo "Binary path for project $project_id not found."
+    exit 1
+  fi
+  # Generate JAR from binary path
+  jar cf "${buggy_project_bug_dir}/${project_id}".jar -C "${buggy_project_bug_dir}/${binary_path}" .
+  jar cf "${buggy_project_bug_dir}/$project_id".jar -C "${fixed_project_bug_dir}/${binary_path}" .
+
   # Iterate over the modified classes and generate test cases for each class
   for modified_class in "${modified_classes_list[@]}"; do
-    # Run the experiment on the modified class
-    bash experiment_test.sh "$modified_class" "$project_bug_binary_path"
+    # Generate jdoctor oracles
+    bash experiment.sh jdoctor "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}"
+    # Generate toga oracles
+    bash experiment.sh toga "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}"
+    # Generate tratto oracles
+    bash experiment.sh tratto "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${buggy_project_bug_dir}/${project_id}.jar"
   done
+  # TODO: [INTEGRATION WITH RUNNER SCRIPT]
+  # mkdir "${buggy_project_bug_dir}/evosuite-tests"
+  #mv "${OUTPUT_DIR}/evosuite-tests" "${buggy_project_bug_dir}/evosuite-tests"
+  #bash runner.sh
 done < "$D4J_PROJECTS_BUGS"
+

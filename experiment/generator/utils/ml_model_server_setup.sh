@@ -1,69 +1,46 @@
 #!/bin/bash
-# Set separator depending on the operating system
-# '/' for linux-based operating systems
-# '\' for windows users
-if [[ $(uname) == "Darwin" || $(uname) == "Linux" ]]; then
-    SEPARATOR="/"
-else
-    SEPARATOR="\\"
-fi
+# This script start the server for the experiments executed with tratto
 
-ROOT_DIR=$(pwd)
-SERVER_PORT="${1:-5050}"
-ML_MODEL_DIR="${ROOT_DIR}${SEPARATOR}..${SEPARATOR}ml-model"
-TOKEN_CLASSES_MODEL="${ML_MODEL_DIR}${SEPARATOR}checkpoints${SEPARATOR}token-classes-checkpoint${SEPARATOR}pytorch_model.bin"
-TOKEN_VALUES_MODEL="${ML_MODEL_DIR}${SEPARATOR}checkpoints${SEPARATOR}token-values-checkpoint${SEPARATOR}pytorch_model.bin"
-RESOURCES_DIR="${ROOT_DIR}${SEPARATOR}generator${SEPARATOR}resources"
-UTILS_DIR="${ROOT_DIR}${SEPARATOR}generator${SEPARATOR}utils"
+# Get current directory
+current_dir=$(realpath "$(dirname "$BASH_SOURCE")")
+# Setup global variables
+source "${current_dir}/global_variables.sh"
 
-#CONDA_ENV_NAME=$(bash ".${SEPARATOR}generator${SEPARATOR}utils${SEPARATOR}conda_setup.sh" "ml-model")
-#if [ ! "$CONDA_ENV_NAME" == "" ]; then
-#  if [[ $(uname) == "Darwin" || $(uname) == "Linux" ]]; then
-#    source activate "$CONDA_ENV_NAME"
-#  else
-#    activate "$CONDA_ENV_NAME"
-#  fi
-#fi
+# Define local variables
+token_classes_model="${ML_MODEL_DIR}/checkpoints/token-classes-checkpoint/pytorch_model.bin"
+token_values_model="${ML_MODEL_DIR}/checkpoints/token-values-checkpoint/pytorch_model.bin"
 
 echo "[1] Install requirements."
-bash "${UTILS_DIR}${SEPARATOR}install_requirements.sh" "${ML_MODEL_DIR}" "ml-model"
+# Install python requirements
+bash "${UTILS_DIR}/install_python_requirements.sh" "${ML_MODEL_DIR}" "ml-model"
 
 echo "[2] Setup models."
-if [ ! -e "$TOKEN_CLASSES_MODEL" ]; then
+# Download token classes model
+if [ ! -e "$token_classes_model" ]; then
   echo "[2.1] Token class model not found."
-  echo "      Downloading token class model..."
-  TOKEN_CLASSES_MODEL_DIR=$(dirname "$TOKEN_CLASSES_MODEL")
-  mkdir -p "$TOKEN_CLASSES_MODEL_DIR"
-  curl -o "$TOKEN_CLASSES_MODEL" "https://drive.switch.ch/index.php/s/ClE8ttjDtWzSJ13/download"
-  echo "      Download complete!"
+  echo "Downloading token class model..."
+  token_classes_model_dir=$(dirname "$token_classes_model")
+  mkdir -p "$token_classes_model_dir"
+  #curl -o "$token_classes_model" "https://drive.switch.ch/index.php/s/ClE8ttjDtWzSJ13/download"
+  curl -o "$token_classes_model" "https://drive.switch.ch/index.php/s/vkuzseJ7YeiO1Vh/download"
+  echo "Download complete!"
 fi
-
-if [ ! -e "$TOKEN_VALUES_MODEL" ]; then
+# Download token values model
+if [ ! -e "$token_values_model" ]; then
   echo "[2.1] Token values model not found."
-  echo "      Downloading token values model..."
-  TOKEN_VALUES_MODEL_DIR=$(dirname "$TOKEN_VALUES_MODEL")
-  mkdir -p "$TOKEN_VALUES_MODEL_DIR"
-  curl -o "$TOKEN_VALUES_MODEL" "https://drive.switch.ch/index.php/s/tYTmJtdZ0sgBa6Z/download"
-  echo "      Download complete!"
+  echo "Downloading token values model..."
+  token_values_model_dir=$(dirname "$token_values_model")
+  mkdir -p "$token_values_model_dir"
+  #curl -o "$token_values_model" "https://drive.switch.ch/index.php/s/tYTmJtdZ0sgBa6Z/download"
+  curl -o "$token_values_model" "https://drive.switch.ch/index.php/s/IXNa0fMFTfzVp7V/download"
+  echo "Download complete!"
 fi
-
-while true; do
-  if nc -z -v -w 1 localhost "$SERVER_PORT" 2>&1 | grep -q "succeeded"; then
-      echo "Port $SERVER_PORT is occupied."
-      CHOICE=$(bash "${UTILS_DIR}${SEPARATOR}y_n.sh" "The port is occupied. Do you want to run the processes on another port? (Y/n): ")
-      if [ "$CHOICE" == "Y" ]; then
-        read -rp "Provide the number of the port you want to use: " USER_INPUT
-        SERVER_PORT="$USER_INPUT"
-      else
-        echo "Program stopped."
-        exit 1
-      fi
-  else
-      echo "Starting server on port ${SERVER_PORT}..."
-      break
-  fi
-done
-
+# Check that the server port is free
+if nc -z -v -w 1 localhost "$SERVER_PORT" 2>&1 | grep -q "succeeded"; then
+    echo "Port $SERVER_PORT is occupied. Kill the processes running on port $SERVER_PORT or change the server port in the generator/utils/global_variables.sh bash file."
+    exit 1
+fi
+# Start the server
 cd "$ML_MODEL_DIR"
-bash ".${SEPARATOR}server.sh" $SERVER_PORT
+bash "./server.sh" "$SERVER_PORT"
 cd "$ROOT_DIR"

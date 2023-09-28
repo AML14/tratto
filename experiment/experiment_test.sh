@@ -17,7 +17,7 @@ TARGET_CLASS="$1"  # Fully-qualified name of target class
 TARGET_DIR="$2"    # Directory of binary files of the system under test
 
 # Setup sdkman
-source "${UTILS_DIR}/sdkman_init.sh"
+source "${UTILS_DIR}/init_sdkman.sh"
 
 sdk use java "$JAVA8"
 
@@ -26,4 +26,4 @@ if ! [ -d "$OUTPUT_DIR" ]; then
 fi
 
 # Generate tests using EvoSuite
-java -jar "$EVOSUITE_JAR" -class "$TARGET_CLASS" -projectCP "$TARGET_DIR" -base_dir="${OUTPUT_DIR}" -seed=42
+#java -jar "$EVOSUITE_JAR" -class "$TARGET_CLASS" -projectCP "$TARGET_DIR" -base_dir="${OUTPUT_DIR}" -seed=42

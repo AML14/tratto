@@ -10,12 +10,30 @@ This module has all scripts necessary to reproduce the experimental results desc
 
 ---
 
-This section outlines all requirements and corresponding setup instructions for each tool used in the experimental pipeline. After the setup is complete, the user should be able to run each example command in the [Run the experiments](#3-run-the-experiments) section.
+This section outlines all requirements and corresponding setup instructions for each tool used in the experimental pipeline. 
+After the setup is complete, the user should be able to run each example command in the [Run the experiments](#3-run-the-experiments) section.
 
 ## 1.0. General Requirements
 
-* zip
-* run init_requirements.sh
+[Sdkman](https://sdkman.io/) is used to easily manage the multiple Java Development Kit(s) (JDKs) required by the different 
+tools of the experimental pipeline. **Sdkman** is a Software Development Kit (SDK) manager.
+
+First of all, check to have **zip** and **unzip** packages installed in your machine. Otherwise, check these webpage to install
+them with the proper command ([zip](https://www.thegeekdiary.com/zip-command-not-found/) and [unzip](https://www.thegeekdiary.com/unzip-command-not-found/)).
+
+Then, execute the command:
+
+  ```shell
+  bash ./generator/utils/init.sh
+  ```
+
+To download and install a local version of **Sdkman**. The script will also install a local version of:
+
+* Java 8
+* Java 17
+* Maven 3.9.4
+* Ant 1.10.13
+* Gradle 8.3
 
 ## 1.1. Evosuite
 

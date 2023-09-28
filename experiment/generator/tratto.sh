@@ -1,37 +1,35 @@
 #!/bin/bash
 # This script generates a list of axiomatic oracles using Tratto.
-# Should output a list of OracleOutput.
+# The output is a list of OracleOutput.
 
-# Exit from the program if any error is arose from another bash script or another command executed within this bash script.
-set -e
-
-# argument and setup check
+# Arguments and setup check
 if [ ! $# -eq 3 ]; then
   echo -e "(TRATTO) Incorrect number of arguments. Expected 3 arguments, but got $#".
   exit 1
 fi
 
-if [[ $(uname) == "Darwin" || $(uname) == "Linux" ]]; then
-    SEPARATOR="/"
-else
-    SEPARATOR="\\"
-fi
+# Get current directory
+current_dir=$(realpath "$(dirname "$BASH_SOURCE")")
+source "${current_dir}/utils/global_variables.sh"
 
-ROOT_DIR=$(pwd)
+
 FULLY_QUALIFIED_NAME="$1"
 SRC_PATH="$2"
 PROJECT_JAR_PATH="$3"
-RESOURCES_DIR="${ROOT_DIR}${SEPARATOR}generator${SEPARATOR}resources"
-UTILS_DIR="${ROOT_DIR}${SEPARATOR}generator${SEPARATOR}utils"
-TRATTO_PROJECT_DIR="${ROOT_DIR}${SEPARATOR}..${SEPARATOR}tratto"
-TRATTO_OUTPUT_DIR="${ROOT_DIR}${SEPARATOR}output${SEPARATOR}tratto${SEPARATOR}output"
+RESOURCES_DIR="${ROOT_DIR}/generator/resources"
+UTILS_DIR="${ROOT_DIR}/generator/utils"
+TRATTO_PROJECT_DIR="${ROOT_DIR}/../tratto"
+TRATTO_OUTPUT_DIR="${ROOT_DIR}/output/tratto/output"
 
-bash "${UTILS_DIR}${SEPARATOR}tratto_setup.sh"
-
-read -rp "In which port is running the server? (default: 5050): " SERVER_PORT
-[ -z "$SERVER_PORT" ] && SERVER_PORT="5050"
+# Setup sdkman
+source "${UTILS_DIR}/init_sdkman.sh" "$SDKMAN_DIR"
+# Switch to Java 17
+sdk use java "$JAVA17"
+# Setup tratto
+bash "${UTILS_DIR}/tratto_setup.sh"
+# Execute tratto to generate oracles
 cd "$TRATTO_PROJECT_DIR"
-java -jar "${RESOURCES_DIR}${SEPARATOR}tratto.jar" "$FULLY_QUALIFIED_NAME" "$SRC_PATH" "$PROJECT_JAR_PATH" "$SERVER_PORT"
+java -jar "${RESOURCES_DIR}/tratto.jar" "$FULLY_QUALIFIED_NAME" "$SRC_PATH" "$PROJECT_JAR_PATH" "$SERVER_PORT"
 cd "$ROOT_DIR"
 
 if [ ! -d "${TRATTO_OUTPUT_DIR}" ]; then
@@ -40,6 +38,6 @@ if [ ! -d "${TRATTO_OUTPUT_DIR}" ]; then
     echo "Folder created: ${TRATTO_OUTPUT_DIR}"
 fi
 
-mv "${TRATTO_PROJECT_DIR}${SEPARATOR}src${SEPARATOR}main${SEPARATOR}resources${SEPARATOR}oracle_datapoints.json" "${TRATTO_OUTPUT_DIR}"
+mv "${TRATTO_PROJECT_DIR}/src/main/resources/oracle_datapoints.json" "${TRATTO_OUTPUT_DIR}"
 
-java -jar "${RESOURCES_DIR}${SEPARATOR}experiment.jar" tratto generate_oracle_outputs "$SRC_PATH"
+java -jar "${RESOURCES_DIR}/experiment.jar" tratto generate_oracle_outputs "$SRC_PATH"

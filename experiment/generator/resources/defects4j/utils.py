@@ -26,7 +26,7 @@ class Defects4JUtils:
         -------
         A csv file containing the information about the modified classes within each project, to fix each bug.
         """
-        modified_classes_csv_file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'd4j_projects_modified_classes.csv')
+        modified_classes_csv_file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'modified_classes.csv')
         result = subprocess.run(["defects4j","pids"], stdout=subprocess.PIPE, text=True, check=True)
         project_ids = result.stdout.split('\n')[:-1]
 
@@ -101,8 +101,8 @@ if __name__ == "__main__":
 
     if args.method == "generate_csv_modified_classes":
         defects4j_root_path = args.options[0]
-        result = Defects4JUtils.generate_csv_modified_classes(defects4j_root_path)
+        Defects4JUtils.generate_csv_modified_classes(defects4j_root_path)
     if args.method == "check_differences_between_files":
         reference_file_path = args.options[0]
-        other_file_paths = [other_file_path for other_file_path in args.options[1:-1]]
+        other_file_paths = [other_file_path for other_file_path in args.options[1:]]
         Defects4JUtils.check_differences_between_files(reference_file_path, other_file_paths)

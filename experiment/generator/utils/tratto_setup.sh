@@ -1,35 +1,29 @@
 #!/bin/bash
-# Set separator depending on the operating system
-# '/' for linux-based operating systems
-# '\' for windows users
-if [[ $(uname) == "Darwin" || $(uname) == "Linux" ]]; then
-    SEPARATOR="/"
+# This script setup the experiments with tratto
+
+# Get current directory
+current_dir=$(realpath "$(dirname "$BASH_SOURCE")")
+
+# Setup global variables
+if ! [ -v ROOT_DIR ]; then
+    source "${current_dir}/global_variables.sh"
 else
-    SEPARATOR="\\"
+    echo "Global variables already defined."
 fi
 
-ROOT_DIR=$(pwd)
-SERVER_PORT="${1:-5000}"
-ML_MODEL_DIR="${ROOT_DIR}${SEPARATOR}..${SEPARATOR}ml-model"
-RESOURCES_DIR="${ROOT_DIR}${SEPARATOR}generator${SEPARATOR}resources"
-UTILS_DIR="${ROOT_DIR}${SEPARATOR}generator${SEPARATOR}utils"
-TRATTO_JAR_FILE="${RESOURCES_DIR}${SEPARATOR}tratto.jar"
-TRATTO_PROJECT_DIR="${ROOT_DIR}${SEPARATOR}..${SEPARATOR}tratto"
-
-if [ ! -e "${TRATTO_JAR_FILE}" ]; then
+# Generate JAR
+if [ ! -e "${TRATTO_JAR}" ]; then
   echo "Generate tratto jar from java project."
   cd "${TRATTO_PROJECT_DIR}"
   bash scripts/install_dependencies.sh
   mvn clean package -DskipTests
   cd "${ROOT_DIR}"
-  TARGET_JAR=$(find "${TRATTO_PROJECT_DIR}${SEPARATOR}target" -type f -name "tratto*-jar-with-dependencies.jar")
-
+  target_jar=$(find "${TRATTO_PROJECT_DIR}/target" -type f -name "tratto*-jar-with-dependencies.jar")
   # Check if a file was found
-  if [ -z "$TARGET_JAR" ]; then
+  if [ -z "$target_jar" ]; then
     echo "Unexpected error: tratto jar not found."
     exit 1
   fi
-  mv "$TARGET_JAR" "$RESOURCES_DIR/tratto.jar"
+  # Move jar to the resources folder and rename it as tratto.jar
+  mv "$target_jar" "${TRATTO_JAR}"
 fi
-
-

@@ -2,51 +2,48 @@
 # This script manages the end-to-end experimental analysis.
 # To run the experiment, the user provides a specific TOG and a source file.
 
-# Exit from the program if any error is arose from another bash script or another command executed within this bash script.
-set -e
+# Get current directory
+current_dir=$(realpath "$(dirname "$BASH_SOURCE")")
+# Setup global variables
+source "${current_dir}/generator/utils/global_variables.sh"
 
-if [[ $(uname) == "Darwin" || $(uname) == "Linux" ]]; then
-    SEPARATOR="/"
-else
-    SEPARATOR="\\"
-fi
+# Define local variables
+tog=$1
+target_class=$2
+src_dir=$3
+bin_dir=$4
+qualifiers="${target_class%.*}"
+evosuite_output="${ROOT_DIR}/output/evosuite-tests/${qualifiers//.//}"
 
-ROOT_DIR="$(dirname "$(realpath "$0")")"
-TOG=$1
-TARGET_CLASS=$2
-SRC_DIR=$3
-BIN_DIR=$4
-QUALIFIERS="${TARGET_CLASS%.*}"
-RESOURCES_DIR="${ROOT_DIR}${SEPARATOR}generator${SEPARATOR}resources"
-EVOSUITE_OUTPUT="${ROOT_DIR}${SEPARATOR}output${SEPARATOR}evosuite-tests${SEPARATOR}${QUALIFIERS//./$SEPARATOR}"
-EXPERIMENT_JAR="${ROOT_DIR}${SEPARATOR}generator${SEPARATOR}resources${SEPARATOR}experiment.jar"
-EXPERIMENT="java -jar ${EXPERIMENT_JAR}"
-
+# Generate experiment JAR if not present
 if [ ! -f "$EXPERIMENT_JAR" ]; then
   mvn clean package -DskipTests
-  TARGET_JAR=$(find "${ROOT_DIR}${SEPARATOR}target" -type f -name "experiment*-jar-with-dependencies.jar")
+  target_jar=$(find "${ROOT_DIR}/target" -type f -name "experiment*-jar-with-dependencies.jar")
     # Check if a file was found
-    if [ -z "$TARGET_JAR" ]; then
+    if [ -z "$target_jar" ]; then
       echo "Unexpected error: experiment jar not found."
       exit 1
     fi
-    sudo mv "$TARGET_JAR" "$RESOURCES_DIR/experiment.jar"
+    sudo mv "$target_jar" "${RESOURCES_DIR}/experiment.jar"
 fi
 
+# Setup sdkman
+source "${UTILS_DIR}/init_sdkman.sh" "$SDKMAN_DIR"
 
-# check if given directories exist
-if [ ! -d "$SRC_DIR" ]; then
-  echo -e "The project source directory \"$SRC_DIR\" does not exist."
+# Check if given directories exist
+if [ ! -d "$src_dir" ]; then
+  echo -e "The project source directory \"$src_dir\" does not exist."
   exit 1
-elif [ ! -d "$BIN_DIR" ]; then
-  echo -e "The system binaries path \"$BIN_DIR\" does not exist."
+elif [ ! -d "$bin_dir" ]; then
+  echo -e "The system binaries path \"$bin_dir\" does not exist."
   exit 1
 fi
-# check if given TOG is supported
+
+# Check if given TOG is supported
 found=0
-VALID_TOG=("jdoctor" "toga" "tratto")
-for option in "${VALID_TOG[@]}"; do
-  if [ "$option" = "$TOG" ]; then
+valid_tog=("jdoctor" "toga" "tratto")
+for option in "${valid_tog[@]}"; do
+  if [ "$option" = "$tog" ]; then
     found=1
     break
   fi
@@ -57,28 +54,31 @@ if [ ! $found -eq 1 ]; then
 fi
 
 # Generate EvoSuite tests
-echo "[1] Generate EvoSuite tests for class ${TARGET_CLASS}"
+echo "[1] Generate EvoSuite tests for class ${target_class}"
 #{
-bash ./generator/evosuite.sh "${TARGET_CLASS}" "${BIN_DIR}"
+#bash ./generator/evosuite.sh "${target_class}" "${bin_dir}"
 #} > /dev/null 2>&1
-# generate EvoSuite prefixes
-$EXPERIMENT "$TOG" "remove_oracles" "$EVOSUITE_OUTPUT" "$TARGET_CLASS"
-# generate oracles using TOG
-if [ "${TOG}" == "jdoctor" ]; then
-  bash ./generator/jdoctor.sh "${TARGET_CLASS}" "${SRC_DIR}" "${BIN_DIR}"
-  ORACLE_OUTPUT="$ROOT_DIR/output/jdoctor/oracle_outputs.json"
-elif [ "${TOG}" == "toga" ]; then
-  bash ./generator/toga.sh "${TARGET_CLASS}" "${SRC_DIR}" "${EVOSUITE_OUTPUT}"
-  ORACLE_OUTPUT="$ROOT_DIR/output/toga/oracle/oracle_outputs.json"
-elif [ "${TOG}" == "tratto" ]; then
-  PROJECT_JAR=$5
-  bash ./generator/tratto.sh "${TARGET_CLASS}" "${SRC_DIR}" "${PROJECT_JAR}"
-  ORACLE_OUTPUT="$ROOT_DIR/output/tratto/oracle/oracle_outputs.json"
+
+# Switch to Java 17
+sdk use java "$JAVA17"
+# Generate EvoSuite prefixes
+java -jar "$EXPERIMENT_JAR" "$tog" "remove_oracles" "$evosuite_output" "$target_class"
+# Generate oracles using TOG
+if [ "${tog}" == "jdoctor" ]; then
+  bash ./generator/jdoctor.sh "${target_class}" "${src_dir}" "${bin_dir}"
+  oracle_output="$ROOT_DIR/output/jdoctor/oracle_outputs.json"
+elif [ "${tog}" == "toga" ]; then
+  bash ./generator/toga.sh "${target_class}" "${src_dir}" "${evosuite_output}"
+  oracle_output="$ROOT_DIR/output/toga/oracle/oracle_outputs.json"
+elif [ "${tog}" == "tratto" ]; then
+  project_jar=$5
+  bash ./generator/tratto.sh "${target_class}" "${src_dir}" "${project_jar}"
+  oracle_output="$ROOT_DIR/output/tratto/oracle/oracle_outputs.json"
 fi
-cp "$ORACLE_OUTPUT" "$ROOT_DIR/output/$TOG-oracles.json"
+cp "$oracle_output" "$ROOT_DIR/output/$tog-oracles.json"
 # insert oracles into EvoSuite prefixes
 echo "[7] Insert oracles in test prefixes"
-$EXPERIMENT "$TOG" "insert_oracles" "$BIN_DIR" "$ORACLE_OUTPUT"
+java -jar "$EXPERIMENT_JAR" "$tog" "insert_oracles" "$bin_dir" "$oracle_output"
 echo "[8] Running tests and generating test output"
-bash ./runner.sh "$TOG" "$TARGET_CLASS" "$SRC_DIR" "$BIN_DIR"
+#bash ./runner.sh "$tog" "$target_class" "$src_dir" "$bin_dir"
 echo "[9] Experiment complete!"

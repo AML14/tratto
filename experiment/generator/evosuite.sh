@@ -9,32 +9,27 @@ if [ ! $# -eq 2 ]; then
 elif [ ! -d "$2" ]; then
   echo -e "(EVOSUITE) The system binaries path \"$2\" does not exist."
   exit 1
-elif [ ! -f "$JAVA8_BIN" ]; then
-  echo -e "(EVOSUITE) Error: JDK8 java binary \"$JAVA8_BIN\" does not exist."
-  exit 1
 fi
 
 # Get current directory
 current_dir=$(realpath "$(dirname "$BASH_SOURCE")")
-
 # Setup global variables
-if ! [ -v ROOT_DIR ]; then
-    source "${current_dir}/utils/global_variables.sh"
-else
-    echo "Global variables already defined."
-fi
+source "${current_dir}/utils/global_variables.sh"
 
 # Setup local variables
 target_class="$1"  # Fully-qualified name of target class
 target_dir="$2"    # Directory of binary files of the system under test
 
 # Setup sdkman
-source "${UTILS_DIR}/sdkman_init.sh" "$SDKMAN_DIR"
+source "${UTILS_DIR}/init_sdkman.sh" "$SDKMAN_DIR"
 
 # Generate output dir if it does not exists
 if ! [ -d "$OUTPUT_DIR" ]; then
   mkdir "$OUTPUT_DIR"
 fi
+
+# Switch to Java 8
+sdk use java "$JAVA8"
 
 # Generate tests using EvoSuite
 java -jar "$EVOSUITE_JAR" -class "$target_class" -projectCP "$target_dir" -base_dir="${OUTPUT_DIR}" -seed=42
