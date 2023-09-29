@@ -4,10 +4,10 @@
 
 # Argument and setup check
 if [ ! $# -eq 2 ]; then
-  echo -e "(EVOSUITE) Incorrect number of arguments. Expected 2 arguments, but got $#".
+  echo -e "evosuite.sh: Incorrect number of arguments. Expected 2 arguments, but got $#".
   exit 1
 elif [ ! -d "$2" ]; then
-  echo -e "(EVOSUITE) The system binaries path \"$2\" does not exist."
+  echo -e "evosuite.sh: The system binaries path \"$2\" does not exist."
   exit 1
 fi
 
