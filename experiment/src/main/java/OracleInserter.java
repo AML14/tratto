@@ -34,19 +34,20 @@ import data.OracleOutput;
 import data.OracleType;
 import data.TogType;
 
-import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
+/**
+ * This class provides the functionality for inserting oracles into test
+ * prefixes.
+ */
 public class OracleInserter {
     /** A ClassLoader used to load classes outside the JVM. */
     private static ClassLoader classLoader;
@@ -63,10 +64,6 @@ public class OracleInserter {
             "float",
             "double"
     );
-    /** The path to the output directory. */
-    private static final Path output = Paths.get("output");
-    /** A list of all supported axiomatic test oracle generators. */
-    private static final List<TogType> axiomaticTogs = List.of(TogType.JDOCTOR, TogType.TRATTO);
 
     /** Private constructor to avoid creating an instance of this class. */
     private OracleInserter() {
@@ -1123,9 +1120,15 @@ public class OracleInserter {
     }
 
     /**
-     * Adds axiomatic oracles to test prefixes in a given Java file. Axiomatic
-     * oracles are not specific to a given test prefix. This method iterates
-     * through each line in each test case, and adds all applicable oracles.
+     * Adds axiomatic oracles to test prefixes in a given Java file.
+     * Axiomatic oracles are not specific to a given test prefix. The oracles
+     * are inserted wherever they may be applicable in source code. For
+     * example, if a TOG generates an axiomatic post-condition for a method
+     * "foo", then the oracle is added after every call to "foo" in the test
+     * prefix. The approach for inserting an axiomatic oracle differs based on
+     * the {@link OracleType} (PRE, NORMAL_POST, EXCEPT_POST). This method
+     * iterates through each line in each test case, and adds all related
+     * oracles.
      *
      * @param testFile a Java test file
      * @param oracles a list of test oracles made by an axiomatic tog
@@ -1147,52 +1150,25 @@ public class OracleInserter {
     }
 
     /**
-     * Adds axiomatic oracles to test prefixes in a given directory. Axiomatic
-     * oracles are not specific to a given test prefix. Therefore, we insert
-     * the axiomatic oracles wherever they may be applicable in source code.
-     * For example, if an axiomatic oracle involves class Foo, then the oracle
-     * is added after every instance of Foo in all test prefixes.
+     * Adds an assertion to the end of a given test prefix. This method does
+     * nothing if the assertion is an empty string.
      *
-     * @param dir a directory with Java test prefixes
-     * @param oracles a list of test oracles made by an axiomatic tog
-     */
-    private static void insertAxiomaticOracles(Path dir, List<OracleOutput> oracles) {
-        try (Stream<Path> walk = Files.walk(dir)) {
-            walk
-                    .filter(FileUtils::isJavaFile)
-                    .filter(p -> !FileUtils.isScaffolding(p))
-                    .forEach(testFile -> {
-                        try {
-                            CompilationUnit cu = StaticJavaParser.parse(testFile);
-                            insertAxiomaticOracles(cu, oracles);
-                            FileUtils.writeString(testFile, cu.toString());
-                        } catch (IOException e) {
-                            throw new Error("Unable to parse test file " + testFile.getFileName().toString());
-                        }
-                    });
-        } catch (IOException e) {
-            throw new Error("Error when parsing files in directory " + dir, e);
-        }
-    }
-
-    /**
-     * Adds an assertion to a given test case.
-     *
-     * @param testCase a method representation of a test case
-     * @param assertion the string representation of the assertion to add
+     * @param testCase a test case
+     * @param assertion the assertion to add
      */
     private static void insertNonAxiomaticAssertion(MethodDeclaration testCase, String assertion) {
-        if (!assertion.equals("")) {
-            Statement statement = StaticJavaParser.parseStatement(assertion + ";");
+        if (!assertion.isEmpty()) {
             testCase
-                    .getBody().orElseThrow()
-                    .getStatements().add(statement);
+                    .getBody()
+                    .orElseThrow()
+                    .getStatements()
+                    .add(StaticJavaParser.parseStatement(assertion + ";"));
         }
     }
 
     /**
-     * Wraps a given test case in a try/catch block where the catch block
-     * expects a given exception class.
+     * Wraps a test prefix with a try/catch block, where the catch block
+     * expects a given exception type.
      *
      * @param testCase a test case
      * @param exception the exception to catch
@@ -1217,18 +1193,6 @@ public class OracleInserter {
     }
 
     /**
-     * Checks if an oracle record represents an exceptional oracle.
-     *
-     * @param oracle an oracle record
-     * @return true iff the oracle represents an exceptional oracle. This
-     * corresponds to an empty string in the {@link OracleOutput#exception()}
-     * value.
-     */
-    private static boolean isExceptional(OracleOutput oracle) {
-        return !oracle.exception().equals("");
-    }
-
-    /**
      * Gets the non-axiomatic oracle corresponding to a given test from a list
      * of oracles.
      *
@@ -1242,18 +1206,17 @@ public class OracleInserter {
                 .stream()
                 .map(OracleOutput::testName)
                 .toList();
-        int indexOfOracle = allTestNames.indexOf(testName);
-        if (indexOfOracle == -1) {
+        int oracleIdx = allTestNames.indexOf(testName);
+        if (oracleIdx == -1) {
             return null;
         }
-        return oracles.get(indexOfOracle);
+        return oracles.get(oracleIdx);
     }
 
     /**
-     * Adds non-axiomatic oracles to test prefixes in a given test file.
-     * Non-axiomatic oracles are specific to a given test prefix. Each oracle
-     * is matched to its corresponding test prefix using the
-     * {@link OracleOutput#testName()} value.
+     * Adds non-axiomatic oracles to test prefixes in a given test file. Each
+     * oracle is matched to its corresponding test prefix using the
+     * {@link OracleOutput#testName()} field.
      *
      * @param testFile a Java file of test prefixes
      * @param oracles a list of test oracles made by a non-axiomatic tog
@@ -1264,7 +1227,7 @@ public class OracleInserter {
                     String testName = testCase.getNameAsString();
                     OracleOutput oracle = getOracleWithTestName(testName, oracles);
                     if (oracle != null) {
-                        if (isExceptional(oracle)) {
+                        if (oracle.isExceptional()) {
                             insertNonAxiomaticException(testCase, oracle.exception());
                         } else {
                             insertNonAxiomaticAssertion(testCase, oracle.oracle());
@@ -1274,82 +1237,50 @@ public class OracleInserter {
     }
 
     /**
-     * Adds non-axiomatic oracles to test prefixes in a given directory.
-     * Non-axiomatic oracles are specific to a given test prefix. Each oracle
-     * is matched to its corresponding test prefix using the
-     * {@link OracleOutput#testName()} value.
+     * Sets the ClassLoader for the project under analysis.
      *
-     * @param dir a directory with Java test prefixes
-     * @param oracles a list of test oracles made by a non-axiomatic tog
+     * @param jarPath the JAR of the project under analysis
      */
-    private static void insertNonAxiomaticOracles(Path dir, List<OracleOutput> oracles) {
-        try (Stream<Path> walk = Files.walk(dir)) {
-            walk
-                    .filter(FileUtils::isJavaFile)
-                    .filter(p -> !FileUtils.isScaffolding(p))
-                    .forEach(testFile -> {
-                        try {
-                            CompilationUnit cu = StaticJavaParser.parse(testFile);
-                            insertNonAxiomaticOracles(cu, oracles);
-                            FileUtils.writeString(testFile, cu.toString());
-                        } catch (IOException e) {
-                            throw new Error("Unable to parse test file " + testFile.getFileName().toString());
-                        }
-                    });
-        } catch (IOException e) {
-            throw new Error("Error when parsing files in directory " + dir, e);
-        }
-    }
-
-    /**
-     * Checks if a given TOG is axiomatic.
-     *
-     * @param tog a test oracle generator
-     * @return true iff the given tog generates axiomatic test oracles (known
-     * a priori)
-     * @see OracleInserter#axiomaticTogs
-     */
-    private static boolean isAxiomatic(TogType tog) {
-        return axiomaticTogs.contains(tog);
-    }
-
-    /**
-     * Gets a ClassLoader that corresponds to a given JAR file.
-     *
-     * @param jarPath a path to a JAR file
-     * @return a ClassLoader object
-     */
-    private static ClassLoader getClassLoader(Path jarPath) {
+    private static void setClassLoader(Path jarPath) {
         try {
             URL jarURL = jarPath.toUri().toURL();
-            return new URLClassLoader(new URL[]{jarURL});
+            classLoader = new URLClassLoader(new URL[]{jarURL});
         } catch (MalformedURLException e) {
             throw new Error("Unable to get URL for JAR " + jarPath);
         }
     }
 
     /**
-     * Adds oracles to a given collection of test prefixes. The approach for
-     * adding oracles varies based on whether the oracles are axiomatic or
-     * non-axiomatic. Saves the modified test prefixes in
-     * "output/tog-tests/[tog]", where [tog] is the given test oracle
-     * generator. This method does not override the original test prefixes.
+     * Adds oracles to the test prefixes generated by EvoSuite. The approach
+     * for adding oracles varies based on whether the oracles are axiomatic or
+     * non-axiomatic. Saves the new test suites to "output/tog-tests/[tog]",
+     * where [tog] is the given test oracle generator. This method does NOT
+     * override the original test prefixes.
      *
-     * @param prefixDir a directory with Java test prefixes
      * @param tog a test oracle generator
-     * @param oracles a list of test oracles made by {@code tog}
-     * @param jarPath a JAR file
-     * @see OracleInserter#insertAxiomaticOracles(Path, List)
-     * @see OracleInserter#insertNonAxiomaticOracles(Path, List)
+     * @param fullyQualifiedName the fully qualified name of the class under
+     *                           test
+     * @param oracles all test oracles generated by {@code tog}
+     * @param jarPath a JAR file of the project under test
      */
-    public static void insertOracles(Path prefixDir, TogType tog, List<OracleOutput> oracles, Path jarPath) {
-        classLoader = getClassLoader(jarPath);
-        Path testPath = output.resolve("tog-tests/" + tog.toString().toLowerCase());
-        FileUtils.copy(prefixDir, testPath);
-        if (isAxiomatic(tog)) {
-            insertAxiomaticOracles(testPath, oracles);
+    public static void insertOracles(
+            TogType tog,
+            String fullyQualifiedName,
+            List<OracleOutput> oracles,
+            Path jarPath
+    ) {
+        // load test prefixes
+        setClassLoader(jarPath);
+        Path prefixPath = FileUtils.getFQNOutputPath(fullyQualifiedName, "evosuite-prefixes");
+        Path testPath = FileUtils.getFQNOutputPath(fullyQualifiedName, "tog-tests", tog.toString().toLowerCase());
+        FileUtils.copyFile(prefixPath, testPath);
+        // insert oracles
+        CompilationUnit cu = FileUtils.getCompilationUnit(testPath);
+        if (tog.isAxiomatic()) {
+            insertAxiomaticOracles(cu, oracles);
         } else {
-            insertNonAxiomaticOracles(testPath, oracles);
+            insertNonAxiomaticOracles(cu, oracles);
         }
+        FileUtils.writeString(testPath, cu.toString());
     }
 }
