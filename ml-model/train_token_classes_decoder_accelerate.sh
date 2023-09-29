@@ -12,7 +12,7 @@ accelerate launch --config_file accelerate_config_fsdp.yaml scripts/train/run_cl
 --batch_size 16 \
 --learning_rate 1e-5 \
 --num_epochs 5 \
---save_steps 10000 \
+--save_steps 4000 \
 --accumulation_steps 1 \
 --test_ratio 0.1 \
 --validation_ratio 0.1 \
