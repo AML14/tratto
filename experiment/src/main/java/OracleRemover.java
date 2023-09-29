@@ -1,6 +1,7 @@
-import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.ImportDeclaration;
 import com.github.javaparser.ast.NodeList;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.expr.Expression;
@@ -10,13 +11,9 @@ import com.github.javaparser.ast.stmt.ExpressionStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.stmt.TryStmt;
 
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 /**
  * This class provides the functionality for removing oracles from a test
@@ -25,8 +22,6 @@ import java.util.stream.Stream;
 public class OracleRemover {
     /** A global unique ID to avoid duplicate test names. */
     private static int testID = 0;
-    /** The path to the output directory. */
-    private static final Path output = Paths.get("output");
     /** A list of all JUnit Assertions assert methods. */
     private static final List<String> allJUnitAssertionsMethods = List.of(
             "assertArrayEquals",
@@ -86,7 +81,6 @@ public class OracleRemover {
         return false;
     }
 
-
     /**
      * Gets all method calls in a Java statement.
      *
@@ -107,8 +101,8 @@ public class OracleRemover {
      * or,
      *     {@code assertTrue(booleanVar}    -&gt;    {@code null}
      * </pre>
-     * This method assumes that a JUnit Assertions only has a single method
-     * call in its condition.
+     * This method assumes each JUnit Assertions method call contains at most
+     * one other method call.
      *
      * @param jUnitAssertion a JUnit Assertion statement
      * @return the method call in the JUnit Assertion condition. Returns null
@@ -138,7 +132,8 @@ public class OracleRemover {
      * Assertions condition contains a method call, then the method call is
      * kept in the prefix. For example,
      *     {@code assertTrue(stack.isEmpty())}    -&gt;    {@code stack.isEmpty()}.
-     * This method does not modify the actual source file.
+     * This method assumes each JUnit Assertions method call contains at most
+     * one method call. This method does not modify the actual source file.
      *
      * @param testFile a JavaParser representation of a test file
      */
@@ -167,7 +162,9 @@ public class OracleRemover {
      *         fail();
      *     } catch (Exception e) {}
      * }
+     * </pre>
      * becomes,
+     * <pre>
      * {@code
      *     int x = 5;
      *     int y = 10;
@@ -195,46 +192,24 @@ public class OracleRemover {
     }
 
     /**
-     * Creates a related method based on a given original method. The original
-     * method is given a new body and a new name. The new name is the same as
-     * the original method name, but with a global ID appended to avoid
-     * repeating a method name.
-     *
-     * @param original the original method
-     * @param newBody the new method body
-     * @return the new method
-     */
-    private static MethodDeclaration createRelatedMethod(
-            MethodDeclaration original,
-            NodeList<Statement> newBody
-    ) {
-        String newName = original.getNameAsString() + testID;
-        testID++;
-        return original.clone()
-                .setBody(new BlockStmt(newBody))
-                .setName(newName);
-    }
-
-    /**
-     * Gets a new test case corresponding to a specific assertion in the
-     * original test case. An EvoSuite test may contain multiple assertions.
-     * For compatibility with TOGA, each test is split into multiple subtests,
-     * each corresponding to a single assertion in the original test case.
+     * Gets a new test case corresponding to a specific oracle in the original
+     * EvoSuite test case. An EvoSuite test may contain multiple oracles. For
+     * compatibility with TOGA, each test is split into multiple subtests,
+     * each corresponding to a single oracle in the original test case.
      *
      * @param testCase a test case
-     * @param assertionIdx the index of the assertion in the test case. Must
-     *                     be less than the number of assertions in the test
-     *                     case.
-     * @return a test case with a single assertion, corresponding to the given
-     * assertion index
+     * @param oracleIdx the index of the oracle in the test case. Must be
+     *                  less than the number of oracles in the test case.
+     * @return a test case with a single oracle, corresponding to the given
+     * index
      */
-    private static MethodDeclaration getSimpleTestCase(MethodDeclaration testCase, int assertionIdx) {
+    private static MethodDeclaration getSimpleTestCase(MethodDeclaration testCase, int oracleIdx) {
         NodeList<Statement> originalBody = testCase.getBody().orElseThrow().getStatements();
         NodeList<Statement> newBody = new NodeList<>();
         int currentIdx = 0;
         for (Statement testStmt : originalBody) {
-            if (isJUnitAssertion(testStmt)) {
-                if (currentIdx == assertionIdx) {
+            if (isJUnitAssertion(testStmt) || testStmt.isTryStmt()) {
+                if (currentIdx == oracleIdx) {
                     newBody.add(testStmt);
                     break;
                 }
@@ -243,116 +218,183 @@ public class OracleRemover {
                 newBody.add(testStmt);
             }
         }
-        return createRelatedMethod(testCase, newBody);
+        String simpleTestName = testCase.getNameAsString() + testID++;
+        return testCase.clone()
+                .setBody(new BlockStmt(newBody))
+                .setName(simpleTestName);
     }
 
     /**
-     * Gets the number of JUnit Assertions assert method calls in a given test
-     * case. This method does NOT count {@code fail()} calls.
+     * Gets the number of oracles in a given EvoSuite test case. In an
+     * EvoSuite test case, an assertion oracle is represented by a JUnit
+     * Assertions assert method call and an exceptional oracle is represented
+     * by a try/catch block.
      *
      * @param testCase a test case
-     * @return the number of JUnit Assertions assert method calls in the test
-     * case
+     * @return the number of oracles in the test case
      */
-    private static int getNumberOfAssertions(MethodDeclaration testCase) {
-        NodeList<Statement> testBody = testCase.getBody().orElseThrow().getStatements();
-        int numAssertions = 0;
-        for (Statement testStmt : testBody) {
-            if (isJUnitAssertion(testStmt)) {
-                numAssertions++;
+    private static int getNumberOfOracles(MethodDeclaration testCase) {
+        List<Statement> testStmts = testCase.getBody().orElseThrow().getStatements();
+        int numOracles = 0;
+        for (Statement testStmt : testStmts) {
+            if (isJUnitAssertion(testStmt) || testStmt.isTryStmt()) {
+                numOracles++;
             }
         }
-        return numAssertions;
+        return numOracles;
     }
 
     /**
      * Splits all test cases in a given test file into smaller subtests, each
-     * with a single assertion from the original test case. If a test case
-     * does not contain a JUnit Assertions assert method call (e.g.
-     * exceptional oracle), then it is not modified. The original tests with
-     * multiple assertions are removed. This method does not modify the actual
-     * source file.
+     * with a single oracle from the original test case. The original tests
+     * with multiple assertions are removed. This method does not modify the
+     * actual source file.
      *
      * @param testFile a JavaParser representation of a test file
      */
     private static void splitTests(CompilationUnit testFile) {
-        TypeDeclaration<?> testClass = testFile.getType(0);
+        TypeDeclaration<?> testClass = testFile.getPrimaryType().orElseThrow();
         List<MethodDeclaration> testCases = testFile.findAll(MethodDeclaration.class);
         for (MethodDeclaration testCase : testCases) {
-            int numAssertions = getNumberOfAssertions(testCase);
-            for (int i = 0; i < numAssertions; i++) {
+            int numOracles = getNumberOfOracles(testCase);
+            for (int i = 0; i < numOracles; i++) {
                 MethodDeclaration simpleTest = getSimpleTestCase(testCase, i);
                 testClass.addMember(simpleTest);
-            }
-            // keep exceptional oracles
-            if (numAssertions == 0) {
-                NodeList<Statement> originalBody = testCase.getBody().orElseThrow()
-                        .getStatements();
-                MethodDeclaration exceptionalTest = createRelatedMethod(testCase, originalBody);
-                testClass.addMember(exceptionalTest);
             }
             testCase.remove();
         }
     }
 
     /**
-     * Gets the path to the output directory for a given fully qualified name.
-     * The FQN path converts the package names as subdirectories for a given
-     * output base directory. For example,
-     * {@code "baseDir", "com.example.MyClass"}    -&gt;
-     * {@code output/baseDir/com/example/MyClass}
+     * Removes all import statements from the {@code org.evosuite} package.
+     * This method does not override the original file.
      *
-     * @param fullyQualifiedName a fully qualified name
-     * @return the output path for a given fully qualified name
+     * @param testFile a JavaParser representation of a test file
      */
-    private static Path getFQNOutputPath(String baseDir, String fullyQualifiedName) {
-        Path fqnPath = FileUtils.getRelativePathFromFullyQualifiedClassName(baseDir + "." + fullyQualifiedName);
-        int classNameIdx = fqnPath.getNameCount() - 1;
-        return output.resolve(fqnPath.subpath(0, classNameIdx));
+    private static void removeEvosuiteImports(CompilationUnit testFile) {
+        NodeList<ImportDeclaration> nonEvoImports = new NodeList<>();
+        for (ImportDeclaration importDeclaration : testFile.getImports()) {
+            if (!importDeclaration.getNameAsString().startsWith("org.evosuite")) {
+                nonEvoImports.add(importDeclaration);
+            }
+        }
+        testFile.setImports(nonEvoImports);
+    }
+
+    /** A list of all assertions from the {@code EvoAssertions} class. */
+    private static final List<String> evosuiteAssertions = List.of(
+            "assertThrownBy",
+            "verifyException"
+    );
+
+    /**
+     * Removes all EvoAssertions method call statements.
+     *
+     * @param testFile a JavaParser representation of a test file
+     */
+    private static void removeEvosuiteAssertions(CompilationUnit testFile) {
+        testFile
+                .findAll(Statement.class)
+                .stream()
+                .filter(Statement::isExpressionStmt)
+                .map(Statement::asExpressionStmt)
+                .forEach(exprStmt -> {
+                    Expression expr = exprStmt.getExpression();
+                    if (expr.isMethodCallExpr()) {
+                        MethodCallExpr methodCallExpr = expr.asMethodCallExpr();
+                        if (evosuiteAssertions.contains(methodCallExpr.getNameAsString())) {
+                            exprStmt.remove();
+                        }
+                    }
+                });
     }
 
     /**
-     * Removes all assertions from all test files in a given directory. The
-     * approach for removing oracles depends on whether an oracle is
-     * exceptional (e.g. throws an exception) or a normal assertion. Firstly,
-     * this method splits any test case with multiple assertions into multiple
-     * simple tests, each with a single JUnit assertion. These smaller
-     * subtests are saved in "output/evosuite-tests-simple/". Then, all
-     * oracles are removed from each test case to create test prefixes. The
-     * test prefixes are saved in "output/evosuite-prefix". This method does
-     * not override the original test files.
+     * Removes all import statements, annotations, and superclasses related to
+     * EvoSuite. This method does not override the original file.
      *
-     * @param dir a directory with Java test files
-     * @see OracleRemover#splitTests(CompilationUnit)
-     * @see OracleRemover#removeExceptionalOracles(CompilationUnit)
-     * @see OracleRemover#removeAssertionOracles(CompilationUnit)
+     * @param testFile a JavaParser representation of a test file
      */
-    public static void removeOracles(Path dir, String fullyQualifiedName) {
-        Path simplePath = getFQNOutputPath("evosuite-tests-simple", fullyQualifiedName);
-        Path prefixPath = getFQNOutputPath("evosuite-prefix", fullyQualifiedName);
-        FileUtils.copy(dir, simplePath);
-        FileUtils.copy(dir, prefixPath);
-        try (Stream<Path> walk = Files.walk(prefixPath)) {
-            walk
-                    .filter(FileUtils::isJavaFile)
-                    .filter(p -> !FileUtils.isScaffolding(p))
-                    .forEach(testFile -> {
-                        try {
-                            CompilationUnit cu = StaticJavaParser.parse(testFile);
-                            // save simple tests to separate output for later analysis
-                            splitTests(cu);
-                            Path simpleTestPath = FileUtils.getRelativePath(prefixPath, simplePath, testFile);
-                            FileUtils.writeString(simpleTestPath, cu.toString());
-                            // then, remove oracles for future insertion
-                            removeExceptionalOracles(cu);
-                            removeAssertionOracles(cu);
-                            FileUtils.writeString(testFile, cu.toString());
-                        } catch (IOException e) {
-                            throw new Error("Unable to parse test file " + testFile.getFileName().toString());
-                        }
-                    });
-        } catch (IOException e) {
-            throw new Error("Unable to parse files in directory " + dir.toString());
-        }
+    private static void removeEvosuiteDependency(CompilationUnit testFile) {
+        removeEvosuiteAssertions(testFile);
+        removeEvosuiteImports(testFile);
+        ClassOrInterfaceDeclaration testClass = testFile.getPrimaryType()
+                .orElseThrow()
+                .asClassOrInterfaceDeclaration();
+        testClass.setAnnotations(new NodeList<>());
+        testClass.setExtendedTypes(new NodeList<>());
+    }
+
+    /**
+     * Simplifies test generated by EvoSuite. The simplifications include:
+     * <ul>
+     *     <li>If a test has multiple assertions, then it is split into
+     *     multiple tests, each with a single assertion.</li>
+     *     <li>All dependencies related to {@code org.evosuite} are
+     *     removed.</li>
+     *     <li>Test file is renamed to "[simpleName]Test.java" (also renames
+     *     the primary type).</li>
+     *     <li>Removes EvoSuite scaffolding file.</li>
+     * </ul>
+     * This method assumes that EvoSuite tests have been generated and saved
+     * in "output/evosuite-tests". This method does not modify the original
+     * EvoSuite tests.
+     *
+     * @param fullyQualifiedName the fully qualified name of the class under
+     *                           test
+     */
+    private static void generateSimpleTests(String fullyQualifiedName) {
+        String simpleName = FileUtils.getSimpleNameFromFQN(fullyQualifiedName);
+        Path testPath = FileUtils.getFQNOutputPath(fullyQualifiedName, "evosuite-tests")
+                .resolveSibling(simpleName + "_ESTest.java");
+        CompilationUnit cu = FileUtils.getCompilationUnit(testPath);
+        splitTests(cu);
+        removeEvosuiteDependency(cu);
+        cu.getPrimaryType().orElseThrow()
+                .setName(simpleName + "Test");
+        Path simpleTestPath = FileUtils.getFQNOutputPath(fullyQualifiedName, "evosuite-simple-tests");
+        FileUtils.writeString(simpleTestPath, cu.toString());
+    }
+
+    /**
+     * Removes all assertion and exceptional oracles from a simple test suite.
+     * This method assumes that EvoSuite tests have been generated and saved
+     * in "output/evosuite-simple-tests". This method does not modify the
+     * original simple tests.
+     *
+     * @param fullyQualifiedName the fully qualified name of the class under
+     *                           test
+     */
+    private static void generatePrefixes(String fullyQualifiedName) {
+        // remove oracles from simple tests
+        Path simpleTestPath = FileUtils.getFQNOutputPath(fullyQualifiedName, "evosuite-simple-tests");
+        CompilationUnit cu = FileUtils.getCompilationUnit(simpleTestPath);
+        removeExceptionalOracles(cu);
+        removeAssertionOracles(cu);
+        // write output to evosuite-prefixes
+        Path prefixPath = FileUtils.getFQNOutputPath(fullyQualifiedName, "evosuite-prefixes");
+        FileUtils.writeString(prefixPath, cu.toString());
+    }
+
+    /**
+     * Removes all oracles from all EvoSuite tests generated for a given
+     * class. The approach for removing oracles depends on whether an oracle
+     * is exceptional or a normal assertion. Firstly, this method splits any
+     * test case with multiple assertions into multiple simple tests, each
+     * with a single JUnit assertion. Additionally, the simple tests remove
+     * the scaffolding generated by EvoSuite. The smaller subtests are saved
+     * in "output/evosuite-simple-tests" and the test prefixes are saved in
+     * "output/evosuite-prefixes". This method assumes that EvoSuite tests
+     * have been generated and saved in "output/evosuite-tests". This method
+     * does not modify the original EvoSuite test files.
+     *
+     * @param fullyQualifiedName the fully qualified name of the class under
+     *                           test
+     * @see OracleRemover#generateSimpleTests(String)
+     * @see OracleRemover#generatePrefixes(String)
+     */
+    public static void removeOracles(String fullyQualifiedName) {
+        generateSimpleTests(fullyQualifiedName);
+        generatePrefixes(fullyQualifiedName);
     }
 }
