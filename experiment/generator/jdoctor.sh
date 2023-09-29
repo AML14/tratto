@@ -1,5 +1,6 @@
-# This script generates a list of axiomatic oracles using JDoctor.
-# The output is a list of OracleOutput.
+#!/bin/bash
+# This script generates a list of axiomatic oracles using JDoctor. Saves the
+# output to "output/jdoctor/oracle" as a list of OracleOutput records.
 
 # Arguments check
 if [ ! $# -eq 3 ]; then
@@ -14,6 +15,7 @@ elif [ ! -d "$3" ]; then
 fi
 
 # Get current directory
+# shellcheck disable=SC2128
 current_dir=$(realpath "$(dirname "$BASH_SOURCE")")
 # Setup global variables
 source "${current_dir}/utils/global_variables.sh"

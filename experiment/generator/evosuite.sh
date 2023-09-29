@@ -1,6 +1,6 @@
 #!/bin/bash
 # This script generates a test suite using EvoSuite and saves the output to
-# experiment/output/evosuite-test.
+# "output/evosuite-tests".
 
 # Argument and setup check
 if [ ! $# -eq 2 ]; then
@@ -12,6 +12,7 @@ elif [ ! -d "$2" ]; then
 fi
 
 # Get current directory
+# shellcheck disable=SC2128
 current_dir=$(realpath "$(dirname "$BASH_SOURCE")")
 # Setup global variables
 source "${current_dir}/utils/global_variables.sh"

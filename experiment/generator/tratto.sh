@@ -1,6 +1,6 @@
 #!/bin/bash
-# This script generates a list of axiomatic oracles using Tratto.
-# The output is a list of OracleOutput.
+# This script generates a list of non-axiomatic oracles using Tratto. Saves the
+# output to "output/tratto/oracle" as a list of OracleOutput records.
 
 # Arguments and setup check
 if [ ! $# -eq 3 ]; then
@@ -9,6 +9,7 @@ if [ ! $# -eq 3 ]; then
 fi
 
 # Get current directory
+# shellcheck disable=SC2128
 current_dir=$(realpath "$(dirname "$BASH_SOURCE")")
 source "${current_dir}/utils/global_variables.sh"
 
@@ -28,9 +29,9 @@ sdk use java "$JAVA17"
 # Setup tratto
 bash "${UTILS_DIR}/tratto_setup.sh"
 # Execute tratto to generate oracles
-cd "$TRATTO_PROJECT_DIR"
+cd "$TRATTO_PROJECT_DIR" || exit 1
 java -jar "${RESOURCES_DIR}/tratto.jar" "$FULLY_QUALIFIED_NAME" "$SRC_PATH" "$PROJECT_JAR_PATH" "$SERVER_PORT"
-cd "$ROOT_DIR"
+cd "$ROOT_DIR" || exit 1
 
 if [ ! -d "${TRATTO_OUTPUT_DIR}" ]; then
     # If it doesn't exist, create the folder

@@ -23,4 +23,15 @@ public record OracleOutput(
         String oracle,
         String exception,
         String testName
-) {}
+) {
+    /**
+     * Checks if an OracleOutput corresponds to an exceptional oracle.
+     *
+     * @return true iff the record represents an exceptional oracle. This
+     * corresponds to an empty string in the {@link OracleOutput#exception()}
+     * value.
+     */
+    public boolean isExceptional() {
+        return !this.exception.equals("");
+    }
+}

@@ -1,16 +1,19 @@
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.javaparser.StaticJavaParser;
+import com.github.javaparser.ast.CompilationUnit;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.Arrays;
+import java.nio.file.attribute.FileAttribute;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -21,37 +24,69 @@ import java.util.stream.Stream;
  * reading, etc.
  */
 public class FileUtils {
-    /**
-     * Private constructor to avoid creating an instance of this class.
-     */
+    /** Private constructor to avoid creating an instance of this class. */
     private FileUtils() {
         throw new UnsupportedOperationException("This class cannot be instantiated.");
     }
 
     /**
-     * Gets the root project directory, "experiment", from the absolute path
-     * of a file or directory in the project.
+     * Converts a fully qualified class name into a relative file Path. For
+     * example,
+     *     {@code com.example.MyClass}    -&gt;
+     *     {@code com/example/MyClass.java}
      *
-     * @param absolutePath the absolute path of a file or directory in the
-     *                     project
-     * @return the path to the project root directory
-     * @throws IllegalArgumentException if the given path is not contained in
-     * the project
+     * @param fullyQualifiedName a fully qualified class name
+     * @return the path corresponding to the fully qualified class name
      */
-    public static Path getProjectRoot(Path absolutePath) {
-        Path currentPath = absolutePath;
-        while (currentPath != null) {
-            if (currentPath.endsWith("experiment")) {
-                return currentPath;
-            }
-            currentPath = currentPath.getParent();
+    public static Path getFQNPath(String fullyQualifiedName) {
+        return Paths.get(fullyQualifiedName.replaceAll("[.]", "/") + ".java");
+    }
+
+    /**
+     * Gets the output path for the fully qualified name of a given path. Each
+     * package is converted into a subdirectory of a given base directory.
+     * Then, the word "Test" is appended to the file name. For example:
+     *     {@code "evosuite-prefixes", "com.example.MyClass"}    -&gt;
+     *     {@code output/evosuite-prefixes/com/example/MyClassTest.java}
+     * This format is consistent for all subdirectories within output (except
+     * "evosuite-tests", which uses "[simpleName]_ESTest.java" as the file
+     * name).
+     *
+     * @param fullyQualifiedName a fully qualified name
+     * @param baseDir the base subdirectories within the output directory
+     * @return the output path for a given fully qualified name in the given
+     * base directories
+     */
+    public static Path getFQNOutputPath(String fullyQualifiedName, String... baseDir) {
+        Path fqnPath = FileUtils.getFQNPath(String.join(".", baseDir) + "." + fullyQualifiedName);
+        String fileName = getSimpleNameFromFQN(fullyQualifiedName) + "Test.java";
+        return Paths.get("output")
+                .resolve(fqnPath)
+                .resolveSibling(fileName);
+    }
+
+    /**
+     * Gets the ClassGetSimpleName from a fully qualified class name. For
+     * example:
+     *     {@code com.example.MyClass}    -&gt;    {@code MyClass}
+     *
+     * @param fullyQualifiedName a fully qualified class name
+     * @return the corresponding simple name without packages
+     */
+    public static String getSimpleNameFromFQN(String fullyQualifiedName) {
+        int classNameIdx = fullyQualifiedName.lastIndexOf(".");
+        if (classNameIdx != -1) {
+            return fullyQualifiedName.substring(classNameIdx + 1);
         }
-        throw new IllegalArgumentException("Unable to find \"experiment\" in the path " + absolutePath);
+        return fullyQualifiedName;
     }
 
     /**
      * Creates an empty directory. Creates parent directories if necessary. If
-     * the directory already exists, then this method does nothing.
+     * the directory already exists, then this method does nothing. <br> This
+     * method is a wrapper method of {@link Files#createDirectories(Path, FileAttribute[])}
+     * to substitute {@link IOException} with {@link Error} and avoid
+     * superfluous try/catch blocks.
      *
      * @param path a path
      * @throws Error if an error occurs while creating the directory
@@ -70,7 +105,7 @@ public class FileUtils {
      *
      * @param path a file
      * @throws Error if an error occurs while creating the parent directories
-     *               or new file
+     * or new file
      */
     public static void createFile(Path path) {
         try {
@@ -80,20 +115,6 @@ public class FileUtils {
             }
         } catch (IOException e) {
             throw new Error("Error when creating file " + path, e);
-        }
-    }
-
-    /**
-     * Deletes a given file.
-     *
-     * @param path a path
-     * @throws Error if an error occurs while deleting the file
-     */
-    public static void deleteFile(Path path) {
-        try {
-            Files.delete(path);
-        } catch (IOException e) {
-            throw new Error("Error when trying to delete the file " + path, e);
         }
     }
 
@@ -115,7 +136,11 @@ public class FileUtils {
                         if (Files.isDirectory(p)) {
                             deleteDirectory(p);
                         } else {
-                            deleteFile(p);
+                            try {
+                                Files.delete(p);
+                            } catch (IOException e) {
+                                throw new Error("Error when trying to delete the file " + p, e);
+                            }
                         }
                     });
             // delete root directory last
@@ -126,118 +151,118 @@ public class FileUtils {
     }
 
     /**
-     * Returns the path of the target file when hypothetically moved from the
-     * source directory to the destination directory. NOTE: this method does
-     * NOT move any files.
+     * Returns the path of the target file or directory when (hypothetically)
+     * moved from the source directory to the destination directory.
+     * NOTE: This method does NOT perform the move. This method is different
+     * from {@link Path#relativize(Path)}, which gives a path to the
+     * destination, relative to the source.
      *
-     * @param source      the source directory
+     * @param sourceDir the source directory
      * @param destination the destination directory
-     * @param target      the target file in the source directory
-     * @return the relative path of target in the destination directory. For
-     * example, let
+     * @param target the target file in the source directory
+     * @return the path of the target file if hypothetically moved from the
+     * source directory to the destination directory. For example, let
      * <pre>
-     *      source = [sourcePrefix]/[source]
-     *      destination = [destinationPrefix]/[destination]
-     *      target = [sourcePrefix]/[source]/[suffix]/[fileName]
+     *     sourceDir = [sourcePath]
+     *     destination = [destinationPath]
+     *     target = [sourcePath]/[internalDirectories]/[fileName]
      * </pre>
      * then the method outputs,
      * <pre>
-     *      relativePath = [destinationPrefix]/[destination]/[suffix]/[fileName]
+     *     relativePath = [destinationPath]/[internalDirectories]/[fileName]
      * </pre>
      */
-    public static Path getRelativePath(Path source, Path destination, Path target) {
-        if (source.equals(target)) {
+    public static Path getRelativePath(Path sourceDir, Path destination, Path target) {
+        if (sourceDir.equals(target)) {
             return destination;
         }
         // remove source prefix
-        if (!target.startsWith(source)) {
-            throw new IllegalArgumentException(target + " must exist under " + source);
+        if (!target.startsWith(sourceDir)) {
+            throw new IllegalArgumentException(target + " must exist under " + sourceDir);
         }
-        Path suffix = target.subpath(source.getNameCount(), target.getNameCount());
+        Path suffix = target.subpath(sourceDir.getNameCount(), target.getNameCount());
         // add remaining suffix to destination
         return destination.resolve(suffix);
     }
 
     /**
-     * Generates a relative path to a class file from a fully qualified class name.
-     * @param fullyQualifiedClassName the fully qualified class name.
-     * @return the relative path corresponding to the fully qualified class name.
+     * Copies a source file to a target file. If the target file already
+     * exists, then it is overwritten. If target does not exist, then it will
+     * be created. <br> This method is a wrapper method of
+     * {@link Files#copy(Path, Path, CopyOption...)} to substitute
+     * {@link IOException} with {@link Error} and avoid superfluous try/catch
+     * blocks.
+     *
+     * @param source the source file
+     * @param target the target file
      */
-    public static Path getRelativePathFromFullyQualifiedClassName(String fullyQualifiedClassName) {
-        String[] fullyQualifiedClassNameSplit = fullyQualifiedClassName.split("\\.");
-        if (fullyQualifiedClassNameSplit.length > 1) {
-            int classNameIdx = fullyQualifiedClassNameSplit.length - 1;
-            String className = fullyQualifiedClassNameSplit[classNameIdx];
-            fullyQualifiedClassNameSplit[classNameIdx] = className + ".java";
-            return Paths.get(
-                    fullyQualifiedClassNameSplit[0],
-                    Arrays.copyOfRange(
-                            fullyQualifiedClassNameSplit,
-                            1,
-                            fullyQualifiedClassNameSplit.length
-                    )
-            );
+    public static void copyFile(Path source, Path target) {
+        if (!Files.exists(target)) {
+            createFile(target);
         }
-        return Paths.get(fullyQualifiedClassName);
+        try {
+            Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            throw new Error("Error when trying to copy the file " + source + " to " + target, e);
+        }
     }
 
     /**
-     * Recursively copies all files from the source directory to the
-     * destination directory. If a file in the source directory already exists
-     * in the destination directory, then the original file will be overridden.
+     * Recursively copies all files and directories from the source directory
+     * to the destination directory. If a file in the source directory already
+     * exists in the destination directory, then the original file will be
+     * overwritten.
      *
-     * @param source      the directory where the files are located
-     * @param destination the directory where the files will be copied to
+     * @param sourceDir the directory where the files are located
+     * @param destinationDir the directory where the files will be copied to
      * @throws Error if the source directory does not exist or an error occurs
-     *               while copying a file
+     * while copying a file
      * @see FileUtils#move(Path, Path)
      */
-    public static void copy(Path source, Path destination) {
-        if (!Files.exists(source)) {
-            throw new Error("Directory " + source + " is not found");
+    public static void copy(Path sourceDir, Path destinationDir) {
+        if (!Files.exists(sourceDir)) {
+            throw new Error("Directory " + sourceDir + " is not found");
         }
-        if (!Files.exists(destination)) {
-            createDirectories(destination);
+        if (!Files.exists(destinationDir)) {
+            createDirectories(destinationDir);
         }
-        try (Stream<Path> walk = Files.walk(source)) {
+        // walk is used to iterate over files in subdirectories
+        try (Stream<Path> walk = Files.walk(sourceDir)) {
             walk
                     .forEach(p -> {
-                        Path relativePath = getRelativePath(source, destination, p);
-                        try {
-                            if (Files.isDirectory(p)) {
-                                createDirectories(relativePath);
-                            } else {
-                                Files.copy(p, relativePath, StandardCopyOption.REPLACE_EXISTING);
-                            }
-                        } catch (IOException e) {
-                            throw new Error("Error when trying to move the file " + p, e);
+                        Path relativePath = getRelativePath(sourceDir, destinationDir, p);
+                        if (Files.isDirectory(p)) {
+                            createDirectories(relativePath);
+                        } else {
+                            copyFile(p, relativePath);
                         }
                     });
         } catch (IOException e) {
-            throw new Error("Error when trying to copy " + source + " to " + destination, e);
+            throw new Error("Error when trying to copy " + sourceDir + " to " + destinationDir, e);
         }
     }
 
     /**
      * Recursively moves all files from the source directory to the
      * destination directory. If a file in the source directory already exists
-     * in the destination directory, then the original file will be overridden.
+     * in the destination directory, then the original file will be
+     * overwritten.
      *
-     * @param source      the directory where the files are located
-     * @param destination the directory where the files will be moved to
+     * @param sourceDir the directory where the files are located
+     * @param destinationDir the directory where the files will be moved to
      * @throws Error if the source directory does not exist or an error occurs
-     *               while moving a file
-     * @see FileUtils#copy
+     * while moving a file
+     * @see FileUtils#copy(Path, Path)
      */
-    public static void move(Path source, Path destination) {
-        if (!Files.exists(source)) {
-            throw new Error("Directory " + source + " is not found");
+    public static void move(Path sourceDir, Path destinationDir) {
+        if (!Files.exists(sourceDir)) {
+            throw new Error("Directory " + sourceDir + " is not found");
         }
-        if (!Files.exists(destination)) {
-            createDirectories(destination);
+        if (!Files.exists(destinationDir)) {
+            createDirectories(destinationDir);
         }
-        copy(source, destination);
-        deleteDirectory(source);
+        copy(sourceDir, destinationDir);
+        deleteDirectory(sourceDir);
     }
 
     /**
@@ -245,7 +270,7 @@ public class FileUtils {
      * file and parent directories if necessary. If file already exists,
      * then this method overrides any previous content.
      *
-     * @param path    a file
+     * @param path a file
      * @param content an object to be written in JSON content
      * @throws Error if unable to create files/directories or unable to write
      *               content to file
@@ -345,17 +370,34 @@ public class FileUtils {
         }
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            return (type == null)
-                    // if type is null, return List<?>
-                    ? objectMapper.readValue(jsonPath.toFile(), new TypeReference<>() {
-            })
-                    // otherwise, return List<T> of the given type
-                    : objectMapper.readValue(
+            return objectMapper.readValue(
                     jsonPath.toFile(),
                     objectMapper.getTypeFactory().constructCollectionType(List.class, type)
             );
         } catch (IOException e) {
             throw new Error("Error in processing the JSON file " + jsonPath, e);
+        }
+    }
+
+    /**
+     * Searches for a class file in a given directory and its
+     * subdirectories. Returns the path to the class from the root directory
+     * if found, otherwise, returns null.
+     *
+     * @param dir the root directory
+     * @param fqnPath the fully qualified name of the class as a Path
+     * @return the path to the class in the given root directory. Returns null
+     * if no such class is found.
+     * @see FileUtils#getFQNPath(String)
+     */
+    public static Path findClassPath(Path dir, Path fqnPath) {
+        try (Stream<Path> walk = Files.walk(dir)) {
+            return walk
+                    .filter(p -> p.endsWith(fqnPath))
+                    .findFirst()
+                    .orElse(null);
+        } catch (IOException e) {
+            throw new Error("Unable to parse files in directory " + dir);
         }
     }
 
@@ -371,7 +413,7 @@ public class FileUtils {
 
     /**
      * Checks if a given path corresponds to a scaffolding file generated by
-     * EvoSuite.
+     * EvoSuite. All scaffolding files end with "scaffolding.java".
      *
      * @param path a file
      * @return true iff the given file represents an EvoSuite scaffolding file
@@ -381,44 +423,20 @@ public class FileUtils {
     }
 
     /**
-     * Searches a file within all the subdirectories of a given directory.
-     * @param dir the root directory.
-     * @param fullyQualifiedClassFilePath the fully qualified name of the class file.
-     * @return the full path to the file. Returns null if the path is not found.
+     * Returns the JavaParser {@link CompilationUnit} corresponding to a given
+     * Java file. Uses StaticJavaParser to avoid configuring a symbol solver.
+     * <br> This method is a wrapper method of
+     * {@link StaticJavaParser#parse(Path)} to substitute {@link IOException}
+     * with {@link Error} and avoid superfluous try/catch blocks.
+     *
+     * @param path a Java file
+     * @return the CompilationUnit corresponding to the given file
      */
-    public static Path searchClassFile(Path dir, Path fullyQualifiedClassFilePath) {
-        File dirFile = new File(dir.toString());
-        int classNameIdx = fullyQualifiedClassFilePath.getNameCount() - 1;
-        Path className = fullyQualifiedClassFilePath.getName(classNameIdx);
-        File[] files = dirFile.listFiles();
-        if (files != null) {
-            for (File file : files) {
-                if (file.isDirectory()) {
-                    Path path = searchClassFile(file.toPath(), fullyQualifiedClassFilePath);
-                    if (!(path == null)) {
-                        return path;
-                    }
-                } else if (file.getName().equals(className.toString())) {
-                    if (file.toPath().endsWith(fullyQualifiedClassFilePath)) {
-                        return file.toPath();
-                    }
-                }
-            }
+    public static CompilationUnit getCompilationUnit(Path path) {
+        try {
+            return StaticJavaParser.parse(path);
+        } catch (IOException e) {
+            throw new Error("Unable to parse the file " + path + " using JavaParser");
         }
-        return null;
-    }
-
-    /**
-     * Extracts the class name from a fully qualified class name and returns it as a string.
-     * @param fullyQualifiedClassName the fully qualified class name.
-     * @return the class name.
-     */
-    public static String getClassNameFromFullyQualifiedName(String fullyQualifiedClassName) {
-        String[] fullyQualifiedClassNameSplit = fullyQualifiedClassName.split("\\.");
-        if (fullyQualifiedClassNameSplit.length > 1) {
-            int classNameIdx = fullyQualifiedClassNameSplit.length - 1;
-            return fullyQualifiedClassNameSplit[classNameIdx];
-        }
-        return fullyQualifiedClassName;
     }
 }

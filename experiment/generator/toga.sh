@@ -1,8 +1,9 @@
 #!/bin/bash
 # This script generates a list of non-axiomatic oracles using TOGA.
-# Should output a list of OracleOutput.
+# It should save the output to "output/toga/oracle" as a list of OracleOutput records.
 
 # Get current directory
+# shellcheck disable=SC2128
 current_dir=$(realpath "$(dirname "$BASH_SOURCE")")
 source "${current_dir}/utils/global_variables.sh"
 
@@ -23,11 +24,11 @@ echo "[4] Generate TOGA input files."
 java -jar "generator/resources/experiment.jar" toga generate_tog_inputs "$src_path" "$fully_qualified_name"
 
 echo "[5] Generate oracles with TOGA."
-cd "$TOGA_PROJECT_DIR"
+cd "$TOGA_PROJECT_DIR" || exit 1
 
 python3 toga.py "${TOGA_INPUT_DIR}/toga_input.csv" "${TOGA_INPUT_DIR}/toga_metadata.csv"
 
-cd "$ROOT_DIR"
+cd "$ROOT_DIR" || exit 1
 
 if [ ! -d "$TOGA_OUTPUT_DIR" ]; then
     # If it doesn't exist, create the folder
