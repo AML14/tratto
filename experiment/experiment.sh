@@ -28,6 +28,31 @@ project_jar=${5}
 qualifiers="${target_class%.*}"
 evosuite_output="${ROOT_DIR}/output/evosuite-tests/${qualifiers//.//}"
 
+# Check given arguments
+if [ ! -d "${src_dir}" ]; then
+  echo -e "The project source directory \"${src_dir}\" does not exist."
+  exit 1
+elif [ ! -d "${bin_dir}" ]; then
+  echo -e "The system binaries path \"${bin_dir}\" does not exist."
+  exit 1
+elif [ ! -f "${project_jar}" ]; then
+  echo -e "The project jar file \"${project_jar}\" does not exist."
+  exit 1
+fi
+# Check if given TOG is supported
+found=0
+valid_tog=("jdoctor" "toga" "tratto")
+for option in "${valid_tog[@]}"; do
+  if [ "${option}" = "${tog}" ]; then
+    found=1
+    break
+  fi
+done
+if [ ! $found -eq 1 ]; then
+  echo -e "The given TOG \"${1}\" is not supported. Must be one of: \"jdoctor\", \"toga\", or \"tratto\"."
+  exit 1
+fi
+
 # Generate experiment JAR if not present
 if [ ! -f "${EXPERIMENT_JAR}" ]; then
   mvn clean package -DskipTests
@@ -42,32 +67,6 @@ fi
 
 # Setup sdkman
 source "${UTILS_DIR}/init_sdkman.sh" "${SDKMAN_DIR}"
-
-# Check if given directories exist
-if [ ! -d "${src_dir}" ]; then
-  echo -e "The project source directory \"${src_dir}\" does not exist."
-  exit 1
-elif [ ! -d "${bin_dir}" ]; then
-  echo -e "The system binaries path \"${bin_dir}\" does not exist."
-  exit 1
-elif [ ! -f "${project_jar}" ]; then
-  echo -e "The project jar file \"${project_jar}\" does not exist."
-  exit 1
-fi
-
-# Check if given TOG is supported
-found=0
-valid_tog=("jdoctor" "toga" "tratto")
-for option in "${valid_tog[@]}"; do
-  if [ "${option}" = "${tog}" ]; then
-    found=1
-    break
-  fi
-done
-if [ ! $found -eq 1 ]; then
-  echo -e "The given TOG \"${1}\" is not supported. Must be one of: \"jdoctor\", \"toga\", or \"tratto\"."
-  exit 1
-fi
 
 # Generate EvoSuite tests
 echo "[1] Generate EvoSuite tests for class ${target_class}"
