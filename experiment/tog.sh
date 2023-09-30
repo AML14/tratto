@@ -47,9 +47,6 @@ if [ ! $found -eq 1 ]; then
   exit 1
 fi
 
-echo "${evosuite_prefixes}"
-exit 1
-
 # Generate experiment JAR if not present
 if [ ! -f "${EXPERIMENT_JAR}" ]; then
   mvn clean package -DskipTests
@@ -64,9 +61,9 @@ fi
 
 # Setup sdkman
 source "${UTILS_DIR}/init_sdkman.sh" "${SDKMAN_DIR}"
-
 # Switch to Java 17
 sdk use java "${JAVA17}"
+
 # Generate oracles using TOG
 if [ "${tog}" == "jdoctor" ]; then
   bash ./generator/jdoctor.sh "${target_class}" "${src_dir}" "${bin_dir}"
