@@ -46,5 +46,5 @@ java -jar "${JDOCTOR_JAR}" \
 # switch to Java 17
 sdk use java "${JAVA17}"
 
-# convert JDoctor JSON EXPERIMENT_JARto OracleOutput
-java -jar "${}" "jdoctor" "generate_oracle_outputs" "${OUTPUT_DIR}/jdoctor/jdoctor_output.json"
+# convert JDoctor JSON to OracleOutput
+java -jar "${EXPERIMENT_JAR}" "generate_oracle_output" "jdoctor" ""   # empty argument for compatibility
