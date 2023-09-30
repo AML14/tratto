@@ -47,4 +47,4 @@ mv "${ROOT_DIR}/evosuite-tests" "${OUTPUT_DIR}"
 sdk use java "${JAVA17}"
 
 # convert EvoSuite tests into test prefixes
-java -jar "${EXPERIMENT_JAR}" "remove_oracles" "${target_dir}"
+java -jar "${EXPERIMENT_JAR}" "remove_oracles" "${target_class}"
