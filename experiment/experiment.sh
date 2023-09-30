@@ -34,7 +34,7 @@ if [ ! -f "${EXPERIMENT_JAR}" ]; then
   target_jar=$(find "${ROOT_DIR}/target" -type f -name "experiment*-jar-with-dependencies.jar")
     # Check if a file was found
     if [ -z "${target_jar}" ]; then
-      echo "Unexpected error: experiment jar not found."
+      echo "experiment.sh: Unable to build jar for experiment module."
       exit 1
     fi
     sudo mv "${target_jar}" "${RESOURCES_DIR}/experiment.jar"
@@ -49,6 +49,9 @@ if [ ! -d "${src_dir}" ]; then
   exit 1
 elif [ ! -d "${bin_dir}" ]; then
   echo -e "The system binaries path \"${bin_dir}\" does not exist."
+  exit 1
+elif [ ! -f "${project_jar}" ]; then
+  echo -e "The project jar file \"${project_jar}\" does not exist."
   exit 1
 fi
 
