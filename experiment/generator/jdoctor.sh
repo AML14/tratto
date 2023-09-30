@@ -37,11 +37,12 @@ fi
 sdk use java "${JAVA8}"
 
 # execute JDoctor to generate oracles
+mkdir -p "${OUTPUT_DIR}/jdoctor/output"
 java -jar "${JDOCTOR_JAR}" \
     --target-class "${target_class}" \
     --source-dir "${src_dir}" \
     --class-dir "${class_dir}" \
-    --condition-translator-output "${OUTPUT_DIR}/jdoctor/jdoctor_output.json"
+    --condition-translator-output "${OUTPUT_DIR}/jdoctor/output/jdoctor_output.json"
 
 # switch to Java 17
 sdk use java "${JAVA17}"
