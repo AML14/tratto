@@ -47,6 +47,9 @@ if [ ! $found -eq 1 ]; then
   exit 1
 fi
 
+echo "${evosuite_prefixes}"
+exit 1
+
 # Generate experiment JAR if not present
 if [ ! -f "${EXPERIMENT_JAR}" ]; then
   mvn clean package -DskipTests
@@ -62,16 +65,8 @@ fi
 # Setup sdkman
 source "${UTILS_DIR}/init_sdkman.sh" "${SDKMAN_DIR}"
 
-# Generate EvoSuite tests
-echo "[1] Generate EvoSuite tests for class ${target_class}"
-#{
-#bash ./generator/evosuite.sh "${target_class}" "${bin_dir}"
-#} > /dev/null 2>&1
-
 # Switch to Java 17
 sdk use java "${JAVA17}"
-# Generate EvoSuite prefixes
-java -jar "${EXPERIMENT_JAR}" "${tog}" "remove_oracles" "${evosuite_output}" "${target_class}"
 # Generate oracles using TOG
 if [ "${tog}" == "jdoctor" ]; then
   bash ./generator/jdoctor.sh "${target_class}" "${src_dir}" "${bin_dir}"
@@ -85,8 +80,4 @@ elif [ "${tog}" == "tratto" ]; then
 fi
 cp "${oracle_output}" "${ROOT_DIR}/output/${tog}-oracles.json"
 # insert oracles into EvoSuite prefixes
-echo "[7] Insert oracles in test prefixes"
 java -jar "${EXPERIMENT_JAR}" "${tog}" "insert_oracles" "${bin_dir}" "${oracle_output}"
-echo "[8] Running tests and generating test output"
-#bash ./runner.sh "$tog" "$target_class" "$src_dir" "$bin_dir"
-echo "[9] Experiment complete!"
