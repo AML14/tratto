@@ -24,6 +24,7 @@ tog=${1}
 target_class=${2}
 src_dir=${3}
 bin_dir=${4}
+project_jar=${5}
 qualifiers="${target_class%.*}"
 evosuite_output="${ROOT_DIR}/output/evosuite-tests/${qualifiers//.//}"
 
@@ -83,7 +84,6 @@ elif [ "${tog}" == "toga" ]; then
   bash ./generator/toga.sh "${target_class}" "${src_dir}" "${evosuite_output}"
   oracle_output="${ROOT_DIR}/output/toga/oracle/oracle_outputs.json"
 elif [ "${tog}" == "tratto" ]; then
-  project_jar=${5}
   bash ./generator/tratto.sh "${target_class}" "${src_dir}" "${project_jar}"
   oracle_output="${ROOT_DIR}/output/tratto/oracle/oracle_outputs.json"
 fi
