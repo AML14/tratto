@@ -15,39 +15,39 @@
 
 # Get current directory
 # shellcheck disable=SC2128
-current_dir=$(realpath "$(dirname "$BASH_SOURCE")")
+current_dir=$(realpath "$(dirname "${BASH_SOURCE}")")
 # Setup global variables
 source "${current_dir}/generator/utils/global_variables.sh"
 
 # Define local variables
-tog=$1
-target_class=$2
-src_dir=$3
-bin_dir=$4
+tog=${1}
+target_class=${2}
+src_dir=${3}
+bin_dir=${4}
 qualifiers="${target_class%.*}"
 evosuite_output="${ROOT_DIR}/output/evosuite-tests/${qualifiers//.//}"
 
 # Generate experiment JAR if not present
-if [ ! -f "$EXPERIMENT_JAR" ]; then
+if [ ! -f "${EXPERIMENT_JAR}" ]; then
   mvn clean package -DskipTests
   target_jar=$(find "${ROOT_DIR}/target" -type f -name "experiment*-jar-with-dependencies.jar")
     # Check if a file was found
-    if [ -z "$target_jar" ]; then
+    if [ -z "${target_jar}" ]; then
       echo "Unexpected error: experiment jar not found."
       exit 1
     fi
-    sudo mv "$target_jar" "${RESOURCES_DIR}/experiment.jar"
+    sudo mv "${target_jar}" "${RESOURCES_DIR}/experiment.jar"
 fi
 
 # Setup sdkman
-source "${UTILS_DIR}/init_sdkman.sh" "$SDKMAN_DIR"
+source "${UTILS_DIR}/init_sdkman.sh" "${SDKMAN_DIR}"
 
 # Check if given directories exist
-if [ ! -d "$src_dir" ]; then
-  echo -e "The project source directory \"$src_dir\" does not exist."
+if [ ! -d "${src_dir}" ]; then
+  echo -e "The project source directory \"${src_dir}\" does not exist."
   exit 1
-elif [ ! -d "$bin_dir" ]; then
-  echo -e "The system binaries path \"$bin_dir\" does not exist."
+elif [ ! -d "${bin_dir}" ]; then
+  echo -e "The system binaries path \"${bin_dir}\" does not exist."
   exit 1
 fi
 
@@ -55,13 +55,13 @@ fi
 found=0
 valid_tog=("jdoctor" "toga" "tratto")
 for option in "${valid_tog[@]}"; do
-  if [ "$option" = "$tog" ]; then
+  if [ "${option}" = "${tog}" ]; then
     found=1
     break
   fi
 done
 if [ ! $found -eq 1 ]; then
-  echo -e "The given TOG \"$1\" is not supported. Must be one of: \"jdoctor\", \"toga\", or \"tratto\"."
+  echo -e "The given TOG \"${1}\" is not supported. Must be one of: \"jdoctor\", \"toga\", or \"tratto\"."
   exit 1
 fi
 
@@ -72,25 +72,25 @@ echo "[1] Generate EvoSuite tests for class ${target_class}"
 #} > /dev/null 2>&1
 
 # Switch to Java 17
-sdk use java "$JAVA17"
+sdk use java "${JAVA17}"
 # Generate EvoSuite prefixes
-java -jar "$EXPERIMENT_JAR" "$tog" "remove_oracles" "$evosuite_output" "$target_class"
+java -jar "${EXPERIMENT_JAR}" "${tog}" "remove_oracles" "${evosuite_output}" "${target_class}"
 # Generate oracles using TOG
 if [ "${tog}" == "jdoctor" ]; then
   bash ./generator/jdoctor.sh "${target_class}" "${src_dir}" "${bin_dir}"
-  oracle_output="$ROOT_DIR/output/jdoctor/oracle_outputs.json"
+  oracle_output="${ROOT_DIR}/output/jdoctor/oracle_outputs.json"
 elif [ "${tog}" == "toga" ]; then
   bash ./generator/toga.sh "${target_class}" "${src_dir}" "${evosuite_output}"
-  oracle_output="$ROOT_DIR/output/toga/oracle/oracle_outputs.json"
+  oracle_output="${ROOT_DIR}/output/toga/oracle/oracle_outputs.json"
 elif [ "${tog}" == "tratto" ]; then
-  project_jar=$5
+  project_jar=${5}
   bash ./generator/tratto.sh "${target_class}" "${src_dir}" "${project_jar}"
-  oracle_output="$ROOT_DIR/output/tratto/oracle/oracle_outputs.json"
+  oracle_output="${ROOT_DIR}/output/tratto/oracle/oracle_outputs.json"
 fi
-cp "$oracle_output" "$ROOT_DIR/output/$tog-oracles.json"
+cp "${oracle_output}" "${ROOT_DIR}/output/${tog}-oracles.json"
 # insert oracles into EvoSuite prefixes
 echo "[7] Insert oracles in test prefixes"
-java -jar "$EXPERIMENT_JAR" "$tog" "insert_oracles" "$bin_dir" "$oracle_output"
+java -jar "${EXPERIMENT_JAR}" "${tog}" "insert_oracles" "${bin_dir}" "${oracle_output}"
 echo "[8] Running tests and generating test output"
 #bash ./runner.sh "$tog" "$target_class" "$src_dir" "$bin_dir"
 echo "[9] Experiment complete!"
