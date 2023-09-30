@@ -4,13 +4,13 @@
 
 # Arguments check
 if [ ! $# -eq 3 ]; then
-  echo -e "(JDOCTOR) Incorrect number of arguments. Expected 3 arguments, but got $#".
+  echo -e "jdoctor.sh: Expected 3 arguments, but got ${#}".
   exit 1
-elif [ ! -d "$2" ]; then
-  echo -e "(JDOCTOR) The source directory \"$2\" does not exist."
+elif [ ! -d "${2}" ]; then
+  echo -e "jdoctor.sh: The source directory \"${2}\" does not exist."
   exit 1
-elif [ ! -d "$3" ]; then
-  echo -e "(JDOCTOR) The system binaries path \"$3\" does not exist."
+elif [ ! -d "${3}" ]; then
+  echo -e "jdoctor.sh: The system binaries path \"${3}\" does not exist."
   exit 1
 fi
 
