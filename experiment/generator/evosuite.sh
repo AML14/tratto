@@ -33,4 +33,12 @@ fi
 sdk use java "${JAVA8}"
 
 # Generate tests using EvoSuite
-java -jar "${EVOSUITE_JAR}" -class "${target_class}" -projectCP "${target_dir}" -base_dir="${OUTPUT_DIR}" -seed=13042023
+java -jar "${EVOSUITE_JAR}" -class "${target_class}" -projectCP "${target_dir}" -seed 13042023
+rm -r "${ROOT_DIR}/evosuite-report"  # delete statistics
+# overwrites previous output if necessary
+if [ -d "${OUTPUT_DIR}/evosuite-tests" ]; then
+  rm - r "${OUTPUT_DIR}/evosuite-tests"
+fi
+# moves evosuite tests to "output/evosuite-tests"
+mkdir -p "${OUTPUT_DIR}/evosuite-tests"
+mv "${ROOT_DIR}/evosuite-tests" "${OUTPUT_DIR}"
