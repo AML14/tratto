@@ -42,3 +42,9 @@ fi
 # moves evosuite tests to "output/evosuite-tests"
 mkdir -p "${OUTPUT_DIR}/evosuite-tests"
 mv "${ROOT_DIR}/evosuite-tests" "${OUTPUT_DIR}"
+
+# switch to Java 17
+sdk use java "${JAVA17}"
+
+# convert EvoSuite tests into test prefixes
+java -jar "${EXPERIMENT_JAR}" "remove_oracles" "${target_dir}"
