@@ -96,7 +96,7 @@ public class Tratto {
                     oracleDatapoint.getJavadocTag(),
                     oracleDatapoint.getOracleType());
 
-            while (!(oracleDatapoint.getOracle().endsWith(";") && oracleDatapoint.getOracle().length() < 50)) {
+            while (!(oracleDatapoint.getOracle().endsWith(";") || oracleDatapoint.getOracle().length() > 500)) {
                 // Generate token datapoints and save to file
                 List<TokenDatapoint> tokenDatapoints = oracleSoFarAndTokenToTokenDatapoints(oracleDatapoint, oracleSoFarTokens, tokenClassesSoFar, "", TokenDPType.TOKEN);
                 FileOutputStream tokenDatapointsOutputStream = new FileOutputStream(TOKEN_DATAPOINTS_PATH);
