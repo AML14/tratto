@@ -22,7 +22,7 @@ while IFS=, read -r project_id bug_id modified_classes; do
   fixed_project_bug_dir="${DEFECTS4J_DIR}/temp/${project_id}_${bug_id}f"
   # Checkout buggy version of the project_id-bug_id project
   echo "Checkout buggy version: project ${project_id}-${bug_id}b."
-  #defects4j checkout -p "${project_id}" -v "${bug_id}b" -w "$buggy_project_bug_dir"
+  defects4j checkout -p "${project_id}" -v "${bug_id}b" -w "$buggy_project_bug_dir"
   echo "Checkout complete."
   # Checkout fixed version of the project_id-bug_id project
   echo "Checkout fixed version: project ${project_id}-${bug_id}f."

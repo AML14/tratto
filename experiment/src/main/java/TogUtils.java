@@ -13,6 +13,7 @@ import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.resolution.SymbolResolver;
+import com.github.javaparser.resolution.UnsolvedSymbolException;
 import com.github.javaparser.symbolsolver.utils.SymbolSolverCollectionStrategy;
 import data.JDoctorOutput;
 import data.JDoctorOutput.Parameter;
@@ -148,8 +149,8 @@ public class TogUtils {
                             .get(0);
                     String methodName = mut.getNameAsString();
                     String focalMethod = getMethodSignature(mut);
-                    String javadocString = getCallableJavadoc(mut).replaceAll("\"", "'");
-                    String testStr = test.toString().replaceAll("\"", "'");
+                    String javadocString = getCallableJavadoc(mut).replace("'", "\\'").replace("\"", "'");
+                    String testStr = test.toString().replace("'", "\\'").replace("\"", "'");
                     String testPrefixStr = testPrefix.toString();
                     Matcher matcher = testPrefixPattern.matcher(testPrefix.toString());
                     if (matcher.find()) {
@@ -164,11 +165,11 @@ public class TogUtils {
                     togaRow.put("testPrefix", testPrefixStr);
                     togaRow.put("testName", testName);
                     togaInfo.put(testName,togaRow);
-                } catch (NoSuchElementException e) {
+                } catch (NoSuchElementException | UnsolvedSymbolException e) {
                     String errMsg = String.format(
-                            "Focal method %s not found for class %s",
-                            lastMethodCallExpression.getNameAsString(),
-                            fullyQualifiedClassName
+                        "Focal method %s not found for class %s",
+                        lastMethodCallExpression.getNameAsString(),
+                        fullyQualifiedClassName
                     );
                     System.err.println(errMsg);
                 }

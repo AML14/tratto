@@ -77,4 +77,4 @@ elif [ "${tog}" == "tratto" ]; then
 fi
 cp "${oracle_output}" "${ROOT_DIR}/output/${tog}-oracles.json"
 # insert oracles into EvoSuite prefixes
-java -jar "${EXPERIMENT_JAR}" "${tog}" "insert_oracles" "${bin_dir}" "${oracle_output}"
+java -jar "${EXPERIMENT_JAR}" "insert_oracles" "${tog}" "${bin_dir}" "${oracle_output}"

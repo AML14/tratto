@@ -24,9 +24,10 @@ tog=${1}
 target_class=${2}
 src_dir=${3}
 bin_dir=${4}
-project_jar=${5}
+project_jar=${5:-""}
 qualifiers="${target_class%.*}"
-evosuite_output="${ROOT_DIR}/output/evosuite-tests/${qualifiers//.//}"
+#evosuite_output="${ROOT_DIR}/output/evosuite-tests/${qualifiers//.//}"   #!!!
+
 
 # Check given arguments
 if [ ! -d "${src_dir}" ]; then
@@ -35,7 +36,7 @@ if [ ! -d "${src_dir}" ]; then
 elif [ ! -d "${bin_dir}" ]; then
   echo -e "The system binaries path \"${bin_dir}\" does not exist."
   exit 1
-elif [ ! -f "${project_jar}" ]; then
+elif [ "$tog" == "tratto" ] && [ ! -f "${project_jar}" ]; then
   echo -e "The project jar file \"${project_jar}\" does not exist."
   exit 1
 fi
@@ -75,24 +76,24 @@ echo "[1] Generate EvoSuite tests for class ${target_class}"
 #} > /dev/null 2>&1
 
 # Switch to Java 17
-sdk use java "${JAVA17}"
+sdk use java "$JAVA17"
 # Generate EvoSuite prefixes
-java -jar "${EXPERIMENT_JAR}" "${tog}" "remove_oracles" "${evosuite_output}" "${target_class}"
+java -jar "${EXPERIMENT_JAR}" "remove_oracles" "${target_class}"
 # Generate oracles using TOG
 if [ "${tog}" == "jdoctor" ]; then
   bash ./generator/jdoctor.sh "${target_class}" "${src_dir}" "${bin_dir}"
   oracle_output="${ROOT_DIR}/output/jdoctor/oracle_outputs.json"
 elif [ "${tog}" == "toga" ]; then
-  bash ./generator/toga.sh "${target_class}" "${src_dir}" "${evosuite_output}"
+  bash ./generator/toga.sh "${target_class}" "${src_dir}" #"${evosuite_output}"
   oracle_output="${ROOT_DIR}/output/toga/oracle/oracle_outputs.json"
 elif [ "${tog}" == "tratto" ]; then
   bash ./generator/tratto.sh "${target_class}" "${src_dir}" "${project_jar}"
   oracle_output="${ROOT_DIR}/output/tratto/oracle/oracle_outputs.json"
 fi
-cp "${oracle_output}" "${ROOT_DIR}/output/${tog}-oracles.json"
+#cp "${oracle_output}" "${ROOT_DIR}/output/${tog}-oracles.json" #!!!
 # insert oracles into EvoSuite prefixes
-echo "[7] Insert oracles in test prefixes"
-java -jar "${EXPERIMENT_JAR}" "${tog}" "insert_oracles" "${bin_dir}" "${oracle_output}"
-echo "[8] Running tests and generating test output"
+#echo "[7] Insert oracles in test prefixes"
+#java -jar "${EXPERIMENT_JAR}" "insert_oracles" "${tog}" "${bin_dir}" "${oracle_output}"
+#echo "[8] Running tests and generating test output"
 #bash ./runner.sh "$tog" "$target_class" "$src_dir" "$bin_dir"
-echo "[9] Experiment complete!"
+#echo "[9] Experiment complete!"

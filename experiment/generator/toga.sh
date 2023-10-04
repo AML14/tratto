@@ -42,4 +42,4 @@ fi
 mv "${toga_project_dir}/oracle_preds.csv" "${toga_output_dir}"
 
 echo "toga.sh: Map oracles generated with TOGA into OracleOutputs."
-java -jar "generator/resources/experiment.jar" "generate_oracle_output" "toga" "${src_path}"
+java -jar "${EXPERIMENT_JAR}" "generate_oracle_output" "toga" "${src_path}"

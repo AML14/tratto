@@ -14,8 +14,9 @@ installed_packages=$(pip freeze)
 install_packages="N"
 
 # Loop through each package and check if it's installed
-for PACKAGE in "${packages[@]}"; do
-    found=$(echo "$installed_packages" | grep "^${PACKAGE}==")
+for package_name in "${packages[@]}"; do
+    dashed_package_name=$(echo "$package_name" | sed 's/_/-/g')
+    found=$(echo "$installed_packages" | grep "^${package_name}\|^${dashed_package_name}")
     if [ -z "$found" ]; then
         echo "Detected python packages not installed."
         install_packages="Y"
@@ -24,15 +25,14 @@ for PACKAGE in "${packages[@]}"; do
 done
 # Install the packages not installed
 if [ "$install_packages" == "Y" ]; then
-  choice=$(bash "${UTILS_DIR}/y_n.sh" "To proceed it is necessary to install the python packages from the requirements.txt of the ${2} repository. Proceed? (Y/n): ")
-  if [ ! "$choice" == "Y" ]; then
-    echo "[ERROR] - Impossible to proceed without authorization to install python packages."
-    exit 1
-  fi
+  #choice=$(bash "${UTILS_DIR}/y_n.sh" "To proceed it is necessary to install the python packages from the requirements.txt of the ${2} repository. Proceed? (Y/n): ")
+  #if [ ! "$choice" == "Y" ]; then
+  #  echo "[ERROR] - Impossible to proceed without authorization to install python packages."
+  #  exit 1
+  #fi
   echo "Installing packages..."
   cd "$project_dir"
-  #pip install -q -r requirements.txt
   pip install -r requirements.txt
   cd "$ROOT_DIR"
+  echo "Installation complete!"
 fi
-echo "Installation complete!"

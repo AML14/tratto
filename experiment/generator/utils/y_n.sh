@@ -7,7 +7,7 @@ choice="Y"
 
 # Prompt the input and capture the user choice
 while true; do
-  read -rp "$1" USER_INPUT
+  read -rp "To proceed it is necessary to install the python packages from the requirements.txt of the repository. Proceed? (Y/n):" USER_INPUT
   # Check if the user input is empty (just Enter) and set it to 'Y'
   [ -z "$USER_INPUT" ] && USER_INPUT="Y"
   # Convert the user input to lowercase for case-insensitive comparisons
@@ -23,5 +23,6 @@ while true; do
     echo "Invalid input. Please enter 'Y' or 'n'." >&2
   fi
 done
+echo "pluto"
 # Return the Yes/No choice
 echo "${choice}"
