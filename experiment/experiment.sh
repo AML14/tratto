@@ -72,7 +72,7 @@ source "${UTILS_DIR}/init_sdkman.sh" "${SDKMAN_DIR}"
 # Generate EvoSuite tests
 echo "[1] Generate EvoSuite tests for class ${target_class}"
 #{
-#bash ./generator/evosuite.sh "${target_class}" "${bin_dir}"
+bash ./generator/evosuite.sh "${target_class}" "${bin_dir}"
 #} > /dev/null 2>&1
 
 # Switch to Java 17

@@ -40,46 +40,45 @@ while IFS=, read -r project_id bug_id modified_classes; do
   defects4j compile -w "$fixed_project_bug_dir"
   echo "Compilation complete."
   # Set path path to binary files
-  if [ -d "$buggy_project_bug_dir/build/classes" ]; then
-    binary_path="build/classes"
-  elif [ -d "$buggy_project_bug_dir/build" ]; then
-    binary_path="build"
-  elif [ -d "${buggy_project_bug_dir}/target/classes" ]; then
-    binary_path="target/classes"
-  else
-    echo "Binary path for project $project_id not found."
-    exit 1
-  fi
-  if [ -d "$buggy_project_bug_dir/source" ]; then
-    src_path="source"
-  elif [ -d "$buggy_project_bug_dir/src/main/java" ]; then
-    src_path="src/main/java"
-  elif [ -d "$buggy_project_bug_dir/src/java" ]; then
-    src_path="src/java"
-  elif [ -d "${buggy_project_bug_dir}/src" ]; then
-    src_path="src"
-  elif [ -d "$buggy_project_bug_dir/src/main/java" ]; then
-    src_path="gson/src/main/java"
-  else
-    echo "Binary path for project $project_id not found."
-    exit 1
-  fi
-  # Generate JAR from binary path
-  jar cf "${buggy_project_bug_dir}/${project_id}".jar -C "${buggy_project_bug_dir}/${binary_path}" .
-  jar cf "${buggy_project_bug_dir}/$project_id".jar -C "${fixed_project_bug_dir}/${binary_path}" .
+    if [ -d "$buggy_project_bug_dir/build/classes" ]; then
+      binary_path="build/classes"
+    elif [ -d "$buggy_project_bug_dir/build" ]; then
+      binary_path="build"
+    elif [ -d "${buggy_project_bug_dir}/target/classes" ]; then
+      binary_path="target/classes"
+    else
+      echo "Binary path for project $project_id not found."
+      exit 1
+    fi
+    if [ -d "$buggy_project_bug_dir/source" ]; then
+      src_path="source"
+    elif [ -d "$buggy_project_bug_dir/src/main/java" ]; then
+      src_path="src/main/java"
+    elif [ -d "$buggy_project_bug_dir/src/java" ]; then
+      src_path="src/java"
+    elif [ -d "${buggy_project_bug_dir}/src" ]; then
+      src_path="src"
+    elif [ -d "$buggy_project_bug_dir/src/main/java" ]; then
+      src_path="gson/src/main/java"
+    else
+      echo "Binary path for project $project_id not found."
+      exit 1
+    fi
+    # Generate JAR from binary path
+    jar cf "${buggy_project_bug_dir}/${project_id}".jar -C "${buggy_project_bug_dir}/${binary_path}" .
+    jar cf "${buggy_project_bug_dir}/$project_id".jar -C "${fixed_project_bug_dir}/${binary_path}" .
 
-  # Iterate over the modified classes and generate test cases for each class
-  for modified_class in "${modified_classes_list[@]}"; do
-    # Generate jdoctor oracles
-    bash experiment.sh jdoctor "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}"
-    # Generate toga oracles
-    bash experiment.sh toga "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}"
-    # Generate tratto oracles
-    bash experiment.sh tratto "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${buggy_project_bug_dir}/${project_id}.jar"
-  done
-  # TODO: [INTEGRATION WITH RUNNER SCRIPT]
-  # mkdir "${buggy_project_bug_dir}/evosuite-tests"
-  #mv "${OUTPUT_DIR}/evosuite-tests" "${buggy_project_bug_dir}/evosuite-tests"
-  #bash runner.sh
+    # Iterate over the modified classes and generate test cases for each class
+    for modified_class in "${modified_classes_list[@]}"; do
+      #bash /Users/davidemolinelli/Documents/phd/repositories/tratto/experiment/generator/evosuite.sh "$modified_class" "${buggy_project_bug_dir}/${binary_path}"
+      bash "${ROOT_DIR}/generator/evosuite.sh" "$modified_class" "${buggy_project_bug_dir}/${binary_path}"
+      # Generate jdoctor oracles
+      bash experiment.sh jdoctor "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}"
+      # Generate toga oracles
+      bash experiment.sh toga "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}"
+      # Generate tratto oracles
+      bash experiment.sh tratto "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${buggy_project_bug_dir}/${project_id}.jar"
+    done
+    # TODO: [INTEGRATION WITH RUNNER SCRIPT]
 done < "$D4J_PROJECTS_BUGS"
 

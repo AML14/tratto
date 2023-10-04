@@ -20,6 +20,7 @@ source "${current_dir}/utils/global_variables.sh"
 # setup local variables
 target_class="${1}"  # Fully-qualified name of target class
 target_dir="${2}"    # Directory of binary files of the system under test
+target_class_path=$(echo "$target_class" | sed 's/\./\//g')
 
 # setup sdkman
 source "${UTILS_DIR}/init_sdkman.sh" "${SDKMAN_DIR}"
@@ -32,16 +33,13 @@ fi
 # switch to Java 8
 sdk use java "${JAVA8}"
 
-# generate tests using EvoSuite
-java -jar "${EVOSUITE_JAR}" -class "${target_class}" -projectCP "${target_dir}" -seed 13042023
-rm -r "${ROOT_DIR}/evosuite-report"  # delete statistics
-# overwrites previous output if necessary
-if [ -d "${OUTPUT_DIR}/evosuite-tests" ]; then
-  rm - r "${OUTPUT_DIR}/evosuite-tests"
+# Generate tests using EvoSuite, if the tests does not exist
+if [ ! -f "${OUTPUT_DIR}/evosuite-tests/${target_class_path}_ESTest.java" ]; then
+  echo "${OUTPUT_DIR}/evosuite-tests/${target_class_path}.java"
+  java -jar "${EVOSUITE_JAR}" -class "${target_class}" -projectCP "${target_dir}" -seed 13042023 -base_dir "${OUTPUT_DIR}"
+  #rm -r "${OUTPUT_DIR}/evosuite-report"  # delete statistics
 fi
-# moves evosuite tests to "output/evosuite-tests"
-mkdir -p "${OUTPUT_DIR}/evosuite-tests"
-mv "${ROOT_DIR}/evosuite-tests" "${OUTPUT_DIR}"
+
 
 # switch to Java 17
 sdk use java "${JAVA17}"
