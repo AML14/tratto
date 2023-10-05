@@ -74,6 +74,12 @@ Similar to Toga, a package management system, such as conda, is recommended (but
 
 Please complete the above [EvoSuite Java 8 setup](#111-java-8) instructions before continuing. Similar to the EvoSuite and JDoctor setup, modify the field at the top of the `./runner.sh` script, `JDK8_NAME`, to the name of the local JDK 8 directory in `./generator/resources`.
 
+## 1.6 Defects4J
+
+To replicate the experiments with Defects4J, the Subversion command-line client tool must be installed.
+Execute `svn --version` command to check if the tool is installed in your machine, otherwise check the list of commands
+to install it in your machine, [here](https://command-not-found.com/svn).
+
 # 2. Overview
 
 ----

@@ -9,6 +9,9 @@ source "${current_dir}/generator/utils/global_variables.sh"
 # Setup sdkman
 source "${UTILS_DIR}/init_sdkman.sh"
 
+# Scope
+scope="${1:-experiments}"
+
 # Read the CSV file line by line and split into project_id, bug_id, and modified_classes fields
 while IFS=, read -r project_id bug_id modified_classes; do
   sdk use java "$JAVA8"
@@ -70,14 +73,18 @@ while IFS=, read -r project_id bug_id modified_classes; do
 
     # Iterate over the modified classes and generate test cases for each class
     for modified_class in "${modified_classes_list[@]}"; do
-      #bash /Users/davidemolinelli/Documents/phd/repositories/tratto/experiment/generator/evosuite.sh "$modified_class" "${buggy_project_bug_dir}/${binary_path}"
-      bash "${ROOT_DIR}/generator/evosuite.sh" "$modified_class" "${buggy_project_bug_dir}/${binary_path}"
-      # Generate jdoctor oracles
-      bash experiment.sh jdoctor "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}"
-      # Generate toga oracles
-      bash experiment.sh toga "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}"
-      # Generate tratto oracles
-      bash experiment.sh tratto "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${buggy_project_bug_dir}/${project_id}.jar"
+      if [ "$scope" == "experiments" ]; then
+        #bash /Users/davidemolinelli/Documents/phd/repositories/tratto/experiment/generator/evosuite.sh "$modified_class" "${buggy_project_bug_dir}/${binary_path}"
+        bash "${ROOT_DIR}/generator/evosuite.sh" "$modified_class" "${buggy_project_bug_dir}/${binary_path}"
+        # Generate jdoctor oracles
+        bash experiment.sh jdoctor "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}"
+        # Generate toga oracles
+        bash experiment.sh toga "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}"
+        # Generate tratto oracles
+        bash experiment.sh tratto "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${buggy_project_bug_dir}/${project_id}.jar"
+      elif [ "$scope" == "evosuite" ]; then
+        bash "${GENERATOR_DIR}/evosuite.sh" "$modified_class" "${buggy_project_bug_dir}/${binary_path}"
+      fi
     done
     # TODO: [INTEGRATION WITH RUNNER SCRIPT]
 done < "$D4J_PROJECTS_BUGS"

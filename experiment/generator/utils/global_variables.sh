@@ -4,7 +4,8 @@ JAVA17="17.0.8-oracle"
 
 # Directories
 ROOT_DIR=$(dirname "$(dirname "$(realpath "$(dirname "$BASH_SOURCE")")")")
-RESOURCES_DIR="${ROOT_DIR}/generator/resources"
+GENERATOR_DIR="${ROOT_DIR}/generator"
+RESOURCES_DIR="${GENERATOR_DIR}/resources"
 UTILS_DIR="${ROOT_DIR}/generator/utils"
 ML_MODEL_DIR="${ROOT_DIR}/../ml-model"
 TRATTO_PROJECT_DIR="${ROOT_DIR}/../tratto"
