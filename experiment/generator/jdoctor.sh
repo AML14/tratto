@@ -28,6 +28,9 @@ class_dir="${3}"  # path to binary files of the system under test
 # setup sdkman
 source "${UTILS_DIR}/init_sdkman.sh" "${SDKMAN_DIR}"
 
+echo "jdoctor.sh: Setup JDoctor project"
+bash "${ROOT_DIR}/generator/utils/jdoctor_setup.sh"
+
 # generate output dir if it does not exists
 if ! [ -d "${OUTPUT_DIR}/jdoctor" ]; then
   mkdir -p "${OUTPUT_DIR}/jdoctor"
