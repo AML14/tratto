@@ -248,6 +248,13 @@ public class OracleDatapointBuilder {
         this.datapoint.setTokensOracleVariablesNonPrivateNonStaticAttributes(tokensOracleVariablesNonPrivateNonStaticAttributes);
     }
 
+    /**
+     * Creates a new copy of the current OracleDatapoint being built by this
+     * class.
+     *
+     * @return a new OracleDatapoint with all fields copied from the current
+     * OracleDatapoint builder
+     */
     public OracleDatapoint copy() {
         return new OracleDatapoint(
                 this.datapoint.getId(),
