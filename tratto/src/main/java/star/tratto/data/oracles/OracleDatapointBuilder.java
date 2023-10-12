@@ -107,14 +107,18 @@ public class OracleDatapointBuilder {
         sb.append(mainProperty.condition());
         sb.append(" : ");
         // get false result
-        if (conditionList.size() == 2) {
-            PostCondition altCondition = conditionList.get(1);
-            String altTag = altCondition.description();
-            assert mainTag.equals(altTag);
-            Property altProperty = altCondition.property();
-            sb.append(altProperty.condition());
-        } else {
-            sb.append("true");
+        switch (conditionList.size()) {
+            case 2 -> {
+                PostCondition altCondition = conditionList.get(1);
+                String altTag = altCondition.description();
+                assert mainTag.equals(altTag);
+                Property altProperty = altCondition.property();
+                sb.append(altProperty.condition());
+            }
+            case 1 -> sb.append("true");
+            default -> throw new IllegalArgumentException(
+                    "Expected condition list to have 1 or 2 conditions, but got " + conditionList.size()
+            );
         }
         sb.append(";");
         return sb.toString().replaceAll("receiverObjectID", "this");
