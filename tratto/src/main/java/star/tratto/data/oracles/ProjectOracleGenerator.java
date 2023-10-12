@@ -131,7 +131,7 @@ public class ProjectOracleGenerator {
      *
      * @param targetTag a preprocessed JDoctor javadoc tag
      * @param name a Javadoc tag name (parameter name or exception type)
-     * @return true iff the target tag matches the given name or the target
+     * @return true if the target tag matches the given name or if the JDoctor
      * tag has no name (and {@code name} is empty)
      */
     private boolean tagHasName(
