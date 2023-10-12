@@ -28,6 +28,9 @@ class_dir="${3}"  # path to binary files of the system under test
 # setup sdkman
 source "${UTILS_DIR}/init_sdkman.sh" "${SDKMAN_DIR}"
 
+# switch to Java 8
+sdk use java "${JAVA8}"
+
 echo "jdoctor.sh: Setup JDoctor project"
 bash "${ROOT_DIR}/generator/utils/jdoctor_setup.sh"
 
@@ -35,9 +38,6 @@ bash "${ROOT_DIR}/generator/utils/jdoctor_setup.sh"
 if ! [ -d "${OUTPUT_DIR}/jdoctor" ]; then
   mkdir -p "${OUTPUT_DIR}/jdoctor"
 fi
-
-# switch to Java 8
-sdk use java "${JAVA8}"
 
 # execute JDoctor to generate oracles
 mkdir -p "${OUTPUT_DIR}/jdoctor/output"
