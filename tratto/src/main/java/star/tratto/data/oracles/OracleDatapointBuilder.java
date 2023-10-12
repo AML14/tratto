@@ -94,6 +94,8 @@ public class OracleDatapointBuilder {
      *
      * @param conditionList a list of JDoctor post-conditions
      * @return the oracle corresponding to the post-condition
+     * @throws IllegalArgumentException if the list of post conditions has
+     * less than one or more than two conditions
      */
     private String getPostConditionOracle(List<PostCondition> conditionList) {
         PostCondition mainCondition = conditionList.get(0);
@@ -132,11 +134,11 @@ public class OracleDatapointBuilder {
     }
 
     /**
-     * Gets all information from a JDoctor condition (ThrowsCondition,
-     * PreCondition, or a list of PostConditions). Sets the oracle type,
-     * JavaDoc tag, and oracle.
+     * Sets the oracle type, Javadoc tag, and oracle from a JDoctor condition.
      *
      * @param condition a JDoctor condition
+     * @throws IllegalArgumentException if the condition is not a
+     * ThrowsCondition, PreCondition, or List of PostConditions.
      */
     public void setConditionInfo(Object condition) {
         if (condition instanceof ThrowsCondition) {
@@ -151,6 +153,10 @@ public class OracleDatapointBuilder {
             if (conditionList.size() > 0) {
                 this.setPostConditionInfo(conditionList);
             }
+        } else {
+            throw new IllegalArgumentException(
+                    "Unexpected condition type " + condition.getClass()
+            );
         }
     }
 
