@@ -122,7 +122,7 @@ public class ProjectOracleGenerator {
         // log information.
         System.out.printf("Processed %s non-empty oracles.%n", numNonEmptyOracles);
         System.out.printf("Processed %s empty oracles.%n", numEmptyOracles);
-        System.out.printf("Processed %s total conditions.%n", numNonEmptyOracles + numEmptyOracles);
+        System.out.printf("Processed %s total oracles.%n", numNonEmptyOracles + numEmptyOracles);
         return oracleDPs;
     }
 
