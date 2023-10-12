@@ -28,7 +28,7 @@ import java.nio.file.Path;
 import java.util.regex.Pattern;
 
 /**
- * ProjectOracleGenerator generates all {@link OracleDatapoint}'s in a project
+ * ProjectOracleGenerator generates {@link OracleDatapoint}s for a project
  * using a list of JDoctor conditions as a ground truth dataset to train the
  * Tratto neural modules.
  */
