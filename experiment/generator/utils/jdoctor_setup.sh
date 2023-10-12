@@ -22,3 +22,4 @@ if [ ! -e "${JDOCTOR_JAR}" ]; then
   ./gradlew shadowJar
   mv "${JDOCTOR_PROJECT_DIR}/build/libs/toradocu-1.0-all.jar" "$JDOCTOR_JAR"
 fi
+rm -r "$JDOCTOR_PROJECT_DIR"
