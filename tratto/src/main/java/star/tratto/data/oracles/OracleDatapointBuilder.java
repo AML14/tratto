@@ -26,6 +26,10 @@ import static org.plumelib.util.CollectionsPlume.mapList;
  * This class is a builder class for {@link OracleDatapoint}.
  */
 public class OracleDatapointBuilder {
+    /**
+     * The OracleDatapoint being built. Returns a copy when
+     * {@link OracleDatapointBuilder#build()} is called.
+     */
     private OracleDatapoint datapoint;
 
     public OracleDatapointBuilder() {
