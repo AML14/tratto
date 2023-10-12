@@ -40,13 +40,16 @@ public class ProjectOracleGenerator {
     /** All JDoctor conditions of the current project. */
     private List<JDoctorCondition> jDoctorConditions;
     /** All classes in the current project. */
-    private List<ClassTokens> projectClassesTokens;
+    private List<ClassTokens> classes;
     /** All non-private, static methods in the current project. */
-    private List<MethodTokens> projectMethodsTokens;
-    /** All non-private, static attributes (fields) in the current project. */
-    private List<AttributeTokens> projectAttributesTokens;
+    private List<MethodTokens> methods;
+    /**
+     * All non-private, static fields (denoted as "attributes" in the dataset)
+     * in the current project.
+     */
+    private List<AttributeTokens> fields;
     /** All Javadoc tags in the current project. */
-    private List<JavadocTag> projectTagsTokens;
+    private List<JavadocTag> tags;
 
     /**
      * Creates a new instance of a ProjectOracleGenerator.
@@ -68,11 +71,11 @@ public class ProjectOracleGenerator {
     ) {
         this.project = project;
         this.jDoctorConditions = jDoctorConditions;
-        this.projectClassesTokens = DatasetUtils.getProjectClassTokens(this.project.srcPath());
-        this.projectMethodsTokens = DatasetUtils.getProjectNonPrivateStaticNonVoidMethodsTokens(this.project.srcPath());
-        this.projectAttributesTokens = DatasetUtils.getProjectNonPrivateStaticAttributesTokens(this.project.srcPath());
-        this.projectTagsTokens = DatasetUtils.getProjectTagsTokens(this.project.srcPath());
-        System.out.printf("Identified %s total JavaDoc tags.%n", this.projectTagsTokens.size());
+        this.classes = DatasetUtils.getProjectClassTokens(this.project.srcPath());
+        this.methods = DatasetUtils.getProjectNonPrivateStaticNonVoidMethodsTokens(this.project.srcPath());
+        this.fields = DatasetUtils.getProjectNonPrivateStaticAttributesTokens(this.project.srcPath());
+        this.tags = DatasetUtils.getProjectTagsTokens(this.project.srcPath());
+        System.out.printf("Identified %s total JavaDoc tags.%n", this.tags.size());
     }
 
     /**
@@ -116,7 +119,7 @@ public class ProjectOracleGenerator {
         }
         int numNonEmptyOracles = oracleDPs.size();
         // Generate an OracleDatapoint for each remaining JavaDoc tag.
-        for (JavadocTag jpTag : this.projectTagsTokens) {
+        for (JavadocTag jpTag : this.tags) {
             OracleDatapoint nextDatapoint = getEmptyDatapoint(jpTag);
             if (nextDatapoint != null) oracleDPs.add(nextDatapoint);
         }
@@ -248,8 +251,8 @@ public class ProjectOracleGenerator {
             CallableDeclaration<?> jpCallable = DatasetUtils.getCallableDeclaration(jpClass, callableName, parameterTypes);
             assert jpCallable != null;
             // remove tag with maximum similarity.
-            this.projectTagsTokens.remove(findMaximumSimilarityTag(
-                    this.projectTagsTokens,
+            this.tags.remove(findMaximumSimilarityTag(
+                    this.tags,
                     jpClass,
                     jpCallable,
                     oracleType,
@@ -293,9 +296,9 @@ public class ProjectOracleGenerator {
         builder.setPackageName(jpClass.resolve().getPackageName());
         builder.setClassName(jpClass.getNameAsString());
         builder.setClassJavadoc(DatasetUtils.getClassJavadoc(jpClass));
-        builder.setTokensProjectClasses(this.projectClassesTokens);
-        builder.setTokensProjectClassesNonPrivateStaticNonVoidMethods(this.projectMethodsTokens);
-        builder.setTokensProjectClassesNonPrivateStaticAttributes(this.projectAttributesTokens);
+        builder.setTokensProjectClasses(this.classes);
+        builder.setTokensProjectClassesNonPrivateStaticNonVoidMethods(this.methods);
+        builder.setTokensProjectClassesNonPrivateStaticAttributes(this.fields);
         builder.setMethodSourceCode(DatasetUtils.getCallableSourceCode(jpCallable));
         builder.setMethodJavadoc(DatasetUtils.getCallableJavadoc(jpCallable));
         builder.setTokensMethodJavadocValues(DatasetUtils.getJavadocValues(builder.copy().getMethodJavadoc()));
@@ -360,7 +363,7 @@ public class ProjectOracleGenerator {
         builder.setConditionInfo(condition);
         // override JavaDoc tag with tag from source code.
         builder.setJavadocTag(DatasetUtils.getTagAsString(findMaximumSimilarityTag(
-                this.projectTagsTokens,
+                this.tags,
                 jpClass,
                 jpCallable,
                 builder.copy().getOracleType(),
@@ -371,9 +374,9 @@ public class ProjectOracleGenerator {
         builder.setPackageName(packageName);
         builder.setClassName(className);
         builder.setClassJavadoc(DatasetUtils.getClassJavadoc(jpClass));
-        builder.setTokensProjectClasses(this.projectClassesTokens);
-        builder.setTokensProjectClassesNonPrivateStaticNonVoidMethods(this.projectMethodsTokens);
-        builder.setTokensProjectClassesNonPrivateStaticAttributes(this.projectAttributesTokens);
+        builder.setTokensProjectClasses(this.classes);
+        builder.setTokensProjectClassesNonPrivateStaticNonVoidMethods(this.methods);
+        builder.setTokensProjectClassesNonPrivateStaticAttributes(this.fields);
         builder.setMethodSourceCode(DatasetUtils.getCallableSourceCode(jpCallable));
         builder.setMethodJavadoc(DatasetUtils.getCallableJavadoc(jpCallable));
         builder.setTokensMethodJavadocValues(DatasetUtils.getJavadocValues(builder.copy().getMethodJavadoc()));
