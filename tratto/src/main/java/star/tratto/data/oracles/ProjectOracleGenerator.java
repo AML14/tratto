@@ -52,8 +52,8 @@ public class ProjectOracleGenerator {
     private List<JavadocTag> tags;
 
     /**
-     * Sets the project under analysis and corresponding project-level
-     * features. This avoids repeatedly reloading shared features.
+     * Sets the project under analysis and project-level features. This avoids
+     * repeatedly reloading shared features.
      *
      * @param project the project under analysis
      * @param jDoctorConditions the JDoctor conditions associated with the
