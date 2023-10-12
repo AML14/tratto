@@ -52,12 +52,6 @@ public class ProjectOracleGenerator {
     private List<JavadocTag> tags;
 
     /**
-     * Creates a new instance of a ProjectOracleGenerator.
-     */
-    public ProjectOracleGenerator() {
-    }
-
-    /**
      * Sets the project under analysis and corresponding project-level
      * features. This avoids repeatedly reloading shared features.
      *
