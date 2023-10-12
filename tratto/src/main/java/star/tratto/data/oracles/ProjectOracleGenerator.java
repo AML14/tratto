@@ -90,17 +90,17 @@ public class ProjectOracleGenerator {
             Operation operation = jDoctorCondition.operation();
             // Add all ThrowsCondition oracles to dataset.
             List<ThrowsCondition> throwsConditions = jDoctorCondition.throwsConditions();
-            for (ThrowsCondition condition : throwsConditions) {
-                OracleDatapoint nextDatapoint = getNextDatapoint(operation, condition);
+            for (ThrowsCondition throwsCondition : throwsConditions) {
+                OracleDatapoint nextDatapoint = getNextDatapoint(operation, throwsCondition);
                 if (nextDatapoint != null) oracleDPs.add(nextDatapoint);
-                removeProjectClassesTag(operation, OracleType.EXCEPT_POST, condition.description());
+                removeProjectClassesTag(operation, OracleType.EXCEPT_POST, throwsCondition.description());
             }
             // Add all PreCondition oracles to dataset.
             List<PreCondition> preConditions = jDoctorCondition.preConditions();
-            for (PreCondition condition : preConditions) {
-                OracleDatapoint nextDatapoint = getNextDatapoint(operation, condition);
+            for (PreCondition preCondition : preConditions) {
+                OracleDatapoint nextDatapoint = getNextDatapoint(operation, preCondition);
                 if (nextDatapoint != null) oracleDPs.add(nextDatapoint);
-                removeProjectClassesTag(operation, OracleType.PRE, condition.description());
+                removeProjectClassesTag(operation, OracleType.PRE, preCondition.description());
             }
             // Add all PostCondition oracles to dataset.
             List<PostCondition> postConditions = jDoctorCondition.postConditions();
