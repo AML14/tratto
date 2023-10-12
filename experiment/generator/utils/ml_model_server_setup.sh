@@ -21,8 +21,7 @@ if [ ! -e "$token_classes_model" ]; then
   echo "Downloading token class model..."
   token_classes_model_dir=$(dirname "$token_classes_model")
   mkdir -p "$token_classes_model_dir"
-  #curl -o "$token_classes_model" "https://drive.switch.ch/index.php/s/ClE8ttjDtWzSJ13/download"
-  curl -o "$token_classes_model" "https://drive.switch.ch/index.php/s/vkuzseJ7YeiO1Vh/download"
+  curl -o "$token_classes_model" "$TRATTO_TOKEN_CLASSES_LINK"
   echo "Download complete!"
 fi
 # Download token values model
@@ -31,8 +30,7 @@ if [ ! -e "$token_values_model" ]; then
   echo "Downloading token values model..."
   token_values_model_dir=$(dirname "$token_values_model")
   mkdir -p "$token_values_model_dir"
-  #curl -o "$token_values_model" "https://drive.switch.ch/index.php/s/tYTmJtdZ0sgBa6Z/download"
-  curl -o "$token_values_model" "https://drive.switch.ch/index.php/s/IXNa0fMFTfzVp7V/download"
+  curl -o "$token_values_model" "$TRATTO_TOKEN_VALUES_LINK"
   echo "Download complete!"
 fi
 # Check that the server port is free

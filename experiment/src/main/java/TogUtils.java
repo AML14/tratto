@@ -2,16 +2,16 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.Node;
-import com.github.javaparser.ast.body.BodyDeclaration;
-import com.github.javaparser.ast.body.CallableDeclaration;
-import com.github.javaparser.ast.body.MethodDeclaration;
-import com.github.javaparser.ast.body.TypeDeclaration;
+import com.github.javaparser.ast.body.*;
 import com.github.javaparser.ast.comments.JavadocComment;
 import com.github.javaparser.ast.expr.ArrayAccessExpr;
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.NameExpr;
+import com.github.javaparser.ast.type.ReferenceType;
+import com.github.javaparser.ast.type.TypeParameter;
 import com.github.javaparser.resolution.SymbolResolver;
 import com.github.javaparser.resolution.UnsolvedSymbolException;
 import com.github.javaparser.symbolsolver.utils.SymbolSolverCollectionStrategy;
@@ -167,9 +167,9 @@ public class TogUtils {
                     togaInfo.put(testName,togaRow);
                 } catch (NoSuchElementException | UnsolvedSymbolException e) {
                     String errMsg = String.format(
-                        "Focal method %s not found for class %s",
-                        lastMethodCallExpression.getNameAsString(),
-                        fullyQualifiedClassName
+                            "Focal method %s not found for class %s",
+                            lastMethodCallExpression.getNameAsString(),
+                            fullyQualifiedClassName
                     );
                     System.err.println(errMsg);
                 }
@@ -243,6 +243,64 @@ public class TogUtils {
         // Last line is method signature, remove everything before that
         method = method.replaceAll("[\\s\\S]*\n", "");
         return method.trim().replaceAll(";$", "");
+    }
+
+    /**
+     * Returns the signature of a JavaParser callable declaration. Uses the
+     * method source code and removes method body, contained comments, the
+     * Javadoc comment, and other special characters (e.g. "\n").
+     *
+     * @param jpCallable a JavaParser callable declaration
+     * @return a string representation of the signature. A signature follows
+     * the format:
+     *     "[modifiers] [typeParameters] [type] [methodName]([parameters]) throws [exceptions]"
+     */
+    public static String getCallableSignature(
+            CallableDeclaration<?> jpCallable
+    ) {
+        StringBuilder sb = new StringBuilder();
+        // add modifiers
+        List<String> modifiers = jpCallable.getModifiers()
+                .stream()
+                .map(Modifier::toString)
+                .toList();
+        sb.append(String.join("", modifiers));
+        // add type parameters
+        List<String> typeParameters = jpCallable.getTypeParameters()
+                .stream()
+                .map(TypeParameter::toString)
+                .toList();
+        if (!typeParameters.isEmpty()) {
+            sb.append("<")
+                    .append(String.join(", ", typeParameters))
+                    .append(">")
+                    .append(" ");
+        }
+        // add return type (if not a constructor)
+        if (jpCallable.isMethodDeclaration()) {
+            sb.append(jpCallable.asMethodDeclaration().getType())
+                    .append(" ");
+        }
+        // add method name
+        sb.append(jpCallable.getNameAsString());
+        // add formal parameters
+        List<String> parameters = jpCallable.getParameters()
+                .stream()
+                .map(com.github.javaparser.ast.body.Parameter::toString)
+                .toList();
+        sb.append("(")
+                .append(String.join(", ", parameters))
+                .append(")");
+        // add exceptions
+        List<String> exceptions = jpCallable.getThrownExceptions()
+                .stream()
+                .map(ReferenceType::asString)
+                .toList();
+        if (!exceptions.isEmpty()) {
+            sb.append(" throws ")
+                    .append(String.join(", ", exceptions));
+        }
+        return sb.toString().replaceAll(" +", " ").trim();
     }
 
     /**
@@ -441,12 +499,13 @@ public class TogUtils {
         );
         List<OracleOutput> oracleOutputs = new ArrayList<>();
         for (TrattoOutput trattoOutput : trattoOutputs) {
-            // Parse the method string and add it to the CompilationUnit
-            MethodDeclaration mut = javaParser.parseMethodDeclaration(trattoOutput.methodSourceCode()).getResult().orElseThrow();
-            String methodSignature = getMethodSignature(mut);
+            // Parse the method string as a compilation unit
+            CompilationUnit cu = javaParser.parse("public class " + trattoOutput.className() + "{ " + trattoOutput.methodSourceCode() + " }").getResult().get();
+            CallableDeclaration<?> mut = cu.findFirst(CallableDeclaration.class).orElseThrow();
+            String signature = getCallableSignature(mut);
             OracleOutput oracleOutput = new OracleOutput(
                     trattoOutput.className(),
-                    methodSignature,
+                    signature,
                     trattoOutput.oracleType(),
                     trattoOutput.oracleType() != OracleType.EXCEPT_POST ? trattoOutput.oracle() : "",
                     trattoOutput.oracleType() == OracleType.EXCEPT_POST ? trattoOutput.oracle() : "",

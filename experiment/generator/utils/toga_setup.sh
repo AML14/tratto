@@ -7,8 +7,8 @@ current_dir=$(realpath "$(dirname "$BASH_SOURCE")")
 source "${current_dir}/global_variables.sh"
 
 # Define local variables
-toga_assertions_dir="${RESOURCES_DIR}/toga/model/assertions/pretrained"
-toga_exceptions_dir="${RESOURCES_DIR}/toga/model/exceptions/pretrained"
+toga_assertions_dir="${TOGA_PROJECT_DIR}/model/assertions/pretrained"
+toga_exceptions_dir="${TOGA_PROJECT_DIR}/model/exceptions/pretrained"
 
 # Check the script has been from root of the experiment repository directory
 if [ ! -d "$RESOURCES_DIR" ]; then
@@ -23,34 +23,26 @@ if [ ! -d "${RESOURCES_DIR}/toga" ]; then
   echo "TOGA project not found."
   echo "Downloading TOGA project into './generator/resources'..."
   #{
-  git clone https://github.com/microsoft/toga.git
+  git clone "$TOGA_GITHUB_REPO" toga
   #} > /dev/null 2>&1
   cd "$ROOT_DIR"
-
-  TOGA_PROJECT_NAME="${MATCHING_DIRECTORIES[0]}"
-  TOGA_PROJECT_DIR="${TOGA_PROJECT_NAME#* }"
-
-  # Rename downloaded project with default name 'toga'
-  if [ ! "${TOGA_PROJECT_DIR}" == "${RESOURCES_DIR}/toga" ]; then
-    mv "${TOGA_PROJECT_DIR}" "${RESOURCES_DIR}/toga"
-  fi
 fi
 
 echo "Checking python packages."
-rm "${RESOURCES_DIR}/toga/requirements.txt"
-cp "${RESOURCES_DIR}/toga_requirements.txt" "${RESOURCES_DIR}/toga/requirements.txt"
-bash "${UTILS_DIR}/install_python_requirements.sh" "${RESOURCES_DIR}/toga" "toga"
+rm "${TOGA_PROJECT_DIR}/requirements.txt"
+cp "${RESOURCES_DIR}/toga_requirements.txt" "${TOGA_PROJECT_DIR}/requirements.txt"
+bash "${UTILS_DIR}/install_python_requirements.sh" "$TOGA_PROJECT_DIR" "toga"
 
 # Download models
 if [ ! -e "${toga_assertions_dir}/pytorch_model.bin" ]; then
   echo "Assertion model not found."
   echo "Downloading toga assertions model..."
   if ! pip show "gdown" > /dev/null 2>&1; then
-    CHOICE=$(bash "${UTILS_DIR}/y_n.sh" "To proceed it is necessary to install gdown python package to download the model from a google drive link. Proceed? (Y/n): ")
-    if [ ! "$CHOICE" == "Y" ]; then
-      echo "ERROR - Impossible to proceed without authorization to install gdown package. Terminate program."
-      exit 1
-    fi
+    #CHOICE=$(bash "${UTILS_DIR}/y_n.sh" "To proceed it is necessary to install gdown python package to download the model from a google drive link. Proceed? (Y/n): ")
+    #if [ ! "$CHOICE" == "Y" ]; then
+    #  echo "ERROR - Impossible to proceed without authorization to install gdown package. Terminate program."
+    #  exit 1
+    #fi
     sudo pip install gdown
     # Check if a Conda environment is activated
     if [ -z "$CONDA_DEFAULT_ENV" ]; then
@@ -64,7 +56,7 @@ if [ ! -e "${toga_assertions_dir}/pytorch_model.bin" ]; then
     fi
   fi
   #{
-  gdown "https://drive.google.com/u/0/uc?id=1TvZMlpXeN3DQUwwgOhlCRkn5-v1l_ZSK&export=download" -O "${toga_assertions_dir}/pytorch_model.bin"
+  gdown "$TOGA_ASSERTION_MODEL_LINK" -O "${toga_assertions_dir}/pytorch_model.bin"
   #} > /dev/null 2>&1
   echo "Download of TOGA assertion model complete!"
 fi
@@ -72,11 +64,11 @@ if [ ! -e "${toga_exceptions_dir}/pytorch_model.bin" ]; then
   echo "Exceptions model not found."
   echo "Downloading toga exceptions model..."
   if ! pip show "gdown" > /dev/null 2>&1; then
-    CHOICE=$(bash "${UTILS_DIR}/y_n.sh" "To proceed it is necessary to install gdown python package to download the model from a google drive link. Proceed? (Y/n): ")
-    if [ ! "$CHOICE" == "Y" ]; then
-      echo "ERROR - Impossible to proceed without authorization to install gdown package. Terminate program."
-      exit 1
-    fi
+    #CHOICE=$(bash "${UTILS_DIR}/y_n.sh" "To proceed it is necessary to install gdown python package to download the model from a google drive link. Proceed? (Y/n): ")
+    #if [ ! "$CHOICE" == "Y" ]; then
+    #  echo "ERROR - Impossible to proceed without authorization to install gdown package. Terminate program."
+    #  exit 1
+    #fi
     sudo pip install gdown
     # Check if a Conda environment is activated
     if [ -z "$CONDA_DEFAULT_ENV" ]; then
@@ -90,7 +82,7 @@ if [ ! -e "${toga_exceptions_dir}/pytorch_model.bin" ]; then
     fi
   fi
   #{
-  gdown "https://drive.google.com/u/0/uc?id=1JeRod7jtR8CdWTB_wn-HRNMgtgoRFpc7&export=download" -O "${toga_exceptions_dir}/pytorch_model.bin"
+  gdown "$TOGA_EXCEPTION_MODEL_LINK" -O "${toga_exceptions_dir}/pytorch_model.bin"
   #} > /dev/null 2>&1
   echo "Download of TOGA exceptions model complete!"
 fi

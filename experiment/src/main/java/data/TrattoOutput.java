@@ -18,5 +18,7 @@ public record TrattoOutput(
         OracleType oracleType,
         String packageName,
         String className,
+
+        String methodName,
         String methodSourceCode
 ) {}
