@@ -86,6 +86,7 @@ public class ProjectOracleGenerator {
         this.loadProject(project, jDoctorConditions);
         List<OracleDatapoint> oracleDPs = new ArrayList<>();
         // Generate an OracleDatapoint for each JDoctor condition.
+        // Removes corresponding Javadoc tag from list of tags.
         for (JDoctorCondition jDoctorCondition : this.jDoctorConditions) {
             Operation operation = jDoctorCondition.operation();
             // Add all ThrowsCondition oracles to dataset.
@@ -104,7 +105,7 @@ public class ProjectOracleGenerator {
             }
             // Add all PostCondition oracles to dataset.
             List<PostCondition> postConditions = jDoctorCondition.postConditions();
-            if (postConditions.size() > 0) {
+            if (postConditions.isEmpty()) {
                 OracleDatapoint nextDatapoint = getNextDatapoint(operation, postConditions);
                 if (nextDatapoint != null) oracleDPs.add(nextDatapoint);
                 // first description corresponds to source tag.
