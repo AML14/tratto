@@ -349,9 +349,9 @@ public class DatasetUtils {
      * Gets the Javadoc tag corresponding to a given oracle type. For
      * reference,
      * <ul>
-     *     <li>PRE -&gt; @param</li>
-     *     <li>NORMAL_POST -&gt; @return</li>
-     *     <li>EXCEPT_POST -&gt; @throws</li>
+     *     <li>PRE &rarr; @param</li>
+     *     <li>NORMAL_POST &rarr; @return</li>
+     *     <li>EXCEPT_POST &rarr; @throws</li>
      * </ul>
      *
      * @param oracleType a type of oracle
