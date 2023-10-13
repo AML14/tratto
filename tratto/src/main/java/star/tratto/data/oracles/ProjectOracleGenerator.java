@@ -340,7 +340,7 @@ public class ProjectOracleGenerator {
      * @param operation a JDoctor operation
      * @param condition a JDoctor condition (i.e. ThrowsCondition,
      *                  PreCondition, or a list of PostCondition's)
-     * @return a fully populated OracleDatapoint. Returns null if error
+     * @return a fully populated OracleDatapoint. Returns null if an error
      * occurs during information collection.
      */
     private OracleDatapoint getDatapoint(Operation operation, Object condition) {
