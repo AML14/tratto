@@ -269,11 +269,10 @@ public class ProjectOracleGenerator {
     }
 
     /**
-     * Generates an OracleDatapoint from a given source code tag. Used ONLY
-     * for empty oracles (e.g. JavaDoc tags in a project without a
-     * corresponding JDoctor condition).
+     * Generates an OracleDatapoint for a given Javadoc tag that does not
+     * have a corresponding JDoctor condition.
      *
-     * @param jpTag a list of JavadocTag records
+     * @param jpTag a Javadoc tag
      * @return a fully populated OracleDatapoint. The "oracle" field is set
      * to a semicolon (";"). Returns null if an error occurs during
      * information collection.
