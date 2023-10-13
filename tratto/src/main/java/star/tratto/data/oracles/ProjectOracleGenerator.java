@@ -92,21 +92,21 @@ public class ProjectOracleGenerator {
             // Add all ThrowsCondition oracles to dataset.
             List<ThrowsCondition> throwsConditions = jDoctorCondition.throwsConditions();
             for (ThrowsCondition throwsCondition : throwsConditions) {
-                OracleDatapoint nextDatapoint = getNextDatapoint(operation, throwsCondition);
+                OracleDatapoint nextDatapoint = getDatapoint(operation, throwsCondition);
                 if (nextDatapoint != null) oracleDPs.add(nextDatapoint);
                 removeProjectClassesTag(operation, OracleType.EXCEPT_POST, throwsCondition.description());
             }
             // Add all PreCondition oracles to dataset.
             List<PreCondition> preConditions = jDoctorCondition.preConditions();
             for (PreCondition preCondition : preConditions) {
-                OracleDatapoint nextDatapoint = getNextDatapoint(operation, preCondition);
+                OracleDatapoint nextDatapoint = getDatapoint(operation, preCondition);
                 if (nextDatapoint != null) oracleDPs.add(nextDatapoint);
                 removeProjectClassesTag(operation, OracleType.PRE, preCondition.description());
             }
             // Add all PostCondition oracles to dataset.
             List<PostCondition> postConditions = jDoctorCondition.postConditions();
             if (!postConditions.isEmpty()) {
-                OracleDatapoint nextDatapoint = getNextDatapoint(operation, postConditions);
+                OracleDatapoint nextDatapoint = getDatapoint(operation, postConditions);
                 if (nextDatapoint != null) oracleDPs.add(nextDatapoint);
                 // first description corresponds to source tag.
                 removeProjectClassesTag(operation, OracleType.NORMAL_POST, postConditions.get(0).description());
@@ -343,7 +343,7 @@ public class ProjectOracleGenerator {
      * @return a fully populated OracleDatapoint. Returns null if error
      * occurs during information collection.
      */
-    private OracleDatapoint getNextDatapoint(Operation operation, Object condition) {
+    private OracleDatapoint getDatapoint(Operation operation, Object condition) {
         OracleDatapointBuilder builder = new OracleDatapointBuilder();
         // get basic information of operation.
         Path sourcePath = this.project.srcPath();
