@@ -151,7 +151,7 @@ public class ProjectOracleGenerator {
 
     /**
      * Removes all special characters from a Javadoc tag. For example,
-     *     "removes all {&#64;code links} from a document" -&gt;
+     *     "removes all {&#64;code links} from a document" &rarr;
      *     "removes all links from a document"
      *
      * @param unprocessedTag a Javadoc tag
@@ -171,7 +171,7 @@ public class ProjectOracleGenerator {
     /**
      * Removes a tag prefix from a Javadoc tag (includes tag type and name).
      * For example,
-     *     "@param name the student name" -&gt;
+     *     "@param name the student name" &rarr;
      *     "the student name"
      *
      * @param unprocessedTag a Javadoc tag
