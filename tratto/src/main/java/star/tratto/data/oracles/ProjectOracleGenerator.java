@@ -212,6 +212,9 @@ public class ProjectOracleGenerator {
                         tagInfo.oracleType().equals(targetOracleType) &&
                         tagHasName(targetTag, tagInfo.tagName()))
                 .toList();
+        if (filteredTags.size() == 1) {
+            return filteredTags.get(0);
+        }
         // find index of most semantically similar tag (cosine similarity).
         JavadocTag mostSimilarTag = null;
         double maxSimilaritySoFar = -1.0;
@@ -224,7 +227,9 @@ public class ProjectOracleGenerator {
                 mostSimilarTag = tag;
             }
         }
-        assert mostSimilarTag != null;
+        if (mostSimilarTag == null) {
+            throw new Error("Unable to find a tag corresponding to " + targetTag);
+        }
         return mostSimilarTag;
     }
 
