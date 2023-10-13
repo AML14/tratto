@@ -123,7 +123,7 @@ public class OracleDatapointBuilder {
             );
         }
         sb.append(";");
-        return sb.toString().replaceAll("\breceiverObjectID\b", "this");
+        return sb.toString().replaceAll("receiverObjectID", "this");
     }
 
     private void setPostConditionInfo(List<PostCondition> conditionList) {
