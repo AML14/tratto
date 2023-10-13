@@ -185,12 +185,12 @@ public class ProjectOracleGenerator {
     }
 
     /**
-     * Gets the most similar tag from {@link ProjectOracleGenerator#tags} to a
-     * given preprocessed JDoctor tag. Only considers tags of a given type
-     * from a given method in a given class. Among the remaining tags, uses
-     * semantic similarity to find the most similar source code tag to the
-     * preprocessed JDoctor tag.
+     * Gets the most similar tag from source code to a target preprocessed
+     * JDoctor tag. Only considers tags of a target type from a target method
+     * in a target class. Otherwise, uses semantic similarity to find the most
+     * similar source code tag in comparison to the preprocessed JDoctor tag.
      *
+     * @param tagList list of tags
      * @param targetClass target class
      * @param targetCallable target method/constructor
      * @param targetOracleType target oracle type (e.g. pre-condition)
@@ -199,13 +199,14 @@ public class ProjectOracleGenerator {
      * @see StringUtils#semanticSimilarity(String, String)
      */
     private JavadocTag findMaximumSimilarityTag(
+            List<JavadocTag> tagList,
             TypeDeclaration<?> targetClass,
             CallableDeclaration<?> targetCallable,
             OracleType targetOracleType,
             String targetTag
     ) {
         // filter tags by TypeDeclaration, CallableDeclaration, OracleType, and Pattern matching.
-        List<JavadocTag> filteredTags = this.tags
+        List<JavadocTag> filteredTags = tagList
                 .stream()
                 .filter(tagInfo -> tagInfo.jpClass().equals(targetClass) &&
                         tagInfo.jpCallable().equals(targetCallable) &&
@@ -259,6 +260,7 @@ public class ProjectOracleGenerator {
             assert jpCallable != null;
             // remove tag with maximum similarity.
             this.tags.remove(findMaximumSimilarityTag(
+                    this.tags,
                     jpClass,
                     jpCallable,
                     oracleType,
@@ -369,6 +371,7 @@ public class ProjectOracleGenerator {
         builder.setConditionInfo(condition);
         // override JavaDoc tag with tag from source code.
         builder.setJavadocTag(DatasetUtils.getTagAsString(findMaximumSimilarityTag(
+                this.tags,
                 jpClass,
                 jpCallable,
                 builder.copy().getOracleType(),
