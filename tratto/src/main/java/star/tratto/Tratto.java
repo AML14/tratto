@@ -96,9 +96,16 @@ public class Tratto {
                     oracleDatapoint.getJavadocTag(),
                     oracleDatapoint.getOracleType());
 
-            while (!(oracleDatapoint.getOracle().endsWith(";") || oracleDatapoint.getOracle().length() > 500)) {
+            int tokensCounter = 0;
+
+            while (!(oracleDatapoint.getOracle().endsWith(";") || tokensCounter > 20)) {
                 // Generate token datapoints and save to file
                 List<TokenDatapoint> tokenDatapoints = oracleSoFarAndTokenToTokenDatapoints(oracleDatapoint, oracleSoFarTokens, tokenClassesSoFar, "", TokenDPType.TOKEN);
+
+                if (tokenDatapoints.size() == 0) {
+                    break;
+                }
+
                 FileOutputStream tokenDatapointsOutputStream = new FileOutputStream(TOKEN_DATAPOINTS_PATH);
                 tokenDatapointsOutputStream.write(objectMapper.writeValueAsBytes(tokenDatapoints));
                 tokenDatapointsOutputStream.close();
@@ -108,6 +115,8 @@ public class Tratto {
                 oracleDatapoint.setOracle(compactExpression(oracleDatapoint.getOracle() + " " + nextTokenValueClass.getValue0()));
                 oracleSoFarTokens.add(nextTokenValueClass.getValue0());
                 tokenClassesSoFar.add(nextTokenValueClass.getValue1());
+
+                tokensCounter += 1;
 
                 logger.info("Oracle so far: {}", oracleDatapoint.getOracle());
             }

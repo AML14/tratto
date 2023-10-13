@@ -4,6 +4,7 @@ import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.Node;
+import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.*;
 import com.github.javaparser.ast.comments.JavadocComment;
 import com.github.javaparser.ast.expr.ArrayAccessExpr;
@@ -140,7 +141,67 @@ public class TogUtils {
                 try {
                     String testName = testPrefix.getNameAsString();
                     Map<String,String> togaRow = new HashMap<>();
-                    MethodDeclaration mut = (MethodDeclaration) lastMethodCallExpression.resolve().toAst().orElseThrow();
+                    MethodDeclaration mut;
+
+                    try {
+                        mut = (MethodDeclaration) lastMethodCallExpression.resolve().toAst().orElse(null);
+                    } catch (UnsolvedSymbolException e) {
+                        mut = null;
+                    }
+
+                    if (mut == null) {
+                        List<MethodDeclaration> classMethodsList = cuClassFile.getPrimaryType().get().getMethods();
+                        List<MethodDeclaration> candidatesMethods = new ArrayList<>();
+
+                        for (MethodDeclaration method: classMethodsList) {
+                            // Check if the method name is the same
+                            if (method.getNameAsString().equals(lastMethodCallExpression.getNameAsString())) {
+                                // Check if the number of parameters is the same
+                                if (method.getParameters().size() == lastMethodCallExpression.getArguments().size()) {
+                                    // Add method to candidates if the previous conditions are satisfied
+                                    candidatesMethods.add(method);
+                                }
+                            }
+                        }
+
+                        if (candidatesMethods.size() == 0) {
+                            throw new NoSuchElementException();
+                        } else if (candidatesMethods.size() == 1) {
+                            mut = candidatesMethods.get(0);
+                        } else {
+                            int bestParamsTypesInCommon = -1;
+                            boolean multipleCandidates = false;
+                            MethodDeclaration mostSimilar = null;
+                            for (MethodDeclaration method: candidatesMethods) {
+                                NodeList<com.github.javaparser.ast.body.Parameter> paramsList = method.getParameters();
+                                int paramsTypesInCommon = 0;
+                                for (int i=0; i < paramsList.size(); i++) {
+                                    com.github.javaparser.ast.body.Parameter param = paramsList.get(i);
+                                    String lastMethodTypeName = lastMethodCallExpression.getArguments().get(i).calculateResolvedType().describe();
+                                    String paramTypeName = param.getTypeAsString();
+                                    if (lastMethodTypeName.endsWith(paramTypeName)) {
+                                        paramsTypesInCommon += 1;
+                                    }
+                                }
+                                if (paramsTypesInCommon >= bestParamsTypesInCommon) {
+                                    if (paramsTypesInCommon == bestParamsTypesInCommon) {
+                                        multipleCandidates = true;
+                                    } else {
+                                        bestParamsTypesInCommon = paramsTypesInCommon;
+                                        multipleCandidates = false;
+                                        mostSimilar = method;
+                                    }
+                                }
+                            }
+                            if (!(multipleCandidates || mostSimilar == null)) {
+                                mut = mostSimilar;
+                            } else {
+                                // Multiple candidates, impossible to discern
+                                throw new NoSuchElementException();
+                            }
+                        }
+                    }
+
                     MethodDeclaration test = cuTestClassFile
                             .findAll(MethodDeclaration.class)
                             .stream()
