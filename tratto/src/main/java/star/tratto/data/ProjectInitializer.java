@@ -22,8 +22,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * A helper class that provides a static method to initialize all projects as
- * a list of {@link Project} records from a JSON file.
+ * A helper class that provides a static method
+ * {@link ProjectInitializer#initialize(Path)}to initialize all projects as a
+ * list of {@link Project} records from a JSON file.
  */
 public class ProjectInitializer {
     /**
