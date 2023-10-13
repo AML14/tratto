@@ -12,7 +12,6 @@ elif [ ! -d "${2}" ]; then
 fi
 
 # get current directory
-# shellcheck disable=SC2128
 current_dir=$(realpath "$(dirname "${BASH_SOURCE}")")
 # setup global variables
 source "${current_dir}/utils/global_variables.sh"
@@ -43,6 +42,9 @@ fi
 
 # switch to Java 17
 sdk use java "${JAVA17}"
+
+# Setup experiments
+bash "${UTILS_DIR}/experiment_setup.sh"
 
 # convert EvoSuite tests into test prefixes
 java -jar "${EXPERIMENT_JAR}" "remove_oracles" "${target_class}"

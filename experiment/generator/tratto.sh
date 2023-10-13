@@ -11,6 +11,7 @@ fi
 # Get current directory
 # shellcheck disable=SC2128
 current_dir=$(realpath "$(dirname "${BASH_SOURCE}")")
+# setup global variables
 source "${current_dir}/utils/global_variables.sh"
 
 

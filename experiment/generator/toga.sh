@@ -5,6 +5,7 @@
 # Get current directory
 # shellcheck disable=SC2128
 current_dir=$(realpath "$(dirname "${BASH_SOURCE}")")
+# setup global variables
 source "${current_dir}/utils/global_variables.sh"
 
 # argument and setup check
@@ -22,6 +23,12 @@ toga_output_dir="${ROOT_DIR}/output/toga/output"
 
 echo "toga.sh: Setup TOGA project"
 bash "${ROOT_DIR}/generator/utils/toga_setup.sh"
+
+# Switch to Java 17
+sdk use java "$JAVA17"
+
+# Setup experiments
+bash "${UTILS_DIR}/experiment_setup.sh"
 
 echo "toga.sh: Generate TOGA input files."
 java -jar "generator/resources/experiment.jar" "generate_tog_input" "toga" "${fully_qualified_name}" "${src_path}"

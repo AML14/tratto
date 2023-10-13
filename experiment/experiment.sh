@@ -54,17 +54,8 @@ if [ ! $found -eq 1 ]; then
   exit 1
 fi
 
-# Generate experiment JAR if not present
-if [ ! -f "${EXPERIMENT_JAR}" ]; then
-  mvn clean package -DskipTests
-  target_jar=$(find "${ROOT_DIR}/target" -type f -name "experiment*-jar-with-dependencies.jar")
-    # Check if a file was found
-    if [ -z "${target_jar}" ]; then
-      echo "experiment.sh: Unable to build jar for experiment module."
-      exit 1
-    fi
-    sudo mv "${target_jar}" "${RESOURCES_DIR}/experiment.jar"
-fi
+# Setup experiments
+bash "${UTILS_DIR}/experiment_setup.sh"
 
 # Setup sdkman
 source "${UTILS_DIR}/init_sdkman.sh" "${SDKMAN_DIR}"
