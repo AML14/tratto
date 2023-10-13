@@ -24,6 +24,8 @@ toga_output_dir="${ROOT_DIR}/output/toga/output"
 echo "toga.sh: Setup TOGA project"
 bash "${ROOT_DIR}/generator/utils/toga_setup.sh"
 
+# Setup sdkman
+source "${UTILS_DIR}/init_sdkman.sh" "${SDKMAN_DIR}"
 # Switch to Java 17
 sdk use java "$JAVA17"
 
