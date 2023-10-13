@@ -105,7 +105,7 @@ public class ProjectOracleGenerator {
             }
             // Add all PostCondition oracles to dataset.
             List<PostCondition> postConditions = jDoctorCondition.postConditions();
-            if (postConditions.isEmpty()) {
+            if (!postConditions.isEmpty()) {
                 OracleDatapoint nextDatapoint = getNextDatapoint(operation, postConditions);
                 if (nextDatapoint != null) oracleDPs.add(nextDatapoint);
                 // first description corresponds to source tag.
