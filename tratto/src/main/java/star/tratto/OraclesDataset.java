@@ -100,7 +100,7 @@ public class OraclesDataset {
         FileUtils.deleteDirectory(TrattoPath.OUTPUT.getPath());
         FileUtils.deleteDirectory(TrattoPath.ORACLES_DATASET.getPath());
         // get oracle datapoints
-        List<Project> projects = ProjectInitializer.initialize(TrattoPath.INPUT_PROJECTS.getPath());
+        List<Project> projects = ProjectInitializer.getProjects(TrattoPath.INPUT_PROJECTS.getPath());
         for (Project project : projects) {
             List<OracleDatapoint> oracleDPs = getProjectOracleDatapoints(project);
             writeProjectOracleDatapoints(oracleDPs, project);
