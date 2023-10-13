@@ -156,7 +156,7 @@ public class ProjectOracleGenerator {
      *
      * @param unprocessedTag a Javadoc tag
      * @return a Javadoc tag without "&#64;code", "&#64;link", "{", "}", "\n",
-     * "\r", "\t", or HTML tags (angle brackets)
+     * "\r", "\t", HTML tags (angle brackets), or type parameter
      */
     private String removeTagSpecialCharacters(String unprocessedTag) {
         String previous;
