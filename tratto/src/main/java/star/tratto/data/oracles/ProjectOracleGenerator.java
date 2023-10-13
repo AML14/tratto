@@ -159,7 +159,13 @@ public class ProjectOracleGenerator {
      * "\r", "\t", or HTML tags (angle brackets)
      */
     private String removeTagSpecialCharacters(String unprocessedTag) {
-        return unprocessedTag.replaceAll("<[^>]*>|@code|@link|\\{|}|\\n|\\r|\\t", " ");
+        String previous;
+        String current = unprocessedTag;
+        do {
+            previous = current;
+            current = previous.replaceAll("<[^>]*>|@code|@link|\\{|}|\\n|\\r|\\t", " ");
+        } while (!current.equals(previous));
+        return current;
     }
 
     /**
