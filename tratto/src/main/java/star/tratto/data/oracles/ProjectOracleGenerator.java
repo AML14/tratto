@@ -168,18 +168,20 @@ public class ProjectOracleGenerator {
         return current;
     }
 
+    /** The regex to match an arbitrary tag type ("@param", "@return", "@throws"). */
+    private static final String tagTypeRegex = "@(param|return|throws)\\s+(.*\\.)*";
+
     /**
      * Removes a tag prefix from a Javadoc tag (includes tag type and name).
      * For example,
-     *     "@param name the student name" &rarr;
-     *     "the student name"
+     *     "@param name the student name" &rarr; "the student name"
      *
      * @param unprocessedTag a Javadoc tag
      * @param tagName the name of the Javadoc tag
      * @return a Javadoc tag without the tag type or tag name
      */
     private String removeTagPrefix(String unprocessedTag, String tagName) {
-        return unprocessedTag.replaceAll("@(param|return|throws)\\s+(.*\\.)*" + tagName + "\\b", "");
+        return unprocessedTag.replaceAll(tagTypeRegex + tagName + "\\b", "");
     }
 
     /**
