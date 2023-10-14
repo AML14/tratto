@@ -18,57 +18,59 @@ import java.util.stream.Collectors;
  * declaring class, in a corresponding project.
  */
 public class OracleDatapoint {
-    // a unique identifier for each oracle datapoint
+    /** A unique identifier for each oracle datapoint. */
     private Integer id;
-    // a boolean expression corresponding to a test assertion
+    /** A boolean expression corresponding to a test assertion. */
     private String oracle;
-    // the type of oracle (e.g. pre-condition, post-condition, exceptional condition)
+    /** The type of oracle (e.g. pre-condition, post-condition, exceptional condition). */
     private OracleType oracleType;
-    // the name of the project being analyzed
+    /** The name of the project being analyzed. */
     private String projectName;
-    // the package name of the class under analysis
+    /** The package name of the class under analysis. */
     private String packageName;
-    // the name of the class under analysis
+    /** The name of the class under analysis. */
     private String className;
-    // the Javadoc tag corresponding to the oracle expression
+    /** The Javadoc tag corresponding to the oracle expression. */
     private String javadocTag;
-    // the Javadoc of the method under analysis
+    /** The Javadoc of the method under analysis. */
     private String methodJavadoc;
-    // the source code of the method under analysis
+    /** The source code of the method under analysis. */
     private String methodSourceCode;
-    // the Javadoc of the class under analysis
+    /** The Javadoc of the class under analysis. */
     private String classJavadoc;
-    // the source code of the class under analysis
+    /** The source code of the class under analysis. */
     private String classSourceCode;
-    // default tokens for the XText grammar (see "./repos/tokens_grammar.json")
+    /** Default tokens for the XText grammar (see "./repos/tokens_grammar.json"). */
     private List<String> tokensGeneralGrammar;
-    // default (token, type) pairs for the XText grammar
+    /** Default (token, type) pairs for the XText grammar. */
     private List<ValueTokens> tokensGeneralValuesGlobalDictionary;
-    // all classes in the Java project (className, packageName)
+    /** All classes in the Java project (className, packageName). */
     private List<ClassTokens> tokensProjectClasses;
-    // all non-private, static methods in the Java project (methodName, packageName, className, methodSignature)
+    /** All non-private, static methods in the Java project (methodName, packageName, className, methodSignature). */
     private List<MethodTokens> tokensProjectClassesNonPrivateStaticNonVoidMethods;
-    // all non-private, static attributes in the Java project (attributeName, packageName, className, attributeDeclaration)
+    /** All non-private, static attributes in the Java project (attributeName, packageName, className, attributeDeclaration). */
     private List<AttributeTokens> tokensProjectClassesNonPrivateStaticAttributes;
-    // all values in the corresponding method Javadoc (value, type)
+    /** All values in the corresponding method Javadoc (value, type). */
     private List<ValueTokens> tokensMethodJavadocValues;
-    // all arguments of the corresponding method (argumentName, packageName, className)
+    /** All arguments of the corresponding method (argumentName, packageName, className). */
     private List<MethodArgumentTokens> tokensMethodArguments;
-    // all non-private, non-static, non-void methods from:
-    //  (1) the declaring class,
-    //  (2) each method argument,
-    //  (3) the method return type
-    // (methodName, packageName, className, methodSignature)
+    /** All non-private, non-static, non-void methods from:
+     *  (1) the declaring class,
+     *  (2) each method argument,
+     *  (3) the method return type
+     *  (methodName, packageName, className, methodSignature)
+     */
     private List<MethodTokens> tokensMethodVariablesNonPrivateNonStaticNonVoidMethods;
-    // all non-private, non-static, attributes from:
-    //  (1) the declaring class,
-    //  (2) each method argument,
-    //  (3) the method return type
-    // (attributeName, packageName, className, attributeDeclaration)
+    /** All non-private, non-static, attributes from:
+     *  (1) the declaring class,
+     *  (2) each method argument,
+     *  (3) the method return type
+     * (attributeName, packageName, className, attributeDeclaration)
+     */
     private List<AttributeTokens> tokensMethodVariablesNonPrivateNonStaticAttributes;
-    // all non-private, non-static, non-void method from the return type of each possible oracle sub-expression
+    /** All non-private, non-static, non-void method from the return type of each possible oracle sub-expression. */
     private List<MethodTokens> tokensOracleVariablesNonPrivateNonStaticNonVoidMethods;
-    // all non-private, non-static attributes from the return type of each possible oracle sub-expression
+    /** All non-private, non-static attributes from the return type of each possible oracle sub-expression. */
     private List<AttributeTokens> tokensOracleVariablesNonPrivateNonStaticAttributes;
 
     public OracleDatapoint(Map oracleDatapointMap) {
