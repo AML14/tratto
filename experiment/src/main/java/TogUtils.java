@@ -30,6 +30,7 @@ import data.TogType;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -102,10 +103,12 @@ public class TogUtils {
     public static void generateTOGAInput(Path srcDirPath, String fullyQualifiedClassName) {
         javaParser = getJavaParser(srcDirPath);
         Path prefixPath = output.resolve(Paths.get("toga", "input"));
+        Path errorPath = output.resolve(Paths.get("toga", "err"));
         Path togaInputPath = prefixPath.resolve("toga_input.csv");
         Path togaMetadataPath = prefixPath.resolve("toga_metadata.csv");
         Path togaInfoPath = prefixPath.resolve("toga_info.json");
         Path fullyQualifiedClassNamePath = FileUtils.getFQNPath(fullyQualifiedClassName);
+        Path togaErrorPath = errorPath.resolve(fullyQualifiedClassNamePath.resolve("err.csv"));
         String className = FileUtils.getSimpleNameFromFQN(fullyQualifiedClassName);
         int classNameIdx = fullyQualifiedClassNamePath.getNameCount() - 1;
         Path fullyQualifiedTestClassNamePath = classNameIdx > 0 ?
@@ -133,103 +136,117 @@ public class TogUtils {
             Map<String, Map<String,String>> togaInfo = new HashMap<>();
             StringBuilder togaInputBuilder = new StringBuilder();
             StringBuilder togaMetadataBuilder = new StringBuilder();
+            StringBuilder togaErrBuilder = new StringBuilder();
             togaInputBuilder.append("focal_method,test_prefix,docstring\n");
             togaMetadataBuilder.append("project,bug_num,test_name,exception_bug,assertion_bug,exception_lbl,assertion_lbl,assert_err\n");
             cuTestClassPrefixFile.findAll(MethodDeclaration.class).forEach(testPrefix -> {
                 List<MethodCallExpr> methodCallExpressions = testPrefix.getBody().orElseThrow().findAll(MethodCallExpr.class);
-                MethodCallExpr lastMethodCallExpression = methodCallExpressions.get(methodCallExpressions.size() - 1);
-                try {
-                    String testName = testPrefix.getNameAsString();
-                    Map<String,String> togaRow = new HashMap<>();
-                    MethodDeclaration mut;
-
+                if (methodCallExpressions.size() > 0) {
+                    MethodCallExpr lastMethodCallExpression = methodCallExpressions.get(methodCallExpressions.size() - 1);
                     try {
-                        mut = (MethodDeclaration) lastMethodCallExpression.resolve().toAst().orElse(null);
-                    } catch (UnsolvedSymbolException e) {
-                        mut = null;
-                    }
+                        String testName = testPrefix.getNameAsString();
+                        Map<String, String> togaRow = new HashMap<>();
+                        MethodDeclaration mut;
 
-                    if (mut == null) {
-                        List<MethodDeclaration> classMethodsList = cuClassFile.getPrimaryType().get().getMethods();
-                        List<MethodDeclaration> candidatesMethods = new ArrayList<>();
-
-                        for (MethodDeclaration method: classMethodsList) {
-                            // Check if the method name is the same
-                            if (method.getNameAsString().equals(lastMethodCallExpression.getNameAsString())) {
-                                // Check if the number of parameters is the same
-                                if (method.getParameters().size() == lastMethodCallExpression.getArguments().size()) {
-                                    // Add method to candidates if the previous conditions are satisfied
-                                    candidatesMethods.add(method);
-                                }
-                            }
+                        try {
+                            mut = (MethodDeclaration) lastMethodCallExpression.resolve().toAst().orElse(null);
+                        } catch (UnsolvedSymbolException e) {
+                            mut = null;
                         }
 
-                        if (candidatesMethods.size() == 0) {
-                            throw new NoSuchElementException();
-                        } else if (candidatesMethods.size() == 1) {
-                            mut = candidatesMethods.get(0);
-                        } else {
-                            int bestParamsTypesInCommon = -1;
-                            boolean multipleCandidates = false;
-                            MethodDeclaration mostSimilar = null;
-                            for (MethodDeclaration method: candidatesMethods) {
-                                NodeList<com.github.javaparser.ast.body.Parameter> paramsList = method.getParameters();
-                                int paramsTypesInCommon = 0;
-                                for (int i=0; i < paramsList.size(); i++) {
-                                    com.github.javaparser.ast.body.Parameter param = paramsList.get(i);
-                                    String lastMethodTypeName = lastMethodCallExpression.getArguments().get(i).calculateResolvedType().describe();
-                                    String paramTypeName = param.getTypeAsString();
-                                    if (lastMethodTypeName.endsWith(paramTypeName)) {
-                                        paramsTypesInCommon += 1;
-                                    }
-                                }
-                                if (paramsTypesInCommon >= bestParamsTypesInCommon) {
-                                    if (paramsTypesInCommon == bestParamsTypesInCommon) {
-                                        multipleCandidates = true;
-                                    } else {
-                                        bestParamsTypesInCommon = paramsTypesInCommon;
-                                        multipleCandidates = false;
-                                        mostSimilar = method;
+                        if (mut == null) {
+                            List<MethodDeclaration> classMethodsList = cuClassFile.getPrimaryType().get().getMethods();
+                            List<MethodDeclaration> candidatesMethods = new ArrayList<>();
+
+                            for (MethodDeclaration method : classMethodsList) {
+                                // Check if the method name is the same
+                                if (method.getNameAsString().equals(lastMethodCallExpression.getNameAsString())) {
+                                    // Check if the number of parameters is the same
+                                    if (method.getParameters().size() == lastMethodCallExpression.getArguments().size()) {
+                                        // Add method to candidates if the previous conditions are satisfied
+                                        candidatesMethods.add(method);
                                     }
                                 }
                             }
-                            if (!(multipleCandidates || mostSimilar == null)) {
-                                mut = mostSimilar;
-                            } else {
-                                // Multiple candidates, impossible to discern
+
+                            if (candidatesMethods.size() == 0) {
                                 throw new NoSuchElementException();
+                            } else if (candidatesMethods.size() == 1) {
+                                mut = candidatesMethods.get(0);
+                            } else {
+                                int bestParamsTypesInCommon = -1;
+                                boolean multipleCandidates = false;
+                                MethodDeclaration mostSimilar = null;
+                                for (MethodDeclaration method : candidatesMethods) {
+                                    NodeList<com.github.javaparser.ast.body.Parameter> paramsList = method.getParameters();
+                                    int paramsTypesInCommon = 0;
+                                    for (int i = 0; i < paramsList.size(); i++) {
+                                        com.github.javaparser.ast.body.Parameter param = paramsList.get(i);
+                                        String lastMethodTypeName = lastMethodCallExpression.getArguments().get(i).calculateResolvedType().describe();
+                                        String paramTypeName = param.getTypeAsString();
+                                        if (lastMethodTypeName.endsWith(paramTypeName)) {
+                                            paramsTypesInCommon += 1;
+                                        }
+                                    }
+                                    if (paramsTypesInCommon >= bestParamsTypesInCommon) {
+                                        if (paramsTypesInCommon == bestParamsTypesInCommon) {
+                                            multipleCandidates = true;
+                                        } else {
+                                            bestParamsTypesInCommon = paramsTypesInCommon;
+                                            multipleCandidates = false;
+                                            mostSimilar = method;
+                                        }
+                                    }
+                                }
+                                if (!(multipleCandidates || mostSimilar == null)) {
+                                    mut = mostSimilar;
+                                } else {
+                                    // Multiple candidates, impossible to discern
+                                    throw new NoSuchElementException();
+                                }
                             }
                         }
-                    }
 
-                    MethodDeclaration test = cuTestClassFile
-                            .findAll(MethodDeclaration.class)
-                            .stream()
-                            .filter(t -> t.getNameAsString().equals(testName))
-                            .toList()
-                            .get(0);
-                    String methodName = mut.getNameAsString();
-                    String focalMethod = getMethodSignature(mut);
-                    String javadocString = getCallableJavadoc(mut).replace("'", "\\'").replace("\"", "'");
-                    String testStr = test.toString().replace("'", "\\'").replace("\"", "'");
-                    String testPrefixStr = testPrefix.toString();
-                    Matcher matcher = testPrefixPattern.matcher(testPrefix.toString());
-                    if (matcher.find()) {
-                        int startIdx = matcher.start();
-                        testStr = testStr.substring(startIdx);
+                        MethodDeclaration test = cuTestClassFile
+                                .findAll(MethodDeclaration.class)
+                                .stream()
+                                .filter(t -> t.getNameAsString().equals(testName))
+                                .toList()
+                                .get(0);
+                        String methodName = mut.getNameAsString();
+                        String focalMethod = getMethodSignature(mut);
+                        String javadocString = getCallableJavadoc(mut).replace("'", "\\'").replace("\"", "'");
+                        String testStr = test.toString().replace("'", "\\'").replace("\"", "'");
+                        String testPrefixStr = testPrefix.toString();
+                        Matcher matcher = testPrefixPattern.matcher(testPrefix.toString());
+                        if (matcher.find()) {
+                            int startIdx = matcher.start();
+                            testStr = testStr.substring(startIdx);
+                        }
+                        togaInputBuilder.append(String.format("\"%s {}\",\"%s\",\"%s\"\n", focalMethod, testStr, javadocString));
+                        togaMetadataBuilder.append(String.format("project,0,%s,0,0,False,\"\",\"\"\n", testName));
+                        togaRow.put("className", cuClassFile.getPrimaryType().orElseThrow().getFullyQualifiedName().orElseThrow());
+                        togaRow.put("methodName", methodName);
+                        togaRow.put("methodSignature", focalMethod);
+                        togaRow.put("testPrefix", testPrefixStr);
+                        togaRow.put("testName", testName);
+                        togaInfo.put(testName, togaRow);
+                    } catch (NoSuchElementException | UnsolvedSymbolException e) {
+                        togaErrBuilder.append(generateLogTogaInputError(testPrefix, fullyQualifiedClassName, e.getClass().getName()));
+                        String errMsg = String.format(
+                                "Focal method %s not found in test %s for class %s",
+                                lastMethodCallExpression.getNameAsString(),
+                                testPrefix.getNameAsString(),
+                                fullyQualifiedClassName
+                        );
+                        System.err.println(errMsg);
                     }
-                    togaInputBuilder.append(String.format("\"%s {}\",\"%s\",\"%s\"\n",focalMethod, testStr, javadocString));
-                    togaMetadataBuilder.append(String.format("project,0,%s,0,0,False,\"\",\"\"\n", testName));
-                    togaRow.put("className", cuClassFile.getPrimaryType().orElseThrow().getFullyQualifiedName().orElseThrow());
-                    togaRow.put("methodName", methodName);
-                    togaRow.put("methodSignature", focalMethod);
-                    togaRow.put("testPrefix", testPrefixStr);
-                    togaRow.put("testName", testName);
-                    togaInfo.put(testName,togaRow);
-                } catch (NoSuchElementException | UnsolvedSymbolException e) {
+                } else {
+                    String testPrefixStr = testPrefix.toString().replace("'", "\\'").replace("\"", "'");
+                    togaErrBuilder.append(generateLogTogaInputError(testPrefix, fullyQualifiedClassName, "NoMethodCallException"));
                     String errMsg = String.format(
-                            "Focal method %s not found for class %s",
-                            lastMethodCallExpression.getNameAsString(),
+                            "Method call not found in test %s for class %s",
+                            testPrefix.getNameAsString(),
                             fullyQualifiedClassName
                     );
                     System.err.println(errMsg);
@@ -238,10 +255,25 @@ public class TogUtils {
             FileUtils.writeJSON(togaInfoPath, togaInfo);
             FileUtils.writeString(togaInputPath, togaInputBuilder.toString());
             FileUtils.writeString(togaMetadataPath, togaMetadataBuilder.toString());
+            FileUtils.writeString(togaErrorPath, togaErrBuilder.toString());
         } catch (IOException e) {
             e.printStackTrace();
             throw new Error(e.getMessage());
         }
+    }
+
+    /**
+     * Logs error in parsing prefix test and generating TOGA input.
+     *
+     * @param testPrefix the test prefix that triggers an error.
+     * @param fullyQualifiedClassName the fully qualified name of the class under test
+     * @param errStr the error to log
+     * @return A string in the forms of a csv row (separated by semicolons), containing the
+     * test prefix, the fully qualified name, and the error.
+     */
+    private static String generateLogTogaInputError(MethodDeclaration testPrefix, String fullyQualifiedClassName, String errStr) {
+        String testPrefixStr = testPrefix.toString().replace("'", "\\'").replace("\"", "'");
+        return String.format("%s,%s,%s\n", fullyQualifiedClassName, testPrefixStr, errStr);
     }
 
     /**
