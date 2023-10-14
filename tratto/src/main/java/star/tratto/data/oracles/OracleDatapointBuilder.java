@@ -26,6 +26,10 @@ import static org.plumelib.util.CollectionsPlume.mapList;
  * This class is a builder class for {@link OracleDatapoint}.
  */
 public class OracleDatapointBuilder {
+    /**
+     * The OracleDatapoint being built. Returns a copy when
+     * {@link OracleDatapointBuilder#build()} is called.
+     */
     private OracleDatapoint datapoint;
 
     public OracleDatapointBuilder() {
@@ -84,13 +88,14 @@ public class OracleDatapointBuilder {
 
     /**
      * Gets the oracle of a non-exceptional JDoctor post-condition. The oracle
-     * is represented by a ternary expression, where each method may satisfy
-     * UP TO two possible final states. If the post-condition does not have an
-     * alternative final state, then the false result of the ternary
-     * expression is "true".
+     * is represented by a ternary expression. If the post-condition does not
+     * have an alternative "else" final state, then the false result of the
+     * ternary expression is "true".
      *
-     * @param conditionList a JDoctor post-condition
+     * @param conditionList a list of JDoctor post-conditions
      * @return the oracle corresponding to the post-condition
+     * @throws IllegalArgumentException if the list of post conditions has
+     * less than one or more than two conditions
      */
     private String getPostConditionOracle(List<PostCondition> conditionList) {
         PostCondition mainCondition = conditionList.get(0);
@@ -104,14 +109,18 @@ public class OracleDatapointBuilder {
         sb.append(mainProperty.condition());
         sb.append(" : ");
         // get false result
-        if (conditionList.size() == 2) {
-            PostCondition altCondition = conditionList.get(1);
-            String altTag = altCondition.description();
-            assert mainTag.equals(altTag);
-            Property altProperty = altCondition.property();
-            sb.append(altProperty.condition());
-        } else {
-            sb.append("true");
+        switch (conditionList.size()) {
+            case 2 -> {
+                PostCondition altCondition = conditionList.get(1);
+                String altTag = altCondition.description();
+                assert mainTag.equals(altTag);
+                Property altProperty = altCondition.property();
+                sb.append(altProperty.condition());
+            }
+            case 1 -> sb.append("true");
+            default -> throw new IllegalArgumentException(
+                    "Expected condition list to have 1 or 2 conditions, but got " + conditionList.size()
+            );
         }
         sb.append(";");
         return sb.toString().replaceAll("receiverObjectID", "this");
@@ -125,11 +134,11 @@ public class OracleDatapointBuilder {
     }
 
     /**
-     * Gets all information from a JDoctor condition (ThrowsCondition,
-     * PreCondition, or a list of PostConditions). Sets the oracle type,
-     * JavaDoc tag, and oracle.
+     * Sets the oracle type, Javadoc tag, and oracle from a JDoctor condition.
      *
      * @param condition a JDoctor condition
+     * @throws IllegalArgumentException if the condition is not a
+     * ThrowsCondition, PreCondition, or List of PostConditions.
      */
     public void setConditionInfo(Object condition) {
         if (condition instanceof ThrowsCondition) {
@@ -144,6 +153,10 @@ public class OracleDatapointBuilder {
             if (conditionList.size() > 0) {
                 this.setPostConditionInfo(conditionList);
             }
+        } else {
+            throw new IllegalArgumentException(
+                    "Unexpected condition type " + condition.getClass()
+            );
         }
     }
 
@@ -235,6 +248,13 @@ public class OracleDatapointBuilder {
         this.datapoint.setTokensOracleVariablesNonPrivateNonStaticAttributes(tokensOracleVariablesNonPrivateNonStaticAttributes);
     }
 
+    /**
+     * Creates a new copy of the current OracleDatapoint being built by this
+     * class.
+     *
+     * @return a new OracleDatapoint with all fields copied from the current
+     * OracleDatapoint builder
+     */
     public OracleDatapoint copy() {
         return new OracleDatapoint(
                 this.datapoint.getId(),

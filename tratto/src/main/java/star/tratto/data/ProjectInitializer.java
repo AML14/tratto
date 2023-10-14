@@ -22,10 +22,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * A helper class that provides a static method to initialize all projects as
- * a list of {@link Project} records from a JSON file.
+ * A helper class that provides a static method
+ * {@link ProjectInitializer#getProjects(Path)}to initialize all projects as a
+ * list of {@link Project} records from a JSON file.
  */
 public class ProjectInitializer {
+    /** Private constructor to avoid creating an instance of this class. */
+    private ProjectInitializer() {
+        throw new UnsupportedOperationException("This class cannot be instantiated.");
+    }
+
     /**
      * This helper class uses the Jackson framework to deserialize a JSON
      * object into a {@link Project}.
@@ -34,8 +40,9 @@ public class ProjectInitializer {
         /**
          * Gets a Path from a JSON list of path elements.
          *
-         * @param arrayNode an array node representing a list of path elements
-         * @return the path corresponding to the joined elements of the JSON list
+         * @param arrayNode a JSON list of path elements
+         * @return the path corresponding to the joined elements of
+         * {@code arrayNode}
          */
         private Path arrayNodeToPath(ArrayNode arrayNode) {
             List<String> pathElements = new ArrayList<>();
@@ -78,9 +85,22 @@ public class ProjectInitializer {
         }
     }
 
-    /** Private constructor to avoid creating an instance of this class. */
-    private ProjectInitializer() {
-        throw new UnsupportedOperationException("This class cannot be instantiated.");
+    /**
+     * This helper class uses the Jackson framework to set the deserializer to
+     * a {@link ProjectDeserializer} when parsing a {@link Project}.
+     */
+    public static class ProjectDeserializerModifier extends BeanDeserializerModifier {
+        @Override
+        public JsonDeserializer<?> modifyDeserializer(
+                DeserializationConfig config,
+                BeanDescription beanDesc,
+                JsonDeserializer<?> deserializer
+        ) {
+            if (beanDesc.getBeanClass() == Project.class) {
+                return new ProjectDeserializer();
+            }
+            return super.modifyDeserializer(config, beanDesc, deserializer);
+        }
     }
 
     /**
@@ -89,23 +109,11 @@ public class ProjectInitializer {
      * @param jsonPath path to the JSON representation of projects
      * @return the corresponding {@link Project} records
      */
-    public static List<Project> initialize(Path jsonPath) {
+    public static List<Project> getProjects(Path jsonPath) {
         // initialize ObjectMapper with custom deserializer
         ObjectMapper objectMapper = new ObjectMapper();
         SimpleModule module = new SimpleModule();
-        module.setDeserializerModifier(new BeanDeserializerModifier() {
-            @Override
-            public JsonDeserializer<?> modifyDeserializer(
-                    DeserializationConfig config,
-                    BeanDescription beanDesc,
-                    JsonDeserializer<?> deserializer
-            ) {
-                if (beanDesc.getBeanClass() == Project.class) {
-                    return new ProjectDeserializer();
-                }
-                return super.modifyDeserializer(config, beanDesc, deserializer);
-            }
-        });
+        module.setDeserializerModifier(new ProjectDeserializerModifier());
         objectMapper.registerModule(module);
         // read JSON object to Project
         try {
