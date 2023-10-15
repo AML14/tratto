@@ -61,7 +61,7 @@ while IFS=, read -r project_id bug_id modified_classes; do
       src_path="src/java"
     elif [ -d "${buggy_project_bug_dir}/src" ]; then
       src_path="src"
-    elif [ -d "$buggy_project_bug_dir/src/main/java" ]; then
+    elif [ -d "$buggy_project_bug_dir/gson/src/main/java" ]; then
       src_path="gson/src/main/java"
     else
       echo "Binary path for project $project_id not found."
