@@ -93,11 +93,7 @@ public record JDoctorCondition(
             /* The textual description of the JDoctor post-condition. */
             @JsonProperty("description") String description,
             /*
-             * The guard of the JDoctor post-condition. It contains the
-             * condition for which the oracle of the post-condition must be
-             * verified. If the guard condition is true, the corresponding
-             * oracle must be true as well. Moreover, it contains the textual
-             * description of the guard condition.
+             * The guard of the JDoctor post-condition.
              */
             @JsonProperty("guard") Guard guard
     ) {}
@@ -109,9 +105,7 @@ public record JDoctorCondition(
             /* The textual description of the JDoctor pre-condition. */
             @JsonProperty("description") String description,
             /*
-             * The guard of the JDoctor pre-condition. It contains the
-             * condition for which the JDoctor pre-condition is verified.
-             * Moreover, it contains the textual description of the guard.
+             * The guard of the JDoctor pre-condition.
              */
             @JsonProperty("guard") Guard guard
     ) {}
