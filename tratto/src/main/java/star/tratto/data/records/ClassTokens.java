@@ -3,8 +3,7 @@ package star.tratto.data.records;
 import java.util.List;
 
 /**
- * A Java class. Includes the class name (className) and package name
- * (packageName).
+ * A Java class. Includes the class name and package name.
  */
 public record ClassTokens(
         /* The name of a Java class. */
