@@ -108,7 +108,7 @@ public class DatasetUtils {
      * {@link DatasetUtils#getClassJavadoc(TypeDeclaration)} (e.g. after
      * attempting to recover the Javadoc using the JavaParser API).
      *
-     * @param jpBody a member in a Java class
+     * @param jpBody a Java class or method
      * @return the matched Javadoc comment surrounded by
      * "&#47;&#42; ... &#42;&#47;" (empty string if not found)
      */
