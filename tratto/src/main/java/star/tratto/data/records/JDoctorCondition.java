@@ -24,23 +24,22 @@ public record JDoctorCondition(
         @JsonProperty("pre") List<PreCondition> preConditions
 ) {
     /**
-     * The operation of a JDoctor condition. Provides contextual information
-     * of the method under test.
+     * Represents the method under test.
      */
     public record Operation(
             /*
-             * The qualified name for the declaring class of the method which
-             * the JDoctor condition refers to.
+             * The fully qualified name for the declaring class of the method
+             * which the JDoctor condition refers to.
              */
             @JsonProperty("classname") String className,
             /*
-             * The qualified name of the method which the JDoctor condition
-             * refers to.
+             * The fully qualified name of the method which the JDoctor
+             * condition refers to.
              */
             @JsonProperty("name") String methodName,
             /*
-             * The list of parameter type names for the method which the
-             * JDoctor condition refers to.
+             * The list of parameter fully qualified names for the method
+             * which the JDoctor condition refers to.
              */
             @JsonProperty("parameterTypes") List<String> parameterTypes
     ) {}
