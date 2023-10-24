@@ -483,7 +483,7 @@ public class DatasetUtils {
         return tagList;
     }
 
-    /** A collection of all files that should be ignored. */
+    /** Files that should be ignored. */
     private static final Set<String> ignoreFiles = Set.of(".DS_Store", "package-info.java");
 
     /**
@@ -491,10 +491,10 @@ public class DatasetUtils {
      * ad-hoc list of files to ignore (see "data/repos/ignore_file.json").
      *
      * @param dir the root directory
-     * @return a list of all valid files as Paths with parent directory names
+     * @return a list of all java files as Paths with parent directory names
      * @see DatasetUtils#ignoreFiles
      */
-    private static List<Path> getValidJavaFiles(Path dir) {
+    private static List<Path> getJavaFiles(Path dir) {
         List<Path> allJavaFiles = FileUtils.getAllJavaFilesUnderDirectory(dir);
         // filter files.
         return allJavaFiles
@@ -514,7 +514,7 @@ public class DatasetUtils {
             Path sourceDir
     ) {
         List<ClassTokens> projectClasses = new ArrayList<>();
-        List<Path> javaFiles = getValidJavaFiles(sourceDir);
+        List<Path> javaFiles = getJavaFiles(sourceDir);
         // iterate through each file and add class tokens.
         for (Path javaFile : javaFiles) {
             Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnit(javaFile.toAbsolutePath());
@@ -540,7 +540,7 @@ public class DatasetUtils {
             Path sourceDir
     ) {
         List<MethodTokens> projectMethods = new ArrayList<>();
-        List<Path> javaFiles = getValidJavaFiles(sourceDir);
+        List<Path> javaFiles = getJavaFiles(sourceDir);
         // iterate through each file and add method tokens.
         for (Path javaFile : javaFiles) {
             Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnit(javaFile.toAbsolutePath());
@@ -566,7 +566,7 @@ public class DatasetUtils {
             Path sourceDir
     ) {
         List<AttributeTokens> attributeList = new ArrayList<>();
-        List<Path> javaFiles = getValidJavaFiles(sourceDir);
+        List<Path> javaFiles = getJavaFiles(sourceDir);
         // iterate through each file and add attribute tokens.
         for (Path javaFile : javaFiles) {
             Optional<CompilationUnit> cu = JavaParserUtils.getCompilationUnit(javaFile.toAbsolutePath());
@@ -592,7 +592,7 @@ public class DatasetUtils {
             Path sourceDir
     ) {
         List<JavadocTag> tagList = new ArrayList<>();
-        List<Path> javaFiles = getValidJavaFiles(sourceDir);
+        List<Path> javaFiles = getJavaFiles(sourceDir);
         // iterate through each file and add Javadoc tags.
         for (Path javaFile : javaFiles) {
             Path absoluteJavaFile = javaFile.toAbsolutePath();
