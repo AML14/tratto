@@ -522,7 +522,7 @@ public class DatasetUtils {
                 try {
                     projectClasses.addAll(getClassTokens(cu.get()));
                 } catch (PackageDeclarationNotFoundException e) {
-                    e.printStackTrace();
+                    throw new Error("Unable to resolve package for class " + cu);
                 }
             }
         }
