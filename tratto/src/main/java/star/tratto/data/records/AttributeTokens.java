@@ -3,10 +3,11 @@ package star.tratto.data.records;
 import java.util.List;
 
 /**
- * A Java attribute, defined as a field of a Java class. Includes the
- * attribute name, the package of the declaring class, the name of the
- * declaring class, and the attribute declaration. The attribute declaration
- * follows the format:
+ * This project uses the term "attribute" to refer to fields in Java classes.
+ * This is done for compatibility with the XText grammar. This record defines
+ * various attribute information. Includes the attribute name, the package of
+ * the declaring class, the name of the declaring class, and the attribute
+ * declaration. The attribute declaration follows the format:
  *     "[modifiers] [type] [name][ = initial value];"
  */
 public record AttributeTokens(
@@ -16,10 +17,10 @@ public record AttributeTokens(
         String packageName,
         /* The name of the declaring class. */
         String className,
-        /* The attribute declaration (as defined in the record Javadoc). */
+        /* The attribute declaration. */
         String attributeDeclaration
 ) {
-    /** Non-canonical constructor using List to read JSON. */
+    /** Constructor used when reading JSON. */
     public AttributeTokens(List<String> tokens) {
         this(tokens.get(0), tokens.get(1), tokens.get(2), tokens.get(3));
     }
