@@ -3,7 +3,8 @@ package star.tratto.data.records;
 import java.util.List;
 
 /**
- * A method argument.
+ * A method argument. This record uses the term "argument" rather than
+ * "parameter" for compatibility with the XText grammar.
  *
  * @param argumentName the argument variable name
  * @param packageName the package of the corresponding type
