@@ -245,7 +245,7 @@ public class DatasetUtils {
      *
      * @param jpClass the declaring class of {@code jpCallable}
      * @param jpCallable the method with a parameter {@code jpParameter}
-     * @param jpParameter the given method parameter
+     * @param jpParameter a parameter of {@code jpCallable}
      * @return the type name of the given parameter
      */
     private static String getParameterTypeName(
