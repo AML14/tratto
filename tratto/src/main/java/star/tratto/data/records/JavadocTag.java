@@ -23,4 +23,50 @@ public record JavadocTag(
         String tagName,
         /* The content of the tag after the tag name. */
         String tagBody
-) {}
+) {
+    /**
+     * Gets the Javadoc tag corresponding to a given oracle type. For
+     * reference,
+     * <ul>
+     *     <li>PRE &rarr; @param</li>
+     *     <li>NORMAL_POST &rarr; @return</li>
+     *     <li>EXCEPT_POST &rarr; @throws</li>
+     * </ul>
+     *
+     * @param oracleType a type of oracle
+     * @return an equivalent Javadoc tag corresponding to the oracle type
+     */
+    private static String oracleTypeToJavadocTag(
+            OracleType oracleType
+    ) {
+        switch (oracleType) {
+            case PRE -> {
+                return "@param ";
+            }
+            case NORMAL_POST -> {
+                return "@return ";
+            }
+            case EXCEPT_POST -> {
+                return "@throws ";
+            }
+            default -> throw new IllegalArgumentException("Unknown oracle type " + oracleType);
+        }
+    }
+
+    /**
+     * Gets an equivalent String representation of a Javadoc tag as it would
+     * appear in source code. This method is not lossless. For example, if a
+     * tag originally uses "@exception", this method will return "@throws".
+     *
+     * @return a String representation of the Javadoc tag
+     */
+    public String getTagAsString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(oracleTypeToJavadocTag(this.oracleType()));
+        if (!this.tagName().equals("")) {
+            sb.append(this.tagName()).append(" ");
+        }
+        sb.append(this.tagBody());
+        return sb.toString();
+    }
+}
