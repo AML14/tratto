@@ -344,7 +344,7 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets the source code of a given function.
+     * Gets the source code of a given method or constructor.
      *
      * @param jpCallable a method or constructor
      * @return a string representation of the source code
