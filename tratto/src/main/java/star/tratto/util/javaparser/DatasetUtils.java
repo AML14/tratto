@@ -132,7 +132,7 @@ public class DatasetUtils {
      * Gets the Javadoc comment of a given class.
      * 
      * @param jpClass a JavaParser class
-     * @return the class Javadoc comment surrounded by
+     * @return the class Javadoc comment, in Javadoc format, surrounded by
      * "&#47;&#42; ... &#42;&#47;" (empty string if not found)
      */
     public static String getClassJavadoc(
@@ -148,8 +148,8 @@ public class DatasetUtils {
      * Gets the Javadoc comment of a given function.
      *
      * @param jpCallable a JavaParser function
-     * @return the method/constructor Javadoc comment surrounded by
-     * "&#47;&#42; ... &#42;&#47;" (empty string if not found)
+     * @return the method/constructor Javadoc comment, in Javadoc format,
+     * surrounded by "&#47;&#42; ... &#42;&#47;" (empty string if not found)
      */
     public static String getCallableJavadoc(
             CallableDeclaration<?> jpCallable
