@@ -161,7 +161,7 @@ public class DatasetUtils {
     }
 
     /** Regex to match the numeric values in a Javadoc comment. */
-    private static final Pattern numericValuePattern = Pattern.compile("-?\\d+(\\.\\d+)?");
+    private static final Pattern numericValuePattern = Pattern.compile("-?\\d+(\\.\\d+)?|\\|\\.\\d+");
 
     /**
      * Gets all numeric value tokens in a Javadoc comment.
