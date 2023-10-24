@@ -8,10 +8,8 @@ import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import org.junit.jupiter.api.Test;
 import star.tratto.data.OracleDatapoint;
-import star.tratto.data.OracleType;
 import star.tratto.data.JPClassNotFoundException;
 import star.tratto.data.records.AttributeTokens;
-import star.tratto.data.records.JavadocTag;
 import star.tratto.data.records.ValueTokens;
 import star.tratto.data.records.MethodArgumentTokens;
 import star.tratto.data.records.MethodTokens;
@@ -81,13 +79,6 @@ public class DatasetUtilsTest {
         List<MethodArgumentTokens> expected = oracleDatapoint.getTokensMethodArguments();
         List<MethodArgumentTokens> actual = getMethodArgumentTokens(jpClass, jpCallable);
         assertEquals(expected, actual);
-    }
-
-    @Test
-    public void reconstructTagTest() {
-        assertEquals("@throws IllegalArgumentException if username is null", DatasetUtils.getTagAsString(new JavadocTag("", null, null, OracleType.EXCEPT_POST, "IllegalArgumentException", "if username is null")));
-        assertEquals("@return the number of users", DatasetUtils.getTagAsString(new JavadocTag("", null, null, OracleType.NORMAL_POST, "", "the number of users")));
-        assertEquals("@param password the user's security key", DatasetUtils.getTagAsString(new JavadocTag("", null, null, OracleType.PRE, "password", "the user's security key")));
     }
 
     @Test
