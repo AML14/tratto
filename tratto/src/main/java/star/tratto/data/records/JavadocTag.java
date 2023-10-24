@@ -6,9 +6,8 @@ import com.github.javaparser.ast.body.TypeDeclaration;
 import star.tratto.data.OracleType;
 
 /**
- * A Javadoc method tag (e.g. "@throws", "@param", etc.). For reference, in
- * the tag,
- *     "@param box a default container"
+ * A Javadoc method tag (e.g. "@throws", "@param", etc.). In the tag,
+ *     "@param box a default container",
  * "box" is the tag name and "a default container" is the tag body.
  */
 public record JavadocTag(
