@@ -71,7 +71,8 @@ public class DatasetUtils {
      * Removes all duplicate elements in a list, according to equals.
      * 
      * @param list a list of elements 
-     * @return a new list without duplicate elements
+     * @return a new list with unique elements appearing in the same order as
+     * the original list
      * @param <T> the type of object in the lists
      */
     public static <T> List<T> withoutDuplicates(List<T> list) {
