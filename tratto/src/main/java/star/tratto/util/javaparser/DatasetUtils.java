@@ -55,6 +55,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static org.plumelib.util.CollectionsPlume.mapList;
+
 /**
  * This class provides static methods for generating features in the oracles
  * dataset.
@@ -92,13 +94,8 @@ public class DatasetUtils {
     private static List<ClassTokens> getClassTokens(
             CompilationUnit cu
     ) throws PackageDeclarationNotFoundException {
-        List<TypeDeclaration<?>> jpClasses = cu.getTypes();
         String packageName = JavaParserUtils.getPackageDeclaration(cu).getNameAsString();
-        List<ClassTokens> classList = new ArrayList<>(jpClasses.size());
-        for (TypeDeclaration<?> jpClass : jpClasses) {
-            classList.add(new ClassTokens(jpClass.getNameAsString(), packageName));
-        }
-        return classList;
+        return mapList(jpClass -> new ClassTokens(jpClass.getNameAsString(), packageName), cu.getTypes());
     }
 
     /** Regex to match the Javadoc of a class or method. */
