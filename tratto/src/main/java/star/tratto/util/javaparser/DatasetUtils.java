@@ -1038,7 +1038,7 @@ public class DatasetUtils {
      * </ul>
      *
      * @param jDoctorParam the JDoctor parameter name
-     * @param jpParam a JavaParser parameter
+     * @param jpParam a JavaParser parameter name
      * @param jpCallable the declaring method with parameter {@code jpParam}
      * @param jpClass the declaring class of {@code jpCallable}
      * @return returns true if any of the aforementioned cases are true
@@ -1052,14 +1052,14 @@ public class DatasetUtils {
         if (jDoctorParam.equals(jpParam)) {
             return true;
         }
-        boolean jDoctorParamIsStandard = TypeUtils.isObjectOrComparable(jDoctorParam);
-        boolean jDoctorParamIsStandardArray = TypeUtils.isObjectOrComparableArray(jDoctorParam);
-        boolean jpParamIsStandard = TypeUtils.isObjectOrComparable(jpParam);
+        boolean jDoctorParamIsObjectOrComparable = TypeUtils.isObjectOrComparable(jDoctorParam);
+        boolean jDoctorParamIsObjectOrComparableArray = TypeUtils.isObjectOrComparableArray(jDoctorParam);
+        boolean jpParamIsObjectOrComparable = TypeUtils.isObjectOrComparable(jpParam);
         boolean jpParamIsArray = jpParam.endsWith("[]");
         boolean jpParamIsGeneric = JavaParserUtils.isTypeVariable(jpParam, jpCallable, jpClass);
-        return (jDoctorParamIsStandard && jpParamIsStandard) ||
-                ((jpParamIsGeneric && !jpParamIsArray) && jDoctorParamIsStandard) ||
-                ((jpParamIsGeneric && jpParamIsArray) && jDoctorParamIsStandardArray);
+        return (jDoctorParamIsObjectOrComparable && jpParamIsObjectOrComparable) ||
+                ((jpParamIsGeneric && !jpParamIsArray) && jDoctorParamIsObjectOrComparable) ||
+                ((jpParamIsGeneric && jpParamIsArray) && jDoctorParamIsObjectOrComparableArray);
     }
 
     /**
