@@ -113,7 +113,7 @@ public record JDoctorCondition(
             /*
              * The condition for which a JDoctor pre-condition must be true,
              * or a JDoctor post-condition must be true, or a JDoctor
-             * exceptional condition must be thrown
+             * exceptional condition must be thrown.
              */
             @JsonProperty("condition") String condition,
             /* The textual description of the guard condition. */
