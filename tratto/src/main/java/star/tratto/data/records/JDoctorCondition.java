@@ -9,13 +9,12 @@ import java.util.List;
  * Note: Both the overall data structure (including all precondition,
  * post-condition, and exceptional oracles) and the oracle itself are
  * referred to as a "condition". This is a consequence of the JDoctor output
- * used to generate the Oracles Dataset and should NOT be changed, despite
- * redundancy.
+ * used to generate the Oracles Dataset and should NOT be changed.
  */
 public record JDoctorCondition(
         /* The identifying information of the method under test (e.g. declaring class, name, etc.) */
         @JsonProperty("operation") Operation operation,
-        /* Additional contextual identifier of the method under test. */
+        /* The names used to represent parameters, the return type, and the declaring class. */
         @JsonProperty("identifiers") Identifiers identifiers,
         /* Exceptional post-conditions. */
         @JsonProperty("throws") List<ThrowsCondition> throwsConditions,
