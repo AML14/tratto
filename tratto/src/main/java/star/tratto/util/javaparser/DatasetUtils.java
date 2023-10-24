@@ -611,7 +611,7 @@ public class DatasetUtils {
 
     /**
      * Collects information for all non-private, non-static, non-void methods
-     * available to a given type.
+     * available (i.e., defined in the class or supertype) to a given type.
      *
      * @param jpResolvedType a type
      * @return a list of method tokens for all available methods. Returns an
