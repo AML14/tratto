@@ -1131,13 +1131,12 @@ public class DatasetUtils {
                 }
             }
         }
-        // return null if no such function is found.
+        // return null if no such method or constructor is found.
         return null;
     }
 
     /**
-     * Gets the type declaration {@link TypeDeclaration} of a class from a
-     * given compilation unit {@link CompilationUnit}.
+     * Gets the type declaration of a class from a given compilation unit.
      *
      * @param cu the compilation unit of a file
      * @param className the name of the desired class
