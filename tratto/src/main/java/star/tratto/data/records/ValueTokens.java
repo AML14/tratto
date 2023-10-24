@@ -16,7 +16,7 @@ public record ValueTokens(
         /* The type of the value. */
         String type
 ) {
-    /** Non-canonical constructor using List to read JSON. */
+    /** Constructor used when reading JSON. */
     public ValueTokens(List<String> tokens) {
         this(tokens.get(0), tokens.get(1));
     }

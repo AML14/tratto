@@ -12,7 +12,7 @@ public record ClassTokens(
         /* The package of the Java class. */
         String packageName
 ) {
-    /** Non-canonical constructor using List to read JSON. */
+    /** Constructor used when reading JSON. */
     public ClassTokens(List<String> tokens) {
         this(tokens.get(0), tokens.get(1));
     }

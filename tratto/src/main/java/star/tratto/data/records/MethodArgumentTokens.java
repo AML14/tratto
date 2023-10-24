@@ -10,7 +10,7 @@ import java.util.List;
  * @param typeName the simple name of the corresponding type
  */
 public record MethodArgumentTokens(String argumentName, String packageName, String typeName) {
-    /** Non-canonical constructor using List to read JSON. */
+    /** Constructor used when reading JSON. */
     public MethodArgumentTokens(List<String> tokens) {
         this(tokens.get(0), tokens.get(1), tokens.get(2));
     }
