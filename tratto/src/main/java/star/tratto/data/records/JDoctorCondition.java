@@ -65,18 +65,14 @@ public record JDoctorCondition(
     ) {}
 
     /**
-     * An exceptional JDoctor condition.
+     * An exceptional JDoctor post-condition.
      */
     public record ThrowsCondition(
             /* The fully qualified name of the exception type. */
             @JsonProperty("exception") String exception,
-            /*
-             * The @throws tag corresponding to the oracle (includes type).
-             */
+            /* The @throws tag corresponding to the oracle (includes type). */
             @JsonProperty("description") String description,
-            /*
-             * The guard of the condition.
-             */
+            /* The guard of the condition. */
             @JsonProperty("guard") Guard guard
     ) {}
 
