@@ -1237,8 +1237,8 @@ public class DatasetUtils {
      *
      * @param list the flattened list of objects
      * @param chunkSize the number of objects per chunk
-     * @return a list of lists of objects
-     * @param <T> an arbitrary object
+     * @return a list of lists of the type of list elements
+     * @param <T> the type of list elements
      */
     public static <T> List<List<T>> splitListIntoSubLists(List<T> list, int chunkSize) {
         List<List<T>> chunks = new ArrayList<>();
