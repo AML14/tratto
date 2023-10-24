@@ -22,6 +22,6 @@ public record JavadocTag(
         OracleType oracleType,
         /* Parameter name or exception type (empty string if oracleType is NORMAL_POST). */
         String tagName,
-        /* The content of the tag. */
+        /* The content of the tag after the tag name. */
         String tagBody
 ) {}
