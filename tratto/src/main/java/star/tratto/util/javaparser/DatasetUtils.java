@@ -293,7 +293,7 @@ public class DatasetUtils {
      * @return the tokens of the given parameter. Returns null if unable to
      * resolve the given parameter or does not recognize the given type.
      */
-    public static MethodArgumentTokens getTokensMethodArguments(
+    public static MethodArgumentTokens getMethodArgumentTokens(
             TypeDeclaration<?> jpClass,
             CallableDeclaration<?> jpCallable,
             Parameter parameter
@@ -332,13 +332,13 @@ public class DatasetUtils {
      * @param jpCallable a method
      * @return a list of method argument tokens
      */
-    public static List<MethodArgumentTokens> getTokensMethodArguments(
+    public static List<MethodArgumentTokens> getMethodArgumentTokens(
             TypeDeclaration<?> jpClass,
             CallableDeclaration<?> jpCallable
     ) {
         return jpCallable.getParameters()
                 .stream()
-                .map(p -> getTokensMethodArguments(jpClass, jpCallable, p))
+                .map(p -> getMethodArgumentTokens(jpClass, jpCallable, p))
                 .filter(Objects::nonNull)
                 .toList();
     }

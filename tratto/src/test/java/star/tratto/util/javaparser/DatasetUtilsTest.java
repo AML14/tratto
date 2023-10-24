@@ -79,7 +79,7 @@ public class DatasetUtilsTest {
         CallableDeclaration<?> jpCallable = getCallableDeclaration(jpClass, methodName, methodArgs);
         assertNotNull(jpCallable);
         List<MethodArgumentTokens> expected = oracleDatapoint.getTokensMethodArguments();
-        List<MethodArgumentTokens> actual = getTokensMethodArguments(jpClass, jpCallable);
+        List<MethodArgumentTokens> actual = getMethodArgumentTokens(jpClass, jpCallable);
         assertEquals(expected, actual);
     }
 
