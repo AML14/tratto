@@ -169,7 +169,7 @@ public class DatasetUtils {
      * @param javadocComment a Javadoc comment
      * @return a list of numeric value tokens
      */
-    private static List<ValueTokens> findAllNumericValuesInJavadoc(
+    private static List<ValueTokens> getAllNumericValuesInJavadoc(
             String javadocComment
     ) {
         Matcher matcher = numericValuePattern.matcher(javadocComment);
@@ -199,7 +199,7 @@ public class DatasetUtils {
         return numericValues;
     }
 
-    /** Regex to match the string values in a Javadoc comment. */
+    /** Regex to match the string and character values in a Javadoc comment. */
     private static final Pattern stringValuePattern = Pattern.compile("\"(.*?)\"|'(.*?)'");
 
     /**
@@ -208,7 +208,7 @@ public class DatasetUtils {
      * @param javadocComment a Javadoc comment
      * @return a list of string value tokens
      */
-    private static List<ValueTokens> findAllStringValuesInJavadoc(
+    private static List<ValueTokens> getAllStringValuesInJavadoc(
             String javadocComment
     ) {
         Matcher matcher = stringValuePattern.matcher(javadocComment);
@@ -231,8 +231,8 @@ public class DatasetUtils {
             String javadocComment
     ) {
         List<ValueTokens> valueList = new ArrayList<>();
-        valueList.addAll(findAllNumericValuesInJavadoc(javadocComment));
-        valueList.addAll(findAllStringValuesInJavadoc(javadocComment));
+        valueList.addAll(getAllNumericValuesInJavadoc(javadocComment));
+        valueList.addAll(getAllStringValuesInJavadoc(javadocComment));
         return valueList;
     }
 
