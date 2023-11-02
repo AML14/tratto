@@ -61,6 +61,7 @@ public class ProjectInitializer {
             JsonNode node = jsonParser.getCodec().readTree(jsonParser);
             String projectName = node.get("projectName").asText();
             String githubLink = node.get("githubLink").asText();
+            String commit = node.get("commit").asText();
             Path projectPath = DataAgumentationPath.RESOURCES.getPath().resolve(arrayNodeToPath((ArrayNode) node.get("dirPathList")));
             Path srcPath = projectPath.resolve(arrayNodeToPath((ArrayNode) node.get("srcPathList")));
             List<String> fullyQualifiedClassNameList = new ArrayList<>();
@@ -71,6 +72,7 @@ public class ProjectInitializer {
             return new Project(
                     projectName,
                     githubLink,
+                    commit,
                     projectPath,
                     srcPath,
                     fullyQualifiedClassNameList

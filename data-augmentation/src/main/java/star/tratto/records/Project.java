@@ -13,6 +13,7 @@ import java.util.List;
 public record Project(
         String projectName,
         String githubLink,
+        String commit,
         Path rootPath,
         Path srcPath,
         List<String> fullyQualifiedClassNameList
