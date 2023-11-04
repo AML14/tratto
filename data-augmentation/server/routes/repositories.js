@@ -31,6 +31,7 @@ router.get(
     '/:idRepository/repositoryclasses',
     getRepository,
     async (req, res) => {
+        console.log(res.repository)
         try {
             const repository = res.repository;
             const repositoryClasses = [];
@@ -136,9 +137,10 @@ router.post(
     async (req, res) => {
         // Get the repository to create
         const repository = req.body.repository;
+        console.log(repository);
         // Generate repository document
         const repositoryDocument = new Repository({
-            projectName: repository.name,
+            projectName: repository.projectName,
             githubLink: repository.githubLink,
             commit: repository.commit,
             srcPathList: repository.srcPathList,
@@ -162,6 +164,23 @@ router.delete(
     async (req, res) => {
         try {
             await res.repository.deleteOne();
+            for(const idRepositoryClass of res.repository.classes) {
+                const repositoryClass = await RepositoryClass.findById(idRepositoryClass);
+                for(const idJDoctorCondition of repositoryClass.jDoctorConditions) {
+                    const jDoctorCondition = await JDoctorCondition.findById(idJDoctorCondition);
+                    for(const idPreCondition of jDoctorCondition.pre) {
+                        await PreCondition.findByIdAndDelete(idPreCondition);
+                    }
+                    for(const idPostCondition of jDoctorCondition.post) {
+                        await PostCondition.findByIdAndDelete(idPostCondition);
+                    }
+                    for(const idThrowsCondition of jDoctorCondition.throws) {
+                        await ThrowsCondition.findByIdAndDelete(idThrowsCondition);
+                    }
+                    await jDoctorCondition.deleteOne();
+                }
+                await repositoryClass.deleteOne();
+            }
             res.json({ message: "Deleted repository" });
         } catch (e) {
             res.status(500).json({ message: e.message });
@@ -178,17 +197,38 @@ router.get(
     }
 );
 
-// Add class to repository
+// Create repository class
 router.post(
     '/:idRepository/repositoryclasses/',
     getRepository,
     async (req, res) => {
         // Get class
         const repositoryClass = req.body.repositoryClass;
-        // Generate repository document
+
+        if(!repositoryClass || (repositoryClass && !(repositoryClass.name && repositoryClass.jDoctorConditions))) {
+            res.status(400).json({ message: "Missing parameters." });
+        }
+
+        // Define jDoctorConditions list
+        const jDoctorConditions = [];
+
+        // Create jDoctorConditions
+        for(const jDoctorCondition of repositoryClass.jDoctorConditions) {
+            // Create jDoctorCondition document
+            const jDoctorConditionDocument = new JDoctorCondition(jDoctorCondition);
+            try {
+                // Save document to database
+                await jDoctorConditionDocument.save();
+                jDoctorConditions.push(jDoctorConditionDocument._id);
+            } catch (e) {
+                res.status(400).json({ message: e.message });
+            }
+        }
+
+        // Generate repository class document
         const repositoryClassDocument = new RepositoryClass({
             name: repositoryClass.name,
-            jDoctorConditions: []
+            jDoctorConditions: jDoctorConditions
         });
         try {
             // Save document to database
@@ -244,10 +284,20 @@ router.delete(
     async (req, res) => {
         try {
             await res.jDoctorCondition.deleteOne();
-            res.repositoryClass.jDoctorConditions = res.jDoctorCondition.jDoctorConditions.filter(j => j != req.params.idJDoctorCondition);
+            for(const idPreCondition of res.jDoctorCondition.pre) {
+                await PreCondition.findByIdAndDelete(idPreCondition);
+            }
+            for(const idPostCondition of res.jDoctorCondition.post) {
+                await PostCondition.findByIdAndDelete(idPostCondition);
+            }
+            for(const idThrowsCondition of res.jDoctorCondition.throws) {
+                await ThrowsCondition.findByIdAndDelete(idThrowsCondition);
+            }
+            res.repositoryClass.jDoctorConditions = res.repositoryClass.jDoctorConditions.filter(j => j != req.params.idJDoctorCondition);
             res.repositoryClass.save();
             res.json({ message: "Deleted JDoctorCondition." });
         } catch (e) {
+            console.log("entro qui purtroppo");
             res.status(500).json({ message: e.message });
         }
     }
@@ -303,9 +353,25 @@ router.delete(
 // Delete repository class
 router.delete(
     '/:idRepository/repositoryclasses/:idRepositoryClass',
+    getRepository,
     getRepositoryClass,
     async (req, res) => {
         try {
+            for(const idJDoctorCondition of res.repositoryClass.jDoctorConditions) {
+                const jDoctorCondition = await JDoctorCondition.findById(idJDoctorCondition);
+                for(const idPreCondition of jDoctorCondition.pre) {
+                    await PreCondition.findByIdAndDelete(idPreCondition);
+                }
+                for(const idPostCondition of jDoctorCondition.post) {
+                    await PostCondition.findByIdAndDelete(idPostCondition);
+                }
+                for(const idThrowsCondition of jDoctorCondition.throws) {
+                    await ThrowsCondition.findByIdAndDelete(idThrowsCondition);
+                }
+                await jDoctorCondition.deleteOne();
+            }
+            res.repository.classes = res.repository.classes.filter(c => c != req.params.idRepositoryClass);
+            res.repository.save();
             await res.repositoryClass.deleteOne();
             res.json({ message: "Deleted repository class." });
         } catch (e) {

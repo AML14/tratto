@@ -2,7 +2,7 @@ import {TiDelete} from "react-icons/ti";
 import React, {useState} from "react";
 import {FiMinusSquare, FiPlusSquare} from "react-icons/fi";
 
-export default function List({ label, identifier, elements, onClickCallback, deleteButtonCallback }) {
+export default function List({ label, identifier, selected, elements, onClickCallback, deleteButtonCallback }) {
 
     const [expand, setExpand] = useState(true);
 
@@ -35,9 +35,9 @@ export default function List({ label, identifier, elements, onClickCallback, del
                             elements.length > 0 ?
                                 elements.map((e, idx) => {
                                     return (
-                                        <div key={`${identifier}-${e.name}`} className="list-row">
-                                            <span className="list-row-name" onClick={() => { onClickCallback(idx) }}>{e.name}</span>
-                                            <button className="delete-button" onClick={() => deleteButtonCallback(idx)}><TiDelete color="darkred" size={25} /></button>
+                                        <div key={ e._id } className="list-row">
+                                            <span className="list-row-name" style={ selected && selected == e._id ? { color: '#e2777a' } : null } onClick={() => { onClickCallback(idx) }}>{e.name}</span>
+                                            <button className="delete-button" onClick={() => deleteButtonCallback(idx)}><TiDelete color="#e2777a" size={25} /></button>
                                         </div>
                                     );
                                 })

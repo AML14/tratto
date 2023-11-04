@@ -7,8 +7,14 @@ const api = {
     getAllConditionsUrl: (idRepository, idRepositoryClass, idJDoctorCondition, conditionType) => `${BASE_URL}/repositories/${idRepository}/repositoryClasses/${idRepositoryClass}/jdoctorconditions/${idJDoctorCondition}/${conditionType}`,
     getRepositoryUrl: (idRepository) => `${BASE_URL}/repositories/${idRepository}`,
     getRepositoryClassUrl: (idRepository, idRepositoryClass) => `${BASE_URL}/repositories/${idRepository}/repositoryClasses/${idRepositoryClass}`,
-    deleteCondition: (idRepository, idRepositoryClass, idJDoctorCondition, idCondition, conditionType) => `${BASE_URL}/repositories/${idRepository}/repositoryClasses/${idRepositoryClass}/jdoctorconditions/${idJDoctorCondition}/${conditionType}/${idCondition}`,
-
+    createRepositoryUrl: () => `${BASE_URL}/repositories/`,
+    createRepositoryClassUrl: (idRepository) => `${BASE_URL}/repositories/${idRepository}/repositoryClasses`,
+    createJDoctorConditionUrl: (idRepository, idRepositoryClasses) => `${BASE_URL}/repositories/${idRepository}/repositoryClasses/${idRepositoryClasses}`,
+    createConditionUrl: (idRepository, idRepositoryClass, idJDoctorCondition, conditionType) => `${BASE_URL}/repositories/${idRepository}/repositoryClasses/${idRepositoryClass}/jdoctorconditions/${idJDoctorCondition}/${conditionType}`,
+    deleteRepositoryUrl: (idRepository) => `${BASE_URL}/repositories/${idRepository}`,
+    deleteRepositoryClassUrl: (idRepository, idRepositoryClass) => `${BASE_URL}/repositories/${idRepository}/repositoryClasses/${idRepositoryClass}`,
+    deleteJDoctorConditionUrl: (idRepository, idRepositoryClass, idJDoctorCondition) => `${BASE_URL}/repositories/${idRepository}/repositoryClasses/${idRepositoryClass}/jdoctorconditions/${idJDoctorCondition}`,
+    deleteConditionUrl: (idRepository, idRepositoryClass, idJDoctorCondition, idCondition, conditionType) => `${BASE_URL}/repositories/${idRepository}/repositoryClasses/${idRepositoryClass}/jdoctorconditions/${idJDoctorCondition}/${conditionType}/${idCondition}`
 }
 
 export default api;

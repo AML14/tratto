@@ -8,7 +8,7 @@ export default function Code({ label, identifier, code, language }) {
 
     useEffect(() => {
         Prism.highlightAll();
-    }, [expand]);
+    }, [expand, code]);
     return (
         <>
             {

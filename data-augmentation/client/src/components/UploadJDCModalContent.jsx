@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 
 export default function UploadJDCModalContent({ repositories, modalUpdateState }) {
     const [newRepository, setNewRepository] = useState(null);
@@ -7,9 +7,25 @@ export default function UploadJDCModalContent({ repositories, modalUpdateState }
     const [radioChoice, setRadioChoice] = useState("new");
     const fileInputRef = useRef(null);
 
+    useEffect(() => {
+        if (repositories.length > 0) {
+            setSelectValue(repositories[0]);
+            modalUpdateState({
+                repository: repositories[0],
+                files: files
+            })
+        } else {
+            setSelectValue(null);
+            modalUpdateState({
+                repository: null,
+                files: files
+            })
+        }
+    }, [repositories]);
+
     const repositoryFileUpload = (event) => {
-        const file = event.target.files[0];
-        if (file.type === 'application/json' || file.name.endsWith('.json')) {
+        const file = event.target.files.length > 0 ? event.target.files[0] : null;
+        if (file !== null && (file.type === 'application/json' || file.name && file.name.endsWith('.json'))) {
             const reader = new FileReader();
             reader.onload = (e) => {
                 const fileContent = e.target.result;
@@ -38,7 +54,12 @@ export default function UploadJDCModalContent({ repositories, modalUpdateState }
             };
             reader.readAsText(file);
         } else {
-            alert(`File to upload is not a JSON file.`);
+            setNewRepository(null);
+            modalUpdateState({
+                repository: null,
+                files: files
+            });
+            console.log(`File to upload is not a JSON file.`);
         }
     }
 
@@ -53,8 +74,8 @@ export default function UploadJDCModalContent({ repositories, modalUpdateState }
 
     return (
         <div id="modal-jdc" className="modal-jdc-container">
+            <h2 className="modal-title">Upload JDoctor Conditions</h2>
             <div id="repository-option-container">
-                <h2>Upload JDoctor Conditions</h2>
                 <div className="radio-option">
                     <h3>Repository</h3>
                     <div className="radio-option-input-label-container">
@@ -83,6 +104,7 @@ export default function UploadJDCModalContent({ repositories, modalUpdateState }
                         type="file"
                         name="repository-file"
                         id="repository-file"
+                        className="input-file"
                         accept=".json"
                         ref={fileInputRef}
                         onChange={(event) => { repositoryFileUpload(event); }}
@@ -116,22 +138,29 @@ export default function UploadJDCModalContent({ repositories, modalUpdateState }
                     <select
                         name="repositories"
                         id="repositories-select"
+                        className="select-repository"
                         disabled={radioChoice == "new"}
+                        value={selectValue || ""}
+                        onChange={(event) => {
+                            const idx = event.target.value;
+                            setNewRepository(repositories[idx]);
+                            setSelectValue(repositories[idx]);
+                            modalUpdateState({
+                                repository: repositories[idx],
+                                files: files
+                            });
+                            console.log({
+                                repository: repositories[idx],
+                                files: files
+                            })
+                        }}
                     >
                         {
                             repositories.map( (r, idx) => {
                                 return <option
-                                    key={`option-${r._id}`} value={r._id}
-                                    onChange={() => {
-                                        setNewRepository(repositories[idx]);
-                                        setSelectValue(repositories[idx]);
-                                        modalUpdateState({
-                                            repository: repositories[idx],
-                                            files: files
-                                        });
-                                    }}
-                                    defaultChecked={idx == 0}
-                                >{r.name}</option>
+                                    key={`option-${r._id}`}
+                                    value={idx}
+                                >{r.projectName}</option>
                             })
                         }
                     </select>
@@ -142,6 +171,7 @@ export default function UploadJDCModalContent({ repositories, modalUpdateState }
                 <p className="jdc-p">Upload files</p>
                 <input
                     type="file"
+                    className="input-file"
                     name="jdc-files"
                     id="jdc-files"
                     accept=".json"

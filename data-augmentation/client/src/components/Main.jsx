@@ -68,26 +68,29 @@ export default function Main({ repository, repositoryClass, jdc, onClickCallback
         const idJDoctorCondition = jdc._id;
 
         axios
-            .delete(api.deleteCondition(idRepository, idRepositoryClass, idJDoctorCondition, idCondition, conditionType))
+            .delete(api.deleteConditionUrl(idRepository, idRepositoryClass, idJDoctorCondition, idCondition, conditionType))
             .then((response) => {
                 if (conditionType == "pre") {
-                    setPreConditions(prevState => prevState.filter(p => p != idCondition));
-                    if (preConditions.length > 1) {
-                        setCurrentPreCondition(preConditions[0]);
+                    const filteredPreConditions = preConditions.filter(p => p._id != idCondition);
+                    setPreConditions(filteredPreConditions);
+                    if (filteredPreConditions.length > 0) {
+                        setCurrentPreCondition(filteredPreConditions[0]);
                     } else {
                         setCurrentPreCondition(null);
                     }
                 } else if (conditionType == "post") {
-                    setPostConditions(prevState => prevState.filter(p => p != idCondition));
-                    if (postConditions.length > 1) {
-                        setCurrentPostCondition(postConditions[0]);
+                    const filteredPostConditions = postConditions.filter(p => p._id != idCondition);
+                    setPostConditions(filteredPostConditions);
+                    if (filteredPostConditions.length > 0) {
+                        setCurrentPostCondition(filteredPostConditions[0]);
                     } else {
                         setCurrentPostCondition(null);
                     }
                 } else if (conditionType == "throws") {
-                    setThrowsConditions(prevState => prevState.filter(p => p != idCondition));
-                    if (throwsConditions.length > 1) {
-                        setCurrentThrowsCondition(throwsConditions[0]);
+                    const filteredThrowsConditions = throwsConditions.filter(t => t._id != idCondition);
+                    setThrowsConditions(filteredThrowsConditions);
+                    if (filteredThrowsConditions.length > 0) {
+                        setCurrentThrowsCondition(filteredThrowsConditions[0]);
                     } else {
                         setCurrentThrowsCondition(null);
                     }
@@ -120,7 +123,7 @@ export default function Main({ repository, repositoryClass, jdc, onClickCallback
                             <Code
                                 label="Javadoc"
                                 identifier="javadoc"
-                                code={jdc.source.javadoc}
+                                code={jdc.source.methodJavadoc}
                                 language="java"
                             />
                         </div>
@@ -128,21 +131,30 @@ export default function Main({ repository, repositoryClass, jdc, onClickCallback
                             <h2 id="pre-condition-title">Pre-conditions</h2>
                             <List
                                 identifier="pre"
-                                elements={ preConditions.map( p => { return { name : p.guard.condition } } ) }
+                                elements={ preConditions.map( p => { return {
+                                    _id: p._id,
+                                    name : p.guard.condition
+                                } } ) }
                                 onClickCallback={ onClickCallback }
                                 deleteButtonCallback={ deleteCondition.bind(null, "pre") }
                             />
                             <h2 id="post-condition-title">Post-conditions</h2>
                             <List
                                 identifier="post"
-                                elements={ postConditions.map( p => { return { name : p.property.condition } } ) }
+                                elements={ postConditions.map( p => { return {
+                                    _id: p._id,
+                                    name : p.property.condition
+                                } } ) }
                                 onClickCallback={ onClickCallback }
                                 deleteButtonCallback={ deleteCondition.bind(null, "post") }
                             />
                             <h2 id="throws-condition-title">Throws-conditions</h2>
                             <List
                                 identifier="throws"
-                                elements={ throwsConditions.map( t => { return { name : t.guard.condition } } ) }
+                                elements={ throwsConditions.map( t => { return {
+                                    _id: t._id,
+                                    name : t.guard.condition
+                                } } ) }
                                 onClickCallback={ onClickCallback }
                                 deleteButtonCallback={ deleteCondition.bind(null, "throws") }
                             />
