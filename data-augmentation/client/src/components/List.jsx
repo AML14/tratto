@@ -27,24 +27,28 @@ export default function List({ label, identifier, elements, onClickCallback, del
                 :
                     null
             }
-            <div className="list-item">
-                {
-                    expand ?
-                        elements.length > 0 ?
-                            elements.map((e, idx) => {
-                                return (
-                                    <div key={`${identifier}-${e.name}`} className="list-row">
-                                        <span className="list-row-name" onClick={() => { onClickCallback(idx) }}>{e.name}</span>
-                                        <button className="delete-button" onClick={() => deleteButtonCallback(idx)}><TiDelete color="darkred" size={25} /></button>
-                                    </div>
-                                );
-                            })
-                            :
-                            <span>Not found</span>
-                    :
-                        null
-                }
-            </div>
+            {
+                expand ?
+                    <div className="list-item">
+                        {
+
+                            elements.length > 0 ?
+                                elements.map((e, idx) => {
+                                    return (
+                                        <div key={`${identifier}-${e.name}`} className="list-row">
+                                            <span className="list-row-name" onClick={() => { onClickCallback(idx) }}>{e.name}</span>
+                                            <button className="delete-button" onClick={() => deleteButtonCallback(idx)}><TiDelete color="darkred" size={25} /></button>
+                                        </div>
+                                    );
+                                })
+                                :
+                                <span>Not found</span>
+                        }
+                    </div>
+                :
+                    null
+            }
+
         </div>
     )
 }
