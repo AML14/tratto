@@ -138,8 +138,11 @@ router.post(
         const repository = req.body.repository;
         // Generate repository document
         const repositoryDocument = new Repository({
-            name: repository.name,
+            projectName: repository.name,
             githubLink: repository.githubLink,
+            commit: repository.commit,
+            srcPathList: repository.srcPathList,
+            rootPathList: repository.rootPathList,
             classes: []
         });
         try {

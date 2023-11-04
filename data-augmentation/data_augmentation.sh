@@ -16,7 +16,7 @@
 current_dir="$(realpath "$(dirname "$BASH_SOURCE")")"
 
 # Setup global variables
-source "${current_dir}/utils/global_variables.sh"
+source "${current_dir}/generator/utils/global_variables.sh"
 
 # Setup local variables
 javadoc_empty="false"
@@ -32,6 +32,6 @@ sdk use java "${JAVA17}"
 # Setup data augmentation
 bash "${UTILS_DIR}/data_augmentation_setup.sh"
 # Execute data augmentation to generate project conditions
-cd "${DATA_AUGMENTATION_PROJECT_DIR}" || exit 1
+cd "${DATA_AUGMENTATION_PROJECT_DIR}"
 java -jar "${DATA_AUGMENTATION_JAR}" "$javadoc_empty"
 cd "${ROOT_DIR}" || exit 1

@@ -9,7 +9,9 @@ import java.nio.file.Paths;
 public enum DataAgumentationPath {
     REPOS(Paths.get("src", "main", "java", "star", "tratto", "data", "repos")),
 
-    RESOURCES(Paths.get("src", "main", "resources", "projects-source")),
+    RESOURCES(Paths.get("src", "main", "resources")),
+
+    PROJECTS_SOURCE(DataAgumentationPath.RESOURCES.getPath().resolve("projects-source")),
     DATA_ENTRIES(Paths.get("src", "main", "resources", "data_entries")),
     INPUT_PROJECTS(DataAgumentationPath.REPOS.getPath().resolve("input_projects.json")),
     IGNORE_FILE(DataAgumentationPath.REPOS.getPath().resolve("ignore_file.json"));

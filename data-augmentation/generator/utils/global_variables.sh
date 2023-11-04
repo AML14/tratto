@@ -12,6 +12,5 @@ DATA_AUGMENTATION_PROJECT_DIR="${ROOT_DIR}"
 
 # JARs & Files
 DATA_AUGMENTATION_JAR="${RESOURCES_DIR}/data_augmentation.jar"
-INPUT_PROJECTS_CSV_FILE="${ROOT_DIR}/src/main/java/star/tratto/data/repo/input_projects.csv"
-INPUT_PROJECTS_JSON_FILE="${ROOT_DIR}/src/main/java/star/tratto/data/repo/input_projects.json"
-
+INPUT_PROJECTS_CSV_FILE="${ROOT_DIR}/src/main/java/star/tratto/data/repos/input_projects.csv"
+INPUT_PROJECTS_JSON_FILE="${ROOT_DIR}/src/main/java/star/tratto/data/repos/input_projects.json"

@@ -1,20 +1,45 @@
-import React, { useEffect } from "react";
+import React, {useEffect, useState} from "react";
 import Prism from "prismjs";
+import {FiMinusSquare, FiPlusSquare} from "react-icons/fi";
 
 export default function Code({ label, identifier, code, language }) {
+
+    const [expand, setExpand] = useState(true);
+
     useEffect(() => {
         Prism.highlightAll();
-    }, []);
+    }, [expand]);
     return (
         <>
-            <div className="label">
-                <label>{label}</label>
-            </div>
-            <div id={identifier}>
-                 <pre className="line-numbers">
-                <code className={`language-${language}`}>{code}</code>
-            </pre>
-            </div>
+            {
+                label != null ?
+                    <div className="code-label">
+                        <button
+                            className="expand-button"
+                            onClick={() => { setExpand((prevState) => { return !prevState; }) }}
+                        >
+                            {
+                                expand ?
+                                    <FiMinusSquare size={20}/>
+                                :
+                                    <FiPlusSquare size={20}/>
+                            }
+                        </button>
+                        <h2>{label}</h2>
+                    </div>
+                :
+                    null
+            }
+            {
+                expand ?
+                    <div id={identifier}>
+                        <pre className="line-numbers">
+                            <code className={`language-${language}`}>{code}</code>
+                        </pre>
+                    </div>
+                :
+                    null
+            }
         </>
     );
 }

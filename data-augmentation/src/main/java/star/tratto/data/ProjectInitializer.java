@@ -62,7 +62,7 @@ public class ProjectInitializer {
             String projectName = node.get("projectName").asText();
             String githubLink = node.get("githubLink").asText();
             String commit = node.get("commit").asText();
-            Path projectPath = DataAgumentationPath.RESOURCES.getPath().resolve(arrayNodeToPath((ArrayNode) node.get("dirPathList")));
+            Path projectPath = DataAgumentationPath.PROJECTS_SOURCE.getPath().resolve(arrayNodeToPath((ArrayNode) node.get("rootPathList")));
             Path srcPath = projectPath.resolve(arrayNodeToPath((ArrayNode) node.get("srcPathList")));
             List<String> fullyQualifiedClassNameList = new ArrayList<>();
             ArrayNode fqnArrayNode = (ArrayNode) node.get("fullyQualifiedClassNameList");
@@ -115,6 +115,7 @@ public class ProjectInitializer {
                     jsonProjects.toFile(),
                     new TypeReference<>() {}
             );
+
             return projectList
                     .stream()
                     .filter(project -> {

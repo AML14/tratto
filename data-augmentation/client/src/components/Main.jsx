@@ -1,8 +1,103 @@
 
 import Code from "./Code.jsx";
 import List from "./List.jsx";
+import {useEffect, useState} from "react";
+import axios from "axios";
+import api from "../api.js";
 
-export default function Main({ jdc, pre, post, throws, onClickCallback, deleteCallback }) {
+export default function Main({ repository, repositoryClass, jdc, onClickCallback }) {
+
+    const [preConditions, setPreConditions] = useState([]);
+    const [postConditions, setPostConditions] = useState([]);
+    const [throwsConditions, setThrowsConditions] = useState([]);
+    const [currentPreCondition, setCurrentPreCondition] = useState(null);
+    const [currentPostCondition, setCurrentPostCondition] = useState(null);
+    const [currentThrowsCondition, setCurrentThrowsCondition] = useState(null);
+
+    useEffect(() => {
+        if (repository !== null && repositoryClass !== null && jdc !== null) {
+            const idCurrentRepository = repository._id;
+            const idRepositoryClass = repositoryClass._id;
+            const idJDoctorCondition = jdc._id;
+            axios
+                .get(api.getAllConditionsUrl(idCurrentRepository, idRepositoryClass, idJDoctorCondition, "pre"))
+                .then((response) => {
+                    setPreConditions(response.data);
+                    if (response.data.length > 0 ) {
+                        setCurrentPreCondition(response.data[0]);
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                    setPreConditions([]);
+                    setCurrentPreCondition(null);
+                })
+            axios
+                .get(api.getAllConditionsUrl(idCurrentRepository, idRepositoryClass, idJDoctorCondition, "post"))
+                .then((response) => {
+                    setPostConditions(response.data);
+                    if (response.data.length > 0 ) {
+                        setCurrentPostCondition(response.data[0]);
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                    setPostConditions([]);
+                    setCurrentPostCondition(null);
+                })
+            axios
+                .get(api.getAllConditionsUrl(idCurrentRepository, idRepositoryClass, idJDoctorCondition, "throws"))
+                .then((response) => {
+                    setThrowsConditions(response.data);
+                    if (response.data.length > 0 ) {
+                        setCurrentThrowsCondition(response.data[0]);
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                    setThrowsConditions([]);
+                    setCurrentThrowsCondition(null);
+                })
+        }
+
+    }, [jdc]);
+
+    const deleteCondition = (conditionType, idCondition) => {
+        const idRepository = repository._id;
+        const idRepositoryClass = repositoryClass._id;
+        const idJDoctorCondition = jdc._id;
+
+        axios
+            .delete(api.deleteCondition(idRepository, idRepositoryClass, idJDoctorCondition, idCondition, conditionType))
+            .then((response) => {
+                if (conditionType == "pre") {
+                    setPreConditions(prevState => prevState.filter(p => p != idCondition));
+                    if (preConditions.length > 1) {
+                        setCurrentPreCondition(preConditions[0]);
+                    } else {
+                        setCurrentPreCondition(null);
+                    }
+                } else if (conditionType == "post") {
+                    setPostConditions(prevState => prevState.filter(p => p != idCondition));
+                    if (postConditions.length > 1) {
+                        setCurrentPostCondition(postConditions[0]);
+                    } else {
+                        setCurrentPostCondition(null);
+                    }
+                } else if (conditionType == "throws") {
+                    setThrowsConditions(prevState => prevState.filter(p => p != idCondition));
+                    if (throwsConditions.length > 1) {
+                        setCurrentThrowsCondition(throwsConditions[0]);
+                    } else {
+                        setCurrentThrowsCondition(null);
+                    }
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
+
     return (
         <>
             {
@@ -30,27 +125,86 @@ export default function Main({ jdc, pre, post, throws, onClickCallback, deleteCa
                             />
                         </div>
                         <div id="jdoctor-conditions">
+                            <h2 id="pre-condition-title">Pre-conditions</h2>
                             <List
-                                label="Pre Conditions"
                                 identifier="pre"
-                                elements={ pre.map( p => { return { name : p.guard.condition } } ) }
+                                elements={ preConditions.map( p => { return { name : p.guard.condition } } ) }
                                 onClickCallback={ onClickCallback }
-                                deleteButtonCallback={ deleteCallback.bind(null, "pre") }
+                                deleteButtonCallback={ deleteCondition.bind(null, "pre") }
                             />
+                            <h2 id="post-condition-title">Post-conditions</h2>
                             <List
-                                label="Post Conditions"
                                 identifier="post"
-                                elements={ post.map( p => { return { name : p.property.condition } } ) }
+                                elements={ postConditions.map( p => { return { name : p.property.condition } } ) }
                                 onClickCallback={ onClickCallback }
-                                deleteButtonCallback={ deleteCallback.bind(null, "post") }
+                                deleteButtonCallback={ deleteCondition.bind(null, "post") }
                             />
+                            <h2 id="throws-condition-title">Throws-conditions</h2>
                             <List
-                                label="Throws Conditions"
                                 identifier="throws"
-                                elements={ throws.map( t => { return { name : t.guard.condition } } ) }
+                                elements={ throwsConditions.map( t => { return { name : t.guard.condition } } ) }
                                 onClickCallback={ onClickCallback }
-                                deleteButtonCallback={ deleteCallback.bind(null, "throws") }
+                                deleteButtonCallback={ deleteCondition.bind(null, "throws") }
                             />
+                            <div id="pre-container" className="condition-container">
+                                {
+                                    currentPreCondition != null ?
+                                        <>
+                                            <div id="pre-description-container" className="property-container">
+                                                <label>Javadoc Tag</label>
+                                                <span>{currentPreCondition.description}</span>
+                                            </div>
+                                            <div id="pre-oracle-container" className="property-container">
+                                                <label>Oracle</label>
+                                                <span>{currentPreCondition.guard.condition}</span>
+                                            </div>
+                                        </>
+                                    :
+                                        <span>No pre-conditions defined</span>
+                                }
+                            </div>
+                            <div id="post-container" className="condition-container">
+                                {
+                                    currentPostCondition != null ?
+                                        <>
+                                            <div id="post-description-container" className="property-container">
+                                                <label>Javadoc Tag</label>
+                                                <span>{currentPostCondition.description}</span>
+                                            </div>
+                                            <div id="post-condition-container" className="property-container">
+                                                <label>Condition</label>
+                                                <span>{currentPostCondition.guard.condition}</span>
+                                            </div>
+                                            <div id="post-oracle-container" className="property-container">
+                                                <label>Oracle</label>
+                                                <span>{currentPostCondition.property.condition}</span>
+                                            </div>
+                                        </>
+                                        :
+                                        <span>No pre-conditions defined</span>
+                                }
+                            </div>
+                            <div id="throws-container" className="condition-container">
+                                {
+                                    currentThrowsCondition != null ?
+                                        <>
+                                            <div id="throws-description-container" className="property-container">
+                                                <label>Javadoc Tag</label>
+                                                <span>{currentThrowsCondition.description}</span>
+                                            </div>
+                                            <div id="throws-condition-container" className="property-container">
+                                                <label>Condition</label>
+                                                <span>{currentThrowsCondition.guard.condition}</span>
+                                            </div>
+                                            <div id="throws-oracle-container" className="property-container">
+                                                <label>Exception</label>
+                                                <span>{currentThrowsCondition.exception}</span>
+                                            </div>
+                                        </>
+                                        :
+                                        <span>No pre-conditions defined</span>
+                                }
+                            </div>
                         </div>
                     </>
                 )
