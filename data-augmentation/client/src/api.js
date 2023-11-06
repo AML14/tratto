@@ -1,4 +1,4 @@
-const BASE_URL = "https://tratto-jdc.onrender.com/api";
+const BASE_URL = "http://localhost:3000";
 
 const api = {
     getAllrepositoriesUrl: () => `${BASE_URL}/repositories`,
