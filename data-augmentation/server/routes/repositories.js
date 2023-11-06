@@ -31,7 +31,6 @@ router.get(
     '/:idRepository/repositoryclasses',
     getRepository,
     async (req, res) => {
-        console.log(res.repository)
         try {
             const repository = res.repository;
             const repositoryClasses = [];
@@ -137,7 +136,6 @@ router.post(
     async (req, res) => {
         // Get the repository to create
         const repository = req.body.repository;
-        console.log(repository);
         // Generate repository document
         const repositoryDocument = new Repository({
             projectName: repository.projectName,
@@ -297,7 +295,6 @@ router.delete(
             res.repositoryClass.save();
             res.json({ message: "Deleted JDoctorCondition." });
         } catch (e) {
-            console.log("entro qui purtroppo");
             res.status(500).json({ message: e.message });
         }
     }
@@ -310,7 +307,9 @@ router.post(
     (req, res) => {
         try {
             // Create pre-condition
+            console.log(req.body.condition);
             const preCondition = new PreCondition(req.body.condition);
+            console.log(preCondition);
             // Save pre-condition to database
             preCondition.save();
             // Add id to list of pre-conditions associated to the corresponding JDoctorCondition

@@ -1,18 +1,20 @@
 
 import Code from "./Code.jsx";
 import List from "./List.jsx";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
 import api from "../api.js";
+import ConditionContainer from "./ConditionContainer.jsx";
+import Modal from "./Modal.jsx";
+import AddConditionModalContent from "./AddConditionModalContent.jsx";
 
-export default function Main({ repository, repositoryClass, jdc, onClickCallback }) {
+export default function Main({ repository, repositoryClass, jdc, updateCurrentJDC }) {
 
     const [preConditions, setPreConditions] = useState([]);
     const [postConditions, setPostConditions] = useState([]);
     const [throwsConditions, setThrowsConditions] = useState([]);
-    const [currentPreCondition, setCurrentPreCondition] = useState(null);
-    const [currentPostCondition, setCurrentPostCondition] = useState(null);
-    const [currentThrowsCondition, setCurrentThrowsCondition] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalIdentifier, setModalIdentifier] = useState(null);
 
     useEffect(() => {
         if (repository !== null && repositoryClass !== null && jdc !== null) {
@@ -23,40 +25,28 @@ export default function Main({ repository, repositoryClass, jdc, onClickCallback
                 .get(api.getAllConditionsUrl(idCurrentRepository, idRepositoryClass, idJDoctorCondition, "pre"))
                 .then((response) => {
                     setPreConditions(response.data);
-                    if (response.data.length > 0 ) {
-                        setCurrentPreCondition(response.data[0]);
-                    }
                 })
                 .catch((error) => {
                     console.log(error);
                     setPreConditions([]);
-                    setCurrentPreCondition(null);
                 })
             axios
                 .get(api.getAllConditionsUrl(idCurrentRepository, idRepositoryClass, idJDoctorCondition, "post"))
                 .then((response) => {
                     setPostConditions(response.data);
-                    if (response.data.length > 0 ) {
-                        setCurrentPostCondition(response.data[0]);
-                    }
                 })
                 .catch((error) => {
                     console.log(error);
                     setPostConditions([]);
-                    setCurrentPostCondition(null);
                 })
             axios
                 .get(api.getAllConditionsUrl(idCurrentRepository, idRepositoryClass, idJDoctorCondition, "throws"))
                 .then((response) => {
                     setThrowsConditions(response.data);
-                    if (response.data.length > 0 ) {
-                        setCurrentThrowsCondition(response.data[0]);
-                    }
                 })
                 .catch((error) => {
                     console.log(error);
                     setThrowsConditions([]);
-                    setCurrentThrowsCondition(null);
                 })
         }
 
@@ -67,33 +57,64 @@ export default function Main({ repository, repositoryClass, jdc, onClickCallback
         const idRepositoryClass = repositoryClass._id;
         const idJDoctorCondition = jdc._id;
 
+        console.log(api.deleteConditionUrl(idRepository, idRepositoryClass, idJDoctorCondition, idCondition, conditionType));
+
         axios
             .delete(api.deleteConditionUrl(idRepository, idRepositoryClass, idJDoctorCondition, idCondition, conditionType))
             .then((response) => {
                 if (conditionType == "pre") {
                     const filteredPreConditions = preConditions.filter(p => p._id != idCondition);
                     setPreConditions(filteredPreConditions);
-                    if (filteredPreConditions.length > 0) {
-                        setCurrentPreCondition(filteredPreConditions[0]);
-                    } else {
-                        setCurrentPreCondition(null);
-                    }
                 } else if (conditionType == "post") {
                     const filteredPostConditions = postConditions.filter(p => p._id != idCondition);
                     setPostConditions(filteredPostConditions);
-                    if (filteredPostConditions.length > 0) {
-                        setCurrentPostCondition(filteredPostConditions[0]);
-                    } else {
-                        setCurrentPostCondition(null);
-                    }
                 } else if (conditionType == "throws") {
                     const filteredThrowsConditions = throwsConditions.filter(t => t._id != idCondition);
                     setThrowsConditions(filteredThrowsConditions);
-                    if (filteredThrowsConditions.length > 0) {
-                        setCurrentThrowsCondition(filteredThrowsConditions[0]);
-                    } else {
-                        setCurrentThrowsCondition(null);
-                    }
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
+
+    const addCondition = (conditionType, modalObj) => {
+        const idRepository = repository._id;
+        const idRepositoryClass = repositoryClass._id;
+        const idJDoctorCondition = jdc._id;
+
+        const condition = {
+            description: modalObj.description,
+            guard: {
+                condition: modalObj.condition,
+                description: modalObj.description
+            }
+        };
+
+        if (conditionType == "post") {
+            condition["description"] = modalObj.description;
+            condition["property"] = {
+                condition: modalObj.oracle,
+                description: modalObj.description
+            }
+        }
+        if (conditionType == "throws") {
+            condition["exception"] = modalObj.exception;
+        }
+
+        console.log({ condition: condition });
+
+        console.log(api.createConditionUrl(idRepository, idRepositoryClass, idJDoctorCondition, conditionType));
+
+        axios
+            .post(api.createConditionUrl(idRepository, idRepositoryClass, idJDoctorCondition, conditionType), { condition: condition } )
+            .then((response) => {
+                if (conditionType == "pre") {
+                    setPreConditions((prevState) => { return [...prevState, response.data] });
+                } else if (conditionType == "post") {
+                    setPostConditions((prevState) => { return [...prevState, response.data] });
+                } else if (conditionType == "throws") {
+                    setThrowsConditions((prevState) => { return [...prevState, response.data] });
                 }
             })
             .catch((error) => {
@@ -128,96 +149,82 @@ export default function Main({ repository, repositoryClass, jdc, onClickCallback
                             />
                         </div>
                         <div id="jdoctor-conditions">
-                            <h2 id="pre-condition-title">Pre-conditions</h2>
-                            <List
+                            <ConditionContainer
+                                classname="pre-condition-container"
+                                title="Pre-conditions"
                                 identifier="pre"
-                                elements={ preConditions.map( p => { return {
-                                    _id: p._id,
-                                    name : p.guard.condition
-                                } } ) }
-                                onClickCallback={ onClickCallback }
-                                deleteButtonCallback={ deleteCondition.bind(null, "pre") }
+                                conditions={ preConditions.map(p => { return { ...p, name: p.guard.condition } }) }
+                                addCondition={() => {
+                                    setModalIdentifier("pre");
+                                    setIsModalOpen(true);
+                                }}
+                                deleteCondition={ deleteCondition.bind(null, "pre") }
+                                onClickAdd={ () => {
+                                    setModalIdentifier("pre");
+                                    setIsModalOpen(true);
+                                }}
                             />
-                            <h2 id="post-condition-title">Post-conditions</h2>
-                            <List
+                            <ConditionContainer
+                                classname="post-condition-container"
+                                title="Post-conditions"
                                 identifier="post"
-                                elements={ postConditions.map( p => { return {
-                                    _id: p._id,
-                                    name : p.property.condition
-                                } } ) }
-                                onClickCallback={ onClickCallback }
-                                deleteButtonCallback={ deleteCondition.bind(null, "post") }
+                                conditions={ postConditions.map(p => { return { ...p, name: p.property.condition } }) }
+                                addCondition={() => {
+                                    setModalIdentifier("post");
+                                    setIsModalOpen(true);
+                                }}
+                                deleteCondition={ deleteCondition.bind(null, "post") }
+                                onClickAdd={ () => {
+                                    setModalIdentifier("post");
+                                    setIsModalOpen(true);
+                                } }
                             />
-                            <h2 id="throws-condition-title">Throws-conditions</h2>
-                            <List
+                            <ConditionContainer
+                                classname="throws-condition-container"
+                                title="Throws-conditions"
                                 identifier="throws"
-                                elements={ throwsConditions.map( t => { return {
-                                    _id: t._id,
-                                    name : t.guard.condition
-                                } } ) }
-                                onClickCallback={ onClickCallback }
-                                deleteButtonCallback={ deleteCondition.bind(null, "throws") }
+                                conditions={ throwsConditions.map(t => { return { ...t, name: t.exception } }) }
+                                addCondition={() => {
+                                    setModalIdentifier("throws");
+                                    setIsModalOpen(true);
+                                }}
+                                deleteCondition={ deleteCondition.bind(null, "throws") }
+                                onClickAdd={ () => {
+                                    setModalIdentifier("throws");
+                                    setIsModalOpen(true);
+                                }}
                             />
-                            <div id="pre-container" className="condition-container">
-                                {
-                                    currentPreCondition != null ?
-                                        <>
-                                            <div id="pre-description-container" className="property-container">
-                                                <label>Javadoc Tag</label>
-                                                <span>{currentPreCondition.description}</span>
-                                            </div>
-                                            <div id="pre-oracle-container" className="property-container">
-                                                <label>Oracle</label>
-                                                <span>{currentPreCondition.guard.condition}</span>
-                                            </div>
-                                        </>
-                                    :
-                                        <span>No pre-conditions defined</span>
-                                }
-                            </div>
-                            <div id="post-container" className="condition-container">
-                                {
-                                    currentPostCondition != null ?
-                                        <>
-                                            <div id="post-description-container" className="property-container">
-                                                <label>Javadoc Tag</label>
-                                                <span>{currentPostCondition.description}</span>
-                                            </div>
-                                            <div id="post-condition-container" className="property-container">
-                                                <label>Condition</label>
-                                                <span>{currentPostCondition.guard.condition}</span>
-                                            </div>
-                                            <div id="post-oracle-container" className="property-container">
-                                                <label>Oracle</label>
-                                                <span>{currentPostCondition.property.condition}</span>
-                                            </div>
-                                        </>
-                                        :
-                                        <span>No pre-conditions defined</span>
-                                }
-                            </div>
-                            <div id="throws-container" className="condition-container">
-                                {
-                                    currentThrowsCondition != null ?
-                                        <>
-                                            <div id="throws-description-container" className="property-container">
-                                                <label>Javadoc Tag</label>
-                                                <span>{currentThrowsCondition.description}</span>
-                                            </div>
-                                            <div id="throws-condition-container" className="property-container">
-                                                <label>Condition</label>
-                                                <span>{currentThrowsCondition.guard.condition}</span>
-                                            </div>
-                                            <div id="throws-oracle-container" className="property-container">
-                                                <label>Exception</label>
-                                                <span>{currentThrowsCondition.exception}</span>
-                                            </div>
-                                        </>
-                                        :
-                                        <span>No pre-conditions defined</span>
-                                }
-                            </div>
                         </div>
+                        <Modal
+                            open={isModalOpen}
+                            onClose={()=>{ setIsModalOpen(false); }}
+                            onConfirm={(modalObj) => {
+                                addCondition(modalIdentifier, modalObj);
+                            }}
+                            disableProperties={{
+                                description: (value) => { return value == "" },
+                                condition: (value) => { return value == "" },
+                                exception: modalIdentifier == "throws" ? (value) => { return value == "" } : (value) => { return false; } ,
+                                oracle: modalIdentifier == "post" ? (value) => { return value == "" } : (value) => { return false; }
+                            }}
+                            modalState={{
+                                description: "",
+                                condition: "",
+                                exception: modalIdentifier == "throws" ? "" : null,
+                                oracle: modalIdentifier == "post" ? "" : null
+                            }}
+                            confirmButtonLabel="Add"
+                        >
+                            <AddConditionModalContent
+                                identifier={modalIdentifier}
+                                formData={{
+                                    description: "",
+                                    condition: "",
+                                    exception: modalIdentifier == "throws" ? "" : null,
+                                    oracle: modalIdentifier == "post" ? "" : null
+                                }}
+                            />
+                        </Modal>
                     </>
                 )
                 :

@@ -7,6 +7,9 @@ import Modal from "./components/Modal.jsx";
 import {FaFileUpload} from "react-icons/fa";
 import CircleMenuButton from "./components/CircleMenuButton.jsx";
 import UploadJDCModalContent from "./components/UploadJDCModalContent.jsx";
+import {MdCloudDownload} from "react-icons/md";
+import JSZip from "jszip";
+import { saveAs } from 'file-saver';
 
 export const AppContext = React.createContext();
 
@@ -98,46 +101,128 @@ function App() {
         setCurrentJDoctorCondition(jDoctorConditions[newIdx]);
     }
 
-    const uploadJDoctorConditions = async (modalObj) => {
-        const repository = modalObj.repository;
-        const uploadRepositoryClasses = modalObj.repositoryClasses;
-        let idRepository = repository._id;
-        const filteredUploadedRepositoryClasses = [];
+    const updateCurrentJDoctorCondition = (condition, conditionType, operation) => {
+        if (operation == "add") {
+            setCurrentJDoctorCondition((prevState) => {
+                return {
+                    ...prevState,
+                    conditionType: [...prevState[conditionType], condition]
+                }
+            })
+        }
+        if (operation == "delete") {
+            setCurrentJDoctorCondition((prevState) => {
+                return {
+                    ...prevState,
+                    conditionType: prevState[conditionType].filter(id => id != condition._id)
+                }
+            })
+        }
+    }
 
-        if (idRepository == null) {
-            await axios
-                .post(api.createRepositoryUrl(), { "repository": repository })
-                .then((response) => {
-                    console.log(1)
-                    idRepository = response.data._id;
-                    repository._id = response.data._id;
-                    setRepositories([...repositories, response.data]);
+    const uploadJDoctorConditions = async (modalObj) => {
+        console.log(modalObj);
+        const processFiles = (returnState) => {
+            const selectedFiles = returnState.files;
+            const repositoryClasses = [];
+
+            const readFile = (file) => {
+                return new Promise((resolve, reject) => {
+                    if (file.type === 'application/json' || file.name.endsWith('.json')) {
+                        const reader = new FileReader();
+
+                        reader.onload = (e) => {
+                            const fileContent = e.target.result;
+                            try {
+                                const repositoryClass = JSON.parse(fileContent);
+                                resolve(repositoryClass);
+                            } catch (error) {
+                                reject(error);
+                            }
+                        };
+                        reader.readAsText(file);
+                    } else {
+                        resolve(null); // Skip non-JSON files
+                    }
+                });
+            };
+
+            const readAllFiles = () => {
+                const promises = selectedFiles.map((file) => readFile(file));
+                return Promise.all(promises);
+            };
+
+            return readAllFiles()
+                .then((results) => {
+                    results.forEach((repositoryClass) => {
+                        if (repositoryClass !== null) {
+                            repositoryClasses.push(repositoryClass);
+                        }
+                    });
+
+                    return {
+                        repository: returnState.repository,
+                        repositoryClasses: repositoryClasses,
+                    };
                 })
                 .catch((error) => {
-                    console.log(error);
-                })
-        }
-        for(let repositoryClass of uploadRepositoryClasses) {
-            const filteredRepositoryClasses = repositoryClasses.filter(r => r.name == repositoryClass.name);
-            if (filteredRepositoryClasses.length == 0) {
+                    console.error(error);
+                    return {
+                        repository: returnState.repository,
+                        repositoryClasses: repositoryClasses,
+                    };
+                });
+        };
+
+        const uploadToDatabase = async (processedObj) => {
+            const repository = processedObj.repository;
+            const uploadRepositoryClasses = processedObj.repositoryClasses;
+            let idRepository = repository._id;
+            const filteredUploadedRepositoryClasses = [];
+
+            if (idRepository == null) {
                 await axios
-                    .post(api.createRepositoryClassUrl(repository._id), { "repositoryClass": repositoryClass })
+                    .post(api.createRepositoryUrl(), { "repository": repository })
                     .then((response) => {
-                        filteredUploadedRepositoryClasses.push(response.data);
+                        console.log(1)
+                        idRepository = response.data._id;
+                        repository._id = response.data._id;
+                        setRepositories([...repositories, response.data]);
                     })
                     .catch((error) => {
                         console.log(error);
-                    });
-
-            } else {
-                console.log("Repository class already exists. Not uploaded.");
+                    })
             }
-            setRepositoryClasses([...repositoryClasses, ...filteredUploadedRepositoryClasses]);
-        }
+            for(let repositoryClass of uploadRepositoryClasses) {
+                const filteredRepositoryClasses = repositoryClasses.filter(r => r.name == repositoryClass.name);
+                if (filteredRepositoryClasses.length == 0) {
+                    await axios
+                        .post(api.createRepositoryClassUrl(repository._id), { "repositoryClass": repositoryClass })
+                        .then((response) => {
+                            filteredUploadedRepositoryClasses.push(response.data);
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        });
 
-        if (currentRepository == null) {
-            setCurrentRepository(repository);
-        }
+                } else {
+                    console.log("Repository class already exists. Not uploaded.");
+                }
+                setRepositoryClasses([...repositoryClasses, ...filteredUploadedRepositoryClasses]);
+            }
+
+            if (currentRepository == null) {
+                setCurrentRepository(repository);
+            }
+        };
+
+        processFiles(modalObj)
+            .then((processedObj) => {
+                uploadToDatabase(processedObj);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }
 
     const deleteRepository = async (idx) => {
@@ -180,9 +265,6 @@ function App() {
     };
 
     const deleteJDoctorCondition = async (idx) => {
-        console.log(idx);
-        console.log(jDoctorConditions);
-        console.log(jDoctorConditions[idx]);
         const idRepository = currentRepository._id;
         const idRepositoryClass = currentRepositoryClass._id;
         const jDoctorCondition = jDoctorConditions[idx];
@@ -202,6 +284,75 @@ function App() {
                 console.log(error);
             })
     };
+
+    const exportDB = async () => {
+        console.log(repositories);
+        const folderStructure = {
+            "inputProjects.json": JSON.stringify(repositories.map(r => { return {
+                projectName: r.projectName,
+                rootPathList: r.rootPathList,
+                srcPathList: ["raw", ...r.srcPathList],
+                jarPathList: ["jar"],
+                jDoctorConditionsPathList: ["conditions"]
+            } })),
+        };
+
+        const zip = new JSZip();
+
+        for (const repo of repositories) {
+            await axios
+                .get(api.getAllreporitoryClassesUrl(repo._id))
+                .then(async (response) => {
+                    const repoClasses = response.data;
+                    for (const repoClass of repoClasses) {
+                        repoClass.jDoctorConditions = [];
+                        await axios
+                            .get(api.getAllJDoctorConditionsUrl(repo._id, repoClass._id))
+                            .then(async (response) => {
+                                const jdcs = response.data;
+                                for(const jdc of jdcs) {
+                                    await axios
+                                        .get(api.getAllConditionsUrl(repo._id, repoClass._id, jdc._id, "pre"))
+                                        .then(async (response) => {
+                                            const preConditions = response.data;
+                                            await axios
+                                                .get(api.getAllConditionsUrl(repo._id, repoClass._id, jdc._id, "post"))
+                                                .then(async (response) => {
+                                                    const postConditions = response.data;
+                                                    await axios
+                                                        .get(api.getAllConditionsUrl(repo._id, repoClass._id, jdc._id, "throws"))
+                                                        .then((response) => {
+                                                            jdc.preConditions = preConditions;
+                                                            jdc.postConditions = postConditions;
+                                                            jdc.throwsConditions = response.data;
+                                                            repoClass.jDoctorConditions.push(jdc);
+                                                            folderStructure[`repositories/${repo.projectName}/${repoClass.name}.json`] = JSON.stringify(repoClass);
+                                                        })
+                                                })
+                                                .catch((error) => {
+                                                    console.log(error);
+                                                })
+                                        })
+                                }
+
+                            })
+                            .catch((error) => {
+                                console.log(error);
+                            })
+                    }
+
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+        }
+        for (const filePath in folderStructure) {
+            zip.file(filePath, folderStructure[filePath]);
+        }
+        zip.generateAsync({type:"blob"}).then(function(content) {
+            saveAs(content, "jdoctorconditions.zip");
+        });
+    }
 
     return (
         <>
@@ -264,7 +415,7 @@ function App() {
                         repository={currentRepository}
                         repositoryClass={currentRepositoryClass}
                         jdc={currentJDoctorCondition}
-                        onClickCallback={() => {}}
+                        updateCurrentJDC={updateCurrentJDoctorCondition}
                     />
                 </div>
                 <div className="add-button-set">
@@ -272,12 +423,22 @@ function App() {
                         label="Upload JDoctor Conditions"
                         onClick={() => { setIsModalOpen(true); }}
                     ><FaFileUpload color="white" size={30} /></CircleMenuButton>
+                    <CircleMenuButton
+                        label="Export JDoctor Conditions"
+                        onClick={() => { exportDB(); }}
+                    ><MdCloudDownload color="white" size={30} /></CircleMenuButton>
                 </div>
             </div>
             <Modal
                 open={isModalOpen}
                 onClose={()=>{ setIsModalOpen(false); }}
-                onUpload={(modalObj) => { uploadJDoctorConditions(modalObj) }}
+                onConfirm={(modalObj) => { uploadJDoctorConditions(modalObj); }}
+                disableProperties={{ repository: (property) => { return property == null; }}}
+                modalState={{
+                    repository: null,
+                    repositoryClasses: []
+                }}
+                confirmButtonLabel={"Upload"}
             >
                 <UploadJDCModalContent
                     repositories={repositories}

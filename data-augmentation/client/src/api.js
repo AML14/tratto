@@ -1,15 +1,12 @@
-const BASE_URL = "http://localhost:3000";
+const BASE_URL = "https://tratto-jdc.onrender.com/api";
 
 const api = {
     getAllrepositoriesUrl: () => `${BASE_URL}/repositories`,
     getAllreporitoryClassesUrl: (idRepository) => `${BASE_URL}/repositories/${idRepository}/repositoryClasses`,
     getAllJDoctorConditionsUrl: (idRepository, idRepositoryClass) => `${BASE_URL}/repositories/${idRepository}/repositoryClasses/${idRepositoryClass}/jdoctorconditions`,
     getAllConditionsUrl: (idRepository, idRepositoryClass, idJDoctorCondition, conditionType) => `${BASE_URL}/repositories/${idRepository}/repositoryClasses/${idRepositoryClass}/jdoctorconditions/${idJDoctorCondition}/${conditionType}`,
-    getRepositoryUrl: (idRepository) => `${BASE_URL}/repositories/${idRepository}`,
-    getRepositoryClassUrl: (idRepository, idRepositoryClass) => `${BASE_URL}/repositories/${idRepository}/repositoryClasses/${idRepositoryClass}`,
     createRepositoryUrl: () => `${BASE_URL}/repositories/`,
     createRepositoryClassUrl: (idRepository) => `${BASE_URL}/repositories/${idRepository}/repositoryClasses`,
-    createJDoctorConditionUrl: (idRepository, idRepositoryClasses) => `${BASE_URL}/repositories/${idRepository}/repositoryClasses/${idRepositoryClasses}`,
     createConditionUrl: (idRepository, idRepositoryClass, idJDoctorCondition, conditionType) => `${BASE_URL}/repositories/${idRepository}/repositoryClasses/${idRepositoryClass}/jdoctorconditions/${idJDoctorCondition}/${conditionType}`,
     deleteRepositoryUrl: (idRepository) => `${BASE_URL}/repositories/${idRepository}`,
     deleteRepositoryClassUrl: (idRepository, idRepositoryClass) => `${BASE_URL}/repositories/${idRepository}/repositoryClasses/${idRepositoryClass}`,

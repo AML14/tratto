@@ -2,12 +2,12 @@ import {TiDelete} from "react-icons/ti";
 import React, {useState} from "react";
 import {FiMinusSquare, FiPlusSquare} from "react-icons/fi";
 
-export default function List({ label, identifier, selected, elements, onClickCallback, deleteButtonCallback }) {
+export default function List({ label, identifier, selected, elements, onClickCallback, deleteButtonCallback, style }) {
 
     const [expand, setExpand] = useState(true);
 
     return (
-        <div className="list-container">
+        <div className="list-container" style={style}>
             {
                 label != null ?
                     <div className="list-label">
@@ -36,7 +36,7 @@ export default function List({ label, identifier, selected, elements, onClickCal
                                 elements.map((e, idx) => {
                                     return (
                                         <div key={ e._id } className="list-row">
-                                            <span className="list-row-name" style={ selected && selected == e._id ? { color: '#e2777a' } : null } onClick={() => { onClickCallback(idx) }}>{e.name}</span>
+                                            <span className="list-row-name" style={ selected && selected == e._id ? { color: "rgba(226, 119, 122, 1)" } : null } onClick={() => { onClickCallback(idx) }}>{e.name}</span>
                                             <button className="delete-button" onClick={() => deleteButtonCallback(idx)}><TiDelete color="#e2777a" size={25} /></button>
                                         </div>
                                     );

@@ -10,16 +10,21 @@ export default function UploadJDCModalContent({ repositories, modalUpdateState }
     useEffect(() => {
         if (repositories.length > 0) {
             setSelectValue(repositories[0]);
-            modalUpdateState({
+
+            if (radioChoice == "existing") {
+                modalUpdateState({
                 repository: repositories[0],
                 files: files
-            })
+                })
+            }
         } else {
             setSelectValue(null);
-            modalUpdateState({
-                repository: null,
-                files: files
-            })
+            if (radioChoice == "existing") {
+                modalUpdateState({
+                    repository: null,
+                    files: files
+                })
+            }
         }
     }, [repositories]);
 
