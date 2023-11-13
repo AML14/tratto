@@ -48,8 +48,8 @@ public class ProjectOracleGenerator {
      * in the current project.
      */
     private List<AttributeTokens> fields;
-    /** All Javadoc tags in the current project. */
-    private List<TagAndText> tags;
+    /** All Javadoc tags and their text in the current project. */
+    private List<TagAndText> tagAndTexts;
 
     /**
      * Sets the project under analysis and project-level features. This avoids
@@ -68,8 +68,8 @@ public class ProjectOracleGenerator {
         this.classes = DatasetUtils.getProjectClassTokens(this.project.srcPath());
         this.methods = DatasetUtils.getProjectNonPrivateStaticNonVoidMethodsTokens(this.project.srcPath());
         this.fields = DatasetUtils.getProjectNonPrivateStaticAttributesTokens(this.project.srcPath());
-        this.tags = DatasetUtils.getProjectTagsTokens(this.project.srcPath());
-        System.out.printf("Identified %s total JavaDoc tags.%n", this.tags.size());
+        this.tagAndTexts = DatasetUtils.getProjectTagsTokens(this.project.srcPath());
+        System.out.printf("Identified %s total JavaDoc tags.%n", this.tagAndTexts.size());
     }
 
     /**
@@ -114,7 +114,7 @@ public class ProjectOracleGenerator {
         }
         int numNonEmptyOracles = oracleDPs.size();
         // Generate an OracleDatapoint for each remaining JavaDoc tag.
-        for (TagAndText jpTag : this.tags) {
+        for (TagAndText jpTag : this.tagAndTexts) {
             OracleDatapoint nextDatapoint = getEmptyDatapoint(jpTag);
             if (nextDatapoint != null) oracleDPs.add(nextDatapoint);
         }
@@ -185,7 +185,7 @@ public class ProjectOracleGenerator {
     }
 
     /**
-     * Gets the most similar tag from {@link ProjectOracleGenerator#tags} to a
+     * Gets the most similar tag from {@link ProjectOracleGenerator#tagAndTexts} to a
      * target preprocessed JDoctor tag. Only considers tags of a given type
      * from a given method in a given class. Among the remaining tags, uses
      * semantic similarity to find the most similar source code tag to the
@@ -205,7 +205,7 @@ public class ProjectOracleGenerator {
             String targetTag
     ) {
         // filter tags by TypeDeclaration, CallableDeclaration, OracleType, and Pattern matching.
-        List<TagAndText> filteredTags = this.tags
+        List<TagAndText> filteredTags = this.tagAndTexts
                 .stream()
                 .filter(tagInfo -> tagInfo.jpClass().equals(targetClass) &&
                         tagInfo.jpCallable().equals(targetCallable) &&
@@ -235,7 +235,7 @@ public class ProjectOracleGenerator {
 
     /**
      * Removes a Javadoc tag of a JDoctor condition from
-     * {@link ProjectOracleGenerator#tags}.
+     * {@link ProjectOracleGenerator#tagAndTexts}.
      *
      * @param operation the operation of the JDoctor condition to remove a
      *                  Javadoc tag from
@@ -259,7 +259,7 @@ public class ProjectOracleGenerator {
             CallableDeclaration<?> jpCallable = DatasetUtils.getCallableDeclaration(jpClass, callableName, parameterTypes);
             assert jpCallable != null;
             // remove tag with maximum similarity.
-            this.tags.remove(findMaximumSimilarityTag(
+            this.tagAndTexts.remove(findMaximumSimilarityTag(
                     jpClass,
                     jpCallable,
                     oracleType,
