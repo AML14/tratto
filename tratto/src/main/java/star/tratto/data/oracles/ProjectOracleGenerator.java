@@ -14,7 +14,7 @@ import star.tratto.data.records.JDoctorCondition.Operation;
 import star.tratto.data.records.JDoctorCondition.PostCondition;
 import star.tratto.data.records.JDoctorCondition.PreCondition;
 import star.tratto.data.records.JDoctorCondition.ThrowsCondition;
-import star.tratto.data.records.JavadocTag;
+import star.tratto.data.records.TagAndText;
 import star.tratto.data.records.MethodTokens;
 import star.tratto.data.records.Project;
 import star.tratto.util.StringUtils;
@@ -49,7 +49,7 @@ public class ProjectOracleGenerator {
      */
     private List<AttributeTokens> fields;
     /** All Javadoc tags in the current project. */
-    private List<JavadocTag> tags;
+    private List<TagAndText> tags;
 
     /**
      * Sets the project under analysis and project-level features. This avoids
@@ -114,7 +114,7 @@ public class ProjectOracleGenerator {
         }
         int numNonEmptyOracles = oracleDPs.size();
         // Generate an OracleDatapoint for each remaining JavaDoc tag.
-        for (JavadocTag jpTag : this.tags) {
+        for (TagAndText jpTag : this.tags) {
             OracleDatapoint nextDatapoint = getEmptyDatapoint(jpTag);
             if (nextDatapoint != null) oracleDPs.add(nextDatapoint);
         }
@@ -198,14 +198,14 @@ public class ProjectOracleGenerator {
      * @return tag with the greatest similarity to {@code targetTag}
      * @see StringUtils#semanticSimilarity(String, String)
      */
-    private JavadocTag findMaximumSimilarityTag(
+    private TagAndText findMaximumSimilarityTag(
             TypeDeclaration<?> targetClass,
             CallableDeclaration<?> targetCallable,
             OracleType targetOracleType,
             String targetTag
     ) {
         // filter tags by TypeDeclaration, CallableDeclaration, OracleType, and Pattern matching.
-        List<JavadocTag> filteredTags = this.tags
+        List<TagAndText> filteredTags = this.tags
                 .stream()
                 .filter(tagInfo -> tagInfo.jpClass().equals(targetClass) &&
                         tagInfo.jpCallable().equals(targetCallable) &&
@@ -216,9 +216,9 @@ public class ProjectOracleGenerator {
             return filteredTags.get(0);
         }
         // find index of most semantically similar tag (cosine similarity).
-        JavadocTag mostSimilarTag = null;
+        TagAndText mostSimilarTag = null;
         double maxSimilaritySoFar = -1.0;
-        for (JavadocTag tag : filteredTags) {
+        for (TagAndText tag : filteredTags) {
             String simpleTargetBody = removeTagSpecialCharacters(removeTagPrefix(targetTag, tag.tagName()));
             String simpleActualBody = removeTagSpecialCharacters(tag.tagBody());
             double currentSimilarity = StringUtils.semanticSimilarity(simpleTargetBody, simpleActualBody);
@@ -278,7 +278,7 @@ public class ProjectOracleGenerator {
      * information collection.
      */
     private OracleDatapoint getEmptyDatapoint(
-            JavadocTag jpTag
+            TagAndText jpTag
     ) {
         OracleDatapointBuilder builder = new OracleDatapointBuilder();
         // get basic information of jpTag.

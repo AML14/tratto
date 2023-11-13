@@ -33,7 +33,7 @@ import star.tratto.data.TrattoPath;
 import star.tratto.data.records.AttributeTokens;
 import star.tratto.data.records.ClassTokens;
 import star.tratto.data.records.JDoctorCondition.Operation;
-import star.tratto.data.records.JavadocTag;
+import star.tratto.data.records.TagAndText;
 import star.tratto.data.records.ValueTokens;
 import star.tratto.data.records.MethodArgumentTokens;
 import star.tratto.data.records.MethodTokens;
@@ -436,11 +436,11 @@ public class DatasetUtils {
      * @throws PackageDeclarationNotFoundException if the package
      * {@link PackageDeclaration} of the compilation unit is not found
      */
-    private static List<JavadocTag> getCuTags(
+    private static List<TagAndText> getCuTags(
             CompilationUnit cu,
             String fileContent
     ) throws PackageDeclarationNotFoundException {
-        List<JavadocTag> tagList = new ArrayList<>();
+        List<TagAndText> tagList = new ArrayList<>();
         // iterate through each class.
         List<TypeDeclaration<?>> jpClasses = cu.getTypes();
         for (TypeDeclaration<?> jpClass : jpClasses) {
@@ -469,7 +469,7 @@ public class DatasetUtils {
                         continue;
                     }
                     // add new tag.
-                    tagList.add(new JavadocTag(
+                    tagList.add(new TagAndText(
                             fileContent,
                             jpClass,
                             jpCallable,
@@ -588,10 +588,10 @@ public class DatasetUtils {
      * @param sourceDir the project root directory
      * @return a list of JavadocTags
      */
-    public static List<JavadocTag> getProjectTagsTokens(
+    public static List<TagAndText> getProjectTagsTokens(
             Path sourceDir
     ) {
-        List<JavadocTag> tagList = new ArrayList<>();
+        List<TagAndText> tagList = new ArrayList<>();
         List<Path> javaFiles = getJavaFiles(sourceDir);
         // iterate through each file and add Javadoc tags.
         for (Path javaFile : javaFiles) {
