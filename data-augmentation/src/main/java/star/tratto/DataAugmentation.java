@@ -72,7 +72,7 @@ public class DataAugmentation {
                 for (CallableDeclaration<?> jpCallable: jpCallableList) {
                     String methodJavadoc = DatasetUtils.getCallableJavadoc(jpCallable);
 
-                    if (methodJavadoc.length() > 0 || emptyJavadoc) {
+                    if (methodJavadoc.length() > 0 || !emptyJavadoc) {
 
                         String focalMethodSourceCode = DatasetUtils.getCallableSourceCode(jpCallable);
                         List<String> parameterTypeList = jpCallable.getParameters()

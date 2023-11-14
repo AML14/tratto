@@ -26,6 +26,7 @@ src_dir=${3}
 bin_dir=${4}
 project_jar=${5:-""}
 qualifiers="${target_class%.*}"
+evosuite_flag=$( [[ "$6" == "true" ]] && echo true || echo false )
 #evosuite_output="${ROOT_DIR}/output/evosuite-tests/${qualifiers//.//}"   #!!!
 
 
@@ -54,22 +55,28 @@ if [ ! $found -eq 1 ]; then
   exit 1
 fi
 
+# setup sdkman
+source "${UTILS_DIR}/init_sdkman.sh" "${SDKMAN_DIR}"
+
+# switch to Java 17
+sdk use java "${JAVA17}"
+
 # Setup experiments
 bash "${UTILS_DIR}/experiment_setup.sh"
 
-# Setup sdkman
-source "${UTILS_DIR}/init_sdkman.sh" "${SDKMAN_DIR}"
-
-# Generate EvoSuite tests
-echo "[1] Generate EvoSuite tests for class ${target_class}"
-#{
-bash ./generator/evosuite.sh "${target_class}" "${bin_dir}"
-#} > /dev/null 2>&1
-
-# Switch to Java 17
-sdk use java "$JAVA17"
-# Generate EvoSuite prefixes
-java -jar "${EXPERIMENT_JAR}" "remove_oracles" "${target_class}"
+if [ evosuite_flag == true ]; then
+  # Generate EvoSuite tests
+  echo "[1] Generate EvoSuite tests for class ${target_class}"
+  #{
+  bash ./generator/evosuite.sh "${target_class}" "${bin_dir}"
+  #} > /dev/null 2>&1
+  # Switch to Java 17
+  sdk use java "$JAVA17"
+  # Generate EvoSuite prefixes
+  java -jar "${EXPERIMENT_JAR}" "remove_oracles" "${target_class}"
+else
+  echo "[1] Generation of EvoSuite tests skipped for class ${target_class} (supposed has already been generated)."
+fi
 # Generate oracles using TOG
 if [ "${tog}" == "jdoctor" ]; then
   bash ./generator/jdoctor.sh "${target_class}" "${src_dir}" "${bin_dir}"
