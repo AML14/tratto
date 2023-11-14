@@ -85,6 +85,7 @@ while IFS=, read -r project_id bug_id modified_classes; do
         output_evosuite_prefix_path="${OUTPUT_DIR}/evosuite-prefixes/$(dirname "$fqn_path")"
         output_evosuite_simple_test_path="${OUTPUT_DIR}/evosuite-simple-tests/$(dirname "$fqn_path")"
         output_evosuite_tests_path="${OUTPUT_DIR}/evosuite-tests/$(dirname "$fqn_path")"
+        defects4j_output="${DEFECTS4J_DIR}/output"
         if [ ! -d "$output_evosuite_prefix_path" ]; then
             mkdir -p "$output_evosuite_prefix_path"
         fi
@@ -98,11 +99,20 @@ while IFS=, read -r project_id bug_id modified_classes; do
         cp "$evosuite_simple_test_path" "$output_evosuite_simple_test_path"
         cp "$evosuite_tests_path" "$output_evosuite_tests_path"
         # Generate jdoctor oracles
-        #bash experiment.sh jdoctor "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}"
+        bash experiment.sh jdoctor "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}"
+        jdoctor_output="${defects4j_output}/${project_id}/${bug_id}/${fqn_path}/jdoctor"
+        mkdir -p "$jdoctor_output"
+        cp "$OUTPUT_DIR/jdoctor" "$jdoctor_output"
         # Generate toga oracles
         bash experiment.sh toga "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}"
+        toga_output="${defects4j_output}/${project_id}/${bug_id}/${fqn_path}/toga"
+        mkdir -p "$jdoctor_output"
+        cp "$OUTPUT_DIR/toga" "$toga_output"
         # Generate tratto oracles
-        #bash experiment.sh tratto "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${buggy_project_bug_dir}/${project_id}.jar"
+        bash experiment.sh tratto "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${buggy_project_bug_dir}/${project_id}.jar"
+        tratto_output="${defects4j_output}/${project_id}/${bug_id}/${fqn_path}/tratto"
+        mkdir -p "$tratto_output"
+        cp "$OUTPUT_DIR/tratto" "$tratto_output"
     done
     # TODO: [INTEGRATION WITH RUNNER SCRIPT]
 done < "$D4J_PROJECTS_BUGS"
