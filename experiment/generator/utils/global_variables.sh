@@ -27,7 +27,7 @@ SERVER_PORT=5050
 
 # Github repositories
 JDOCTOR_GITHUB_REPO="https://github.com/albertogoffi/toradocu.git"
-TOGA_GITHUB_REPO="https://github.com/microsoft/toga.git"
+TOGA_GITHUB_REPO="https://github.com/darthdaver/toga.git"
 
 # Links to resources
 TOGA_ASSERTION_MODEL_LINK="https://drive.google.com/u/0/uc?id=1TvZMlpXeN3DQUwwgOhlCRkn5-v1l_ZSK&export=download"
