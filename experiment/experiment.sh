@@ -90,7 +90,7 @@ elif [ "${tog}" == "tratto" ]; then
 fi
 #cp "${oracle_output}" "${ROOT_DIR}/output/${tog}-oracles.json" #!!!
 # insert oracles into EvoSuite prefixes
-#echo "[7] Insert oracles in test prefixes"
+echo "[7] Insert oracles in test prefixes"
 java -jar "${EXPERIMENT_JAR}" "insert_oracles" "${tog}" "${bin_dir}" "${oracle_output}"
 #echo "[8] Running tests and generating test output"
 #bash ./runner.sh "$tog" "$target_class" "$src_dir" "$bin_dir"
