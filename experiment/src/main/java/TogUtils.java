@@ -1,5 +1,6 @@
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.github.javaparser.JavaParser;
+import com.github.javaparser.ParseProblemException;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Modifier;
@@ -30,7 +31,6 @@ import data.TogType;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -450,7 +450,12 @@ public class TogUtils {
      * @return the same oracle with parameter names from the method signature
      */
     private static String contextualizeOracle(JDoctorOutput jDoctorOutput, String oracle) {
-        Expression oracleExpression = StaticJavaParser.parseExpression(oracle);
+        Expression oracleExpression;
+        try {
+            oracleExpression = StaticJavaParser.parseExpression(oracle);
+        } catch (ParseProblemException e) {
+            throw new Error("Unable to parse oracle " + oracle, e);
+        }
         List<String> parameterNames = jDoctorOutput.parameters()
                 .stream()
                 .map(Parameter::name)
@@ -498,11 +503,15 @@ public class TogUtils {
         if (returnTag == null || returnTag.condition().isEmpty()) {
             return null;
         }
+        String oracle = returnTag.condition();
+        if (oracle.contains("?") && !oracle.contains(":")) {
+            oracle += ": true";
+        }
         return new OracleOutput(
                 jDoctorOutput.targetClass(),
                 jDoctorOutput.signature(),
                 OracleType.NORMAL_POST,
-                contextualizeOracle(jDoctorOutput, returnTag.condition()),
+                contextualizeOracle(jDoctorOutput, oracle),
                 "",
                 ""
         );
