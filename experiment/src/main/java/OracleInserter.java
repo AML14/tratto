@@ -1272,9 +1272,8 @@ public class OracleInserter {
             List<OracleOutput> oracles,
             Path jarPath
     ) {
-        Path prefixPath = output.resolve(tog.name().toLowerCase());
         /** The path of the tog-tests directory. */
-        Path togTestsPath = prefixPath.resolve("tog-tests");
+        Path togTestsPath = output.resolve(tog.name().toLowerCase()).resolve("tog-tests");
         // load test prefixes
         setClassLoader(jarPath);
         Path prefixPath = FileUtils.getFQNOutputPath(fullyQualifiedName, "evosuite-prefixes");
