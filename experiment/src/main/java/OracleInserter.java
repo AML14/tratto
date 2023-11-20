@@ -40,6 +40,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -49,6 +50,10 @@ import java.util.stream.Stream;
  * prefixes.
  */
 public class OracleInserter {
+    /** The path of the output directory. */
+    private static final Path output = Paths.get("output");
+    /** The path of the tog-tests directory. */
+    private static final Path togTestsPath = output.resolve("tog-tests");
     /** A ClassLoader used to load classes outside the JVM. */
     private static ClassLoader classLoader;
     /** A unique id for placeholder variable names when inserting oracles. */
@@ -1282,5 +1287,6 @@ public class OracleInserter {
             insertNonAxiomaticOracles(cu, oracles);
         }
         FileUtils.writeString(testPath, cu.toString());
+        FileUtils.writeString(togTestsPath.resolve(String.format("%sTest.java",tog.name().substring(0, 1).toUpperCase() + tog.name().substring(1).toLowerCase())), cu.toString());
     }
 }
