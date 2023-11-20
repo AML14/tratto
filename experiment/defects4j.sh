@@ -110,7 +110,6 @@ while IFS=, read -r project_id bug_id modified_classes; do
         cp -r "$OUTPUT_DIR/toga" "$fqn_output"
         # Generate tratto oracles
         bash experiment.sh tratto "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "false" "${buggy_project_bug_dir}/${project_id}.jar"
-        tratto_output="${defects4j_output}/${project_id}/${bug_id}/${fqn_path}/tratto"
         cp -r "$OUTPUT_DIR/tratto" "$fqn_output"
         rm -rf "$OUTPUT_DIR"
     done

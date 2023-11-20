@@ -215,8 +215,8 @@ public class TogUtils {
                                 .get(0);
                         String methodName = mut.getNameAsString();
                         String focalMethod = getMethodSignature(mut);
-                        String javadocString = getCallableJavadoc(mut).replace("'", "\\'").replace("\"", "'");
-                        String testStr = test.toString().replace("'", "\\'").replace("\"", "'");
+                        String javadocString = getCallableJavadoc(mut).replace("\"", "\"\"");
+                        String testStr = test.toString().replace("\"", "\"\"");
                         String testPrefixStr = testPrefix.toString();
                         Matcher matcher = testPrefixPattern.matcher(testPrefix.toString());
                         if (matcher.find()) {
@@ -242,7 +242,7 @@ public class TogUtils {
                         System.err.println(errMsg);
                     }
                 } else {
-                    String testPrefixStr = testPrefix.toString().replace("'", "\\'").replace("\"", "'");
+                    String testPrefixStr = testPrefix.toString().replace("\"", "\"\"");
                     togaErrBuilder.append(generateLogTogaInputError(testPrefix, fullyQualifiedClassName, "NoMethodCallException"));
                     String errMsg = String.format(
                             "Method call not found in test %s for class %s",
@@ -272,7 +272,7 @@ public class TogUtils {
      * test prefix, the fully qualified name, and the error.
      */
     private static String generateLogTogaInputError(MethodDeclaration testPrefix, String fullyQualifiedClassName, String errStr) {
-        String testPrefixStr = testPrefix.toString().replace("'", "\\'").replace("\"", "'");
+        String testPrefixStr = testPrefix.toString().replace("\"", "\"\"");
         return String.format("%s,%s,%s\n", fullyQualifiedClassName, testPrefixStr, errStr);
     }
 

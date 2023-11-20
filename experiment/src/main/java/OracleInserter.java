@@ -40,6 +40,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -49,6 +50,10 @@ import java.util.stream.Stream;
  * prefixes.
  */
 public class OracleInserter {
+    /** The path of the output directory. */
+    private static final Path output = Paths.get("output");
+    /** The path of the EvoSuite prefixes directory. */
+    private static final Path evosuitePrefixPath = output.resolve("evosuite-prefixes");
     /** A ClassLoader used to load classes outside the JVM. */
     private static ClassLoader classLoader;
     /** A unique id for placeholder variable names when inserting oracles. */
@@ -1265,22 +1270,27 @@ public class OracleInserter {
      */
     public static void insertOracles(
             TogType tog,
-            String fullyQualifiedName,
+            String fullyQualifiedClassName,
             List<OracleOutput> oracles,
             Path jarPath
     ) {
-        // load test prefixes
+        Path fullyQualifiedClassNamePath = FileUtils.getFQNPath(fullyQualifiedClassName);
+        Path togTestsPath = output.resolve("tog-tests").resolve(String.format("%s", tog.name().toLowerCase()));
+        String className = FileUtils.getSimpleNameFromFQN(fullyQualifiedClassName);
+        int classNameIdx = fullyQualifiedClassNamePath.getNameCount() - 1;
+        Path fullyQualifiedTestClassNamePath = classNameIdx > 0 ?
+                fullyQualifiedClassNamePath.subpath(0, classNameIdx).resolve(className + "Test.java") :
+                Paths.get(className);
+        Path testClassPrefixFilePath = evosuitePrefixPath.resolve(fullyQualifiedTestClassNamePath);
+        System.out.println(testClassPrefixFilePath);
         setClassLoader(jarPath);
-        Path prefixPath = FileUtils.getFQNOutputPath(fullyQualifiedName, "evosuite-prefixes");
-        Path testPath = FileUtils.getFQNOutputPath(fullyQualifiedName, "tog-tests", tog.toString().toLowerCase());
-        FileUtils.copyFile(prefixPath, testPath);
         // insert oracles
-        CompilationUnit cu = FileUtils.getCompilationUnit(testPath);
+        CompilationUnit cu = FileUtils.getCompilationUnit(testClassPrefixFilePath);
         if (tog.isAxiomatic()) {
             insertAxiomaticOracles(cu, oracles);
         } else {
             insertNonAxiomaticOracles(cu, oracles);
         }
-        FileUtils.writeString(testPath, cu.toString());
+        FileUtils.writeString(togTestsPath.resolve("TogTest.java"), cu.toString());
     }
 }
