@@ -454,7 +454,9 @@ public class TogUtils {
         try {
             oracleExpression = StaticJavaParser.parseExpression(oracle);
         } catch (ParseProblemException e) {
-            throw new Error("Unable to parse oracle " + oracle, e);
+            System.err.println("Unable to parse oracle " + oracle);
+            System.err.println(e.getMessage());
+            return null;
         }
         List<String> parameterNames = jDoctorOutput.parameters()
                 .stream()
