@@ -67,6 +67,7 @@ public class OracleDatapointBuilder {
         switch (level) {
             case "method":
                 this.setMethodSourceCode(oracleDP.getMethodSourceCode());
+                this.setInnerMethodsSourceCodes(oracleDP.getInnerMethodsSourceCodes());
                 this.setMethodJavadoc(oracleDP.getMethodJavadoc());
                 this.setTokensMethodJavadocValues(oracleDP.getTokensMethodJavadocValues());
                 this.setTokensMethodArguments(oracleDP.getTokensMethodArguments());
@@ -211,6 +212,10 @@ public class OracleDatapointBuilder {
         this.datapoint.setMethodSourceCode(methodSourceCode);
     }
 
+    public void setInnerMethodsSourceCodes(List<String> innerMethodsSourceCodes) {
+        this.datapoint.setInnerMethodsSourceCodes(innerMethodsSourceCodes);
+    }
+
     public void setClassJavadoc(String classJavadoc) {
         this.datapoint.setClassJavadoc(classJavadoc);
     }
@@ -274,6 +279,7 @@ public class OracleDatapointBuilder {
                 this.datapoint.getJavadocTag(),
                 this.datapoint.getMethodJavadoc(),
                 this.datapoint.getMethodSourceCode(),
+                this.datapoint.getInnerMethodsSourceCodes(),
                 this.datapoint.getClassJavadoc(),
                 this.datapoint.getClassSourceCode(),
                 this.datapoint.getTokensGeneralGrammar(),

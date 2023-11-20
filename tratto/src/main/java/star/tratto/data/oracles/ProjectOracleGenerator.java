@@ -251,6 +251,7 @@ public class ProjectOracleGenerator {
         builder.setTokensProjectClassesNonPrivateStaticNonVoidMethods(this.projectMethodsTokens);
         builder.setTokensProjectClassesNonPrivateStaticAttributes(this.projectAttributesTokens);
         builder.setMethodSourceCode(DatasetUtils.getCallableSourceCode(jpCallable));
+        builder.setInnerMethodsSourceCodes(DatasetUtils.getInnerCallableSourceCodes(jpCallable));
         builder.setMethodJavadoc(DatasetUtils.getCallableJavadoc(jpCallable));
         builder.setTokensMethodJavadocValues(DatasetUtils.getJavadocValues(builder.copy().getMethodJavadoc()));
         builder.setTokensMethodArguments(DatasetUtils.getTokensMethodArguments(jpClass, jpCallable));
@@ -329,6 +330,7 @@ public class ProjectOracleGenerator {
         builder.setTokensProjectClassesNonPrivateStaticNonVoidMethods(this.projectMethodsTokens);
         builder.setTokensProjectClassesNonPrivateStaticAttributes(this.projectAttributesTokens);
         builder.setMethodSourceCode(DatasetUtils.getCallableSourceCode(jpCallable));
+        builder.setInnerMethodsSourceCodes(DatasetUtils.getInnerCallableSourceCodes(jpCallable));
         builder.setMethodJavadoc(DatasetUtils.getCallableJavadoc(jpCallable));
         builder.setTokensMethodJavadocValues(DatasetUtils.getJavadocValues(builder.copy().getMethodJavadoc()));
         builder.setTokensMethodArguments(DatasetUtils.getTokensMethodArguments(jpClass, jpCallable));

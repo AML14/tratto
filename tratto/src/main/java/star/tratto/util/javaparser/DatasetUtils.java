@@ -1,6 +1,8 @@
 package star.tratto.util.javaparser;
 
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.Node;
+import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.body.BodyDeclaration;
 import com.github.javaparser.ast.body.CallableDeclaration;
@@ -11,7 +13,9 @@ import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.comments.JavadocComment;
-import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.expr.*;
+import com.github.javaparser.ast.stmt.*;
+import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.type.Type;
 import com.github.javaparser.javadoc.Javadoc;
 import com.github.javaparser.javadoc.JavadocBlockTag;
@@ -43,12 +47,7 @@ import star.tratto.util.FileUtils;
 
 import java.lang.reflect.Field;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -388,6 +387,45 @@ public class DatasetUtils {
                 ? ((MethodDeclaration) jpCallable).getBody()
                 : Optional.ofNullable(((ConstructorDeclaration) jpCallable).getBody());
         return jpSignature + (jpBody.isEmpty() ? ";" : jpBody.get().toString());
+    }
+
+    public static List<String> getInnerCallableSourceCodes(
+            CallableDeclaration<?> jpCallable
+    ) {
+        List<CallableDeclaration> jpCallableList = new ArrayList<>(getCallableDeclarationsWithinCallableDeclaration(jpCallable, 0));
+        List<String> innerCallableSourceCodes = jpCallableList.stream().map(DatasetUtils::getCallableSourceCode).collect(Collectors.toList());
+        return innerCallableSourceCodes;
+    }
+
+    /**
+     * The method analyzes the {@link com.github.javaparser.ast.stmt.BlockStmt} of the
+     * method or constructor {@link com.github.javaparser.ast.body.CallableDeclaration}
+     * passed to the function, and extracts a set of all the methods and constructors
+     * {@link com.github.javaparser.ast.body.CallableDeclaration} called within it. The
+     * set, by definition, does not contain duplicates.
+     *
+     * @param jpCallable a method or constructor
+     */
+    public static HashSet<CallableDeclaration> getCallableDeclarationsWithinCallableDeclaration(
+            CallableDeclaration<?> jpCallable,
+            int level
+    ) {
+        HashSet<CallableDeclaration> jpCallableUniqueHash = new HashSet<>();
+        if (level <= 3 && jpCallable != null) {
+            for (MethodCallExpr methodExpr: jpCallable.findAll(MethodCallExpr.class)) {
+                try {
+                    CallableDeclaration innerJpCallable = (MethodDeclaration) methodExpr.resolve().toAst().orElse(null);
+                    if (innerJpCallable != null) {
+                        jpCallableUniqueHash.add(innerJpCallable);
+                        jpCallableUniqueHash.addAll(getCallableDeclarationsWithinCallableDeclaration(innerJpCallable, level+1));
+                    }
+                } catch (Exception e) {
+                    String errMsg = String.format("Unable to extract MethodDeclaration from MethodCallExpr: %s", methodExpr.getNameAsString());
+                    System.err.println(errMsg);
+                }
+            }
+        }
+        return jpCallableUniqueHash;
     }
 
     /**

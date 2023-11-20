@@ -37,6 +37,8 @@ public class OracleDatapoint {
     private String methodJavadoc;
     // the source code of the method under analysis
     private String methodSourceCode;
+    // the source code of the inner methods of the method under test (level of depth: 3)
+    private List<String> innerMethodsSourceCodes;
     // the Javadoc of the class under analysis
     private String classJavadoc;
     // the source code of the class under analysis
@@ -82,6 +84,7 @@ public class OracleDatapoint {
         this.javadocTag = (String) oracleDatapointMap.get("javadocTag");
         this.methodJavadoc = (String) oracleDatapointMap.get("methodJavadoc");
         this.methodSourceCode = (String) oracleDatapointMap.get("methodSourceCode");
+        this.innerMethodsSourceCodes = (List<String>) oracleDatapointMap.get("innerMethodsSourceCodes");
         this.classJavadoc = (String) oracleDatapointMap.get("classJavadoc");
         this.classSourceCode = (String) oracleDatapointMap.get("classSourceCode");
         this.tokensGeneralGrammar = (List<String>) oracleDatapointMap.get("tokensGeneralGrammar");
@@ -111,6 +114,7 @@ public class OracleDatapoint {
         this.javadocTag = oracleDatapoint.javadocTag;
         this.methodJavadoc = oracleDatapoint.methodJavadoc;
         this.methodSourceCode = oracleDatapoint.methodSourceCode;
+        this.innerMethodsSourceCodes = oracleDatapoint.innerMethodsSourceCodes;
         this.classJavadoc = oracleDatapoint.classJavadoc;
         this.classSourceCode = oracleDatapoint.classSourceCode;
         this.tokensGeneralGrammar = new ArrayList<>(oracleDatapoint.tokensGeneralGrammar);
@@ -136,6 +140,7 @@ public class OracleDatapoint {
             String javadocTag,
             String methodJavadoc,
             String methodSourceCode,
+            List<String> innerMethodsSourceCodes,
             String classJavadoc,
             String classSourceCode,
             List<String> tokensGeneralGrammar,
@@ -159,6 +164,7 @@ public class OracleDatapoint {
         this.javadocTag = javadocTag;
         this.methodJavadoc = methodJavadoc;
         this.methodSourceCode = methodSourceCode;
+        this.innerMethodsSourceCodes = innerMethodsSourceCodes;
         this.classJavadoc = classJavadoc;
         this.classSourceCode = classSourceCode;
         this.tokensGeneralGrammar = tokensGeneralGrammar;
@@ -190,6 +196,7 @@ public class OracleDatapoint {
         oracleDatapointMap.put("javadocTag", javadocTag);
         oracleDatapointMap.put("methodJavadoc", methodJavadoc);
         oracleDatapointMap.put("methodSourceCode", methodSourceCode);
+        oracleDatapointMap.put("innerMethodsSourceCodes", innerMethodsSourceCodes);
         oracleDatapointMap.put("classJavadoc", classJavadoc);
         oracleDatapointMap.put("classSourceCode", classSourceCode);
         oracleDatapointMap.put("tokensGeneralGrammar", tokensGeneralGrammar);
@@ -284,6 +291,12 @@ public class OracleDatapoint {
     public void setMethodSourceCode(String methodSourceCode) {
         this.methodSourceCode = methodSourceCode;
     }
+
+    public List<String> getInnerMethodsSourceCodes() {
+        return innerMethodsSourceCodes;
+    }
+
+    public void setInnerMethodsSourceCodes(List<String> innerMethodsSourceCodes) { this.innerMethodsSourceCodes = innerMethodsSourceCodes; }
 
     public String getClassJavadoc() {
         return classJavadoc;

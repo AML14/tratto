@@ -97,6 +97,7 @@ public class ClassAnalyzer {
     private void updateOracleDPBuilderWithNewMethodFeatures(CallableDeclaration<?> methodOrConstructor) {
         String methodJavadoc = DatasetUtils.getCallableJavadoc(methodOrConstructor);
         oracleDPBuilder.setMethodSourceCode(DatasetUtils.getCallableSourceCode(methodOrConstructor));
+        oracleDPBuilder.setInnerMethodsSourceCodes(DatasetUtils.getInnerCallableSourceCodes(methodOrConstructor));
         oracleDPBuilder.setMethodJavadoc(methodJavadoc);
         oracleDPBuilder.setTokensMethodJavadocValues(DatasetUtils.getJavadocValues(methodJavadoc));
         oracleDPBuilder.setTokensMethodArguments(DatasetUtils.getTokensMethodArguments(classTd, methodOrConstructor));
