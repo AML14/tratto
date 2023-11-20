@@ -2,7 +2,7 @@
 # This script perform the experiments for Defect4J projects
 
 # Get current directory
-current_dir=$(realpath "$(dirname "$BASH_SOURCE")")
+current_dir=$(realpath "$(dirname "${BASH_SOURCE[@]}")")
 # Setup global variables
 source "${current_dir}/generator/utils/global_variables.sh"
 
