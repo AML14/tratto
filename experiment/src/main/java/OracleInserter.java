@@ -52,8 +52,6 @@ import java.util.stream.Stream;
 public class OracleInserter {
     /** The path of the output directory. */
     private static final Path output = Paths.get("output");
-    /** The path of the tog-tests directory. */
-    private static final Path togTestsPath = output.resolve("tog-tests");
     /** A ClassLoader used to load classes outside the JVM. */
     private static ClassLoader classLoader;
     /** A unique id for placeholder variable names when inserting oracles. */
@@ -1274,6 +1272,9 @@ public class OracleInserter {
             List<OracleOutput> oracles,
             Path jarPath
     ) {
+        Path prefixPath = output.resolve(tog.name().toLowerCase());
+        /** The path of the tog-tests directory. */
+        Path togTestsPath = prefixPath.resolve("tog-tests");
         // load test prefixes
         setClassLoader(jarPath);
         Path prefixPath = FileUtils.getFQNOutputPath(fullyQualifiedName, "evosuite-prefixes");
@@ -1287,6 +1288,6 @@ public class OracleInserter {
             insertNonAxiomaticOracles(cu, oracles);
         }
         FileUtils.writeString(testPath, cu.toString());
-        FileUtils.writeString(togTestsPath.resolve(String.format("%sTest.java",tog.name().substring(0, 1).toUpperCase() + tog.name().substring(1).toLowerCase())), cu.toString());
+        FileUtils.writeString(togTestsPath.resolve("TogTest.java"), cu.toString());
     }
 }
