@@ -2,10 +2,12 @@ package star.tratto.util.javaparser;
 
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.body.CallableDeclaration;
-import com.github.javaparser.ast.body.MethodDeclaration;
-import com.github.javaparser.ast.body.Parameter;
-import com.github.javaparser.ast.body.TypeDeclaration;
+import com.github.javaparser.ast.body.*;
+import com.github.javaparser.ast.expr.MethodCallExpr;
+import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.stmt.ExpressionStmt;
+import com.github.javaparser.ast.stmt.IfStmt;
+import com.github.javaparser.ast.stmt.Statement;
 import org.junit.jupiter.api.Test;
 import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleType;
@@ -15,7 +17,9 @@ import star.tratto.data.records.JavadocTagTokens;
 import star.tratto.data.records.ValueTokens;
 import star.tratto.data.records.MethodArgumentTokens;
 import star.tratto.data.records.MethodTokens;
+import star.tratto.util.FileUtils;
 
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +32,45 @@ import static star.tratto.util.javaparser.JavaParserUtils.*;
 public class DatasetUtilsTest {
     private static final List<OracleDatapoint> oracleDatapoints = readOracleDatapointsFromOraclesDataset();
     private static final JavaParser javaParser = JavaParserUtils.getJavaParser();
+
+    private static List<String> extractMethodCalls(Optional<BlockStmt> blockOptional) {
+        List<String> methodCalls = new ArrayList<>();
+
+        // Check if the body is present
+        blockOptional.ifPresent(body -> {
+            // Traverse the statements in the body
+            body.getStatements().forEach(statement -> {
+                // Check if the statement is an expression statement
+                if (statement.isExpressionStmt()) {
+                    ExpressionStmt expressionStmt = statement.asExpressionStmt();
+
+                    // Check if the expression is a method call
+                    if (expressionStmt.getExpression().isMethodCallExpr()) {
+                        MethodCallExpr methodCallExpr = expressionStmt.getExpression().asMethodCallExpr();
+
+                        // Add the method name to the list
+                        methodCalls.add(methodCallExpr.getNameAsString());
+                    }
+                }
+
+                // Check if the statement is an if statement
+                if (statement.isIfStmt()) {
+                    IfStmt ifStmt = statement.asIfStmt();
+                    Statement stmt = ifStmt.getThenStmt();
+
+                    // Recursively extract method calls in the "if" branch
+                    methodCalls.addAll(extractMethodCalls(stmt.toBlockStmt()));
+
+                    // Recursively extract method calls in the "else" branch
+                    if (ifStmt.getElseStmt().isPresent() && ifStmt.getElseStmt().get().isBlockStmt()) {
+                        methodCalls.addAll(extractMethodCalls(ifStmt.getElseStmt().get().toBlockStmt()));
+                    }
+                }
+            });
+        });
+
+        return methodCalls;
+    }
 
     @Test
     public void removeDuplicatesTest() {
