@@ -18,6 +18,10 @@ if [ ! -e "${DATA_AUGMENTATION_JAR}" ]; then
     echo "Unexpected error: dataAugmentation jar not found."
     exit 1
   fi
+  # Generate path to resources if it does not exists
+  if [ ! -d "${RESOURCES_DIR}" ]; then
+    mkdir -p "${RESOURCES_DIR}"
+  fi
   # Move jar to the resources folder and rename it as tratto.jar
   mv "$target_jar" "${DATA_AUGMENTATION_JAR}"
 fi
