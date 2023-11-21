@@ -1277,7 +1277,7 @@ public class OracleInserter {
             Path jarPath
     ) {
         Path fullyQualifiedClassNamePath = FileUtils.getFQNPath(fullyQualifiedName);
-        Path togTestsPath = output.resolve("tog-tests").resolve(String.format("%s", tog.name().toLowerCase()));
+        Path togTestsPath = output.resolve(String.format("%s", tog.name().toLowerCase())).resolve("tog-tests");
         String className = FileUtils.getSimpleNameFromFQN(fullyQualifiedName);
         int classNameIdx = fullyQualifiedClassNamePath.getNameCount() - 1;
         Path fullyQualifiedTestClassNamePath = classNameIdx > 0 ?
