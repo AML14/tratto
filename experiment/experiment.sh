@@ -24,8 +24,8 @@ tog=${1}
 target_class=${2}
 src_dir=${3}
 bin_dir=${4}
-evosuite_flag=$( [[ "$5" == "true" ]] && echo true || echo false )
-project_jar=${6:-""}
+project_jar=${5}
+evosuite_flag=$( [[ "$6" == "true" ]] && echo true || echo false )
 qualifiers="${target_class%.*}"
 #evosuite_output="${ROOT_DIR}/output/evosuite-tests/${qualifiers//.//}"   #!!!
 
