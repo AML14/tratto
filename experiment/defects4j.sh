@@ -114,9 +114,13 @@ while IFS=, read -r project_id bug_id modified_classes; do
           cp -r "$OUTPUT_DIR/tratto" "$fqn_output"
           rm -rf "$OUTPUT_DIR"
         elif [ "${scope}" == "run_test" ]; then
-          echo "Running tests..."
           # Run jdoctor tests
-
+          bash runner.sh \
+            "jdoctor" \
+            "${modified_class}" \
+            "${buggy_project_bug_dir}/${src_path}" \
+            "${buggy_project_bug_dir}/${binary_path}" \
+            "${OUTPUT_DIR}/tog-tests/jdoctor"
           # Run toga tests
 
           # Run tratto tests
