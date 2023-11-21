@@ -17,7 +17,7 @@ public class OracleInserterTest {
     private static final Path output = Paths.get("output");
     private static final Path resourcesPath = Paths.get("src", "test", "resources");
     private static final Path projectPath = resourcesPath.resolve("project");
-    private static final Path projectJarPath = projectPath.resolve("target").resolve("Tutorial_Stack-1.0-SNAPSHOT.jar");
+    private static final Path projectJarPath = projectPath.resolve("target").resolve("tutorial.jar");
 
     private void setup() {
         FileUtils.deleteDirectory(output);
