@@ -9,21 +9,20 @@ if [ ! $# -eq 3 ]; then
 elif [ ! -d "${2}" ]; then
   echo -e "jdoctor.sh: The source directory \"${2}\" does not exist."
   exit 1
-elif [ ! -d "${3}" ]; then
-  echo -e "jdoctor.sh: The system binaries path \"${3}\" does not exist."
+elif [ ! -f "${3}" ]; then
+  echo -e "jdoctor.sh: The project jar \"${3}\" does not exist."
   exit 1
 fi
 
 # get current directory
-# shellcheck disable=SC2128
-current_dir=$(realpath "$(dirname "${BASH_SOURCE}")")
+current_dir=$(realpath "$(dirname "${BASH_SOURCE[@]}")")
 # setup global variables
 source "${current_dir}/utils/global_variables.sh"
 
 # define local variables
 target_class="${1}"  # fully-qualified name of target class
 src_dir="${2}"  # project source directory
-class_dir="${3}"  # path to binary files of the system under test
+jar_path="${3}"  # path to jar of the project under test
 
 # setup sdkman
 source "${UTILS_DIR}/init_sdkman.sh" "${SDKMAN_DIR}"
@@ -44,7 +43,7 @@ mkdir -p "${OUTPUT_DIR}/jdoctor/output"
 java -jar "${JDOCTOR_JAR}" \
     --target-class "${target_class}" \
     --source-dir "${src_dir}" \
-    --class-dir "${class_dir}" \
+    --class-dir "${jar_path}" \
     --condition-translator-output "${OUTPUT_DIR}/jdoctor/output/jdoctor_output.json"
 
 # switch to Java 17

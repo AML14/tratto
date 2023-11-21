@@ -79,7 +79,7 @@ else
 fi
 # Generate oracles using TOG
 if [ "${tog}" == "jdoctor" ]; then
-  bash ./generator/jdoctor.sh "${target_class}" "${src_dir}" "${bin_dir}"
+  bash ./generator/jdoctor.sh "${target_class}" "${src_dir}" "${project_jar}"
 elif [ "${tog}" == "toga" ]; then
   bash ./generator/toga.sh "${target_class}" "${src_dir}" #"${evosuite_output}"
 elif [ "${tog}" == "tratto" ]; then
