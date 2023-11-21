@@ -102,16 +102,27 @@ while IFS=, read -r project_id bug_id modified_classes; do
         cp "$evosuite_prefix_path" "$output_evosuite_prefix_path"
         cp "$evosuite_simple_test_path" "$output_evosuite_simple_test_path"
         cp "$evosuite_tests_path" "$output_evosuite_tests_path"
-        # Generate jdoctor oracles
-        bash experiment.sh jdoctor "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "false"
-        cp -r "$OUTPUT_DIR/jdoctor" "$fqn_output"
-        # Generate toga oracles
-        bash experiment.sh toga "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "false"
-        cp -r "$OUTPUT_DIR/toga" "$fqn_output"
-        # Generate tratto oracles
-        bash experiment.sh tratto "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "false" "${buggy_project_bug_dir}/${project_id}.jar"
-        cp -r "$OUTPUT_DIR/tratto" "$fqn_output"
-        rm -rf "$OUTPUT_DIR"
+        if [ "${scope}" == "generate_oracle" ]; then
+          # Generate jdoctor oracles
+          bash experiment.sh jdoctor "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "false"
+          cp -r "$OUTPUT_DIR/jdoctor" "$fqn_output"
+          # Generate toga oracles
+          bash experiment.sh toga "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "false"
+          cp -r "$OUTPUT_DIR/toga" "$fqn_output"
+          # Generate tratto oracles
+          bash experiment.sh tratto "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "false" "${buggy_project_bug_dir}/${project_id}.jar"
+          cp -r "$OUTPUT_DIR/tratto" "$fqn_output"
+          rm -rf "$OUTPUT_DIR"
+        elif [ "${scope}" == "run_test" ]; then
+          echo "Running tests..."
+          # Run jdoctor tests
+
+          # Run toga tests
+
+          # Run tratto tests
+
+        fi
+
     done
     # TODO: [INTEGRATION WITH RUNNER SCRIPT]
 done < "$D4J_PROJECTS_BUGS"

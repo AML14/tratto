@@ -80,18 +80,15 @@ fi
 # Generate oracles using TOG
 if [ "${tog}" == "jdoctor" ]; then
   bash ./generator/jdoctor.sh "${target_class}" "${src_dir}" "${bin_dir}"
-  oracle_output="${ROOT_DIR}/output/jdoctor/oracle/oracle_outputs.json"
 elif [ "${tog}" == "toga" ]; then
   bash ./generator/toga.sh "${target_class}" "${src_dir}" #"${evosuite_output}"
-  oracle_output="${ROOT_DIR}/output/toga/oracle/oracle_outputs.json"
 elif [ "${tog}" == "tratto" ]; then
   bash ./generator/tratto.sh "${target_class}" "${src_dir}" "${project_jar}"
-  oracle_output="${ROOT_DIR}/output/tratto/oracle/oracle_outputs.json"
 fi
 #cp "${oracle_output}" "${ROOT_DIR}/output/${tog}-oracles.json" #!!!
 # insert oracles into EvoSuite prefixes
 echo "[7] Insert oracles in test prefixes"
-java -jar "${EXPERIMENT_JAR}" "insert_oracles" "${tog}" "${target_class}" "${oracle_output}"
+java -jar "${EXPERIMENT_JAR}" "insert_oracles" "${tog}" "${target_class}" "${project_jar}"
 #echo "[8] Running tests and generating test output"
 #bash ./runner.sh "$tog" "$target_class" "$src_dir" "$bin_dir"
 #echo "[9] Experiment complete!"
