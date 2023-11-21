@@ -12,7 +12,7 @@ tog="${1}"
 target_class="${2}"
 src_dir="$(realpath "${3}")"
 bin_dir="$(realpath "${4}")"
-test_dir="${OUTPUT_DIR}/tog-tests/${tog}"
+test_path="$(realpath "${5}")"
 # get project root path
 IFS='/' read -ra src_arr <<< "${src_dir}"
 IFS='/' read -ra bin_arr <<< "${bin_dir}"
@@ -24,6 +24,8 @@ for i in "${!src_arr[@]}" "${!bin_arr[@]}"; do
   project_dir="${project_dir}/${src_arr[i]}"
 done
 project_dir="${project_dir#/}"
+# copy tests
+cp "${test_path}" "${src_dir}/../test"
 cd "${project_dir}" || exit 1
 
 test_output="${ROOT_DIR}/test_output.txt"
