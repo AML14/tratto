@@ -27,6 +27,8 @@ public class OracleRemover {
             "assertArrayEquals",
             "assertEquals",
             "assertFalse",
+            "assertNoAnnotations",
+            "assertNotEquals",
             "assertNotNull",
             "assertNotSame",
             "assertNull",
