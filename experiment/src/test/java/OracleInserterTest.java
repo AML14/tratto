@@ -17,13 +17,14 @@ public class OracleInserterTest {
     private static final Path output = Paths.get("output");
     private static final Path resourcesPath = Paths.get("src", "test", "resources");
     private static final Path projectPath = resourcesPath.resolve("project");
-    private static final Path projectJarPath = projectPath.resolve("target").resolve("Tutorial_Stack-1.0-SNAPSHOT.jar");
+    private static final Path projectJarPath = projectPath.resolve("target").resolve("tutorial.jar");
+    private static final Path prefixPath = output.resolve("evosuite-prefixes").resolve("tutorial").resolve("StackTest.java");
 
     private void setup() {
         FileUtils.deleteDirectory(output);
         FileUtils.copyFile(
                 resourcesPath.resolve("prefix").resolve("tutorial").resolve("StackTest.java"),
-                output.resolve("evosuite-prefixes").resolve("tutorial").resolve("StackTest.java")
+                prefixPath
         );
     }
 
@@ -145,7 +146,7 @@ public class OracleInserterTest {
         setup();
         List<OracleOutput> axiomaticOracles = getAxiomaticOracles();
         OracleInserter.insertOracles(TogType.JDOCTOR, "tutorial.Stack", axiomaticOracles, projectJarPath);
-        Path testPath = Paths.get("output", "tog-tests", "jdoctor", "tutorial", "StackTest.java");
+        Path testPath = Paths.get("output", "jdoctor", "tog-tests", "TogTest.java");
         CompilationUnit cu = FileUtils.getCompilationUnit(testPath);
         List<MethodDeclaration> testCases = cu.findAll(MethodDeclaration.class);
         assertEquals(
@@ -276,7 +277,7 @@ public class OracleInserterTest {
         setup();
         List<OracleOutput> nonAxiomaticOracles = getNonAxiomaticOracles();
         OracleInserter.insertOracles(TogType.TOGA, "tutorial.Stack", nonAxiomaticOracles, projectJarPath);
-        Path testPath = Paths.get("output", "tog-tests", "toga", "tutorial", "StackTest.java");
+        Path testPath = Paths.get("output", "toga", "tog-tests", "TogTest.java");
         CompilationUnit cu = FileUtils.getCompilationUnit(testPath);
         List<MethodDeclaration> testCases = cu.findAll(MethodDeclaration.class);
         MethodDeclaration assertionTest = testCases.get(5);
