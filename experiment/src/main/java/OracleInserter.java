@@ -71,8 +71,6 @@ import java.util.stream.Stream;
 public class OracleInserter {
     /** The path of the output directory. */
     private static final Path output = Paths.get("output");
-    /** The path of the EvoSuite prefixes directory. */
-    private static final Path evosuitePrefixPath = output.resolve("evosuite-prefixes");
     /** A ClassLoader used to load classes outside the JVM. */
     private static ClassLoader classLoader;
     /** A unique id for placeholder variable names when inserting oracles. */
@@ -1340,23 +1338,18 @@ public class OracleInserter {
             List<OracleOutput> oracles,
             Path jarPath
     ) {
-        Path fullyQualifiedClassNamePath = FileUtils.getFQNPath(fullyQualifiedName);
-        Path togTestsPath = output.resolve(String.format("%s", tog.name().toLowerCase())).resolve("tog-tests");
-        String className = FileUtils.getSimpleNameFromFQN(fullyQualifiedName);
-        int classNameIdx = fullyQualifiedClassNamePath.getNameCount() - 1;
-        Path fullyQualifiedTestClassNamePath = classNameIdx > 0 ?
-                fullyQualifiedClassNamePath.subpath(0, classNameIdx).resolve(className + "Test.java") :
-                Paths.get(className);
-        Path testClassPrefixFilePath = evosuitePrefixPath.resolve(fullyQualifiedTestClassNamePath);
-        System.out.println(testClassPrefixFilePath);
         setClassLoader(jarPath);
+        Path prefixPath = FileUtils.getFQNOutputPath(fullyQualifiedName, "evosuite-prefixes");
+        Path testPath = output.resolve(tog.name().toLowerCase()).resolve("tog-tests").resolve("TogTest.java");
+        System.out.println(prefixPath);
+        FileUtils.copyFile(prefixPath, testPath);
         // insert oracles
-        CompilationUnit cu = FileUtils.getCompilationUnit(testClassPrefixFilePath);
+        CompilationUnit cu = FileUtils.getCompilationUnit(testPath);
         if (tog.isAxiomatic()) {
             insertAxiomaticOracles(cu, oracles);
         } else {
             insertNonAxiomaticOracles(cu, oracles);
         }
-        FileUtils.writeString(togTestsPath.resolve("TogTest.java"), cu.toString());
+        FileUtils.writeString(testPath, cu.toString());
     }
 }
