@@ -518,6 +518,8 @@ public class OracleInserter {
         } else if (expr.isBinaryExpr()) {
             // binary expressions are booleans
             return PrimitiveType.booleanType();
+        } else if (expr.isEnclosedExpr()) {
+            return getTypeOfExpression(body, expr.asEnclosedExpr().getInner());
         } else {
             // get literal value
             return getTypeOfLiteral(expr.asLiteralExpr());
@@ -1270,13 +1272,13 @@ public class OracleInserter {
      */
     public static void insertOracles(
             TogType tog,
-            String fullyQualifiedClassName,
+            String fullyQualifiedName,
             List<OracleOutput> oracles,
             Path jarPath
     ) {
-        Path fullyQualifiedClassNamePath = FileUtils.getFQNPath(fullyQualifiedClassName);
+        Path fullyQualifiedClassNamePath = FileUtils.getFQNPath(fullyQualifiedName);
         Path togTestsPath = output.resolve("tog-tests").resolve(String.format("%s", tog.name().toLowerCase()));
-        String className = FileUtils.getSimpleNameFromFQN(fullyQualifiedClassName);
+        String className = FileUtils.getSimpleNameFromFQN(fullyQualifiedName);
         int classNameIdx = fullyQualifiedClassNamePath.getNameCount() - 1;
         Path fullyQualifiedTestClassNamePath = classNameIdx > 0 ?
                 fullyQualifiedClassNamePath.subpath(0, classNameIdx).resolve(className + "Test.java") :
