@@ -29,7 +29,7 @@ public class OracleInserterTest {
     }
 
     private void cleanup() {
-//        FileUtils.deleteDirectory(output);
+        FileUtils.deleteDirectory(output);
     }
 
     private List<OracleOutput> getAxiomaticOracles() {
