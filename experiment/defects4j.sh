@@ -10,7 +10,7 @@ source "${current_dir}/generator/utils/global_variables.sh"
 source "${UTILS_DIR}/init_sdkman.sh"
 
 # Scope
-scope="${1:-experiments}"
+scope="${1:-generate_oracle}"
 
 # Clone defects4jprefix project
 if [ ! -d "$DEFECTS4J_DIR/defects4jprefix" ]; then
