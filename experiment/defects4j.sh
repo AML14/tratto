@@ -10,7 +10,7 @@ source "${current_dir}/generator/utils/global_variables.sh"
 source "${UTILS_DIR}/init_sdkman.sh"
 
 # Scope
-scope="${1:-experiments}"
+scope="${1:-generate_oracle}"
 
 # Clone defects4jprefix project
 if [ ! -d "$DEFECTS4J_DIR/defects4jprefix" ]; then
@@ -104,13 +104,13 @@ while IFS=, read -r project_id bug_id modified_classes; do
         cp "$evosuite_tests_path" "$output_evosuite_tests_path"
         if [ "${scope}" == "generate_oracle" ]; then
           # Generate jdoctor oracles
-          bash experiment.sh jdoctor "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "false"
+          bash experiment.sh jdoctor "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${buggy_project_bug_dir}/${project_id}.jar"
           cp -r "$OUTPUT_DIR/jdoctor" "$fqn_output"
           # Generate toga oracles
-          bash experiment.sh toga "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "false"
+          bash experiment.sh toga "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${buggy_project_bug_dir}/${project_id}.jar"
           cp -r "$OUTPUT_DIR/toga" "$fqn_output"
           # Generate tratto oracles
-          bash experiment.sh tratto "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "false" "${buggy_project_bug_dir}/${project_id}.jar"
+          bash experiment.sh tratto "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${buggy_project_bug_dir}/${project_id}.jar" "false"
           cp -r "$OUTPUT_DIR/tratto" "$fqn_output"
           rm -rf "$OUTPUT_DIR"
         elif [ "${scope}" == "run_test" ]; then
