@@ -14,8 +14,8 @@ src_dir="$(realpath "${3}")"
 bin_dir="$(realpath "${4}")"
 test_dir="${OUTPUT_DIR}/tog-tests/${tog}"
 # get project root path
-IFS='/' read -ra src_arr <<< "$src_dir"
-IFS='/' read -ra bin_arr <<< "$bin_dir"
+IFS='/' read -ra src_arr <<< "${src_dir}"
+IFS='/' read -ra bin_arr <<< "${bin_dir}"
 project_dir=""
 for i in "${!src_arr[@]}" "${!bin_arr[@]}"; do
   if [ "${src_arr[i]}" != "${bin_arr[i]}" ]; then
