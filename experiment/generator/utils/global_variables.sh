@@ -16,7 +16,7 @@ SDKMAN_DIR="${RESOURCES_DIR}/sdkman"
 OUTPUT_DIR="${ROOT_DIR}/output"
 
 # JARs & Files
-D4J_PROJECTS_BUGS="${RESOURCES_DIR}/defects4j/modified_classes.csv"
+D4J_PROJECTS_BUGS="${RESOURCES_DIR}/defects4j/test_modified_classes.csv"
 EXPERIMENT_JAR="${ROOT_DIR}/generator/resources/experiment.jar"
 EVOSUITE_JAR="${RESOURCES_DIR}/evosuite-1.0.6.jar"
 JDOCTOR_JAR="${RESOURCES_DIR}/jdoctor.jar"
