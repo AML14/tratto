@@ -459,6 +459,10 @@ public class TogUtils {
      * Returns null if unable to parse oracle string.
      */
     private static String contextualizeOracle(JDoctorOutput jDoctorOutput, String oracle) {
+        // add clause to ternary statements if necessary
+        if (oracle.contains("?") && !oracle.contains(":")) {
+            oracle += ": true";
+        }
         Expression oracleExpression;
         try {
             oracleExpression = StaticJavaParser.parseExpression(oracle);
