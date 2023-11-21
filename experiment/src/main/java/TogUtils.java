@@ -8,10 +8,7 @@ import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.*;
 import com.github.javaparser.ast.comments.JavadocComment;
-import com.github.javaparser.ast.expr.ArrayAccessExpr;
-import com.github.javaparser.ast.expr.Expression;
-import com.github.javaparser.ast.expr.MethodCallExpr;
-import com.github.javaparser.ast.expr.NameExpr;
+import com.github.javaparser.ast.expr.*;
 import com.github.javaparser.ast.type.ReferenceType;
 import com.github.javaparser.ast.type.TypeParameter;
 import com.github.javaparser.resolution.SymbolResolver;
@@ -140,13 +137,13 @@ public class TogUtils {
             togaInputBuilder.append("focal_method,test_prefix,docstring\n");
             togaMetadataBuilder.append("project,bug_num,test_name,exception_bug,assertion_bug,exception_lbl,assertion_lbl,assert_err\n");
             cuTestClassPrefixFile.findAll(MethodDeclaration.class).forEach(testPrefix -> {
-                List<MethodCallExpr> methodCallExpressions = testPrefix.getBody().orElseThrow().findAll(MethodCallExpr.class);
-                if (methodCallExpressions.size() > 0) {
-                    MethodCallExpr lastMethodCallExpression = methodCallExpressions.get(methodCallExpressions.size() - 1);
-                    try {
-                        String testName = testPrefix.getNameAsString();
-                        Map<String, String> togaRow = new HashMap<>();
-                        MethodDeclaration mut;
+                CallableDeclaration mut = null;
+                String testName = testPrefix.getNameAsString();
+                Map<String, String> togaRow = new HashMap<>();
+                try {
+                    List<MethodCallExpr> methodCallExpressions = testPrefix.getBody().orElseThrow().findAll(MethodCallExpr.class);
+                    if (methodCallExpressions.size() > 0) {
+                        MethodCallExpr lastMethodCallExpression = methodCallExpressions.get(methodCallExpressions.size() - 1);
 
                         try {
                             mut = (MethodDeclaration) lastMethodCallExpression.resolve().toAst().orElse(null);
@@ -206,7 +203,28 @@ public class TogUtils {
                                 }
                             }
                         }
+                    } else {
+                        List<ObjectCreationExpr> constructorCallExpressions = testPrefix.getBody().get().findAll(ObjectCreationExpr.class);
+                        if (constructorCallExpressions.size() > 0 ) {
+                            ObjectCreationExpr lastConstructorCallExpression = constructorCallExpressions.get(constructorCallExpressions.size() - 1);
+                            try {
+                                mut = (ConstructorDeclaration) lastConstructorCallExpression.resolve().toAst().orElse(null);
+                            } catch (UnsolvedSymbolException e) {
+                                mut = null;
+                            }
+                        } else {
+                            String testPrefixStr = testPrefix.toString().replace("\"", "\"\"");
+                            togaErrBuilder.append(generateLogTogaInputError(testPrefix, fullyQualifiedClassName, "NoMethodCallException"));
+                            String errMsg = String.format(
+                                    "Method call not found in test %s for class %s",
+                                    testPrefix.getNameAsString(),
+                                    fullyQualifiedClassName
+                            );
+                            System.err.println(errMsg);
+                        }
+                    }
 
+                    if (mut != null) {
                         MethodDeclaration test = cuTestClassFile
                                 .findAll(MethodDeclaration.class)
                                 .stream()
@@ -214,7 +232,7 @@ public class TogUtils {
                                 .toList()
                                 .get(0);
                         String methodName = mut.getNameAsString();
-                        String focalMethod = getMethodSignature(mut);
+                        String focalMethod = getCallableSignature(mut);
                         String javadocString = getCallableJavadoc(mut).replace("\"", "\"\"");
                         String testStr = test.toString().replace("\"", "\"\"");
                         String testPrefixStr = testPrefix.toString();
@@ -231,21 +249,11 @@ public class TogUtils {
                         togaRow.put("testPrefix", testPrefixStr);
                         togaRow.put("testName", testName);
                         togaInfo.put(testName, togaRow);
-                    } catch (NoSuchElementException | UnsolvedSymbolException e) {
-                        togaErrBuilder.append(generateLogTogaInputError(testPrefix, fullyQualifiedClassName, e.getClass().getName()));
-                        String errMsg = String.format(
-                                "Focal method %s not found in test %s for class %s",
-                                lastMethodCallExpression.getNameAsString(),
-                                testPrefix.getNameAsString(),
-                                fullyQualifiedClassName
-                        );
-                        System.err.println(errMsg);
                     }
-                } else {
-                    String testPrefixStr = testPrefix.toString().replace("\"", "\"\"");
-                    togaErrBuilder.append(generateLogTogaInputError(testPrefix, fullyQualifiedClassName, "NoMethodCallException"));
+                } catch (NoSuchElementException | UnsolvedSymbolException e) {
+                    togaErrBuilder.append(generateLogTogaInputError(testPrefix, fullyQualifiedClassName, e.getClass().getName()));
                     String errMsg = String.format(
-                            "Method call not found in test %s for class %s",
+                            "Focal method not found in test %s for class %s",
                             testPrefix.getNameAsString(),
                             fullyQualifiedClassName
                     );
