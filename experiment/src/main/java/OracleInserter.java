@@ -7,19 +7,37 @@ import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.comments.Comment;
 import com.github.javaparser.ast.comments.LineComment;
+import com.github.javaparser.ast.expr.AnnotationExpr;
+import com.github.javaparser.ast.expr.ArrayAccessExpr;
+import com.github.javaparser.ast.expr.ArrayCreationExpr;
+import com.github.javaparser.ast.expr.ArrayInitializerExpr;
 import com.github.javaparser.ast.expr.AssignExpr;
+import com.github.javaparser.ast.expr.BinaryExpr;
 import com.github.javaparser.ast.expr.BooleanLiteralExpr;
+import com.github.javaparser.ast.expr.CastExpr;
 import com.github.javaparser.ast.expr.CharLiteralExpr;
+import com.github.javaparser.ast.expr.ClassExpr;
+import com.github.javaparser.ast.expr.ConditionalExpr;
 import com.github.javaparser.ast.expr.DoubleLiteralExpr;
+import com.github.javaparser.ast.expr.EnclosedExpr;
 import com.github.javaparser.ast.expr.Expression;
+import com.github.javaparser.ast.expr.FieldAccessExpr;
+import com.github.javaparser.ast.expr.InstanceOfExpr;
 import com.github.javaparser.ast.expr.IntegerLiteralExpr;
+import com.github.javaparser.ast.expr.LambdaExpr;
 import com.github.javaparser.ast.expr.LiteralExpr;
 import com.github.javaparser.ast.expr.LongLiteralExpr;
 import com.github.javaparser.ast.expr.MethodCallExpr;
+import com.github.javaparser.ast.expr.MethodReferenceExpr;
 import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.expr.NullLiteralExpr;
+import com.github.javaparser.ast.expr.ObjectCreationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
+import com.github.javaparser.ast.expr.SuperExpr;
 import com.github.javaparser.ast.expr.TextBlockLiteralExpr;
+import com.github.javaparser.ast.expr.ThisExpr;
+import com.github.javaparser.ast.expr.TypeExpr;
+import com.github.javaparser.ast.expr.UnaryExpr;
 import com.github.javaparser.ast.expr.VariableDeclarationExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.CatchClause;
@@ -30,6 +48,7 @@ import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.stmt.TryStmt;
 import com.github.javaparser.ast.type.PrimitiveType;
 import com.github.javaparser.ast.type.Type;
+import com.github.javaparser.ast.type.VoidType;
 import data.OracleOutput;
 import data.OracleType;
 import data.TogType;
@@ -483,6 +502,18 @@ public class OracleInserter {
         }
     }
 
+    /** All expression types that cannot be parsed to find a Type. */
+    private static final List<Class<?>> unsupportedExpr = List.of(
+            AnnotationExpr.class,
+            ArrayInitializerExpr.class,
+            FieldAccessExpr.class,
+            LambdaExpr.class,
+            MethodCallExpr.class,
+            MethodReferenceExpr.class,
+            SuperExpr.class,
+            ThisExpr.class
+    );
+
     /**
      * Gets the type of a given expression. This method handles four types of
      * expressions:
@@ -499,31 +530,64 @@ public class OracleInserter {
      *
      * @param body all statements in the parent method
      * @param expr a Java variable or literal expression
-     * @return the type of the given expression
+     * @return the type of the given expression. Returns VoidType if the given
+     * Expression cannot be parsed to find a Type.
      * @see OracleInserter#getTypeOfName(List, String)
      * @see OracleInserter#getTypeOfLiteral(LiteralExpr)
      */
     private static Type getTypeOfExpression(List<Statement> body, Expression expr) {
-        if (expr.isCastExpr()) {
-            // recursively search until reaching the base type
+        // return VoidType if the given type is not supported
+        if (unsupportedExpr.contains(expr.getClass())) {
+            return new VoidType();
+        }
+        // search all supported Expression types
+        if (expr instanceof ArrayAccessExpr) {
+            Type arrayType = getTypeOfName(body, expr.asArrayAccessExpr().getName().asNameExpr().getNameAsString());
+            return arrayType.asArrayType().getElementType();
+        } else if (expr instanceof ArrayCreationExpr) {
+            return expr.asArrayCreationExpr().createdType();
+        } else if (expr instanceof AssignExpr) {
+            return getTypeOfExpression(body, expr.asAssignExpr().getTarget());
+        } else if (expr instanceof BinaryExpr) {
+            return PrimitiveType.booleanType();
+        } else if (expr instanceof CastExpr) {
             Type baseType = getTypeOfExpression(body, expr.asCastExpr().getExpression());
             if (baseType == null) {
                 return null;
             } else {
                 return expr.asCastExpr().getType();
             }
-        } else if (expr.isNameExpr()) {
-            // get type corresponding to variable name
-            return getTypeOfName(body, expr.asNameExpr().getNameAsString());
-        } else if (expr.isBinaryExpr()) {
-            // binary expressions are booleans
-            return PrimitiveType.booleanType();
-        } else if (expr.isEnclosedExpr()) {
+        } else if (expr instanceof ClassExpr) {
+            return expr.asClassExpr().getType();
+        } else if (expr instanceof ConditionalExpr) {
+            Type thenType = getTypeOfExpression(body, expr.asConditionalExpr().getThenExpr());
+            Type elseType = getTypeOfExpression(body, expr.asConditionalExpr().getElseExpr());
+            if (thenType == null || elseType == null) {
+                return null;
+            }
+            if (thenType.equals(elseType)) {
+                return thenType;
+            } else {
+                return StaticJavaParser.parseType("Object");
+            }
+        } else if (expr instanceof EnclosedExpr) {
             return getTypeOfExpression(body, expr.asEnclosedExpr().getInner());
-        } else {
-            // get literal value
+        } else if (expr instanceof InstanceOfExpr) {
+            return PrimitiveType.booleanType();
+        } else if (expr instanceof LiteralExpr) {
             return getTypeOfLiteral(expr.asLiteralExpr());
+        } else if (expr instanceof NameExpr) {
+            return getTypeOfName(body, expr.asNameExpr().getNameAsString());
+        } else if (expr instanceof ObjectCreationExpr) {
+            return expr.asObjectCreationExpr().getType();
+        } else if (expr instanceof TypeExpr) {
+            return expr.asTypeExpr().getType();
+        } else if (expr instanceof UnaryExpr) {
+            return getTypeOfExpression(body, expr.asUnaryExpr().getExpression());
+        } else if (expr instanceof VariableDeclarationExpr) {
+            return expr.asVariableDeclarationExpr().getVariable(0).getType();
         }
+        throw new IllegalArgumentException("Unrecognized Expression type " + expr.getClass());
     }
 
     /**
