@@ -111,7 +111,12 @@ while IFS=, read -r project_id bug_id modified_classes; do
             "${buggy_project_bug_dir}/${binary_path}" \
             "${buggy_project_bug_dir}/${test_path}"
           # Run toga tests
-
+          bash runner.sh \
+            "toga" \
+            "${modified_class}" \
+            "${buggy_project_bug_dir}/${src_path}" \
+            "${buggy_project_bug_dir}/${binary_path}" \
+            "${buggy_project_bug_dir}/${test_path}"
           # Run tratto tests
 
         fi
