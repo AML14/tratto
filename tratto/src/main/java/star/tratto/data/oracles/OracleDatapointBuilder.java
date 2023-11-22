@@ -27,8 +27,8 @@ import static org.plumelib.util.CollectionsPlume.mapList;
  */
 public class OracleDatapointBuilder {
     /**
-     * The OracleDatapoint being built. Returns a copy when
-     * {@link OracleDatapointBuilder#build()} is called.
+     * The OracleDatapoint being built. {@link OracleDatapointBuilder#build()}
+     * returns a copy.
      */
     private OracleDatapoint datapoint;
 
