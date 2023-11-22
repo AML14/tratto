@@ -88,7 +88,7 @@ public class OracleDatapointBuilder {
 
     /**
      * Gets the oracle of a non-exceptional JDoctor post-condition. The oracle
-     * is represented by a ternary expression. If the post-condition does not
+     * is represented by a ternary statement. If the post-condition does not
      * have an alternative "else" final state, then the false result of the
      * ternary expression is "true".
      *
