@@ -46,9 +46,8 @@ while IFS= read -r line; do
 done < "${test_output}"
 # cleanup
 rm "${test_output}"
-mv "${simple_output}" "${test_output}"
-rm -r "${ROOT_DIR}/temp"
+mv "${simple_output}" "${ROOT_DIR}/output/${tog}/tog-tests/test_fails.txt"
 
 # generate TestOutput record
 sdk use java "${JAVA17}"
-java -jar "${EXPERIMENT_JAR}" "${tog}" "generate_test_output" "${target_class}" "${src_dir}" "${bin_dir}" "${ROOT_DIR}"
+java -jar "${EXPERIMENT_JAR}" "generate_test_output" "${tog}" "${target_class}" "${src_dir}" "${bin_dir}"
