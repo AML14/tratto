@@ -113,6 +113,7 @@ while IFS=, read -r project_id bug_id modified_classes; do
             "${buggy_project_bug_dir}/${binary_path}" \
             "${buggy_project_bug_dir}/${test_path}"
           # Run toga tests
+          cp "${DEFECTS4J_DIR}/output/${project_id}/${bug_id}/${qualifiers}/toga/tog-tests/"* "${OUTPUT_DIR}/toga/tog-tests/"
 #          bash runner.sh \
 #            "toga" \
 #            "${modified_class}" \
@@ -120,10 +121,17 @@ while IFS=, read -r project_id bug_id modified_classes; do
 #            "${buggy_project_bug_dir}/${binary_path}" \
 #            "${buggy_project_bug_dir}/${test_path}"
           # Run tratto tests
-
+          cp "${DEFECTS4J_DIR}/output/${project_id}/${bug_id}/${qualifiers}/tratto/tog-tests/"* "${OUTPUT_DIR}/tratto/tog-tests/"
+#          bash runner.sh \
+#            "tratto" \
+#            "${modified_class}" \
+#            "${buggy_project_bug_dir}/${src_path}" \
+#            "${buggy_project_bug_dir}/${binary_path}" \
+#            "${buggy_project_bug_dir}/${test_path}"
+          # cleanup
+#          rm -r "${OUTPUT_DIR}"
         fi
 
     done
-    # TODO: [INTEGRATION WITH RUNNER SCRIPT]
 done < "$D4J_PROJECTS_BUGS"
 
