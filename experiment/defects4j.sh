@@ -47,27 +47,16 @@ while IFS=, read -r project_id bug_id modified_classes; do
     echo "Compiling fixed version: project ${project_id}-${bug_id}f."
     defects4j compile -w "$fixed_project_bug_dir"
     echo "Compilation complete."
-    # Set path path to binary files
+    # get source, binary, and test directories
+    commit_id=$(grep "^${bug_id}" "${DEFECTS4J_DIR}/framework/projects/${project_id}/active-bugs.csv" | awk -F ',' '{print $2}')
+    src_path=$(grep "^${commit_id}" "${DEFECTS4J_DIR}/framework/projects/${project_id}/dir-layout.csv" | awk -F ',' '{print $2}')
+    test_path=$(grep "^${commit_id}" "${DEFECTS4J_DIR}/framework/projects/${project_id}/dir-layout.csv" | awk -F ',' '{print $2}')
     if [ -d "$buggy_project_bug_dir/build/classes" ]; then
         binary_path="build/classes"
     elif [ -d "$buggy_project_bug_dir/build" ]; then
         binary_path="build"
     elif [ -d "${buggy_project_bug_dir}/target/classes" ]; then
         binary_path="target/classes"
-    else
-        echo "Binary path for project $project_id not found."
-        exit 1
-    fi
-    if [ -d "$buggy_project_bug_dir/source" ]; then
-        src_path="source"
-    elif [ -d "$buggy_project_bug_dir/src/main/java" ]; then
-        src_path="src/main/java"
-    elif [ -d "$buggy_project_bug_dir/src/java" ]; then
-        src_path="src/java"
-    elif [ -d "${buggy_project_bug_dir}/src" ]; then
-        src_path="src"
-    elif [ -d "$buggy_project_bug_dir/gson/src/main/java" ]; then
-        src_path="gson/src/main/java"
     else
         echo "Binary path for project $project_id not found."
         exit 1
@@ -120,7 +109,7 @@ while IFS=, read -r project_id bug_id modified_classes; do
             "${modified_class}" \
             "${buggy_project_bug_dir}/${src_path}" \
             "${buggy_project_bug_dir}/${binary_path}" \
-            "${OUTPUT_DIR}/tog-tests/jdoctor"
+            "${buggy_project_bug_dir}/${test_path}"
           # Run toga tests
 
           # Run tratto tests
