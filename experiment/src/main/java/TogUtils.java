@@ -711,10 +711,10 @@ public class TogUtils {
             Path binDir
     ) {
         String togName = togType.toString().toLowerCase();
-        Path togTestPath = output.resolve(Paths.get(togType.name().toLowerCase(), "TogTest.java"));
+        Path togTestPath = output.resolve(Paths.get(togType.name().toLowerCase(), "tog-tests"));
         Path outputPath = output.resolve(Paths.get(togType.name().toLowerCase(), "test", "test_output.json"));
         List<String> testFails = List.of(FileUtils.readString(togTestPath.resolve("test_fails.txt")).split("\n"));
-        List<TestCase> testCases = getTestCases(togTestPath, testFails);
+        List<TestCase> testCases = getTestCases(togTestPath.resolve("TogTest.java"), testFails);
         TestOutput testOutput = new TestOutput(
                 togName,
                 className,
