@@ -16,7 +16,7 @@ SDKMAN_DIR="${RESOURCES_DIR}/sdkman"
 OUTPUT_DIR="${ROOT_DIR}/output"
 
 # JARs & Files
-D4J_PROJECTS_BUGS="${RESOURCES_DIR}/defects4j/test_modified_classes.csv"
+D4J_PROJECTS_BUGS="${RESOURCES_DIR}/defects4j/modified_classes.csv"
 EXPERIMENT_JAR="${ROOT_DIR}/generator/resources/experiment.jar"
 EVOSUITE_JAR="${RESOURCES_DIR}/evosuite-1.0.6.jar"
 JDOCTOR_JAR="${RESOURCES_DIR}/jdoctor.jar"
@@ -27,7 +27,7 @@ SERVER_PORT=5050
 
 # Github repositories
 JDOCTOR_GITHUB_REPO="https://github.com/albertogoffi/toradocu.git"
-TOGA_GITHUB_REPO="https://github.com/darthdaver/toga.git"
+TOGA_GITHUB_REPO="https://github.com/microsoft/toga.git"
 
 # Links to resources
 TOGA_ASSERTION_MODEL_LINK="https://drive.google.com/u/0/uc?id=1TvZMlpXeN3DQUwwgOhlCRkn5-v1l_ZSK&export=download"
