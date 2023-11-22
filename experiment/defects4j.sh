@@ -103,7 +103,9 @@ while IFS=, read -r project_id bug_id modified_classes; do
           cp -r "$OUTPUT_DIR/tratto" "$fqn_output"
           rm -rf "$OUTPUT_DIR"
         elif [ "${scope}" == "run_test" ]; then
+          qualifiers=$(echo "${modified_class}" | sed 's/\./\//g')
           # Run jdoctor tests
+          cp "${DEFECTS4J_DIR}/output/${project_id}/${bug_id}/${qualifiers}/jdoctor/tog-tests/"* "${OUTPUT_DIR}/jdoctor/tog-tests/"
           bash runner.sh \
             "jdoctor" \
             "${modified_class}" \
@@ -111,12 +113,12 @@ while IFS=, read -r project_id bug_id modified_classes; do
             "${buggy_project_bug_dir}/${binary_path}" \
             "${buggy_project_bug_dir}/${test_path}"
           # Run toga tests
-          bash runner.sh \
-            "toga" \
-            "${modified_class}" \
-            "${buggy_project_bug_dir}/${src_path}" \
-            "${buggy_project_bug_dir}/${binary_path}" \
-            "${buggy_project_bug_dir}/${test_path}"
+#          bash runner.sh \
+#            "toga" \
+#            "${modified_class}" \
+#            "${buggy_project_bug_dir}/${src_path}" \
+#            "${buggy_project_bug_dir}/${binary_path}" \
+#            "${buggy_project_bug_dir}/${test_path}"
           # Run tratto tests
 
         fi
