@@ -1116,21 +1116,21 @@ public class DatasetUtils {
         jpCallables.addAll(jpClass.getMethods());
         jpCallables.addAll(jpClass.getConstructors());
         // iterate through each member in the class.
-        for (CallableDeclaration<?> jpCallable : jpCallables) {
+        for (CallableDeclaration<?> jpCandidate : jpCallables) {
             // check if the method names are equal.
-            if (jpCallable.getNameAsString().equals(methodName)) {
+            if (jpCandidate.getNameAsString().equals(methodName)) {
                 // check if parameters are equal.
-                List<String> currentParamList = jpCallable.getParameters()
+                List<String> candidateParamList = jpCandidate.getParameters()
                         .stream()
-                        .map(p -> TypeUtils.getJDoctorSimpleNameFromSourceCode(jpClass, jpCallable, p))
+                        .map(p -> TypeUtils.getJDoctorSimpleNameFromSourceCode(jpClass, jpCandidate, p))
                         .toList();
                 if (jpParamListEqualsJDoctorParamList(
                         params,
-                        currentParamList,
-                        jpCallable,
+                        candidateParamList,
+                        jpCandidate,
                         jpClass
                 )) {
-                    return jpCallable;
+                    return jpCandidate;
                 }
             }
         }
