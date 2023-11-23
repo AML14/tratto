@@ -5,9 +5,7 @@ import java.util.List;
 /**
  * This project uses the term "attribute" to refer to fields in Java classes.
  * This is done for compatibility with the XText grammar. This record defines
- * various attribute information. Includes the attribute name, the package of
- * the declaring class, the name of the declaring class, and the attribute
- * declaration. The attribute declaration follows the format:
+ * various attribute information. The attribute declaration follows the format:
  *     "[modifiers] [type] [name][ = initial value];"
  */
 public record AttributeTokens(
