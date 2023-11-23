@@ -76,7 +76,7 @@ public class JavaParserUtils {
     private static final String SYNTHETIC_METHOD_NAME = "__tratto__auxiliaryMethod";
     /** Cache ResolvedType of Object to make subsequent accesses free. */
     private static ResolvedType objectType;
-    /** Cache Set&lt;MethodUsage&gt; of Object methods to make subsequent accesses free. */
+    /** Cache of Object methods to make subsequent accesses free. */
     private static Set<MethodUsage> objectMethods;
 
     /** Do not instantiate this class. */

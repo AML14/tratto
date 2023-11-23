@@ -59,7 +59,7 @@ public class ProjectInitializer {
          * @param jsonParser a parser used to deserialize a JSON object
          * @param deserializationContext provides reusable temporary objects
          *                               for deserialization (not used in this
-         *                               implementation).
+         *                               implementation)
          * @return a Project record, corresponding to the parsed JSON
          * @throws IOException if an error occurs reading the tree of the
          * json parser

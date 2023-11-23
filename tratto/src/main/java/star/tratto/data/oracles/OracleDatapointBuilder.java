@@ -138,7 +138,7 @@ public class OracleDatapointBuilder {
      *
      * @param condition a JDoctor condition
      * @throws IllegalArgumentException if the condition is not a
-     * ThrowsCondition, PreCondition, or List of PostConditions.
+     * ThrowsCondition, PreCondition, or List of PostConditions
      */
     public void setConditionInfo(Object condition) {
         if (condition instanceof ThrowsCondition) {
@@ -321,6 +321,7 @@ public class OracleDatapointBuilder {
     }
 
     /**
+     * Returns a new datapoint {@link OracleDatapoint}. Resets builder.
      * @return a new datapoint {@link OracleDatapoint}. Resets builder.
      */
     public OracleDatapoint build() {

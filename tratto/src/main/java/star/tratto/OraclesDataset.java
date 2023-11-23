@@ -42,8 +42,9 @@ public class OraclesDataset {
     }
 
     /**
+     * Returns the corresponding oracle datapoints of the project.
      * @param project a project under analysis
-     * @return the corresponding oracle datapoints of the project
+     * @return the corresponding oracle datapoints of the project 
      */
     private static List<OracleDatapoint> getProjectOracleDatapoints(Project project) {
         System.out.println("\nCollecting data from: " + project.projectName());
