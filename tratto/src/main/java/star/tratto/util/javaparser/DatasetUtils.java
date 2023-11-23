@@ -326,13 +326,13 @@ public class DatasetUtils {
                 );
             }
         } catch (UnsolvedSymbolException e) {
-            logger.error("Unable to generate MethodArgumentTokens for argument " + parameterType);
+            logger.error("Unable to generate MethodArgumentTokens for argument " + parameter);
         }
         return null;
     }
 
     /**
-     * Collects information about each argument of a given method.
+     * Collects information about each parameter of a given method.
      *
      * @param jpClass the declaring class
      * @param jpCallable a method
