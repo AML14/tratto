@@ -59,12 +59,12 @@ import static org.plumelib.util.CollectionsPlume.mapList;
 
 /**
  * This class provides static methods for generating features in the oracles
- * dataset.
+ * dataset, which is then used to create the tokens dataset. 
  */
 public class DatasetUtils {
     private static final Logger logger = LoggerFactory.getLogger(DatasetUtils.class);
 
-    /** Private constructor to avoid creating an instance of this class. */
+    /** Do not instantiate this class. */
     private DatasetUtils() {
         throw new UnsupportedOperationException("This class cannot be instantiated.");
     }

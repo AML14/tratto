@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  * list of {@link Project} records from a JSON file.
  */
 public class ProjectInitializer {
-    /** Private constructor to avoid creating an instance of this class. */
+    /** Do not instantiate this class. */
     private ProjectInitializer() {
         throw new UnsupportedOperationException("This class cannot be instantiated.");
     }

@@ -79,7 +79,7 @@ public class JavaParserUtils {
     /** Cache Set&lt;MethodUsage&gt; of Object methods to make subsequent accesses free. */
     private static Set<MethodUsage> objectMethods;
 
-    /** Private constructor to avoid creating an instance of this class. */
+    /** Do not instantiate this class. */
     private JavaParserUtils() {
         throw new UnsupportedOperationException("This class cannot be instantiated.");
     }
