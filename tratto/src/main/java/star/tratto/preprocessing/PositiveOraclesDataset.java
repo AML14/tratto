@@ -54,7 +54,7 @@ public class PositiveOraclesDataset {
             }
         }
 
-        objectMapper.writeValue(new File(POSITIVE_ORACLES_FILE), positiveOracles);
+        objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(POSITIVE_ORACLES_FILE), positiveOracles);
         logger.info("Finished selecting positive oracles.");
     }
 }

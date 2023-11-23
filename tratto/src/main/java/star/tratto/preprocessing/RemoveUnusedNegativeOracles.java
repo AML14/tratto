@@ -53,7 +53,7 @@ public class RemoveUnusedNegativeOracles {
                 }
             }
 
-            objectMapper.writeValue(oraclesDatasetFile.toFile(), keptOracleDatapoints.stream().map(OracleDatapoint::toMapAndLists).toList());
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(oraclesDatasetFile.toFile(), keptOracleDatapoints.stream().map(OracleDatapoint::toMapAndLists).toList());
         }
     }
 }

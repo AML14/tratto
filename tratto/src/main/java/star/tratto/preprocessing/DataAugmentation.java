@@ -64,7 +64,7 @@ public class DataAugmentation {
             }
 
             String newOracleDatapointsFile = oraclesDatasetFile.toString().replace(".json", AUGMENTED_SUFFIX);
-            objectMapper.writeValue(new File(newOracleDatapointsFile), newOracleDatapoints.stream().map(OracleDatapoint::toMapAndLists).toList());
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(newOracleDatapointsFile), newOracleDatapoints.stream().map(OracleDatapoint::toMapAndLists).toList());
             newOracleDatapoints.clear();
 
             // Delete original file

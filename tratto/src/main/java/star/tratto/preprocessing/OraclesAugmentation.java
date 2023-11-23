@@ -54,7 +54,7 @@ public class OraclesAugmentation {
             }
         }
 
-        objectMapper.writeValue(new File(ALTERNATE_ORACLES_PATH), alternateOracles);
+        objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(ALTERNATE_ORACLES_PATH), alternateOracles);
         logger.info("Finished generating alternate versions of existing oracles.");
     }
 

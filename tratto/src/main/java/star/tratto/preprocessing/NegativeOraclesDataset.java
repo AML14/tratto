@@ -116,7 +116,7 @@ public class NegativeOraclesDataset {
         }
 
         // Write negative oracles to file
-        objectMapper.writeValue(new File(NEGATIVE_ORACLES_FILE), negativeOracles);
+        objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(NEGATIVE_ORACLES_FILE), negativeOracles);
     }
 
     static Map getOracleDatapointMap(OracleDatapoint oracleDatapoint) {
