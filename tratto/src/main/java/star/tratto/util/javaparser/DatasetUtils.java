@@ -1153,7 +1153,7 @@ public class DatasetUtils {
     ) {
         // get all classes in the compilation unit.
         List<TypeDeclaration<?>> typeList = cu.getTypes();
-        // throw error if no classes are found.
+        // return null if no classes are found.
         if (typeList == null) {
             return null;
         }
