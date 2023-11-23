@@ -1059,6 +1059,7 @@ public class DatasetUtils {
         boolean jpParamIsObjectOrComparable = TypeUtils.isObjectOrComparable(jpParam);
         boolean jpParamIsArray = jpParam.endsWith("[]");
         boolean jpParamIsGeneric = JavaParserUtils.isTypeVariable(jpParam, jpCallable, jpClass);
+        // the cases mentioned in the javadoc have been factored for brevity.
         return (jDoctorParamIsObjectOrComparable && jpParamIsObjectOrComparable) ||
                 ((jpParamIsGeneric && !jpParamIsArray) && jDoctorParamIsObjectOrComparable) ||
                 ((jpParamIsGeneric && jpParamIsArray) && jDoctorParamIsObjectOrComparableArray);
