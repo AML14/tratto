@@ -145,9 +145,9 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets the Javadoc comment of a given function.
+     * Gets the Javadoc comment of a given method.
      *
-     * @param jpCallable a JavaParser function
+     * @param jpCallable a JavaParser method
      * @return the method/constructor Javadoc comment, in Javadoc format,
      * surrounded by "&#47;&#42; ... &#42;&#47;" (empty string if not found)
      */
@@ -444,7 +444,7 @@ public class DatasetUtils {
         // iterate through each class.
         List<TypeDeclaration<?>> jpClasses = cu.getTypes();
         for (TypeDeclaration<?> jpClass : jpClasses) {
-            // iterate through each function.
+            // iterate through each method.
             List<CallableDeclaration<?>> jpCallables = new ArrayList<>();
             jpCallables.addAll(jpClass.getMethods());
             jpCallables.addAll(jpClass.getConstructors());
@@ -875,7 +875,7 @@ public class DatasetUtils {
      *  (3) the class of the method return type.
      *
      * @param jpClass the declaring class
-     * @param jpCallable a function
+     * @param jpCallable a method
      * @return a list of method tokens
      */
     public static List<MethodTokens> getTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(
@@ -915,7 +915,7 @@ public class DatasetUtils {
      *  (3) the class of the method return type.
      *
      * @param jpClass the declaring class
-     * @param jpCallable a function
+     * @param jpCallable a method
      * @return a list of attribute tokens
      * @throws JPClassNotFoundException if the declaring class is not
      * resolvable
@@ -947,9 +947,9 @@ public class DatasetUtils {
      * within an oracle.
      *
      * @param jpClass the declaring class
-     * @param jpCallable a function
-     * @param methodArgs the arguments of the function
-     * @param oracle an oracle corresponding to the function
+     * @param jpCallable a method
+     * @param methodArgs the arguments of the method
+     * @param oracle an oracle corresponding to the method
      * @return a list of method tokens
      */
     public static List<MethodTokens> getTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(
@@ -990,9 +990,9 @@ public class DatasetUtils {
      * an oracle.
      *
      * @param jpClass the declaring class
-     * @param jpCallable a function
-     * @param methodArgs the arguments of the function
-     * @param oracle an oracle corresponding to the function
+     * @param jpCallable a method
+     * @param methodArgs the arguments of the method
+     * @param oracle an oracle corresponding to the method
      * @return a list of attribute tokens
      */
     public static List<AttributeTokens> getTokensOracleVariablesNonPrivateNonStaticAttributes(
