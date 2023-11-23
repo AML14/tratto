@@ -195,11 +195,13 @@ public class ProjectOracleGenerator {
     }
 
     /**
-     * Gets the most similar tag from {@link ProjectOracleGenerator#tagAndTexts} to a
-     * target preprocessed JDoctor tag. Only considers tags of a given type
-     * from a given method in a given class. Among the remaining tags, uses
-     * semantic similarity to find the most similar source code tag to the
-     * preprocessed JDoctor tag.
+     * Gets the most similar tag from {@link ProjectOracleGenerator#tagAndTexts}
+     * to a target preprocessed JDoctor tag. Only considers tags of a given
+     * type from a given method in a given class. Among the remaining tags,
+     * uses semantic similarity to find the most similar source code tag to
+     * the preprocessed JDoctor tag. There is no way to deterministically
+     * convert the original tag to its JDoctor form, such that semantic
+     * similarity is used in its place.
      *
      * @param targetClass target class
      * @param targetCallable target method/constructor
@@ -225,10 +227,14 @@ public class ProjectOracleGenerator {
         if (filteredTags.size() == 1) {
             return filteredTags.get(0);
         }
+        if (filteredTags.size() == 0) {
+            throw new Error("Unable to find a tag corresponding to " + targetTag);
+        }
         // find index of most semantically similar tag (cosine similarity).
         TagAndText mostSimilarTag = null;
         double maxSimilaritySoFar = -1.0;
         for (TagAndText tag : filteredTags) {
+            // must be computed in loop due to using tag name.
             String simpleTargetBody = removeJavadocMarkup(removeTagPrefix(targetTag, tag.tagName()));
             String simpleActualBody = removeJavadocMarkup(tag.tagBody());
             double currentSimilarity = StringUtils.semanticSimilarity(simpleTargetBody, simpleActualBody);
