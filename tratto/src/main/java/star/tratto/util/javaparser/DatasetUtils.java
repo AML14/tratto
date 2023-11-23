@@ -1028,7 +1028,8 @@ public class DatasetUtils {
 
     /**
      * Checks if a JDoctor parameter and JavaParser parameter are equivalent.
-     * Handles four cases:
+     * Primarily handles issues regarding different representations of generic
+     * types between JDoctor and JavaParser. Handles four cases:
      * <ul>
      *     <li>{@code jDoctorParam} and {@code jpParam} are equal</li>
      *     <li>Both {@code jDoctorParam} and {@code jpParam} represent
@@ -1096,21 +1097,20 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets the method/constructor {@link CallableDeclaration} from a given
-     * class {@link TypeDeclaration} given a specific name and a list of
-     * parameters.
+     * Gets the method/constructor from a given class given a specific name
+     * and a list of parameters.
      *
      * @param jpClass the declaring class
-     * @param targetName the name of the method
-     * @param targetParamList the parameters of the desired method.
+     * @param methodName the name of the method
+     * @param params the parameters of the desired method.
      *                        Parameter type names follow JDoctor format.
      * @return the corresponding method (if it exists). Returns null if no
      * such method exists.
      */
     public static CallableDeclaration<?> getCallableDeclaration(
             TypeDeclaration<?> jpClass,
-            String targetName,
-            List<String> targetParamList
+            String methodName,
+            List<String> params
     ) {
         List<CallableDeclaration<?>> jpCallables = new ArrayList<>();
         jpCallables.addAll(jpClass.getMethods());
@@ -1118,14 +1118,14 @@ public class DatasetUtils {
         // iterate through each member in the class.
         for (CallableDeclaration<?> jpCallable : jpCallables) {
             // check if the method names are equal.
-            if (jpCallable.getNameAsString().equals(targetName)) {
+            if (jpCallable.getNameAsString().equals(methodName)) {
                 // check if parameters are equal.
                 List<String> currentParamList = jpCallable.getParameters()
                         .stream()
                         .map(p -> TypeUtils.getJDoctorSimpleNameFromSourceCode(jpClass, jpCallable, p))
                         .toList();
                 if (jpParamListEqualsJDoctorParamList(
-                        targetParamList,
+                        params,
                         currentParamList,
                         jpCallable,
                         jpClass
