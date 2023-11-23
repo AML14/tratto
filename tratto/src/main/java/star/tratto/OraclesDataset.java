@@ -49,7 +49,7 @@ public class OraclesDataset {
      * @return the oracle datapoints of the project
      */
     private static List<OracleDatapoint> getProjectOracleDatapoints(Project project) {
-        System.out.println("%nCollecting data from: " + project.projectName());
+        System.out.printf("%nCollecting data from: " + project.projectName() + "%n");
         List<JDoctorCondition> jDoctorConditions = getConditions(project);
         return oracleDPGenerator.generate(project, jDoctorConditions);
     }
