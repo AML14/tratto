@@ -295,8 +295,9 @@ public class DatasetUtils {
      * @param jpClass the declaring class
      * @param jpCallable a method
      * @param parameter a parameter of {@code jpCallable}
-     * @return the tokens of the given parameter. Returns null if unable to
-     * resolve the given parameter or does not recognize the given type.
+     * @return a representation of the given parameter for use by XText.
+     * Returns null if unable to resolve the parameter or unable to recognize
+     * the given type.
      */
     public static MethodArgumentTokens getMethodArgumentTokens(
             TypeDeclaration<?> jpClass,
