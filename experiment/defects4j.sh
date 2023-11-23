@@ -48,9 +48,10 @@ while IFS=, read -r project_id bug_id modified_classes; do
     defects4j compile -w "$fixed_project_bug_dir"
     echo "Compilation complete."
     # get source, binary, and test directories
-    commit_id=$(grep "^${bug_id}" "${DEFECTS4J_DIR}/framework/projects/${project_id}/active-bugs.csv" | awk -F ',' '{print $2}')
-    src_path=$(grep "^${commit_id}" "${DEFECTS4J_DIR}/framework/projects/${project_id}/dir-layout.csv" | awk -F ',' '{print $2}')
-    test_path=$(grep "^${commit_id}" "${DEFECTS4J_DIR}/framework/projects/${project_id}/dir-layout.csv" | awk -F ',' '{print $2}')
+    defects4j_path=$(realpath "$(dirname $(which defects4j))")
+    commit_id=$(grep "^${bug_id}" "${defects4j_path}/../projects/${project_id}/active-bugs.csv" | awk -F ',' '{print $2}')
+    src_path=$(grep "^${commit_id}" "${defects4j_path}/../projects/${project_id}/dir-layout.csv" | awk -F ',' '{print $2}')
+    test_path=$(grep "^${commit_id}" "${defects4j_path}/../projects/${project_id}/dir-layout.csv" | awk -F ',' '{print $2}')
     # Set path path to binary files
     if [ -d "$buggy_project_bug_dir/build/classes" ]; then
         binary_path="build/classes"
@@ -79,19 +80,25 @@ while IFS=, read -r project_id bug_id modified_classes; do
 
     # Generate jars folder
     dependencies_jars_path="${buggy_project_bug_dir}/dependencies_jars"
-    if [ -d "$dependencies_jars_path" ]; then
-      mkdir -p "${buggy_project_bug_dir}/dependencies_jars"
+    if [ ! -d "$dependencies_jars_path" ]; then
+      mkdir -p "$dependencies_jars_path"
+    else
+      rm -r "$dependencies_jars_path/"*
     fi
-    if [ ! -d "${buggy_project_bug_dir}/${project_id}/d4j_jars" ]; then
-      mkdir -p "${buggy_project_bug_dir}/${project_id}/d4j_jars"
+    if [ ! -d "${buggy_project_bug_dir}/d4j_jars" ]; then
+      mkdir -p "${buggy_project_bug_dir}/d4j_jars"
+    else
+      rm -r "${buggy_project_bug_dir}/d4j_jars/"*
     fi
-    if [ ! -d "${fixed_project_bug_dir}/${project_id}/d4j_jars" ]; then
-      mkdir -p "${fixed_project_bug_dir}/${project_id}/d4j_jars"
+    if [ ! -d "${fixed_project_bug_dir}/d4j_jars" ]; then
+      mkdir -p "${fixed_project_bug_dir}/d4j_jars"
+    else
+      rm -r "${fixed_project_bug_dir}/d4j_jars/"*
     fi
 
     # Generate JAR from binary path
-    jar cf "${buggy_project_bug_dir}/${project_id}".jar -C "${buggy_project_bug_dir}/${binary_path}" "${buggy_project_bug_dir}/${project_id}/d4j_jars"
-    jar cf "${fixed_project_bug_dir}/${project_id}".jar -C "${fixed_project_bug_dir}/${binary_path}" "${fixed_project_bug_dir}/${project_id}/d4j_jars"
+    jar cf "${buggy_project_bug_dir}/${project_id}".jar -C "${buggy_project_bug_dir}/${binary_path}" .
+    jar cf "${fixed_project_bug_dir}/${project_id}".jar -C "${fixed_project_bug_dir}/${binary_path}" .
 
     # Process external dependencies
     if [ -e "${buggy_project_bug_dir}/pom.xml" ] || [ -e "${buggy_project_bug_dir}/build.gradle" ]; then
@@ -99,7 +106,7 @@ while IFS=, read -r project_id bug_id modified_classes; do
         echo "collecting mvn-dependencies"
         cd "$buggy_project_bug_dir"
         mvn dependency:tree > "${buggy_project_bug_dir}/dependencies.txt"
-        python3 "${DEFECTS4J_DIR}/get_depedencies.py" maven "${buggy_project_bug_dir}/dependencies.txt" "${buggy_project_bug_dir}/dependencies.csv"
+        python3 "${DEFECTS4J_DIR}/get_dependencies.py" maven "${buggy_project_bug_dir}/dependencies.txt" "${buggy_project_bug_dir}/dependencies.csv"
         cd "$ROOT_DIR"
       elif [ -e "${buggy_project_bug_dir}/build.gradle" ]; then
           echo "collecting gradle-dependencies"
@@ -119,7 +126,7 @@ while IFS=, read -r project_id bug_id modified_classes; do
               if [ -e "./gradlew" ]; then
                   ./gradlew dependencies > "${buggy_project_bug_dir}/dependencies.txt"
                   cd "${ROOT_DIR}"
-                  python3 "${DEFECTS4J_DIR}/get_depedencies.py" gradle "${buggy_project_bug_dir}/dependencies.txt" "${buggy_project_bug_dir}/dependencies.csv"
+                  python3 "${DEFECTS4J_DIR}/get_dependencies.py" gradle "${buggy_project_bug_dir}/dependencies.txt" "${buggy_project_bug_dir}/dependencies.csv"
               fi
           else
               echo "skipped"
@@ -130,11 +137,11 @@ while IFS=, read -r project_id bug_id modified_classes; do
         wget -P "$dependencies_jars_path" "$http_path"
       done < "${buggy_project_bug_dir}/dependencies.csv"
     else
-      cp -r "${buggy_project_bug_dir}/${project_id}/lib" "${buggy_project_bug_dir}/dependencies_jars"
+      cp -r "${buggy_project_bug_dir}/lib/"* "${buggy_project_bug_dir}/dependencies_jars"
     fi
 
+    cp -r "${buggy_project_bug_dir}/dependencies_jars" "${fixed_project_bug_dir}/d4j_jars"
     mv "${buggy_project_bug_dir}/dependencies_jars" "${buggy_project_bug_dir}/d4j_jars"
-    mv "${fixed_project_bug_dir}/dependencies_jars" "${fixed_project_bug_dir}/d4j_jars"
     mv "${buggy_project_bug_dir}/${project_id}".jar "${buggy_project_bug_dir}/d4j_jars"
     mv "${fixed_project_bug_dir}/${project_id}".jar "${fixed_project_bug_dir}/d4j_jars"
 
@@ -204,7 +211,6 @@ while IFS=, read -r project_id bug_id modified_classes; do
           # cleanup
 #          rm -r "${OUTPUT_DIR}"
         fi
-
     done
 done < "$D4J_PROJECTS_BUGS"
 

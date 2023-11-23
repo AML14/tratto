@@ -4,7 +4,8 @@ import re
 if __name__ == "__main__":
     dependency_type = sys.argv[1]
     path_to_dependency_file = sys.argv[2]
-    path_to_merge_file = sys.argv[3]
+    path_to_output_file = sys.argv[3]
+    dependencies=""
     if dependency_type == "maven":
         pattern=r"\[INFO\]\s*(\s*\|\s+)?[+\\]-\s([^\n]+):jar:([^\n]+):"
     elif dependency_type == "gradle":
