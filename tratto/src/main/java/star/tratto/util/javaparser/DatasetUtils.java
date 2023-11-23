@@ -166,7 +166,8 @@ public class DatasetUtils {
     /**
      * Gets all numeric value tokens in a Javadoc comment.
      *
-     * @param javadocComment a Javadoc comment
+     * @param javadocComment a raw Javadoc comment (i.e. including surrounding
+     *                       asterisks)
      * @return a list of numeric value tokens
      */
     private static List<ValueTokens> getAllNumericValuesInJavadoc(
@@ -205,7 +206,8 @@ public class DatasetUtils {
     /**
      * Gets all string value tokens in a Javadoc comment.
      *
-     * @param javadocComment a Javadoc comment
+     * @param javadocComment a raw Javadoc comment (i.e. including surrounding
+     *                       asterisks)
      * @return a list of string value tokens
      */
     private static List<ValueTokens> getAllStringValuesInJavadoc(
