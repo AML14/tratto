@@ -909,7 +909,7 @@ public class DatasetUtils {
     /**
      * Collects information for all non-private, non-static attributes
      * for a given method variable. Includes attributes visible to:
-     *  (1) the base class (this).
+     *  (1) the class that declares the method.
      *  (2) the arguments of the method.
      *  (3) the class of the method return type.
      *
@@ -942,8 +942,11 @@ public class DatasetUtils {
 
     /**
      * Collects information for all non-private, non-static, non-void methods
-     * for a given oracle. Includes methods visible to each sub-expression
-     * within an oracle.
+     * for a given oracle. Includes accessible methods for each type of each
+     * sub-expression within an oracle. For example, the oracle:
+     *     "this.getName().length() == 0"
+     * has methods available to (1) the declaring class, (2) the return type
+     * of getName(), and (3) the return type of length().
      *
      * @param jpClass the declaring class
      * @param jpCallable a method
