@@ -110,7 +110,8 @@ public class DatasetUtils {
      *
      * @param jpBody a Java class or method
      * @return the matched Javadoc comment surrounded by
-     * "&#47;&#42; ... &#42;&#47;" (empty string if not found)
+     * "&#47;&#42;&#42; ... &#42;&#42;&#47;" for compatibility with the XText
+     * grammar (empty string if not found)
      */
     private static String getJavadocByPattern(BodyDeclaration<?> jpBody) {
         String input = jpBody.toString();
@@ -133,7 +134,8 @@ public class DatasetUtils {
      * 
      * @param jpClass a JavaParser class
      * @return the class Javadoc comment, in Javadoc format, surrounded by
-     * "&#47;&#42; ... &#42;&#47;" (empty string if not found)
+     * "&#47;&#42;&#42; ... &#42;&#42;&#47;" for compatibility with the XText
+     * grammar (empty string if not found)
      */
     public static String getClassJavadoc(
             TypeDeclaration<?> jpClass
