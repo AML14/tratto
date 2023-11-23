@@ -48,10 +48,10 @@ while IFS=, read -r project_id bug_id modified_classes; do
     defects4j compile -w "$fixed_project_bug_dir"
     echo "Compilation complete."
     # get source, binary, and test directories
-    defects4j_path=$(realpath "$(dirname $(which defects4j))")
-    commit_id=$(grep "^${bug_id}" "${defects4j_path}/../projects/${project_id}/active-bugs.csv" | awk -F ',' '{print $2}')
-    src_path=$(grep "^${commit_id}" "${defects4j_path}/../projects/${project_id}/dir-layout.csv" | awk -F ',' '{print $2}')
-    test_path=$(grep "^${commit_id}" "${defects4j_path}/../projects/${project_id}/dir-layout.csv" | awk -F ',' '{print $2}')
+    src_path=$(defects4j export -p "dir.src.classes")
+    binary_path=$(defects4j export -p "dir.bin.classes")
+    test_path=$(defects4j export -p "dir.src.tests")
+    cd - || exit 1
     # Set path path to binary files
     if [ -d "$buggy_project_bug_dir/build/classes" ]; then
         binary_path="build/classes"
