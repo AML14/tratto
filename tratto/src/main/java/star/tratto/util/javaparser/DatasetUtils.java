@@ -1167,8 +1167,9 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets the path to the class of a JDoctor condition from the given source
-     * path.
+     * Gets the path to the class that declares the method of the given
+     * JDoctor condition relative to a source path. This method is not
+     * accurate for inner classes, which are excluded in the Oracles Dataset.
      *
      * @param operation an operation of a JDoctor condition
      * @param sourceDir the source path of the relevant project
@@ -1182,8 +1183,8 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets the compilation unit {@link CompilationUnit} corresponding to the
-     * class of a JDoctor condition.
+     * Gets the compilation unit of the class that declares the method of the
+     * given JDoctor condition.
      *
      * @param operation an operation representation of a JDoctor condition
      * @param sourceDir the source path of the relevant project
@@ -1201,7 +1202,7 @@ public class DatasetUtils {
 
     /**
      * Gets the source code of the Java file, corresponding to the class of a
-     * JDoctor condition.
+     * JDoctor condition. Returns an empty optional type if unable to
      *
      * @param operation a JDoctor condition operation
      * @param sourcePath the path to the corresponding source code of the Java
@@ -1226,7 +1227,7 @@ public class DatasetUtils {
      * @param operation a JDoctor condition operation
      * @return the method/constructor name of the operation
      */
-    public static String getOperationCallableName(
+    public static String getOperationMethodName(
             Operation operation
     ) {
         if (operation.methodName().equals(operation.className())) {

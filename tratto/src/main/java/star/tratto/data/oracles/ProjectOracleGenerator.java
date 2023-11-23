@@ -250,7 +250,7 @@ public class ProjectOracleGenerator {
     ) {
         Path sourcePath = this.project.srcPath();
         String className = TypeUtils.getInnermostClassNameFromClassGetName(operation.className());
-        String callableName = DatasetUtils.getOperationCallableName(operation);
+        String callableName = DatasetUtils.getOperationMethodName(operation);
         List<String> parameterTypes = TypeUtils.classGetNameToClassGetSimpleName(operation.parameterTypes());
         Optional<CompilationUnit> cuOptional = DatasetUtils.getOperationCompilationUnit(operation, sourcePath);
         if (cuOptional.isPresent()) {
@@ -350,7 +350,7 @@ public class ProjectOracleGenerator {
         String projectName = this.project.projectName();
         String packageName = TypeUtils.getPackageNameFromClassGetName(operation.className());
         String className = TypeUtils.getInnermostClassNameFromClassGetName(operation.className());
-        String callableName = DatasetUtils.getOperationCallableName(operation);
+        String callableName = DatasetUtils.getOperationMethodName(operation);
         List<String> parameterTypes = TypeUtils.classGetNameToClassGetSimpleName(operation.parameterTypes());
         // get CompilationUnit of operation class.
         Optional<CompilationUnit> cuOptional = DatasetUtils.getOperationCompilationUnit(operation, sourcePath);
