@@ -41,15 +41,15 @@
         "(input==null);",
         "(input!=null)==false;"
     ],
-    "coefficients.length==0;": [
-        "(coefficients.length==0);",
-        "(coefficients.length!=0)==false;"
-    ],
     "closure==null||predicate==null;": [
         "(closure==null)||predicate==null;",
         "closure==null||(predicate==null);",
         "(closure!=null)==false||predicate==null;",
         "closure==null||(predicate!=null)==false;"
+    ],
+    "coefficients.length==0;": [
+        "(coefficients.length==0);",
+        "(coefficients.length!=0)==false;"
     ],
     "n<0;": [
         "(n<0);",
@@ -133,6 +133,10 @@
         "((keys==null))==false;",
         "((keys!=null)==false)==false;"
     ],
+    "true?methodResultID==x%y:true;": [
+        "true?(methodResultID==x%y):true;",
+        "true?(methodResultID!=x%y)==false:true;"
+    ],
     "abort==true;": [
         "(abort==true);",
         "abort;",
@@ -155,6 +159,12 @@
     "true?methodResultID==a*b:true;": [
         "true?(methodResultID==a*b):true;",
         "true?(methodResultID!=a*b)==false:true;"
+    ],
+    "n<2?methodResultID==false:true;": [
+        "(n<2)?methodResultID==false:true;",
+        "n<2?(methodResultID==false):true;",
+        "n<2?(methodResultID!=false)==false:true;",
+        "(n>=2)==false?methodResultID==false:true;"
     ],
     "n<2;": [
         "(n<2);",
@@ -227,6 +237,17 @@
         "list==null||(transformer==null);",
         "(list!=null)==false||transformer==null;",
         "list==null||(transformer!=null)==false;"
+    ],
+    "string==null||string.isEmpty()?methodResultID==true:methodResultID==false;": [
+        "(string==null||string.isEmpty())==false?methodResultID==false:methodResultID==true;",
+        "(string==null)||string.isEmpty()?methodResultID==true:methodResultID==false;",
+        "string==null||(string.isEmpty())?methodResultID==true:methodResultID==false;",
+        "string==null||string.isEmpty()?(methodResultID==true):methodResultID==false;",
+        "string==null||string.isEmpty()?methodResultID==true:(methodResultID==false);",
+        "string==null||string.isEmpty()?methodResultID:methodResultID==false;",
+        "(string!=null)==false||string.isEmpty()?methodResultID==true:methodResultID==false;",
+        "string==null||string.isEmpty()?(methodResultID!=true)==false:methodResultID==false;",
+        "string==null||string.isEmpty()?methodResultID==true:(methodResultID!=false)==false;"
     ],
     "b==0;": [
         "(b==0);",
@@ -343,13 +364,6 @@
         "((out==null))==false;",
         "((out!=null)==false)==false;"
     ],
-    "n==1?methodResultID.equals(noun):methodResultID.equals(noun);": [
-        "(n==1)==false?methodResultID.equals(noun):methodResultID.equals(noun);",
-        "(n==1)?methodResultID.equals(noun):methodResultID.equals(noun);",
-        "n==1?(methodResultID.equals(noun)):methodResultID.equals(noun);",
-        "n==1?methodResultID.equals(noun):(methodResultID.equals(noun));",
-        "(n!=1)==false?methodResultID.equals(noun):methodResultID.equals(noun);"
-    ],
     "source==null;": [
         "(source==null);",
         "(source!=null)==false;"
@@ -438,6 +452,15 @@
     "denominator==0;": [
         "(denominator==0);",
         "(denominator!=0)==false;"
+    ],
+    "(string==null||string.isEmpty())==false?methodResultID.equals(string):methodResultID==null;": [
+        "(string==null||string.isEmpty())?methodResultID==null:methodResultID.equals(string);",
+        "((string==null)||string.isEmpty())==false?methodResultID.equals(string):methodResultID==null;",
+        "(string==null||(string.isEmpty()))==false?methodResultID.equals(string):methodResultID==null;",
+        "(string==null||string.isEmpty())==false?(methodResultID.equals(string)):methodResultID==null;",
+        "(string==null||string.isEmpty())==false?methodResultID.equals(string):(methodResultID==null);",
+        "((string!=null)==false||string.isEmpty())==false?methodResultID.equals(string):methodResultID==null;",
+        "(string==null||string.isEmpty())==false?methodResultID.equals(string):(methodResultID!=null)==false;"
     ],
     "(((matrix==null)==false)&&(matrix.isSquare()))==false;": [
         "((((matrix==null))==false)&&(matrix.isSquare()))==false;",
@@ -649,6 +672,9 @@
         "outputCollection==null&&((inputIterator!=null)==false)==false&&(transformer==null)==false;",
         "outputCollection==null&&(inputIterator==null)==false&&((transformer!=null)==false)==false;"
     ],
+    "true?methodResultID.equals(NotPredicate.notPredicate(predicate)):true;": [
+        "true?(methodResultID.equals(NotPredicate.notPredicate(predicate))):true;"
+    ],
     "(c==null)==false;": [
         "((c==null))==false;",
         "((c!=null)==false)==false;"
@@ -807,10 +833,6 @@
         "((predicate1==null))==false;",
         "((predicate1!=null)==false)==false;"
     ],
-    "bandwidth==0;": [
-        "(bandwidth==0);",
-        "(bandwidth!=0)==false;"
-    ],
     "init<lo;": [
         "(init<lo);",
         "(init>=lo)==false;"
@@ -848,12 +870,6 @@
         "(loadFactor<0);",
         "(loadFactor>=0)==false;"
     ],
-    "this.getIterator()==null||this.getPredicate()==null;": [
-        "(this.getIterator()==null)||this.getPredicate()==null;",
-        "this.getIterator()==null||(this.getPredicate()==null);",
-        "(this.getIterator()!=null)==false||this.getPredicate()==null;",
-        "this.getIterator()==null||(this.getPredicate()!=null)==false;"
-    ],
     "((list1==null)==false)&&(list1.equals(list2))?methodResultID==true:methodResultID==false;": [
         "(((list1==null)==false)&&(list1.equals(list2)))==false?methodResultID==false:methodResultID==true;",
         "(((list1==null))==false)&&(list1.equals(list2))?methodResultID==true:methodResultID==false;",
@@ -864,6 +880,12 @@
         "(((list1!=null)==false)==false)&&(list1.equals(list2))?methodResultID==true:methodResultID==false;",
         "((list1==null)==false)&&(list1.equals(list2))?(methodResultID!=true)==false:methodResultID==false;",
         "((list1==null)==false)&&(list1.equals(list2))?methodResultID==true:(methodResultID!=false)==false;"
+    ],
+    "this.getIterator()==null||this.getPredicate()==null;": [
+        "(this.getIterator()==null)||this.getPredicate()==null;",
+        "this.getIterator()==null||(this.getPredicate()==null);",
+        "(this.getIterator()!=null)==false||this.getPredicate()==null;",
+        "this.getIterator()==null||(this.getPredicate()!=null)==false;"
     ],
     "(trueTransformer==null)==false;": [
         "((trueTransformer==null))==false;",
@@ -915,6 +937,12 @@
     "limitSize<0;": [
         "(limitSize<0);",
         "(limitSize>=0)==false;"
+    ],
+    "true?(methodResultID==0||methodResultID==1):true;": [
+        "true?((methodResultID==0)||methodResultID==1):true;",
+        "true?(methodResultID==0||(methodResultID==1)):true;",
+        "true?((methodResultID!=0)==false||methodResultID==1):true;",
+        "true?(methodResultID==0||(methodResultID!=1)==false):true;"
     ],
     "windowSize<1&&(windowSize==DescriptiveStatistics.INFINITE_WINDOW)==false;": [
         "(windowSize<1)&&(windowSize==DescriptiveStatistics.INFINITE_WINDOW)==false;",
@@ -1227,15 +1255,15 @@
         "(initialStepBoundFactor==100.0);",
         "(initialStepBoundFactor!=100.0)==false;"
     ],
+    "maximalIterationCount<=TrapezoidIntegrator.TRAPEZOID_MAX_ITERATIONS_COUNT;": [
+        "(maximalIterationCount<=TrapezoidIntegrator.TRAPEZOID_MAX_ITERATIONS_COUNT);",
+        "(maximalIterationCount>TrapezoidIntegrator.TRAPEZOID_MAX_ITERATIONS_COUNT)==false;"
+    ],
     "a==null||c==null;": [
         "(a==null)||c==null;",
         "a==null||(c==null);",
         "(a!=null)==false||c==null;",
         "a==null||(c!=null)==false;"
-    ],
-    "maximalIterationCount<=TrapezoidIntegrator.TRAPEZOID_MAX_ITERATIONS_COUNT;": [
-        "(maximalIterationCount<=TrapezoidIntegrator.TRAPEZOID_MAX_ITERATIONS_COUNT);",
-        "(maximalIterationCount>TrapezoidIntegrator.TRAPEZOID_MAX_ITERATIONS_COUNT)==false;"
     ],
     "(v.length==3)==false;": [
         "((v.length==3))==false;",
@@ -1414,6 +1442,10 @@
     "valuePred==null;": [
         "(valuePred==null);",
         "(valuePred!=null)==false;"
+    ],
+    "true?methodResultID==x&y:true;": [
+        "true?(methodResultID==x&y):true;",
+        "true?(methodResultID!=x&y)==false:true;"
     ],
     "true?methodResultID.equals(dest):true;": [
         "true?(methodResultID.equals(dest)):true;"
@@ -1665,6 +1697,10 @@
         "(maximalIterationCount<=MidPointIntegrator.MIDPOINT_MAX_ITERATIONS_COUNT);",
         "(maximalIterationCount>MidPointIntegrator.MIDPOINT_MAX_ITERATIONS_COUNT)==false;"
     ],
+    "true?methodResultID==x>>y:true;": [
+        "true?(methodResultID==x>>y):true;",
+        "true?(methodResultID!=x>>y)==false:true;"
+    ],
     "reference==null;": [
         "(reference==null);",
         "(reference!=null)==false;"
@@ -1673,6 +1709,10 @@
         "((((node==null))==false)&&(node.hasChildNodes()));",
         "(((node==null)==false)&&((node.hasChildNodes())));",
         "((((node!=null)==false)==false)&&(node.hasChildNodes()));"
+    ],
+    "true?methodResultID==x<<y:true;": [
+        "true?(methodResultID==x<<y):true;",
+        "true?(methodResultID!=x<<y)==false:true;"
     ],
     "(key==null)==false;": [
         "((key==null))==false;",
@@ -1689,6 +1729,9 @@
     "x.length<3;": [
         "(x.length<3);",
         "(x.length>=3)==false;"
+    ],
+    "true?methodResultID.equals(NullIsFalsePredicate.nullIsFalsePredicate(predicate)):true;": [
+        "true?(methodResultID.equals(NullIsFalsePredicate.nullIsFalsePredicate(predicate))):true;"
     ],
     "dimension<1||dimension>1000;": [
         "(dimension<1)||dimension>1000;",
@@ -1972,15 +2015,6 @@
         "true?methodResultID.isEmpty():true;",
         "true?(methodResultID.isEmpty()!=true)==false:true;"
     ],
-    "CollectionUtils.isSubCollection(a,b)?methodResultID==true:methodResultID==false;": [
-        "(CollectionUtils.isSubCollection(a,b))==false?methodResultID==false:methodResultID==true;",
-        "(CollectionUtils.isSubCollection(a,b))?methodResultID==true:methodResultID==false;",
-        "CollectionUtils.isSubCollection(a,b)?(methodResultID==true):methodResultID==false;",
-        "CollectionUtils.isSubCollection(a,b)?methodResultID==true:(methodResultID==false);",
-        "CollectionUtils.isSubCollection(a,b)?methodResultID:methodResultID==false;",
-        "CollectionUtils.isSubCollection(a,b)?(methodResultID!=true)==false:methodResultID==false;",
-        "CollectionUtils.isSubCollection(a,b)?methodResultID==true:(methodResultID!=false)==false;"
-    ],
     "length>0;": [
         "(length>0);",
         "(length<=0)==false;"
@@ -2091,13 +2125,13 @@
         "(numComponents<2);",
         "(numComponents>=2)==false;"
     ],
-    "(nodeList==null)==false;": [
-        "((nodeList==null))==false;",
-        "((nodeList!=null)==false)==false;"
-    ],
     "(function==null)==false;": [
         "((function==null))==false;",
         "((function!=null)==false)==false;"
+    ],
+    "(nodeList==null)==false;": [
+        "((nodeList==null))==false;",
+        "((nodeList!=null)==false)==false;"
     ],
     "(size>0)==false;": [
         "((size>0))==false;",
@@ -2118,6 +2152,10 @@
         "object==null?(methodResultID==0):true;",
         "(object!=null)==false?methodResultID==0:true;",
         "object==null?(methodResultID!=0)==false:true;"
+    ],
+    "true?methodResultID==x>>>y:true;": [
+        "true?(methodResultID==x>>>y):true;",
+        "true?(methodResultID!=x>>>y)==false:true;"
     ],
     "observed.length<2;": [
         "(observed.length<2);",
@@ -2196,6 +2234,17 @@
         "multipleUse;",
         "(multipleUse!=true)==false;"
     ],
+    "a.size()<b.size()&&CollectionUtils.isSubCollection(a,b)?methodResultID==true:methodResultID==false;": [
+        "(a.size()<b.size()&&CollectionUtils.isSubCollection(a,b))==false?methodResultID==false:methodResultID==true;",
+        "(a.size()<b.size())&&CollectionUtils.isSubCollection(a,b)?methodResultID==true:methodResultID==false;",
+        "a.size()<b.size()&&(CollectionUtils.isSubCollection(a,b))?methodResultID==true:methodResultID==false;",
+        "a.size()<b.size()&&CollectionUtils.isSubCollection(a,b)?(methodResultID==true):methodResultID==false;",
+        "a.size()<b.size()&&CollectionUtils.isSubCollection(a,b)?methodResultID==true:(methodResultID==false);",
+        "a.size()<b.size()&&CollectionUtils.isSubCollection(a,b)?methodResultID:methodResultID==false;",
+        "a.size()<b.size()&&CollectionUtils.isSubCollection(a,b)?(methodResultID!=true)==false:methodResultID==false;",
+        "a.size()<b.size()&&CollectionUtils.isSubCollection(a,b)?methodResultID==true:(methodResultID!=false)==false;",
+        "(a.size()>=b.size())==false&&CollectionUtils.isSubCollection(a,b)?methodResultID==true:methodResultID==false;"
+    ],
     "lower>upper;": [
         "(lower>upper);",
         "(lower<=upper)==false;"
@@ -2263,6 +2312,9 @@
     ],
     "true?methodResultID.equals(this.atanh()):true;": [
         "true?(methodResultID.equals(this.atanh())):true;"
+    ],
+    "true?methodResultID.equals(NullIsTruePredicate.nullIsTruePredicate(predicate)):true;": [
+        "true?(methodResultID.equals(NullIsTruePredicate.nullIsTruePredicate(predicate))):true;"
     ],
     "(array.getClass().isArray())==false||start>end;": [
         "((array.getClass().isArray()))==false||start>end;",
@@ -2545,6 +2597,10 @@
         "(value==0);",
         "(value!=0)==false;"
     ],
+    "true?methodResultID==x^y:true;": [
+        "true?(methodResultID==x^y):true;",
+        "true?(methodResultID!=x^y)==false:true;"
+    ],
     "items==null;": [
         "(items==null);",
         "(items!=null)==false;"
@@ -2623,10 +2679,6 @@
     "this.isEmpty();": [
         "(this.isEmpty());"
     ],
-    "(predicates==null)==false;": [
-        "((predicates==null))==false;",
-        "((predicates!=null)==false)==false;"
-    ],
     "f==null||target==null||weight==null||startPoint==null;": [
         "(f==null)||target==null||weight==null||startPoint==null;",
         "f==null||(target==null)||weight==null||startPoint==null;",
@@ -2636,6 +2688,10 @@
         "f==null||(target!=null)==false||weight==null||startPoint==null;",
         "f==null||target==null||(weight!=null)==false||startPoint==null;",
         "f==null||target==null||weight==null||(startPoint!=null)==false;"
+    ],
+    "(predicates==null)==false;": [
+        "((predicates==null))==false;",
+        "((predicates!=null)==false)==false;"
     ],
     "z<2;": [
         "(z<2);",
@@ -2664,10 +2720,6 @@
     "end<start;": [
         "(end<start);",
         "(end>=start)==false;"
-    ],
-    "true?methodResultID==offsetInBits:true;": [
-        "true?(methodResultID==offsetInBits):true;",
-        "true?(methodResultID!=offsetInBits)==false:true;"
     ],
     "(b==null)==false;": [
         "((b==null))==false;",
@@ -2867,6 +2919,10 @@
         "((set.isEmpty()))==false||(list.isEmpty())==false;",
         "(set.isEmpty())==false||((list.isEmpty()))==false;"
     ],
+    "true?methodResultID==x|y:true;": [
+        "true?(methodResultID==x|y):true;",
+        "true?(methodResultID!=x|y)==false:true;"
+    ],
     "maximalIterationCount>RombergIntegrator.ROMBERG_MAX_ITERATIONS_COUNT;": [
         "(maximalIterationCount>RombergIntegrator.ROMBERG_MAX_ITERATIONS_COUNT);",
         "(maximalIterationCount<=RombergIntegrator.ROMBERG_MAX_ITERATIONS_COUNT)==false;"
@@ -2882,6 +2938,10 @@
     "scale<=0;": [
         "(scale<=0);",
         "(scale>0)==false;"
+    ],
+    "true?methodResultID==a*-1:true;": [
+        "true?(methodResultID==a*-1):true;",
+        "true?(methodResultID!=a*-1)==false:true;"
     ],
     "a==null||m==null||b==null;": [
         "(a==null)||m==null||b==null;",
@@ -3053,10 +3113,6 @@
         "((num==null))==false;",
         "((num!=null)==false)==false;"
     ],
-    "a.length==2;": [
-        "(a.length==2);",
-        "(a.length!=2)==false;"
-    ],
     "a==null?methodResultID==null:methodResultID!=null;": [
         "(a==null)==false?methodResultID!=null:methodResultID==null;",
         "(a==null)?methodResultID==null:methodResultID!=null;",
@@ -3157,16 +3213,6 @@
         "f==null||(t!=null)==false||w==null||startPoint==null;",
         "f==null||t==null||(w!=null)==false||startPoint==null;",
         "f==null||t==null||w==null||(startPoint!=null)==false;"
-    ],
-    "n<2?methodResultID==true:methodResultID==false;": [
-        "(n<2)==false?methodResultID==false:methodResultID==true;",
-        "(n<2)?methodResultID==true:methodResultID==false;",
-        "n<2?(methodResultID==true):methodResultID==false;",
-        "n<2?methodResultID==true:(methodResultID==false);",
-        "n<2?methodResultID:methodResultID==false;",
-        "n<2?(methodResultID!=true)==false:methodResultID==false;",
-        "n<2?methodResultID==true:(methodResultID!=false)==false;",
-        "(n>=2)==false?methodResultID==true:methodResultID==false;"
     ],
     "lower>=upper;": [
         "(lower>=upper);",
@@ -3311,12 +3357,6 @@
     "(comp==null)==false;": [
         "((comp==null))==false;",
         "((comp!=null)==false)==false;"
-    ],
-    "this.matchesAllOf(sequence)?methodResultID==true:true;": [
-        "(this.matchesAllOf(sequence))?methodResultID==true:true;",
-        "this.matchesAllOf(sequence)?(methodResultID==true):true;",
-        "this.matchesAllOf(sequence)?methodResultID:true;",
-        "this.matchesAllOf(sequence)?(methodResultID!=true)==false:true;"
     ],
     "knots==null||polynomials==null;": [
         "(knots==null)||polynomials==null;",
@@ -3463,25 +3503,11 @@
     "true?methodResultID.equals(map):true;": [
         "true?(methodResultID.equals(map)):true;"
     ],
-    "bandwidth==0.25;": [
-        "(bandwidth==0.25);",
-        "(bandwidth!=0.25)==false;"
-    ],
     "errorMessageTemplate==null||errorMessageArgs==null;": [
         "(errorMessageTemplate==null)||errorMessageArgs==null;",
         "errorMessageTemplate==null||(errorMessageArgs==null);",
         "(errorMessageTemplate!=null)==false||errorMessageArgs==null;",
         "errorMessageTemplate==null||(errorMessageArgs!=null)==false;"
-    ],
-    "string==null?methodResultID==true:methodResultID==false;": [
-        "(string==null)==false?methodResultID==false:methodResultID==true;",
-        "(string==null)?methodResultID==true:methodResultID==false;",
-        "string==null?(methodResultID==true):methodResultID==false;",
-        "string==null?methodResultID==true:(methodResultID==false);",
-        "string==null?methodResultID:methodResultID==false;",
-        "(string!=null)==false?methodResultID==true:methodResultID==false;",
-        "string==null?(methodResultID!=true)==false:methodResultID==false;",
-        "string==null?methodResultID==true:(methodResultID!=false)==false;"
     ],
     "loadFactor<=0;": [
         "(loadFactor<=0);",
@@ -3537,9 +3563,6 @@
     ],
     "true?methodResultID.equals(inverseMap):true;": [
         "true?(methodResultID.equals(inverseMap)):true;"
-    ],
-    "true?methodResultID.equals(predicate):true;": [
-        "true?(methodResultID.equals(predicate)):true;"
     ],
     "(original instanceof BinaryChromosome)==false;": [
         "((original instanceof BinaryChromosome))==false;"
@@ -3704,14 +3727,6 @@
         "true?(methodResultID==x):true;",
         "true?(methodResultID!=x)==false:true;"
     ],
-    "(((string==null)==false)&&(string.isEmpty()))==false?(methodResultID.equals(string)||methodResultID==null):true;": [
-        "((((string==null))==false)&&(string.isEmpty()))==false?(methodResultID.equals(string)||methodResultID==null):true;",
-        "(((string==null)==false)&&((string.isEmpty())))==false?(methodResultID.equals(string)||methodResultID==null):true;",
-        "(((string==null)==false)&&(string.isEmpty()))==false?((methodResultID.equals(string))||methodResultID==null):true;",
-        "(((string==null)==false)&&(string.isEmpty()))==false?(methodResultID.equals(string)||(methodResultID==null)):true;",
-        "((((string!=null)==false)==false)&&(string.isEmpty()))==false?(methodResultID.equals(string)||methodResultID==null):true;",
-        "(((string==null)==false)&&(string.isEmpty()))==false?(methodResultID.equals(string)||(methodResultID!=null)==false):true;"
-    ],
     "coll==null;": [
         "(coll==null);",
         "(coll!=null)==false;"
@@ -3849,10 +3864,6 @@
     "true?methodResultID.equals(checker):true;": [
         "true?(methodResultID.equals(checker)):true;"
     ],
-    "true?methodResultID==value:true;": [
-        "true?(methodResultID==value):true;",
-        "true?(methodResultID!=value)==false:true;"
-    ],
     "coll==null||predicate==null;": [
         "(coll==null)||predicate==null;",
         "coll==null||(predicate==null);",
@@ -3906,6 +3917,16 @@
         "(count==0)?methodResultID.equals(Strings.nullToEmpty(null)):true;",
         "count==0?(methodResultID.equals(Strings.nullToEmpty(null))):true;",
         "(count!=0)==false?methodResultID.equals(Strings.nullToEmpty(null)):true;"
+    ],
+    "true?methodResultID==~a:true;": [
+        "true?(methodResultID==~a):true;",
+        "true?(methodResultID!=~a)==false:true;"
+    ],
+    "x!=null&&x.length<2;": [
+        "(x!=null)&&x.length<2;",
+        "x!=null&&(x.length<2);",
+        "(x==null)==false&&x.length<2;",
+        "x!=null&&(x.length>=2)==false;"
     ],
     "comparator==null;": [
         "(comparator==null);",
@@ -4066,6 +4087,9 @@
         "(elementsToSkip<0);",
         "(elementsToSkip>=0)==false;"
     ],
+    "true?methodResultID.equals(TransformedPredicate.transformedPredicate(transformer,predicate)):true;": [
+        "true?(methodResultID.equals(TransformedPredicate.transformedPredicate(transformer,predicate))):true;"
+    ],
     "digraph==true;": [
         "(digraph==true);",
         "digraph;",
@@ -4116,6 +4140,10 @@
     "(Queue==null)==false;": [
         "((Queue==null))==false;",
         "((Queue!=null)==false)==false;"
+    ],
+    "true?methodResultID==x/y:true;": [
+        "true?(methodResultID==x/y):true;",
+        "true?(methodResultID!=x/y)==false:true;"
     ],
     "(RegexUtil.isRegex(s,groups))==false;": [
         "((RegexUtil.isRegex(s,groups)))==false;"
@@ -4187,10 +4215,6 @@
         "(object!=null)==false?methodResultID==true:methodResultID==false;",
         "object==null?(methodResultID!=true)==false:methodResultID==false;",
         "object==null?methodResultID==true:(methodResultID!=false)==false;"
-    ],
-    "directed==false;": [
-        "(directed==false);",
-        "(directed!=false)==false;"
     ],
     "mean<=0;": [
         "(mean<=0);",
