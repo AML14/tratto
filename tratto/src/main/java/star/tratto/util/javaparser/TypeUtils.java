@@ -111,8 +111,8 @@ public class TypeUtils {
      * Gets the ClassGetName form of the element type for a given ClassGetName
      * array type. For example,
      * <pre>
-     *     "[[I"    =&gt;    "I"
-     *     "[Ljava.lang.String;"    =&gt;    "java.lang.String"
+     *     "[[I"    &rArr;    "I"
+     *     "[Ljava.lang.String;"    &rArr;    "java.lang.String"
      * </pre>
      *
      * @param classGetNameArray a ClassGetName form of an array type

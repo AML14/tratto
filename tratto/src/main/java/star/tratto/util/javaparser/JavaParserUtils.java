@@ -68,11 +68,11 @@ public class JavaParserUtils {
     private static JavaParser javaParser = getJavaParser();
     private static final Parser oracleParser = Parser.getInstance();
     // artificial source code used to parse arbitrary source code expressions using JavaParser
-    /** Artificial class name */
+    /** Artificial class name. */
     private static final String SYNTHETIC_CLASS_NAME = "Tratto__AuxiliaryClass";
-    /** Artificial class source code */
+    /** Artificial class source code. */
     private static final String SYNTHETIC_CLASS_SOURCE = "public class " + SYNTHETIC_CLASS_NAME + " {}";
-    /** Artificial method name */
+    /** Artificial method name. */
     private static final String SYNTHETIC_METHOD_NAME = "__tratto__auxiliaryMethod";
     /** Cache ResolvedType of Object to make subsequent accesses free. */
     private static ResolvedType objectType;
