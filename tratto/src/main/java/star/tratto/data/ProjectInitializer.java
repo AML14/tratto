@@ -57,10 +57,10 @@ public class ProjectInitializer {
          * Deserializes a JSON object into a {@link Project} record.
          *
          * @param jsonParser a parser used to deserialize a JSON object
-         * @param deserializationContext the deserialization context requested
-         *                               to override the method
-         * @return a {@link Project} record, corresponding to the given JSON
-         * object
+         * @param deserializationContext provides reusable temporary objects
+         *                               for deserialization (not used in this
+         *                               implementation).
+         * @return a Project record, corresponding to the parsed JSON
          * @throws IOException if an error occurs reading the tree of the
          * json parser
          */
@@ -107,7 +107,8 @@ public class ProjectInitializer {
      * Gets a list of {@link Project} records from a JSON file.
      *
      * @param jsonPath path to the JSON representation of projects
-     * @return the corresponding {@link Project} records
+     * @return the corresponding {@link Project} records. Filters any
+     * inaccessible projects (i.e. the project path does not exist).
      */
     public static List<Project> getProjects(Path jsonPath) {
         // initialize ObjectMapper with custom deserializer
