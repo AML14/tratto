@@ -776,8 +776,8 @@ public class DatasetUtils {
     }
 
     /**
-     * Gets information for all non-private, non-static attributes available
-     * to a given type.
+     * Gets information for all non-private, non-static fields (attributes)
+     * available to a given type.
      *
      * @param jpResolvedType the given type
      * @return a list of attribute tokens
@@ -826,7 +826,7 @@ public class DatasetUtils {
      * to a given type. This method is a wrapper of
      * {@link DatasetUtils#getFieldsFromType(ResolvedType)} which attempts to
      * resolve the given type. Returns an empty list if unable to resolve the
-     * given type.
+     * given type (i.e. the class path does not include the given type).
      *
      * @param jpType the given type
      * @return a list of attribute tokens
@@ -845,11 +845,7 @@ public class DatasetUtils {
 
     /**
      * Gets information for all non-private, non-static attributes available
-     * to a given parameter. This method is a wrapper of
-     * {@link DatasetUtils#getFieldsFromType(Type)} (another wrapper) which
-     * checks if a parameter is a varargs, and adds array fields if
-     * applicable. If the parameter is not a varargs, then this method is
-     * identical to the aforementioned method.
+     * to a given parameter.
      *
      * @param jpParameter the given parameter
      * @return a list of attribute tokens
@@ -866,12 +862,13 @@ public class DatasetUtils {
                     "public final int length;"
             ));
         }
+        // wrapper of previous getFieldsFromType method to consider varargs as arrays.
         return getFieldsFromType(jpParameter.getType());
     }
 
     /**
-     * Collects information for all non-private, non-static, non-void methods
-     * for a given method variable. Includes methods visible to:
+     * Collects information for all methods available to any type in a given
+     * method's signature. Includes methods visible to:
      *  (1) the base class (this).
      *  (2) the arguments of the method.
      *  (3) the class of the method return type.
