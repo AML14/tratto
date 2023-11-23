@@ -47,6 +47,10 @@ while IFS=, read -r project_id bug_id modified_classes; do
     echo "Compiling fixed version: project ${project_id}-${bug_id}f."
     defects4j compile -w "$fixed_project_bug_dir"
     echo "Compilation complete."
+    # get source, binary, and test directories
+    commit_id=$(grep "^${bug_id}" "${DEFECTS4J_DIR}/framework/projects/${project_id}/active-bugs.csv" | awk -F ',' '{print $2}')
+    src_path=$(grep "^${commit_id}" "${DEFECTS4J_DIR}/framework/projects/${project_id}/dir-layout.csv" | awk -F ',' '{print $2}')
+    test_path=$(grep "^${commit_id}" "${DEFECTS4J_DIR}/framework/projects/${project_id}/dir-layout.csv" | awk -F ',' '{print $2}')
     # Set path path to binary files
     if [ -d "$buggy_project_bug_dir/build/classes" ]; then
         binary_path="build/classes"
@@ -172,20 +176,35 @@ while IFS=, read -r project_id bug_id modified_classes; do
           cp -r "$OUTPUT_DIR/tratto" "$fqn_output"
           rm -rf "$OUTPUT_DIR"
         elif [ "${scope}" == "run_test" ]; then
+          qualifiers=$(echo "${modified_class}" | sed 's/\./\//g')
           # Run jdoctor tests
+          cp "${DEFECTS4J_DIR}/output/${project_id}/${bug_id}/${qualifiers}/jdoctor/tog-tests/"* "${OUTPUT_DIR}/jdoctor/tog-tests/"
           bash runner.sh \
             "jdoctor" \
             "${modified_class}" \
             "${buggy_project_bug_dir}/${src_path}" \
             "${buggy_project_bug_dir}/${binary_path}" \
-            "${OUTPUT_DIR}/tog-tests/jdoctor"
+            "${buggy_project_bug_dir}/${test_path}"
           # Run toga tests
-
+          cp "${DEFECTS4J_DIR}/output/${project_id}/${bug_id}/${qualifiers}/toga/tog-tests/"* "${OUTPUT_DIR}/toga/tog-tests/"
+#          bash runner.sh \
+#            "toga" \
+#            "${modified_class}" \
+#            "${buggy_project_bug_dir}/${src_path}" \
+#            "${buggy_project_bug_dir}/${binary_path}" \
+#            "${buggy_project_bug_dir}/${test_path}"
           # Run tratto tests
-
+          cp "${DEFECTS4J_DIR}/output/${project_id}/${bug_id}/${qualifiers}/tratto/tog-tests/"* "${OUTPUT_DIR}/tratto/tog-tests/"
+#          bash runner.sh \
+#            "tratto" \
+#            "${modified_class}" \
+#            "${buggy_project_bug_dir}/${src_path}" \
+#            "${buggy_project_bug_dir}/${binary_path}" \
+#            "${buggy_project_bug_dir}/${test_path}"
+          # cleanup
+#          rm -r "${OUTPUT_DIR}"
         fi
 
     done
-    # TODO: [INTEGRATION WITH RUNNER SCRIPT]
 done < "$D4J_PROJECTS_BUGS"
 

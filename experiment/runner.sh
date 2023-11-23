@@ -12,7 +12,8 @@ tog="${1}"
 target_class="${2}"
 src_dir="$(realpath "${3}")"
 bin_dir="$(realpath "${4}")"
-test_path="$(realpath "${5}")"
+test_dir="$(realpath "${5}")"
+qualifiers=$(echo "${target_class}" | sed 's/\./\//g' | xargs dirname)
 # get project root path
 IFS='/' read -ra src_arr <<< "${src_dir}"
 IFS='/' read -ra bin_arr <<< "${bin_dir}"
@@ -24,8 +25,12 @@ for i in "${!src_arr[@]}" "${!bin_arr[@]}"; do
   project_dir="${project_dir}/${src_arr[i]}"
 done
 project_dir="${project_dir#/}"
-# copy tests
-cp "${test_path}" "${src_dir}/../test"
+# copy tests from tog-tests to test directory
+test_dir="${test_dir}/${qualifiers}"
+if [ ! -d "${test_dir}" ]; then
+  mkdir -p "${test_dir}"
+fi
+cp "${ROOT_DIR}/output/${tog}/tog-tests/"* "${test_dir}/"
 cd "${project_dir}" || exit 1
 
 test_output="${ROOT_DIR}/test_output.txt"
@@ -41,9 +46,8 @@ while IFS= read -r line; do
 done < "${test_output}"
 # cleanup
 rm "${test_output}"
-mv "${simple_output}" "${test_output}"
-rm -r "${ROOT_DIR}/temp"
+mv "${simple_output}" "${ROOT_DIR}/output/${tog}/tog-tests/test_fails.txt"
 
 # generate TestOutput record
 sdk use java "${JAVA17}"
-java -jar "${EXPERIMENT_JAR}" "${tog}" "generate_test_output" "${target_class}" "${src_dir}" "${bin_dir}" "${ROOT_DIR}"
+java -jar "${EXPERIMENT_JAR}" "generate_test_output" "${tog}" "${target_class}" "${src_dir}" "${bin_dir}"
