@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 import static org.plumelib.util.CollectionsPlume.mapList;
 
 /**
- * This class is a builder class for {@link OracleDatapoint}.
+ * A builder class for {@link OracleDatapoint}.
  */
 public class OracleDatapointBuilder {
     /**
@@ -250,10 +250,9 @@ public class OracleDatapointBuilder {
 
     /**
      * Creates a new copy of the current OracleDatapoint being built by this
-     * class.
+     * OracleDatapointBuilder.
      *
-     * @return a new OracleDatapoint with all fields copied from the current
-     * OracleDatapoint builder
+     * @return a new OracleDatapoint with all fields copied from this
      */
     public OracleDatapoint copy() {
         return new OracleDatapoint(
@@ -283,7 +282,7 @@ public class OracleDatapointBuilder {
     }
 
     /**
-     * Returns a new datapoint, but carries over specific columns from
+     * Returns a new datapoint, but carries over specific columns from the
      * current datapoint based on the given feature level. The ordering is
      * hierarchical, such that each level keeps columns from the previous
      * level (e.g. "project" also keeps "default" features).
