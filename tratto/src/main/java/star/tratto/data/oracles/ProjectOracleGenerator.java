@@ -160,7 +160,7 @@ public class ProjectOracleGenerator {
     }
 
     /**
-     * Removes all special characters from a Javadoc tag. For example,
+     * Removes all markup from Javadoc text. For example,
      *     "removes all {&#64;code links} from a document" &rarr;
      *     "removes all links from a document"
      *
@@ -168,27 +168,27 @@ public class ProjectOracleGenerator {
      * @return a Javadoc tag without "&#64;code", "&#64;link", "{", "}", "\n",
      * "\r", "\t", HTML tags (angle brackets), or type parameter
      */
-    private String removeTagSpecialCharacters(String unprocessedTag) {
+    private String removeJavadocMarkup(String unprocessedTag) {
         String previous;
         String current = unprocessedTag;
         do {
             previous = current;
-            current = previous.replaceAll("<[^>]*>|@code|@link|\\{|}|\\n|\\r|\\t", " ");
+            current = previous.replaceAll("<[^>]*>|@code|@link|\\{|}|\\n|\\r|\\t|  +", " ");
         } while (!current.equals(previous));
         return current;
     }
 
-    /** The regex to match an arbitrary tag type ("@param", "@return", "@throws"). */
+    /** The regex to match an arbitrary tag ("@param", "@return", "@throws"). */
     private static final String tagTypeRegex = "@(param|return|throws)\\s+(.*\\.)*";
 
     /**
-     * Removes a tag prefix from a Javadoc tag (includes tag type and name).
-     * For example,
+     * Removes a block tag from a Javadoc tag. For example,
      *     "@param name the student name" &rarr; "the student name"
      *
-     * @param unprocessedTag a Javadoc tag
-     * @param tagName the name of the Javadoc tag
-     * @return a Javadoc tag without the tag type or tag name
+     * @param unprocessedTag a Javadoc tag and text
+     * @param tagName the name associated with the Javadoc tag. This may be an
+     *                empty String (e.g. a return tag).
+     * @return a Javadoc tag description without the tag or tag name
      */
     private String removeTagPrefix(String unprocessedTag, String tagName) {
         return unprocessedTag.replaceAll(tagTypeRegex + tagName + "\\b", "");
@@ -229,8 +229,8 @@ public class ProjectOracleGenerator {
         TagAndText mostSimilarTag = null;
         double maxSimilaritySoFar = -1.0;
         for (TagAndText tag : filteredTags) {
-            String simpleTargetBody = removeTagSpecialCharacters(removeTagPrefix(targetTag, tag.tagName()));
-            String simpleActualBody = removeTagSpecialCharacters(tag.tagBody());
+            String simpleTargetBody = removeJavadocMarkup(removeTagPrefix(targetTag, tag.tagName()));
+            String simpleActualBody = removeJavadocMarkup(tag.tagBody());
             double currentSimilarity = StringUtils.semanticSimilarity(simpleTargetBody, simpleActualBody);
             if (currentSimilarity > maxSimilaritySoFar) {
                 maxSimilaritySoFar = currentSimilarity;
