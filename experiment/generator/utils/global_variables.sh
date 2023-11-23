@@ -1,5 +1,6 @@
 # Sdkman Java versions
 JAVA8="8.0.382-amzn"
+JAVA11="11.0.19-amzn"
 JAVA17="17.0.8-oracle"
 
 # Directories

@@ -16,6 +16,8 @@ source "${UTILS_DIR}/init_sdkman.sh"
 
 # Install Java 8
 sdk install java 8.0.382-amzn
+# Install Java 11
+sdk install java 11.0.19-amzn
 # Install Java 17
 sdk install java 17.0.8-oracle
 # Install maven
