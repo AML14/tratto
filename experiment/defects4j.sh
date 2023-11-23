@@ -48,19 +48,11 @@ while IFS=, read -r project_id bug_id modified_classes; do
     defects4j compile -w "$fixed_project_bug_dir"
     echo "Compilation complete."
     # get source, binary, and test directories
-    commit_id=$(grep "^${bug_id}" "${DEFECTS4J_DIR}/framework/projects/${project_id}/active-bugs.csv" | awk -F ',' '{print $2}')
-    src_path=$(grep "^${commit_id}" "${DEFECTS4J_DIR}/framework/projects/${project_id}/dir-layout.csv" | awk -F ',' '{print $2}')
-    test_path=$(grep "^${commit_id}" "${DEFECTS4J_DIR}/framework/projects/${project_id}/dir-layout.csv" | awk -F ',' '{print $2}')
-    if [ -d "$buggy_project_bug_dir/build/classes" ]; then
-        binary_path="build/classes"
-    elif [ -d "$buggy_project_bug_dir/build" ]; then
-        binary_path="build"
-    elif [ -d "${buggy_project_bug_dir}/target/classes" ]; then
-        binary_path="target/classes"
-    else
-        echo "Binary path for project $project_id not found."
-        exit 1
-    fi
+    cd "${buggy_project_bug_dir}" || exit 1
+    src_path=$(defects4j export -p "dir.src.classes")
+    binary_path=$(defects4j export -p "dir.bin.classes")
+    test_path=$(defects4j export -p "dir.src.tests")
+    cd - || exit 1
     # Generate JAR from binary path
     jar cf "${buggy_project_bug_dir}/${project_id}".jar -C "${buggy_project_bug_dir}/${binary_path}" .
     jar cf "${buggy_project_bug_dir}/$project_id".jar -C "${fixed_project_bug_dir}/${binary_path}" .
