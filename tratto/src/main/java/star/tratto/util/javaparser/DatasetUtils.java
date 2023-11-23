@@ -217,7 +217,9 @@ public class DatasetUtils {
         // Iterate through all occurrences.
         List<ValueTokens> stringValues = new ArrayList<>();
         while (matcher.find()) {
+            // matches strings but not chars
             String value = String.format("\"%s\"", !(matcher.group(1) == null) ? matcher.group(1) : matcher.group(2));
+            // value is recorded without surrounding quotations for grammar compatibility
             stringValues.add(new ValueTokens(value, "String"));
         }
         return stringValues;
