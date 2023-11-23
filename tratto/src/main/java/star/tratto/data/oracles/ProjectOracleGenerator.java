@@ -73,41 +73,49 @@ public class ProjectOracleGenerator {
     }
 
     /**
-     * Gets all OracleDatapoint objects for the project under analysis.
-     * Generates empty oracle datapoints for tags without a JDoctor condition,
-     * representing tags which cannot have a corresponding oracle.
+     * Gets all OracleDatapoint objects for the given project. Generates empty
+     * oracle datapoints for Javadoc tags that do not have a corresponding
+     * JDoctor condition.
      *
-     * @return a list of oracle datapoints
+     * @return all oracle datapoints of the given project
      */
     public List<OracleDatapoint> generate(
             Project project,
             List<JDoctorCondition> jDoctorConditions
     ) {
+        // Set the given project and get all project-level variables.
         this.setProject(project, jDoctorConditions);
+        // A list of OracleDatapoint for each Javadoc tag in a project.
         List<OracleDatapoint> oracleDPs = new ArrayList<>();
-        // Generate an OracleDatapoint for each JDoctor condition.
-        // Removes corresponding Javadoc tag from list of tags.
+        // Iterate through all known oracles.
         for (JDoctorCondition jDoctorCondition : this.jDoctorConditions) {
             Operation operation = jDoctorCondition.operation();
-            // Add all ThrowsCondition oracles to dataset.
+            // Add all ThrowsCondition oracles to the list.
             List<ThrowsCondition> throwsConditions = jDoctorCondition.throwsConditions();
             for (ThrowsCondition throwsCondition : throwsConditions) {
                 OracleDatapoint nextDatapoint = getDatapoint(operation, throwsCondition);
-                if (nextDatapoint != null) oracleDPs.add(nextDatapoint);
+                // Do not add oracles if unable to parse corresponding class file.
+                if (nextDatapoint != null) {
+                    oracleDPs.add(nextDatapoint);
+                }
                 removeProjectClassesTag(operation, OracleType.EXCEPT_POST, throwsCondition.description());
             }
-            // Add all PreCondition oracles to dataset.
+            // Add all PreCondition oracles to the list.
             List<PreCondition> preConditions = jDoctorCondition.preConditions();
             for (PreCondition preCondition : preConditions) {
                 OracleDatapoint nextDatapoint = getDatapoint(operation, preCondition);
-                if (nextDatapoint != null) oracleDPs.add(nextDatapoint);
+                if (nextDatapoint != null) {
+                    oracleDPs.add(nextDatapoint);
+                }
                 removeProjectClassesTag(operation, OracleType.PRE, preCondition.description());
             }
-            // Add all PostCondition oracles to dataset.
+            // Add all PostCondition oracles to the list.
             List<PostCondition> postConditions = jDoctorCondition.postConditions();
             if (!postConditions.isEmpty()) {
                 OracleDatapoint nextDatapoint = getDatapoint(operation, postConditions);
-                if (nextDatapoint != null) oracleDPs.add(nextDatapoint);
+                if (nextDatapoint != null) {
+                    oracleDPs.add(nextDatapoint);
+                }
                 // first description corresponds to source tag.
                 removeProjectClassesTag(operation, OracleType.NORMAL_POST, postConditions.get(0).description());
             }
