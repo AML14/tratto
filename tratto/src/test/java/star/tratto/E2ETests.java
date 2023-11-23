@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.opentest4j.AssertionFailedError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import star.tratto.preprocessing.DataAugmentation;
+import star.tratto.preprocessing.OraclesAugmentation;
 import star.tratto.data.OracleDP2TokenDPs;
 import star.tratto.data.TokenDPType;
 import star.tratto.input.ClassAnalyzerTest;

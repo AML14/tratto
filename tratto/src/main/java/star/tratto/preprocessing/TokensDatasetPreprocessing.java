@@ -1,9 +1,10 @@
-package star.tratto;
+package star.tratto.preprocessing;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import star.tratto.TokensDataset;
 import star.tratto.data.TokenDPType;
 
 import java.io.IOException;

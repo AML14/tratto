@@ -1,13 +1,11 @@
-package star.tratto;
+package star.tratto.preprocessing;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.javaparser.JavaParser;
 import org.javatuples.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import star.tratto.data.OracleDatapoint;
-import star.tratto.util.javaparser.JavaParserUtils;
 
 import java.io.File;
 import java.io.IOException;

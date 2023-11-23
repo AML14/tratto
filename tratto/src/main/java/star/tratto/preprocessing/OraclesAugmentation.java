@@ -1,4 +1,4 @@
-package star.tratto;
+package star.tratto.preprocessing;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;

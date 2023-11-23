@@ -1,4 +1,4 @@
-package star.tratto;
+package star.tratto.preprocessing;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -26,11 +26,12 @@ import java.util.stream.Collectors;
  * conditions. Then, for each category, a set of diverse oracles is selected.
  * <br>
  * The output JSON file is a list of objects with the same properties as the oracle
- * data points, but without those related to the tokens.
+ * data points, but without those related to the tokens. As such, this file is only
+ * useful for training the binary classifier of oracles.
  */
-public class NegativeOraclesDatasetSelector {
+public class NegativeOraclesDataset {
 
-    private static final Logger logger = LoggerFactory.getLogger(NegativeOraclesDatasetSelector.class);
+    private static final Logger logger = LoggerFactory.getLogger(NegativeOraclesDataset.class);
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
     public static String ORACLES_DATASET_FOLDER = "src/main/resources/oracles-dataset/";
@@ -118,7 +119,7 @@ public class NegativeOraclesDatasetSelector {
         objectMapper.writeValue(new File(NEGATIVE_ORACLES_FILE), negativeOracles);
     }
 
-    private static Map getOracleDatapointMap(OracleDatapoint oracleDatapoint) {
+    static Map getOracleDatapointMap(OracleDatapoint oracleDatapoint) {
         Map oracleDatapointMap = new HashMap();
         oracleDatapointMap.put("id", oracleDatapoint.getId());
         oracleDatapointMap.put("oracle", oracleDatapoint.getOracle());
