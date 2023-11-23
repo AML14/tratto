@@ -666,7 +666,7 @@ public class DatasetUtils {
      * available to a given type. This method is a wrapper method for
      * {@link DatasetUtils#getMethodsFromType(ResolvedType)} which first
      * attempts to resolve the given type. Returns an empty list if unable
-     * to resolve the type.
+     * to resolve the type, for example, if the given type is primitive.
      *
      * @param jpType a type
      * @return a list of method tokens for all available methods. Returns an
@@ -686,8 +686,8 @@ public class DatasetUtils {
     }
 
     /**
-     * Converts a field declaration to a list of records of attribute tokens.
-     * This method is a special case of
+     * Converts a field declaration (which may declare multiple variables) to
+     * a list of records of attribute tokens. his method is a special case of
      * {@link DatasetUtils#convertFieldDeclarationToAttributeTokens(List)}
      * using available information from the implementation of
      * {@link JavaParserFieldDeclaration}. If possible, declarations with
@@ -713,8 +713,7 @@ public class DatasetUtils {
     }
 
     /**
-     * Converts a field declaration to a record with the form:
-     *     [fieldName, packageName, typeName, fieldDeclaration]
+     * Converts a field declaration (in Java Reflection format) to a record.
      * This method is a special case of
      * {@link DatasetUtils#convertFieldDeclarationToAttributeTokens(List)}
      * using available information from the implementation of
@@ -745,12 +744,9 @@ public class DatasetUtils {
 
     /**
      * Converts a list of field declarations to a list of records of attribute
-     * tokens, where each record has the form:
-     *     [fieldName, packageName, typeName, fieldDeclaration]
-     * where "typeName" refers to the field type name. If possible,
-     * declarations with multiple fields are split into individual records.
-     * The "fieldDeclaration" includes modifiers, type, name, and initial
-     * value (if applicable).
+     * tokens. If possible, declarations with multiple fields are split into
+     * individual records. The "fieldDeclaration" includes modifiers, type,
+     * name, and initial value (if applicable).
      *
      * @param resolvedFields a list of field declarations
      * @return the corresponding list of attribute token records
