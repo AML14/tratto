@@ -3,8 +3,8 @@ package star.tratto.data.records;
 import java.util.List;
 
 /**
- * This record stores basic information of a value. Includes the value and the
- * type of the value. For example,
+ * This record stores basic information about a value. Includes the value and
+ * the type of the value. For example,
  *     "1"    =>    ("1", "int")
  * Used for XText grammar.
  */

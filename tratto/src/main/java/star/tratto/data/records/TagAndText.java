@@ -22,7 +22,7 @@ public record TagAndText(
         OracleType oracleType,
         /* Parameter name or exception type (empty string if oracleType is NORMAL_POST). */
         String tagName,
-        /* The tag text. */
+        /* The tag description. */
         String tagBody
 ) {
     /**
@@ -33,6 +33,8 @@ public record TagAndText(
      *     <li>NORMAL_POST &rarr; @return</li>
      *     <li>EXCEPT_POST &rarr; @throws</li>
      * </ul>
+     * This method is included in this record to avoid incompatibility issues
+     * with the Jackson JSON reader.
      *
      * @param oracleType a type of oracle
      * @return an equivalent Javadoc tag corresponding to the oracle type
@@ -55,10 +57,11 @@ public record TagAndText(
     }
 
     /**
-     * Gets an equivalent String representation of a Javadoc tag and text as it
-     * would appear in source code. This method is not lossless. For example,
-     * if a tag originally uses "@exception", this method will return
-     * "@throws".
+     * Gets a String representation of a Javadoc tag and description
+     * equivalent to as it would appear in source code. However, this method
+     * is not lossless. For example, if a tag is originally "@exception", this
+     * method will return "@throws". The type of tag is preserved (i.e. PRE,
+     * EXCEPT_POST, NORMAL_POST).
      *
      * @return a String representation of the Javadoc tag and its text
      */

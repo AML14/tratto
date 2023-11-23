@@ -136,7 +136,8 @@ public class OracleDatapointBuilder {
     /**
      * Sets the oracle type, Javadoc tag, and oracle from a JDoctor condition.
      *
-     * @param condition a JDoctor condition
+     * @param condition a JDoctor condition (does not use a shared supertype
+     *                  to avoid compatibility issues with reading the JSON)
      * @throws IllegalArgumentException if the condition is not a
      * ThrowsCondition, PreCondition, or List of PostConditions
      */
@@ -146,6 +147,7 @@ public class OracleDatapointBuilder {
         } else if (condition instanceof PreCondition) {
             this.setPreConditionInfo((PreCondition) condition);
         } else if (condition instanceof List<?>) {
+            // use stream to avoid compiler warnings when casting.
             List<PostCondition> conditionList = ((List<?>) condition)
                     .stream()
                     .map(e -> (PostCondition) e)
@@ -155,7 +157,7 @@ public class OracleDatapointBuilder {
             }
         } else {
             throw new IllegalArgumentException(
-                    "Unexpected condition type " + condition.getClass()
+                    "Unexpected JDoctor condition " + condition.getClass() + " " + condition
             );
         }
     }

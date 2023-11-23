@@ -4,7 +4,8 @@ import java.util.List;
 
 /**
  * A method argument. This record uses the term "argument" rather than
- * "parameter" for compatibility with the XText grammar.
+ * "parameter" for compatibility with the XText grammar. Includes the
+ * parameter name, the type name, and its corresponding package name.
  *
  * @param argumentName the argument variable name
  * @param packageName the package of the corresponding type

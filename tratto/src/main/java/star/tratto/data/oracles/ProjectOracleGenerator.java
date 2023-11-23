@@ -73,41 +73,49 @@ public class ProjectOracleGenerator {
     }
 
     /**
-     * Gets all OracleDatapoint objects for the project under analysis.
-     * Generates empty oracle datapoints for tags without a JDoctor condition,
-     * representing tags which cannot have a corresponding oracle.
+     * Gets all OracleDatapoint objects for the given project. Generates empty
+     * oracle datapoints for Javadoc tags that do not have a corresponding
+     * JDoctor condition.
      *
-     * @return a list of oracle datapoints
+     * @return all oracle datapoints of the given project
      */
     public List<OracleDatapoint> generate(
             Project project,
             List<JDoctorCondition> jDoctorConditions
     ) {
+        // Set the given project and get all project-level variables.
         this.setProject(project, jDoctorConditions);
+        // A list of OracleDatapoint for each Javadoc tag in a project.
         List<OracleDatapoint> oracleDPs = new ArrayList<>();
-        // Generate an OracleDatapoint for each JDoctor condition.
-        // Removes corresponding Javadoc tag from list of tags.
+        // Iterate through all known oracles.
         for (JDoctorCondition jDoctorCondition : this.jDoctorConditions) {
             Operation operation = jDoctorCondition.operation();
-            // Add all ThrowsCondition oracles to dataset.
+            // Add all ThrowsCondition oracles to the list.
             List<ThrowsCondition> throwsConditions = jDoctorCondition.throwsConditions();
             for (ThrowsCondition throwsCondition : throwsConditions) {
                 OracleDatapoint nextDatapoint = getDatapoint(operation, throwsCondition);
-                if (nextDatapoint != null) oracleDPs.add(nextDatapoint);
+                // Do not add oracles if unable to parse corresponding class file.
+                if (nextDatapoint != null) {
+                    oracleDPs.add(nextDatapoint);
+                }
                 removeProjectClassesTag(operation, OracleType.EXCEPT_POST, throwsCondition.description());
             }
-            // Add all PreCondition oracles to dataset.
+            // Add all PreCondition oracles to the list.
             List<PreCondition> preConditions = jDoctorCondition.preConditions();
             for (PreCondition preCondition : preConditions) {
                 OracleDatapoint nextDatapoint = getDatapoint(operation, preCondition);
-                if (nextDatapoint != null) oracleDPs.add(nextDatapoint);
+                if (nextDatapoint != null) {
+                    oracleDPs.add(nextDatapoint);
+                }
                 removeProjectClassesTag(operation, OracleType.PRE, preCondition.description());
             }
-            // Add all PostCondition oracles to dataset.
+            // Add all PostCondition oracles to the list.
             List<PostCondition> postConditions = jDoctorCondition.postConditions();
             if (!postConditions.isEmpty()) {
                 OracleDatapoint nextDatapoint = getDatapoint(operation, postConditions);
-                if (nextDatapoint != null) oracleDPs.add(nextDatapoint);
+                if (nextDatapoint != null) {
+                    oracleDPs.add(nextDatapoint);
+                }
                 // first description corresponds to source tag.
                 removeProjectClassesTag(operation, OracleType.NORMAL_POST, postConditions.get(0).description());
             }
@@ -127,30 +135,32 @@ public class ProjectOracleGenerator {
     }
 
     /**
-     * Checks if a preprocessed JDoctor Javadoc tag matches a given name.
+     * Checks if a given Javadoc tag and text matches a given tag name.
      *
-     * @param targetTag a preprocessed JDoctor javadoc tag
-     * @param name a Javadoc tag name (parameter name or exception type)
-     * @return true if the target tag matches the given name or if the JDoctor
-     * tag has no name (and {@code name} is empty)
+     * @param tagAndText a Javadoc tag
+     * @param name a parameter name or exception type. May be empty String
+     *             for return tags.
+     *
+     * @return true if target tag matches the given name or if the given tag
+     * has no name (e.g. a {@code @return} tag).
      */
     private boolean tagHasName(
-            String targetTag,
+            String tagAndText,
             String name
     ) {
         // check if target tag has no name
-        if (!targetTag.startsWith("@param") && !targetTag.startsWith("@throws")) {
+        if (!tagAndText.startsWith("@param") && !tagAndText.startsWith("@throws")) {
             if (name.isEmpty()) {
                 return true;
             }
         }
         // check if target tag matches given name
         Pattern tagNamePattern = Pattern.compile("@(param|return|throws)\\s+(.*\\.)*" + name + "\\b");
-        return tagNamePattern.matcher(targetTag).find();
+        return tagNamePattern.matcher(tagAndText).find();
     }
 
     /**
-     * Removes all special characters from a Javadoc tag. For example,
+     * Removes all markup from Javadoc text. For example,
      *     "removes all {&#64;code links} from a document" &rarr;
      *     "removes all links from a document"
      *
@@ -158,38 +168,40 @@ public class ProjectOracleGenerator {
      * @return a Javadoc tag without "&#64;code", "&#64;link", "{", "}", "\n",
      * "\r", "\t", HTML tags (angle brackets), or type parameter
      */
-    private String removeTagSpecialCharacters(String unprocessedTag) {
+    private String removeJavadocMarkup(String unprocessedTag) {
         String previous;
         String current = unprocessedTag;
         do {
             previous = current;
-            current = previous.replaceAll("<[^>]*>|@code|@link|\\{|}|\\n|\\r|\\t", " ");
+            current = previous.replaceAll("<[^>]*>|@code|@link|\\{|}|\\n|\\r|\\t|  +", " ");
         } while (!current.equals(previous));
         return current;
     }
 
-    /** The regex to match an arbitrary tag type ("@param", "@return", "@throws"). */
+    /** The regex to match an arbitrary tag ("@param", "@return", "@throws"). */
     private static final String tagTypeRegex = "@(param|return|throws)\\s+(.*\\.)*";
 
     /**
-     * Removes a tag prefix from a Javadoc tag (includes tag type and name).
-     * For example,
+     * Removes a block tag from a Javadoc tag. For example,
      *     "@param name the student name" &rarr; "the student name"
      *
-     * @param unprocessedTag a Javadoc tag
-     * @param tagName the name of the Javadoc tag
-     * @return a Javadoc tag without the tag type or tag name
+     * @param unprocessedTag a Javadoc tag and text
+     * @param tagName the name associated with the Javadoc tag. This may be an
+     *                empty String (e.g. a return tag).
+     * @return a Javadoc tag description without the tag or tag name
      */
     private String removeTagPrefix(String unprocessedTag, String tagName) {
         return unprocessedTag.replaceAll(tagTypeRegex + tagName + "\\b", "");
     }
 
     /**
-     * Gets the most similar tag from {@link ProjectOracleGenerator#tagAndTexts} to a
-     * target preprocessed JDoctor tag. Only considers tags of a given type
-     * from a given method in a given class. Among the remaining tags, uses
-     * semantic similarity to find the most similar source code tag to the
-     * preprocessed JDoctor tag.
+     * Gets the most similar tag from {@link ProjectOracleGenerator#tagAndTexts}
+     * to a target preprocessed JDoctor tag. Only considers tags of a given
+     * type from a given method in a given class. Among the remaining tags,
+     * uses semantic similarity to find the most similar source code tag to
+     * the preprocessed JDoctor tag. There is no way to deterministically
+     * convert the original tag to its JDoctor form, such that semantic
+     * similarity is used in its place.
      *
      * @param targetClass target class
      * @param targetCallable target method/constructor
@@ -215,12 +227,16 @@ public class ProjectOracleGenerator {
         if (filteredTags.size() == 1) {
             return filteredTags.get(0);
         }
+        if (filteredTags.size() == 0) {
+            throw new Error("Unable to find a tag corresponding to " + targetTag);
+        }
         // find index of most semantically similar tag (cosine similarity).
         TagAndText mostSimilarTag = null;
         double maxSimilaritySoFar = -1.0;
         for (TagAndText tag : filteredTags) {
-            String simpleTargetBody = removeTagSpecialCharacters(removeTagPrefix(targetTag, tag.tagName()));
-            String simpleActualBody = removeTagSpecialCharacters(tag.tagBody());
+            // must be computed in loop due to using tag name.
+            String simpleTargetBody = removeJavadocMarkup(removeTagPrefix(targetTag, tag.tagName()));
+            String simpleActualBody = removeJavadocMarkup(tag.tagBody());
             double currentSimilarity = StringUtils.semanticSimilarity(simpleTargetBody, simpleActualBody);
             if (currentSimilarity > maxSimilaritySoFar) {
                 maxSimilaritySoFar = currentSimilarity;
