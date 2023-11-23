@@ -1370,7 +1370,10 @@ public class JavaParserUtils {
                     .getResult().get().getJavadoc().get().getBlockTags().get(0);
             oldJavadocBlockTags.set(oldJavadocBlockTags.indexOf(oldJavadocBlockTag), newJavadocBlockTag);
         }
-        if (!javadoc.toText().contains(newJavadocTag) || (javadoc.toText().contains(oldJavadocTag) && !newJavadocTag.contains(oldJavadocTag))) {
+        if (!javadoc.toText().contains(newJavadocTag) ||
+                (javadoc.toText().contains(oldJavadocTag) && !newJavadocTag.contains(oldJavadocTag) && methodJavadoc.split(oldJavadocTag).length == 2)) {
+            // After ||: If the new Javadoc still contains the old tag, it might be because the new tag actually contains
+            // the old tag (is a substring) or because there's another tag whose param name contains the old param name
             throw new IllegalStateException("The Javadoc tag could not be correctly updated.");
         }
 
