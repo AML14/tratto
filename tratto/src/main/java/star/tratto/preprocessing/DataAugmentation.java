@@ -2,7 +2,7 @@ package star.tratto.preprocessing;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.javatuples.Pair;
+import org.javatuples.Quartet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import star.tratto.data.OracleDatapoint;
@@ -19,12 +19,9 @@ import static star.tratto.util.StringUtils.compactExpression;
 import static star.tratto.util.javaparser.JavaParserUtils.updateMethodJavadoc;
 
 /**
- * This class augments the oracles dataset as follows: 1) it reads the existing oracles
- * dataset; 2) for each oracle datapoint, it retrieves all alternate versions of
- * the oracles and the Javadoc tags; 3) it combines both up to the maximum number
- * of either oracles or Javadoc tags, whichever is higher (if different numbers,
- * the default oracle or Javadoc tag will be combined with remaining ones); 4) it
- * writes new oracle datapoints for each combination of oracle - Javadoc tag.
+ * This class augments the oracles dataset by reading all existing oracles from
+ * src/main/resources/oracles-dataset and, for each oracle, proceeding as detailed
+ * in the {@link #getAlternateOracleDPs(OracleDatapoint)} method.
  */
 public class DataAugmentation {
 
@@ -39,7 +36,7 @@ public class DataAugmentation {
     private static Map<String, List<String>> alternateTags;
     private static int oracleDPsAllowingAugmentation = 0;
     private static int oracleDPsOriginal = 0;
-    private static int oracleDPsAugmented = 0;
+    private static int oracleDPsTotal = 0;
 
     public static void main(String[] args) throws IOException {
         logger.info("Augmenting oracles dataset...");
@@ -60,64 +57,142 @@ public class DataAugmentation {
             List<Map> rawOracleDatapoints = objectMapper.readValue(oraclesDatasetFile.toFile(), List.class);
             for (Map rawOracleDatapoint : rawOracleDatapoints) {
                 OracleDatapoint oracleDatapoint = new OracleDatapoint(rawOracleDatapoint);
-                List<Pair<String, String>> oracleTagCombos = getOracleTagCombos(oracleDatapoint);
-                for (Pair<String, String> oracleTagCombo : oracleTagCombos) {
-                    OracleDatapoint newOracleDatapoint = new OracleDatapoint(oracleDatapoint);
-                    newOracleDatapoint.setOracle(oracleTagCombo.getValue0());
-                    newOracleDatapoint.setJavadocTag(oracleTagCombo.getValue1());
-                    newOracleDatapoint.setMethodJavadoc(updateMethodJavadoc(oracleDatapoint.getMethodJavadoc(), oracleDatapoint.getJavadocTag(), oracleTagCombo.getValue1()));
-                    newOracleDatapoints.add(newOracleDatapoint);
-                    oracleDPsAugmented++;
-                }
-                // Add one more Oracle Datapoint where we remove completely the method Javadoc
-                OracleDatapoint newOracleDatapoint = new OracleDatapoint(oracleDatapoint);
-                newOracleDatapoint.setJavadocTag("");
-                newOracleDatapoint.setMethodJavadoc("");
-                newOracleDatapoints.add(newOracleDatapoint);
-                oracleDPsAugmented++;
+                List<OracleDatapoint> alternateOracleDPs = getAlternateOracleDPs(oracleDatapoint);
+                newOracleDatapoints.addAll(alternateOracleDPs);
+                oracleDPsTotal += alternateOracleDPs.size();
                 oracleDPsOriginal++;
             }
 
             String newOracleDatapointsFile = oraclesDatasetFile.toString().replace(".json", AUGMENTED_SUFFIX);
             objectMapper.writeValue(new File(newOracleDatapointsFile), newOracleDatapoints.stream().map(OracleDatapoint::toMapAndLists).toList());
             newOracleDatapoints.clear();
+
+            // Delete original file
+            Files.delete(oraclesDatasetFile);
         }
 
         logger.info("Finished augmenting oracles dataset.");
         logger.info("Oracle data points original: {}", oracleDPsOriginal);
         logger.info("Oracle data points allowing augmentation: {}", oracleDPsAllowingAugmentation);
-        logger.info("Oracle data points augmented: {}", oracleDPsAugmented);
-        logger.info("Oracle data points total: {}", oracleDPsOriginal + oracleDPsAugmented);
+        logger.info("Oracle data points augmented: {}", oracleDPsTotal - oracleDPsOriginal);
+        logger.info("Oracle data points total: {}", oracleDPsTotal);
     }
 
     /**
-     * @return List of pairs oracle-tag
+     * The returned list WILL contain the original oracle.
+     * <br>
+     * The returned list MAY contain up to 10 oracles.
+     * <br>
+     * The returned list MAY contain the following variations IF possible:
+     * <ul>
+     *     <li>Case 1: Original.</li>
+     *     <li>Case 2: Without Javadoc tag + oracle1.</li>
+     *     <li>Case 3: Without Javadoc + oracle2.</li>
+     *     <li>Case 4: Without method body + oracle3 + Javadoc tag1.</li>
+     *     <li>Case 5: Without method body and without Javadoc tag + oracle4.</li>
+     *     <li>Case 6: Without method body and without Javadoc + oracle5.</li>
+     *     <li>Case 7: Oracle6 + Javadoc tag2.</li>
+     *     <li>Case 8: Without method body + oracle7 + Javadoc tag3</li>
+     *     <li>Case 9: Oracle8 + Javadoc tag4.</li>
+     *     <li>Case 10: Without method body + oracle9 + Javadoc tag5</li>
+     * </ul>
      */
-    private static List<Pair<String, String>> getOracleTagCombos(OracleDatapoint oracleDatapoint) {
-        List<Pair<String, String>> oracleTagCombos = new ArrayList<>();
-        String compactOracle = compactExpression(oracleDatapoint.getOracle());
-        String javaDocTag = oracleDatapoint.getJavadocTag();
-        List<String> currentAlternateOracles = new ArrayList<>(alternateOracles.getOrDefault(compactOracle, List.of()));
-        currentAlternateOracles.add(compactOracle); // Add default oracle
-        List<String> currentAlternateTags = new ArrayList<>(alternateTags.getOrDefault(javaDocTag, List.of()));
-        currentAlternateTags.add(javaDocTag); // Add default Javadoc tag
-        // Randomize lists so that combination patterns are varied:
-        Collections.shuffle(currentAlternateOracles, random);
-        Collections.shuffle(currentAlternateTags, random);
+    private static List<OracleDatapoint> getAlternateOracleDPs(OracleDatapoint oracleDatapoint) {
+        List<Quartet<String, String, String, String>> oracleCombos = new ArrayList<>(); // Quartet: javadocTag, methodJavadoc, oracle, methodSourceCode
+        List<OracleDatapoint> alternateOracleDPs = new ArrayList<>();
 
-        int max = Math.max(currentAlternateOracles.size(), currentAlternateTags.size());
-        for (int i = 0; i < max; i++) {
-            String oracle = currentAlternateOracles.get(i % currentAlternateOracles.size());
-            String tag = currentAlternateTags.get(i % currentAlternateTags.size());
-            oracleTagCombos.add(Pair.with(oracle, tag));
+        String javadocTag = oracleDatapoint.getJavadocTag();
+        String javadoc = oracleDatapoint.getMethodJavadoc();
+        String oracle = compactExpression(oracleDatapoint.getOracle());
+        String methodSourceCode = oracleDatapoint.getMethodSourceCode();
+        String javadocEmptyTag = updateMethodJavadoc(javadoc, javadocTag, "");
+
+        // Prepare list of Javadoc tags
+        List<String> currentAlternateTags = new ArrayList<>(alternateTags.getOrDefault(javadocTag, List.of()));
+        Collections.shuffle(currentAlternateTags, random);
+        currentAlternateTags.add(javadocTag); // Add default Javadoc tag
+        int tagIndex = 0;
+        int nTags = currentAlternateTags.size();
+
+        // Prepare list of method Javadoc
+        List<String> currentAlternateJavadocs = currentAlternateTags
+                .stream()
+                .map(tag -> updateMethodJavadoc(javadoc, javadocTag, tag))
+                .toList();
+
+        // Prepare list of oracles
+        List<String> currentAlternateOracles = new ArrayList<>(alternateOracles.getOrDefault(oracle, List.of()));
+        Collections.shuffle(currentAlternateOracles, random);
+        currentAlternateOracles.add(oracle); // Add default oracle
+        int oracleIndex = 0;
+        int nOracles = currentAlternateOracles.size();
+
+        // Prepare alternatives of method source code
+        String methodSignature = methodSourceCode.split("\\{")[0];
+        methodSignature = methodSignature.stripTrailing();
+        methodSignature = methodSignature.endsWith(";") ? methodSignature : methodSignature + ";";
+
+        // Case 1: Original
+        oracleCombos.add(Quartet.with(javadocTag, javadoc, oracle, methodSourceCode));
+
+        // Case 2: Without Javadoc tag + oracle1
+        oracleCombos.add(Quartet.with("", javadocEmptyTag, currentAlternateOracles.get(oracleIndex), methodSourceCode));
+        oracleIndex = (oracleIndex + 1) % nOracles;
+
+        // Case 3: Without Javadoc + oracle2
+        oracleCombos.add(Quartet.with("", "", currentAlternateOracles.get(oracleIndex), methodSourceCode));
+        oracleIndex = (oracleIndex + 1) % nOracles;
+
+        // Case 4: Without method body + oracle3 + Javadoc tag1
+        oracleCombos.add(Quartet.with(currentAlternateTags.get(tagIndex), currentAlternateJavadocs.get(tagIndex), currentAlternateOracles.get(oracleIndex), methodSignature));
+        tagIndex = (tagIndex + 1) % nTags;
+        oracleIndex = (oracleIndex + 1) % nOracles;
+
+        // Case 5: Without method body and without Javadoc tag + oracle4
+        oracleCombos.add(Quartet.with("", javadocEmptyTag, currentAlternateOracles.get(oracleIndex), methodSignature));
+        oracleIndex = (oracleIndex + 1) % nOracles;
+
+        // Case 6: Without method body and without Javadoc + oracle5
+        oracleCombos.add(Quartet.with("", "", currentAlternateOracles.get(oracleIndex), methodSignature));
+        oracleIndex = (oracleIndex + 1) % nOracles;
+
+        // Case 7: Oracle6 + Javadoc tag2
+        oracleCombos.add(Quartet.with(currentAlternateTags.get(tagIndex), currentAlternateJavadocs.get(tagIndex), currentAlternateOracles.get(oracleIndex), methodSourceCode));
+        tagIndex = (tagIndex + 1) % nTags;
+        oracleIndex = (oracleIndex + 1) % nOracles;
+
+        // Case 8: Without method body + oracle7 + Javadoc tag3
+        oracleCombos.add(Quartet.with(currentAlternateTags.get(tagIndex), currentAlternateJavadocs.get(tagIndex), currentAlternateOracles.get(oracleIndex), methodSignature));
+        tagIndex = (tagIndex + 1) % nTags;
+        oracleIndex = (oracleIndex + 1) % nOracles;
+
+        // Case 9: Oracle8 + Javadoc tag4
+        oracleCombos.add(Quartet.with(currentAlternateTags.get(tagIndex), currentAlternateJavadocs.get(tagIndex), currentAlternateOracles.get(oracleIndex), methodSourceCode));
+        tagIndex = (tagIndex + 1) % nTags;
+        oracleIndex = (oracleIndex + 1) % nOracles;
+
+        // Case 10: Without method body + oracle9 + Javadoc tag5
+        oracleCombos.add(Quartet.with(currentAlternateTags.get(tagIndex), currentAlternateJavadocs.get(tagIndex), currentAlternateOracles.get(oracleIndex), methodSignature));
+//        tagIndex = (tagIndex + 1) % nTags;
+//        oracleIndex = (oracleIndex + 1) % nOracles;
+
+        // Remove possible duplicates
+        oracleCombos = oracleCombos.stream().distinct().toList();
+
+        // Create OracleDatapoint objects
+        for (Quartet<String, String, String, String> oracleCombo : oracleCombos) {
+            OracleDatapoint alternateOracleDatapoint = new OracleDatapoint(oracleDatapoint);
+            alternateOracleDatapoint.setJavadocTag(oracleCombo.getValue0());
+            alternateOracleDatapoint.setMethodJavadoc(oracleCombo.getValue1());
+            alternateOracleDatapoint.setOracle(oracleCombo.getValue2());
+            alternateOracleDatapoint.setMethodSourceCode(oracleCombo.getValue3());
+            alternateOracleDPs.add(alternateOracleDatapoint);
         }
 
-        // Original oracle and Javadoc tag may be combined. This is already in the dataset. Remove it.
-        oracleTagCombos.remove(Pair.with(compactOracle, javaDocTag));
-        if (oracleTagCombos.size() > 0) {
+        if (alternateOracleDPs.size() > 1) {
             oracleDPsAllowingAugmentation++;
         }
 
-        return oracleTagCombos;
+        return alternateOracleDPs;
     }
 }
