@@ -226,7 +226,8 @@ public class DatasetUtils {
     /**
      * Gets all value tokens in a Javadoc comment via pattern matching.
      *
-     * @param javadocComment a Javadoc comment
+     * @param javadocComment a raw Javadoc comment (i.e. including surrounding
+     *                       asterisks)
      * @return a list of value tokens
      */
     public static List<ValueTokens> getJavadocValues(
