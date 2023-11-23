@@ -588,8 +588,8 @@ public class DatasetUtils {
     }
 
     /**
-     * Collects information about all Javadoc tags in a project from a
-     * given source path.
+     * Collects information about all Javadoc tags in the project at a given
+     * source path.
      *
      * @param sourceDir the project root directory
      * @return a list of JavadocTags
