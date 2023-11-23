@@ -135,26 +135,28 @@ public class ProjectOracleGenerator {
     }
 
     /**
-     * Checks if a preprocessed JDoctor Javadoc tag matches a given name.
+     * Checks if a given Javadoc tag and text matches a given tag name.
      *
-     * @param targetTag a preprocessed JDoctor javadoc tag
-     * @param name a Javadoc tag name (parameter name or exception type)
-     * @return true if the target tag matches the given name or if the JDoctor
-     * tag has no name (and {@code name} is empty)
+     * @param tagAndText a Javadoc tag
+     * @param name a parameter name or exception type. May be empty String
+     *             for return tags.
+     *
+     * @return true if target tag matches the given name or if the given tag
+     * has no name (e.g. a {@code @return} tag).
      */
     private boolean tagHasName(
-            String targetTag,
+            String tagAndText,
             String name
     ) {
         // check if target tag has no name
-        if (!targetTag.startsWith("@param") && !targetTag.startsWith("@throws")) {
+        if (!tagAndText.startsWith("@param") && !tagAndText.startsWith("@throws")) {
             if (name.isEmpty()) {
                 return true;
             }
         }
         // check if target tag matches given name
         Pattern tagNamePattern = Pattern.compile("@(param|return|throws)\\s+(.*\\.)*" + name + "\\b");
-        return tagNamePattern.matcher(targetTag).find();
+        return tagNamePattern.matcher(tagAndText).find();
     }
 
     /**
