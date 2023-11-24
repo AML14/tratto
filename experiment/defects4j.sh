@@ -145,6 +145,28 @@ while IFS=, read -r project_id bug_id modified_classes; do
     mv "${buggy_project_bug_dir}/${project_id}".jar "${buggy_project_bug_dir}/d4j_jars"
     mv "${fixed_project_bug_dir}/${project_id}".jar "${fixed_project_bug_dir}/d4j_jars"
 
+    cd "${buggy_project_bug_dir}/d4j_jars"
+    class_paths=$(find "${buggy_project_bug_dir}/d4j_jars/dependencies_jars" -type f -exec echo {} + | tr '\n' ' ')
+    main_class=$(unzip -p "${buggy_project_bug_dir}/d4j_jars/${project_id}.jar" META-INF/MANIFEST.MF | grep Main-Class)
+    echo "Manifest-Version: 1.0" > "${buggy_project_bug_dir}/d4j_jars/Manifest.txt"
+    echo "Class-Path: ${class_paths}" >> "${buggy_project_bug_dir}/d4j_jars/Manifest.txt"
+    if [ -n "$main_class" ]; then
+      echo "Main-Class: ${main_class}" >> Manifest.txt
+    fi
+    jar cmf "${buggy_project_bug_dir}/d4j_jars/Manifest.txt" "${buggy_project_bug_dir}/d4j_jars/${project_id}_fat.jar" -C . .
+
+    cd "${fixed_project_bug_dir}/d4j_jars"
+    class_paths=$(find "${fixed_project_bug_dir}/d4j_jars/dependencies_jars" -type f -exec echo {} + | tr '\n' ' ')
+    main_class=$(unzip -p "${fixed_project_bug_dir}/d4j_jars/${project_id}.jar" META-INF/MANIFEST.MF | grep Main-Class)
+    echo "Manifest-Version: 1.0" > "${fixed_project_bug_dir}/d4j_jars/Manifest.txt"
+    echo "Class-Path: ${class_paths}" >> "${fixed_project_bug_dir}/d4j_jars/Manifest.txt"
+    if [ -n "$main_class" ]; then
+      echo "Main-Class: ${main_class}" >> Manifest.txt
+    fi
+    jar cmf "${fixed_project_bug_dir}/d4j_jars/Manifest.txt" "${fixed_project_bug_dir}/d4j_jars/${project_id}_fat.jar" -C . .
+
+    cd "$ROOT_DIR"
+
     # Iterate over the modified classes and generate test cases for each class
     for modified_class in "${modified_classes_list[@]}"; do
         fqn_path=$(echo "$modified_class" | sed 's/\./\//g')
@@ -173,13 +195,13 @@ while IFS=, read -r project_id bug_id modified_classes; do
         cp "$evosuite_tests_path" "$output_evosuite_tests_path"
         if [ "${scope}" == "generate_oracle" ]; then
           # Generate jdoctor oracles
-          bash experiment.sh jdoctor "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${buggy_project_bug_dir}/df4_jars"
+          bash experiment.sh jdoctor "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${buggy_project_bug_dir}/df4_jars/${project_id}_fat.jar"
           cp -r "$OUTPUT_DIR/jdoctor" "$fqn_output"
           # Generate toga oracles
-          bash experiment.sh toga "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${buggy_project_bug_dir}/df4_jars"
+          bash experiment.sh toga "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${buggy_project_bug_dir}/df4_jars/${project_id}_fat.jar"
           cp -r "$OUTPUT_DIR/toga" "$fqn_output"
           # Generate tratto oracles
-          bash experiment.sh tratto "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${buggy_project_bug_dir}/df4_jars" "false"
+          bash experiment.sh tratto "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${buggy_project_bug_dir}/df4_jars${project_id}_fat.jar" "false"
           cp -r "$OUTPUT_DIR/tratto" "$fqn_output"
           rm -rf "$OUTPUT_DIR"
         elif [ "${scope}" == "run_test" ]; then
