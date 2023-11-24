@@ -21,7 +21,9 @@ import static star.tratto.util.javaparser.JavaParserUtils.updateMethodJavadoc;
 /**
  * This class augments the oracles dataset by reading all existing oracles from
  * src/main/resources/oracles-dataset and, for each oracle, proceeding as detailed
- * in the {@link #getAlternateOracleDPs(OracleDatapoint)} method.
+ * in the {@link #getAlternateOracleDPs(OracleDatapoint)} method. Also, the oracles
+ * contained in each file are randomly shuffled and split into two files. This is
+ * useful for later splitting the dataset into training and test sets.
  */
 public class DataAugmentation {
 
@@ -55,17 +57,21 @@ public class DataAugmentation {
             }
             logger.info("Augmenting file: {}", oraclesDatasetFile.getFileName());
             List<Map> rawOracleDatapoints = objectMapper.readValue(oraclesDatasetFile.toFile(), List.class);
-            for (Map rawOracleDatapoint : rawOracleDatapoints) {
-                OracleDatapoint oracleDatapoint = new OracleDatapoint(rawOracleDatapoint);
-                List<OracleDatapoint> alternateOracleDPs = getAlternateOracleDPs(oracleDatapoint);
-                newOracleDatapoints.addAll(alternateOracleDPs);
-                oracleDPsTotal += alternateOracleDPs.size();
-                oracleDPsOriginal++;
-            }
+            Collections.shuffle(rawOracleDatapoints, random);
+            for (int i = 1; i <= 2; i++) {
+                List<Map> rawOracleDatapointsHalf = rawOracleDatapoints.subList((i - 1) * rawOracleDatapoints.size() / 2, i * rawOracleDatapoints.size() / 2);
+                for (Map rawOracleDatapoint : rawOracleDatapointsHalf) {
+                    OracleDatapoint oracleDatapoint = new OracleDatapoint(rawOracleDatapoint);
+                    List<OracleDatapoint> alternateOracleDPs = getAlternateOracleDPs(oracleDatapoint);
+                    newOracleDatapoints.addAll(alternateOracleDPs);
+                    oracleDPsTotal += alternateOracleDPs.size();
+                    oracleDPsOriginal++;
+                }
 
-            String newOracleDatapointsFile = oraclesDatasetFile.toString().replace(".json", AUGMENTED_SUFFIX);
-            objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(newOracleDatapointsFile), newOracleDatapoints.stream().map(OracleDatapoint::toMapAndLists).toList());
-            newOracleDatapoints.clear();
+                String newOracleDatapointsFile = oraclesDatasetFile.toString().replace(".json", "-" + i + AUGMENTED_SUFFIX);
+                objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(newOracleDatapointsFile), newOracleDatapoints.stream().map(OracleDatapoint::toMapAndLists).toList());
+                newOracleDatapoints.clear();
+            }
 
             // Delete original file
             Files.delete(oraclesDatasetFile);
