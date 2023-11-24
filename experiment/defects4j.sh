@@ -147,6 +147,7 @@ while IFS=, read -r project_id bug_id modified_classes; do
 
     cd "${buggy_project_bug_dir}/d4j_jars"
     class_paths=$(find "./dependencies_jars" -name "*.jar" -exec echo {} \; | tr '\n' ' ')
+    cd "${buggy_project_bug_dir}"
     mkdir temp
     unzip "${buggy_project_bug_dir}/${project_id}.jar" -d temp
     main_class=$(grep -Eo 'Main-Class: (.*)' temp/META-INF/MANIFEST.MF | awk '{print $2}')
@@ -162,6 +163,7 @@ while IFS=, read -r project_id bug_id modified_classes; do
 
     cd "${fixed_project_bug_dir}/d4j_jars"
     class_paths=$(find "./dependencies_jars" -name "*.jar" -exec echo {} \; | tr '\n' ' ')
+    cd "${fixed_project_bug_dir}"
     mkdir temp
     unzip "${fixed_project_bug_dir}/${project_id}.jar" -d temp
     main_class=$(grep -Eo 'Main-Class: (.*)' temp/META-INF/MANIFEST.MF | awk '{print $2}')
