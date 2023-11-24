@@ -22,7 +22,7 @@ import java.util.Map;
  * <br>
  * The output JSON file is a list of objects with the same properties as the oracle
  * data points, but without those related to the tokens. As such, this file is only
- *  useful for training the binary classifier of oracles.
+ * useful for training the binary classifier of oracles.
  */
 public class PositiveOraclesDataset {
     private static final Logger logger = LoggerFactory.getLogger(PositiveOraclesDataset.class);
