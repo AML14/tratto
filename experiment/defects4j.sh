@@ -146,7 +146,7 @@ while IFS=, read -r project_id bug_id modified_classes; do
     mv "${fixed_project_bug_dir}/${project_id}".jar "${fixed_project_bug_dir}/d4j_jars"
 
     cd "${buggy_project_bug_dir}/d4j_jars"
-    class_paths=$(find "${buggy_project_bug_dir}/d4j_jars/dependencies_jars" -type f -exec echo {} + | tr '\n' ' ')
+    class_paths=$(find "./dependencies_jars" -name "*.jar" -exec echo {} \; | tr '\n' ' ')
     main_class=$(unzip -p "${buggy_project_bug_dir}/d4j_jars/${project_id}.jar" META-INF/MANIFEST.MF | grep Main-Class)
     echo "Manifest-Version: 1.0" > "${buggy_project_bug_dir}/d4j_jars/Manifest.txt"
     echo "Class-Path: ${class_paths}" >> "${buggy_project_bug_dir}/d4j_jars/Manifest.txt"
@@ -156,7 +156,7 @@ while IFS=, read -r project_id bug_id modified_classes; do
     jar cmf "${buggy_project_bug_dir}/d4j_jars/Manifest.txt" "${buggy_project_bug_dir}/d4j_jars/${project_id}_fat.jar" -C . .
 
     cd "${fixed_project_bug_dir}/d4j_jars"
-    class_paths=$(find "${fixed_project_bug_dir}/d4j_jars/dependencies_jars" -type f -exec echo {} + | tr '\n' ' ')
+    class_paths=$(find "./dependencies_jars" -name "*.jar" -exec echo {} \; | tr '\n' ' ')
     main_class=$(unzip -p "${fixed_project_bug_dir}/d4j_jars/${project_id}.jar" META-INF/MANIFEST.MF | grep Main-Class)
     echo "Manifest-Version: 1.0" > "${fixed_project_bug_dir}/d4j_jars/Manifest.txt"
     echo "Class-Path: ${class_paths}" >> "${fixed_project_bug_dir}/d4j_jars/Manifest.txt"
