@@ -159,7 +159,7 @@ while IFS=, read -r project_id bug_id modified_classes; do
     fi
     rm -rf temp/META-INF
     cd temp
-    python3 "${DEFECTS4J_DIR}/generate_pom.py" "${buggy_project_bug_dir}/dependencies.csv" "${buggy_project_bug_dir}/temp/pom.xml" $main_class
+    python3 "${DEFECTS4J_DIR}/generate_pom.py" "$buggy_project_bug_dir" "${buggy_project_bug_dir}/dependencies.csv" "${buggy_project_bug_dir}/temp/pom.xml" $main_class
     mvn clean package
     cd "${buggy_project_bug_dir}"
     cp -r temp/* d4j_jars/
