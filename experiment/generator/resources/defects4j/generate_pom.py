@@ -22,7 +22,7 @@ def generate_pom(project_name, project_dir, path_to_dependency_file, path_to_out
     group_id.text = "com.example"
 
     artifact_id = ET.SubElement(root, "artifactId")
-    artifact_id.text = "your-project-name"
+    artifact_id.text = project_name
 
     version = ET.SubElement(root, "version")
     version.text = "1.0-SNAPSHOT"
