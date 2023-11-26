@@ -161,8 +161,7 @@ while IFS=, read -r project_id bug_id modified_classes; do
     cd temp
     python3 "${DEFECTS4J_DIR}/generate_pom.py" "$project_id" "$buggy_project_bug_dir" "${buggy_project_bug_dir}/dependencies.csv" "${buggy_project_bug_dir}/temp/pom.xml" $main_class
     mvn clean package
-    mv ${project_id}-1.0-SNAPSHOT-jar-with-dependencies.jar ${project_id}_fat.jar
-    mv ${project_id}_fat.jar "${buggy_project_bug_dir}"
+    mv "target/${project_id}-1.0-SNAPSHOT-jar-with-dependencies.jar" "${buggy_project_bug_dir}/${project_id}_fat.jar"
     cd "${buggy_project_bug_dir}"
     #cp -r temp/* d4j_jars/
     #rm -rf temp
