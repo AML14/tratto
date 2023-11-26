@@ -39,10 +39,10 @@ def generate_pom(project_name, project_dir, path_to_dependency_file, path_to_out
     compiler_group_id.text = "org.apache.maven.plugins"
 
     compiler_artifact_id = ET.SubElement(compiler_plugin, "artifactId")
-    compiler_artifact_id.text = "maven-compiler-plugin"
+    compiler_artifact_id.text = "maven-jar-plugin"
 
     compiler_version = ET.SubElement(compiler_plugin, "version")
-    compiler_version.text = "3.8.1"
+    compiler_version.text = "3.1.0"
 
     compiler_configuration = ET.SubElement(compiler_plugin, "configuration")
 
@@ -70,10 +70,9 @@ def generate_pom(project_name, project_dir, path_to_dependency_file, path_to_out
 
     manifest = ET.SubElement(archive, "manifest")
 
-    add_classpath = ET.SubElement(manifest, "addClasspath")
-    add_classpath.text = "true"
-
     if main_class is not None:
+        add_classpath = ET.SubElement(manifest, "addClasspath")
+        add_classpath.text = "true"
         main_class = ET.SubElement(manifest, "mainClass")
         main_class.text = "com.example.MainClass"
 
