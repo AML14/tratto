@@ -134,7 +134,8 @@ def generate_pom(project_dir, path_to_dependency_file, path_to_output_file, main
 
     # Save the XML to a file
     tree = ET.ElementTree(root)
-    tree.write(path_to_output_file, encoding="utf-8", xml_declaration=True)
+    with open(path_to_output_file, 'wb') as output_file:
+        tree.write(output_file, encoding="utf-8", xml_declaration=True)
 
 if __name__ == "__main__":
     project_dir = sys.argv[1]
