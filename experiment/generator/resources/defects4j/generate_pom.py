@@ -1,8 +1,10 @@
+import fnmatch
+import os.path
 import xml.etree.ElementTree as ET
 import csv
 import sys
 
-def generate_pom(path_to_dependency_file, path_to_output_file, main_class=None):
+def generate_pom(project_dir, path_to_dependency_file, path_to_output_file, main_class=None):
     # Create the root element with namespaces and schema location
     root = ET.Element(
         "project",
@@ -98,28 +100,48 @@ def generate_pom(path_to_dependency_file, path_to_output_file, main_class=None):
     # Dependencies element
     dependencies = ET.SubElement(root, "dependencies")
 
-    with open(path_to_dependency_file, newline='') as csvfile:
-        csv_reader = csv.reader(csvfile)
+    if os.path.exists(path_to_dependency_file):
+        with open(path_to_dependency_file, newline='') as csvfile:
+            csv_reader = csv.reader(csvfile)
 
-        for row in csv_reader:
-            group_id, artifact_id, version = row
+            for row in csv_reader:
+                group_id, artifact_id, version = row
+                dependency = ET.SubElement(dependencies, "dependency")
+                dependency_group_id = ET.SubElement(dependency, "groupId")
+                dependency_group_id.text = group_id.replace("/", ".")
+                dependency_artifact_id = ET.SubElement(dependency, "artifactId")
+                dependency_artifact_id.text = artifact_id
+                dependency_version = ET.SubElement(dependency, "version")
+                dependency_version.text = version
+    else:
+        jar_files_paths = []
+        for root, dirs, files in os.walk(project_dir):
+            for file in fnmatch.filter(files, '*.jar'):
+                jar_files_paths.append(os.path.join(root, file))
+
+        for idx, jar_file_path in enumerate(jar_files_paths):
             dependency = ET.SubElement(dependencies, "dependency")
             dependency_group_id = ET.SubElement(dependency, "groupId")
-            dependency_group_id.text = group_id.replace("/", ".")
+            dependency_group_id.text = "local"
             dependency_artifact_id = ET.SubElement(dependency, "artifactId")
-            dependency_artifact_id.text = artifact_id
+            dependency_artifact_id.text = f"{jar_file_path.replace('.jar','').split('/')[-1]}"
             dependency_version = ET.SubElement(dependency, "version")
-            dependency_version.text = version
+            dependency_version.text = 1.0
+            dependency_scope = ET.SubElement(dependency, "scope")
+            dependency_scope.text = "system"
+            dependency_system_path = ET.SubElement(dependency, "systemPath")
+            dependency_system_path.text = jar_file_path
 
     # Save the XML to a file
     tree = ET.ElementTree(root)
     tree.write(path_to_output_file, encoding="utf-8", xml_declaration=True)
 
 if __name__ == "__main__":
-    path_to_dependency_file = sys.argv[1]
-    path_to_output_file = sys.argv[2]
-    main_class = sys.argv[3] if len(sys.argv) > 3 and not sys.argv[3] == "" else None
-    generate_pom(path_to_dependency_file, path_to_output_file, main_class)
+    project_dir = sys.argv[1]
+    path_to_dependency_file = sys.argv[2]
+    path_to_output_file = sys.argv[3]
+    main_class = sys.argv[4] if len(sys.argv) > 4 and not sys.argv[4] == "" else None
+    generate_pom(project_dir, path_to_dependency_file, path_to_output_file, main_class)
 
 
 
