@@ -128,6 +128,7 @@ while IFS=, read -r project_id bug_id modified_classes; do
                   cd "${ROOT_DIR}"
                   python3 "${DEFECTS4J_DIR}/get_dependencies.py" gradle "${buggy_project_bug_dir}/dependencies.txt" "${buggy_project_bug_dir}/dependencies.csv"
               fi
+              sdk use java "$JAVA8"
           else
               echo "skipped"
           fi
@@ -156,7 +157,11 @@ while IFS=, read -r project_id bug_id modified_classes; do
     if [ -n "$main_class" ]; then
       echo "Main-Class: ${main_class}" >> "${buggy_project_bug_dir}/Manifest.txt"
     fi
-    rm temp/META-INF/MANIFEST.MF
+    rm -rf temp/META-INF
+    cd temp
+    python3 "${DEFECTS4J_DIR}/generate_pom.py" "${buggy_project_bug_dir}/dependencies.csv" "${buggy_project_bug_dir}/temp/pom.xml" $main_class
+    mvn clean package
+    cd "${buggy_project_bug_dir}"
     cp -r temp/* d4j_jars/
     rm -rf temp
     jar cmf "${buggy_project_bug_dir}/Manifest.txt" "${buggy_project_bug_dir}/${project_id}_fat.jar" -C d4j_jars .
