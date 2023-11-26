@@ -115,9 +115,9 @@ def generate_pom(project_dir, path_to_dependency_file, path_to_output_file, main
                 dependency_version.text = version
     else:
         jar_files_paths = []
-        for root, dirs, files in os.walk(project_dir):
+        for root_dir, dirs, files in os.walk(f"{project_dir}/lib"):
             for file in fnmatch.filter(files, '*.jar'):
-                jar_files_paths.append(os.path.join(root, file))
+                jar_files_paths.append(os.path.join(root_dir, file))
 
         for idx, jar_file_path in enumerate(jar_files_paths):
             dependency = ET.SubElement(dependencies, "dependency")
@@ -126,15 +126,14 @@ def generate_pom(project_dir, path_to_dependency_file, path_to_output_file, main
             dependency_artifact_id = ET.SubElement(dependency, "artifactId")
             dependency_artifact_id.text = f"{jar_file_path.replace('.jar','').split('/')[-1]}"
             dependency_version = ET.SubElement(dependency, "version")
-            dependency_version.text = 1.0
+            dependency_version.text = "1.0"
             dependency_scope = ET.SubElement(dependency, "scope")
             dependency_scope.text = "system"
             dependency_system_path = ET.SubElement(dependency, "systemPath")
             dependency_system_path.text = jar_file_path
 
     with open(path_to_output_file, 'wb') as output_file:
-        output_file.write('<?xml version="1.0" encoding="utf-8"?>\n')
-        ET.ElementTree(root).write(output_file, encoding="unicode")
+        ET.ElementTree(root).write(output_file, encoding="utf-8")
         #tree.write(output_file, encoding="utf-8", xml_declaration=True)
 
 if __name__ == "__main__":
