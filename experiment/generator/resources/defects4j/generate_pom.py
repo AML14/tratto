@@ -4,7 +4,7 @@ import xml.etree.ElementTree as ET
 import csv
 import sys
 
-def generate_pom(project_dir, path_to_dependency_file, path_to_output_file, main_class=None):
+def generate_pom(project_name, project_dir, path_to_dependency_file, path_to_output_file, main_class=None):
     # Create the root element with namespaces and schema location
     root = ET.Element(
         "project",
@@ -137,11 +137,12 @@ def generate_pom(project_dir, path_to_dependency_file, path_to_output_file, main
         #tree.write(output_file, encoding="utf-8", xml_declaration=True)
 
 if __name__ == "__main__":
-    project_dir = sys.argv[1]
-    path_to_dependency_file = sys.argv[2]
-    path_to_output_file = sys.argv[3]
-    main_class = sys.argv[4] if len(sys.argv) > 4 and not sys.argv[4] == "" else None
-    generate_pom(project_dir, path_to_dependency_file, path_to_output_file, main_class)
+    project_name = sys.argv[1]
+    project_dir = sys.argv[2]
+    path_to_dependency_file = sys.argv[3]
+    path_to_output_file = sys.argv[4]
+    main_class = sys.argv[5] if len(sys.argv) > 5 and not sys.argv[5] == "" else None
+    generate_pom(project_name, project_dir, path_to_dependency_file, path_to_output_file, main_class)
 
 
 
