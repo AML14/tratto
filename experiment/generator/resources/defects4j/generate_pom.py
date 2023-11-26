@@ -132,10 +132,10 @@ def generate_pom(project_dir, path_to_dependency_file, path_to_output_file, main
             dependency_system_path = ET.SubElement(dependency, "systemPath")
             dependency_system_path.text = jar_file_path
 
-    # Save the XML to a file
-    tree = ET.ElementTree(root)
     with open(path_to_output_file, 'wb') as output_file:
-        tree.write(output_file, encoding="utf-8", xml_declaration=True)
+        output_file.write('<?xml version="1.0" encoding="utf-8"?>\n')
+        ET.ElementTree(root).write(output_file, encoding="unicode")
+        #tree.write(output_file, encoding="utf-8", xml_declaration=True)
 
 if __name__ == "__main__":
     project_dir = sys.argv[1]
