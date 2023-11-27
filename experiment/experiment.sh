@@ -25,7 +25,8 @@ target_class=${2}
 src_dir=${3}
 bin_dir=${4}
 project_jar=${5}
-evosuite_flag=$( [[ "$6" == "true" ]] && echo true || echo false )
+dependencies_path=${6}
+evosuite_flag=$( [[ "$7" == "true" ]] && echo true || echo false )
 qualifiers="${target_class%.*}"
 #evosuite_output="${ROOT_DIR}/output/evosuite-tests/${qualifiers//.//}"   #!!!
 
@@ -79,11 +80,11 @@ else
 fi
 # Generate oracles using TOG
 if [ "${tog}" == "jdoctor" ]; then
-  bash ./generator/jdoctor.sh "${target_class}" "${src_dir}" "${project_jar}"
+  bash ./generator/jdoctor.sh "${target_class}" "${src_dir}" "${project_jar}" "${dependencies_path}"
 elif [ "${tog}" == "toga" ]; then
-  bash ./generator/toga.sh "${target_class}" "${src_dir}" #"${evosuite_output}"
+  bash ./generator/toga.sh "${target_class}" "${src_dir}" "${dependencies_path}" #"${evosuite_output}"
 elif [ "${tog}" == "tratto" ]; then
-  bash ./generator/tratto.sh "${target_class}" "${src_dir}" "${project_jar}"
+  bash ./generator/tratto.sh "${target_class}" "${src_dir}" "${project_jar}" "${dependencies_path}"
 fi
 #cp "${oracle_output}" "${ROOT_DIR}/output/${tog}-oracles.json" #!!!
 # insert oracles into EvoSuite prefixes

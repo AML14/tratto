@@ -213,13 +213,13 @@ while IFS=, read -r project_id bug_id modified_classes; do
         cp "$evosuite_tests_path" "$output_evosuite_tests_path"
         if [ "${scope}" == "generate_oracle" ]; then
           # Generate jdoctor oracles
-          bash experiment.sh jdoctor "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${buggy_project_bug_dir}/${project_id}_fat.jar"
+          bash experiment.sh jdoctor "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${buggy_project_bug_dir}/${project_id}.jar" "${buggy_project_bug_dir}/d4j_jars/dependencies_jars"
           cp -r "$OUTPUT_DIR/jdoctor" "$fqn_output"
           # Generate toga oracles
-          bash experiment.sh toga "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${buggy_project_bug_dir}/${project_id}_fat.jar"
+          bash experiment.sh toga "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${buggy_project_bug_dir}/${project_id}.jar" "${buggy_project_bug_dir}/d4j_jars/dependencies_jars"
           cp -r "$OUTPUT_DIR/toga" "$fqn_output"
           # Generate tratto oracles
-          bash experiment.sh tratto "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${buggy_project_bug_dir}/${project_id}_fat.jar" "false"
+          bash experiment.sh tratto "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${buggy_project_bug_dir}/${project_id}.jar" "${buggy_project_bug_dir}/d4j_jars/dependencies_jars" "false"
           cp -r "$OUTPUT_DIR/tratto" "$fqn_output"
           rm -rf "$OUTPUT_DIR"
         elif [ "${scope}" == "run_test" ]; then

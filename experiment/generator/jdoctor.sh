@@ -43,7 +43,7 @@ mkdir -p "${OUTPUT_DIR}/jdoctor/output"
 java -jar "${JDOCTOR_JAR}" \
     --target-class "${target_class}" \
     --source-dir "${src_dir}" \
-    --class-dir "${jar_path}" \
+    --class-dir "${jar_path}:${dependencies_path}" \
     --condition-translator-output "${OUTPUT_DIR}/jdoctor/output/jdoctor_output.json"
 
 # switch to Java 17
