@@ -10,7 +10,7 @@ from src.utils import utils
 from tests.utils import generate_src_input, generate_equivalent_tokenClassesSoFar, generate_equivalent_eligibles
 
 
-def test_load_dataset_num_rows(
+def test_load_dataset_as_dataframe_num_rows(
         data_processor,
         arg_data_dir
 ):
@@ -24,13 +24,14 @@ def test_load_dataset_num_rows(
 def test_compute_weights(
         data_processor
 ):
-    data_processor.pre_processing()
-    df_dataset = getattr(data_processor, '_df_dataset')
-    columns = df_dataset.columns.tolist()
-    for col in columns:
-        weights = data_processor.compute_weights(col)
-        assert pytest.approx(sum(weights), 0.01) == 1
-        assert len(weights) == len(df_dataset[col].unique().tolist())
+    for dataset_type in ['train', 'validation']:
+        data_processor.pre_processing()
+        df_dataset = getattr(data_processor, '_df_dataset')
+        columns = df_dataset.columns.tolist()
+        for col in columns:
+            weights = data_processor.compute_weights(col)
+            assert pytest.approx(sum(weights), 0.01) == 1
+            assert len(weights) == len(df_dataset[col].unique().tolist())
 
 def test_get_encoder_ids_labels(
         data_processor,
@@ -198,11 +199,12 @@ def test_pre_processing_src_input(
                 src_tgt_src_test_tgt_test_expected.append((input, row.label))
         else:
             if arg_classification_type == ClassificationType.CATEGORY_PREDICTION:
-                classes_ids_dict = data_processor_ten_datapoints.get_encoder_classes_ids()
                 if arg_tratto_model_type == TrattoModelType.TOKEN_CLASSES:
+                    classes_ids_dict = data_processor_ten_datapoints.get_encoder_labels_ids("token_class")
                     row_tgt = classes_ids_dict[row.tokenClass]
                     src_tgt_src_test_tgt_test_expected.append((input, row_tgt))
                 elif arg_tratto_model_type == TrattoModelType.TOKEN_VALUES:
+                    classes_ids_dict = data_processor_ten_datapoints.get_encoder_labels_ids("token")
                     row_tgt = classes_ids_dict[row.token]
                     src_tgt_src_test_tgt_test_expected.append((input, row_tgt))
             elif arg_classification_type == ClassificationType.LABEL_PREDICTION:

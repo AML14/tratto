@@ -27,8 +27,8 @@ def print_cross_validation(fold):
     print("        " + "-" * 25)
 
 
-def print_load_dataset(d_path: str):
-    print(f"[2] Load {'token-values-dataset' if d_path.endswith('token-values-dataset') else 'token-classes-dataset'} phase")
+def print_load_dataset_as_dataframe(d_path: str):
+    print(f"[2] Load dataset: {d_path}")
 
 
 def print_load_gpu():

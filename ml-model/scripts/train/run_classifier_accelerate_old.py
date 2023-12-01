@@ -8,7 +8,7 @@ from torch.utils.data import DataLoader, RandomSampler
 from torch.optim import AdamW
 from transformers import get_linear_schedule_with_warmup
 
-from src.model.OracleTrainer import OracleTrainer
+from src.model.OracleTrainerAccelerate import OracleTrainerAccelerate
 from src.types.ClassificationType import ClassificationType
 from src.types.DatasetType import DatasetType
 from src.types.DeviceType import DeviceType
@@ -19,6 +19,7 @@ from src.parser.ArgumentParser import ArgumentParser
 from src.processors.DataProcessor import DataProcessor
 from src.pretrained.ModelClasses import ModelClasses
 from src.utils import utils
+from accelerate import Accelerator
 
 
 def set_seed(device: str, seed: int = 42):
@@ -65,11 +66,14 @@ def main():
         except:
             print(f"Model type {args.tratto_model_type} not recognized. Tratto model type {TrattoModelType.TOKEN_CLASSES} used.")
 
+    # Initialize accelerator for model distribution on multiple GPUs
+    accelerator = Accelerator()
+
     logger.print_welcome(classification_type, tratto_model_type)
     # Logging - load gpu
     logger.print_load_gpu()
     # Connect to device
-    device = utils.connect_to_device(DeviceType.GPU)
+    device = utils.connect_to_device(DeviceType.ACCELERATOR)
     # Set up seeds for reproducibility
     set_seed(device, args.seed)
 
@@ -77,21 +81,19 @@ def main():
     config_class, model_class, tokenizer_class, transformer_type = ModelClasses.getModelClass(args.model_type)
     # Setup tokenizer
     tokenizer = tokenizer_class.from_pretrained(args.tokenizer_name)
+    tokenizer.sep_token = "</s>"
 
+    logger.print_load_dataset_as_dataframe(args.data_dir)
     # Create DataProcessor instance
     data_processor = DataProcessor(
-        args.train_path,
-        args.validation_path,
+        args.data_dir,
+        args.test_ratio,
         tokenizer,
         transformer_type,
         classification_type,
         tratto_model_type,
-        args.target_column
+        args.folds              # if folds = 1 no cross-validation is performed
     )
-    logger.print_load_dataset_as_dataframe(args.train_path)
-    data_processor.load_dataset_as_dataframe(args.train_path)
-    logger.print_load_dataset_as_dataframe(args.validation_path)
-    data_processor.load_dataset_as_dataframe(args.validation_path)
     # Pre-processing data
     logger.print_pre_processing()
     data_processor.pre_processing()
@@ -110,17 +112,17 @@ def main():
         test_dataset = data_processor.get_tokenized_dataset(DatasetType.TEST)
 
         # Create instance of training, validation, and test dataloaders
-        dl_train = DataLoader(
+        dl_train_cpu = DataLoader(
             train_dataset,
             sampler=RandomSampler(train_dataset),
             batch_size=args.batch_size
         )
-        dl_val = DataLoader(
+        dl_val_cpu = DataLoader(
             val_dataset,
             sampler=RandomSampler(val_dataset),
             batch_size=args.batch_size
         )
-        dl_test = DataLoader(
+        dl_test_cpu = DataLoader(
             test_dataset,
             sampler=RandomSampler(test_dataset),
             batch_size=args.batch_size
@@ -138,7 +140,8 @@ def main():
         )
 
         model.resize_token_embeddings(len(tokenizer))
-        model.to(device)
+
+        model = accelerator.prepare(model)
 
         # Prepare optimizer and schedule (linear warmup and decay)
         no_decay = ['bias', 'LayerNorm.weight']
@@ -152,7 +155,7 @@ def main():
 
         # Instantiate trainer
         classifier_ids_labels = data_processor.get_encoder_ids_labels()
-        training_steps = len(dl_train) // args.accumulation_steps * args.num_epochs
+        training_steps = len(dl_train_cpu) // args.accumulation_steps * args.num_epochs
         scheduler = get_linear_schedule_with_warmup(optimizer, args.warmup_steps, training_steps)
         checkpoint_path = os.path.join(
             args.output_dir,
@@ -161,7 +164,17 @@ def main():
             f"batch_{args.batch_size}",
             f"epochs_{args.num_epochs}"
         )
-        oracle_trainer = OracleTrainer(
+
+        optimizer, dl_train, dl_val, dl_test, lr_scheduler = accelerator.prepare(
+            optimizer,
+            dl_train_cpu,
+            dl_val_cpu,
+            dl_test_cpu,
+            scheduler
+        )
+
+        oracle_trainer = OracleTrainerAccelerate(
+            accelerator,
             model,
             optimizer,
             dl_train,
@@ -208,7 +221,7 @@ def main():
         elif args.do_predict:
             if not os.path.exists(args.resume_checkpoint_filename):
                 raise ValueError(f"Impossible to resume checkpoint - File not found {args.resume_checkpoint_filename} (or argument --resume_checkpoint_filename not provided).")
-            best_checkpoint = utils.resume_checkpoint(args.resume_checkpoint_filename, device)
+            best_checkpoint = utils.resume_checkpoint_accelerate(model, args.resume_checkpoint_filename)
             # Load the model state dict
             model.load_state_dict(best_checkpoint['model_state_dict'])
             # Load the optimizer state dict

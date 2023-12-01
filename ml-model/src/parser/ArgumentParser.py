@@ -141,11 +141,25 @@ class ArgumentParser:
         """
         # Required parameters
         parser.add_argument(
-            "--data_dir",
+            "--train_path",
             default=None,
             type=str,
             required=True,
-            help="The directory of the dataset."
+            help="The directory to the train dataset."
+        )
+        parser.add_argument(
+            "--validation_path",
+            default=None,
+            type=str,
+            required=True,
+            help="The directory to the validation dataset."
+        )
+        parser.add_argument(
+            "--target_column",
+            default=None,
+            type=str,
+            required=True,
+            help="The name of the target column of the dataset."
         )
         parser.add_argument(
             "--model_type",

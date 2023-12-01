@@ -78,20 +78,17 @@ def main():
     # Setup tokenizer
     tokenizer = tokenizer_class.from_pretrained(args.tokenizer_name)
 
+    logger.print_load_dataset_as_dataframe(args.data_dir)
     # Create DataProcessor instance
     data_processor = DataProcessor(
-        args.train_path,
-        args.validation_path,
+        args.data_dir,
+        args.test_ratio,
         tokenizer,
         transformer_type,
         classification_type,
         tratto_model_type,
-        args.target_column
+        args.folds              # if folds = 1 no cross-validation is performed
     )
-    logger.print_load_dataset_as_dataframe(args.train_path)
-    data_processor.load_dataset_as_dataframe(args.train_path)
-    logger.print_load_dataset_as_dataframe(args.validation_path)
-    data_processor.load_dataset_as_dataframe(args.validation_path)
     # Pre-processing data
     logger.print_pre_processing()
     data_processor.pre_processing()

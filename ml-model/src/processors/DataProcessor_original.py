@@ -96,7 +96,7 @@ class DataProcessor:
         self._d_path = d_path
         self._tokenizer = tokenizer
         self._test_ratio = test_ratio
-        self._df_dataset = self._load_dataset(d_path)
+        self._df_dataset = self._load_dataset_as_dataframe(d_path)
         self._src = None
         self._tgt = None
         self._src_test = None
@@ -378,7 +378,7 @@ class DataProcessor:
                 os.path.dirname(os.path.abspath(__file__)),
                 '..',
                 'resources',
-                'tokenClassesValuesMapping.json'
+                'token_classes_values_mappings.json'
             )
         )
         # If the model is for the token values consider only a subset of words
@@ -389,7 +389,7 @@ class DataProcessor:
                     os.path.dirname(os.path.abspath(__file__)),
                     '..',
                     'resources',
-                    'model_values_ignore_value_mappings.json'
+                    'token_classes_ignore_value_mappings.json'
                 )
             )
         vocab = self._tokenizer.get_vocab()
@@ -538,7 +538,7 @@ class DataProcessor:
         # Split the dataset into training and test sets with stratified sampling (given imbalanced dataset), based on target classes
         self._src, self._src_test, self._tgt, self._tgt_test = train_test_split(src, tgt, test_size=self._test_ratio)  # stratify=tgt)
 
-    def _load_dataset(
+    def _load_dataset_as_dataframe(
             self,
             d_path: str
     ):

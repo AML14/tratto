@@ -83,17 +83,21 @@ def main():
     tokenizer = tokenizer_class.from_pretrained(args.tokenizer_name)
     tokenizer.sep_token = "</s>"
 
-    logger.print_load_dataset(args.data_dir)
     # Create DataProcessor instance
     data_processor = DataProcessor(
-        args.data_dir,
-        args.test_ratio,
+        args.train_path,
+        args.validation_path,
         tokenizer,
         transformer_type,
         classification_type,
         tratto_model_type,
-        args.folds              # if folds = 1 no cross-validation is performed
+        args.target_column
     )
+    logger.print_load_dataset_as_dataframe(args.train_path)
+    data_processor.load_dataset_as_dataframe(args.train_path)
+    logger.print_load_dataset_as_dataframe(args.validation_path)
+    data_processor.load_dataset_as_dataframe(args.validation_path)
+
     # Pre-processing data
     logger.print_pre_processing()
     data_processor.pre_processing()

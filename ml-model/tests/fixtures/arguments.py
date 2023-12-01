@@ -18,6 +18,39 @@ def arg_data_dir(request):
 
 @pytest.fixture(
     scope='session',
+    params=[
+        os.path.join(os.path.dirname(__file__), '..', 'dataset', 'token-classes-dataset', 'train'),
+        os.path.join(os.path.dirname(__file__), '..', 'dataset', 'token-values-dataset', 'train'),
+        os.path.join(os.path.dirname(__file__), '..', 'dataset', 'discern-dataset', 'train')
+    ]
+)
+def arg_train_dataset_path(request):
+    return request.param
+
+@pytest.fixture(
+    scope='session',
+    params=[
+        os.path.join(os.path.dirname(__file__), '..', 'dataset', 'token-classes-dataset', 'train'),
+        os.path.join(os.path.dirname(__file__), '..', 'dataset', 'token-values-dataset', 'train'),
+        os.path.join(os.path.dirname(__file__), '..', 'dataset', 'discern-dataset', 'train')
+    ]
+)
+def arg_validation_dataset_path(request):
+    return request.param
+
+@pytest.fixture(
+    scope='session',
+    params=[
+        os.path.join(os.path.dirname(__file__), '..', 'dataset', 'token-classes-dataset', 'validation'),
+        os.path.join(os.path.dirname(__file__), '..', 'dataset', 'token-values-dataset', 'validation'),
+        os.path.join(os.path.dirname(__file__), '..', 'dataset', 'discern-dataset', 'validation')
+    ]
+)
+def arg_validation_dataset_path(request):
+    return request.param
+
+@pytest.fixture(
+    scope='session',
 )
 def arg_data_dir_single_datapoint():
     return os.path.join(os.path.dirname(__file__), '..', 'dataset', 'single-datapoint-dataset')

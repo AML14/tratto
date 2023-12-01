@@ -22,7 +22,7 @@ _, value_mappings = utils.import_json(
         '..',
         'src',
         'resources',
-        'tokenClassesValuesMapping.json'
+        'token_classes_values_mappings.json'
     )
 )
 

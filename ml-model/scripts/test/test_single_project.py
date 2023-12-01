@@ -39,7 +39,7 @@ def predict(
             '..',
             'src',
             'resources',
-            'tokenClassesValuesMapping.json'
+            'token_classes_values_mappings.json'
         )
     )
 
@@ -166,7 +166,7 @@ def pre_processing(
             '..',
             'src',
             'resources',
-            'tokenClassesValuesMapping.json'
+            'token_classes_values_mappings.json'
         )
     )
     # If the model is for the token values consider only a subset of words
@@ -179,7 +179,7 @@ def pre_processing(
                 '..',
                 'src',
                 'resources',
-                'model_values_ignore_value_mappings.json'
+                'token_classes_ignore_value_mappings.json'
             )
         )
     vocab = tokenizer.get_vocab()
