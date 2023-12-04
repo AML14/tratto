@@ -1,6 +1,5 @@
 package star.tratto;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import star.tratto.data.OracleDP2TokenDPs;
 import star.tratto.data.TokenDPType;
@@ -29,7 +28,6 @@ public class E2ETests {
      * </ul>
      */
     @Test
-//    @Disabled
     public void datasetsE2ETest() throws IOException {
         // Config for E2E test
         OracleDP2TokenDPs.CRASH_WRONG_ORACLE = true;
@@ -61,7 +59,6 @@ public class E2ETests {
      * token ";" is returned.
      */
     @Test
-//    @Disabled
     public void tokenSuggesterE2ETest() {
         List<String> stringOracles = readOraclesFromExternalFiles();
         TokenSuggesterTest.getNextLegalTokensAuxTest(stringOracles);
