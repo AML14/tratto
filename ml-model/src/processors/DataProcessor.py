@@ -37,8 +37,6 @@ class DataProcessor:
         Category predictions or label predictions.
     tratto_model_type: Type[TrattoModelType]
         TokenClasses or tokenValues model.
-    tgt_column_name: str
-        The name of the target column of the dataset
 
     Attributes
     ----------
@@ -68,8 +66,7 @@ class DataProcessor:
             tokenizer: PreTrainedTokenizer,
             transformerType: Type[TransformerType],
             classification_type: ClassificationType,
-            tratto_model_type: Type[TrattoModelType],
-            tgt_column_name: str
+            tratto_model_type: Type[TrattoModelType]
     ):
         self._train_dataset_path = train_dataset_path
         self._validation_dataset_path = validation_dataset_path
@@ -77,538 +74,29 @@ class DataProcessor:
         self._classification_type = classification_type
         self._transformer_type = transformerType
         self._tratto_model_type = tratto_model_type
-        self._tgt_column_name = tgt_column_name
-        self._t_dataset = {
-            "df": None,
+        if classification_type == ClassificationType.LABEL_PREDICTION:
+            self._tgt_column_name = "label"
+        else:
+            if tratto_model_type == TrattoModelType.TOKEN_CLASSES:
+                self._tgt_column_name = "tokenClass"
+            elif tratto_model_type == TrattoModelType.TOKEN_VALUES:
+                self._tgt_column_name = "token"
+            else:
+                raise Exception(f"Tratto model type {tratto_model_type} not allowed for classification type equals to CATEGORY_PREDICTION.")
+        self._tokenized_train_dataset = {
             "src": None,
-            "tgt": None,
-            "t_src": None,
-            "t_tgt": None
-        },
-        self._v_dataset = {
-            "df": None,
+            "mask": None,
+            "tgt": None
+        }
+        self._tokenized_validation_dataset = {
             "src": None,
-            "tgt": None,
-            "t_src": None,
-            "t_tgt": None
+            "mask": None,
+            "tgt": None
         }
         self._cache = {}
 
-    def compute_weights(
-            self,
-            column_name: str,
-            df_type: Type[DatasetType] = None,
-            df: Type[DataFrame] = None
-    ):
-        """
-        The method computes the weights to assign to each value of the list passed to the function, for the given
-        dataset. The weights are used to assign a different importance to each value of the list (targets), in
-        the computation of the loss of the classification task, when the dataset is imbalanced. By default, if the
-        dataframe is not provided and the dataset type is not provided as well, the method uses the training dataframe.
-
-        Parameters
-        ----------
-        column_name: str
-            The name of the column of the dataset to process
-        df_type: Type[DatasetType]
-            The dataset type (DatasetType.TRAINING or DatasetType.VALIDATION)
-        df: Type[DataFrame]
-            The dataframe to process. Default None.
-
-        Returns
-        -------
-        values_weights : List[float]
-            A list containing the weights for each different value of the column within the dataset. The length of
-            the list is equal to the number of unique values in the column processed.
-        """
-        if column_name is None:
-            column_name = self._tgt_column_name
-        # Assert arguments are legal
-        assert df_type in [DatasetType.TRAINING, DatasetType.VALIDATION], f"Dataset type {df_type} not recognized."
-        assert df_type is not None or (df_type is None and df is None), "Illegal arguments combination."
-        assert column_name in df.columns, f"Column {column_name} not found in the dataset."
-
-        if self._cache["weights"] is None:
-            self._cache["weights"] = {}
-        if df_type is None or self._cache["weights"][df_type.value] is None:
-            # Get training dataframe, if df is not provided
-            if df is None:
-                if df_type is None or df_type == DatasetType.TRAINING:
-                    df = self.get_train_dataframe()
-                else:
-                    df = self.get_validation_dataframe()
-            # Get the list of unique labels and the count the occurrences of each class
-            unique_classes, class_counts = np.unique(df[column_name], return_counts=True)
-            # Calculate the inverse class frequencies
-            total_samples = np.sum(class_counts)
-            class_frequencies = class_counts / total_samples
-            class_weights = 1.0 / class_frequencies
-            # Normalize the class weights
-            class_weights /= np.sum(class_weights)
-            # Save weights on cache
-            self._cache["weights"][df_type.value] = class_weights
-        # Return the computed weights
-        return self._cache["weights"][df_type.value]
-
-    def get_encoder_labels_ids(
-            self,
-            column_name: str,
-            df_type: Type[DatasetType] = DatasetType.TRAINING,
-            df: Type[DataFrame] = None,
-    ):
-        """
-        The method computes the dictionary of the target labels for a given column name of a given dataframe, where
-        each key represents the name of a target label, while the corresponding value is a numerical identifier
-        representing the index of the one-shot vector representing the label, with value equals to 1.0. If the dataframe
-        provided is None, the method uses the training dataframe.
-
-        Parameters
-        ----------
-        column_name: str
-            The name of the column of the dataset to process
-        df_type: Type[DatasetType]
-            The dataset type (DatasetType.TRAINING or DatasetType.VALIDATION)
-        df: Type[DataFrame]
-            The dataframe to process. Default None.
-
-        Returns
-        -------
-        The dictionary of labels. The keys strings representing the name of the corresponding target label, while the 
-        values are strings representing the name of the corresponding target label.
-        """
-        if column_name is None:
-            column_name = self._tgt_column_name
-        # Assert arguments are legal
-        assert df_type in [DatasetType.TRAINING, DatasetType.VALIDATION], f"Dataset type {df_type} not recognized."
-        assert df_type is not None or (df_type is None and df is None), "Illegal arguments combination."
-        assert column_name in df.columns, f"Column {column_name} not found in the dataset."
-
-        if self._cache["encoder_labels_ids"] is None:
-            self._cache["encoder_labels_ids"] = {}
-        if self._cache["encoder_labels_ids"][df_type.value] is None:
-            self._cache["encoder_labels_ids"][df_type.value] = {k: i for i, k in self.get_encoder_ids_labels(column_name, df_type, df).items()}
-        # Return the computed dictionary
-        return self._cache["encoder_labels_ids"][df_type.value]
-
-    def get_encoder_ids_labels(
-            self,
-            column_name=None,
-            df_type: Type[DatasetType] = DatasetType.TRAINING,
-            df: Type[DataFrame] = None
-    ):
-        """
-        The method computes the dictionary of target labels for a given column name of a given dataframe, where each
-        value represents the name of a target label, while the corresponding key element is a numerical identifier
-        representing the index of the one-shot vector representing the label, with value equals to 1.0. If the column
-        name provided is None, the method uses the default target column name (self._tgt_column_name). If the dataframe
-        provided is None, the method uses the training dataframe.
-
-        Parameters
-        ----------
-        column_name: str
-            The name of the column of the dataset to process. Default None.
-        df: Type[DataFrame]
-            The dataframe to process. Default None.
-
-        Returns
-        -------
-        The dictionary of labels. The keys are numerical identifiers (int), while the values are strings representing the
-        name of the corresponding target label.
-        """
-        if column_name is None:
-            column_name = self._tgt_column_name
-        # Assert arguments are legal
-        assert df_type in [DatasetType.TRAINING, DatasetType.VALIDATION], f"Dataset type {df_type} not recognized."
-        assert df_type is not None or (df_type is None and df is None), "Illegal arguments combination."
-        assert column_name in df.columns, f"Column {column_name} not found in the dataset."
-
-        if self._cache["encoder_ids_labels"] is None:
-            self._cache["encoder_ids_labels"] = {}
-        if df_type is None or self._cache["encoder_ids_labels"][df_type.value] is None:
-            if df is None:
-                if df_type is None or df_type == DatasetType.TRAINING:
-                    df = self.get_train_dataframe()
-                else:
-                    df = self.get_validation_dataframe()
-            self._cache["encoder_ids_labels"][df_type.value] = {i: str(k) for i, k in enumerate(sorted(list(df[column_name].unique())))}
-        # Return the computed dictionary
-        return self._cache["encoder_ids_labels"][df_type.value]
-
-    def get_train_dataframe(self):
-        """
-        The method returns the training dataset as a pandas dataframe.
-
-        Returns
-        -------
-        The training dataset as a pandas dataframe.
-        """
-        # Get the dataset to process
-        t_df = self.load_dataset_as_dataframe(self._train_dataset_path)
-        return t_df
-
-    def get_validation_dataframe(self):
-        """
-        The method returns the validation dataset as a pandas dataframe.
-
-        Returns
-        -------
-        The validation dataset as a pandas dataframe.
-        """
-        # Get the dataset to process
-        v_df = self.load_dataset_as_dataframe(self._validation_dataset_path)
-        return v_df
-
-    def get_num_labels(
-            self,
-            column_name: str = None,
-            df: Type[DataFrame] = None
-    ):
-        """
-        Get the number of unique values of the target labels, for a given column name of the given dataframe.
-        If the column name provided is None, the method uses the default target column name (self._tgt_column_name).
-        
-        Parameters
-        ----------
-        column_name: str
-            The name of the column of the dataset to process. Default None.
-        df: Type[DataFrame]
-            The dataframe to process. Default None.
-
-        Returns
-        -------
-        An integer representing the number of unique values of labels.
-        """
-        if self._num_labels is None:
-            self._num_labels = len(self.get_encoder_ids_labels(column_name, df))
-        return self._num_labels
-
-    # *****
-    def get_tokenized_dataset(
-            self,
-            d_type: Type[DatasetType]
-    ):
-        """
-        The method returns the processed tokenized (training or validation) dataset.
-
-        Parameters
-        ----------
-        d_type: DatasetType
-            The dataset type that the method must return
-                - DatasetType.TRAINING for the training dataset
-                - DatasetType.VALIDATION for the validation dataset
-
-        Returns
-        -------
-        t_t_dataset : TensorDataset
-            A PyTorch TensorDataset composed of four tensors stack:
-                - the first tensor stack representing the stack of tokenized input
-                  datapoints of the selected dataset
-                - the second tensor stack representing the stack of attention masks
-                  (each index corresponding to the index of the input datapoints in
-                  the first tensor)
-                - the third tensor stack representing the list of expected target
-                  outputs (each index corresponding to the index of the input
-                  datapoints in the first tensor)
-                - the fourth tensor stack representing the list of expected target
-                  labels (each index corresponding to the index of the input
-                  datapoints in the first tensor)
-        """
-        # Select the tokenized dataset
-        if d_type == DatasetType.TRAINING:
-            t_dataset = self._t_dataset["t_train"]
-        elif d_type == DatasetType.VALIDATION:
-            t_dataset = self._v_dataset["t_"]
-        else:
-            raise Exception(f"Unrecognized DataType value: {d_type}")
-        # Generate the tokenized tensor dataset, from the list of tokenized datapoints
-        t_t_dataset = TensorDataset(*t_dataset)
-        # Return the dataset
-        return t_t_dataset
-
-    def processing(self):
-        """
-        The method processes the original datasets to generate the training, validation, and test datasets to train and
-        test the model. If the attribute {@code self.folds} is greater than 1, the datasets are generated to perform
-        cross-validation (A number of sets equal to {@code self.folds} are generated). Otherwise, a single set of datasets
-        is generated.
-        """
-        # Create the cross-validation splitter, if the attribute folds is greater than 1
-        if self._folds > 1:
-            cross_validation = StratifiedKFold(n_splits=self._n_split, shuffle=True, random_state=42)
-            print(f"        Generating {self._n_split} folds for cross-validation.")
-            t_v_cross_datasets = cross_validation.split(self._src, np.array([np.array(dp) for dp in self._tgt]))
-            for fold, (t_fold_indices, v_fold_indices) in enumerate(t_v_cross_datasets):
-                print(f"            Processing fold {fold + 1}.")
-                # Split the dataset into training and validation source and target sets for the current fold
-                t_src_fold_data = [self._src[i] for i in t_fold_indices]
-                t_tgt_fold_data = [self._tgt[i] for i in t_fold_indices]
-                v_src_fold_data = [self._src[i] for i in v_fold_indices]
-                v_tgt_fold_data = [self._tgt[i] for i in v_fold_indices]
-                t_fold_dataset = (t_src_fold_data, t_tgt_fold_data)
-                v_fold_dataset = (v_src_fold_data, v_tgt_fold_data)
-                # Tokenize training and validation datasets of the current fold
-                t_t_fold_dataset = self._tokenize_dataset(t_fold_dataset)
-                t_v_fold_dataset = self._tokenize_dataset(v_fold_dataset)
-                # Append datasets of the current fold to the corresponding training and validation processes datasets
-                self._processed_dataset["train"].append(t_fold_dataset)
-                self._processed_dataset["val"].append(v_fold_dataset)
-                # Append tokenized datasets of the current fold to the corresponding training and validation processes
-                # tokenized datasets
-                self._processed_dataset["t_train"].append(t_t_fold_dataset)
-                self._processed_dataset["t_val"].append(t_v_fold_dataset)
-        else:
-            # Split the original dataset in training and test sets
-            t_src_data, v_src_data, t_tgt_data, v_tgt_data = train_test_split(self._src, self._tgt, test_size=self._test_ratio)  # , stratify=self._tgt)
-            # Generate training and validation sets
-            t_dataset = (t_src_data, t_tgt_data)
-            v_dataset = (v_src_data, v_tgt_data)
-            # Tokenize training and validation datasets of the current fold
-            t_t_dataset = self._tokenize_dataset(t_dataset)
-            t_v_dataset = self._tokenize_dataset(v_dataset)
-            self._src = None
-            self._tgt = None
-            # Append datasets of the current fold to the corresponding training and validation processes datasets
-            #self._processed_dataset["train"].append(t_dataset)
-            #self._processed_dataset["val"].append(v_dataset)
-            # Append tokenized datasets of the current fold to the corresponding training and validation processes
-            # tokenized datasets
-            self._processed_dataset["t_train"].append(t_t_dataset)
-            self._processed_dataset["t_val"].append(t_v_dataset)
-        # Generate test dataset
-        test_dataset = (self._src_test, self._tgt_test)
-        # Assign the test dataset to the processed datasets
-        #self._processed_dataset["test"] = (self._src_test, self._tgt_test)
-        # Assign the tokenized test dataset to the processed tokenized datasets
-        self._processed_dataset["t_test"] = self._tokenize_dataset(test_dataset)
-        self._src_test = None
-        self._tgt_test = None
-        gc.collect()
-
-    def pre_processing(
-            self
-    ):
-        """
-        The method pre-processes the loaded dataset that will be used to train and test the model.
-        """
-
-        # Get train and validation dataframes
-        t_df = self.get_train_dataframe()
-        v_df = self.get_validation_dataframe()
-        # Map empty cells to empty strings
-        t_df.fillna('', inplace=True)
-        v_df.fillna('', inplace=True)
-
-        if self._tratto_model_type == TrattoModelType.DISCERN:
-            # Generate labels for discern model
-            # The discern model must return True if the oracle is not empty (there is an oracle to generate), False otherwise
-            # An empty oracle is an oracle with ";" as value
-            t_df["label"] = t_df["oracle"].apply(lambda o: "False" if o == ";" else "True")
-            v_df["label"] = v_df["oracle"].apply(lambda o: "False" if o == ";" else "True")
-            # Map id into oracleId
-            #t_df.rename(columns={'id': 'oracleId'}, inplace=True)
-            #v_df.rename(columns={'id': 'oracleId'}, inplace=True)
-            # Specify the type of each column in the dataset
-            df_types = {
-                'label': 'str',
-                'oracleType': 'string',
-                'javadocTag': 'string',
-                'methodJavadoc': 'string',
-                'methodSourceCode': 'string'
-            }
-            # Set the type of each column in the dataset
-            t_df = t_df.astype(df_types)
-            v_df = v_df.astype(df_types)
-        else:
-            # Specify the type of each column in the dataset
-            df_types = {
-                'label': 'str',
-                'oracleId': 'int64',
-                'oracleType': 'string',
-                'packageName': 'string',
-                'className': 'string',
-                'javadocTag': 'string',
-                'methodJavadoc': 'string',
-                'methodSourceCode': 'string',
-                'oracleSoFar': 'string',
-                'token': 'string',
-                'tokenClass': 'string',
-                'tokenInfo': 'string'
-            }
-            # Set the type of each column in the dataset
-            t_df = t_df.astype(df_types)
-            v_df = v_df.astype(df_types)
-            self._enrich_vocabulary()
-            # Replace the values in the DataFrame column
-            t_df['tokenClass'] = t_df['tokenClass'].replace(self.get_token_classes_value_mappings())
-
-        # Pre-process the dataset, according to the Tratto model considered (tokenClasses or tokenValues).
-        if self._tratto_model_type == TrattoModelType.TOKEN_CLASSES:
-            # Balance dataset
-            t_df = self._balance_dataframe(t_df)
-
-            ## TODO: START REFACTORING FROM HERE
-
-
-            # Map token classes so far to new values and transform it from array to string
-            self._df_dataset["tokenClassesSoFar"] = self._df_dataset["tokenClassesSoFar"].apply(lambda x: "[ " + " ".join(random.sample([value_mappings[y] for y in x], len(x))) + " ]")
-            # Compute eligible token classes
-            df_eligibleTokenClasses = self._df_dataset.groupby(['oracleId', 'oracleSoFar'])['tokenClass'].unique().to_frame()
-            df_eligibleTokenClasses = df_eligibleTokenClasses.rename(columns={'tokenClass': 'eligibleTokenClasses'})
-            self._df_dataset = pd.merge(self._df_dataset, df_eligibleTokenClasses, on=['oracleId', 'oracleSoFar']).reset_index()
-            self._df_dataset["eligibleTokenClasses"] = self._df_dataset["eligibleTokenClasses"].apply(lambda x: "[ " + " ".join(random.sample(list(x),len(x))) + " ]")
-            # Set type of dataframe columns
-            self._df_dataset['eligibleTokenClasses'] = self._df_dataset['eligibleTokenClasses'].astype('string')
-            self._df_dataset['tokenClass'] = self._df_dataset['tokenClass'].astype('string')
-            self._df_dataset['tokenClassesSoFar'] = self._df_dataset['tokenClassesSoFar'].astype('string')
-            # Define the new order of columns
-            new_columns_order = [
-                'token', 'tokenInfo', 'tokenClass', 'oracleSoFar', 'tokenClassesSoFar', 'eligibleTokenClasses',
-                'javadocTag', 'oracleType', 'packageName', 'className', 'methodSourceCode', 'methodJavadoc',
-                'oracleId', 'label'
-            ]
-            # Reindex the DataFrame with the new order
-            self._df_dataset = self._df_dataset.reindex(columns=new_columns_order)
-        else:
-            # Compute eligible token values
-            df_eligibleTokens = self._df_dataset.groupby(['oracleId', 'oracleSoFar'])['token'].unique().to_frame()
-            df_eligibleTokens = df_eligibleTokens.rename(columns={'token': 'eligibleTokens'})
-            self._df_dataset = pd.merge(self._df_dataset, df_eligibleTokens, on=['oracleId', 'oracleSoFar']).reset_index()
-            self._df_dataset["eligibleTokens"] = self._df_dataset["eligibleTokens"].apply(lambda x: "[ " + " ".join(random.sample(list(x),len(x))) + " ]")
-            # Set type of dataframe columns
-            self._df_dataset['eligibleTokens'] = self._df_dataset['eligibleTokens'].astype('string')
-            # Define the new order of columns
-            new_columns_order = [
-                'token', 'oracleSoFar', 'eligibleTokens', 'tokenInfo', 'tokenClass', 'javadocTag', 'oracleType',
-                'packageName', 'className', 'methodSourceCode', 'methodJavadoc',
-                'oracleId', 'label'
-            ]
-            # Reindex the DataFrame with the new order
-            self._df_dataset = self._df_dataset.reindex(columns=new_columns_order)
-
-        if self._classification_type == ClassificationType.CATEGORY_PREDICTION:
-            # Keep only a single instance for each combination of oracleId and oracleSoFar
-            self._df_dataset = self._df_dataset[self._df_dataset['label'] == 'True']
-
-        # Remove method source code (keep only signature)
-        #self._df_dataset['methodSourceCode'] = self._df_dataset['methodSourceCode'].str.split('{').str[0]
-
-        # Delete the tgt labels from the input dataset, and others less relevant columns
-        df_src = self._df_dataset.drop(['label', 'oracleId'], axis=1)
-        # If the model predicts token classes, remove the token values from the input, else remove
-        # the token classes from the input
-        if self._tratto_model_type == TrattoModelType.TOKEN_CLASSES:
-            df_src = df_src.drop(['token','tokenInfo'], axis=1)
-            # Remove the tokenClass column if the model will predict the tokenClass as target
-            if self._classification_type == ClassificationType.CATEGORY_PREDICTION:
-                df_src = df_src.drop(['tokenClass'], axis=1)
-        else:
-            # Remove the token column if the model will predict the token as target
-            if self._classification_type == ClassificationType.CATEGORY_PREDICTION:
-                df_src = df_src.drop(['token'], axis=1)
-            # Remove the tokenInfo column if the classificator is a decoder
-            if self._transformer_type == TransformerType.DECODER and not self._classification_type == ClassificationType.LABEL_PREDICTION:
-                df_src = df_src.drop(['tokenInfo'], axis=1)
-
-        # The apply function maps each row of the src dataset with multiple columns, to
-        # a row with a single column containing the concatenation of the strings of each
-        # original column, using a token as a separator.
-        #
-        # For example:
-        #
-        #   1. Given the first row of the dataset:
-        #
-        #         projectName                                 "commons-collections4-4.1"
-        #         packageName                          "org.apache.commons.collections4"
-        #         className                                                    "Equator"
-        #         javadocTag                "@return whether the two objects are equal."
-        #         methodJavadoc      "/**\n     * Evaluates the two arguments for th..."
-        #         methodSourceCode                         "boolean equate(T o1, T o2);"
-        #         classJavadoc       "/**\n * An equation function, which determines..."
-        #         oracleSoFar                                                         ""
-        #         token                                                              "("
-        #         tokenClass                                        "OpeningParenthesis"
-        #         tokenInfo                                                           ""
-        #         notes                                                               ""
-        #
-        #   2. The statement gets the values of each column in an array (row.values)
-        #
-        #         ["commons-collections4-4.1","org.apache.commons.collections4",...,"",""]
-        #
-        #   3. The join method concatenates all the values in the array into a string,
-        #      using a special token (the *sep_token*) as separator.
-        #
-        #         commons-collections4-4.1<s>org.apache.commons.collections4<s>...<s>OpeningParenthesis<s><s>
-        #
-        # The result of step (3) represents the content of the unique column of the new
-        # map row. The process is repeated for each row in the src dataset.
-        df_src_concat = df_src.apply(lambda row: self._tokenizer.sep_token.join(row.values), axis=1)
-
-        # The pandas dataframe is transformed in a list of strings: each string is an input to the model
-        src = df_src_concat.to_numpy().tolist()
-        # Get the list of target values from the dataframe
-        if self._transformer_type == TransformerType.DECODER:
-            if self._classification_type == ClassificationType.CATEGORY_PREDICTION:
-                if self._tratto_model_type == TrattoModelType.TOKEN_CLASSES:
-                    tgt = self._df_dataset["tokenClass"].values.tolist()
-                elif self._tratto_model_type == TrattoModelType.TOKEN_VALUES:
-                    tgt = self._df_dataset["token"].values.tolist()
-            elif self._classification_type == ClassificationType.LABEL_PREDICTION:
-                tgt = self._df_dataset["label"].values.tolist()
-        else:
-            if self._classification_type == ClassificationType.CATEGORY_PREDICTION:
-                if self._tratto_model_type == TrattoModelType.TOKEN_CLASSES:
-                    classes_ids_dict = self.get_encoder_labels_ids("token_class")
-                    tgt = list(map(lambda t: classes_ids_dict[t], self._df_dataset["tokenClass"].values.tolist()))
-                elif self._tratto_model_type == TrattoModelType.TOKEN_VALUES:
-                    classes_ids_dict = self.get_encoder_labels_ids("token")
-                    tgt = list(map(lambda t: classes_ids_dict[t], self._df_dataset["token"].values.tolist()))
-            elif self._classification_type == ClassificationType.LABEL_PREDICTION:
-                labels_ids_dict =  self.get_encoder_labels_ids(self._tgt_column_name)
-                tgt = list(map(lambda t: labels_ids_dict[t], self._df_dataset["label"].values.tolist()))
-        print(f"After preprocessing: {len(src)}")
-        # Split the dataset into training and test sets with stratified sampling (given imbalanced dataset), based on target classes
-        self._src, self._src_test, self._tgt, self._tgt_test = train_test_split(src, tgt, test_size=self._test_ratio)  # stratify=tgt)
-
-    def _balance_dataframe(self, df):
-        # Extract empty oracles from dataframe
-        df_empty_semicolon_true = df[
-            (df['oracleSoFar'] == '') &
-            (df['token'] == ';') &
-            (df['label'] == True)
-        ]
-        # Extract non-empty oracles from dataframe
-        df_not_empty_semicolon_true = df[
-            (df['oracleSoFar'].str.strip() != '') |
-            (df['token'] != ';') |
-            (df['label'] != True)
-            ]
-        # Compute the size of the two dataframes
-        df_empty_size = len(df_empty_semicolon_true)
-        df_not_empty_size = len(df_not_empty_semicolon_true)
-        # Check if the two dataframes are imbalanced
-        if df_empty_size > 0 and (0.8 < df_not_empty_size/df_empty_size < 1.2):
-            # Start building the balanced DataFrame
-            major_df = df_empty_semicolon_true if df_empty_size > df_not_empty_size else df_not_empty_semicolon_true
-            minor_df = df_empty_semicolon_true if df_empty_size < df_not_empty_size else df_not_empty_semicolon_true
-            balanced_df = minor_df
-            # Group the major dataframe by 'oracleId'
-            groups = major_df.groupby('oracleId')
-            rows_counter = 0
-            # Iterate over the groups and randomly select groups until the desired number of rows is reached
-            for name, group in groups:
-                rows_counter += len(group)
-                # Add all rows of the group to the balanced DataFrame
-                balanced_df = pd.concat([balanced_df, group])
-                # Check if adding the group's rows would exceed the desired number of rows
-                if len(balanced_df) + len(group) > 2 * len(minor_df):
-                    break
-            print(f"Balanced dataset: {len(minor_df)} minor df + {rows_counter} major df = {len(balanced_df)}")
-            # Reset the index of the balanced DataFrame
-            balanced_df = balanced_df.reset_index(drop=True)
-            return balanced_df
-
-    def _collect_dataframes(
-            self,
+    @staticmethod
+    def collect_dataframes(
             d_path: str
     ):
         """
@@ -636,8 +124,309 @@ class DataProcessor:
         df_dataset.reset_index(drop=True, inplace=True)
         return df_dataset
 
-    def load_dataset_as_dataframe(
+    def compute_weights(
             self,
+            column_name: str,
+            df_type: Type[DatasetType] = None,
+            df: Type[DataFrame] = None
+    ):
+        """
+        The method computes the weights to assign to each value of the list passed to the function, for the given
+        dataset. The weights are used to assign a different importance to each value of the list (targets), in
+        the computation of the loss of the classification task, when the dataset is imbalanced. By default, if the
+        dataframe is not provided and the dataset type is not provided as well, the method uses the training dataframe.
+
+        Parameters
+        ----------
+        column_name: str
+            The name of the column of the dataset to process
+        df_type: Type[DatasetType]
+            The dataset type (DatasetType.TRAINING or DatasetType.VALIDATION). Default None.
+        df: Type[DataFrame]
+            The dataframe to process. Default None.
+
+        Returns
+        -------
+        values_weights : List[float]
+            A list containing the weights for each different value of the column within the dataset. The length of
+            the list is equal to the number of unique values in the column processed.
+        """
+        if column_name is None:
+            column_name = self._tgt_column_name
+        # Assert arguments are legal
+        assert df_type is None or df_type in [DatasetType.TRAINING, DatasetType.VALIDATION], f"Dataset type {df_type} not recognized."
+        assert df_type is not None or (df_type is None and df is None), "Illegal arguments combination."
+        if df_type is None:
+            df_type = DatasetType.TRAINING
+        if "weights" not in self._cache:
+            self._cache["weights"] = {}
+        if df_type.value not in self._cache["weights"]:
+            self._cache["weights"][df_type.value] = {}
+        if df_type is None or column_name not in self._cache["weights"][df_type.value]:
+            # Get training dataframe, if df is not provided
+            if df is None:
+                if df_type == DatasetType.TRAINING:
+                    df = self.get_train_dataframe()
+                else:
+                    df = self.get_validation_dataframe()
+            # Assert the column name is in the dataframe
+            assert column_name in df.columns, f"Column {column_name} not found in the dataset."
+            # Get the list of unique labels and the count the occurrences of each class
+            unique_classes, class_counts = np.unique(df[column_name], return_counts=True)
+            # Calculate the inverse class frequencies
+            total_samples = np.sum(class_counts)
+            class_frequencies = class_counts / total_samples
+            class_weights = 1.0 / class_frequencies
+            # Normalize the class weights
+            class_weights /= np.sum(class_weights)
+            # Save weights on cache
+            self._cache["weights"][df_type.value][column_name] = class_weights
+        # Return the computed weights
+        return self._cache["weights"][df_type.value][column_name]
+
+    def get_encoder_labels_ids(
+            self,
+            column_name: str,
+            df_type: Type[DatasetType] = None,
+            df: Type[DataFrame] = None
+    ):
+        """
+        The method computes the dictionary of the target labels for a given column name of a given dataframe, where
+        each key represents the name of a target label, while the corresponding value is a numerical identifier
+        representing the index of the one-shot vector representing the label, with value equals to 1.0. If the dataframe
+        provided is None, the method uses the training dataframe.
+
+        Parameters
+        ----------
+        column_name: str
+            The name of the column of the dataset to process
+        df_type: Type[DatasetType]
+            The dataset type (DatasetType.TRAINING or DatasetType.VALIDATION). Default None.
+        df: Type[DataFrame]
+            The dataframe to process. Default None.
+
+        Returns
+        -------
+        The dictionary of labels. The keys strings representing the name of the corresponding target label, while the 
+        values are strings representing the name of the corresponding target label.
+        """
+        if column_name is None:
+            column_name = self._tgt_column_name
+        # Assert arguments are legal
+        assert df_type is None or df_type in [DatasetType.TRAINING, DatasetType.VALIDATION], f"Dataset type {df_type} not recognized."
+        assert df_type is not None or (df_type is None and df is None), "Illegal arguments combination."
+
+        if df_type is None and df is None:
+            df_type = DatasetType.TRAINING
+            df = self.get_train_dataframe()
+        if "encoder_labels_ids" not in self._cache:
+            self._cache["encoder_labels_ids"] = {}
+        if df_type is None or df_type.value not in self._cache["encoder_labels_ids"]:
+            self._cache["encoder_labels_ids"][df_type.value] = {}
+        if column_name not in self._cache["encoder_labels_ids"][df_type.value]:
+            self._cache["encoder_labels_ids"][df_type.value][column_name] = {k: i for i, k in self.get_encoder_ids_labels(column_name, df_type, df).items()}
+        # Return the computed dictionary
+        return self._cache["encoder_labels_ids"][df_type.value][column_name]
+
+    def get_encoder_ids_labels(
+            self,
+            column_name: str = None,
+            df_type: Type[DatasetType] = None,
+            df: Type[DataFrame] = None
+    ):
+        """
+        The method computes the dictionary of target labels for a given column name of a given dataframe, where each
+        value represents the name of a target label, while the corresponding key element is a numerical identifier
+        representing the index of the one-shot vector representing the label, with value equals to 1.0. If the column
+        name provided is None, the method uses the default target column name (self._tgt_column_name). If the dataframe
+        provided is None, the method uses the training dataframe.
+
+        Parameters
+        ----------
+        column_name: str
+            The name of the column of the dataset to process. Default None.
+        df_type: Type[DatasetType]
+            The dataset type (DatasetType.TRAINING or DatasetType.VALIDATION). Default None.
+        df: Type[DataFrame]
+            The dataframe to process. Default None.
+
+        Returns
+        -------
+        The dictionary of labels. The keys are numerical identifiers (int), while the values are strings representing the
+        name of the corresponding target label.
+        """
+        if column_name is None:
+            column_name = self._tgt_column_name
+        # Assert arguments are legal
+        assert df_type is None or df_type in [DatasetType.TRAINING, DatasetType.VALIDATION], f"Dataset type {df_type} not recognized."
+        assert df_type is not None or (df_type is None and df is None), "Illegal arguments combination."
+
+        if df_type is None:
+            df_type = DatasetType.TRAINING
+        if "encoder_ids_labels" not in self._cache:
+            self._cache["encoder_ids_labels"] = {}
+        if df_type.value not in self._cache["encoder_ids_labels"]:
+            self._cache["encoder_ids_labels"][df_type.value] = {}
+        if column_name not in self._cache["encoder_ids_labels"][df_type.value]:
+            if df is None:
+                if df_type == DatasetType.TRAINING:
+                    df = self.get_train_dataframe()
+                else:
+                    df = self.get_validation_dataframe()
+            # Assert the column name is in the dataframe
+            assert column_name in df.columns, f"Column {column_name} not found in the dataset."
+            self._cache["encoder_ids_labels"][df_type.value][column_name] = {i: str(k) for i, k in enumerate(sorted(list(df[column_name].unique())))}
+        # Return the computed dictionary
+        return self._cache["encoder_ids_labels"][df_type.value][column_name]
+
+    def get_num_labels(
+            self,
+            column_name: str = None,
+            df_type: Type[DatasetType] = None,
+            df: Type[DataFrame] = None
+    ):
+        """
+        Get the number of unique values of the target labels, for a given column name of the given dataframe.
+        If the column name provided is None, the method uses the default target column name (self._tgt_column_name).
+        
+        Parameters
+        ----------
+        column_name: str
+            The name of the column of the dataset to process. Default None.
+        df_type: Type[DatasetType]
+            The dataset type (DatasetType.TRAINING or DatasetType.VALIDATION). Default None.
+        df: Type[DataFrame]
+            The dataframe to process. Default None.
+
+        Returns
+        -------
+        An integer representing the number of unique values of labels.
+        """
+        if column_name is None:
+            column_name = self._tgt_column_name
+        # Assert arguments are legal
+        assert df_type is None or df_type in [DatasetType.TRAINING, DatasetType.VALIDATION], f"Dataset type {df_type} not recognized."
+        assert df_type is not None or (df_type is None and df is None), "Illegal arguments combination."
+
+        return len(self.get_encoder_ids_labels(column_name, df_type, df))
+
+    @staticmethod
+    def get_token_classes_value_mappings():
+        """
+        The method loads the value mappings to substitute token classes default names.
+        """
+        _, value_mappings = utils.import_json(
+            os.path.join(
+                os.path.dirname(os.path.abspath(__file__)),
+                '..',
+                'resources',
+                'token_classes_values_mappings.json'
+            )
+        )
+        return value_mappings
+
+    @staticmethod
+    def get_token_classes_ignore_values():
+        """
+        The method loads the token classes to ignore by the token values model.
+        """
+        _, ignore_values = utils.import_json(
+            os.path.join(
+                os.path.dirname(os.path.abspath(__file__)),
+                '..',
+                'resources',
+                'token_classes_ignore_value_mappings.json'
+            )
+        )
+        return ignore_values
+
+    def get_tokenized_dataset(
+            self,
+            d_type: Type[DatasetType]
+    ):
+        """
+        The method returns the processed tokenized (training or validation) dataset.
+
+        Parameters
+        ----------
+        d_type: DatasetType
+            The dataset type that the method must return
+                - DatasetType.TRAINING for the training dataset
+                - DatasetType.VALIDATION for the validation dataset
+
+        Returns
+        -------
+        t_t_dataset : TensorDataset
+            A PyTorch TensorDataset composed of four tensors stack:
+                - the first tensor stack representing the stack of tokenized input
+                  datapoints of the selected dataset
+                - the second tensor stack representing the stack of attention masks
+                  (each index corresponding to the index of the input datapoints in
+                  the first tensor)
+                - the third tensor stack representing the list of expected target
+                  outputs (each index corresponding to the index of the input
+                  datapoints in the first tensor)
+        """
+        # Select the tokenized dataset
+        if d_type == DatasetType.TRAINING:
+            t_dataset = (
+                self._tokenized_train_dataset["src"],
+                self._tokenized_train_dataset["mask"],
+                self._tokenized_train_dataset["tgt"]
+            )
+        elif d_type == DatasetType.VALIDATION:
+            t_dataset = (
+                self._tokenized_validation_dataset["src"],
+                self._tokenized_validation_dataset["mask"],
+                self._tokenized_validation_dataset["tgt"]
+            )
+        else:
+            raise Exception(f"Unrecognized DataType value: {d_type}")
+        # Generate the tokenized tensor dataset, from the list of tokenized datapoints
+        t_t_dataset = TensorDataset(*t_dataset)
+        # Return the dataset
+        return t_t_dataset
+
+    def get_train_dataframe(self):
+        """
+        The method returns the training dataset as a pandas dataframe.
+
+        Returns
+        -------
+        The training dataset as a pandas dataframe.
+        """
+        # Get the dataset to process
+        t_df = self.load_dataset_as_dataframe(self._train_dataset_path)
+        if self._tratto_model_type == TrattoModelType.TOKEN_CLASSES:
+            # Get token classes value mappings
+            value_mappings = self.get_token_classes_value_mappings()
+            # Replace the values in the DataFrame column
+            t_df['tokenClass'] = t_df['tokenClass'].replace(value_mappings)
+            # Map token classes so far to new values and transform it from array to string
+            t_df["tokenClassesSoFar"] = t_df["tokenClassesSoFar"].apply(lambda x: [value_mappings[y] for y in x])
+        return t_df
+
+    def get_validation_dataframe(self):
+        """
+        The method returns the validation dataset as a pandas dataframe.
+
+        Returns
+        -------
+        The validation dataset as a pandas dataframe.
+        """
+        # Get the dataset to process
+        v_df = self.load_dataset_as_dataframe(self._validation_dataset_path)
+        if self._tratto_model_type == TrattoModelType.TOKEN_CLASSES:
+            # Get token classes value mappings
+            value_mappings = self.get_token_classes_value_mappings()
+            # Replace the values in the DataFrame column
+            v_df['tokenClass'] = v_df['tokenClass'].replace(value_mappings)
+            # Map token classes so far to new values and transform it from array to string
+            v_df["tokenClassesSoFar"] = v_df["tokenClassesSoFar"].apply(lambda x: [value_mappings[y] for y in x])
+        return v_df
+
+    @staticmethod
+    def load_dataset_as_dataframe(
             dataset_path: str
     ):
         """
@@ -671,31 +460,227 @@ class DataProcessor:
         # Return the dataset in the form of pandas dataframe
         return df_dataset
 
+    def pre_processing(
+            self
+    ):
+        """
+        The method pre-processes the loaded dataset that will be used to train and validate the model.
+        It generates the final tokenized dataset, ready to be used to train and validate the model.
+        """
+        # Get train and validation dataframes
+        t_df = self.get_train_dataframe()
+        v_df = self.get_validation_dataframe()
+        # Map empty cells to empty strings
+        t_df.fillna('', inplace=True)
+        v_df.fillna('', inplace=True)
+        # Get the dictionary of encoder label ids
+        labels_ids_dict = self.get_encoder_labels_ids(self._tgt_column_name, df_type=DatasetType.TRAINING, df=t_df)
+        # Pre-process the dataset, according to the Tratto model
+        if self._tratto_model_type == TrattoModelType.DISCERN:
+            # Generate labels for discern model
+            # The discern model must return True if the oracle is not empty (there is an oracle to generate), False otherwise
+            # An empty oracle is an oracle with ";" as value
+            t_df["label"] = t_df["oracle"].apply(lambda o: "False" if o == ";" else "True")
+            v_df["label"] = v_df["oracle"].apply(lambda o: "False" if o == ";" else "True")
+            # Map id into oracleId
+            t_df.rename(columns={'id': 'oracleId'}, inplace=True)
+            v_df.rename(columns={'id': 'oracleId'}, inplace=True)
+            # Specify the type of each column in the dataset
+            df_types = {
+                'label': 'str',
+                'oracleId': 'int64',
+                'oracle': 'string',
+                'oracleType': 'string',
+                'javadocTag': 'string',
+                'methodJavadoc': 'string',
+                'methodSourceCode': 'string'
+            }
+            # Set the type of each column in the dataset
+            t_df = t_df.astype(df_types)
+            v_df = v_df.astype(df_types)
+            # Balance dataset
+            t_df = self._balance_dataframe(t_df)
+            # Define the new order of columns
+            new_columns_order = [
+                'javadocTag', 'oracleType', 'methodSourceCode', 'methodJavadoc', 'oracleId', 'oracle', 'label'
+            ]
+            # Reindex the DataFrame with the new order
+            t_df = t_df.reindex(columns=new_columns_order)
+            v_df = v_df.reindex(columns=new_columns_order)
+            # Get the list of target values from the dataframe
+            t_tgt = t_df["label"].values.tolist()
+            v_tgt = v_df["label"].values.tolist()
+            # Drop oracle column
+            t_df.drop(['oracle'], axis=1, inplace=True)
+            v_df.drop(['oracle'], axis=1, inplace=True)
+        else:
+            # Specify the type of each column in the dataset
+            df_types = {
+                'label': 'str',
+                'oracleId': 'int64',
+                'oracleType': 'string',
+                'packageName': 'string',
+                'className': 'string',
+                'javadocTag': 'string',
+                'methodJavadoc': 'string',
+                'methodSourceCode': 'string',
+                'oracleSoFar': 'string',
+                'token': 'string',
+                'tokenClass': 'string',
+                'tokenInfo': 'string'
+            }
+            # Set the type of each column in the dataset
+            t_df = t_df.astype(df_types)
+            v_df = v_df.astype(df_types)
+            # Enrich vocabulary
+            self._enrich_vocabulary()
+            # Balance dataset
+            t_df = self._balance_dataframe(t_df)
+            # Pre-process the dataset, according to the Tratto model considered (tokenClasses or tokenValues).
+            if self._tratto_model_type == TrattoModelType.TOKEN_CLASSES:
+                # Map token classes so far to new values and transform it from array to string
+                t_df = self._compute_tokenClassesSoFar(t_df)
+                v_df = self._compute_tokenClassesSoFar(v_df)
+                # Compute eligible token classes
+                t_df = self._compute_eligible_token_classes(t_df)
+                v_df = self._compute_eligible_token_classes(v_df)
+                # Define the new order of columns
+                new_columns_order = [
+                    'token', 'tokenInfo', 'tokenClass', 'oracleSoFar', 'tokenClassesSoFar', 'eligibleTokenClasses',
+                    'javadocTag', 'oracleType', 'packageName', 'className', 'methodSourceCode', 'methodJavadoc',
+                    'oracleId', 'label'
+                ]
+                # Reindex the DataFrame with the new order
+                t_df = t_df.reindex(columns=new_columns_order)
+                v_df = v_df.reindex(columns=new_columns_order)
+            else:
+                # Compute eligible token values
+                t_df = self._compute_eligible_token_values(t_df)
+                v_df = self._compute_eligible_token_values(v_df)
+                # Define the new order of columns
+                new_columns_order = [
+                    'token', 'oracleSoFar', 'eligibleTokens', 'tokenInfo', 'tokenClass', 'javadocTag', 'oracleType',
+                    'packageName', 'className', 'methodSourceCode', 'methodJavadoc', 'oracleId', 'label'
+                ]
+                # Reindex the DataFrame with the new order
+                t_df = t_df.reindex(columns=new_columns_order)
+                v_df = v_df.reindex(columns=new_columns_order)
+            # Keep only the instance with label 'True', for each combination of oracleId and oracleSoFar, if the model
+            # predicts the categories (tokenClasses or tokenValues)
+            if self._classification_type == ClassificationType.CATEGORY_PREDICTION:
+                t_df = t_df[t_df['label'] == 'True']
+                v_df = v_df[v_df['label'] == 'True']
+            # Get the list of target values from the dataframe
+            if self._transformer_type == TransformerType.DECODER:
+                t_tgt = t_df[self._tgt_column_name].values.tolist()
+                v_tgt = v_df[self._tgt_column_name].values.tolist()
+            else:
+                t_tgt = list(map(lambda t: labels_ids_dict[t], t_df[self._tgt_column_name].values.tolist()))
+                v_tgt = list(map(lambda t: labels_ids_dict[t], v_df[self._tgt_column_name].values.tolist()))
+            # If the model predicts token classes, remove the token values from the input, else remove
+            # the token classes from the input
+            if self._tratto_model_type == TrattoModelType.TOKEN_CLASSES:
+                t_df = t_df.drop(['token', 'tokenInfo'], axis=1)
+                # Remove the tokenClass column if the model will predict the tokenClass as target
+                if self._classification_type == ClassificationType.CATEGORY_PREDICTION:
+                    t_df = t_df.drop(['tokenClass'], axis=1)
+            else:
+                # Remove the token column if the model will predict the token as target
+                if self._classification_type == ClassificationType.CATEGORY_PREDICTION:
+                    t_df = t_df.drop(['token'], axis=1)
+                # Remove the tokenInfo column if the classificator is a decoder
+                if self._transformer_type == TransformerType.DECODER and not self._classification_type == ClassificationType.LABEL_PREDICTION:
+                    t_df = t_df.drop(['tokenInfo'], axis=1)
+        # Delete the tgt labels from the input dataset, and others irrelevant columns
+        t_df.drop(['label', 'oracleId'], axis=1, inplace=True)
+        v_df.drop(['label', 'oracleId'], axis=1, inplace=True)
+        # Generate input strings for training and validation datasets
+        t_src = self._concat_src(t_df)
+        v_src = self._concat_src(v_df)
+        # Release memory to reduce consumptions with large datasets
+        del t_df
+        del v_df
+        gc.collect()
+        # Generate tensors of tokenized input and target datapoints
+        t_t_train = self._tokenize_dataset(t_src, t_tgt)
+        t_t_validation = self._tokenize_dataset(v_src, v_tgt)
+        # Release memory to reduce consumptions with large datasets
+        del t_src
+        del v_src
+        del t_tgt
+        del v_tgt
+        gc.collect()
+        # Save the tokenized datasets
+        self._tokenized_train_dataset["src"] = t_t_train[0]
+        self._tokenized_train_dataset["mask"] = t_t_train[1]
+        self._tokenized_train_dataset["tgt"] = t_t_train[2]
+        self._tokenized_validation_dataset["src"] = t_t_validation[0]
+        self._tokenized_validation_dataset["mask"] = t_t_validation[1]
+        self._tokenized_validation_dataset["tgt"] = t_t_validation[2]
+
+    @staticmethod
+    def _balance_dataframe(df):
+        # Extract empty oracles from dataframe
+        df_empty_semicolon_true = df[
+            (df['oracleSoFar'] == '') &
+            (df['token'] == ';') &
+            (df['label'] == True)
+        ]
+        # Extract non-empty oracles from dataframe
+        df_not_empty_semicolon_true = df[
+            (df['oracleSoFar'].str.strip() != '') |
+            (df['token'] != ';') |
+            (df['label'] != True)
+        ]
+        # Compute the size of the two dataframes
+        df_empty_size = len(df_empty_semicolon_true)
+        df_not_empty_size = len(df_not_empty_semicolon_true)
+        # Check if the two dataframes are imbalanced
+        if df_empty_size > 0 and (0.8 < df_not_empty_size/df_empty_size < 1.2):
+            # Start building the balanced DataFrame
+            major_df = df_empty_semicolon_true if df_empty_size > df_not_empty_size else df_not_empty_semicolon_true
+            minor_df = df_empty_semicolon_true if df_empty_size < df_not_empty_size else df_not_empty_semicolon_true
+            balanced_df = minor_df
+            # Group the major dataframe by 'oracleId'
+            groups = major_df.groupby('oracleId')
+            rows_counter = 0
+            # Iterate over the groups and randomly select groups until the desired number of rows is reached
+            for name, group in groups:
+                rows_counter += len(group)
+                # Add all rows of the group to the balanced DataFrame
+                balanced_df = pd.concat([balanced_df, group])
+                # Check if adding the group's rows would exceed the desired number of rows
+                if len(balanced_df) + len(group) > 2 * len(minor_df):
+                    break
+            print(f"Balanced dataset: {len(minor_df)} minor df + {rows_counter} major df = {len(balanced_df)}")
+            # Reset the index of the balanced DataFrame
+            balanced_df = balanced_df.reset_index(drop=True)
+            return balanced_df
+        return df
+
     def _tokenize_dataset(
             self,
-            datapoints: Tuple[List[str], List[List[float]]]
+            inputs: List[str],
+            targets: List[List[float]]
     ):
         """
         The method tokenizes the input and target datapoints passed to the function
 
         Parameters
         ----------
-        datapoints: List[Tuple[str,Union[str,float]]]
-            A list of datapoints  (tuples input and targets).
+        inputs: List[str]
+            The list of input datapoints to tokenize
+        targets: List[List[float]]
+            The list of target datapoints to tokenize
 
         Returns
         -------
-        tokenized_batches : Tuple[List[int],List[float],List[float]]]
+        tokenized_batches : Tuple[List[int],List[float],List[float]]
             A tuple of 3 lists, where the first list represents the tokenized strings of the input datapoints of the
             dataset, the second list is the tensor of the corresponding attention-masks, the third element is the tensor
             of the corresponding targets.
         """
-        # Extracts the inputs datapoints from the dataset
-        inputs = datapoints[0]
-        # Extracts the corresponding targets datapoints from the dataset
-        targets = datapoints[1]
-        # Tokenize the input and the target datapoints
-        # The method generate a dictionary with two keys:
+        # The following method generatse a dictionary with two keys:
         #
         #   t_src_dict = {
         #       "input_ids": [[t_i_1_1,...,t_i_1_n],...,[t_i_k_1,...,t_i_k_n]],
@@ -745,38 +730,133 @@ class DataProcessor:
         tokenized_dataset = (t_inputs, t_inputs_attention_masks, t_targets)
         # Return the tokenized dataset
         return tokenized_dataset
-    
+
     @staticmethod
-    def get_token_classes_value_mappings():
+    def _compute_tokenClassesSoFar(
+            df: Type[DataFrame]
+    ):
         """
-        The method loads the value mappings to substitute token classes default names.
+        The method computes the token classes added so far to a given oracle, for each datapoint of the dataframe
+        passed to the function.
+
+        Parameters
+        ----------
+        df: Type[DataFrame]
+            The dataframe to process
+
+        Returns
+        -------
+        df: Type[DataFrame]
+            The dataframe with the token classes so far computed
         """
-        _, value_mappings = utils.import_json(
-            os.path.join(
-                os.path.dirname(os.path.abspath(__file__)),
-                '..',
-                'resources',
-                'token_classes_values_mappings.json'
-            )
-        )
-        return value_mappings
-    
+        # Map token classes so far to new values and transform it from array to string
+        df["tokenClassesSoFar"] = df["tokenClassesSoFar"].apply(lambda x: "[ " + " ".join(random.sample([y for y in x], len(x))) + " ]")
+        # Set type of new dataframe column
+        df['tokenClassesSoFar'] = df['tokenClassesSoFar'].astype('string')
+        return df
+
     @staticmethod
-    def get_token_classes_ignore_values():
+    def _compute_eligible_token_classes(
+            df: Type[DataFrame]
+    ):
         """
-        The method loads the token classes to ignore by the token values model.
+        The method computes the eligible token classes for each datapoint of the dataframe passed to the function.
+        Parameters
+        ----------
+        df: Type[DataFrame]
+            The dataframe to process
+
+        Returns
+        -------
+        df: Type[DataFrame]
+            The dataframe with the eligible token classes computed
         """
-        _, ignore_values = utils.import_json(
-            os.path.join(
-                os.path.dirname(os.path.abspath(__file__)),
-                '..',
-                'resources',
-                'token_classes_ignore_value_mappings.json'
-            )
-        )
-        return ignore_values
-        
-    
+        # Compute eligible token classes
+        df_eligibleTokenClasses = df.groupby(['oracleId', 'oracleSoFar'])['tokenClass'].unique().to_frame()
+        df_eligibleTokenClasses = df_eligibleTokenClasses.rename(columns={'tokenClass': 'eligibleTokenClasses'})
+        df = pd.merge(df, df_eligibleTokenClasses, on=['oracleId', 'oracleSoFar']).reset_index()
+        df["eligibleTokenClasses"] = df["eligibleTokenClasses"].apply(lambda x: "[ " + " ".join(random.sample(list(x), len(x))) + " ]")
+        # Set type of new dataframe column
+        df['eligibleTokenClasses'] = df['eligibleTokenClasses'].astype('string')
+        return df
+
+    @staticmethod
+    def _compute_eligible_token_values(df):
+        """
+        The method computes the eligible token values for each datapoint of the dataframe passed to the function.
+
+        Parameters
+        ----------
+        df: Type[DataFrame]
+            The dataframe to process
+
+        Returns
+        -------
+        df: Type[DataFrame]
+            The dataframe with the eligible token values computed
+        """
+        df_eligibleTokens = df.groupby(['oracleId', 'oracleSoFar'])['token'].unique().to_frame()
+        df_eligibleTokens = df_eligibleTokens.rename(columns={'token': 'eligibleTokens'})
+        df = pd.merge(df, df_eligibleTokens, on=['oracleId', 'oracleSoFar']).reset_index()
+        df["eligibleTokens"] = df["eligibleTokens"].apply(lambda x: "[ " + " ".join(random.sample(list(x), len(x))) + " ]")
+        # Set type of new dataframe column
+        df['eligibleTokens'] = df['eligibleTokens'].astype('string')
+        return df
+
+    def _concat_src(
+            self,
+            df: Type[DataFrame]
+    ):
+        """
+        Maps each row of the given dataframe, with multiple columns, to a row with a single column containing the
+        concatenation of the strings of each original column, using a token as a separator (</s>).
+
+        For example:
+
+          1. Given the first row of the dataset:
+
+                projectName                                 "commons-collections4-4.1"
+                packageName                          "org.apache.commons.collections4"
+                className                                                    "Equator"
+                javadocTag                "@return whether the two objects are equal."
+                methodJavadoc      "/**\n     * Evaluates the two arguments for th..."
+                methodSourceCode                         "boolean equate(T o1, T o2);"
+                classJavadoc       "/**\n * An equation function, which determines..."
+                oracleSoFar                                                         ""
+                token                                                              "("
+                tokenClass                                        "OpeningParenthesis"
+                tokenInfo                                                           ""
+                notes                                                               ""
+
+          2. The statement gets the values of each column in an array (row.values)
+
+                ["commons-collections4-4.1","org.apache.commons.collections4",...,"",""]
+
+          3. The join method concatenates all the values in the array into a string,
+             using a special token (the *sep_token*) as separator.
+
+                commons-collections4-4.1<s>org.apache.commons.collections4<s>...<s>OpeningParenthesis<s><s>
+
+        The result of step (3) represents the content of the unique column of the new map row. The process is repeated
+        for each row in the diven dataframe.
+        Finally, the dataframe is transformed into a numpy list where each element corresponds to a row of the new
+        dataframe, i.e. a string representing the concatenation of the values of the original columns.
+
+        Parameters
+        ----------
+        df: Type[DataFrame]
+            The dataframe to process
+
+        Returns
+        -------
+        rows_list: List[str]
+            A list of strings, where each string represents the concatenation of the values of the original columns
+            of the dataframe.
+        """
+        df = df.apply(lambda row: self._tokenizer.sep_token.join(row.values), axis=1)
+        rows_list = df.to_numpy().tolist()
+        return rows_list
+
     def _enrich_vocabulary(self):
         """
         The method enriches the vocabulary of the tokenizer with the words of the token classes.

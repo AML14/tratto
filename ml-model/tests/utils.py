@@ -35,6 +35,39 @@ def generate_src_input(
     input += f"{datapoint.methodJavadoc}"
     return input
 
+def generate_equivalent_src_input(
+        df_dataset,
+        datapoint,
+        tokenizer,
+        transformer_type,
+        classification_type,
+        tratto_model_type,
+        value_mappings
+):
+    equivalent_inputs_array = []
+    equivalent_tokenClassesSoFar_array = []
+    for perm_tokenClassesSoFar in list(permutations(datapoint.tokenClassesSoFar)):
+        perm_tokenClassesSoFar_str = generate_tokenClassSoFar_str(perm_tokenClassesSoFar)
+        equivalent_tokenClassesSoFar_array.append(perm_tokenClassesSoFar_str)
+    equivalent_eligible_array = generate_eligibles(df_dataset, datapoint, value_mappings)
+    for perm_eligible in list(permutations(equivalent_eligible_array)):
+        perm_eligible_str = generate_eligibles_str(perm_eligible)
+        for perm_tokenClassesSoFar in equivalent_tokenClassesSoFar_array:
+            datapoint.tokenClassesSoFar = perm_tokenClassesSoFar
+            if tratto_model_type == TrattoModelType.TOKEN_CLASSES:
+                datapoint.eligibleTokenClasses = perm_eligible_str
+            elif tratto_model_type == TrattoModelType.TOKEN_VALUES:
+                datapoint.eligibleTokens = perm_eligible_str
+            equivalent_inputs_array.append(generate_src_input(
+                datapoint,
+                tokenizer,
+                transformer_type,
+                classification_type,
+                tratto_model_type
+            ))
+
+
+
 def generate_tokenClassSoFar_str(
         tokenClassesSoFar_list
 ):
@@ -50,8 +83,7 @@ def generate_equivalent_tokenClassesSoFar(
         value_mappings
 ):
     equivalent_array = []
-    tokenClassesSoFar_mapped = list(map(lambda t: value_mappings[t], datapoint.tokenClassesSoFar))
-    for perm_tokenClassesSoFar in list(permutations(tokenClassesSoFar_mapped)):
+    for perm_tokenClassesSoFar in list(permutations(datapoint.tokenClassesSoFar)):
         perm_tokenClassesSoFar_str = generate_tokenClassSoFar_str(perm_tokenClassesSoFar)
         equivalent_array.append(perm_tokenClassesSoFar_str)
     return equivalent_array

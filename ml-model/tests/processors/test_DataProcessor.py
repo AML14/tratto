@@ -1,9 +1,12 @@
 import os
 import pytest
 import copy
+
+from src.processors.DataProcessor import DataProcessor
 from src.types.ClassificationType import ClassificationType
 from itertools import permutations
 
+from src.types.DatasetType import DatasetType
 from src.types.TransformerType import TransformerType
 from src.types.TrattoModelType import TrattoModelType
 from src.utils import utils
@@ -11,26 +14,32 @@ from tests.utils import generate_src_input, generate_equivalent_tokenClassesSoFa
 
 
 def test_load_dataset_as_dataframe_num_rows(
-        data_processor,
-        arg_data_dir
+        arg_dataset_path
 ):
-    datapoints_counter = 0
-    for file_name in os.listdir(arg_data_dir):
-        _, json_content = utils.import_json(os.path.join(arg_data_dir, file_name))
-        datapoints_counter += len(json_content)
-    df_dataset = getattr(data_processor, '_df_dataset')
-    assert df_dataset.shape[0] == datapoints_counter
+    for dataset_type in ['train', 'validation']:
+        datapoints_counter = 0
+        path_to_dataset = os.path.join(arg_dataset_path, dataset_type)
+        for file_name in os.listdir(path_to_dataset):
+            _, json_content = utils.import_json(os.path.join(path_to_dataset, file_name))
+            datapoints_counter += len(json_content)
+        df_dataset = DataProcessor.load_dataset_as_dataframe(path_to_dataset)
+        assert df_dataset.shape[0] == datapoints_counter
 
 def test_compute_weights(
         data_processor
 ):
-    for dataset_type in ['train', 'validation']:
-        data_processor.pre_processing()
-        df_dataset = getattr(data_processor, '_df_dataset')
+    t_df = data_processor.get_train_dataframe()
+    v_df = data_processor.get_validation_dataframe()
+    for dataset_type in [DatasetType.TRAINING, DatasetType.VALIDATION, None]:
+        df_dataset = t_df if dataset_type == DatasetType.TRAINING or dataset_type is None else v_df
         columns = df_dataset.columns.tolist()
         for col in columns:
-            weights = data_processor.compute_weights(col)
+            if dataset_type is None:
+                weights = data_processor.compute_weights(col)
+            else:
+                weights = data_processor.compute_weights(col, dataset_type, df_dataset)
             assert pytest.approx(sum(weights), 0.01) == 1
+            df_dataset = df_dataset.astype(str)
             assert len(weights) == len(df_dataset[col].unique().tolist())
 
 def test_get_encoder_ids_labels(
@@ -38,25 +47,32 @@ def test_get_encoder_ids_labels(
         arg_classification_type,
         arg_tratto_model_type
 ):
-    data_processor.pre_processing()
-    ids_tgt_labels = data_processor.get_encoder_ids_labels()
-    df_dataset = getattr(data_processor, '_df_dataset')
-    if arg_classification_type == ClassificationType.CATEGORY_PREDICTION:
-        if arg_tratto_model_type == TrattoModelType.TOKEN_CLASSES:
-            dataset_tgt_labels = df_dataset['tokenClass'].unique().tolist()
-        elif arg_tratto_model_type == TrattoModelType.TOKEN_VALUES:
-            dataset_tgt_labels = df_dataset['token'].unique().tolist()
+    t_df = data_processor.get_train_dataframe()
+    v_df = data_processor.get_validation_dataframe()
+    for dataset_type in [DatasetType.TRAINING, DatasetType.VALIDATION, None]:
+        df_dataset = t_df if dataset_type == DatasetType.TRAINING or dataset_type is None else v_df
+        df_dataset = df_dataset.astype(str)
+        tgt_column_name = getattr(data_processor, '_tgt_column_name')
+        if dataset_type is None:
+            ids_tgt_labels = data_processor.get_encoder_ids_labels(tgt_column_name)
+        else:
+            ids_tgt_labels = data_processor.get_encoder_ids_labels(tgt_column_name, dataset_type, df_dataset)
+        if arg_classification_type == ClassificationType.CATEGORY_PREDICTION:
+            if arg_tratto_model_type == TrattoModelType.TOKEN_CLASSES:
+                dataset_tgt_labels = df_dataset['tokenClass'].unique().tolist()
+            elif arg_tratto_model_type == TrattoModelType.TOKEN_VALUES:
+                dataset_tgt_labels = df_dataset['token'].unique().tolist()
+            else:
+                assert False
+        elif arg_classification_type == ClassificationType.LABEL_PREDICTION:
+            dataset_tgt_labels = df_dataset['label'].unique().tolist()
         else:
             assert False
-    elif arg_classification_type == ClassificationType.LABEL_PREDICTION:
-        dataset_tgt_labels = df_dataset['label'].unique().tolist()
-    else:
-        assert False
-    assert len(ids_tgt_labels.values()) == len(dataset_tgt_labels)
-    for tgt_label in dataset_tgt_labels:
-        assert tgt_label in list(ids_tgt_labels.values())
-    for idx in range(len(dataset_tgt_labels)):
-        assert idx in list(ids_tgt_labels.keys())
+        assert len(ids_tgt_labels.values()) == len(dataset_tgt_labels)
+        for tgt_label in dataset_tgt_labels:
+            assert tgt_label in list(ids_tgt_labels.values())
+        for idx in range(len(dataset_tgt_labels)):
+            assert idx in list(ids_tgt_labels.keys())
 
 
 def test_num_labels(
@@ -64,56 +80,74 @@ def test_num_labels(
         arg_classification_type,
         arg_tratto_model_type
 ):
-    data_processor.pre_processing()
-    num_labels = data_processor.get_num_labels()
-    df_dataset = getattr(data_processor, '_df_dataset')
-    if arg_classification_type == ClassificationType.CATEGORY_PREDICTION:
-        if arg_tratto_model_type == TrattoModelType.TOKEN_CLASSES:
-            dataset_tgt_labels = df_dataset['tokenClass'].unique().tolist()
-        elif arg_tratto_model_type == TrattoModelType.TOKEN_VALUES:
-            dataset_tgt_labels = df_dataset['token'].unique().tolist()
+    t_df = data_processor.get_train_dataframe()
+    v_df = data_processor.get_validation_dataframe()
+    for dataset_type in [DatasetType.TRAINING, DatasetType.VALIDATION, None]:
+        df_dataset = t_df if dataset_type == DatasetType.TRAINING or dataset_type is None else v_df
+        df_dataset = df_dataset.astype(str)
+        tgt_column_name = getattr(data_processor, '_tgt_column_name')
+        if dataset_type is None:
+            num_labels = data_processor.get_num_labels()
+        else:
+            num_labels = data_processor.get_num_labels(tgt_column_name, dataset_type, df_dataset)
+        if arg_classification_type == ClassificationType.CATEGORY_PREDICTION:
+            if arg_tratto_model_type == TrattoModelType.TOKEN_CLASSES:
+                dataset_tgt_labels = df_dataset['tokenClass'].unique().tolist()
+            elif arg_tratto_model_type == TrattoModelType.TOKEN_VALUES:
+                dataset_tgt_labels = df_dataset['token'].unique().tolist()
+            else:
+                assert False
+        elif arg_classification_type == ClassificationType.LABEL_PREDICTION:
+            dataset_tgt_labels = df_dataset['label'].unique().tolist()
         else:
             assert False
-    elif arg_classification_type == ClassificationType.LABEL_PREDICTION:
-        dataset_tgt_labels = df_dataset['label'].unique().tolist()
-    else:
-        assert False
-    assert num_labels == len(dataset_tgt_labels)
+        assert num_labels == len(dataset_tgt_labels)
 
 
 def test_pre_processing_dataset_after(
         data_processor_ten_datapoints,
-        arg_classification_type,
-        arg_tratto_model_type,
-        value_mappings
+        arg_classification_type
 ):
-    df_dataset_before_processing = getattr(data_processor_ten_datapoints, '_df_dataset').copy()
+    t_df = data_processor_ten_datapoints.get_train_dataframe()
+    v_df = data_processor_ten_datapoints.get_validation_dataframe()
     data_processor_ten_datapoints.pre_processing()
-    df_dataset_after_processing = getattr(data_processor_ten_datapoints, '_df_dataset')
+    tokenized_train_dataset = getattr(data_processor_ten_datapoints, '_tokenized_train_dataset')
+    tokenized_validation_dataset = getattr(data_processor_ten_datapoints, '_tokenized_validation_dataset')
     if arg_classification_type == ClassificationType.CATEGORY_PREDICTION:
-        assert len(df_dataset_before_processing[df_dataset_before_processing['label']] == True) == len(df_dataset_after_processing)
+        assert len(t_df[t_df['label']] == True) == len(tokenized_train_dataset["src"])
+        assert len(v_df[v_df['label']] == True) == len(tokenized_validation_dataset["src"])
     elif arg_classification_type == ClassificationType.LABEL_PREDICTION:
-        assert len(df_dataset_before_processing) == len(df_dataset_after_processing)
+        assert len(t_df) == len(tokenized_train_dataset["src"])
+        assert len(v_df) == len(tokenized_validation_dataset["src"])
     else:
         assert False
+    assert len(tokenized_train_dataset["src"]) == len(tokenized_train_dataset["tgt"])
+    assert len(tokenized_train_dataset["src"]) == len(tokenized_train_dataset["mask"])
+    assert len(tokenized_validation_dataset["src"]) == len(tokenized_validation_dataset["tgt"])
+    assert len(tokenized_validation_dataset["src"]) == len(tokenized_validation_dataset["mask"])
 
 
-def test_pre_processing_tokenClassesSoFar(
+def test_compute_tokenClassesSoFar(
         data_processor_ten_datapoints,
         arg_classification_type,
         arg_tratto_model_type,
         value_mappings
 ):
-    df_dataset_before_processing = getattr(data_processor_ten_datapoints, '_df_dataset').copy()
-    data_processor_ten_datapoints.pre_processing()
-    df_dataset_after_processing = getattr(data_processor_ten_datapoints, '_df_dataset')
+    t_df = data_processor_ten_datapoints.get_train_dataframe()
+    v_df = data_processor_ten_datapoints.get_validation_dataframe()
     expected_tokenClassesSoFar = []
     if arg_tratto_model_type == TrattoModelType.TOKEN_CLASSES:
-        for row in df_dataset_before_processing.itertuples(index=False):
+        for row in [*t_df.itertuples(index=False), *v_df.itertuples(index=False)]:
             if (arg_classification_type == ClassificationType.CATEGORY_PREDICTION and row.label == True) or (arg_classification_type == ClassificationType.LABEL_PREDICTION):
                 equivalent_array = generate_equivalent_tokenClassesSoFar(row, value_mappings)
                 expected_tokenClassesSoFar.append(equivalent_array)
-        for row in df_dataset_after_processing.itertuples(index=False):
+        if (arg_classification_type == ClassificationType.CATEGORY_PREDICTION):
+            t_df = data_processor_ten_datapoints._compute_tokenClassesSoFar(t_df[t_df['label'] == True])
+            v_df = data_processor_ten_datapoints._compute_tokenClassesSoFar(v_df[v_df['label'] == True])
+        else:
+            t_df = data_processor_ten_datapoints._compute_tokenClassesSoFar(t_df)
+            v_df = data_processor_ten_datapoints._compute_tokenClassesSoFar(v_df)
+        for row in [*list(t_df.itertuples(index=False)), *list(v_df.itertuples(index=False))]:
             len_before_research = len(expected_tokenClassesSoFar)
             expected_tokenClassesSoFar_copy = copy.deepcopy(expected_tokenClassesSoFar)
             for eq_strings in expected_tokenClassesSoFar_copy:
@@ -122,10 +156,9 @@ def test_pre_processing_tokenClassesSoFar(
                     break
             assert len_before_research == (len(expected_tokenClassesSoFar) + 1)
         assert len(expected_tokenClassesSoFar) == 0
-    elif arg_tratto_model_type == TrattoModelType.TOKEN_VALUES:
-        assert 'tokenClassesSoFar' not in df_dataset_after_processing.columns.tolist()
     else:
-        assert False
+        if not arg_tratto_model_type == TrattoModelType.TOKEN_VALUES:
+            assert False
 
 
 def test_pre_processing_eligibles(
@@ -134,22 +167,32 @@ def test_pre_processing_eligibles(
         arg_tratto_model_type,
         value_mappings
 ):
-    if not arg_tratto_model_type in [TrattoModelType.TOKEN_CLASSES, TrattoModelType.TOKEN_VALUES]:
-        assert False
-    df_dataset_before_processing = getattr(data_processor_ten_datapoints, '_df_dataset').copy()
-    data_processor_ten_datapoints.pre_processing()
-    df_dataset_after_processing = getattr(data_processor_ten_datapoints, '_df_dataset')
+    t_df = data_processor_ten_datapoints.get_train_dataframe()
+    v_df = data_processor_ten_datapoints.get_validation_dataframe()
     expected_eligibles = []
-    for row in df_dataset_before_processing.itertuples(index=False):
+    for row in [*t_df.itertuples(index=False), *v_df.itertuples(index=False)]:
+        df = t_df if row in t_df.itertuples(index=False) else v_df
         if (arg_classification_type == ClassificationType.CATEGORY_PREDICTION and row.label == True or arg_classification_type == ClassificationType.LABEL_PREDICTION):
             equivalent_array = generate_equivalent_eligibles(
-                df_dataset_before_processing,
+                df,
                 row,
                 arg_tratto_model_type,
                 value_mappings
             )
             expected_eligibles.append(equivalent_array)
-    for row in df_dataset_after_processing.itertuples(index=False):
+    if arg_tratto_model_type == TrattoModelType.TOKEN_CLASSES:
+        t_df = data_processor_ten_datapoints._compute_eligible_token_classes(t_df)
+        v_df = data_processor_ten_datapoints._compute_eligible_token_classes(v_df)
+        if arg_classification_type == ClassificationType.CATEGORY_PREDICTION:
+            t_df = t_df[t_df['label'] == True]
+            v_df = v_df[v_df['label'] == True]
+    elif arg_tratto_model_type == TrattoModelType.TOKEN_VALUES:
+        t_df = data_processor_ten_datapoints._compute_eligible_token_values(t_df)
+        v_df = data_processor_ten_datapoints._compute_eligible_token_values(v_df)
+        if arg_classification_type == ClassificationType.CATEGORY_PREDICTION:
+            t_df = t_df[t_df['label'] == True]
+            v_df = v_df[v_df['label'] == True]
+    for row in [*t_df.itertuples(index=False), *v_df.itertuples(index=False)]:
         len_before_research = len(expected_eligibles)
         expected_eligibles_copy = copy.deepcopy(expected_eligibles)
         for eq_strings in expected_eligibles_copy:
@@ -171,23 +214,44 @@ def test_pre_processing_src_input(
         arg_classification_type,
         arg_tratto_model_type,
 ):
-    data_processor_ten_datapoints.pre_processing()
-    df_dataset = getattr(data_processor_ten_datapoints, '_df_dataset')
-    tokenizer = getattr(data_processor_ten_datapoints, '_tokenizer')
-    src = getattr(data_processor_ten_datapoints, '_src')
-    src_test = getattr(data_processor_ten_datapoints, '_src_test')
-    tgt = getattr(data_processor_ten_datapoints, '_tgt')
-    tgt_test = getattr(data_processor_ten_datapoints, '_tgt_test')
-    test_ratio = getattr(data_processor_ten_datapoints, '_test_ratio')
+    t_df = data_processor_ten_datapoints.get_train_dataframe()
+    v_df = data_processor_ten_datapoints.get_validation_dataframe()
 
-    assert pytest.approx(len(src),1) == (1 - test_ratio) * df_dataset.shape[0]
-    assert pytest.approx(len(src_test),1) == test_ratio * df_dataset.shape[0]
-    assert len(src) == len(tgt)
-    assert len(src_test) == len(tgt_test)
+    if arg_tratto_model_type == TrattoModelType.TOKEN_CLASSES:
+        t_df = data_processor_ten_datapoints._compute_eligible_token_classes(t_df)
+        v_df = data_processor_ten_datapoints._compute_eligible_token_classes(v_df)
+        if arg_classification_type == ClassificationType.CATEGORY_PREDICTION:
+            t_df = t_df[t_df['label'] == True]
+            v_df = v_df[v_df['label'] == True]
+    elif arg_tratto_model_type == TrattoModelType.TOKEN_VALUES:
+        t_df = data_processor_ten_datapoints._compute_eligible_token_values(t_df)
+        v_df = data_processor_ten_datapoints._compute_eligible_token_values(v_df)
+        if arg_classification_type == ClassificationType.CATEGORY_PREDICTION:
+            t_df = t_df[t_df['label'] == True]
+            v_df = v_df[v_df['label'] == True]
+
+    if (arg_classification_type == ClassificationType.CATEGORY_PREDICTION):
+        t_df = data_processor_ten_datapoints._compute_tokenClassesSoFar(t_df[t_df['label'] == True])
+        v_df = data_processor_ten_datapoints._compute_tokenClassesSoFar(v_df[v_df['label'] == True])
+    else:
+        t_df = data_processor_ten_datapoints._compute_tokenClassesSoFar(t_df)
+        v_df = data_processor_ten_datapoints._compute_tokenClassesSoFar(v_df)
+
+    data_processor_ten_datapoints.pre_processing()
+    tokenized_train_dataset = getattr(data_processor_ten_datapoints, '_tokenized_train_dataset')
+    tokenized_validation_dataset = getattr(data_processor_ten_datapoints, '_tokenized_validation_dataset')
+    tokenizer = getattr(data_processor_ten_datapoints, '_tokenizer')
+
+    t_t_src = tokenized_train_dataset['src']
+    t_t_mask = tokenized_train_dataset['mask']
+    t_t_tgt = tokenized_train_dataset['tgt']
+    v_t_src = tokenized_validation_dataset['src']
+    v_t_mask = tokenized_validation_dataset['mask']
+    v_t_tgt = tokenized_validation_dataset['tgt']
 
     src_tgt_src_test_tgt_test_expected = []
 
-    for row in df_dataset.itertuples(index=False):
+    for row in [*t_df.itertuples(index=False), *v_df.itertuples(index=False)]:
         input = generate_src_input(row, tokenizer, arg_transformer_type, arg_classification_type, arg_tratto_model_type)
         if arg_transformer_type == TransformerType.DECODER:
             if arg_classification_type == ClassificationType.CATEGORY_PREDICTION:
@@ -200,7 +264,7 @@ def test_pre_processing_src_input(
         else:
             if arg_classification_type == ClassificationType.CATEGORY_PREDICTION:
                 if arg_tratto_model_type == TrattoModelType.TOKEN_CLASSES:
-                    classes_ids_dict = data_processor_ten_datapoints.get_encoder_labels_ids("token_class")
+                    classes_ids_dict = data_processor_ten_datapoints.get_encoder_labels_ids("tokenClass")
                     row_tgt = classes_ids_dict[row.tokenClass]
                     src_tgt_src_test_tgt_test_expected.append((input, row_tgt))
                 elif arg_tratto_model_type == TrattoModelType.TOKEN_VALUES:
@@ -212,12 +276,23 @@ def test_pre_processing_src_input(
                 row_tgt = labels_ids_dict[row.label]
                 src_tgt_src_test_tgt_test_expected.append((input, row_tgt))
 
-    assert (len(src) + len(src_test)) == len(src_tgt_src_test_tgt_test_expected)
+    assert (len(t_t_src) + len(v_t_src)) == len(src_tgt_src_test_tgt_test_expected)
+    assert (len(t_t_mask) + len(v_t_mask)) == len(src_tgt_src_test_tgt_test_expected)
+    assert (len(t_t_tgt) + len(v_t_tgt)) == len(src_tgt_src_test_tgt_test_expected)
 
-    for input, target in [*zip(src,tgt),(*src_test,*tgt_test)]:
+    for input, target in [*zip(t_t_src,t_t_tgt),*zip(v_t_src,v_t_tgt)]:
         len_before_processing = len(src_tgt_src_test_tgt_test_expected)
-        if (input, target) in src_tgt_src_test_tgt_test_expected:
-            src_tgt_src_test_tgt_test_expected.remove((input, target))
+        decoded_input = tokenizer.decode(input)
+        decoded_input = decoded_input[len(tokenizer.special_tokens_map['cls_token']):]
+        decoded_input = decoded_input[:decoded_input.rindex(tokenizer.special_tokens_map['sep_token'])]
+        if arg_transformer_type == TransformerType.DECODER:
+            decoded_target = tokenizer.decode(target)
+            decoded_target = decoded_target[len(tokenizer.special_tokens_map['cls_token']):]
+            decoded_target = decoded_target[:decoded_target.rindex(tokenizer.special_tokens_map['sep_token'])]
+        else:
+            decoded_target = target.item()
+        if (decoded_input, decoded_target) in src_tgt_src_test_tgt_test_expected:
+            src_tgt_src_test_tgt_test_expected.remove((decoded_input, decoded_target))
         assert len_before_processing == (len(src_tgt_src_test_tgt_test_expected) + 1)
     assert len(src_tgt_src_test_tgt_test_expected) == 0
 

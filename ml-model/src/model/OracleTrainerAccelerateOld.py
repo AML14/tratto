@@ -31,6 +31,8 @@ class OracleTrainerAccelerate:
         The training dataloader which contains the batches of datapoints for the training phase
     dl_val: DataLoader
         The validation dataloader which contains the batches of datapoints for the validation phase
+    dl_test: DataLoader
+        The test dataloader which contains the batches of datapoints for the testing phase
     classifier_ids_labels: Dict[int,str]
         The dictionary of labels. The keys are numerical identifiers (int), while the values are strings representing
         the name of the corresponding target label. The dictionary is empty if the dataset has not been processed yet.
@@ -57,6 +59,8 @@ class OracleTrainerAccelerate:
         The training dataloader which contains the batches of datapoints for the training phase
     _dl_val: Type[DataLoader]
         The validation dataloader which contains the batches of datapoints for the validation phase
+    _dl_test: Type[DataLoader]
+        The test dataloader which contains the batches of datapoints for the testing phase
     _classifier_ids_labels: Dict[int,str]
         The dictionary of labels of the classification model, where the value is the name of a target label, while the
         key element is a numerical identifier representing the index of the one-shot vector representing the target label,
@@ -82,6 +86,7 @@ class OracleTrainerAccelerate:
             optimizer: Type[AdamW],
             dl_train: Type[DataLoader],
             dl_val: Type[DataLoader],
+            dl_test: Type[DataLoader],
             classifier_ids_labels: Dict[int, str],
             classification_type: Type[ClassificationType],
             transformer_type: Type[TransformerType],
@@ -94,6 +99,7 @@ class OracleTrainerAccelerate:
         self._model = model
         self._dl_train = dl_train
         self._dl_val = dl_val
+        self._dl_test = dl_test
         self._optimizer = optimizer
         self._classifier_ids_labels = classifier_ids_labels
         self._classification_type = classification_type
@@ -469,3 +475,114 @@ class OracleTrainerAccelerate:
         )
         v_recall = [[self._classifier_ids_labels[i], score] for i, score in enumerate(v_recall)]
         return mean_v_loss, v_f1, v_f1_micro, v_accuracy, v_precision, v_recall
+
+    def evaluation(
+            self,
+            device: Union[int, str]
+    ):
+        """
+        The method computes the testing phase.
+
+        Parameters
+        ----------
+        device: int
+            The identifier of the rank gpu or the cpu
+
+        Returns
+        -------
+        stats: dict
+            The statistics of the testing phase
+        """
+        # model in evaluation mode
+        self._model.eval()
+        # Accumulate predictions and labels
+        all_predictions = []
+        all_labels = []
+
+        # The validation phase is performed without accumulating
+        # the gradient descent and without updating the weights
+        # of the model
+        print("        Performing testing evaluation...")
+        with torch.no_grad():
+            for batch_id, batch in enumerate(self._dl_test, 1):
+                print(f"            Processing batch {batch_id} of {len(self._dl_test)}")
+                # Extract the inputs, the attention masks and the
+                # targets from the batch
+                src_input = batch[0]
+                src_masks = batch[1]
+                tgt_out = batch[2]
+
+                # Train the model
+                print(f"                Model predictions...")
+                outputs = self._model(
+                    input_ids=src_input,
+                    attention_mask=src_masks,
+                    labels=tgt_out
+                )
+                # Compute the loss
+                print(f"                Computing loss...")
+                # Exctract the predicted values and the expected output
+                # Decode outputs and expected values
+                if self._transformer_type == TransformerType.DECODER:
+                    predicted = np.array(
+                        self._tokenizer.batch_decode(
+                            torch.argmax(torch.softmax(outputs.logits, dim=-1), dim=-1),
+                            skip_special_tokens=True
+                        )
+                    )
+                    expected_out = np.array(
+                        self._tokenizer.batch_decode(
+                            tgt_out,
+                            skip_special_tokens=True
+                        )
+                    )
+                else:
+                    predicted_ids = torch.argmax(torch.softmax(outputs.logits, dim=-1), dim=-1)
+                    predicted = np.array(list(map(lambda x: self._classifier_ids_labels[x], predicted_ids.tolist())))
+                    expected_out = np.array(list(map(lambda x: self._classifier_ids_labels[x], tgt_out.tolist())))
+                # Accumulate predictions and labels
+                all_predictions.extend(predicted)
+                all_labels.extend(expected_out)
+        print(f"                Computing statistics...")
+        # Compute the f1 score of the model within the accumulation
+        # steps
+        predictions_numpy = np.array(all_predictions)
+        labels_numpy = np.array(all_labels)
+        test_f1 = f1_score(
+            labels_numpy,
+            predictions_numpy,
+            average=None,
+            labels=list(self._classifier_ids_labels.values()),
+            zero_division=0
+        )
+        test_f1 = [[self._classifier_ids_labels[i], score] for i, score in enumerate(test_f1)]
+        test_f1_micro = f1_score(
+            labels_numpy,
+            predictions_numpy,
+            average='micro',
+            labels=list(self._classifier_ids_labels.values()),
+            zero_division=0
+        )
+        # Compute accuracy
+        test_accuracy = accuracy_score(labels_numpy, predictions_numpy)
+        # Compute precision
+        test_precision = precision_score(
+            labels_numpy,
+            predictions_numpy,
+            average=None,
+            zero_division=0,
+            labels=list(self._classifier_ids_labels.values())
+        )
+        test_precision = [[self._classifier_ids_labels[i], score] for i, score in enumerate(test_precision)]
+        # Compute recall
+        test_recall = recall_score(labels_numpy, predictions_numpy, average=None, zero_division=0,labels=list(self._classifier_ids_labels.values()))
+        test_recall = [[self._classifier_ids_labels[i], score] for i, score in enumerate(test_recall)]
+        # Perform testing to measure performances on unseen data
+        logger.print_evaluation_stats(test_f1, test_f1_micro, test_accuracy, test_precision, test_recall)
+        stats = {}
+        stats["test_f1"] = test_f1
+        stats["test_f1_micro"] = test_f1_micro
+        stats["test_accuracy"] = test_accuracy
+        stats["test_precision"] = test_precision
+        stats["test_recall"] = test_recall
+        return stats

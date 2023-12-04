@@ -36,15 +36,15 @@ def print_load_gpu():
 
 
 def print_pre_processing():
-    print("[3] Pre-processing phase")
+    print("[2] Pre-processing phase")
 
 
 def print_save_model():
-    print("[5] Saving model")
+    print("[4] Saving model")
 
 
 def print_training_fold(fold_idx):
-    print(f"    [4.{fold_idx}] Training - fold {fold_idx}")
+    print(f"    [3.{fold_idx}] Training - fold {fold_idx}")
 
 
 

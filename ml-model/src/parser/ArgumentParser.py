@@ -155,13 +155,6 @@ class ArgumentParser:
             help="The directory to the validation dataset."
         )
         parser.add_argument(
-            "--target_column",
-            default=None,
-            type=str,
-            required=True,
-            help="The name of the target column of the dataset."
-        )
-        parser.add_argument(
             "--model_type",
             default=None,
             type=str,
