@@ -34,7 +34,7 @@ def df_projects(
     # Collects partial dataframes
     for dataset_type in ["train", "validation"]:
         oracles_dataset = os.path.join(arg_dataset_path_ten_datapoint, dataset_type)
-        for file_name in os.listdir(arg_dataset_path_ten_datapoint):
+        for file_name in os.listdir(oracles_dataset):
             df = pd.read_json(os.path.join(oracles_dataset, file_name))
             dfs.append(df)
     df_dataset = pd.concat(dfs)

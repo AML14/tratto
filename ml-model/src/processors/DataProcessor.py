@@ -186,7 +186,7 @@ class DataProcessor:
 
     def get_encoder_labels_ids(
             self,
-            column_name: str,
+            column_name: str = None,
             df_type: Type[DatasetType] = None,
             df: Type[DataFrame] = None
     ):
@@ -199,7 +199,7 @@ class DataProcessor:
         Parameters
         ----------
         column_name: str
-            The name of the column of the dataset to process
+            The name of the column of the dataset to process. Default None.
         df_type: Type[DatasetType]
             The dataset type (DatasetType.TRAINING or DatasetType.VALIDATION). Default None.
         df: Type[DataFrame]
@@ -581,16 +581,20 @@ class DataProcessor:
             # the token classes from the input
             if self._tratto_model_type == TrattoModelType.TOKEN_CLASSES:
                 t_df = t_df.drop(['token', 'tokenInfo'], axis=1)
+                v_df = v_df.drop(['token', 'tokenInfo'], axis=1)
                 # Remove the tokenClass column if the model will predict the tokenClass as target
                 if self._classification_type == ClassificationType.CATEGORY_PREDICTION:
                     t_df = t_df.drop(['tokenClass'], axis=1)
+                    v_df = v_df.drop(['tokenClass'], axis=1)
             else:
                 # Remove the token column if the model will predict the token as target
                 if self._classification_type == ClassificationType.CATEGORY_PREDICTION:
                     t_df = t_df.drop(['token'], axis=1)
+                    v_df = v_df.drop(['token'], axis=1)
                 # Remove the tokenInfo column if the classificator is a decoder
                 if self._transformer_type == TransformerType.DECODER and not self._classification_type == ClassificationType.LABEL_PREDICTION:
                     t_df = t_df.drop(['tokenInfo'], axis=1)
+                    v_df = v_df.drop(['tokenInfo'], axis=1)
         # Delete the tgt labels from the input dataset, and others irrelevant columns
         t_df.drop(['label', 'oracleId'], axis=1, inplace=True)
         v_df.drop(['label', 'oracleId'], axis=1, inplace=True)

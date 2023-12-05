@@ -1,4 +1,5 @@
 from itertools import permutations
+import pandas as pd
 
 from src.types.ClassificationType import ClassificationType
 from src.types.TransformerType import TransformerType
@@ -45,26 +46,24 @@ def generate_equivalent_src_input(
         value_mappings
 ):
     equivalent_inputs_array = []
-    equivalent_tokenClassesSoFar_array = []
-    for perm_tokenClassesSoFar in list(permutations(datapoint.tokenClassesSoFar)):
-        perm_tokenClassesSoFar_str = generate_tokenClassSoFar_str(perm_tokenClassesSoFar)
-        equivalent_tokenClassesSoFar_array.append(perm_tokenClassesSoFar_str)
-    equivalent_eligible_array = generate_eligibles(df_dataset, datapoint, value_mappings)
-    for perm_eligible in list(permutations(equivalent_eligible_array)):
-        perm_eligible_str = generate_eligibles_str(perm_eligible)
-        for perm_tokenClassesSoFar in equivalent_tokenClassesSoFar_array:
-            datapoint.tokenClassesSoFar = perm_tokenClassesSoFar
+    equivalent_tokenClassesSoFar_array = generate_equivalent_tokenClassesSoFar(datapoint, value_mappings)
+    equivalent_eligible_array = generate_equivalent_eligibles(df_dataset, datapoint, tratto_model_type, value_mappings)
+    temp_df = pd.DataFrame([datapoint], columns=df_dataset.columns)
+    for input_eligible in equivalent_eligible_array:
+        for input_tokenClassSoFar in equivalent_tokenClassesSoFar_array:
+            temp_df.at[0, 'tokenClassesSoFar'] = input_tokenClassSoFar
             if tratto_model_type == TrattoModelType.TOKEN_CLASSES:
-                datapoint.eligibleTokenClasses = perm_eligible_str
+                temp_df.at[0, 'eligibleTokenClasses'] = input_eligible
             elif tratto_model_type == TrattoModelType.TOKEN_VALUES:
-                datapoint.eligibleTokens = perm_eligible_str
+                temp_df.at[0, 'eligibleTokens'] = input_eligible
             equivalent_inputs_array.append(generate_src_input(
-                datapoint,
+                temp_df.iloc[0],
                 tokenizer,
                 transformer_type,
                 classification_type,
                 tratto_model_type
             ))
+    return equivalent_inputs_array
 
 
 
