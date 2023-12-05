@@ -20,6 +20,7 @@ def test_pre_processing(
     assert arg_tratto_model_type in [TrattoModelType.TOKEN_CLASSES, TrattoModelType.TOKEN_VALUES]
     df_projects_before = df_projects.copy()
     df_projects_before["tokenClass"] = df_projects_before["tokenClass"].apply(lambda x: value_mappings[x])
+    df_projects_before["tokenClassesSoFar"] = df_projects_before["tokenClassesSoFar"].apply(lambda x: [value_mappings[y] for y in x])
     datasets, _ = pre_processing(
         df_projects,
         tokenizer,
@@ -33,8 +34,9 @@ def test_pre_processing(
         if arg_classification_type == ClassificationType.CATEGORY_PREDICTION:
             if row_copy.label == False:
                 continue
-        row_copy.methodSourceCode = row_copy.methodSourceCode.split('{')[0]
-        #row_copy.tokenClass = value_mappings[row_copy.tokenClass]
+        #row_copy.methodSourceCode = row_copy.methodSourceCode.split('{')[0]
+        #inverse_value_mappings = {v: k for k, v in value_mappings.items()}
+        #row_copy.tokenClassesSoFar = inverse_value_mappings[row_copy.tokenClass]
         equivalent_tokenClassesSoFar_str_array = generate_equivalent_tokenClassesSoFar(row_copy, value_mappings)
         if arg_tratto_model_type == TrattoModelType.TOKEN_CLASSES:
             eligible_key = 'eligibleTokenClasses'

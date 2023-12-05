@@ -235,7 +235,7 @@ def pre_processing(
         df_dataset = df_dataset[(df_dataset['label'] == 'True')]
 
     # Remove method source code (keep only signature)
-    df_dataset['methodSourceCode'] = df_dataset['methodSourceCode'].str.split('{').str[0]
+    # df_dataset['methodSourceCode'] = df_dataset['methodSourceCode'].str.split('{').str[0]
 
     # Group the rows by 'oracleId' and 'oracleSoFar'
     df_grouped = df_dataset.groupby(['oracleId', 'oracleSoFar'])

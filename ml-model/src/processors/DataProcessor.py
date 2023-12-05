@@ -754,9 +754,12 @@ class DataProcessor:
             The dataframe with the token classes so far computed
         """
         # Map token classes so far to new values and transform it from array to string
-        df["tokenClassesSoFar"] = df["tokenClassesSoFar"].apply(lambda x: "[ " + " ".join(random.sample([y for y in x], len(x))) + " ]")
+        mapped_tokenClassesSoFar_series = df["tokenClassesSoFar"].apply(lambda x: "[ " + " ".join(random.sample([y for y in x], len(x))) + " ]")
+        df.loc[:, 'tokenClassesSoFar'] = None
         # Set type of new dataframe column
-        df['tokenClassesSoFar'] = df['tokenClassesSoFar'].astype('string')
+        df.loc[:, 'tokenClassesSoFar'] = df['tokenClassesSoFar'].astype('string')
+        # Assign the new values to the dataframe
+        df.loc[:, 'tokenClassesSoFar'] = mapped_tokenClassesSoFar_series
         return df
 
     @staticmethod

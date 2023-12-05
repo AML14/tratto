@@ -51,10 +51,17 @@ def generate_equivalent_src_input(
     temp_df = pd.DataFrame([datapoint], columns=df_dataset.columns)
     for input_eligible in equivalent_eligible_array:
         for input_tokenClassSoFar in equivalent_tokenClassesSoFar_array:
-            temp_df.at[0, 'tokenClassesSoFar'] = input_tokenClassSoFar
+            temp_df['tokenClassesSoFar'] = None
+            temp_df['tokenClassesSoFar'] = temp_df['tokenClassesSoFar'].astype(str)
+            temp_df.at[0, 'tokenClassesSoFar'] = str(input_tokenClassSoFar)
             if tratto_model_type == TrattoModelType.TOKEN_CLASSES:
+                temp_df['eligibleTokenClasses'] = None
+                temp_df['eligibleTokenClasses'] = temp_df['eligibleTokenClasses'].astype(str)
                 temp_df.at[0, 'eligibleTokenClasses'] = input_eligible
+                temp_df.astype({'eligibleTokenClasses': 'str'})
             elif tratto_model_type == TrattoModelType.TOKEN_VALUES:
+                temp_df['eligibleTokens'] = None
+                temp_df['eligibleTokens'] = temp_df['eligibleTokens'].astype(str)
                 temp_df.at[0, 'eligibleTokens'] = input_eligible
             equivalent_inputs_array.append(generate_src_input(
                 temp_df.iloc[0],
