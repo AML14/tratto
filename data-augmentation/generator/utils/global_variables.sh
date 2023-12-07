@@ -1,6 +1,8 @@
 # Sdkman Java versions
 JAVA8="8.0.382-amzn"
-JAVA17="17.0.8-oracle"
+JAVA11="11.0.21-amzn"
+JAVA17="17.0.9-oracle"
+
 
 # Directories
 ROOT_DIR=$(dirname "$(dirname "$(realpath "$(dirname "$BASH_SOURCE")")")")

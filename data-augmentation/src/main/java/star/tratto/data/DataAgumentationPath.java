@@ -12,7 +12,7 @@ public enum DataAgumentationPath {
     RESOURCES(Paths.get("src", "main", "resources")),
 
     PROJECTS_SOURCE(DataAgumentationPath.RESOURCES.getPath().resolve("projects-source")),
-    DATA_ENTRIES(Paths.get("src", "main", "resources", "data_entries")),
+    DATA_ENTRIES(Paths.get("src", "main", "resources", "data-entries")),
     INPUT_PROJECTS(DataAgumentationPath.REPOS.getPath().resolve("input_projects.json")),
     IGNORE_FILE(DataAgumentationPath.REPOS.getPath().resolve("ignore_file.json"));
 

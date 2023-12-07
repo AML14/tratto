@@ -15,10 +15,4 @@ bash "${UTILS_DIR}/install_sdkman.sh"
 source "${UTILS_DIR}/init_sdkman.sh"
 
 # Install Java 17
-sdk install java 17.0.8-oracle
-# Install maven
-sdk install maven 3.9.4
-# Install ant
-sdk install ant 1.10.13
-# Install gradle
-sdk install gradle 8.3
+sdk install java "$JAVA17"

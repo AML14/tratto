@@ -27,7 +27,7 @@ if __name__ == '__main__':
         project_github_link = input("Github link to the project to clone: ")
         project_commit = input("Do you want to clone a specific commit: [last] ") or "last"
         dir_path = [project_name]
-        source_input = input("Type the relative path to the src code (for example src/main/java for a standard maven project): [src] ") or "src"
+        source_input = input("Type the relative path to the src code (for example src/main/java for a standard maven project): [src/main/java] ") or "src/main/java"
         source_path = [dir for dir in source_input.split("/")]
         fqn_input = input("Type the fully qualified class names of the class you want to analyze, separated by a blank space: [all] ")
         if len(fqn_input) > 0 :

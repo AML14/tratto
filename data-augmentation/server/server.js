@@ -13,11 +13,7 @@ db.connect();
 
 // Allow all origin
 const allowedOrigins = [
-    "http://localhost:5173",
-    "http://localhost:5174",
-    "https://tratto-jdc.onrender.com",
-    "https://tratto-jdc-api.onrender.com",
-    "https://star.inf.usi.ch"
+    process.env.CLIENT_URL
 ];
 
 const corsOptions = {
@@ -44,4 +40,6 @@ app.use('/repositories', repositoriesRouter);
 const exportRouter = require('./routes/export').router;
 app.use('/export', exportRouter);
 
-app.listen(3000);
+app.listen(process.env.PORT || 3000);
+
+console.log(`Server running on port ${process.env.PORT || 3000}`)

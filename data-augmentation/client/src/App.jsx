@@ -617,17 +617,18 @@ function App() {
                             </div>
                             <div className="add-button-set">
                                 {
-                                    import.meta.env.PERMIT == "student" ?
+                                    import.meta.env.VITE_PERMIT == "admin" ?
                                         <CircleMenuButton
                                             label="Upload JDoctor Conditions"
                                             onClick={() => { setIsModalOpen(true); }}
                                         ><FaFileUpload color="white" size={30} /></CircleMenuButton>
                                     :
-                                        <CircleMenuButton
-                                            label="Export JDoctor Conditions"
-                                            onClick={() => { exportDB(); }}
-                                        ><MdCloudDownload color="white" size={30} /></CircleMenuButton>
+                                        null
                                 }
+                                    <CircleMenuButton
+                                        label="Export JDoctor Conditions"
+                                        onClick={() => { exportDB(); }}
+                                    ><MdCloudDownload color="white" size={30} /></CircleMenuButton>
                             </div>
                         </div>
                         <Modal

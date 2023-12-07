@@ -18,6 +18,7 @@ current_dir="$(realpath "$(dirname "$BASH_SOURCE")")"
 source "${current_dir}/generator/utils/global_variables.sh"
 
 # Define local variables
+javadoc_empty="$1"
 data_aug_resources_dir="${current_dir}/src/main/resources"
 projects_source_dir="${data_aug_resources_dir}/projects-source"
 
@@ -50,6 +51,6 @@ done < "$INPUT_PROJECTS_CSV_FILE"
 # Move to the root directory
 cd "$current_dir"
 # Generate collections and documents for each project
-bash data_augmentation.sh
+bash data_augmentation.sh "$javadoc_empty"
 # Upload collections and documents on database
 python3 "${ROOT_DIR}/scripts/migrate.py"
