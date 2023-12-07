@@ -13,8 +13,6 @@ export default function Main({ repository, repositoryClass, jdc, updateCurrentJD
     const [preConditions, setPreConditions] = useState([]);
     const [postConditions, setPostConditions] = useState([]);
     const [throwsConditions, setThrowsConditions] = useState([]);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [modalIdentifier, setModalIdentifier] = useState(null);
 
     useEffect(() => {
         if (repository !== null && repositoryClass !== null && jdc !== null) {
@@ -57,8 +55,6 @@ export default function Main({ repository, repositoryClass, jdc, updateCurrentJD
         const idRepositoryClass = repositoryClass._id;
         const idJDoctorCondition = jdc._id;
 
-        console.log(api.deleteConditionUrl(idRepository, idRepositoryClass, idJDoctorCondition, idCondition, conditionType));
-
         axios
             .delete(api.deleteConditionUrl(idRepository, idRepositoryClass, idJDoctorCondition, idCondition, conditionType))
             .then((response) => {
@@ -79,6 +75,8 @@ export default function Main({ repository, repositoryClass, jdc, updateCurrentJD
     }
 
     const addCondition = (conditionType, modalObj) => {
+        console.log(conditionType);
+        console.log(modalObj);
         const idRepository = repository._id;
         const idRepositoryClass = repositoryClass._id;
         const idJDoctorCondition = jdc._id;
@@ -101,10 +99,6 @@ export default function Main({ repository, repositoryClass, jdc, updateCurrentJD
         if (conditionType == "throws") {
             condition["exception"] = modalObj.exception;
         }
-
-        console.log({ condition: condition });
-
-        console.log(api.createConditionUrl(idRepository, idRepositoryClass, idJDoctorCondition, conditionType));
 
         axios
             .post(api.createConditionUrl(idRepository, idRepositoryClass, idJDoctorCondition, conditionType), { condition: condition } )
@@ -140,12 +134,14 @@ export default function Main({ repository, repositoryClass, jdc, updateCurrentJD
                                 identifier="method-source-code"
                                 code={jdc.source.methodSourceCode}
                                 language="java"
+                                defaultExpand={true}
                             />
                             <Code
                                 label="Javadoc"
                                 identifier="javadoc"
                                 code={jdc.source.methodJavadoc}
                                 language="java"
+                                defaultExpand={true}
                             />
                         </div>
                         <div id="jdoctor-conditions">
@@ -154,81 +150,36 @@ export default function Main({ repository, repositoryClass, jdc, updateCurrentJD
                                 title="Pre-conditions"
                                 identifier="pre"
                                 conditions={ preConditions.map(p => { return { ...p, name: p.guard.condition } }) }
-                                addCondition={() => {
-                                    setModalIdentifier("pre");
-                                    setIsModalOpen(true);
+                                addCondition={(condition) => {
+                                    addCondition("pre", condition);
                                 }}
                                 deleteCondition={ deleteCondition.bind(null, "pre") }
-                                onClickAdd={ () => {
-                                    setModalIdentifier("pre");
-                                    setIsModalOpen(true);
-                                }}
                             />
                             <ConditionContainer
                                 classname="post-condition-container"
                                 title="Post-conditions"
                                 identifier="post"
                                 conditions={ postConditions.map(p => { return { ...p, name: p.property.condition } }) }
-                                addCondition={() => {
-                                    setModalIdentifier("post");
-                                    setIsModalOpen(true);
+                                addCondition={(condition) => {
+                                    addCondition("post", condition);
                                 }}
                                 deleteCondition={ deleteCondition.bind(null, "post") }
-                                onClickAdd={ () => {
-                                    setModalIdentifier("post");
-                                    setIsModalOpen(true);
-                                } }
                             />
                             <ConditionContainer
                                 classname="throws-condition-container"
                                 title="Throws-conditions"
                                 identifier="throws"
                                 conditions={ throwsConditions.map(t => { return { ...t, name: t.exception } }) }
-                                addCondition={() => {
-                                    setModalIdentifier("throws");
-                                    setIsModalOpen(true);
+                                addCondition={(condition) => {
+                                    addCondition("throws", condition);
                                 }}
                                 deleteCondition={ deleteCondition.bind(null, "throws") }
-                                onClickAdd={ () => {
-                                    setModalIdentifier("throws");
-                                    setIsModalOpen(true);
-                                }}
                             />
                         </div>
-                        <Modal
-                            open={isModalOpen}
-                            onClose={()=>{ setIsModalOpen(false); }}
-                            onConfirm={(modalObj) => {
-                                addCondition(modalIdentifier, modalObj);
-                            }}
-                            disableProperties={{
-                                description: (value) => { return value == "" },
-                                condition: (value) => { return value == "" },
-                                exception: modalIdentifier == "throws" ? (value) => { return value == "" } : (value) => { return false; } ,
-                                oracle: modalIdentifier == "post" ? (value) => { return value == "" } : (value) => { return false; }
-                            }}
-                            modalState={{
-                                description: "",
-                                condition: "",
-                                exception: modalIdentifier == "throws" ? "" : null,
-                                oracle: modalIdentifier == "post" ? "" : null
-                            }}
-                            confirmButtonLabel="Add"
-                        >
-                            <AddConditionModalContent
-                                identifier={modalIdentifier}
-                                formData={{
-                                    description: "",
-                                    condition: "",
-                                    exception: modalIdentifier == "throws" ? "" : null,
-                                    oracle: modalIdentifier == "post" ? "" : null
-                                }}
-                            />
-                        </Modal>
                     </>
                 )
                 :
-                    <span>JDoctor Condition Not Found</span>
+                    <span>JDoctor Condition Not Defined</span>
             }
         </>
     )

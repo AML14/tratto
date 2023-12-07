@@ -27,9 +27,18 @@ const JDoctorConditionSchema = new mongoose.Schema({
     source: SourceSchema,
     operation: OperationSchema,
     identifiers: IdentifiersSchema,
-    pre: [String],
-    post: [String],
-    throws: [String]
+    pre: [{
+        _id: String,
+        name: String
+    }],
+    post: [{
+        _id: String,
+        name: String
+    }],
+    throws: [{
+        _id: String,
+        name: String
+    }]
 });
 
 exports.JDoctorCondition = mongoose.model("JdoctorCondition", JDoctorConditionSchema);

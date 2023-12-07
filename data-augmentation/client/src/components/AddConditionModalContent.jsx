@@ -24,13 +24,13 @@ export default function AddConditionModalContent({ identifier, modalUpdateState 
     return (
         <div id="modal-jdc" className="modal-jdc-container">
             <h2 className="modal-title">{`Add ${identifier.charAt(0).toUpperCase() + identifier.slice(1)}`}-condition</h2>
-            <div className="form-container">
+            <div className="external-form-container-modal">
                 <form className="form-container">
                     <div className="add-condition-input-container">
                         <label
                             htmlFor="description"
                             className="add-condition-label"
-                        >Description:</label>
+                        >Javadoc Tag:</label>
                         <input
                             type="text"
                             id="description"

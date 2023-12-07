@@ -6,13 +6,19 @@ const cors = require('cors');
 const db = require('./config/db');
 
 // Load configuration file and environment variables
-dotenv.config({ path: "./config/config.env" });
+dotenv.config({ path: ".env" });
 
 // Connect mongodb database
 db.connect();
 
 // Allow all origin
-const allowedOrigins = ["http://localhost:5173","https://tratto-jdc.onrender.com"];
+const allowedOrigins = [
+    "http://localhost:5173",
+    "http://localhost:5174",
+    "https://tratto-jdc.onrender.com",
+    "https://tratto-jdc-api.onrender.com",
+    "https://star.inf.usi.ch"
+];
 
 const corsOptions = {
     origin: function (origin, callback) {
@@ -28,12 +34,14 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-app.use(express.json({ limit: '10mb' }));
+app.use(express.json({ limit: '100mb' }));
 
 // Setup server rest api
 app.use(express.json());
 // Setup router
 const repositoriesRouter = require('./routes/repositories').router;
 app.use('/repositories', repositoriesRouter);
+const exportRouter = require('./routes/export').router;
+app.use('/export', exportRouter);
 
 app.listen(3000);

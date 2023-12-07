@@ -2,9 +2,9 @@ import React, {useEffect, useState} from "react";
 import Prism from "prismjs";
 import {FiMinusSquare, FiPlusSquare} from "react-icons/fi";
 
-export default function Code({ label, identifier, code, language }) {
+export default function Code({ label, identifier, code, language, defaultExpand = false }) {
 
-    const [expand, setExpand] = useState(true);
+    const [expand, setExpand] = useState(defaultExpand);
 
     useEffect(() => {
         Prism.highlightAll();

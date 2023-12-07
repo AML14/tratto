@@ -29,7 +29,7 @@ html, body {
 
 #menu {
   padding: 2% 4%;
-  overflow: scroll;
+  overflow: auto;
   box-shadow: 0 0 0.5rem #9da5ab;
 }
 
@@ -87,6 +87,7 @@ html, body {
 
 #class-source-code, #method-source-code, #javadoc {
   margin-left: 2em;
+  max-width: 1000px;
 }
 
 #pre-container, #post-container, #throws-container {
@@ -114,7 +115,7 @@ html, body {
 }
 
 .conditions-list {
-  overflow: scroll;
+  overflow: auto;
   white-space:nowrap;
 }
 
@@ -131,11 +132,13 @@ html, body {
 }
 
 .list-row-name {
-  overflow: scroll;
+  overflow-y: auto;
+  overflow-x: auto;
   white-space: nowrap;
   cursor: pointer;
   display: flex;
   align-self: center;
+  min-height: 1em;
 }
 
 .delete-button {
@@ -262,11 +265,10 @@ html, body {
   margin: 0.7%;
 }
 
-.code-label, .list-label {
+.code-label, .list-label, .condition-title-container {
   display: flex;
   grid-column-start: begin;
   grid-column-end: end;
-
 }
 
 .expand-button {
@@ -283,7 +285,10 @@ html, body {
   margin-left: 1em;
   padding-left: 8%;
   border-left: 1px dashed rgba(0,0,0,0.3);
-  height: 100%;
+  max-height: 300px;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .main-not-found {
@@ -310,6 +315,7 @@ html, body {
 .condition-item {
   display: grid;
   grid-template-columns: [begin] 25% [middle] 75% [end];
+  grid-template-rows: [up] auto [middle] auto [bottom];
   margin-bottom: 5%;
   padding-top: 2%;
 }
@@ -323,17 +329,29 @@ html, body {
   background-color: rgba(84,188,125,1);
   color: white;
   cursor: pointer;
+  margin-right: 4em;
+}
+
+.external-form-container {
+  display: flex;
+  flex-direction: column;
+  max-width: 650px;
+  margin: auto;
+  margin-top: 1.5em;
 }
 
 .label-property {
   color: rgba(240,191,84,1);
 }
 
-.add-condition-input {
+.add-condition-input, .signin-input {
   padding: 0.3em 1em;
   border: 1px solid rgba(0,0,0,0.5);
   border-radius: 20px;
   height: 20px;
+}
+
+.add-condition-input {
   margin-right: 4em;
 }
 
@@ -342,11 +360,87 @@ html, body {
   align-self: center;
 }
 
-.add-condition-input-container {
-    display: grid;
-    grid-template-columns: [begin] 35% [middle] 65% [end];
-    margin-bottom: 1em;
+.signin-label {
+  margin-bottom: 1em;
 }
 
-.form-container {
+
+.add-condition-input-container {
+  display: grid;
+  grid-template-columns: [begin] 35% [middle] 65% [end];
+  margin-bottom: 1em;
 }
+
+.signin-input-container {
+  display: grid;
+  margin-bottom: 1em;
+}
+
+.condition-list {
+  grid-row-start: up;
+  grid-row-end: bottom;
+}
+
+#student-login {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  align-items: center;
+  margin: auto;
+  justify-content: center;
+  background: white;
+}
+
+.form-container-student {
+  width: 25%;
+}
+
+.signin-button {
+  background-color: rgba(84,188,125,1);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 1em 2em;
+  margin-top: 2em;
+  cursor: pointer;
+}
+
+.add-condition-jdc {
+  grid-column-start: middle;
+}
+
+.search-input {
+  border-radius: 10px;
+  border: 1px solid;
+  padding: 0.5em 0.5em;
+  margin-bottom: 1em;
+  margin-top: 0.5em;
+}
+
+/* Style the scrollbar track */
+::-webkit-scrollbar {
+  background: #f1f1f1; /* Background color of the track */
+  width: 2px;
+  height: 2px;
+}
+
+/* Style the scrollbar track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Background color of the track */
+}
+
+/* Style the scrollbar thumb */
+::-webkit-scrollbar-thumb {
+  background: #888; /* Background color of the thumb */
+}
+
+/* You can also style the scrollbar on hover or when active */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+
+

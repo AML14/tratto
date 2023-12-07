@@ -2,14 +2,14 @@ import React, {useEffect, useRef, useState} from 'react';
 
 export default function UploadJDCModalContent({ repositories, modalUpdateState }) {
     const [newRepository, setNewRepository] = useState(null);
-    const [selectValue, setSelectValue] = useState(repositories.length > 0 ? repositories[0] : null);
+    const [selectValue, setSelectValue] = useState(repositories.length > 0 ? 0 : null);
     const [files, setFiles] = useState([]);
     const [radioChoice, setRadioChoice] = useState("new");
     const fileInputRef = useRef(null);
 
     useEffect(() => {
         if (repositories.length > 0) {
-            setSelectValue(repositories[0]);
+            setSelectValue(0);
 
             if (radioChoice == "existing") {
                 modalUpdateState({
@@ -127,9 +127,9 @@ export default function UploadJDCModalContent({ repositories, modalUpdateState }
                             defaultChecked={radioChoice == "existing"}
                             onClick={() => {
                                 fileInputRef.current.value="";
-                                setNewRepository(selectValue);
+                                setNewRepository(repositories[selectValue]);
                                 modalUpdateState({
-                                    repository: selectValue,
+                                    repository: repositories[selectValue],
                                     files: files
                                 })
                                 setRadioChoice("existing");
@@ -147,17 +147,13 @@ export default function UploadJDCModalContent({ repositories, modalUpdateState }
                         disabled={radioChoice == "new"}
                         value={selectValue || ""}
                         onChange={(event) => {
-                            const idx = event.target.value;
+                            const idx = event.target.value[0];
                             setNewRepository(repositories[idx]);
-                            setSelectValue(repositories[idx]);
+                            setSelectValue(idx);
                             modalUpdateState({
                                 repository: repositories[idx],
                                 files: files
                             });
-                            console.log({
-                                repository: repositories[idx],
-                                files: files
-                            })
                         }}
                     >
                         {

@@ -6,7 +6,10 @@ const RepositorySchema = new mongoose.Schema({
     commit: String,
     srcPathList: [String],
     rootPathList: [String],
-    classes: [String]
+    classes: [{
+        _id: String,
+        name: String
+    }]
 })
 
 exports.Repository = mongoose.model('Repository', RepositorySchema);
