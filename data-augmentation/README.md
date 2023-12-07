@@ -24,6 +24,11 @@ The script will also install Java 8, 11, and 17, Maven 3.9.4, Ant 1.10.13, and G
 
 ### Client
 
+Move to the `client` folder with:
+```bash
+cd client
+```
+
 #### Installation
 Install the dependencies with:
 ```bash
@@ -45,6 +50,11 @@ npm run dev
 By deafult, the client will be available at `http://localhost:5173`.
 
 ### Server
+
+Move to the `server` folder with:
+```bash
+cd server
+```
 
 #### Installation
 Install the dependencies with:
