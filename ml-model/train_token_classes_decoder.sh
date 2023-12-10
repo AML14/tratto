@@ -1,8 +1,5 @@
 export PYTHONPATH="./"
 python scripts/train/run_classifier.py \
---do_train \
---do_eval \
---do_predict \
 --model_type codet5+ \
 --tokenizer_name Salesforce/codet5p-220m \
 --model_name_or_path Salesforce/codet5p-220m \
@@ -14,8 +11,7 @@ python scripts/train/run_classifier.py \
 --num_epochs 20 \
 --save_steps 9000 \
 --accumulation_steps 1 \
---test_ratio 0.1 \
---validation_ratio 0.1 \
---data_dir ./dataset/token-classes-dataset \
+--train_path ./dataset/token-classes-dataset/train \
+--validation_path ./dataset/token-classes-dataset/validation \
 --output_dir ./output_token_classes_decoder \
 --classification_type label_prediction

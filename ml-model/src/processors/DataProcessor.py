@@ -499,7 +499,7 @@ class DataProcessor:
             t_df = t_df.astype(df_types)
             v_df = v_df.astype(df_types)
             # Balance dataset
-            t_df = self._balance_dataframe(t_df)
+            # t_df = self._balance_dataframe(t_df)
             # Define the new order of columns
             new_columns_order = [
                 'javadocTag', 'oracleType', 'methodSourceCode', 'methodJavadoc', 'oracleId', 'oracle', 'label'
