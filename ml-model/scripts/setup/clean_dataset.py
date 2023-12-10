@@ -4,12 +4,20 @@ import torch
 import pandas as pd
 
 d_paths = [
-    os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "dataset", "token-classes-dataset"),
-    os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "dataset", "token-values-dataset")
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "dataset", "original", "oracles-dataset-train"),
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "dataset", "original", "oracles-dataset-validation"),
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "dataset", "original", "token-classes-dataset-train"),
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "dataset", "original", "token-classes-dataset-train"),
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "dataset", "original", "token-values-dataset-validation"),
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "dataset", "original", "token-values-dataset-validation"),
 ]
 c_paths = [
-    os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "dataset", "token-classes-dataset-cleaned"),
-    os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "dataset", "token-values-dataset-cleaned")
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "dataset", "cleaned", "oracles-dataset-train"),
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "dataset", "cleaned", "oracles-dataset-validation"),
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "dataset", "cleaned", "token-classes-dataset-train"),
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "dataset", "cleaned", "token-classes-dataset-train"),
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "dataset", "cleaned", "token-values-dataset-validation"),
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "dataset", "cleaned", "token-values-dataset-validation"),
 ]
 
 for c_path in c_paths:

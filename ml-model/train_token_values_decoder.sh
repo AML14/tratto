@@ -11,7 +11,7 @@ python scripts/train/run_classifier.py \
 --num_epochs 20 \
 --save_steps 9000 \
 --accumulation_steps 1 \
---train_path ./dataset/token-values-dataset \
---validation_path ./dataset/token-values-dataset \
+--train_path ./dataset/cleaned/token-values-dataset-train \
+--validation_path ./dataset/cleaned/token-values-dataset-validation \
 --output_dir ./output_token_values_decoder \
 --classification_type category_prediction

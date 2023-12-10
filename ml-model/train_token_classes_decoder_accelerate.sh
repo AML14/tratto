@@ -11,7 +11,7 @@ accelerate launch --config_file accelerate_config_fsdp.yaml scripts/train/run_cl
 --num_epochs 5 \
 --save_steps 4000 \
 --accumulation_steps 1 \
---train_path ./dataset/token-classes-dataset-cleaned/train \
---validation_path ./dataset/token-classes-dataset-cleaned/validation \
+--train_path ./dataset/cleaned/token-classes-dataset-train \
+--validation_path ./dataset/cleaned/token-classes-dataset-validation \
 --output_dir ./output_token_classes_decoder_label_770 \
 --classification_type label_prediction
