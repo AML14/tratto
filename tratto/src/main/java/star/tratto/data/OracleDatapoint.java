@@ -148,8 +148,7 @@ public class OracleDatapoint {
 
     /**
      * Converts the OracleDatapoint to a Map with Lists. This is useful for later
-     * conversion to JSON, since tuples (e.g., Pairs and Triplets) are not correctly
-     * exported as lists.
+     * conversion to JSON, as the records must be exported as lists.
      */
     public Map toMapAndLists() {
         Map oracleDatapointMap = new LinkedHashMap();
