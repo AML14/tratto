@@ -489,11 +489,11 @@ class DataProcessor:
             df_types = {
                 'label': 'str',
                 'oracleId': 'int64',
-                'oracle': 'string',
-                'oracleType': 'string',
-                'javadocTag': 'string',
-                'methodJavadoc': 'string',
-                'methodSourceCode': 'string'
+                'oracle': 'str',
+                'oracleType': 'str',
+                'javadocTag': 'str',
+                'methodJavadoc': 'str',
+                'methodSourceCode': 'str'
             }
             # Set the type of each column in the dataset
             t_df = t_df.astype(df_types)
@@ -518,16 +518,16 @@ class DataProcessor:
             df_types = {
                 'label': 'str',
                 'oracleId': 'int64',
-                'oracleType': 'string',
-                'packageName': 'string',
-                'className': 'string',
-                'javadocTag': 'string',
-                'methodJavadoc': 'string',
-                'methodSourceCode': 'string',
-                'oracleSoFar': 'string',
-                'token': 'string',
-                'tokenClass': 'string',
-                'tokenInfo': 'string'
+                'oracleType': 'str',
+                'packageName': 'str',
+                'className': 'str',
+                'javadocTag': 'str',
+                'methodJavadoc': 'str',
+                'methodSourceCode': 'str',
+                'oracleSoFar': 'str',
+                'token': 'str',
+                'tokenClass': 'str',
+                'tokenInfo': 'str'
             }
             # Set the type of each column in the dataset
             t_df = t_df.astype(df_types)
@@ -757,7 +757,7 @@ class DataProcessor:
         mapped_tokenClassesSoFar_series = df["tokenClassesSoFar"].apply(lambda x: "[ " + " ".join(random.sample([y for y in x], len(x))) + " ]")
         df.loc[:, 'tokenClassesSoFar'] = None
         # Set type of new dataframe column
-        df.loc[:, 'tokenClassesSoFar'] = df['tokenClassesSoFar'].astype('string')
+        df.loc[:, 'tokenClassesSoFar'] = df['tokenClassesSoFar'].astype('str')
         # Assign the new values to the dataframe
         df.loc[:, 'tokenClassesSoFar'] = mapped_tokenClassesSoFar_series
         return df
@@ -784,7 +784,7 @@ class DataProcessor:
         df = pd.merge(df, df_eligibleTokenClasses, on=['oracleId', 'oracleSoFar']).reset_index()
         df["eligibleTokenClasses"] = df["eligibleTokenClasses"].apply(lambda x: "[ " + " ".join(random.sample(list(x), len(x))) + " ]")
         # Set type of new dataframe column
-        df['eligibleTokenClasses'] = df['eligibleTokenClasses'].astype('string')
+        df['eligibleTokenClasses'] = df['eligibleTokenClasses'].astype('str')
         return df
 
     @staticmethod
@@ -807,7 +807,7 @@ class DataProcessor:
         df = pd.merge(df, df_eligibleTokens, on=['oracleId', 'oracleSoFar']).reset_index()
         df["eligibleTokens"] = df["eligibleTokens"].apply(lambda x: "[ " + " ".join(random.sample(list(x), len(x))) + " ]")
         # Set type of new dataframe column
-        df['eligibleTokens'] = df['eligibleTokens'].astype('string')
+        df['eligibleTokens'] = df['eligibleTokens'].astype('str')
         return df
 
     def _concat_src(
