@@ -874,8 +874,8 @@ public class DatasetUtils {
     }
 
     /**
-     * Collects information for all methods available to any type in a given
-     * method's signature. Includes methods visible to:
+     * Collects information for all accessible available to any type in a
+     * given method's signature. Includes methods visible to:
      *  (1) the base class (this).
      *  (2) the arguments of the method.
      *  (3) the class of the method return type.
