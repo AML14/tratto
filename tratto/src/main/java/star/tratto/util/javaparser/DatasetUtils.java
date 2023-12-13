@@ -952,8 +952,9 @@ public class DatasetUtils {
      * for a given oracle. Includes accessible methods for each type of each
      * sub-expression within an oracle. For example, the oracle:
      *     "this.getName().length() == 0"
-     * has methods available to (1) the declaring class, (2) the return type
-     * of getName(), and (3) the return type of length().
+     * has methods available to (1) the declaring class (i.e., the type of
+     * this), (2) the return type of getName(), and (3) the return type of
+     * length().
      *
      * @param jpClass the declaring class
      * @param jpCallable a method
