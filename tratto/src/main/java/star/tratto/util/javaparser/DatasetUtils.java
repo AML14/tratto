@@ -639,17 +639,12 @@ public class DatasetUtils {
                     .stream()
                     .map(m -> new MethodTokens(m.get(0), "", jpResolvedType.describe(), m.get(1)))
                     .toList());
-        } else if (JavaParserUtils.isTypeVariable(jpResolvedType)) {
-            // generic type.
-            List<MethodUsage> genericMethods = JavaParserUtils.getObjectType().asReferenceType().getAllMethods()
-                    .stream()
-                    .map(MethodUsage::new)
-                    .filter(JavaParserUtils::isNonPrivateNonStaticNonVoidMethod)
-                    .toList();
-            methodList.addAll(genericMethods.stream().map(MethodTokens::new).toList());
-        } else if (jpResolvedType.isReferenceType()) {
-            // base type.
-            List<MethodUsage> allMethods = jpResolvedType.asReferenceType().getAllMethods()
+        } else if (jpResolvedType.isReferenceType() || jpResolvedType.isTypeVariable()) {
+            ResolvedType type = jpResolvedType;
+            if (JavaParserUtils.isTypeVariable(type)) {
+                type = JavaParserUtils.getObjectType();
+            }
+            List<MethodUsage> allMethods = type.asReferenceType().getAllMethods()
                     .stream()
                     .map(MethodUsage::new)
                     .filter(JavaParserUtils::isNonPrivateNonStaticNonVoidMethod)
