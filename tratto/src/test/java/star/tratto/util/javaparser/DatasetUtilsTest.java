@@ -64,7 +64,7 @@ public class DatasetUtilsTest {
         assertNotNull(jpCallable);
         String javadoc = getCallableJavadoc(jpCallable).trim();
         List<ValueTokens> expected = oracleDatapoint.getTokensMethodJavadocValues();
-        List<ValueTokens> actual = getJavadocValues(javadoc);
+        List<ValueTokens> actual = getJavadocLiterals(javadoc);
         assertEquals(expected, actual);
     }
 

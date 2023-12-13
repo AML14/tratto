@@ -171,7 +171,7 @@ public class DatasetUtils {
      *                       asterisks)
      * @return a list of numeric value tokens
      */
-    private static List<ValueTokens> getAllNumericValuesInJavadoc(
+    private static List<ValueTokens> getAllNumericLiteralsInJavadoc(
             String javadocComment
     ) {
         Matcher matcher = numericValuePattern.matcher(javadocComment);
@@ -211,7 +211,7 @@ public class DatasetUtils {
      *                       asterisks)
      * @return a list of string value tokens
      */
-    private static List<ValueTokens> getAllStringValuesInJavadoc(
+    private static List<ValueTokens> getAllStringLiteralsInJavadoc(
             String javadocComment
     ) {
         Matcher matcher = stringValuePattern.matcher(javadocComment);
@@ -233,12 +233,12 @@ public class DatasetUtils {
      *                       asterisks)
      * @return a list of value tokens
      */
-    public static List<ValueTokens> getJavadocValues(
+    public static List<ValueTokens> getJavadocLiterals(
             String javadocComment
     ) {
         List<ValueTokens> valueList = new ArrayList<>();
-        valueList.addAll(getAllNumericValuesInJavadoc(javadocComment));
-        valueList.addAll(getAllStringValuesInJavadoc(javadocComment));
+        valueList.addAll(getAllNumericLiteralsInJavadoc(javadocComment));
+        valueList.addAll(getAllStringLiteralsInJavadoc(javadocComment));
         return valueList;
     }
 

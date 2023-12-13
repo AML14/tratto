@@ -323,7 +323,7 @@ public class ProjectOracleGenerator {
         builder.setTokensProjectClassesNonPrivateStaticAttributes(this.fields);
         builder.setMethodSourceCode(DatasetUtils.getCallableSourceCode(jpCallable));
         builder.setMethodJavadoc(DatasetUtils.getCallableJavadoc(jpCallable));
-        builder.setTokensMethodJavadocValues(DatasetUtils.getJavadocValues(builder.copy().getMethodJavadoc()));
+        builder.setTokensMethodJavadocValues(DatasetUtils.getJavadocLiterals(builder.copy().getMethodJavadoc()));
         builder.setTokensMethodArguments(DatasetUtils.getMethodArgumentTokens(jpClass, jpCallable));
         // get method variable tokens (no oracle variable tokens).
         try {
@@ -400,7 +400,7 @@ public class ProjectOracleGenerator {
         builder.setTokensProjectClassesNonPrivateStaticAttributes(this.fields);
         builder.setMethodSourceCode(DatasetUtils.getCallableSourceCode(jpCallable));
         builder.setMethodJavadoc(DatasetUtils.getCallableJavadoc(jpCallable));
-        builder.setTokensMethodJavadocValues(DatasetUtils.getJavadocValues(builder.copy().getMethodJavadoc()));
+        builder.setTokensMethodJavadocValues(DatasetUtils.getJavadocLiterals(builder.copy().getMethodJavadoc()));
         builder.setTokensMethodArguments(DatasetUtils.getMethodArgumentTokens(jpClass, jpCallable));
         // get method variable and oracle variable tokens.
         try {
