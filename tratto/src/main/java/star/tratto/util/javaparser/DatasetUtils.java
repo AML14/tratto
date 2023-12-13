@@ -373,8 +373,8 @@ public class DatasetUtils {
      *
      * @param cu a compilation unit of a Java file
      * @return a list of method tokens
-     * @throws PackageDeclarationNotFoundException if the package
-     * {@link PackageDeclaration} of the compilation unit is not found
+     * @throws PackageDeclarationNotFoundException if the package of the
+     * compilation unit is not found
      */
     private static List<MethodTokens> getNonPrivateStaticNonVoidMethods(
             CompilationUnit cu
