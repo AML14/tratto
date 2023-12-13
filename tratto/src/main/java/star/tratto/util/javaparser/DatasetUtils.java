@@ -45,13 +45,13 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static org.plumelib.util.CollectionsPlume.mapList;
 
@@ -948,6 +948,25 @@ public class DatasetUtils {
     }
 
     /**
+     * Gets all subexpressions of a given expression. A subexpression is defined
+     * as either a field access or method call. For example,
+     * {@code this.getStudent().id} has subexpressions: {@code this},
+     * {@code this.getStudent()}, and {@code this.getStudent().id}.
+     *
+     * @param expression a Java expression
+     * @return all subexpressions in the given expression
+     */
+    private static List<String> getSubexpressions(String expression) {
+        return Parser.getInstance().getAllMethodsAndAttributes(expression)
+                .stream()
+                .map(e -> {
+                    List<String> tokens = Splitter.split(e);
+                    return String.join("", tokens).replaceAll("receiverObjectID", "this");
+                })
+                .collect(Collectors.toList());
+    }
+
+    /**
      * Collects information for all non-private, non-static, non-void methods
      * for a given oracle. Includes accessible methods for each type of each
      * sub-expression within an oracle. For example, the oracle:
@@ -969,27 +988,23 @@ public class DatasetUtils {
             String oracle
     ) {
         List<MethodTokens> methodList = new ArrayList<>();
-        List<LinkedList<String>> oracleSubExpressions = Parser.getInstance().getAllMethodsAndAttributes(oracle)
-                .stream()
-                .map(e -> new LinkedList<>(Splitter.split(e)))
-                .toList();
-        for (LinkedList<String> oracleSubexpression : oracleSubExpressions) {
-            String subexpression = String.join("", oracleSubexpression).replaceAll("receiverObjectID", "this");
+        List<String> subexpressions = getSubexpressions(oracle);
+        for (String subexpression : subexpressions) {
+            ResolvedType resolvedType;
             try {
-                ResolvedType resolvedType = JavaParserUtils.getResolvedTypeOfExpression(
+                resolvedType = JavaParserUtils.getResolvedTypeOfExpression(
                         jpClass,
                         jpCallable,
                         methodArgs,
                         subexpression
                 );
-                if (!resolvedType.isPrimitive()) {
-                    methodList.addAll(getMethodsFromType(JavaParserUtils.getObjectType()));
-                }
-                methodList.addAll(getMethodsFromType(resolvedType));
             } catch (UnsolvedSymbolException | ResolvedTypeNotFound e) {
-                ResolvedType genericType = JavaParserUtils.getObjectType();
-                methodList.addAll(getMethodsFromType(genericType));
+                resolvedType = JavaParserUtils.getObjectType();
             }
+            if (!resolvedType.isPrimitive()) {
+                methodList.addAll(getMethodsFromType(JavaParserUtils.getObjectType()));
+            }
+            methodList.addAll(getMethodsFromType(resolvedType));
         }
         return withoutDuplicates(methodList);
     }
@@ -1012,24 +1027,20 @@ public class DatasetUtils {
             String oracle
     ) {
         List<AttributeTokens> attributeList = new ArrayList<>();
-        List<LinkedList<String>> oracleSubexpressions = Parser.getInstance().getAllMethodsAndAttributes(oracle)
-                .stream()
-                .map(e -> new LinkedList<>(Splitter.split(e)))
-                .toList();
-        for (LinkedList<String> oracleSubexpression : oracleSubexpressions) {
-            String subexpression = String.join("", oracleSubexpression).replaceAll("receiverObjectID", "this");
+        List<String> subexpressions = getSubexpressions(oracle);
+        for (String subexpression : subexpressions) {
+            ResolvedType resolvedType;
             try {
-                ResolvedType resolvedType = JavaParserUtils.getResolvedTypeOfExpression(
+                resolvedType = JavaParserUtils.getResolvedTypeOfExpression(
                         jpClass,
                         jpCallable,
                         methodArgs,
                         subexpression
                 );
-                attributeList.addAll(getFieldsFromType(resolvedType));
             } catch (UnsolvedSymbolException | ResolvedTypeNotFound e) {
-                ResolvedType genericType = JavaParserUtils.getObjectType();
-                attributeList.addAll(getFieldsFromType(genericType));
+                resolvedType = JavaParserUtils.getObjectType();
             }
+            attributeList.addAll(getFieldsFromType(resolvedType));
         }
         return withoutDuplicates(attributeList);
     }
