@@ -840,13 +840,14 @@ public class DatasetUtils {
     private static List<AttributeTokens> getFieldsFromType(
             Type jpType
     ) {
+        ResolvedType jpResolvedType;
         try {
-            ResolvedType jpResolvedType = jpType.resolve();
-            return getFieldsFromType(jpResolvedType);
+            jpResolvedType = jpType.resolve();
         } catch (UnsolvedSymbolException e) {
             logger.error(String.format("Unable to generate attribute tokens from type %s", jpType));
-            return new ArrayList<>();
+            return Collections.emptyList();
         }
+        return getFieldsFromType(jpResolvedType);
     }
 
     /**
