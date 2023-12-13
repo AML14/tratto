@@ -86,7 +86,7 @@ public class DatasetUtils {
      * Java file.
      *
      * @param cu a Java file
-     * @return a list of class tokens: (className, packageName)
+     * @return a list of class tokens
      * @throws PackageDeclarationNotFoundException if the package cannot be
      * retrieved
      */
