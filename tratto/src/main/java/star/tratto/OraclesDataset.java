@@ -63,18 +63,19 @@ public class OraclesDataset {
     }
 
     /**
-     * Writes {@code oracleDPChunks} to individual JSON files. Creates new
+     * Writes {@code oracleDPs} to individual JSON files. Creates new
      * files and parent directories if necessary. If files already exist,
-     * overrides any previous content.
+     * overwrites any previous content.
      *
      * @param path base path for all chunks. The i-th chunk will be written to
      *             the path "[path]_i.json" (0-indexed).
-     * @param oracleDPChunks oracle datapoints to write
+     * @param oracleDPs oracle datapoints to write
      * @throws Error if unable to create files/directories or unable to write
      * content to file
      * @see FileUtils#write
      */
-    private static void writeChunks(Path path, List<List<OracleDatapoint>> oracleDPChunks) {
+    private static void writeChunks(Path path, List<OracleDatapoint> oracleDPs) {
+        List<List<OracleDatapoint>> oracleDPChunks = DatasetUtils.splitListIntoSubLists(oracleDPs, chunkSize);
         for (int i = 0; i < oracleDPChunks.size(); i++) {
             List<OracleDatapoint> chunk = oracleDPChunks.get(i);
             // removes ".json" from original path to avoid adding ".json" into the middle of the file name.
@@ -101,10 +102,9 @@ public class OraclesDataset {
         Path oraclesPath = TrattoPath.OUTPUT.getPath().resolve(project.projectName()).resolve(oraclesFileName);
         FileUtils.write(oraclesPath, oracles);
         // write oracle datapoints as chunks
-        List<List<OracleDatapoint>> oracleDPSubLists = DatasetUtils.splitListIntoSubLists(oracleDPs, chunkSize);
         String oracleDPFileName = String.format("oracle_datapoints_%s.json", project.projectName());
         Path oracleDPPath = TrattoPath.OUTPUT_DATASET.getPath().resolve(oracleDPFileName);
-        writeChunks(oracleDPPath, oracleDPSubLists);
+        writeChunks(oracleDPPath, oracleDPs);
     }
 
     /**
