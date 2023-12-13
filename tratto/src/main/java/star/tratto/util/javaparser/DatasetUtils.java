@@ -52,7 +52,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import static org.plumelib.util.CollectionsPlume.mapList;
 
@@ -436,7 +435,7 @@ public class DatasetUtils {
 
     /**
      * Collects information about all Javadoc tags in a given compilation
-     * unit. Does not traverse inner classes or methods for tags.
+     * unit. Does not traverse inner classes.
      *
      * @param cu a compilation unit of a Java file
      * @param fileContent the content of the Java file
@@ -503,12 +502,9 @@ public class DatasetUtils {
      * @see DatasetUtils#ignoreFiles
      */
     private static List<Path> getJavaFiles(Path dir) {
-        List<Path> allJavaFiles = FileUtils.getAllJavaFilesUnderDirectory(dir);
-        // filter files.
-        return allJavaFiles
-                .stream()
-                .filter(f -> !ignoreFiles.contains(f.getFileName().toString()))
-                .collect(Collectors.toList());
+        List<Path> javaFiles = FileUtils.getAllJavaFilesUnderDirectory(dir);
+        javaFiles.removeIf(f -> ignoreFiles.contains(f.getFileName().toString()));
+        return javaFiles;
     }
 
     /**
