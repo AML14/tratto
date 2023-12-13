@@ -672,7 +672,6 @@ public class DatasetUtils {
         try {
             jpResolvedType = jpType.resolve();
         } catch (UnsolvedSymbolException e) {
-            logger.error(String.format("Unable to generate method tokens from type %s", jpType));
             return Collections.emptyList();
         }
         return getMethodsFromType(jpResolvedType);
