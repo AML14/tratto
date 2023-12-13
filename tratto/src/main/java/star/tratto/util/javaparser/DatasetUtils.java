@@ -368,7 +368,8 @@ public class DatasetUtils {
 
     /**
      * Collects information about all non-private, static, non-void methods
-     * of a given compilation unit.
+     * of a given compilation unit. Does not include constructors as they are
+     * not static.
      *
      * @param cu a compilation unit of a Java file
      * @return a list of method tokens
