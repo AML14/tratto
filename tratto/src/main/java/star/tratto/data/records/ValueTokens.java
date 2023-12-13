@@ -9,7 +9,7 @@ import java.util.List;
  * Used for XText grammar.
  */
 public record ValueTokens(
-        /* The value. */
+        /* The value. Includes double quotes for String values. */
         String value,
         /*
          * The type of the value (only numerical or string). Does not include
