@@ -705,9 +705,8 @@ public class DatasetUtils {
     }
 
     /**
-     * Converts a field declaration (in Java Reflection format) to a record.
-     * This method is a special case of
-     * {@link DatasetUtils#convertFieldDeclarationToAttributeTokens(List)}
+     * Converts a field declaration to a record. This method is a special case
+     * of {@link DatasetUtils#convertFieldDeclarationToAttributeTokens(List)}
      * using available information from the implementation of
      * {@link ReflectionFieldDeclaration}.
      *
