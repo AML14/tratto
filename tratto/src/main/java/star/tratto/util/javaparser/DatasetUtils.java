@@ -1058,6 +1058,7 @@ public class DatasetUtils {
      *     <li>{@code jpParam} is a type parameter (array) and
      *     {@code jDoctorParam} is an array of standard objects.</li>
      * </ul>
+     * This method only works for unbounded generics.
      *
      * @param jDoctorParam the JDoctor parameter name
      * @param jpParam a JavaParser parameter name
