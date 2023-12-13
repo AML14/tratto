@@ -18,6 +18,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Generates the OraclesDataset as described in the Tratto paper through the
+ * main method.
+ */
 public class OraclesDataset {
     private static final ProjectOracleGenerator oracleDPGenerator = new ProjectOracleGenerator();
     /**
