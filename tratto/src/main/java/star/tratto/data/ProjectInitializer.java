@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 /**
  * A helper class that provides a static method
- * {@link ProjectInitializer#getProjects(Path)} to initialize all projects as a
+ * {@link ProjectInitializer#getProjects(Path)} to initialize all projects to a
  * list of {@link Project} records from a JSON file.
  */
 public class ProjectInitializer {
