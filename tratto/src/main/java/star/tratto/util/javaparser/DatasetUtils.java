@@ -22,7 +22,6 @@ import com.github.javaparser.resolution.declarations.ResolvedReferenceTypeDeclar
 import com.github.javaparser.resolution.types.ResolvedType;
 import com.github.javaparser.symbolsolver.javaparsermodel.declarations.JavaParserFieldDeclaration;
 import com.github.javaparser.symbolsolver.reflectionmodel.ReflectionFieldDeclaration;
-import org.javatuples.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import star.tratto.data.OracleType;
@@ -778,6 +777,21 @@ public class DatasetUtils {
     }
 
     /**
+     * Creates a ClassTokens record corresponding to a resolved type.
+     *
+     * @param resolvedType a type
+     * @return the corresponding class tokens
+     */
+    private static ClassTokens getResolvedTypeClassTokens(ResolvedType resolvedType) {
+        // get type pair from resolved type returns (packageName, className)
+        List<String> reversedTokens = JavaParserUtils.getTypePairFromResolvedType(resolvedType).toList()
+                .stream()
+                .map(t -> (String) t)
+                .toList();
+        return new ClassTokens(reversedTokens.get(1), reversedTokens.get(0));
+    }
+
+    /**
      * Gets information for all non-private, non-static fields (attributes)
      * available to a given type.
      *
@@ -790,11 +804,11 @@ public class DatasetUtils {
         List<AttributeTokens> fieldList = new ArrayList<>();
         if (jpResolvedType.isArray()) {
             // add array field (length).
-            Pair<String, String> packageAndClass = JavaParserUtils.getTypePairFromResolvedType(jpResolvedType);
+            ClassTokens typeTokens = getResolvedTypeClassTokens(jpResolvedType);
             fieldList.add(new AttributeTokens(
                     "length",
-                    packageAndClass.getValue0(),
-                    packageAndClass.getValue1(),
+                    typeTokens.packageName(),
+                    typeTokens.className(),
                     "public final int length;"
             ));
         } else if (jpResolvedType.isReferenceType()) {
@@ -856,11 +870,11 @@ public class DatasetUtils {
             Parameter jpParameter
     ) {
         if (jpParameter.isVarArgs()) {
-            Pair<String, String> packageAndClass = JavaParserUtils.getTypePairFromResolvedType(jpParameter.getType().resolve());
+            ClassTokens typeTokens = getResolvedTypeClassTokens(jpParameter.getType().resolve());
             return List.of(new AttributeTokens(
                     "length",
-                    packageAndClass.getValue0(),
-                    packageAndClass.getValue1() + "[]",
+                    typeTokens.packageName(),
+                    typeTokens.className() + "[]",
                     "public final int length;"
             ));
         }
