@@ -42,6 +42,7 @@ public class TokensDataset {
             Path tokensDatasetFile = Paths.get(TOKENS_DATASET_FOLDER + fileIndex++ + "_" + oraclesDatasetFile.getFileName());
             OutputStream tokensDatasetOutputStream = Files.newOutputStream(tokensDatasetFile);
 
+            tokensDatasetOutputStream.write("[".getBytes());
             List<Map> rawOracleDatapoints = objectMapper.readValue(oraclesDatasetFile.toFile(), List.class);
             for (Map rawOracleDatapoint : rawOracleDatapoints) {
                 OracleDatapoint oracleDatapoint = new OracleDatapoint(rawOracleDatapoint);
@@ -55,15 +56,13 @@ public class TokensDataset {
                 }
 
                 for (TokenDatapoint tokenDatapoint : tokenDatapoints) {
-                    if (Files.size(tokensDatasetFile) == 0) {
-                        tokensDatasetOutputStream.write("[".getBytes());
-                    } else if (Files.size(tokensDatasetFile) / 1000 / 1000 > 48) { // Limit file size to 50 MB
+                    if (Files.size(tokensDatasetFile) / 1000 / 1000 > 48) { // Limit file size to ~50 MB
                         tokensDatasetOutputStream.write("]".getBytes());
                         tokensDatasetOutputStream.close();
                         tokensDatasetFile = Paths.get(TOKENS_DATASET_FOLDER + fileIndex++ + "_" + oraclesDatasetFile.getFileName());
                         tokensDatasetOutputStream = Files.newOutputStream(tokensDatasetFile);
                         tokensDatasetOutputStream.write("[".getBytes());
-                    } else {
+                    } else if (Files.size(tokensDatasetFile) > 1) { // size=1 means file only with "["
                         tokensDatasetOutputStream.write(",".getBytes());
                     }
                     tokensDatasetOutputStream.write(objectMapper.writeValueAsBytes(tokenDatapoint));
