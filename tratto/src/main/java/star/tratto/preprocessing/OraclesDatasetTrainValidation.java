@@ -29,7 +29,7 @@ public class OraclesDatasetTrainValidation {
     private static final Logger logger = LoggerFactory.getLogger(OraclesDatasetTrainValidation.class);
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    private static final Random random = new Random(43); // Change seed to achieve desired randomness
+    private static final Random random = new Random(42); // Change seed to achieve desired randomness
     public static String ORACLES_DATASET_FOLDER = "src/main/resources/oracles-dataset/";
     public static String ORACLES_DATASET_TRAIN_FOLDER = "src/main/resources/oracles-dataset-train/";
     public static String ORACLES_DATASET_VALIDATION_FOLDER = "src/main/resources/oracles-dataset-validation/";
@@ -51,7 +51,9 @@ public class OraclesDatasetTrainValidation {
 
     public static void main(String[] args) throws IOException {
         // Set up files and folders
+        FileUtils.deleteDirectory(Paths.get(ORACLES_DATASET_TRAIN_FOLDER));
         FileUtils.createDirectories(Paths.get(ORACLES_DATASET_TRAIN_FOLDER));
+        FileUtils.deleteDirectory(Paths.get(ORACLES_DATASET_VALIDATION_FOLDER));
         FileUtils.createDirectories(Paths.get(ORACLES_DATASET_VALIDATION_FOLDER));
         Path oraclesDatasetFolder = Paths.get(ORACLES_DATASET_FOLDER);
         List<Path> oraclesFiles = StreamSupport.stream(Files.newDirectoryStream(oraclesDatasetFolder).spliterator(), false).collect(Collectors.toList());
