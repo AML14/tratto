@@ -76,7 +76,7 @@ public class E2ETests {
                     assertEquals(compactExpression(o), compactExpression(split(parser.getOracle(o))));
                 });
                 // Augment oracles dataset with newly created oracles and existing Javadoc tags alternatives
-                DataAugmentation.main(new String[] {});
+                DataAugmentation.main(new String[] {"0.5"});
                 // Generate tokens dataset based on oracles dataset (assertions are done as dataset is generated)
                 TokensDataset.main(new String[] {});
             });

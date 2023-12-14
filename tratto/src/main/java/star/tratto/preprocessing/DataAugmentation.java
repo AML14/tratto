@@ -41,7 +41,23 @@ public class DataAugmentation {
     private static int oracleDPsOriginal = 0;
     private static int oracleDPsTotal = 0;
 
+    /**
+     * For testing purposes, this class accepts an optional argument that specifies
+     * the probability of augmenting an oracle. This is needed because, in CI, the
+     * server runs out of disk space if we augment all oracles.
+     *
+     * @param args Optional argument (float) that specifies the probability of augmenting
+     *             an oracle. If not specified, it defaults to 1.0.
+     * @throws IOException
+     */
     public static void main(String[] args) throws IOException {
+        Float augmentProb = null;
+        try {
+            augmentProb = Float.parseFloat(args[0]);
+        } catch (Exception e) {
+            logger.info("No augment probability specified. Defaulting to 1.0");
+        }
+
         logger.info("Augmenting oracles dataset...");
         logger.info("Reading oracle data points from: {}", ORACLES_DATASET.getPath());
         logger.info("Reading alternate oracles from: {}", ALTERNATE_ORACLES_PATH);
@@ -55,6 +71,10 @@ public class DataAugmentation {
         for (Path oraclesDatasetFile : oraclesDatasetStream) {
             if (oraclesDatasetFile.toString().endsWith(AUGMENTED_SUFFIX)) {
                 continue; // Skip already augmented files
+            }
+            if (augmentProb != null && new Random().nextFloat() > augmentProb) {
+                logger.info("Skipping file: {}", oraclesDatasetFile.getFileName());
+                continue;
             }
             logger.info("Augmenting file: {}", oraclesDatasetFile.getFileName());
             List<Map> rawOracleDatapoints = objectMapper.readValue(oraclesDatasetFile.toFile(), List.class);
