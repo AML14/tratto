@@ -16,6 +16,7 @@ import java.util.*;
 
 import static star.tratto.data.TrattoPath.ORACLES_DATASET;
 import static star.tratto.util.StringUtils.compactExpression;
+import static star.tratto.util.javaparser.JavaParserUtils.getMethodDeclaration;
 import static star.tratto.util.javaparser.JavaParserUtils.updateMethodJavadoc;
 
 /**
@@ -134,9 +135,12 @@ public class DataAugmentation {
         int nOracles = currentAlternateOracles.size();
 
         // Prepare alternatives of method source code
-        String methodSignature = methodSourceCode.split("\\{")[0];
-        methodSignature = methodSignature.stripTrailing();
-        methodSignature = methodSignature.endsWith(";") ? methodSignature : methodSignature + ";";
+        String methodSignature = methodSourceCode; // If method is constructor, we cannot remove method body
+        if (getMethodDeclaration(methodSourceCode) != null) {
+            methodSignature = methodSourceCode.split("\\{")[0];
+            methodSignature = methodSignature.stripTrailing();
+            methodSignature = methodSignature.endsWith(";") ? methodSignature : methodSignature + ";";
+        }
 
         // Case 1: Original
         oracleCombos.add(Quartet.with(javadocTag, javadoc, oracle, methodSourceCode));
