@@ -87,6 +87,9 @@ public class TokensDatasetPreprocessing {
             "commons-collections4-4.1",
             "commons-math3-3.6.1"
     );
+    private static final String oracleIdFeature = "oracleId";
+    private static final String javadocTagFeature = "javadocTag";
+    private static final String methodSourceCodeFeature = "methodSourceCode";
 
     public static void main(String[] args) throws IOException {
         if (DATASET_TYPE != TokenDPType.TOKEN_CLASS && DATASET_TYPE != TokenDPType.TOKEN_VALUE) {
@@ -121,7 +124,7 @@ public class TokensDatasetPreprocessing {
                     tdp.remove("projectName");
                     tdp.remove("classJavadoc");
                     tdp.remove("classSourceCode");
-                    tdp.put("methodSourceCode", ((String) tdp.get("methodSourceCode")).split("\\{")[0]);
+//                    tdp.put("methodSourceCode", ((String) tdp.get("methodSourceCode")).split("\\{")[0]);
                 });
                 projectTokenDatapoints.addAll(tokenDatapoints);
             }
@@ -185,8 +188,8 @@ public class TokensDatasetPreprocessing {
                     currentIdsDuplicates.addAll(getDuplicateIds(datapointsChunk, tokenDatapoint)); // The current datapoint is in this list, so don't add it
 
                     // 2. Remove contradictory TokenDatapoints
-                    currentIdsContradictory.addAll(getContradictoryIds(datapointsChunk, tokenDatapoint, "oracleId"));
-                    currentIdsContradictory.addAll(getContradictoryIds(datapointsChunk, tokenDatapoint, "javadocTag"));
+                    currentIdsContradictory.addAll(getContradictoryIds(datapointsChunk, tokenDatapoint, true));
+                    currentIdsContradictory.addAll(getContradictoryIds(datapointsChunk, tokenDatapoint, false));
 
                     // 3. Remove TokenDatapoints with single value for token feature
                     List<Map> singlePossibilityTokenDatapoints = datapointsChunk
@@ -275,14 +278,16 @@ public class TokensDatasetPreprocessing {
         return duplicateIds.subList(1, duplicateIds.size()); // The current datapoint is in this list, so don't add it
     }
 
-    private static List<Long> getContradictoryIds(List<Map> datapoints, Map datapoint, String comparedFeature) {
-        if (!comparedFeature.equals("oracleId") && !comparedFeature.equals("javadocTag")) {
-            throw new IllegalArgumentException("Feature " + comparedFeature + " not supported");
-        }
+    private static List<Long> getContradictoryIds(List<Map> datapoints, Map datapoint, boolean compareOracleId) {
         Map tokenDatapointNoIdLabelFeature = new HashMap(datapoint);
         tokenDatapointNoIdLabelFeature.remove("id");
         tokenDatapointNoIdLabelFeature.remove("label");
-        tokenDatapointNoIdLabelFeature.remove(comparedFeature);
+        if (compareOracleId) {
+            tokenDatapointNoIdLabelFeature.remove(oracleIdFeature);
+        } else {
+            tokenDatapointNoIdLabelFeature.remove(javadocTagFeature);
+            tokenDatapointNoIdLabelFeature.remove(methodSourceCodeFeature);
+        }
         List<Long> contradictoryIds = new ArrayList<>();
         if ((Boolean) datapoint.get("label")) {
             contradictoryIds = datapoints
@@ -294,7 +299,12 @@ public class TokensDatasetPreprocessing {
                         Map tdpWithoutFeatures = new HashMap(tdp);
                         tdpWithoutFeatures.remove("id");
                         tdpWithoutFeatures.remove("label");
-                        tdpWithoutFeatures.remove(comparedFeature);
+                        if (compareOracleId) {
+                            tdpWithoutFeatures.remove(oracleIdFeature);
+                        } else {
+                            tdpWithoutFeatures.remove(javadocTagFeature);
+                            tdpWithoutFeatures.remove(methodSourceCodeFeature);
+                        }
                         return tdpWithoutFeatures.equals(tokenDatapointNoIdLabelFeature);
                     })
                     .map(tdp -> (Long) tdp.get("id"))
