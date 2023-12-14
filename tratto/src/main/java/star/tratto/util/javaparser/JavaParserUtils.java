@@ -91,10 +91,10 @@ public class JavaParserUtils {
     private static final String SYNTHETIC_METHOD_NAME = "__tratto__auxiliaryMethod";
     /** Cache ResolvedType of Object to make subsequent accesses free. */
     private static ResolvedType objectType;
-    /** Cache Set&lt;MethodUsage&gt; of Object methods to make subsequent accesses free. */
+    /** Cache of Object methods to make subsequent accesses free. */
     private static Set<MethodUsage> objectMethods;
 
-    /** Private constructor to avoid creating an instance of this class. */
+    /** Do not instantiate this class. */
     private JavaParserUtils() {
         throw new UnsupportedOperationException("This class cannot be instantiated.");
     }

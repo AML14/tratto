@@ -3,28 +3,27 @@ package star.tratto.data.records;
 import java.util.List;
 
 /**
- * This record stores the basic information of a Java attribute. Includes the
- * attribute name, the package of the declaring class, the name of the
- * declaring class, and the attribute declaration. The attribute declaration
- * follows the format:
- *  "[modifiers] [type] [name][ = initial value];"
+ * This project uses the term "attribute" to refer to fields in Java classes.
+ * This is done for compatibility with the XText grammar. This record defines
+ * various attribute information. The attribute declaration follows the format:
+ *     "[modifiers] [type] [name][ = initial value];"
  */
 public record AttributeTokens(
-        /* the name of the attribute */
+        /* The name of the attribute. */
         String attributeName,
-        /* the name of the package of the declaring class */
+        /* The name of the package of the declaring class. */
         String packageName,
-        /* the name of the declaring class */
+        /* The name of the declaring class. */
         String className,
-        /* the attribute declaration (as defined in the record Javadoc) */
+        /* The attribute declaration. */
         String attributeDeclaration
 ) {
-    // Non-canonical constructor using List to read from file
+    /** Constructor used when reading JSON. */
     public AttributeTokens(List<String> tokens) {
         this(tokens.get(0), tokens.get(1), tokens.get(2), tokens.get(3));
     }
 
-    // Converts record to List to write to file
+    /** Converts record to List for JSON compatibility. */
     public List<String> toList() {
         return List.of(this.attributeName, this.packageName, this.className, this.attributeDeclaration);
     }

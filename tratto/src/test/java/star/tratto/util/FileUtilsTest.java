@@ -105,21 +105,6 @@ public class FileUtilsTest {
     }
 
     @Test
-    public void readJSONListTest() {
-        Path path = TrattoPath.IGNORE_FILE.getPath();
-        try {
-            List<String> ignoreFileList = FileUtils.readJSONList(path)
-                    .stream()
-                    .map(e -> (String) e)
-                    .collect(Collectors.toList());
-            assertEquals(List.of(".DS_Store", "package-info.java"), ignoreFileList);
-        } catch (Error e) {
-            e.printStackTrace();
-            fail();
-        }
-    }
-
-    @Test
     public void getAllJavaFilesUnderDirectoryTest() {
         Path dir = Paths.get("src/test/java/star/tratto/oraclegrammar/custom");
         try {

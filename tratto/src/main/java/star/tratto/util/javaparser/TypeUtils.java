@@ -23,7 +23,7 @@ public class TypeUtils {
      */
     private final static List<String> primitiveFieldDescriptors = List.of("Z", "B", "C", "S", "I", "J", "F", "D");
 
-    /** Private constructor to avoid creating an instance of this class. */
+    /** Do not instantiate this class. */
     private TypeUtils() {
         throw new UnsupportedOperationException("This class cannot be instantiated.");
     }

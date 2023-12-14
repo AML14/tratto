@@ -20,13 +20,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.plumelib.util.CollectionsPlume.mapList;
+
 /**
- * This class is a builder class for {@link OracleDatapoint}.
+ * A builder class for {@link OracleDatapoint}.
  */
 public class OracleDatapointBuilder {
+    /**
+     * The OracleDatapoint being built. {@link OracleDatapointBuilder#build()}
+     * returns a copy.
+     */
     private OracleDatapoint datapoint;
-    // a list of feature levels. See build methods for further detail.
-    private static final List<String> featureLevels = List.of("default", "project", "class", "method");
 
     public OracleDatapointBuilder() {
         this.reset();
@@ -41,7 +45,6 @@ public class OracleDatapointBuilder {
         // set default oracle datapoint values.
         this.setDefaultGrammarTokens();
         this.setDefaultGeneralValues();
-        // set non-null values for fields which may throw errors when retrieving information.
         this.setTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(new ArrayList<>());
         this.setTokensMethodVariablesNonPrivateNonStaticAttributes(new ArrayList<>());
         this.setTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(new ArrayList<>());
@@ -55,40 +58,45 @@ public class OracleDatapointBuilder {
         this.setProjectName("");
     }
 
-    public void reset(String level, boolean defaults) {
+    public void reset(FeatureLevel level, boolean defaults) {
         OracleDatapoint oracleDP = this.copy();
         if (defaults) {
             this.resetWithDefaults();
         } else {
             this.reset();
         }
-        // copy fields based on `level`.
-        assert featureLevels.contains(level) : String.format("Given level must be one of: %s.%n", featureLevels);
+        // copy fields based on `level`
         switch (level) {
-            case "method":
+            case ORACLE:
+                this.setTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(oracleDP.getTokensOracleVariablesNonPrivateNonStaticNonVoidMethods());
+                this.setTokensOracleVariablesNonPrivateNonStaticAttributes(oracleDP.getTokensOracleVariablesNonPrivateNonStaticAttributes());
+            case METHOD:
                 this.setMethodSourceCode(oracleDP.getMethodSourceCode());
                 this.setMethodJavadoc(oracleDP.getMethodJavadoc());
                 this.setTokensMethodJavadocValues(oracleDP.getTokensMethodJavadocValues());
                 this.setTokensMethodArguments(oracleDP.getTokensMethodArguments());
                 this.setTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(oracleDP.getTokensMethodVariablesNonPrivateNonStaticNonVoidMethods());
                 this.setTokensMethodVariablesNonPrivateNonStaticAttributes(oracleDP.getTokensMethodVariablesNonPrivateNonStaticAttributes());
-            case "class":
+            case CLASS:
                 this.setClassName(oracleDP.getClassName());
                 this.setClassSourceCode(oracleDP.getClassSourceCode());
                 this.setClassJavadoc(oracleDP.getClassJavadoc());
                 this.setPackageName(oracleDP.getPackageName());
-            case "project":
+            case PROJECT:
                 this.setTokensProjectClasses(oracleDP.getTokensProjectClasses());
                 this.setTokensProjectClassesNonPrivateStaticNonVoidMethods(oracleDP.getTokensProjectClassesNonPrivateStaticNonVoidMethods());
                 this.setTokensProjectClassesNonPrivateStaticAttributes(oracleDP.getTokensProjectClassesNonPrivateStaticAttributes());
                 this.setProjectName(oracleDP.getProjectName());
-            case "default":
+            case DEFAULT:
                 break;
         }
     }
 
     /**
-     * Sets default general tokens for symbolic grammar.
+     * Sets default general tokens for symbolic grammar. This represents
+     * tokens that are available to every project (e.g. "+", ";", etc.). See
+     * "data/repos/tokens_grammar.json" for the full list. Used for the XText
+     * grammar.
      */
     private void setDefaultGrammarTokens() {
         Path tokensGrammarPath = TrattoPath.TOKENS_GRAMMAR.getPath();
@@ -97,67 +105,82 @@ public class OracleDatapointBuilder {
     }
 
     /**
-     * Sets default global values for tokens.
+     * Sets default global values for commonly observed tokens and their
+     * corresponding types (e.g. [1, int], [0.0, double], etc.). Used for the
+     * XText grammar.
      */
     private void setDefaultGeneralValues() {
         Path tokensGeneralValuesPath = TrattoPath.TOKENS_GENERAL_VALUES.getPath();
-        List<ValueTokens> tokenGeneralValues = FileUtils.readJSONList(tokensGeneralValuesPath)
-                .stream()
-                .map(e -> ((List<?>) e)
-                        .stream()
-                        .map(o -> (String) o)
-                        .collect(Collectors.toList()))
-                .toList()
-                .stream()
-                .map(ValueTokens::new)
-                .collect(Collectors.toList());
+        List<ValueTokens> tokenGeneralValues = mapList(ValueTokens::new, FileUtils.readJSONList(tokensGeneralValuesPath, List.class));
         this.setTokensGeneralValuesGlobalDictionary(tokenGeneralValues);
     }
 
     private void setThrowsConditionInfo(ThrowsCondition condition) {
         this.setOracleType(OracleType.EXCEPT_POST);
         this.setJavadocTag(condition.description());
-        this.setOracle(String.format("%s;", condition.guard().condition()).replaceAll("receiverObjectID", "this"));
+        this.setOracle((condition.guard().condition() + ";").replaceAll("receiverObjectID", "this"));
     }
 
     private void setPreConditionInfo(PreCondition condition) {
         this.setOracleType(OracleType.PRE);
         this.setJavadocTag(condition.description());
-        this.setOracle(String.format("%s;", condition.guard().condition()).replaceAll("receiverObjectID", "this"));
+        this.setOracle((condition.guard().condition() + ";").replaceAll("receiverObjectID", "this"));
     }
 
-    private void setPostConditionInfo(List<PostCondition> conditionList) {
-        assert conditionList.size() <= 2;
-        // get base information from first post-condition.
+    /**
+     * Gets the oracle of a non-exceptional JDoctor post-condition. The oracle
+     * is represented by a ternary statement. If the post-condition does not
+     * have an alternative "else" final state, then the false result of the
+     * ternary expression is "true".
+     *
+     * @param conditionList a list of JDoctor post-conditions
+     * @return the oracle corresponding to the post-condition
+     * @throws IllegalArgumentException if the list of post conditions has
+     * less than one or more than two conditions
+     */
+    private String getPostConditionOracle(List<PostCondition> conditionList) {
         PostCondition mainCondition = conditionList.get(0);
         String mainTag = mainCondition.description();
         Guard mainGuard = mainCondition.guard();
         Property mainProperty = mainCondition.property();
-        // start building oracle.
-        String oracle = String.format("%s ? %s : ", mainGuard.condition(), mainProperty.condition());
-        // add to oracle.
-        if (conditionList.size() == 2) {
-            PostCondition secondCondition = conditionList.get(1);
-            String secondTag = secondCondition.description();
-            assert mainTag.equals(secondTag);
-            Property secondProperty = secondCondition.property();
-            oracle += String.format("%s;", secondProperty.condition());
-        } else {
-            oracle += "true;";
+        StringBuilder sb = new StringBuilder();
+        // get true result
+        sb.append(mainGuard.condition());
+        sb.append(" ? ");
+        sb.append(mainProperty.condition());
+        sb.append(" : ");
+        // get false result
+        switch (conditionList.size()) {
+            case 2 -> {
+                PostCondition altCondition = conditionList.get(1);
+                String altTag = altCondition.description();
+                assert mainTag.equals(altTag);
+                Property altProperty = altCondition.property();
+                sb.append(altProperty.condition());
+            }
+            case 1 -> sb.append("true");
+            default -> throw new IllegalArgumentException(
+                    "Expected condition list to have 1 or 2 conditions, but got " + conditionList.size()
+            );
         }
-        oracle = oracle.replaceAll("receiverObjectID", "this");
-        // add information to datapoint.
+        sb.append(";");
+        return sb.toString().replaceAll("receiverObjectID", "this");
+    }
+
+    private void setPostConditionInfo(List<PostCondition> conditionList) {
+        assert conditionList.size() <= 2 && !conditionList.isEmpty();
         this.setOracleType(OracleType.NORMAL_POST);
-        this.setJavadocTag(mainTag);
-        this.setOracle(oracle);
+        this.setJavadocTag(conditionList.get(0).description());
+        this.setOracle(getPostConditionOracle(conditionList));
     }
 
     /**
-     * Gets all information from a JDoctor condition (e.g. ThrowsCondition,
-     * PreCondition, or a list of PostCondition's). Sets the oracle type,
-     * JavaDoc tag, and oracle.
+     * Sets the oracle type, Javadoc tag, and oracle from a JDoctor condition.
      *
-     * @param condition a JDoctor condition
+     * @param condition a JDoctor condition (does not use a shared supertype
+     *                  to avoid compatibility issues with reading the JSON)
+     * @throws IllegalArgumentException if the condition is not a
+     * ThrowsCondition, PreCondition, or List of PostConditions
      */
     public void setConditionInfo(Object condition) {
         if (condition instanceof ThrowsCondition) {
@@ -165,6 +188,7 @@ public class OracleDatapointBuilder {
         } else if (condition instanceof PreCondition) {
             this.setPreConditionInfo((PreCondition) condition);
         } else if (condition instanceof List<?>) {
+            // use stream to avoid compiler warnings when casting.
             List<PostCondition> conditionList = ((List<?>) condition)
                     .stream()
                     .map(e -> (PostCondition) e)
@@ -172,6 +196,10 @@ public class OracleDatapointBuilder {
             if (conditionList.size() > 0) {
                 this.setPostConditionInfo(conditionList);
             }
+        } else {
+            throw new IllegalArgumentException(
+                    "Unexpected JDoctor condition " + condition.getClass() + " " + condition
+            );
         }
     }
 
@@ -263,6 +291,12 @@ public class OracleDatapointBuilder {
         this.datapoint.setTokensOracleVariablesNonPrivateNonStaticAttributes(tokensOracleVariablesNonPrivateNonStaticAttributes);
     }
 
+    /**
+     * Creates a new copy of the current OracleDatapoint being built by this
+     * OracleDatapointBuilder.
+     *
+     * @return a new OracleDatapoint with all fields copied from this
+     */
     public OracleDatapoint copy() {
         return new OracleDatapoint(
                 this.datapoint.getId(),
@@ -291,34 +325,25 @@ public class OracleDatapointBuilder {
     }
 
     /**
-     * Returns a new datapoint, but carries over specific columns from
-     * current datapoint based on the given `level`. This avoids re-running
-     * code between each generated oracle. The columns kept for each level are:
-     * - "default": tokensGeneralGrammar, tokensGeneralValuesGlobalDictionary.
-     * - "project": tokensProjectClasses,
-     *      tokensProjectClassesNonPrivateStaticNonVoidMethods,
-     *      tokensProjectClassesNonPrivateStaticAttributes.
-     * - "class": className, classSourceCode, classJavadoc, packageName.
-     * - "method": methodSourceCode, methodJavadoc, tokensMethodArguments,
-     *      tokensMethodVariablesNonPrivateNonStaticNonVoidMethods,
-     *      tokensMethodVariablesNonPrivateNonStaticAttributes.
-     * The ordering is hierarchical, such that each level keeps columns from
-     * the previous level (e.g. "project" also keeps "default" features).
+     * Returns a new datapoint, but carries over specific columns from the
+     * current datapoint based on the given feature level. The ordering is
+     * hierarchical, such that each level keeps columns from the previous
+     * level (e.g. "project" also keeps "default" features).
      *
-     * @param level the depth of the reset. Must be one of: "default",
-     *              "project", "class", or "method".
+     * @param level the depth of the reset
      * @param defaults set to false to reset the oracle normally ({@link #reset} method).
      *                 Set to true to keep default values for some properties
      *                 ({@link #resetWithDefaults} method).
-     * @return a new datapoint
+     * @return a new datapoint {@link OracleDatapoint}
      */
-    public OracleDatapoint build(String level, boolean defaults) {
+    public OracleDatapoint build(FeatureLevel level, boolean defaults) {
         OracleDatapoint oracleDP = this.copy();
         reset(level, defaults);
         return oracleDP;
     }
 
     /**
+     * Returns a new datapoint {@link OracleDatapoint}. Resets builder.
      * @return a new datapoint {@link OracleDatapoint}. Resets builder.
      */
     public OracleDatapoint build() {

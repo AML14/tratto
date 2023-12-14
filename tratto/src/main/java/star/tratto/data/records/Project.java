@@ -5,18 +5,16 @@ import java.nio.file.Path;
 /**
  * This record stores the basic file I/O information for a project in the
  * resources directory.
- *
- * @param projectName the name of the Java project
- * @param rootPath the path to the project root folder
- * @param jarPath the path to the directory with the project jar file
- * @param conditionsPath the path to the directory of JDoctor conditions for
- *                       the project
- * @param srcPath the path to the project source code directory
  */
 public record Project(
+        /* The name of the Java project. */
         String projectName,
+        /* The project root directory. */
         Path rootPath,
+        /* The directory with the project JAR file. */
         Path jarPath,
+        /* The directory of JDoctor conditions for the project.  */
         Path conditionsPath,
+        /* The project source code directory. */
         Path srcPath
 ) {}
