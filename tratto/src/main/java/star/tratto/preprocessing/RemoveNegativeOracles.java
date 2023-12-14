@@ -23,7 +23,7 @@ public class RemoveNegativeOracles {
     private static final Logger logger = LoggerFactory.getLogger(NegativeOraclesDataset.class);
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    public static String ORACLES_DATASET_FOLDER = "src/main/resources/oracles-dataset-train/";
+    public static String ORACLES_DATASET_FOLDER = "src/main/resources/oracles-dataset/";
 
     public static void main(String[] args) throws IOException {
         Path oraclesDatasetFolder = Paths.get(ORACLES_DATASET_FOLDER);

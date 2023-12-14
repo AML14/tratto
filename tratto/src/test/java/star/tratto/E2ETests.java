@@ -14,6 +14,7 @@ import star.tratto.data.TokenDPType;
 import star.tratto.input.ClassAnalyzerTest;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.data.TrattoPath;
+import star.tratto.preprocessing.RemoveNegativeOracles;
 import star.tratto.token.TokenSuggesterTest;
 import star.tratto.util.FileUtils;
 
@@ -75,8 +76,10 @@ public class E2ETests {
                     logger.info("Checking parsability of oracle: {}", o);
                     assertEquals(compactExpression(o), compactExpression(split(parser.getOracle(o))));
                 });
+                // Remove negative oracles to save disk space (especially for CI) and since they are not interesting to test
+                RemoveNegativeOracles.main(new String[] {});
                 // Augment oracles dataset with newly created oracles and existing Javadoc tags alternatives
-                DataAugmentation.main(new String[] {"0.5"});
+                DataAugmentation.main(new String[] {});
                 // Generate tokens dataset based on oracles dataset (assertions are done as dataset is generated)
                 TokensDataset.main(new String[] {});
             });
