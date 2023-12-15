@@ -165,6 +165,10 @@ class OracleTrainerAccelerate:
 
         # Steps counter
         steps = 0
+        # Define early stopping criteria
+        patience = 5  # Number of epochs to wait for improvement
+        best_f1_score_micro = 0
+        counter = 0
 
         # In each epoch the trainer train the model batch by batch,
         # with all the batch of the training dataset. After a given
@@ -174,49 +178,37 @@ class OracleTrainerAccelerate:
         # the training, and performs the validation to understand how
         # well the model generalize on the validation data.
         for epoch in range(1, num_epochs + 1):
-            print(f"        Start training - Epoch {epoch} of {num_epochs}")
+            print(f"Start training - Epoch {epoch} of {num_epochs}")
             total_loss = 0
             all_predictions = []
             all_labels = []
-            # Define early stopping criteria
-            patience = 3  # Number of epochs to wait for improvement
-            best_f1_score_micro = 0
-            counter = 0
 
             # model in training mode
             self._model.train()
             self._optimizer.zero_grad()
 
             for step, batch in enumerate(self._dl_train, 1):
-                print(f"            Processing step {step} of {len(self._dl_train)}")
+                print(f"Processing step {step} of {len(self._dl_train)}")
                 steps += 1
                 # Extract the inputs, the attention masks and the expected
                 # outputs from the batch
                 src_input = batch[0]
                 src_masks = batch[1]
                 tgt_out = batch[2]
-
                 # Train the model
-                print(f"                Model predictions...")
+                print(f"Model predictions...")
                 outputs = self._model(
                     input_ids=src_input,
                     attention_mask=src_masks,
                     labels=tgt_out
                 )
                 # Compute the loss
-                print(f"                Computing loss...")
-
-
-                #tgt_out_loss = tgt_out.reshape(-1)
-
-                #outputs_loss = outputs.logits.reshape(-1, outputs.logits.shape[2])
-                #tgt_out_loss = tgt_out[:, 1:].reshape(-1)
+                print(f"Computing loss...")
                 loss =  outputs.loss
                 loss = loss / accumulation_steps
                 self._accelerator.backward(loss)
                 # Gradient clipping. It is used to mitigate the problem of exploding gradients
                 torch.nn.utils.clip_grad_norm_(self._model.parameters(), max_grad_norm)
-
                 # Decode outputs and expected values
                 if self._transformer_type == TransformerType.DECODER:
                     predicted = np.array(
@@ -235,20 +227,17 @@ class OracleTrainerAccelerate:
                     predicted_ids = torch.argmax(torch.softmax(outputs.logits, dim=-1), dim=-1)
                     predicted = np.array(list(map(lambda x: self._classifier_ids_labels[x], predicted_ids.tolist())))
                     expected_out = np.array(list(map(lambda x: self._classifier_ids_labels[x], tgt_out.tolist())))
-
                 # Accumulate predictions and labels
                 all_predictions.extend(predicted)
                 all_labels.extend(expected_out)
-
                 if (steps % accumulation_steps) == 0:
-                    print(f"                Weigths update...")
+                    print(f"Weigths update...")
                     # Update the weights of the model
                     self._optimizer.step()
                     self._optimizer.zero_grad()
                     self._scheduler.step()
                     # Update the total loss
                     total_loss += loss.item()
-
                 if (steps % num_steps) == 0:
                     # Compute average statistics for the loss
                     mean_t_loss = total_loss / (num_steps / accumulation_steps)
@@ -290,10 +279,8 @@ class OracleTrainerAccelerate:
                         labels=list(self._classifier_ids_labels.values())
                     )
                     t_recall = [[self._classifier_ids_labels[i], score] for i, score in enumerate(t_recall)]
-
                     # Validation phase
                     mean_v_loss, v_f1, v_f1_micro, v_accuracy, v_precision, v_recall = self.validation(device)
-
                     # Update the statistics
                     stats['t_loss'].append(mean_t_loss)
                     stats['v_loss'].append(mean_v_loss)
@@ -307,7 +294,6 @@ class OracleTrainerAccelerate:
                     stats['v_precision'].append(v_precision)
                     stats['t_recall'].append(t_recall)
                     stats['v_recall'].append(v_recall)
-
                     # Print the statistics
                     logger.print_stats(
                         epoch,
@@ -329,28 +315,27 @@ class OracleTrainerAccelerate:
                             'v_recall': v_recall
                         }
                     )
-
                     # Reset the total loss
                     total_loss = 0
                     interval = timeit.default_timer()
                     # Clear the predictions and labels lists
                     all_predictions = []
                     all_labels = []
-
                     # Save checkpoints
                     self._save_checkpoint(epoch, step, stats)
-
-                    # Round F1-Score to discard minor improvments and speed-up convergence
-                    v_f1_micro = round(v_f1_micro, 2)
-                    # Check if validation loss has improved
-                    if v_f1_micro > best_f1_score_micro:
-                        counter = 0
-                        best_f1_score_micro = v_f1_micro
-                    else:
-                        counter += 1
-                        if counter > patience and epoch > 1:
-                            print("                Early stopping triggered. Training stopped.")
-                            return stats
+            # Validation phase
+            mean_v_loss, v_f1, v_f1_micro, v_accuracy, v_precision, v_recall = self.validation(device)
+            # Round F1-Score to discard minor improvments and speed-up convergence
+            v_f1_micro = round(v_f1_micro, 2)
+            # Check if validation loss has improved
+            if v_f1_micro > best_f1_score_micro:
+                counter = 0
+                best_f1_score_micro = v_f1_micro
+            else:
+                counter += 1
+                if counter > patience and epoch > 1:
+                    print("Early stopping triggered. Training stopped.")
+                    return stats
         return stats
 
     def validation(

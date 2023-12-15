@@ -159,6 +159,10 @@ class OracleTrainer:
 
         # Steps counter
         steps = 0
+        # Define early stopping criteria
+        patience = 3  # Number of validations to wait for improvement
+        best_f1_score_micro = 0
+        counter = 0
 
         # In each epoch the trainer train the model batch by batch,
         # with all the batch of the training dataset. After a given
@@ -172,17 +176,13 @@ class OracleTrainer:
             total_loss = 0
             all_predictions = []
             all_labels = []
-            # Define early stopping criteria
-            patience = 3  # Number of epochs to wait for improvement
-            best_f1_score_micro = 0
-            counter = 0
 
             # model in training mode
             self._model.train()
             self._optimizer.zero_grad()
 
             for step, batch in enumerate(self._dl_train, 1):
-                print(f"            Processing step {step} of {len(self._dl_train)}")
+                print(f"Processing step {step} of {len(self._dl_train)}")
                 steps += 1
                 # Extract the inputs, the attention masks and the expected
                 # outputs from the batch
@@ -191,20 +191,14 @@ class OracleTrainer:
                 tgt_out = batch[2].to(device)
 
                 # Train the model
-                print(f"                Model predictions...")
+                print(f"Model predictions...")
                 outputs = self._model(
                     input_ids=src_input,
                     attention_mask=src_masks,
                     labels=tgt_out
                 )
                 # Compute the loss
-                print(f"                Computing loss...")
-
-
-                #tgt_out_loss = tgt_out.reshape(-1)
-
-                #outputs_loss = outputs.logits.reshape(-1, outputs.logits.shape[2])
-                #tgt_out_loss = tgt_out[:, 1:].reshape(-1)
+                print(f"Computing loss...")
                 loss =  outputs.loss
                 loss = loss / accumulation_steps
                 loss.backward()
@@ -235,7 +229,7 @@ class OracleTrainer:
                 all_labels.extend(expected_out)
 
                 if (steps % accumulation_steps) == 0:
-                    print(f"                Weigths update...")
+                    print(f"Weigths update...")
                     # Update the weights of the model
                     self._optimizer.step()
                     self._optimizer.zero_grad()
@@ -333,18 +327,19 @@ class OracleTrainer:
 
                     # Save checkpoints
                     self._save_checkpoint(epoch, step, stats)
-
-                    # Round F1-Score to discard minor improvments and speed-up convergence
-                    v_f1_micro = round(v_f1_micro, 2)
-                    # Check if validation loss has improved
-                    if v_f1_micro > best_f1_score_micro:
-                        counter = 0
-                        best_f1_score_micro = v_f1_micro
-                    else:
-                        counter += 1
-                        if counter > patience and epoch > 1:
-                            print("                Early stopping triggered. Training stopped.")
-                            return stats
+            # Validation phase
+            mean_v_loss, v_f1, v_f1_micro, v_accuracy, v_precision, v_recall = self.validation(device)
+            # Round F1-Score to discard minor improvments and speed-up convergence
+            v_f1_micro = round(v_f1_micro, 2)
+            # Check if validation loss has improved
+            if v_f1_micro > best_f1_score_micro:
+                counter = 0
+                best_f1_score_micro = v_f1_micro
+            else:
+                counter += 1
+                if counter > patience and epoch > 1:
+                    print("Early stopping triggered. Training stopped.")
+                    return stats
         return stats
 
     def validation(
