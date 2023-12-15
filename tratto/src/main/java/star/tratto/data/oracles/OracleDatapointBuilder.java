@@ -51,6 +51,47 @@ public class OracleDatapointBuilder {
         this.setTokensOracleVariablesNonPrivateNonStaticAttributes(new ArrayList<>());
     }
 
+    public void resetWithDefaults() {
+        this.reset();
+        this.setId(0);
+        this.setOracle("");
+        this.setProjectName("");
+    }
+
+    public void reset(FeatureLevel level, boolean defaults) {
+        OracleDatapoint oracleDP = this.copy();
+        if (defaults) {
+            this.resetWithDefaults();
+        } else {
+            this.reset();
+        }
+        // copy fields based on `level`
+        switch (level) {
+            case ORACLE:
+                this.setTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(oracleDP.getTokensOracleVariablesNonPrivateNonStaticNonVoidMethods());
+                this.setTokensOracleVariablesNonPrivateNonStaticAttributes(oracleDP.getTokensOracleVariablesNonPrivateNonStaticAttributes());
+            case METHOD:
+                this.setMethodSourceCode(oracleDP.getMethodSourceCode());
+                this.setMethodJavadoc(oracleDP.getMethodJavadoc());
+                this.setTokensMethodJavadocValues(oracleDP.getTokensMethodJavadocValues());
+                this.setTokensMethodArguments(oracleDP.getTokensMethodArguments());
+                this.setTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(oracleDP.getTokensMethodVariablesNonPrivateNonStaticNonVoidMethods());
+                this.setTokensMethodVariablesNonPrivateNonStaticAttributes(oracleDP.getTokensMethodVariablesNonPrivateNonStaticAttributes());
+            case CLASS:
+                this.setClassName(oracleDP.getClassName());
+                this.setClassSourceCode(oracleDP.getClassSourceCode());
+                this.setClassJavadoc(oracleDP.getClassJavadoc());
+                this.setPackageName(oracleDP.getPackageName());
+            case PROJECT:
+                this.setTokensProjectClasses(oracleDP.getTokensProjectClasses());
+                this.setTokensProjectClassesNonPrivateStaticNonVoidMethods(oracleDP.getTokensProjectClassesNonPrivateStaticNonVoidMethods());
+                this.setTokensProjectClassesNonPrivateStaticAttributes(oracleDP.getTokensProjectClassesNonPrivateStaticAttributes());
+                this.setProjectName(oracleDP.getProjectName());
+            case DEFAULT:
+                break;
+        }
+    }
+
     /**
      * Sets default general tokens for symbolic grammar. This represents
      * tokens that are available to every project (e.g. "+", ";", etc.). See
@@ -290,34 +331,14 @@ public class OracleDatapointBuilder {
      * level (e.g. "project" also keeps "default" features).
      *
      * @param level the depth of the reset
+     * @param defaults set to false to reset the oracle normally ({@link #reset} method).
+     *                 Set to true to keep default values for some properties
+     *                 ({@link #resetWithDefaults} method).
      * @return a new datapoint {@link OracleDatapoint}
      */
-    public OracleDatapoint build(FeatureLevel level) {
+    public OracleDatapoint build(FeatureLevel level, boolean defaults) {
         OracleDatapoint oracleDP = this.copy();
-        this.reset();
-        switch (level) {
-            case ORACLE:
-                this.setTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(oracleDP.getTokensOracleVariablesNonPrivateNonStaticNonVoidMethods());
-                this.setTokensOracleVariablesNonPrivateNonStaticAttributes(oracleDP.getTokensOracleVariablesNonPrivateNonStaticAttributes());
-            case METHOD:
-                this.setMethodSourceCode(oracleDP.getMethodSourceCode());
-                this.setMethodJavadoc(oracleDP.getMethodJavadoc());
-                this.setTokensMethodArguments(oracleDP.getTokensMethodArguments());
-                this.setTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(oracleDP.getTokensMethodVariablesNonPrivateNonStaticNonVoidMethods());
-                this.setTokensMethodVariablesNonPrivateNonStaticAttributes(oracleDP.getTokensMethodVariablesNonPrivateNonStaticAttributes());
-            case CLASS:
-                this.setClassName(oracleDP.getClassName());
-                this.setClassSourceCode(oracleDP.getClassSourceCode());
-                this.setClassJavadoc(oracleDP.getClassJavadoc());
-                this.setPackageName(oracleDP.getPackageName());
-            case PROJECT:
-                this.setTokensProjectClasses(oracleDP.getTokensProjectClasses());
-                this.setTokensProjectClassesNonPrivateStaticNonVoidMethods(oracleDP.getTokensProjectClassesNonPrivateStaticNonVoidMethods());
-                this.setTokensProjectClassesNonPrivateStaticAttributes(oracleDP.getTokensProjectClassesNonPrivateStaticAttributes());
-                this.setProjectName(oracleDP.getProjectName());
-            case DEFAULT:
-                break;
-        }
+        reset(level, defaults);
         return oracleDP;
     }
 

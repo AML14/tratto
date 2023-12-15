@@ -60,12 +60,23 @@
     "post": [
       {
         "property": {
-          "condition": "(methodResultID.equals(string)||methodResultID==null)",
+          "condition": "methodResultID.equals(string)",
           "description": "string itself if string is not empty; null if string is empty or null."
         },
         "description": "string itself if string is not empty; null if string is empty or null.",
         "guard": {
-          "condition": "(((string==null)==false) && (string.isEmpty())) == false",
+          "condition": "(string==null || string.isEmpty()) == false",
+          "description": "string itself if string is not empty; null if string is empty or null."
+        }
+      },
+      {
+        "property": {
+          "condition": "methodResultID==null",
+          "description": "string itself if string is not empty; null if string is empty or null."
+        },
+        "description": "string itself if string is not empty; null if string is empty or null.",
+        "guard": {
+          "condition": "string==null || string.isEmpty()",
           "description": "string itself if string is not empty; null if string is empty or null."
         }
       }
@@ -92,23 +103,23 @@
       {
         "property": {
           "condition": "methodResultID == true",
-          "description": "true if the string is null"
+          "description": "true if the string is null or is the empty string"
         },
-        "description": "true if the string is null",
+        "description": "true if the string is null or is the empty string",
         "guard": {
-          "condition": "string==null",
-          "description": "true if the string is null"
+          "condition": "string==null || string.isEmpty()",
+          "description": "true if the string is null or is the empty string"
         }
       },
       {
         "property": {
           "condition": "methodResultID == false",
-          "description": "true if the string is null"
+          "description": "true if the string is null or is the empty string"
         },
-        "description": "true if the string is null",
+        "description": "true if the string is null or is the empty string",
         "guard": {
-          "condition": "(string==null)==false",
-          "description": "true if the string is null"
+          "condition": "(string==null || string.isEmpty())==false",
+          "description": "true if the string is null or is the empty string"
         }
       }
     ],
@@ -144,7 +155,7 @@
     "post": [
       {
         "property": {
-          "condition": "methodResultID.equals(string)",
+          "condition": "methodResultID.equals(Strings.nullToEmpty(null))",
           "description": "a string containing string repeated count times (the empty string if count is zero)."
         },
         "description": "a string containing string repeated count times (the empty string if count is zero).",
@@ -160,6 +171,13 @@
         "guard": {
           "condition": "string!=null",
           "description": "string is !=null. !=null string."
+        }
+      },
+      {
+        "description": "@param count the number of times to repeat it; a nonnegative integer.",
+        "guard": {
+          "condition": "(count<0) == false",
+          "description": "count the number of times to repeat it; a nonnegative integer."
         }
       }
     ]

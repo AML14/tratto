@@ -57,7 +57,7 @@ import static org.plumelib.util.CollectionsPlume.mapList;
 
 /**
  * This class provides static methods for generating features in the oracles
- * dataset, which is then used to create the tokens dataset. 
+ * dataset, which is then used to create the tokens dataset.
  */
 public class DatasetUtils {
     private static final Logger logger = LoggerFactory.getLogger(DatasetUtils.class);
@@ -69,11 +69,11 @@ public class DatasetUtils {
 
     /**
      * Removes all duplicate elements in a list, according to equals.
-     * 
-     * @param list a list of elements 
+     *
+     * @param list a list of elements
      * @return a new list with unique elements appearing in the same order as
      * the original list
-     * @param <T> the type of object in the lists
+     * @param <T> the type of object in the list
      */
     public static <T> List<T> withoutDuplicates(List<T> list) {
         Set<T> set = new LinkedHashSet<>(list);
@@ -129,7 +129,7 @@ public class DatasetUtils {
 
     /**
      * Gets the Javadoc comment of a given class.
-     * 
+     *
      * @param jpClass a JavaParser class
      * @return the class Javadoc comment, in Javadoc format, surrounded by
      * "&#47;&#42;&#42; ... &#42;&#42;&#47;" for compatibility with the XText
@@ -145,6 +145,22 @@ public class DatasetUtils {
     }
 
     /**
+     * Gets the package name of a given compilation unit.
+     *
+     * @param cu a compilation unit of a Java file
+     * @return the name of the package obtained from the compilation unit
+     */
+    public static String getClassPackage(
+            CompilationUnit cu
+    ) {
+        try {
+            return JavaParserUtils.getPackageDeclaration(cu).getNameAsString();
+        } catch (PackageDeclarationNotFoundException e) {
+            return "";
+        }
+    }
+
+    /**
      * Gets the Javadoc comment of a given method.
      *
      * @param jpCallable a JavaParser method
@@ -156,7 +172,7 @@ public class DatasetUtils {
     ) {
         Optional<JavadocComment> optionalJavadocComment = jpCallable.getJavadocComment();
         return optionalJavadocComment
-                .map(javadocComment -> "    /**" + javadocComment.getContent() + "*/")
+                .map(javadocComment -> "    /**" + javadocComment.getContent().replaceAll("@exception ", "@throws ") + "*/")
                 .orElseGet(() -> getJavadocByPattern(jpCallable));
     }
 
@@ -501,7 +517,7 @@ public class DatasetUtils {
      * @return a list of all java files as Paths with parent directory names
      * @see DatasetUtils#ignoreFiles
      */
-    private static List<Path> getJavaFiles(Path dir) {
+    public static List<Path> getJavaFiles(Path dir) {
         List<Path> javaFiles = FileUtils.getAllJavaFilesUnderDirectory(dir);
         javaFiles.removeIf(f -> ignoreFiles.contains(f.getFileName().toString()));
         return javaFiles;

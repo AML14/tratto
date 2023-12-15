@@ -2,6 +2,33 @@
   {
     "operation": {
       "classname": "org.apache.commons.collections4.FluentIterable",
+      "name": "empty",
+      "parameterTypes": []
+    },
+    "identifiers": {
+      "parameters": [],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID.isEmpty()==true",
+          "description": "a new empty FluentIterable"
+        },
+        "description": "a new empty FluentIterable",
+        "guard": {
+          "condition": "true",
+          "description": "a new empty FluentIterable"
+        }
+      }
+    ],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.FluentIterable",
       "name": "of",
       "parameterTypes": [
         "java.lang.Iterable"
@@ -308,7 +335,16 @@
       "receiverName": "receiverObjectID",
       "returnName": "methodResultID"
     },
-    "throws": [],
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException if either of the provided iterables is null.",
+        "guard": {
+          "condition": "Arrays.stream(others).anyMatch(jdVar -> jdVar==null)",
+          "description": "if either of the provided iterables is null."
+        }
+      }
+    ],
     "post": [],
     "pre": [
       {
@@ -427,6 +463,34 @@
         }
       }
     ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.FluentIterable",
+      "name": "get",
+      "parameterTypes": [
+        "int"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "position"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.IndexOutOfBoundsException if the provided position is outside the valid range of this iterable: [0, size).",
+        "guard": {
+          "condition": "position < 0 || position > receiverObjectID.size()",
+          "description": "if the provided position is outside the valid range of this iterable: [0, size)."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
   },
   {
     "operation": {

@@ -22,6 +22,14 @@
           "condition": "v==null",
           "description": "specified vertex is null."
         }
+      },
+      {
+        "exception": "java.lang.IllegalArgumentException",
+        "description": "@throws java.lang.IllegalArgumentException if specified vertex does not exist in this graph.",
+        "guard": {
+          "condition": "receiverObjectID.containsVertex(v)==false",
+          "description": "if specified vertex does not exist in this graph."
+        }
       }
     ],
     "post": [],
@@ -48,14 +56,6 @@
     },
     "throws": [],
     "post": [],
-    "pre": [
-      {
-        "description": "@param directed true to use parens for each edge (representing directed). directed is false to use curly braces (representing undirected).",
-        "guard": {
-          "condition": "directed==false",
-          "description": "true to use parens for each edge (representing directed). directed is false to use curly braces (representing undirected)."
-        }
-      }
-    ]
+    "pre": []
   }
 ]

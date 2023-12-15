@@ -6,6 +6,7 @@ import star.tratto.data.records.ValueTokens;
 import star.tratto.data.records.MethodArgumentTokens;
 import star.tratto.data.records.MethodTokens;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -96,6 +97,35 @@ public class OracleDatapoint {
         this.tokensMethodVariablesNonPrivateNonStaticAttributes = ((List<List<String>>) oracleDatapointMap.get("tokensMethodVariablesNonPrivateNonStaticAttributes")).stream().map(AttributeTokens::new).toList();
         this.tokensOracleVariablesNonPrivateNonStaticNonVoidMethods = ((List<List<String>>) oracleDatapointMap.get("tokensOracleVariablesNonPrivateNonStaticNonVoidMethods")).stream().map(MethodTokens::new).toList();
         this.tokensOracleVariablesNonPrivateNonStaticAttributes = ((List<List<String>>) oracleDatapointMap.get("tokensOracleVariablesNonPrivateNonStaticAttributes")).stream().map(AttributeTokens::new).toList();
+    }
+
+    /**
+     * Constructor that takes as input an OracleDatapoint and returns as output
+     * a copy of the input OracleDatapoint.
+     */
+    public OracleDatapoint(OracleDatapoint oracleDatapoint) {
+        this.id = oracleDatapoint.id;
+        this.oracle = oracleDatapoint.oracle;
+        this.oracleType = oracleDatapoint.oracleType;
+        this.projectName = oracleDatapoint.projectName;
+        this.packageName = oracleDatapoint.packageName;
+        this.className = oracleDatapoint.className;
+        this.javadocTag = oracleDatapoint.javadocTag;
+        this.methodJavadoc = oracleDatapoint.methodJavadoc;
+        this.methodSourceCode = oracleDatapoint.methodSourceCode;
+        this.classJavadoc = oracleDatapoint.classJavadoc;
+        this.classSourceCode = oracleDatapoint.classSourceCode;
+        this.tokensGeneralGrammar = new ArrayList<>(oracleDatapoint.tokensGeneralGrammar);
+        this.tokensGeneralValuesGlobalDictionary = new ArrayList<>(oracleDatapoint.tokensGeneralValuesGlobalDictionary);
+        this.tokensProjectClasses = new ArrayList<>(oracleDatapoint.tokensProjectClasses);
+        this.tokensProjectClassesNonPrivateStaticNonVoidMethods = new ArrayList<>(oracleDatapoint.tokensProjectClassesNonPrivateStaticNonVoidMethods);
+        this.tokensProjectClassesNonPrivateStaticAttributes = new ArrayList<>(oracleDatapoint.tokensProjectClassesNonPrivateStaticAttributes);
+        this.tokensMethodJavadocValues = new ArrayList<>(oracleDatapoint.tokensMethodJavadocValues);
+        this.tokensMethodArguments = new ArrayList<>(oracleDatapoint.tokensMethodArguments);
+        this.tokensMethodVariablesNonPrivateNonStaticNonVoidMethods = new ArrayList<>(oracleDatapoint.tokensMethodVariablesNonPrivateNonStaticNonVoidMethods);
+        this.tokensMethodVariablesNonPrivateNonStaticAttributes = new ArrayList<>(oracleDatapoint.tokensMethodVariablesNonPrivateNonStaticAttributes);
+        this.tokensOracleVariablesNonPrivateNonStaticNonVoidMethods = new ArrayList<>(oracleDatapoint.tokensOracleVariablesNonPrivateNonStaticNonVoidMethods);
+        this.tokensOracleVariablesNonPrivateNonStaticAttributes = new ArrayList<>(oracleDatapoint.tokensOracleVariablesNonPrivateNonStaticAttributes);
     }
 
     public OracleDatapoint(

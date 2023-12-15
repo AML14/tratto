@@ -2,7 +2,6 @@ package star.tratto.token;
 
 import com.github.javaparser.resolution.UnsolvedSymbolException;
 import org.javatuples.Triplet;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -41,7 +40,7 @@ import static star.tratto.token.TokenSuggester.*;
  */
 public class TokenSuggesterTest {
 
-     private static final Logger logger = LoggerFactory.getLogger(TokenSuggesterTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(TokenSuggesterTest.class);
 
     private static final Parser parser = Parser.getInstance();
     private static final List<OracleDatapoint> oracleDatapoints = readOracleDatapointsFromOraclesDataset();

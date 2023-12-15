@@ -153,6 +153,13 @@ public class StringUtils {
         return fullyQualifiedClassName(packageClassPair.getValue0(), packageClassPair.getValue1());
     }
 
+    public static String getClassNameFromPath(String path) {
+        assert path.endsWith(".java");
+        String[] pathTokens = path.split("/");
+        String className = pathTokens[pathTokens.length - 1];
+        return className.substring(0, className.length() - 5);
+    }
+
     /**
      * Removes all non-alphabetic and non-space characters in a String, and
      * sets all alphabetic characters to lower case.

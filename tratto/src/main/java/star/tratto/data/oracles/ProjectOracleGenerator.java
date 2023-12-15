@@ -305,12 +305,12 @@ public class ProjectOracleGenerator {
         String tagContent = jpTag.tagBody();
         // get artificial condition information.
         String tagType = switch (oracleType) {
-            case PRE -> "@param ";
-            case NORMAL_POST -> "@return ";
-            case EXCEPT_POST -> "@throws ";
+            case PRE -> "@param";
+            case NORMAL_POST -> "@return";
+            case EXCEPT_POST -> "@throws";
         };
         builder.setOracleType(oracleType);
-        builder.setJavadocTag(String.format("%s%s%s", tagType, !tagName.equals("") ? tagName + " " : "", tagContent));
+        builder.setJavadocTag(String.format("%s%s%s", tagType, !tagName.equals("") ? " " + tagName : "", !tagContent.equals("") ? " " + tagContent : ""));
         builder.setOracle(";");
         // set project-level information.
         builder.setProjectName(this.project.projectName());
