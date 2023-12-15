@@ -1,7 +1,6 @@
 package star.tratto.util.javaparser;
 
 import com.github.javaparser.JavaParser;
-import com.github.javaparser.ParseResult;
 import com.github.javaparser.ast.AccessSpecifier;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Modifier;
@@ -33,13 +32,13 @@ import com.github.javaparser.symbolsolver.javassistmodel.JavassistMethodDeclarat
 import com.github.javaparser.symbolsolver.reflectionmodel.ReflectionMethodDeclaration;
 import com.github.javaparser.symbolsolver.utils.SymbolSolverCollectionStrategy;
 import org.javatuples.Pair;
-import org.javatuples.Triplet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import star.tratto.data.OracleDatapoint;
 import star.tratto.data.JPClassNotFoundException;
 import star.tratto.data.PackageDeclarationNotFoundException;
 import star.tratto.data.ResolvedTypeNotFound;
+import star.tratto.data.records.MethodArgumentTokens;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.util.JavaTypes;
 
@@ -77,10 +76,10 @@ public class JavaParserUtils {
     private static final String SYNTHETIC_METHOD_NAME = "__tratto__auxiliaryMethod";
     /** Cache ResolvedType of Object to make subsequent accesses free. */
     private static ResolvedType objectType;
-    /** Cache Set<MethodUsage> of Object methods to make subsequent accesses free. */
+    /** Cache of Object methods to make subsequent accesses free. */
     private static Set<MethodUsage> objectMethods;
 
-    /** Private constructor to avoid creating an instance of this class. */
+    /** Do not instantiate this class. */
     private JavaParserUtils() {
         throw new UnsupportedOperationException("This class cannot be instantiated.");
     }
@@ -174,8 +173,7 @@ public class JavaParserUtils {
     private static void addNewMethodWithExpression(
             TypeDeclaration<?> jpClass,
             CallableDeclaration<?> originalMethod,
-            // NOTE: This is MethodArgumentTokens in the next pull request where records are integrated.
-            List<Triplet<String, String, String>> methodArgs,
+            List<MethodArgumentTokens> methodArgs,
             String expression
     ) throws ResolvedTypeNotFound {
         // throw error when given a constructor due to JavaParser behavior differences
@@ -185,8 +183,8 @@ public class JavaParserUtils {
         // create synthetic method
         BlockStmt methodBody = createNewMethodBody(jpClass);
         // add method arguments as variable statements in method body (e.g. "ArgType argName;")
-        for (Triplet<String, String, String> methodArg : methodArgs) {
-            methodBody.addStatement(methodArg.getValue2() + " " + methodArg.getValue0() + ";");
+        for (MethodArgumentTokens methodArg : methodArgs) {
+            methodBody.addStatement(methodArg.typeName() + " " + methodArg.argumentName() + ";");
         }
         // add return type (if non-void)
         addMethodResultIDStatementToMethod(
@@ -195,7 +193,7 @@ public class JavaParserUtils {
                 originalMethod.getNameAsString(),
                 methodArgs
                         .stream()
-                        .map(Triplet::getValue0)
+                        .map(MethodArgumentTokens::argumentName)
                         .toList()
         );
         // add expression
@@ -220,7 +218,7 @@ public class JavaParserUtils {
     public static ResolvedType getResolvedTypeOfExpression(
             TypeDeclaration<?> jpClass,
             CallableDeclaration<?> jpCallable,
-            List<Triplet<String, String, String>> methodArgs,
+            List<MethodArgumentTokens> methodArgs,
             String expression
     ) throws ResolvedTypeNotFound {
         if (jpClass instanceof ClassOrInterfaceDeclaration) {
@@ -387,8 +385,8 @@ public class JavaParserUtils {
 
     private static void addImports(CompilationUnit cu, String expression, OracleDatapoint oracleDatapoint) {
         oracleDatapoint.getTokensProjectClasses().forEach(projectClass -> {
-            if (containsWord(expression, projectClass.getValue0())) {
-                cu.addImport(fullyQualifiedClassName(projectClass.getValue1(), projectClass.getValue0()));
+            if (containsWord(expression, projectClass.className())) {
+                cu.addImport(fullyQualifiedClassName(projectClass.packageName(), projectClass.className()));
             }
         });
         if (expression.contains("\\bArrays\\.")) {

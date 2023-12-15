@@ -1,0 +1,74 @@
+[
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.ComparatorUtils",
+      "name": "chainedComparator",
+      "parameterTypes": [
+        "[Ljava.util.Comparator;"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "comparators"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException comparators array is null or contains a null.",
+        "guard": {
+          "condition": "comparators==null",
+          "description": "comparators array is null or contains a null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param comparators the comparators to use. comparators is not null or empty or containing nulls.",
+        "guard": {
+          "condition": "(comparators==null) == false && comparators.length > 0 && Arrays.stream(comparators).noneMatch(jdVar -> jdVar == null)",
+          "description": "the comparators to use. comparators is not null or empty or containing nulls."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.ComparatorUtils",
+      "name": "chainedComparator",
+      "parameterTypes": [
+        "java.util.Collection"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "comparators"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException comparators collection is null or contains a null.",
+        "guard": {
+          "condition": "comparators==null || ((comparators==null)==false) && (comparators.contains(null))",
+          "description": "comparators collection is null or contains a null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param comparators the comparators to use. comparators is not null or empty or containing nulls.",
+        "guard": {
+          "condition": "(comparators==null) == false || ((comparators==null)==false) && (comparators.isEmpty())",
+          "description": "the comparators to use. comparators is not null or empty or containing nulls."
+        }
+      }
+    ]
+  }
+]

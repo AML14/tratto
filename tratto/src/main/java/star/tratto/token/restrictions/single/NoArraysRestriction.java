@@ -3,6 +3,7 @@ package star.tratto.token.restrictions.single;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import org.javatuples.Triplet;
 import star.tratto.data.OracleDatapoint;
+import star.tratto.data.records.MethodArgumentTokens;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,7 +38,7 @@ public class NoArraysRestriction extends SingleTokenRestriction {
         MethodDeclaration methodDeclaration = getMethodDeclaration(oracleDatapoint.getMethodSourceCode());
         boolean methodResultIDIsArray = methodDeclaration != null && !methodDeclaration.getType().isVoidType() &&
                 getReturnTypeOfExpression("methodResultID", oracleDatapoint).getValue1().contains("[]");
-        List<String> methodArgumentsClasses = oracleDatapoint.getTokensMethodArguments().stream().map(Triplet::getValue2).collect(Collectors.toList());
+        List<String> methodArgumentsClasses = oracleDatapoint.getTokensMethodArguments().stream().map(MethodArgumentTokens::typeName).toList();
 
         return !methodResultIDIsArray && methodArgumentsClasses.stream().noneMatch(c -> c.contains("[]"));
     }

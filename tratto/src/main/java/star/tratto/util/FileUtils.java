@@ -18,7 +18,7 @@ import java.util.stream.Stream;
  * utilities, such as: creating, copying, moving, writing, reading, etc.
  */
 public class FileUtils {
-    /** Private constructor to avoid creating an instance of this class. */
+    /** Do not instantiate this class. */
     private FileUtils() {
         throw new UnsupportedOperationException("This class cannot be instantiated.");
     }

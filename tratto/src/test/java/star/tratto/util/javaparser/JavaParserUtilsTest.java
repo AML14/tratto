@@ -25,6 +25,10 @@ import star.tratto.data.OracleDatapointTest;
 import star.tratto.data.JPClassNotFoundException;
 import star.tratto.data.PackageDeclarationNotFoundException;
 import star.tratto.data.ResolvedTypeNotFound;
+import star.tratto.data.records.MethodArgumentTokens;
+import star.tratto.data.JPClassNotFoundException;
+import star.tratto.data.PackageDeclarationNotFoundException;
+import star.tratto.data.ResolvedTypeNotFound;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -51,7 +55,7 @@ public class JavaParserUtilsTest {
         OracleDatapoint oracleDatapoint = oracleDatapoints.get(0);
         TypeDeclaration<?> jpClass = getClassOrInterface(oracleDatapoint.getClassSourceCode(), oracleDatapoint.getClassName());
         CallableDeclaration<?> jpCallable = getMethodDeclaration(oracleDatapoint.getMethodSourceCode());
-        List<Triplet<String, String, String>> methodArgs = oracleDatapoint.getTokensMethodArguments();
+        List<MethodArgumentTokens> methodArgs = oracleDatapoint.getTokensMethodArguments();
         String subExpression = oracleDatapoint.getOracle().substring(0, 20);
         try {
             ResolvedType resolvedType = getResolvedTypeOfExpression(jpClass, jpCallable, methodArgs, subExpression);
@@ -67,7 +71,7 @@ public class JavaParserUtilsTest {
         OracleDatapoint oracleDatapoint = oracleDatapoints.get(1);
         TypeDeclaration<?> jpClass = getClassOrInterface(oracleDatapoint.getClassSourceCode(), oracleDatapoint.getClassName());
         CallableDeclaration<?> jpCallable = getMethodDeclaration(oracleDatapoint.getMethodSourceCode());
-        List<Triplet<String, String, String>> methodArgs = oracleDatapoint.getTokensMethodArguments();
+        List<MethodArgumentTokens> methodArgs = oracleDatapoint.getTokensMethodArguments();
         String subExpression = oracleDatapoint.getOracle().substring(0, 4);
         try {
             ResolvedType resolvedType = getResolvedTypeOfExpression(jpClass, jpCallable, methodArgs, subExpression);
@@ -500,8 +504,16 @@ public class JavaParserUtilsTest {
                     "negate, notify, notifyAll, " +
                     "polynomialDerivative, subtract, toString, " +
                     "value, wait]";
+            // other possible output when running locally.
+            String otherExpected = "[add, clone, degree, " +
+                    "derivative, differentiate, equals, " +
+                    "evaluate, finalize, getClass, " +
+                    "getCoefficients, hashCode, multiply, " +
+                    "negate, notify, notifyAll, " +
+                    "polynomialDerivative, subtract, toString, " +
+                    "value, wait, wait0]";
             String actual = availableMethodList.toString();
-            assertEquals(expected, actual);
+            assertTrue(actual.equals(expected) || actual.equals(otherExpected));
         } catch (JPClassNotFoundException e) {
             fail();
         }

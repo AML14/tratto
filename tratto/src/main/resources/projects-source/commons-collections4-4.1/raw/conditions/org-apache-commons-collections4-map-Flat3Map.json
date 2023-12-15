@@ -1,0 +1,100 @@
+[
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.map.Flat3Map",
+      "name": "org.apache.commons.collections4.map.Flat3Map",
+      "parameterTypes": [
+        "java.util.Map"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "map"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the map is null.",
+        "guard": {
+          "condition": "map==null",
+          "description": "the map is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.map.Flat3Map",
+      "name": "containsValue",
+      "parameterTypes": [
+        "java.lang.Object"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "value"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID == true",
+          "description": "true if the map contains the key."
+        },
+        "description": "true if the map contains the key.",
+        "guard": {
+          "condition": "receiverObjectID.containsKey(value)",
+          "description": "true if the map contains the key."
+        }
+      },
+      {
+        "property": {
+          "condition": "methodResultID == false",
+          "description": "true if the map contains the key."
+        },
+        "description": "true if the map contains the key.",
+        "guard": {
+          "condition": "(receiverObjectID.containsKey(value))==false",
+          "description": "true if the map contains the key."
+        }
+      }
+    ],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.map.Flat3Map",
+      "name": "putAll",
+      "parameterTypes": [
+        "java.util.Map"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "map"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the map is null.",
+        "guard": {
+          "condition": "map==null",
+          "description": "the map is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  }
+]

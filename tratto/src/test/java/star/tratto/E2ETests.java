@@ -1,14 +1,15 @@
 package star.tratto;
 
-import org.apache.commons.io.FileUtils;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import star.tratto.data.OracleDP2TokenDPs;
 import star.tratto.data.TokenDPType;
+import star.tratto.data.TrattoPath;
 import star.tratto.token.TokenSuggesterTest;
+import star.tratto.util.FileUtils;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import static star.tratto.TestUtilities.readOraclesFromExternalFiles;
@@ -27,20 +28,24 @@ public class E2ETests {
      * </ul>
      */
     @Test
-//    @Disabled
     public void datasetsE2ETest() throws IOException {
-        // TODO: Generate oracles dataset. For the moment, we assume it's under src/main/resources/oracles-dataset/
+        // Config for E2E test
+        OracleDP2TokenDPs.CRASH_WRONG_ORACLE = true;
+        TokensDataset.ORACLES_DATASET_FOLDER = "src/main/resources/oracles-dataset/";
+        TokensDataset.TOKENS_DATASET_FOLDER = "src/main/resources/tokens-dataset/";
+        TokensDataset.DATASET_TYPE = TokenDPType.TOKEN_VALUE; // To reduce the size of the generated dataset
 
-//        OracleDP2TokenDPs.CRASH_WRONG_ORACLE = true;
-//        TokensDataset.ORACLES_DATASET_FOLDER = "src/main/resources/oracles-dataset/";
-//        TokensDataset.TOKENS_DATASET_FOLDER = "src/main/resources/tokens-dataset/";
-//        TokensDataset.DATASET_TYPE = TokenDPType.TOKEN_VALUE; // To reduce the size of the generated dataset
-//
-//        TokensDataset.main(new String[] {});
-//
-//        File tokensDatasetFolder = new File(TokensDataset.TOKENS_DATASET_FOLDER);
-//        FileUtils.deleteDirectory(tokensDatasetFolder);
-//        tokensDatasetFolder.mkdir();
+        // Generate the datasets (assertions done in TokensDataset.main)
+        OraclesDataset.main(new String[] {});
+        TokensDataset.main(new String[] {});
+
+        // Delete datasets and recreate folders
+        Path oraclesDataset = TrattoPath.ORACLES_DATASET.getPath();
+        Path tokensDataset = Paths.get(TokensDataset.TOKENS_DATASET_FOLDER);
+        FileUtils.deleteDirectory(oraclesDataset);
+        FileUtils.deleteDirectory(tokensDataset);
+        FileUtils.createDirectories(oraclesDataset);
+        FileUtils.createDirectories(tokensDataset);
     }
 
     /**
@@ -54,9 +59,8 @@ public class E2ETests {
      * token ";" is returned.
      */
     @Test
-//    @Disabled
     public void tokenSuggesterE2ETest() {
-//        List<String> stringOracles = readOraclesFromExternalFiles();
-//        TokenSuggesterTest.getNextLegalTokensAuxTest(stringOracles);
+        List<String> stringOracles = readOraclesFromExternalFiles();
+        TokenSuggesterTest.getNextLegalTokensAuxTest(stringOracles);
     }
 }

@@ -1,0 +1,94 @@
+[
+  {
+    "operation": {
+      "classname": "com.google.common.util.concurrent.Monitor",
+      "name": "waitFor",
+      "parameterTypes": [
+        "com.google.common.util.concurrent.Monitor$Guard",
+        "long",
+        "java.util.concurrent.TimeUnit"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "guard",
+        "time",
+        "unit"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID == true",
+          "description": "True if the guard is now satisfied., false otherwise"
+        },
+        "description": "True if the guard is now satisfied., false otherwise",
+        "guard": {
+          "condition": "(guard==null)==false && guard.isSatisfied()",
+          "description": "True if the guard is now satisfied., false otherwise"
+        }
+      },
+      {
+        "property": {
+          "condition": "methodResultID == false",
+          "description": "True if the guard is now satisfied., false otherwise"
+        },
+        "description": "True if the guard is now satisfied., false otherwise",
+        "guard": {
+          "condition": "((guard==null)==false && guard.isSatisfied())==false",
+          "description": "True if the guard is now satisfied., false otherwise"
+        }
+      }
+    ],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "com.google.common.util.concurrent.Monitor",
+      "name": "waitForUninterruptibly",
+      "parameterTypes": [
+        "com.google.common.util.concurrent.Monitor$Guard",
+        "long",
+        "java.util.concurrent.TimeUnit"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "guard",
+        "time",
+        "unit"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID == true",
+          "description": "True if the guard is now satisfied., false otherwise"
+        },
+        "description": "True if the guard is now satisfied., false otherwise",
+        "guard": {
+          "condition": "(guard==null)==false && guard.isSatisfied()",
+          "description": "True if the guard is now satisfied., false otherwise"
+        }
+      },
+      {
+        "property": {
+          "condition": "methodResultID == false",
+          "description": "True if the guard is now satisfied., false otherwise"
+        },
+        "description": "True if the guard is now satisfied., false otherwise",
+        "guard": {
+          "condition": "((guard==null)==false && guard.isSatisfied())==false",
+          "description": "True if the guard is now satisfied., false otherwise"
+        }
+      }
+    ],
+    "pre": []
+  }
+]

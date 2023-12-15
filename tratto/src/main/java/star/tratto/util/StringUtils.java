@@ -34,7 +34,7 @@ public class StringUtils {
     private static final StanfordCoreNLP stanfordCoreNLP = getStanfordCoreNLP();
     private static final Pattern instanceofPattern = Pattern.compile(" instanceof( |$)");
 
-    /** Private constructor to avoid creating an instance of this class. */
+    /** Do not instantiate this class. */
     private StringUtils() {
         throw new UnsupportedOperationException("This class cannot be instantiated.");
     }

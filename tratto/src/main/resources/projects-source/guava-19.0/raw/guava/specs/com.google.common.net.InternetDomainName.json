@@ -1,0 +1,66 @@
+[
+  {
+    "operation": {
+      "classname": "com.google.common.net.InternetDomainName",
+      "name": "from",
+      "parameterTypes": [
+        "java.lang.String"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "domain"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.IllegalArgumentException",
+        "description": "@throws java.lang.IllegalArgumentException name is not syntactically valid according to isValid.",
+        "guard": {
+          "condition": "(com.google.common.net.InternetDomainName.isValid(domain)) == false",
+          "description": "name is not syntactically valid according to isValid."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "com.google.common.net.InternetDomainName",
+      "name": "child",
+      "parameterTypes": [
+        "java.lang.String"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "leftParts"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException leftParts is null.",
+        "guard": {
+          "condition": "leftParts==null",
+          "description": "leftParts is null."
+        }
+      },
+      {
+        "exception": "java.lang.IllegalArgumentException",
+        "description": "@throws java.lang.IllegalArgumentException the resulting name is not valid.",
+        "guard": {
+          "condition": "(receiverObjectID.isValid(leftParts)) == false",
+          "description": "the resulting name is not valid."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  }
+]
