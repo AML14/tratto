@@ -5,6 +5,7 @@ from transformers import AutoTokenizer
 
 from src.processors.DataProcessor import DataProcessor
 from src.utils.utils import import_json
+from tests import utils
 
 
 @pytest.fixture(scope='session')
@@ -15,6 +16,8 @@ def data_processor(
         arg_classification_type,
         arg_tratto_model_type
 ):
+    if utils.skipTest(arg_dataset_path, arg_transformer_type, arg_tratto_model_type, arg_classification_type):
+        pytest.skip(f"Skipping test because of the invalid combination of the arguments: {arg_dataset_path.split('/')[-1]} - {arg_tratto_model_type}")
     data_processor = DataProcessor(
         os.path.join(arg_dataset_path, "train"),
         os.path.join(arg_dataset_path, "validation"),
@@ -27,13 +30,13 @@ def data_processor(
 
 @pytest.fixture(scope='function')
 def df_projects(
-        arg_dataset_path_ten_datapoint
+        arg_dataset_path
 ):
     # list of partial dataframes
     dfs = []
     # Collects partial dataframes
     for dataset_type in ["train", "validation"]:
-        oracles_dataset = os.path.join(arg_dataset_path_ten_datapoint, dataset_type)
+        oracles_dataset = os.path.join(arg_dataset_path, 'ten', dataset_type)
         for file_name in os.listdir(oracles_dataset):
             df = pd.read_json(os.path.join(oracles_dataset, file_name))
             dfs.append(df)
@@ -44,15 +47,15 @@ def df_projects(
 
 @pytest.fixture(scope='session')
 def data_processor_single_datapoint(
-        arg_dataset_path_single_datapoint,
+        arg_dataset_path,
         tokenizer,
         arg_transformer_type,
         arg_classification_type,
         arg_tratto_model_type
 ):
     data_processor = DataProcessor(
-        os.path.join(arg_dataset_path_single_datapoint, "train"),
-        os.path.join(arg_dataset_path_single_datapoint, "validation"),
+        os.path.join(arg_dataset_path, "single-datapoint", "train"),
+        os.path.join(arg_dataset_path, "single-datapoint", "validation"),
         tokenizer,
         arg_transformer_type,
         arg_classification_type,
@@ -62,15 +65,17 @@ def data_processor_single_datapoint(
 
 @pytest.fixture(scope='session')
 def data_processor_ten_datapoints(
-        arg_dataset_path_ten_datapoint,
+        arg_dataset_path,
         tokenizer,
         arg_transformer_type,
         arg_classification_type,
         arg_tratto_model_type
 ):
+    if utils.skipTest(arg_dataset_path, arg_transformer_type, arg_tratto_model_type, arg_classification_type):
+        pytest.skip(f"Skipping test because of the invalid combination of the arguments: {arg_dataset_path.split('/')[-1]} - {arg_tratto_model_type}")
     data_processor = DataProcessor(
-        os.path.join(arg_dataset_path_ten_datapoint, "train"),
-        os.path.join(arg_dataset_path_ten_datapoint, "validation"),
+        os.path.join(arg_dataset_path, "ten", "train"),
+        os.path.join(arg_dataset_path, "ten", "validation"),
         tokenizer,
         arg_transformer_type,
         arg_classification_type,

@@ -396,7 +396,7 @@ class DataProcessor:
         The training dataset as a pandas dataframe.
         """
         # Get the dataset to process
-        t_df = self.load_dataset_as_dataframe(self._train_dataset_path)
+        t_df = self.load_dataset_as_dataframe(self._train_dataset_path, self._tratto_model_type)
         if self._tratto_model_type == TrattoModelType.TOKEN_CLASSES:
             # Get token classes value mappings
             value_mappings = self.get_token_classes_value_mappings()
@@ -415,7 +415,7 @@ class DataProcessor:
         The validation dataset as a pandas dataframe.
         """
         # Get the dataset to process
-        v_df = self.load_dataset_as_dataframe(self._validation_dataset_path)
+        v_df = self.load_dataset_as_dataframe(self._validation_dataset_path, self._tratto_model_type)
         if self._tratto_model_type == TrattoModelType.TOKEN_CLASSES:
             # Get token classes value mappings
             value_mappings = self.get_token_classes_value_mappings()
@@ -427,7 +427,8 @@ class DataProcessor:
 
     @staticmethod
     def load_dataset_as_dataframe(
-            dataset_path: str
+            dataset_path: str,
+            tratto_model_type: Type[TrattoModelType]
     ):
         """
             The method loads the dataset from specified paths,and generate the corresponding pandas DataFrames.
@@ -439,6 +440,8 @@ class DataProcessor:
             ----------
             dataset_path: str
                 The path to the dataset
+            tratto_model_type: Type[TrattoModelType]
+                The type of Tratto model considered (tokenClasses, tokenValues, or discern).
 
             Returns
             -------
@@ -452,6 +455,12 @@ class DataProcessor:
         # Collects partial dataframes from oracles
         for file_name in os.listdir(dataset_path):
             df = pd.read_json(os.path.join(dataset_path, file_name))
+            if tratto_model_type == TrattoModelType.DISCERN:
+                # Generate labels for discern model
+                # The discern model must return True if the oracle is not empty (there is an oracle to generate), False otherwise
+                # An empty oracle is an oracle with ";" as value
+                df["label"] = df["oracle"].apply(lambda o: "False" if o == ";" else "True")
+                df["label"] = df["oracle"].apply(lambda o: "False" if o == ";" else "True")
             partial_dfs.append(df)
         # Concat the partial dataframes into a single dataframe
         df_dataset = pd.concat(partial_dfs)
@@ -477,11 +486,6 @@ class DataProcessor:
         labels_ids_dict = self.get_encoder_labels_ids(self._tgt_column_name, df_type=DatasetType.TRAINING, df=t_df)
         # Pre-process the dataset, according to the Tratto model
         if self._tratto_model_type == TrattoModelType.DISCERN:
-            # Generate labels for discern model
-            # The discern model must return True if the oracle is not empty (there is an oracle to generate), False otherwise
-            # An empty oracle is an oracle with ";" as value
-            t_df["label"] = t_df["oracle"].apply(lambda o: "False" if o == ";" else "True")
-            v_df["label"] = v_df["oracle"].apply(lambda o: "False" if o == ";" else "True")
             # Map id into oracleId
             t_df.rename(columns={'id': 'oracleId'}, inplace=True)
             v_df.rename(columns={'id': 'oracleId'}, inplace=True)
@@ -508,8 +512,12 @@ class DataProcessor:
             t_df = t_df.reindex(columns=new_columns_order)
             v_df = v_df.reindex(columns=new_columns_order)
             # Get the list of target values from the dataframe
-            t_tgt = t_df["label"].values.tolist()
-            v_tgt = v_df["label"].values.tolist()
+            if self._transformer_type == TransformerType.DECODER:
+                t_tgt = t_df[self._tgt_column_name].values.tolist()
+                v_tgt = v_df[self._tgt_column_name].values.tolist()
+            else:
+                t_tgt = list(map(lambda t: labels_ids_dict[t], t_df[self._tgt_column_name].values.tolist()))
+                v_tgt = list(map(lambda t: labels_ids_dict[t], v_df[self._tgt_column_name].values.tolist()))
             # Drop oracle column
             t_df.drop(['oracle'], axis=1, inplace=True)
             v_df.drop(['oracle'], axis=1, inplace=True)

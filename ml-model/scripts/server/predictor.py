@@ -238,7 +238,7 @@ def pre_process_dataset(
     update_tokenizer_vocab(tokenizer, value_mappings)
 
     # Remove method source code
-    df_dataset['methodSourceCode'] = df_dataset['methodSourceCode'].str.split('{').str[0]
+    #df_dataset['methodSourceCode'] = df_dataset['methodSourceCode'].str.split('{').str[0]
     # Replace the values in the DataFrame column
     df_dataset['tokenClass'] = df_dataset['tokenClass'].replace(value_mappings)
     # Map token classes so far to new values and transform it from array to string

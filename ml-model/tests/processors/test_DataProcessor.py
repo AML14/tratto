@@ -10,19 +10,22 @@ from src.types.DatasetType import DatasetType
 from src.types.TransformerType import TransformerType
 from src.types.TrattoModelType import TrattoModelType
 from src.utils import utils
-from tests.utils import generate_equivalent_src_input, generate_equivalent_tokenClassesSoFar, generate_equivalent_eligibles
+from tests.utils import generate_equivalent_src_input, generate_equivalent_tokenClassesSoFar, generate_equivalent_eligibles, skipTest
 
 
 def test_load_dataset_as_dataframe_num_rows(
-        arg_dataset_path
+        arg_dataset_path,
+        arg_tratto_model_type
 ):
+    if skipTest(arg_dataset_path=arg_dataset_path, tratto_model_type=arg_tratto_model_type):
+        pytest.skip(f"Skipping test because of the invalid combination of the arguments: {arg_dataset_path.split('/')[-1]} - {arg_tratto_model_type}")
     for dataset_type in ['train', 'validation']:
         datapoints_counter = 0
         path_to_dataset = os.path.join(arg_dataset_path, dataset_type)
         for file_name in os.listdir(path_to_dataset):
             _, json_content = utils.import_json(os.path.join(path_to_dataset, file_name))
             datapoints_counter += len(json_content)
-        df_dataset = DataProcessor.load_dataset_as_dataframe(path_to_dataset)
+        df_dataset = DataProcessor.load_dataset_as_dataframe(path_to_dataset, arg_tratto_model_type)
         assert df_dataset.shape[0] == datapoints_counter
 
 def test_compute_weights(
@@ -157,7 +160,7 @@ def test_compute_tokenClassesSoFar(
             assert len_before_research == (len(expected_tokenClassesSoFar) + 1)
         assert len(expected_tokenClassesSoFar) == 0
     else:
-        if not arg_tratto_model_type == TrattoModelType.TOKEN_VALUES:
+        if not arg_tratto_model_type in [TrattoModelType.DISCERN, TrattoModelType.TOKEN_VALUES]:
             assert False
 
 
@@ -170,42 +173,46 @@ def test_pre_processing_eligibles(
     t_df = data_processor_ten_datapoints.get_train_dataframe()
     v_df = data_processor_ten_datapoints.get_validation_dataframe()
     expected_eligibles = []
-    for row in [*t_df.itertuples(index=False), *v_df.itertuples(index=False)]:
-        df = t_df if row in t_df.itertuples(index=False) else v_df
-        if (arg_classification_type == ClassificationType.CATEGORY_PREDICTION and row.label == True or arg_classification_type == ClassificationType.LABEL_PREDICTION):
-            equivalent_array = generate_equivalent_eligibles(
-                df,
-                row,
-                arg_tratto_model_type,
-                value_mappings
-            )
-            expected_eligibles.append(equivalent_array)
-    if arg_tratto_model_type == TrattoModelType.TOKEN_CLASSES:
-        t_df = data_processor_ten_datapoints._compute_eligible_token_classes(t_df)
-        v_df = data_processor_ten_datapoints._compute_eligible_token_classes(v_df)
-        if arg_classification_type == ClassificationType.CATEGORY_PREDICTION:
-            t_df = t_df[t_df['label'] == True]
-            v_df = v_df[v_df['label'] == True]
-    elif arg_tratto_model_type == TrattoModelType.TOKEN_VALUES:
-        t_df = data_processor_ten_datapoints._compute_eligible_token_values(t_df)
-        v_df = data_processor_ten_datapoints._compute_eligible_token_values(v_df)
-        if arg_classification_type == ClassificationType.CATEGORY_PREDICTION:
-            t_df = t_df[t_df['label'] == True]
-            v_df = v_df[v_df['label'] == True]
-    for row in [*t_df.itertuples(index=False), *v_df.itertuples(index=False)]:
-        len_before_research = len(expected_eligibles)
-        expected_eligibles_copy = copy.deepcopy(expected_eligibles)
-        for eq_strings in expected_eligibles_copy:
-            if arg_tratto_model_type == TrattoModelType.TOKEN_CLASSES:
-                if row.eligibleTokenClasses in eq_strings:
-                    expected_eligibles.remove(eq_strings)
-                    break
-            elif arg_tratto_model_type == TrattoModelType.TOKEN_VALUES:
-                if row.eligibleTokens in eq_strings:
-                    expected_eligibles.remove(eq_strings)
-                    break
-        assert len_before_research == (len(expected_eligibles) + 1)
-    assert len(expected_eligibles) == 0
+
+    if not arg_tratto_model_type == TrattoModelType.DISCERN:
+        for row in [*t_df.itertuples(index=False), *v_df.itertuples(index=False)]:
+            df = t_df if row in t_df.itertuples(index=False) else v_df
+            if (arg_classification_type == ClassificationType.CATEGORY_PREDICTION and row.label == True or arg_classification_type == ClassificationType.LABEL_PREDICTION):
+                equivalent_array = generate_equivalent_eligibles(
+                    df,
+                    row,
+                    arg_tratto_model_type,
+                    value_mappings
+                )
+                expected_eligibles.append(equivalent_array)
+        if arg_tratto_model_type == TrattoModelType.TOKEN_CLASSES:
+            t_df = data_processor_ten_datapoints._compute_eligible_token_classes(t_df)
+            v_df = data_processor_ten_datapoints._compute_eligible_token_classes(v_df)
+            if arg_classification_type == ClassificationType.CATEGORY_PREDICTION:
+                t_df = t_df[t_df['label'] == True]
+                v_df = v_df[v_df['label'] == True]
+        elif arg_tratto_model_type == TrattoModelType.TOKEN_VALUES:
+            t_df = data_processor_ten_datapoints._compute_eligible_token_values(t_df)
+            v_df = data_processor_ten_datapoints._compute_eligible_token_values(v_df)
+            if arg_classification_type == ClassificationType.CATEGORY_PREDICTION:
+                t_df = t_df[t_df['label'] == True]
+                v_df = v_df[v_df['label'] == True]
+        for row in [*t_df.itertuples(index=False), *v_df.itertuples(index=False)]:
+            len_before_research = len(expected_eligibles)
+            expected_eligibles_copy = copy.deepcopy(expected_eligibles)
+            for eq_strings in expected_eligibles_copy:
+                if arg_tratto_model_type == TrattoModelType.TOKEN_CLASSES:
+                    if row.eligibleTokenClasses in eq_strings:
+                        expected_eligibles.remove(eq_strings)
+                        break
+                elif arg_tratto_model_type == TrattoModelType.TOKEN_VALUES:
+                    if row.eligibleTokens in eq_strings:
+                        expected_eligibles.remove(eq_strings)
+                        break
+            assert len_before_research == (len(expected_eligibles) + 1)
+        assert len(expected_eligibles) == 0
+    else:
+        assert True
 
 
 def test_pre_processing_src_input(
