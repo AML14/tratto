@@ -120,6 +120,14 @@ def import_json(file_path: str):
         input_obj = json.load(input_file)
         return input_file, input_obj
 
+def is_running_on_gpu():
+    """
+
+    Returns
+    -------
+
+    """
+    return torch.cuda.is_available()
 
 def release_memory():
     # Release memory on GPU
