@@ -19,8 +19,8 @@ def data_processor(
     if utils.skipTest(arg_dataset_path, arg_transformer_type, arg_tratto_model_type, arg_classification_type):
         pytest.skip(f"Skipping test because of the invalid combination of the arguments: {arg_dataset_path.split('/')[-1]} - {arg_tratto_model_type}")
     data_processor = DataProcessor(
-        os.path.join(arg_dataset_path, "train"),
-        os.path.join(arg_dataset_path, "validation"),
+        os.path.join(arg_dataset_path, "small", "train"),
+        os.path.join(arg_dataset_path, "small", "validation"),
         tokenizer,
         arg_transformer_type,
         arg_classification_type,
@@ -54,8 +54,8 @@ def data_processor_single_datapoint(
         arg_tratto_model_type
 ):
     data_processor = DataProcessor(
-        os.path.join(arg_dataset_path, "single-datapoint", "train"),
-        os.path.join(arg_dataset_path, "single-datapoint", "validation"),
+        os.path.join(arg_dataset_path, "single", "train"),
+        os.path.join(arg_dataset_path, "single", "validation"),
         tokenizer,
         arg_transformer_type,
         arg_classification_type,

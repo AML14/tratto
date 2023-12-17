@@ -459,8 +459,9 @@ class DataProcessor:
                 # Generate labels for discern model
                 # The discern model must return True if the oracle is not empty (there is an oracle to generate), False otherwise
                 # An empty oracle is an oracle with ";" as value
-                df["label"] = df["oracle"].apply(lambda o: "False" if o == ";" else "True")
-                df["label"] = df["oracle"].apply(lambda o: "False" if o == ";" else "True")
+                if len(df) > 0:
+                    df["label"] = df["oracle"].apply(lambda o: "False" if o == ";" else "True")
+                    df["label"] = df["oracle"].apply(lambda o: "False" if o == ";" else "True")
             partial_dfs.append(df)
         # Concat the partial dataframes into a single dataframe
         df_dataset = pd.concat(partial_dfs)
