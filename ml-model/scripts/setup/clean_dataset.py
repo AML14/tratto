@@ -1,6 +1,4 @@
 import os
-import numpy as np
-import torch
 import pandas as pd
 
 d_paths = [
@@ -22,9 +20,8 @@ c_paths = [
 
 for c_path in c_paths:
     if not os.path.exists(c_path):
-        os.makedirs(c_path, 'json')
-        os.makedirs(c_path, 'csv')
-
+        os.makedirs(os.path.join(c_path, 'json'))
+        os.makedirs(os.path.join(c_path, 'csv'))
 # list of partial dataframes
 dfs = []
 # collects partial dataframes from oracles
