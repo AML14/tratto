@@ -30,8 +30,13 @@ for d_path, c_path in zip(d_paths, c_paths):
         print(file_name)
         df_dataset = pd.read_json(os.path.join(d_path,  file_name))
         if len(df_dataset) > 0:
-            # drop column id (it is not relevant for training the model)
-            df_dataset = df_dataset.drop(['id'], axis=1)
+            if d_path.endswith("oracles-dataset-train") or d_path.endswith("oracles-dataset-validation"):
+                # Map id into oracleId
+                df_dataset.rename(columns={'id': 'oracleId'}, inplace=True)
+                df_dataset.rename(columns={'id': 'oracleId'}, inplace=True)
+            else:
+                # drop column id (it is not relevant for training the model)
+                df_dataset = df_dataset.drop(['id'], axis=1)
             # map empty cells to empty strings
             df_dataset.fillna('', inplace=True)
             # Remove method source code (keep only signature)

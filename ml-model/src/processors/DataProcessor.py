@@ -456,7 +456,10 @@ class DataProcessor:
         partial_dfs = []
         # Collects partial dataframes from oracles
         for file_name in os.listdir(dataset_path):
-            df = pd.read_json(os.path.join(dataset_path, file_name))
+            if utils.is_running_on_gpu():
+                df = pd.read_csv(os.path.join(dataset_path, file_name))
+            else:
+                df = pd.read_json(os.path.join(dataset_path, file_name))
             if tratto_model_type == TrattoModelType.DISCERN:
                 # Generate labels for discern model
                 # The discern model must return True if the oracle is not empty (there is an oracle to generate), False otherwise
@@ -489,9 +492,6 @@ class DataProcessor:
         labels_ids_dict = self.get_encoder_labels_ids(self._tgt_column_name, df_type=DatasetType.TRAINING, df=t_df)
         # Pre-process the dataset, according to the Tratto model
         if self._tratto_model_type == TrattoModelType.DISCERN:
-            # Map id into oracleId
-            t_df.rename(columns={'id': 'oracleId'}, inplace=True)
-            v_df.rename(columns={'id': 'oracleId'}, inplace=True)
             # Specify the type of each column in the dataset
             df_types = {
                 'label': 'str',
