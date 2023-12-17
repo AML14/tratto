@@ -39,4 +39,4 @@ for d_path, c_path in zip(d_paths, c_paths):
             # Delete the tgt labels from the input dataset, and others less relevant columns
             df_dataset = df_dataset.drop(['projectName', 'classJavadoc', 'classSourceCode'], axis=1)
             df_dataset.to_json(os.path.join(c_path, 'json', file_name))
-            df_dataset.to_csv(os.path.join(c_path, 'csv', file_name))
+            df_dataset.to_csv(os.path.join(c_path, 'csv', file_name.replace(".json", ".csv")))
