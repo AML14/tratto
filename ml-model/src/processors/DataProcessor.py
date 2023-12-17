@@ -1,4 +1,7 @@
-
+from src.utils import utils
+if utils.is_running_on_gpu():
+    import cudf
+    cudf.pandas.install()
 import os
 from typing import Type, Dict, List, Tuple
 import pandas as pd
@@ -14,7 +17,6 @@ from src.types.ClassificationType import ClassificationType
 from src.types.DatasetType import DatasetType
 from src.types.TransformerType import TransformerType
 from src.types.TrattoModelType import TrattoModelType
-from src.utils import utils
 import gc
 
 class DataProcessor:
