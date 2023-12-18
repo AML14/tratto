@@ -3,8 +3,8 @@ accelerate launch --config_file accelerate_config_fsdp.yaml scripts/train/run_cl
 --model_type codet5+ \
 --tokenizer_name Salesforce/codet5p-770m \
 --model_name_or_path Salesforce/codet5p-770m \
---tratto_model_type discern-model \
---task_name discernModel_classifier_decoder \
+--tratto_model_type oracles-model \
+--task_name oraclesModel_classifier_decoder \
 --max_seq_length 512 \
 --batch_size 16 \
 --learning_rate 1e-5 \
@@ -13,5 +13,5 @@ accelerate launch --config_file accelerate_config_fsdp.yaml scripts/train/run_cl
 --accumulation_steps 1 \
 --train_path ./dataset/cleaned/oracles-dataset-train \
 --validation_path ./dataset/cleaned/oracles-dataset-validation \
---output_dir ./output_discern_model_decoder_label_770 \
+--output_dir ./output_oracles_model_decoder_label_770 \
 --classification_type label_prediction

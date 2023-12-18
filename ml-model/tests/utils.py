@@ -35,7 +35,7 @@ def generate_src_input(
         input += f"{datapoint.className}{tokenizer.sep_token}"
         input += f"{datapoint.methodSourceCode}{tokenizer.sep_token}"
         input += f"{datapoint.methodJavadoc}"
-    elif tratto_model_type == TrattoModelType.DISCERN:
+    elif tratto_model_type == TrattoModelType.ORACLES:
         input += f"{datapoint.javadocTag}{tokenizer.sep_token}"
         input += f"{datapoint.oracleType}{tokenizer.sep_token}"
         input += f"{datapoint.methodSourceCode}{tokenizer.sep_token}"
@@ -155,12 +155,12 @@ def skipTest(
     if 'token-classes-dataset' in arg_dataset_path:
         if tratto_model_type == TrattoModelType.TOKEN_VALUES:
             return True
-        if tratto_model_type == TrattoModelType.DISCERN:
+        if tratto_model_type == TrattoModelType.ORACLES:
             return True
     if 'token-values-dataset' in arg_dataset_path:
         if tratto_model_type == TrattoModelType.TOKEN_CLASSES:
             return True
-        if tratto_model_type == TrattoModelType.DISCERN:
+        if tratto_model_type == TrattoModelType.ORACLES:
             return True
     if 'token-oracles-dataset' in arg_dataset_path:
         if tratto_model_type == TrattoModelType.TOKEN_CLASSES:

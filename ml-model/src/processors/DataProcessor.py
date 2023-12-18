@@ -1,10 +1,14 @@
+import ast
 from src.utils import utils
 if utils.is_running_on_gpu():
-    import cudf
+    import cudf.pandas
     cudf.pandas.install()
+    import pandas as pd
+else:
+    import pandas as pd
+import numba as nb
 import os
 from typing import Type, Dict, List, Tuple
-import pandas as pd
 from pandas import DataFrame
 import numpy as np
 import torch
@@ -18,6 +22,7 @@ from src.types.DatasetType import DatasetType
 from src.types.TransformerType import TransformerType
 from src.types.TrattoModelType import TrattoModelType
 import gc
+
 
 class DataProcessor:
     """
@@ -84,7 +89,8 @@ class DataProcessor:
             elif tratto_model_type == TrattoModelType.TOKEN_VALUES:
                 self._tgt_column_name = "token"
             else:
-                raise Exception(f"Tratto model type {tratto_model_type} not allowed for classification type equals to CATEGORY_PREDICTION.")
+                raise Exception(
+                    f"Tratto model type {tratto_model_type} not allowed for classification type equals to CATEGORY_PREDICTION.")
         self._tokenized_train_dataset = {
             "src": None,
             "mask": None,
@@ -96,6 +102,47 @@ class DataProcessor:
             "tgt": None
         }
         self._cache = {}
+
+    @staticmethod
+    @nb.njit
+    def create_numba_dict(items):
+        """
+        The method creates a dictionary from a list of tuples, compatible with Numba library.
+        This method is necessary to overcome the limitations of Numba library, that does not support
+        standard Python dictionaries.
+
+        Parameters
+        ----------
+        items
+
+        Returns
+        -------
+        A dictionary compatible with Numba library.
+        """
+        return {k: v for k, v in items}
+
+    @staticmethod
+    def convert_values(numba_value_mappings, df):
+        # Create an empty list to store the transformed values
+        transformed_values = []
+
+        # Iterate through each row in the DataFrame
+        for x in df["tokenClassesSoFar"]:
+            # Convert the string representation of a list to an actual list
+            list_representation = ast.literal_eval(x)
+
+            # Create an empty list to store the mapped values
+            mapped_list = []
+
+            # Iterate through each element in the list and map using the value_mappings dictionary
+            for y in list_representation:
+                mapped_list.append(numba_value_mappings[y])
+
+            # Append the mapped list to the result list
+            transformed_values.append(mapped_list)
+
+        # Assign the result list to the "tokenClassesSoFar" column in the DataFrame
+        return transformed_values
 
     @staticmethod
     def collect_dataframes(
@@ -156,7 +203,8 @@ class DataProcessor:
         if column_name is None:
             column_name = self._tgt_column_name
         # Assert arguments are legal
-        assert df_type is None or df_type in [DatasetType.TRAINING, DatasetType.VALIDATION], f"Dataset type {df_type} not recognized."
+        assert df_type is None or df_type in [DatasetType.TRAINING,
+                                              DatasetType.VALIDATION], f"Dataset type {df_type} not recognized."
         assert df_type is not None or (df_type is None and df is None), "Illegal arguments combination."
         if df_type is None:
             df_type = DatasetType.TRAINING
@@ -209,13 +257,14 @@ class DataProcessor:
 
         Returns
         -------
-        The dictionary of labels. The keys strings representing the name of the corresponding target label, while the 
+        The dictionary of labels. The keys strings representing the name of the corresponding target label, while the
         values are strings representing the name of the corresponding target label.
         """
         if column_name is None:
             column_name = self._tgt_column_name
         # Assert arguments are legal
-        assert df_type is None or df_type in [DatasetType.TRAINING, DatasetType.VALIDATION], f"Dataset type {df_type} not recognized."
+        assert df_type is None or df_type in [DatasetType.TRAINING,
+                                              DatasetType.VALIDATION], f"Dataset type {df_type} not recognized."
         assert df_type is not None or (df_type is None and df is None), "Illegal arguments combination."
 
         if df_type is None and df is None:
@@ -226,7 +275,10 @@ class DataProcessor:
         if df_type is None or df_type.value not in self._cache["encoder_labels_ids"]:
             self._cache["encoder_labels_ids"][df_type.value] = {}
         if column_name not in self._cache["encoder_labels_ids"][df_type.value]:
-            self._cache["encoder_labels_ids"][df_type.value][column_name] = {k: i for i, k in self.get_encoder_ids_labels(column_name, df_type, df).items()}
+            self._cache["encoder_labels_ids"][df_type.value][column_name] = {k: i for i, k in
+                                                                             self.get_encoder_ids_labels(column_name,
+                                                                                                         df_type,
+                                                                                                         df).items()}
         # Return the computed dictionary
         return self._cache["encoder_labels_ids"][df_type.value][column_name]
 
@@ -260,7 +312,8 @@ class DataProcessor:
         if column_name is None:
             column_name = self._tgt_column_name
         # Assert arguments are legal
-        assert df_type is None or df_type in [DatasetType.TRAINING, DatasetType.VALIDATION], f"Dataset type {df_type} not recognized."
+        assert df_type is None or df_type in [DatasetType.TRAINING,
+                                              DatasetType.VALIDATION], f"Dataset type {df_type} not recognized."
         assert df_type is not None or (df_type is None and df is None), "Illegal arguments combination."
 
         if df_type is None:
@@ -277,7 +330,8 @@ class DataProcessor:
                     df = self.get_validation_dataframe()
             # Assert the column name is in the dataframe
             assert column_name in df.columns, f"Column {column_name} not found in the dataset."
-            self._cache["encoder_ids_labels"][df_type.value][column_name] = {i: str(k) for i, k in enumerate(sorted(list(df[column_name].unique())))}
+            self._cache["encoder_ids_labels"][df_type.value][column_name] = {i: str(k) for i, k in enumerate(
+                sorted(list(df[column_name].unique())))}
         # Return the computed dictionary
         return self._cache["encoder_ids_labels"][df_type.value][column_name]
 
@@ -290,7 +344,7 @@ class DataProcessor:
         """
         Get the number of unique values of the target labels, for a given column name of the given dataframe.
         If the column name provided is None, the method uses the default target column name (self._tgt_column_name).
-        
+
         Parameters
         ----------
         column_name: str
@@ -307,13 +361,13 @@ class DataProcessor:
         if column_name is None:
             column_name = self._tgt_column_name
         # Assert arguments are legal
-        assert df_type is None or df_type in [DatasetType.TRAINING, DatasetType.VALIDATION], f"Dataset type {df_type} not recognized."
+        assert df_type is None or df_type in [DatasetType.TRAINING,
+                                              DatasetType.VALIDATION], f"Dataset type {df_type} not recognized."
         assert df_type is not None or (df_type is None and df is None), "Illegal arguments combination."
 
         return len(self.get_encoder_ids_labels(column_name, df_type, df))
 
-    @staticmethod
-    def get_token_classes_value_mappings():
+    def get_token_classes_value_mappings(self):
         """
         The method loads the value mappings to substitute token classes default names.
         """
@@ -404,8 +458,14 @@ class DataProcessor:
             value_mappings = self.get_token_classes_value_mappings()
             # Replace the values in the DataFrame column
             t_df['tokenClass'] = t_df['tokenClass'].replace(value_mappings)
-            # Map token classes so far to new values and transform it from array to string
-            t_df["tokenClassesSoFar"] = t_df["tokenClassesSoFar"].apply(lambda x: [value_mappings[y] for y in x])
+            if utils.is_running_on_gpu():
+                # Create a dictionary compatible with Numba library
+                numba_value_mappings = self.create_numba_dict(tuple(value_mappings.items()))
+                # Map token classes so far to new values and transform it from array to string
+                t_df["tokenClassesSoFar"] = self.convert_values(numba_value_mappings, t_df)
+            else:
+                # Map token classes so far to new values and transform it from array to string
+                t_df["tokenClassesSoFar"] = t_df["tokenClassesSoFar"].apply(lambda x: [value_mappings[y] for y in x])
         return t_df
 
     def get_validation_dataframe(self):
@@ -423,8 +483,14 @@ class DataProcessor:
             value_mappings = self.get_token_classes_value_mappings()
             # Replace the values in the DataFrame column
             v_df['tokenClass'] = v_df['tokenClass'].replace(value_mappings)
-            # Map token classes so far to new values and transform it from array to string
-            v_df["tokenClassesSoFar"] = v_df["tokenClassesSoFar"].apply(lambda x: [value_mappings[y] for y in x])
+            if utils.is_running_on_gpu():
+                # Create a dictionary compatible with Numba library
+                numba_value_mappings = self.create_numba_dict(tuple(value_mappings.items()))
+                # Map token classes so far to new values and transform it from array to string
+                v_df["tokenClassesSoFar"] = self.convert_values(numba_value_mappings, v_df)
+            else:
+                # Map token classes so far to new values and transform it from array to string
+                v_df["tokenClassesSoFar"] = v_df["tokenClassesSoFar"].apply(lambda x: [value_mappings[y] for y in x])
         return v_df
 
     @staticmethod
@@ -640,18 +706,18 @@ class DataProcessor:
             (df['oracleSoFar'] == '') &
             (df['token'] == ';') &
             (df['label'] == True)
-        ]
+            ]
         # Extract non-empty oracles from dataframe
         df_not_empty_semicolon_true = df[
             (df['oracleSoFar'].str.strip() != '') |
             (df['token'] != ';') |
             (df['label'] != True)
-        ]
+            ]
         # Compute the size of the two dataframes
         df_empty_size = len(df_empty_semicolon_true)
         df_not_empty_size = len(df_not_empty_semicolon_true)
         # Check if the two dataframes are imbalanced
-        if df_empty_size > 0 and (0.8 < df_not_empty_size/df_empty_size < 1.2):
+        if df_empty_size > 0 and (0.8 < df_not_empty_size / df_empty_size < 1.2):
             # Start building the balanced DataFrame
             major_df = df_empty_semicolon_true if df_empty_size > df_not_empty_size else df_not_empty_semicolon_true
             minor_df = df_empty_semicolon_true if df_empty_size < df_not_empty_size else df_not_empty_semicolon_true
@@ -765,7 +831,8 @@ class DataProcessor:
             The dataframe with the token classes so far computed
         """
         # Map token classes so far to new values and transform it from array to string
-        mapped_tokenClassesSoFar_series = df["tokenClassesSoFar"].apply(lambda x: "[ " + " ".join(random.sample([y for y in x], len(x))) + " ]")
+        mapped_tokenClassesSoFar_series = df["tokenClassesSoFar"].apply(
+            lambda x: "[ " + " ".join(random.sample([y for y in x], len(x))) + " ]")
         df.loc[:, 'tokenClassesSoFar'] = None
         # Set type of new dataframe column
         df.loc[:, 'tokenClassesSoFar'] = df['tokenClassesSoFar'].astype('str')
@@ -793,7 +860,8 @@ class DataProcessor:
         df_eligibleTokenClasses = df.groupby(['oracleId', 'oracleSoFar'])['tokenClass'].unique().to_frame()
         df_eligibleTokenClasses = df_eligibleTokenClasses.rename(columns={'tokenClass': 'eligibleTokenClasses'})
         df = pd.merge(df, df_eligibleTokenClasses, on=['oracleId', 'oracleSoFar']).reset_index()
-        df["eligibleTokenClasses"] = df["eligibleTokenClasses"].apply(lambda x: "[ " + " ".join(random.sample(list(x), len(x))) + " ]")
+        df["eligibleTokenClasses"] = df["eligibleTokenClasses"].apply(
+            lambda x: "[ " + " ".join(random.sample(list(x), len(x))) + " ]")
         # Set type of new dataframe column
         df['eligibleTokenClasses'] = df['eligibleTokenClasses'].astype('str')
         return df
@@ -816,7 +884,8 @@ class DataProcessor:
         df_eligibleTokens = df.groupby(['oracleId', 'oracleSoFar'])['token'].unique().to_frame()
         df_eligibleTokens = df_eligibleTokens.rename(columns={'token': 'eligibleTokens'})
         df = pd.merge(df, df_eligibleTokens, on=['oracleId', 'oracleSoFar']).reset_index()
-        df["eligibleTokens"] = df["eligibleTokens"].apply(lambda x: "[ " + " ".join(random.sample(list(x), len(x))) + " ]")
+        df["eligibleTokens"] = df["eligibleTokens"].apply(
+            lambda x: "[ " + " ".join(random.sample(list(x), len(x))) + " ]")
         # Set type of new dataframe column
         df['eligibleTokens'] = df['eligibleTokens'].astype('str')
         return df

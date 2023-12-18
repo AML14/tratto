@@ -35,7 +35,7 @@ def arg_tokenizer_name(request):
     params=[
         TrattoModelType.TOKEN_CLASSES,
         TrattoModelType.TOKEN_VALUES,
-        TrattoModelType.DISCERN
+        TrattoModelType.ORACLES
     ]
 )
 def arg_tratto_model_type(request):

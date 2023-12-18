@@ -161,7 +161,7 @@ def test_compute_tokenClassesSoFar(
             assert len_before_research == (len(expected_tokenClassesSoFar) + 1)
         assert len(expected_tokenClassesSoFar) == 0
     else:
-        if not arg_tratto_model_type in [TrattoModelType.DISCERN, TrattoModelType.TOKEN_VALUES]:
+        if not arg_tratto_model_type in [TrattoModelType.ORACLES, TrattoModelType.TOKEN_VALUES]:
             assert False
 
 
@@ -175,7 +175,7 @@ def test_pre_processing_eligibles(
     v_df = data_processor_ten_datapoints.get_validation_dataframe()
     expected_eligibles = []
 
-    if not arg_tratto_model_type == TrattoModelType.DISCERN:
+    if not arg_tratto_model_type == TrattoModelType.ORACLES:
         for row in [*t_df.itertuples(index=False), *v_df.itertuples(index=False)]:
             df = t_df if row in t_df.itertuples(index=False) else v_df
             if (arg_classification_type == ClassificationType.CATEGORY_PREDICTION and row.label == True or arg_classification_type == ClassificationType.LABEL_PREDICTION):
