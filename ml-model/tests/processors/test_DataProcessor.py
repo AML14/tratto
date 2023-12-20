@@ -146,11 +146,11 @@ def test_compute_tokenClassesSoFar(
                 equivalent_array = generate_equivalent_tokenClassesSoFar(row, value_mappings)
                 expected_tokenClassesSoFar.append(equivalent_array)
         if (arg_classification_type == ClassificationType.CATEGORY_PREDICTION):
-            t_df = data_processor_ten_datapoints._compute_tokenClassesSoFar(t_df[t_df['label'] == True])
-            v_df = data_processor_ten_datapoints._compute_tokenClassesSoFar(v_df[v_df['label'] == True])
+            t_df = data_processor_ten_datapoints.compute_tokenClassesSoFar(t_df[t_df['label'] == True])
+            v_df = data_processor_ten_datapoints.compute_tokenClassesSoFar(v_df[v_df['label'] == True])
         else:
-            t_df = data_processor_ten_datapoints._compute_tokenClassesSoFar(t_df)
-            v_df = data_processor_ten_datapoints._compute_tokenClassesSoFar(v_df)
+            t_df = data_processor_ten_datapoints.compute_tokenClassesSoFar(t_df)
+            v_df = data_processor_ten_datapoints.compute_tokenClassesSoFar(v_df)
         for row in [*list(t_df.itertuples(index=False)), *list(v_df.itertuples(index=False))]:
             len_before_research = len(expected_tokenClassesSoFar)
             expected_tokenClassesSoFar_copy = copy.deepcopy(expected_tokenClassesSoFar)
@@ -187,14 +187,14 @@ def test_pre_processing_eligibles(
                 )
                 expected_eligibles.append(equivalent_array)
         if arg_tratto_model_type == TrattoModelType.TOKEN_CLASSES:
-            t_df = data_processor_ten_datapoints._compute_eligible_token_classes(t_df)
-            v_df = data_processor_ten_datapoints._compute_eligible_token_classes(v_df)
+            t_df = data_processor_ten_datapoints.compute_eligible_token_classes(t_df)
+            v_df = data_processor_ten_datapoints.compute_eligible_token_classes(v_df)
             if arg_classification_type == ClassificationType.CATEGORY_PREDICTION:
                 t_df = t_df[t_df['label'] == True]
                 v_df = v_df[v_df['label'] == True]
         elif arg_tratto_model_type == TrattoModelType.TOKEN_VALUES:
-            t_df = data_processor_ten_datapoints._compute_eligible_token_values(t_df)
-            v_df = data_processor_ten_datapoints._compute_eligible_token_values(v_df)
+            t_df = data_processor_ten_datapoints.compute_eligible_token_values(t_df)
+            v_df = data_processor_ten_datapoints.compute_eligible_token_values(v_df)
             if arg_classification_type == ClassificationType.CATEGORY_PREDICTION:
                 t_df = t_df[t_df['label'] == True]
                 v_df = v_df[v_df['label'] == True]

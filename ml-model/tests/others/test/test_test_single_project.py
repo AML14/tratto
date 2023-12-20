@@ -17,10 +17,11 @@ def test_pre_processing(
         arg_tratto_model_type,
         value_mappings
 ):
-    assert arg_tratto_model_type in [TrattoModelType.TOKEN_CLASSES, TrattoModelType.TOKEN_VALUES]
+    assert arg_tratto_model_type in [TrattoModelType.TOKEN_CLASSES, TrattoModelType.TOKEN_VALUES, TrattoModelType.ORACLES]
     df_projects_before = df_projects.copy()
-    df_projects_before["tokenClass"] = df_projects_before["tokenClass"].apply(lambda x: value_mappings[x])
-    df_projects_before["tokenClassesSoFar"] = df_projects_before["tokenClassesSoFar"].apply(lambda x: [value_mappings[y] for y in x])
+    if not arg_tratto_model_type == TrattoModelType.ORACLES:
+        df_projects_before["tokenClass"] = df_projects_before["tokenClass"].apply(lambda x: value_mappings[x])
+        df_projects_before["tokenClassesSoFar"] = df_projects_before["tokenClassesSoFar"].apply(lambda x: [value_mappings[y] for y in x])
     datasets, _ = pre_processing(
         df_projects,
         tokenizer,
@@ -34,33 +35,39 @@ def test_pre_processing(
         if arg_classification_type == ClassificationType.CATEGORY_PREDICTION:
             if row_copy.label == False:
                 continue
-        #row_copy.methodSourceCode = row_copy.methodSourceCode.split('{')[0]
-        #inverse_value_mappings = {v: k for k, v in value_mappings.items()}
-        #row_copy.tokenClassesSoFar = inverse_value_mappings[row_copy.tokenClass]
-        equivalent_tokenClassesSoFar_str_array = generate_equivalent_tokenClassesSoFar(row_copy, value_mappings)
-        if arg_tratto_model_type == TrattoModelType.TOKEN_CLASSES:
-            eligible_key = 'eligibleTokenClasses'
+        if not arg_tratto_model_type == TrattoModelType.ORACLES:
+            equivalent_tokenClassesSoFar_str_array = generate_equivalent_tokenClassesSoFar(row_copy, value_mappings)
+            if arg_tratto_model_type == TrattoModelType.TOKEN_CLASSES:
+                eligible_key = 'eligibleTokenClasses'
+            else:
+                eligible_key = 'eligibleTokens'
+            equivalent_eligibles_str_array = generate_equivalent_eligibles(
+                df_projects_before,
+                row_copy,
+                arg_tratto_model_type,
+                value_mappings
+            )
+            equivalent_src_inputs = []
+            for eligible_str in equivalent_eligibles_str_array:
+                for tokenClassesSoFar_str in equivalent_tokenClassesSoFar_str_array:
+                    row_copy.tokenClassesSoFar = tokenClassesSoFar_str
+                    row_copy[eligible_key] = eligible_str
+                    row_input = generate_src_input(
+                        row_copy,
+                        tokenizer,
+                        arg_transformer_type,
+                        arg_classification_type,
+                        arg_tratto_model_type
+                    )
+                    equivalent_src_inputs.append(row_input)
         else:
-            eligible_key = 'eligibleTokens'
-        equivalent_eligibles_str_array = generate_equivalent_eligibles(
-            df_projects_before,
-            row_copy,
-            arg_tratto_model_type,
-            value_mappings
-        )
-        equivalent_src_inputs = []
-        for eligible_str in equivalent_eligibles_str_array:
-            for tokenClassesSoFar_str in equivalent_tokenClassesSoFar_str_array:
-                row_copy.tokenClassesSoFar = tokenClassesSoFar_str
-                row_copy[eligible_key] = eligible_str
-                row_input = generate_src_input(
-                    row_copy,
-                    tokenizer,
-                    arg_transformer_type,
-                    arg_classification_type,
-                    arg_tratto_model_type
-                )
-                equivalent_src_inputs.append(row_input)
+            equivalent_src_inputs = [generate_src_input(
+                row_copy,
+                tokenizer,
+                arg_transformer_type,
+                arg_classification_type,
+                arg_tratto_model_type
+            )]
         if arg_classification_type == ClassificationType.CATEGORY_PREDICTION:
             if arg_tratto_model_type == TrattoModelType.TOKEN_CLASSES:
                 expected_src_tgt.append((equivalent_src_inputs,row_copy.tokenClass))
@@ -73,8 +80,11 @@ def test_pre_processing(
         _, classes_ids_dict = utils.import_json(
             os.path.join(
                 os.path.dirname(os.path.abspath(__file__)),
-                '../../..',
-                'src',
+                '..',
+                '..',
+                '..',
+                'scripts',
+                'server',
                 'resources',
                 'classificator_converter_in_category_token_classes.json'
             )

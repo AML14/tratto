@@ -10,6 +10,7 @@ from src.parser.ArgumentParser import ArgumentParser
 from src.types.ClassificationType import ClassificationType
 from src.types.DeviceType import DeviceType
 from src.types.TrattoModelType import TrattoModelType
+from src.types.TransformerType import TransformerType
 from src.utils import utils
 
 
@@ -34,7 +35,7 @@ def setup_model(
         tratto_model_type: Type[TrattoModelType],
         config_name: str = None
 ):
-    config_class, model_class, tokenizer_class, transformer_type = ModelClasses.getModelClass(model_type)
+    config_class, model_class, tokenizer_class = ModelClasses.getModelClass(model_type)
     # Setup tokenizer
     tokenizer = tokenizer_class.from_pretrained(tokenizer_name)
 
@@ -83,7 +84,7 @@ def setup_model(
         checkpoint_path
     )
     resume_checkpoint(pt_model, abs_checkpoint_path, device)
-    return pt_model, tokenizer, transformer_type
+    return pt_model, tokenizer
 
 
 if __name__ == '__main__':
@@ -94,7 +95,7 @@ if __name__ == '__main__':
     # Connect to device
     device = utils.connect_to_device(DeviceType.GPU)
     # Setup tokenClasses model
-    model_token_classes, tokenizer_token_classes, transformer_type_token_classes = setup_model(
+    model_token_classes, tokenizer_token_classes = setup_model(
         device,
         args.model_type_token_classes,
         args.tokenizer_name_token_classes,
@@ -104,15 +105,19 @@ if __name__ == '__main__':
         args.config_name_token_classes
     )
     # Setup tokenValues model
-    model_token_values, tokenizer_token_values, transformer_type_token_values = setup_model(
+    model_token_values, tokenizer_token_values = setup_model(
         device,
         args.model_type_token_values,
         args.tokenizer_name_token_values,
         args.model_name_or_path_token_values,
         args.checkpoint_path_token_values,
         TrattoModelType.TOKEN_VALUES,
+        TransformerType(args.transformer_type_token_values.upper()),
         args.config_name_token_values
     )
+    # Get transformer type
+    transformer_type_token_classes = TransformerType(args.transformer_type_token_classes.upper())
+    transformer_type_token_values = TransformerType(args.transformer_type_token_values.upper())
     # Instantiate server
     server = Server(
         device,

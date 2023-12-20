@@ -47,8 +47,9 @@ def main():
     parser = argparse.ArgumentParser()
     ArgumentParser.add_training_arguments(parser)
     args = parser.parse_args()
-    # Set TRATTO model and classification types
+    # Set TRATTO model, classification, and transformer types
     classification_type = ClassificationType(args.classification_type.upper())
+    transformer_type = TransformerType(args.transformer_type.upper())
     tratto_model_type = TrattoModelType(args.tratto_model_type.upper())
     # Initialize accelerator for model distribution on multiple GPUs
     accelerator = Accelerator()
@@ -61,7 +62,7 @@ def main():
     # Set up seeds for reproducibility
     set_seed(device, args.seed)
     # Get configuration class, model class, and tokenizer class from the corresponding model type
-    config_class, model_class, tokenizer_class, transformer_type = ModelClasses.getModelClass(args.model_type)
+    config_class, model_class, tokenizer_class = ModelClasses.getModelClass(args.model_type)
     # Setup tokenizer
     tokenizer = tokenizer_class.from_pretrained(args.tokenizer_name)
     tokenizer.sep_token = "</s>"
@@ -150,7 +151,7 @@ def main():
         # Train the model
         stats[f"training"] = oracle_trainer.train(
             args.num_epochs,
-            args.save_steps,
+            args.checkpoint_steps,
             device,
             args.accumulation_steps,
             args.max_grad_norm

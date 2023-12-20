@@ -5,7 +5,10 @@ from typing import Type
 import torch
 from accelerate import Accelerator, load_checkpoint_and_dispatch
 
+from src.types.ClassificationType import ClassificationType
 from src.types.DeviceType import DeviceType
+from src.types.TransformerType import TransformerType
+from src.types.TrattoModelType import TrattoModelType
 
 accelerator = Accelerator()
 
@@ -128,6 +131,36 @@ def is_running_on_gpu():
 
     """
     return torch.cuda.is_available()
+
+def is_valid_combination(
+        tratto_model_type: Type[TrattoModelType],
+        transformer_type: Type[TransformerType],
+        classification_type: Type[ClassificationType]
+):
+    """
+    The method checks if the given combination of TrattoModelType and TransformerType is valid.
+
+    Parameters
+    ----------
+    tratto_model_type: Type[TrattoModelType]
+        The type of Tratto model considered (tokenClasses, tokenValues, or oracles).
+    transformer_type: Type[TransformerType]
+        The type of transformer (encoder or decoder)
+    classification_type: Type[ClassificationType]
+        The type of classification (category or label prediction)
+
+    Returns
+    -------
+    True if the combination is valid. False, otherwise.
+    """
+    if tratto_model_type == TrattoModelType.ORACLES:
+        if classification_type == ClassificationType.CATEGORY_PREDICTION:
+                return False
+    if tratto_model_type == TrattoModelType.TOKEN_VALUES:
+        if classification_type == ClassificationType.CATEGORY_PREDICTION:
+            if transformer_type == TransformerType.ENCODER:
+                return False
+    return True
 
 def release_memory():
     # Release memory on GPU

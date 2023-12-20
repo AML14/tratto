@@ -3,8 +3,6 @@ from argparse import ArgumentParser
 from typing import Type
 
 from src.types.ClassificationType import ClassificationType
-from src.types.TransformerType import TransformerType
-from src.types.TrattoModelType import TrattoModelType
 
 
 class ArgumentParser:
@@ -48,6 +46,18 @@ class ArgumentParser:
             help="TokenValues model type for the selected in the list: " + ", ".join(
                 ModelClasses.get_available_model_classes()
             )
+        )
+        parser.add_argument(
+            "--transformer_type_token_classes",
+            default="decoder",
+            type=str,
+            help="Trasformer type: encoder or decoder. Default decoder."
+        )
+        parser.add_argument(
+            "--transformer_type_token_values",
+            default="decoder",
+            type=str,
+            help="Trasformer type: encoder or decoder. Default decoder."
         )
         parser.add_argument(
             "--classification_type_token_classes",
@@ -130,6 +140,86 @@ class ArgumentParser:
         )
 
     @staticmethod
+    def add_test_arguments(parser: Type[ArgumentParser]):
+        """
+        Set up the arguments to parse from the command line.
+        Parameters
+        ----------
+        parser: Type[ArgumentParser]
+            The parser that extract the values of the parameters from the command line
+        """
+        parser.add_argument(
+            "--project_name",
+            default=None,
+            type=str,
+            required=True,
+            help="The name of the project to test, among ['gs-core','plume-lib','jgrapht','commons-math','commons-collections','guava-19']."
+        )
+        parser.add_argument(
+            "--checkpoint_path",
+            default=None,
+            type=str,
+            required=True,
+            help="The path to the checkpoint to load."
+        )
+        parser.add_argument(
+            "--input_path",
+            default=None,
+            type=str,
+            required=True,
+            help="The path to the dataset."
+        )
+        parser.add_argument(
+            "--output_path",
+            default=None,
+            type=str,
+            required=True,
+            help="The path where to save the statistics."
+        )
+        parser.add_argument(
+            "--model_type",
+            default=None,
+            type=str,
+            required=True,
+            help="Model type selected in the list: " + ", ".join(ModelClasses.get_available_model_classes()))
+        parser.add_argument(
+            "--tokenizer_name",
+            default=None,
+            type=str,
+            help="Pretrained tokenizer name or path if not the same as model_name"
+        )
+        parser.add_argument(
+            "--config_name",
+            default=None,
+            type=str,
+            help="Pretrained config name or path if not the same as model_name"
+        )
+        parser.add_argument(
+            "--model_name_or_path",
+            default=None,
+            type=str,
+            required=True,
+            help="Path to pre-trained model or shortcut name.")
+        parser.add_argument(
+            "--classification_type",
+            default="label_prediction",
+            type=str,
+            help="Classification type: category prediction (category_prediction) or label prediction (label_prediction)."
+        )
+        parser.add_argument(
+            "--tratto_model_type",
+            default="token_classes",
+            type=str,
+            help="Tratto model type: token classes (token_classes) or token values (token_values)."
+        )
+        parser.add_argument(
+            "--transformer_type",
+            default="decoder",
+            type=str,
+            help="Trasformer type: encoder or decoder. Default decoder."
+        )
+
+    @staticmethod
     def add_training_arguments(parser: Type[ArgumentParser]):
         """
         Set up the arguments to parse from the command line.
@@ -206,6 +296,12 @@ class ArgumentParser:
             default="token_classes",
             type=str,
             help="Tratto model type: token classes (token_classes) or token values (token_values)."
+        )
+        parser.add_argument(
+            "--transformer_type",
+            default="decoder",
+            type=str,
+            help="Trasformer type: encoder or decoder. Default decoder."
         )
         parser.add_argument(
             "--max_seq_length",
@@ -307,7 +403,7 @@ class ArgumentParser:
             help="Total number of training epochs to perform."
         )
         parser.add_argument(
-            "--save_steps",
+            "--checkpoint_steps",
             type=int,
             default=50,
             help="Save checkpoint every X updates steps."

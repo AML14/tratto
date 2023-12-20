@@ -5,14 +5,40 @@ import random
 import torch
 import numpy as np
 import pandas as pd
+from typing import Type
 from torch.utils.data import DataLoader, TensorDataset
-
+from src.parser.ArgumentParser import ArgumentParser
 from src.types.ClassificationType import ClassificationType
 from src.types.DeviceType import DeviceType
 from src.types.TransformerType import TransformerType
 from src.types.TrattoModelType import TrattoModelType
+from src.processors.DataProcessor import DataProcessor
 from src.utils import utils
 from src.pretrained.ModelClasses import ModelClasses
+
+def get_default_converter_in_category_token_classes():
+    _, classificator_converter_in = utils.import_json(
+        os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            '..',
+            'server',
+            'resources',
+            'classificator_converter_in_category_token_classes.json'
+        )
+    )
+    return classificator_converter_in
+
+def get_default_converter_in_label():
+    _, classificator_converter_in = utils.import_json(
+        os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            '..',
+            'server',
+            'resources',
+            'classificator_converter_in_label.json'
+        )
+    )
+    return classificator_converter_in
 
 
 def predict(
@@ -30,23 +56,13 @@ def predict(
     prediction_stats = []
     id_counter = 0
     num_beams = 1
-
     # Map token class names
-    _, value_mappings = utils.import_json(
-        os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            '..',
-            '..',
-            'src',
-            'resources',
-            'token_classes_values_mappings.json'
-        )
-    )
+    value_mappings = DataProcessor.get_token_classes_value_mappings()
 
     # The prediction is performed without accumulating the gradient descent and without updating the weights of the model
     with torch.no_grad():
         for batch_id, batch in enumerate(dl_data, 1):
-            print(f"            Processing batch {batch_id} of {len(dl_data)}")
+            print(f"Processing batch {batch_id} of {len(dl_data)}")
             # Extract the inputs, the attention masks and the targets from the batch
             src_input = batch[0].to(device)
             src_masks = batch[1].to(device)
@@ -130,159 +146,138 @@ def predict(
 
 
 def pre_processing(
-        df_dataset,
+        t_df,
         tokenizer,
         classification_type,
         tratto_model_type,
         transformer_type
 ):
-    # Drop column id (it is not relevant for training the model)
-    df_dataset = df_dataset.drop(['id'], axis=1)
     # Map empty cells to empty strings
-    df_dataset.fillna('', inplace=True)
-    # Specify the type of each column in the dataset
-    df_dataset = df_dataset.astype({
-        'label': 'str',
-        'oracleId': 'int64',
-        'oracleType': 'string',
-        'projectName': 'string',
-        'packageName': 'string',
-        'className': 'string',
-        'javadocTag': 'string',
-        'methodJavadoc': 'string',
-        'methodSourceCode': 'string',
-        'classJavadoc': 'string',
-        'classSourceCode': 'string',
-        'oracleSoFar': 'string',
-        'token': 'string',
-        'tokenClass': 'string',
-        'tokenInfo': 'string'
-    })
-    # Map token class names
-    _, value_mappings = utils.import_json(
-        os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            '..',
-            '..',
-            'src',
-            'resources',
-            'token_classes_values_mappings.json'
-        )
-    )
-    # If the model is for the token values consider only a subset of words
-    # (the other ones will never appear whitin the dataset)
-    if tratto_model_type == TrattoModelType.TOKEN_VALUES:
-        _, ignore_values = utils.import_json(
-            os.path.join(
-                os.path.dirname(os.path.abspath(__file__)),
-                '..',
-                '..',
-                'src',
-                'resources',
-                'token_classes_ignore_value_mappings.json'
-            )
-        )
-    vocab = tokenizer.get_vocab()
-    for old_word, new_word in value_mappings.items():
-        if tratto_model_type == TrattoModelType.TOKEN_VALUES and old_word in ignore_values:
-            continue
-        for new_sub_word in new_word.split("_"):
-            if not new_sub_word in vocab.keys():
-                tokenizer.add_tokens([new_sub_word])
-
-    # Replace the values in the DataFrame column
-    df_dataset['tokenClass'] = df_dataset['tokenClass'].replace(value_mappings)
-
-    if tratto_model_type == TrattoModelType.TOKEN_CLASSES:
-        # Map token classes so far to new values and transform it from array to string
-        df_dataset["tokenClassesSoFar"] = df_dataset["tokenClassesSoFar"].apply(lambda x: "[ " + " ".join(random.sample([value_mappings[y] for y in x], len(x))) + " ]")
-        # Compute eligible token classes
-        df_eligibleTokenClasses = df_dataset.groupby(['oracleId', 'oracleSoFar'])['tokenClass'].unique().to_frame()
-        df_eligibleTokenClasses = df_eligibleTokenClasses.rename(columns={'tokenClass': 'eligibleTokenClasses'})
-        df_dataset = pd.merge(df_dataset, df_eligibleTokenClasses, on=['oracleId', 'oracleSoFar']).reset_index()
-        df_dataset["eligibleTokenClasses"] = df_dataset["eligibleTokenClasses"].apply(lambda x: "[ " + " ".join(random.sample(list(x),len(x))) + " ]")
-        # Set type of dataframe columns
-        df_dataset['eligibleTokenClasses'] = df_dataset['eligibleTokenClasses'].astype('string')
-        df_dataset['tokenClass'] = df_dataset['tokenClass'].astype('string')
-        df_dataset['tokenClassesSoFar'] = df_dataset['tokenClassesSoFar'].astype('string')
+    t_df.fillna('', inplace=True)
+    if tratto_model_type == TrattoModelType.ORACLES:
+        # Specify the type of each column in the dataset
+        df_types = {
+            'label': 'str',
+            'oracleId': 'int64',
+            'oracle': 'str',
+            'oracleType': 'str',
+            'javadocTag': 'str',
+            'methodJavadoc': 'str',
+            'methodSourceCode': 'str'
+        }
+        # Set the type of each column in the dataset
+        t_df = t_df.astype(df_types)
         # Define the new order of columns
         new_columns_order = [
-            'token', 'tokenInfo', 'tokenClass', 'oracleSoFar', 'tokenClassesSoFar', 'eligibleTokenClasses',
-            'javadocTag', 'oracleType', 'packageName', 'className', 'methodSourceCode', 'methodJavadoc',
-            'classJavadoc', 'classSourceCode', 'projectName', 'oracleId', 'label'
+            'javadocTag', 'oracleType', 'methodSourceCode', 'methodJavadoc', 'oracleId', 'oracle', 'label'
         ]
         # Reindex the DataFrame with the new order
-        df_dataset = df_dataset.reindex(columns=new_columns_order)
+        t_df = t_df.reindex(columns=new_columns_order)
+        # Get the list of target values from the dataframe
+        if transformer_type == TransformerType.DECODER:
+            t_tgt = t_df['label'].values.tolist()
+        else:
+            labels_ids_dict = {k: i for i, k in enumerate(sorted(list(t_df["label"].unique())))}
+            t_tgt = list(map(lambda t: labels_ids_dict[t], t_df['label'].values.tolist()))
     else:
-        # Compute eligible token values
-        df_eligibleTokens = df_dataset.groupby(['oracleId', 'oracleSoFar'])['token'].unique().to_frame()
-        df_eligibleTokens = df_eligibleTokens.rename(columns={'token': 'eligibleTokens'})
-        df_dataset = pd.merge(df_dataset, df_eligibleTokens, on=['oracleId', 'oracleSoFar']).reset_index()
-        df_dataset["eligibleTokens"] = df_dataset["eligibleTokens"].apply(lambda x: "[ " + " ".join(random.sample(list(x),len(x))) + " ]")
-        # Set type of dataframe columns
-        df_dataset['eligibleTokens'] = df_dataset['eligibleTokens'].astype('string')
-        # Define the new order of columns
-        new_columns_order = [
-            'token', 'oracleSoFar', 'eligibleTokens', 'tokenInfo', 'tokenClass', 'javadocTag', 'oracleType',
-            'projectName', 'packageName', 'className', 'methodSourceCode', 'methodJavadoc', 'classJavadoc',
-            'classSourceCode', 'oracleId', 'label'
-        ]
-        # Reindex the DataFrame with the new order
-        df_dataset = df_dataset.reindex(columns=new_columns_order)
+        # Specify the type of each column in the dataset
+        t_df = t_df.astype({
+            'label': 'str',
+            'oracleId': 'int64',
+            'oracleType': 'string',
+            'projectName': 'string',
+            'packageName': 'string',
+            'className': 'string',
+            'javadocTag': 'string',
+            'methodJavadoc': 'string',
+            'methodSourceCode': 'string',
+            'classJavadoc': 'string',
+            'classSourceCode': 'string',
+            'oracleSoFar': 'string',
+            'token': 'string',
+            'tokenClass': 'string',
+            'tokenInfo': 'string'
+        })
+        # Get value mappings values
+        value_mappings = DataProcessor.get_token_classes_value_mappings()
+        # Replace the values in the DataFrame column
+        t_df['tokenClass'] = t_df['tokenClass'].replace(value_mappings)
 
+        if tratto_model_type == TrattoModelType.TOKEN_CLASSES:
+            # Map token classes so far to new values and transform it from array to string
+            t_df["tokenClassesSoFar"] = t_df["tokenClassesSoFar"].apply(lambda x: [value_mappings[y] for y in x])
+            # Map token classes so far to new values and transform it from array to string
+            t_df = DataProcessor.compute_tokenClassesSoFar(t_df)
+            # Compute eligible token classes
+            t_df = DataProcessor.compute_eligible_token_classes(t_df)
+            # Define the new order of columns
+            new_columns_order = [
+                'tokenClass', 'oracleSoFar', 'tokenClassesSoFar', 'eligibleTokenClasses',
+                'javadocTag', 'oracleType', 'packageName', 'className', 'methodSourceCode', 'methodJavadoc',
+                'classJavadoc', 'classSourceCode', 'oracleId', 'label', 'token', 'tokenInfo', 'projectName'
+            ]
+            # Reindex the DataFrame with the new order
+            t_df = t_df.reindex(columns=new_columns_order)
+        else:
+            # Compute eligible token values
+            t_df = DataProcessor.compute_eligible_token_values(t_df)
+            # Define the new order of columns
+            new_columns_order = [
+                'token', 'oracleSoFar', 'eligibleTokens', 'javadocTag', 'oracleType',
+                'packageName', 'className', 'methodSourceCode', 'methodJavadoc', 'tokenInfo',
+                'classJavadoc', 'classSourceCode', 'oracleId', 'label', 'projectName', 'tokenClass'
+            ]
+            # Reindex the DataFrame with the new order
+            t_df = t_df.reindex(columns=new_columns_order)
+    # Keep only the instance with label 'True', for each combination of oracleId and oracleSoFar, if the model
+    # predicts the categories (tokenClasses or tokenValues)
     if classification_type == ClassificationType.CATEGORY_PREDICTION:
         # Keep only a single instance for each combination of oracleId and oracleSoFar
-        df_dataset = df_dataset[(df_dataset['label'] == 'True')]
+        t_df = t_df[(t_df['label'] == 'True')]
 
-    # Remove method source code (keep only signature)
-    # df_dataset['methodSourceCode'] = df_dataset['methodSourceCode'].str.split('{').str[0]
-
-    # Group the rows by 'oracleId' and 'oracleSoFar'
-    df_grouped = df_dataset.groupby(['oracleId', 'oracleSoFar'])
+    # Group the rows according to the tratto model type
+    if tratto_model_type == TrattoModelType.ORACLES:
+        # Group the rows by 'oracleId'
+        df_grouped = t_df.groupby(['oracleId'])
+    else:
+        # Group the rows by 'oracleId' and 'oracleSoFar'
+        df_grouped = t_df.groupby(['oracleId', 'oracleSoFar'])
     # Create an empty dictionary to store the separate datasets
     datasets = []
 
     if classification_type == ClassificationType.CATEGORY_PREDICTION:
         if tratto_model_type == TrattoModelType.TOKEN_CLASSES:
-            _, classificator_converter_in = utils.import_json(
-                os.path.join(
-                    os.path.dirname(os.path.abspath(__file__)),
-                    '..',
-                    '..',
-                    'src',
-                    'resources',
-                    'classificator_converter_in_category_token_classes.json'
-                )
-            )
+            classificator_converter_in = get_default_converter_in_category_token_classes()
         else:
-            classificator_converter_in = {k: i for i, k in enumerate(sorted(list(df_dataset["token"].unique())))}
+            classificator_converter_in = {k: i for i, k in enumerate(sorted(list(t_df["token"].unique())))}
     elif classification_type == ClassificationType.LABEL_PREDICTION:
-        ids_tgt_labels_dict = {i: str(k) for i, k in enumerate(sorted(list(df_dataset["label"].unique())))}
-        classificator_converter_in = {k: i for i, k in ids_tgt_labels_dict.items()}
+        classificator_converter_in = get_default_converter_in_label()
 
     # Iterate through the groups and assign them to separate datasets
     for identifier, group_data in df_grouped:
         # Delete the tgt labels from the input dataset, and others less relevant columns
-        src_group_data = group_data.drop(['label', 'oracleId', 'projectName', 'classJavadoc', 'classSourceCode'], axis=1)
-        # If the model predicts token classes, remove the token values from the input, else remove
-        # the token classes from the input
-        if tratto_model_type == TrattoModelType.TOKEN_CLASSES:
-            src_group_data = src_group_data.drop(['token', 'tokenInfo'], axis=1)
-            # Remove the tokenClass column if the model will predict the tokenClass as target
-            if classification_type == ClassificationType.CATEGORY_PREDICTION:
-                src_group_data = src_group_data.drop(['tokenClass'], axis=1)
+        if tratto_model_type == TrattoModelType.ORACLES:
+            src_group_data = group_data.drop(['label', 'oracleId', 'oracle'], axis=1)
         else:
-            # Remove the token column if the model will predict the token as target
-            if classification_type == ClassificationType.CATEGORY_PREDICTION:
-                src_group_data = src_group_data.drop(['token'], axis=1)
-            # Remove the tokenInfo column if the classificator is a decoder
-            if transformer_type == TransformerType.DECODER and not classification_type == ClassificationType.LABEL_PREDICTION:
-                src_group_data = src_group_data.drop(['tokenInfo'], axis=1)
-
-        df_src_concat = src_group_data.apply(lambda row: tokenizer.sep_token.join(row.values), axis=1)
+            src_group_data = group_data.drop(['label', 'oracleId', 'projectName', 'classJavadoc', 'classSourceCode'], axis=1)
+            # If the model predicts the token classes, remove the token values from the input.
+            # Else remove the token classes from the input
+            if tratto_model_type == TrattoModelType.TOKEN_CLASSES:
+                src_group_data = src_group_data.drop(['token', 'tokenInfo'], axis=1)
+                # Remove the tokenClass column if the model will predict the tokenClass as target
+                if classification_type == ClassificationType.CATEGORY_PREDICTION:
+                    src_group_data = src_group_data.drop(['tokenClass'], axis=1)
+            else:
+                src_group_data = src_group_data.drop(['tokenClass'], axis=1)
+                # Remove the token column if the model will predict the token as target
+                if classification_type == ClassificationType.CATEGORY_PREDICTION:
+                    src_group_data = src_group_data.drop(['token'], axis=1)
+                # Remove the tokenInfo column if the classificator is a decoder
+                # TODO: Check if tokenInfo must be removed
+                #if transformer_type == TransformerType.DECODER and not classification_type == ClassificationType.LABEL_PREDICTION:
+                #    src_group_data = src_group_data.drop(['tokenInfo'], axis=1)
         # The pandas dataframe is transformed in a list of strings: each string is an input to the model
-        src = df_src_concat.to_numpy().tolist()
-
+        src = DataProcessor.concat_src(src_group_data, tokenizer)
         # Get the list of target values from the dataframe
         if transformer_type == TransformerType.DECODER:
             if classification_type == ClassificationType.CATEGORY_PREDICTION:
@@ -296,16 +291,18 @@ def pre_processing(
             if classification_type == ClassificationType.CATEGORY_PREDICTION:
                 if tratto_model_type == TrattoModelType.TOKEN_CLASSES:
                     tgt = list(map(lambda t: classificator_converter_in[t], group_data["tokenClass"].values.tolist()))
-                elif tratto_model_type == TrattoModelType.TOKEN_VALUES:
-                    tgt = list(map(lambda t: classificator_converter_in[t], group_data["token"].values.tolist()))
+                else:
+                    raise ValueError(f"Invalid combination of tratto model type and classification type: {tratto_model_type} - {classification_type}")
             elif classification_type == ClassificationType.LABEL_PREDICTION:
                 tgt = list(map(lambda t: classificator_converter_in[t], group_data["label"].values.tolist()))
         # Add javadoc tags and token classes for analysis purposes
         javadoc_tags = group_data["javadocTag"].values.tolist()
-        if TrattoModelType.TOKEN_CLASSES:
+        if tratto_model_type == TrattoModelType.TOKEN_CLASSES:
             expected_out = group_data["tokenClass"].values.tolist()
-        elif TrattoModelType.TOKEN_VALUES:
+        elif tratto_model_type == TrattoModelType.TOKEN_VALUES:
             expected_out = group_data["token"].values.tolist()
+        elif tratto_model_type == TrattoModelType.ORACLES:
+            expected_out = group_data["oracle"].values.tolist()
         # Append grouped dataset
         datasets.append((identifier, src, tgt, javadoc_tags, expected_out))
     # Return list of grouped datasets
@@ -320,22 +317,12 @@ def tokenize_datasets(
     t_datasets = []
 
     for identifier, inputs, targets, javadoc_tags, outputs in datasets:
-        # Tokenize the inputs datapoints
-        t_src_dict = tokenizer.batch_encode_plus(
-            inputs,
-            max_length=512,
-            padding=True,
-            truncation=True,
-            return_tensors="pt"
-        )
-        if transformer_type == TransformerType.DECODER:
-            t_tgt_dict = tokenizer.batch_encode_plus(
-                targets,
-                max_length=8,
-                padding=True,
-                truncation=True,
-                return_tensors="pt"
-            )
+        # Tokenize group of data
+        tokenized_group = DataProcessor.tokenize_dataset(inputs, targets, tokenizer, transformer_type)
+        t_inputs = tokenized_group[0]
+        t_inputs_attention_masks = tokenized_group[1]
+        t_targets = tokenized_group[2]
+        # Tokenize additional information to put it within tensors
         t_javadoctag_dict = tokenizer.batch_encode_plus(
             javadoc_tags,
             max_length=512,
@@ -350,17 +337,11 @@ def tokenize_datasets(
             truncation=True,
             return_tensors="pt"
         )
-        # Transform the list into a tensor stack
-        t_inputs = torch.stack([ids.clone().detach() for ids in t_src_dict['input_ids']])
-        t_inputs_attention_masks = torch.stack([mask.clone().detach() for mask in t_src_dict['attention_mask']])
-        if transformer_type == TransformerType.DECODER:
-            t_targets = torch.stack([ids.clone().detach() for ids in t_tgt_dict['input_ids']])
-        else:
-            t_targets = torch.stack([torch.tensor(t) for t in targets])
         t_javadoc_tags = torch.stack([ids.clone().detach() for ids in t_javadoctag_dict['input_ids']])
         t_outputs = torch.stack([ids.clone().detach() for ids in t_outputs_dict['input_ids']])
-        # Generate the tokenized dataset
+        # Generate the tuple of tokenized dataset group
         t_dataset = (t_inputs, t_inputs_attention_masks, t_targets, t_javadoc_tags, t_outputs)
+        # Append the tuple to the list of groups representing the whole dataset
         t_datasets.append((identifier,t_dataset))
     return t_datasets
 
@@ -370,8 +351,9 @@ def main(
         checkpoint_path: str,
         input_path: str,
         output_path: str,
-        classification_type: str,
-        tratto_model_type,
+        classification_type: Type[ClassificationType],
+        transformer_type: Type[TransformerType],
+        tratto_model_type: Type[TrattoModelType],
         model_type: str,
         tokenizer_name: str,
         config_name: str,
@@ -381,32 +363,23 @@ def main(
     The main method load the checkpoint and perform the analysis of the performance of the model on a given
     unseen project.
     """
-
+    # Check if is a valid combination of TrattoModelType, TransformerType, and ClassificationType
+    if not utils.is_valid_combination(tratto_model_type, transformer_type, classification_type):
+        raise ValueError(f"Invalid combination of tratto model type, model type, and classification type: {tratto_model_type} - {model_type} - {classification_type}")
     # Connect to device
     print("Connect to device")
     device = utils.connect_to_device(DeviceType.GPU)
-
-    # List of partial dataframes
-    dfs = []
-    # Collects partial dataframes from oracles
-    for file_name in os.listdir(input_path):
-        if project_name in file_name:
-            print(file_name)
-            df = pd.read_json(os.path.join(input_path, file_name))
-            dfs.append(df)
-    df_dataset = pd.concat(dfs)
-    df_dataset.reset_index(drop=True, inplace=True)
-
+    # Load test dataset
+    t_df = DataProcessor.load_dataset_as_dataframe(input_path, tratto_model_type)
     print("Setup model")
     # Get configuration class, model class, and tokenizer class from the corresponding model type
-    config_class, model_class, tokenizer_class, transformer_type = ModelClasses.getModelClass(model_type)
+    config_class, model_class, tokenizer_class = ModelClasses.getModelClass(model_type)
     # Setup tokenizer
     tokenizer = tokenizer_class.from_pretrained(tokenizer_name)
-
     print("Pre-processing dataset")
     # Pre-processing data
     datasets, classificator_converter_out = pre_processing(
-        df_dataset,
+        t_df,
         tokenizer,
         classification_type,
         tratto_model_type,
@@ -414,7 +387,6 @@ def main(
     )
     # Process the data
     t_datasets = tokenize_datasets(datasets, tokenizer, transformer_type)
-
     # Setup model
     config = config_class.from_pretrained(
         config_name if config_name else model_name_or_path
@@ -425,24 +397,20 @@ def main(
     )
     model.resize_token_embeddings(len(tokenizer))
     model.to(device)
-
     # Load checkpoint
     if checkpoint_path.endswith(".bin"):
         model.load_state_dict(torch.load(checkpoint_path, map_location=torch.device(device)))
     elif checkpoint_path.endswith(".pt"):
         checkpoint = torch.load(checkpoint_path, map_location=torch.device(device))
         model.load_state_dict(checkpoint['model_state_dict'])
-
     print("Start predictions")
     predictions_stats = {}
-
     model_stats = {
         "totals": len(t_datasets),
         "false_positives": 0,
         "true_positives": 0,
         "ones": []
     }
-
     for idx, t_dataset in enumerate(t_datasets, 1):
         empty_counter = 0
         identifier, t_data = t_dataset
@@ -482,81 +450,16 @@ def main(
 if __name__ == "__main__":
     # Parse arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--project_name",
-        default=None,
-        type=str,
-        required=True,
-        help="The name of the project to test, among ['gs-core','plume-lib','jgrapht','commons-math','commons-collections','guava-19']."
-    )
-    parser.add_argument(
-        "--checkpoint_path",
-        default=None,
-        type=str,
-        required=True,
-        help="The path to the checkpoint to load."
-    )
-    parser.add_argument(
-        "--input_path",
-        default=None,
-        type=str,
-        required=True,
-        help="The path to the dataset."
-    )
-    parser.add_argument(
-        "--output_path",
-        default=None,
-        type=str,
-        required=True,
-        help="The path where to save the statistics."
-    )
-    parser.add_argument(
-        "--model_type",
-        default=None,
-        type=str,
-        required=True,
-        help="Model type selected in the list: " + ", ".join(ModelClasses.get_available_model_classes()))
-    parser.add_argument(
-        "--tokenizer_name",
-        default=None,
-        type=str,
-        help="Pretrained tokenizer name or path if not the same as model_name"
-    )
-    parser.add_argument(
-        "--config_name",
-        default=None,
-        type=str,
-        help="Pretrained config name or path if not the same as model_name"
-    )
-    parser.add_argument(
-        "--model_name_or_path",
-        default=None,
-        type=str,
-        required=True,
-        help="Path to pre-trained model or shortcut name.")
-    parser.add_argument(
-        "--classification_type",
-        default="label_prediction",
-        type=str,
-        help="Classification type: category prediction (category_prediction) or label prediction (label_prediction)."
-    )
-    parser.add_argument(
-        "--tratto_model_type",
-        default="token_classes",
-        type=str,
-        help="Tratto model type: token classes (token_classes) or token values (token_values)."
-    )
+    ArgumentParser.add_test_arguments(parser)
     args = parser.parse_args()
-
-    # Check if the project name exists
-    if not args.project_name in ['gs-core', 'plume-lib', 'jgrapht', 'commons-math', 'commons-collections', 'guava-19']:
-        raise ValueError(
-            "Project not found. Please provide a project name, among the options: " \
-            "['gs-core','plume-lib','jgrapht','commons-math','commons-collections','guava-19']"
-        )
     # Check if the input path exists
     if not os.path.exists(args.input_path):
         raise ValueError(f"The input path argument contains a value that does not point to an existing folder: {args.input_path}")
+    else:
+        file_list = os.listdir(args.input_path)
+        for file_name in file_list:
+            if not args.project_name in file_name:
+                raise ValueError(f"The input path argument contains a value that does not point to a folder containing the project name: {args.input_path}")
     # Check if the checkpoint path exists
     if not os.path.exists(args.checkpoint_path):
         raise ValueError(f"The checkpoint path argument contains a value that does not point to an existing checkpoint: {args.checkpoint_path}")
@@ -566,6 +469,7 @@ if __name__ == "__main__":
         args.input_path,
         args.output_path,
         ClassificationType(args.classification_type.upper()),
+        TransformerType(args.transformer_type.upper()),
         TrattoModelType(args.tratto_model_type.upper()),
         args.model_type,
         args.tokenizer_name,

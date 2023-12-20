@@ -4,6 +4,7 @@ import pandas as pd
 from src.types.ClassificationType import ClassificationType
 from src.types.TransformerType import TransformerType
 from src.types.TrattoModelType import TrattoModelType
+from src.utils.utils import is_valid_combination
 
 
 def generate_src_input(
@@ -26,15 +27,17 @@ def generate_src_input(
             input += f"{datapoint.eligibleTokenClasses}{tokenizer.sep_token}"
         elif tratto_model_type == TrattoModelType.TOKEN_VALUES:
             input += f"{datapoint.eligibleTokens}{tokenizer.sep_token}"
-            if transformer_type == TransformerType.ENCODER or classification_type == ClassificationType.LABEL_PREDICTION:
-                input += f"{datapoint.tokenInfo}{tokenizer.sep_token}"
-            input += f"{datapoint.tokenClass}{tokenizer.sep_token}"
         input += f"{datapoint.javadocTag}{tokenizer.sep_token}"
         input += f"{datapoint.oracleType}{tokenizer.sep_token}"
         input += f"{datapoint.packageName}{tokenizer.sep_token}"
         input += f"{datapoint.className}{tokenizer.sep_token}"
         input += f"{datapoint.methodSourceCode}{tokenizer.sep_token}"
         input += f"{datapoint.methodJavadoc}"
+        if tratto_model_type == TrattoModelType.TOKEN_VALUES:
+            # TODO: Check if tokenInfo must be removed
+            # if transformer_type == TransformerType.ENCODER or classification_type == ClassificationType.LABEL_PREDICTION:
+            # input += f"{datapoint.tokenInfo}{tokenizer.sep_token}"
+            input += f"{tokenizer.sep_token}{datapoint.tokenInfo}"
     elif tratto_model_type == TrattoModelType.ORACLES:
         input += f"{datapoint.javadocTag}{tokenizer.sep_token}"
         input += f"{datapoint.oracleType}{tokenizer.sep_token}"
@@ -169,3 +172,7 @@ def skipTest(
             return True
         if classification_type == ClassificationType.CATEGORY_PREDICTION:
             return True
+    if is_valid_combination(tratto_model_type, transformer_type, classification_type):
+        return False
+    return True
+

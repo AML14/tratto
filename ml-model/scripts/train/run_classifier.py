@@ -12,8 +12,8 @@ from src.model.OracleTrainer import OracleTrainer
 from src.types.ClassificationType import ClassificationType
 from src.types.DatasetType import DatasetType
 from src.types.DeviceType import DeviceType
-from src.types.TransformerType import TransformerType
 from src.types.TrattoModelType import TrattoModelType
+from src.types.TransformerType import TransformerType
 from src.utils import logger
 from src.parser.ArgumentParser import ArgumentParser
 from src.processors.DataProcessor import DataProcessor
@@ -46,8 +46,9 @@ def main():
     parser = argparse.ArgumentParser()
     ArgumentParser.add_training_arguments(parser)
     args = parser.parse_args()
-    # Set TRATTO model and classification types
+    # Set TRATTO model, classification, and transformer types
     classification_type = ClassificationType(args.classification_type.upper())
+    transformer_type = TransformerType(args.transformer_type.upper())
     tratto_model_type = TrattoModelType(args.tratto_model_type.upper())
     # Logging - welcome message
     logger.print_welcome(classification_type, tratto_model_type)
@@ -58,7 +59,7 @@ def main():
     # Set up seeds for reproducibility
     set_seed(device, args.seed)
     # Get configuration class, model class, and tokenizer class from the corresponding model type
-    config_class, model_class, tokenizer_class, transformer_type = ModelClasses.getModelClass(args.model_type)
+    config_class, model_class, tokenizer_class = ModelClasses.getModelClass(args.model_type)
     # Setup tokenizer
     tokenizer = tokenizer_class.from_pretrained(args.tokenizer_name)
     # Create DataProcessor instance
@@ -139,7 +140,7 @@ def main():
         # Train the model
         stats[f"training"] = oracle_trainer.train(
             args.num_epochs,
-            args.save_steps,
+            args.checkpoint_steps,
             device,
             args.accumulation_steps,
             args.max_grad_norm

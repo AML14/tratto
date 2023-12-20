@@ -4,6 +4,7 @@ import pytest
 from transformers import AutoTokenizer
 
 from src.processors.DataProcessor import DataProcessor
+from src.types.TrattoModelType import TrattoModelType
 from src.utils.utils import import_json
 from tests import utils
 
@@ -28,10 +29,17 @@ def data_processor(
     )
     return data_processor
 
+
 @pytest.fixture(scope='function')
 def df_projects(
-        arg_dataset_path
+        arg_dataset_path,
+        arg_transformer_type,
+        arg_classification_type,
+        arg_tratto_model_type
 ):
+    if utils.skipTest(arg_dataset_path, arg_transformer_type, arg_tratto_model_type, arg_classification_type):
+        pytest.skip(
+            f"Skipping test because of the invalid combination of the arguments: {arg_dataset_path.split('/')[-1]} - {arg_tratto_model_type}")
     # list of partial dataframes
     dfs = []
     # Collects partial dataframes
@@ -39,6 +47,11 @@ def df_projects(
         oracles_dataset = os.path.join(arg_dataset_path, 'ten', dataset_type)
         for file_name in os.listdir(oracles_dataset):
             df = pd.read_json(os.path.join(oracles_dataset, file_name))
+            if arg_tratto_model_type == TrattoModelType.ORACLES:
+                df["label"] = df["oracle"].apply(lambda o: "False" if o == ";" else "True")
+                if "oracleId" not in df.columns:
+                    if "id" in df.columns:
+                        df.rename(columns={'id': 'oracleId'}, inplace=True)
             dfs.append(df)
     df_dataset = pd.concat(dfs)
     df_dataset.reset_index(drop=True, inplace=True)

@@ -30,9 +30,6 @@ _, value_mappings = utils.import_json(
 _, classificator_converter_in_category = utils.import_json(
     os.path.join(
         os.path.dirname(os.path.abspath(__file__)),
-        '..',
-        '..',
-        'src',
         'resources',
         'classificator_converter_in_category_token_classes.json'
     )
@@ -40,9 +37,6 @@ _, classificator_converter_in_category = utils.import_json(
 _, classificator_converter_in_label = utils.import_json(
     os.path.join(
         os.path.dirname(os.path.abspath(__file__)),
-        '..',
-        '..',
-        'src',
         'resources',
         'classificator_converter_in_label.json'
     )
@@ -135,7 +129,7 @@ def predict_next(
                             predicted_generate
                         ))
                     elif classification_type == ClassificationType.LABEL_PREDICTION:
-                        if classificator_converter_out_label[predicted_generate_encoded[p.item()]] == 'True':
+                        if classificator_converter_out_label[p.item()] == 'True':
                             predicted_generate = tgt_decoded[i]
                             true_predictions.append((
                                 probabilities[i][p.item()].item(),
@@ -265,8 +259,9 @@ def get_input_model_classes(
     df_dataset['eligibleTokenClasses'] = df_dataset['eligibleTokenClasses'].astype('string')
     # Define the new order of columns
     new_columns_order = [
-        'oracleId', 'token', 'tokenInfo', 'tokenClass', 'oracleSoFar', 'tokenClassesSoFar', 'eligibleTokenClasses',
-        'javadocTag', 'oracleType', 'packageName', 'className', 'methodSourceCode', 'methodJavadoc'
+        'tokenClass', 'oracleSoFar', 'tokenClassesSoFar', 'eligibleTokenClasses',
+        'javadocTag', 'oracleType', 'packageName', 'className', 'methodSourceCode', 'methodJavadoc',
+        'classJavadoc', 'classSourceCode', 'oracleId', 'label', 'token', 'tokenInfo', 'projectName'
     ]
     # Reindex the DataFrame with the new order
     df_dataset = df_dataset.reindex(columns=new_columns_order)
@@ -319,13 +314,14 @@ def get_input_model_values(
 
     # Define the new order of columns
     new_columns_order = [
-        'oracleId', 'token', 'oracleSoFar', 'eligibleTokens', 'tokenInfo', 'tokenClass',
-        'javadocTag', 'oracleType', 'packageName', 'className', 'methodSourceCode', 'methodJavadoc'
+        'token', 'oracleSoFar', 'eligibleTokens', 'javadocTag', 'oracleType',
+        'packageName', 'className', 'methodSourceCode', 'methodJavadoc', 'tokenInfo',
+        'classJavadoc', 'classSourceCode', 'oracleId', 'label', 'tokenClass', 'projectName'
     ]
     # Reindex the DataFrame with the new order
     df_dataset = df_dataset.reindex(columns=new_columns_order)
     # Delete spurious columns for predicting the next token class
-    df_dataset = df_dataset.drop(['oracleId'], axis=1)
+    df_dataset = df_dataset.drop(['oracleId', 'tokenClass'], axis=1)
     if classification_type == ClassificationType.CATEGORY_PREDICTION:
         # Remove category to predict
         df_dataset = df_dataset.drop(['token'], axis=1)
@@ -333,7 +329,8 @@ def get_input_model_values(
     else:
         tgt = df_dataset["token"].values.tolist()
     if transformer_type == TransformerType.DECODER and classification_type == ClassificationType.CATEGORY_PREDICTION:
-        df_dataset = df_dataset.drop(['tokenInfo'], axis=1)
+        # TODO: Check if tokenInfo must be removed
+        # df_dataset = df_dataset.drop(['tokenInfo'], axis=1)
         # Delete duplicates
         df_dataset = df_dataset.drop_duplicates()
         assert len(df_dataset) == 1
