@@ -16,7 +16,7 @@ validation_path="./dataset/cleaned/oracles-dataset-validation/csv"
 output_dir="./output_oracles_model_decoder_label_770"
 classification_type="label_prediction"
 
-if [ "$#" -eq 1 ] && [ "$1" == "accelerate" ]; then
+if [ "$#" -eq 1 ] && [ "$1" == "--accelerate" ]; then
   echo "Running with accelerate"
   accelerate launch --config_file accelerate_config_fsdp.yaml scripts/train/run_classifier_accelerate.py \
     --model_type "$model_type" \
