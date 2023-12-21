@@ -121,7 +121,7 @@ The command accepts the following optional parameter:
 If you want to run the training as a background process execute the following command:
    ```shell
    nohup [script_name] > [log_filename].out 2>&1 & echo $! > [process_number_filename].pid
-
+   ```
 where:
 
 * `script_name` is the name of the script to run (for example, `./train_token_classes_decoder.sh`)

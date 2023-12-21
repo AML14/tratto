@@ -323,19 +323,19 @@ class OracleTrainerAccelerate:
                     all_labels = []
                     # Save checkpoints
                     self._save_checkpoint(epoch, step, stats)
-            # Validation phase
-            mean_v_loss, v_f1, v_f1_micro, v_accuracy, v_precision, v_recall = self.validation(device)
-            # Round F1-Score to discard minor improvments and speed-up convergence
-            v_f1_micro = round(v_f1_micro, 2)
-            # Check if validation loss has improved
-            if v_f1_micro > best_f1_score_micro:
-                counter = 0
-                best_f1_score_micro = v_f1_micro
-            else:
-                counter += 1
-                if counter > patience and epoch > 1:
-                    print("Early stopping triggered. Training stopped.")
-                    return stats
+                    # Check if the validation loss has improved at the end of the epoch
+                    if step == len(self._dl_train):
+                        # Round F1-Score to discard minor improvments and speed-up convergence
+                        v_f1_micro = round(v_f1_micro, 2)
+                        # Check if validation loss has improved
+                        if v_f1_micro > best_f1_score_micro:
+                            counter = 0
+                            best_f1_score_micro = v_f1_micro
+                        else:
+                            counter += 1
+                            if counter > patience and epoch > 1:
+                                print("Early stopping triggered. Training stopped.")
+                                return stats
         return stats
 
     def validation(
