@@ -5,7 +5,10 @@ from typing import Type
 import torch
 from accelerate import Accelerator, load_checkpoint_and_dispatch
 
+from src.types.ClassificationType import ClassificationType
 from src.types.DeviceType import DeviceType
+from src.types.TransformerType import TransformerType
+from src.types.TrattoModelType import TrattoModelType
 
 accelerator = Accelerator()
 
@@ -101,27 +104,63 @@ def export_stats(file_path: str, content: dict, mode: str = "w"):
 
 def import_json(file_path: str):
     """
-    The method imports the dataset to use to train and validate the model.
-    The methods accept only the format .json
+    The method imports a json file as an object
+    The method accepts only the format .json
 
     Parameters
     ----------
     file_path: str
-        The path to the dataset file
-    file_format: FileFormat
-        The extension of the file
+        The path to the json file
 
     Returns
     -------
     input_file: File
         The file opened
     input_obj:
-        The content of the file:
+        The content of the file as a python dictionary object
     """
     with open(file_path) as input_file:
         input_obj = json.load(input_file)
         return input_file, input_obj
 
+def is_running_on_gpu():
+    """
+
+    Returns
+    -------
+
+    """
+    return torch.cuda.is_available()
+
+def is_valid_combination(
+        tratto_model_type: Type[TrattoModelType],
+        transformer_type: Type[TransformerType],
+        classification_type: Type[ClassificationType]
+):
+    """
+    The method checks if the given combination of TrattoModelType and TransformerType is valid.
+
+    Parameters
+    ----------
+    tratto_model_type: Type[TrattoModelType]
+        The type of Tratto model considered (tokenClasses, tokenValues, or oracles).
+    transformer_type: Type[TransformerType]
+        The type of transformer (encoder or decoder)
+    classification_type: Type[ClassificationType]
+        The type of classification (category or label prediction)
+
+    Returns
+    -------
+    True if the combination is valid. False, otherwise.
+    """
+    if tratto_model_type == TrattoModelType.ORACLES:
+        if classification_type == ClassificationType.CATEGORY_PREDICTION:
+                return False
+    if tratto_model_type == TrattoModelType.TOKEN_VALUES:
+        if classification_type == ClassificationType.CATEGORY_PREDICTION:
+            if transformer_type == TransformerType.ENCODER:
+                return False
+    return True
 
 def release_memory():
     # Release memory on GPU

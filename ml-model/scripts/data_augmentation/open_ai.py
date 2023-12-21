@@ -13,10 +13,10 @@ load_dotenv()
 OPEN_AI_API_KEY = os.getenv('OPEN_AI_API_KEY')
 openai.api_key = OPEN_AI_API_KEY
 
-_, preface = utils.import_json(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "src", "resources", "openai_preface_assistant.json"))
-_, original_javadoctags_set = utils.import_json(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "src", "resources", "original_javadoctags_set.json"))
+_, preface = utils.import_json(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "resources", "openai_preface_assistant.json"))
+_, original_javadoctags_set = utils.import_json(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "resources", "original_javadoctags_set.json"))
 
-output_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "src", "resources", "open_ai_results")
+output_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "resources", "open_ai_results")
 encoding = tiktoken.encoding_for_model("gpt-3.5-turbo")
 
 

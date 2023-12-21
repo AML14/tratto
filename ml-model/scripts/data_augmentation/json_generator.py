@@ -8,13 +8,13 @@ sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)),"..", ".
 from src.utils import utils
 
 # Path to the OpenAI responses
-input_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),"..", "..", "src", "resources", "open_ai_results")
+input_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "output", "open_ai_results")
 # Path where to save the final dictionary of all the alternatives, for each javadoc tag
-output_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),"..", "..", "src", "resources", "data_augmentation")
+output_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "output")
 # Import list of patterns to apply to improve variety of javagoc tags
-_, patterns = utils.import_json(os.path.join(os.path.dirname(os.path.abspath(__file__)),"..", "..", "src", "resources", "data_augmentation_patterns.json"))
+_, patterns = utils.import_json(os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "data_augmentation_patterns.json"))
 # Import list of sets of original javadoc tags
-_,original_javadoctags_set = utils.import_json(os.path.join(os.path.dirname(os.path.abspath(__file__)),"..", "..", "src", "resources", "original_javadoctags_set.json"))
+_,original_javadoctags_set = utils.import_json(os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "original_javadoctags_set.json"))
 # Auxiliary variables for statistics and analysis purposes
 matched_list = []
 not_matched_list = []

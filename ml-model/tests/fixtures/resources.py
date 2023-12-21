@@ -14,7 +14,7 @@ def value_mappings():
             "..",
             "src",
             "resources",
-            "tokenClassesValuesMapping.json"
+            "token_classes_values_mappings.json"
         )
     )
     return value_mappings

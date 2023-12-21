@@ -13,8 +13,8 @@ class ModelClasses:
     @staticmethod
     def getModelClass(model_name: str) :
         if model_name == 'roberta':
-            return RobertaConfig, RobertaForSequenceClassification, RobertaTokenizer, TransformerType.ENCODER
+            return RobertaConfig, RobertaForSequenceClassification, RobertaTokenizer
         if model_name == 'codet5':
-            return T5Config, T5ForConditionalGeneration, RobertaTokenizer, TransformerType.DECODER
+            return T5Config, T5ForConditionalGeneration, RobertaTokenizer
         if model_name == 'codet5+':
-            return T5Config, T5ForConditionalGeneration, AutoTokenizer, TransformerType.DECODER
+            return T5Config, T5ForConditionalGeneration, AutoTokenizer

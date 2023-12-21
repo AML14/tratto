@@ -20,7 +20,7 @@ def test_pre_processing(
         row_after = df_dataset_server_after_pre_process.loc[idx]
         assert row_after.tokenClass in list(value_mappings.values())
         assert row_after.tokenClassesSoFar == f"[ {' '.join(list(map(lambda x: value_mappings[x], row_before.tokenClassesSoFar)))} ]"
-        assert row_after.methodSourceCode == row_before.methodSourceCode.split('{')[0]
+        assert row_after.methodSourceCode == row_before.methodSourceCode
 
 
 def test_get_input(
