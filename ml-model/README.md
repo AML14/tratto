@@ -177,6 +177,13 @@ command ([reference](https://github.com/huggingface/accelerate/issues/1473)):
 pip install light-the-torch; ltt install torch torchvision -U
 ```
 
+The configuration file for the training with accelerate is already provided in the `accelerate_config_fsdp.yaml` file.
+The configuration is set to train the model on 4 GPUs. If you want to train the model on a different number of GPUs, change
+the `num_processes` parameter to the desired number of GPUs. The default configuration is tested, but can be changed and
+customized. The reader can find more information on the FSDP accelerate documentation webpage ([link](https://huggingface.co/docs/accelerate/usage_guides/fsdp)),
+and can generate other type of configuration, using DeepSpeed ([link](https://huggingface.co/docs/accelerate/usage_guides/deepspeed))
+or others approaches.
+
 **Important note**: The model name and the tokenizer name are taken from the HuggingFace models collection, and must be 
 consistent with the model type defined and configured in the `src/pretrained/ModelClasses.py` file.
 
