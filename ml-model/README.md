@@ -92,16 +92,21 @@ The script will run a python script (`scripts/setup/init.py`) to which two optio
 * `--datasets`: if provided, the script will download the datasets to train the token classes and token values models.
 * `--checkpoints`: if provided, the script will download the checkpoints of the finetuned models.
 
+Execute the following command to prepare the datasets for the training of the models.
+   ```shell
+   bash prepare_datasets.sh
+   ```
+The script generate both a json and a csv version of the prepared datasets. The .csv format is necessary to train the model
+using the CUDF library (the `read_json` method of the `CUDF` library is not able to exploit the GPU yet).
+
 **Important note**:: The datasets can be also generated from the main **Tratto** program. This script will only speed up
 the process. The downloaded datasets are exactly the same the main **Tratto** program would generate.
-
-**Important note**: if you skipped the instructions to configure the environment (`section 1`), remember to execute the command described
-at `section 1.4` to grant the permissions to run the bash scripts.
 
 The datasets and checkpoints will be saved within the `ml-model` root directory, with the homonym names
 (`ml-model/datasets` and `ml-model/checkpoints`).
 
-# Training
+
+# 3. Training
 
 The model can be trained both on a CPU (highly not recommended), on a single GPU or multi-GPUs.
 
@@ -113,21 +118,17 @@ Run the following command to replicate the training of the `oracles`, `token-cla
 The command accepts the following optional parameter:
 * `--accelerate`: if provided, the script execute the training on multi GPUs with [accelerate](https://huggingface.co/docs/accelerate/index) and [Fully-Sharded Data Parallel](https://huggingface.co/blog/pytorch-fsdp).
 
+If you want to run the training as a background process execute the following command:
+   ```shell
+   nohup [script_name] > [log_filename].out 2>&1 & echo $! > [process_number_filename].pid
 
-**Important Note**: The accelerate script is highly recommended to finetune the **CodeT5+** `700m` version, due to the huge dimension of the pre-trained model.
-The script reads the `accelerate_config_fsdp.yaml` configuration file to split the model on the GPUs available. We provide
-the configuration file that we set up to finetune the model on Google Cloud Platform instance equipped with **340GB** of
-system RAM and 4 GPUs **Tesla A-100** with **40GB**. The configuration file can be generated running the accelerate plugin.
-The reader can find more information on the FSDP accelerate documentation webpage ([link](https://huggingface.co/docs/accelerate/usage_guides/fsdp)).
-If the system fail to run the script with accelerate try to upgrade the torch and torchvision versions with the following
-command ([reference](https://github.com/huggingface/accelerate/issues/1473)):
+where:
 
-```shell
-pip install light-the-torch; ltt install torch torchvision -U
-```
+* `script_name` is the name of the script to run (for example, `./train_token_classes_decoder.sh`)
+* `log_filename` is the name of the textual file where the logs will be saved
+* `process_number_filename` is the name of the textual file where the pid number of the generated process will be saved.
 
-
-**Important Note**: The bash scripts contain a list of different arguments that can be changed to fine-tune the model using
+The bash scripts contain a list of different arguments that can be changed to fine-tune the model using
 different values of the hyperparameters or classification types (**category** or **label**). The list of the arguments and the
 relative description is reported below.
 
@@ -149,22 +150,40 @@ relative description is reported below.
 --classification_type [ category_prediction, or label_prediction ]
 ```
 
-The model name and the tokenizer name are taken from the HuggingFace models collection, and must be in compliance with 
-the model type defined and configured in the `src/pretrained/ModelClasses.py` file.
+The model can be trained both as an `Encoder`, `Decoder` or `Encoder-Decoder`.
+To train the model as an encoder, set the parameter `--transformer_type` to `encoder`, Otherwise, set it to `decoder`.
+(The value should be consistent with the HuggingFace pre-trained model type selected).
 
-If you want to run the training as a background process execute the following command:
-   ```shell
-   nohup [script_name] > [log_filename].out 2>&1 & echo $! > [process_number_filename].pid
-   ```
+The type of model to train can be set with the parameter `--tratto_model_type`: set it to `oracles` to train the model 
+that predict if an oracle must be generated or not, `token_classes` to train the model for the `token classes` prediction, 
+or `token_values` to train the model for the token values prediction.
 
-where:
+Finally, the type of classification can be set with the parameter `--classification_type`: set it to `category_prediction`
+to train the model for the category prediction (the list of `token classes`), or `label_prediction` to train the model 
+for the label prediction (`True` or `False`). The only models that can be trained with the `category_prediction` are the
+`token-classes` and `token-values` models. However, is highly recommend to train the model in this configuration only for
+the `token-classes` model, since the list of classes is fixed and known in advance. 
+Both the classification types are suitable for the training with an `Encoder`, `Decoder`, or `Encoder-Decoder` model.
 
-* `script_name` is the name of the script to run (for example, `./train_token_classes_decoder.sh`)
-* `log_filename` is the name of the textual file where the logs will be saved
-* `process_number_filename` is the name of the textual file where the pid number of the generated process will be saved.
+**Important Note**: The accelerate script is highly recommended to finetune the **CodeT5+** `770m` version, due to the huge dimension of the pre-trained model.
+The script reads the `accelerate_config_fsdp.yaml` configuration file to split the model on the GPUs available. We provide
+the configuration file that we set up to finetune the model on Google Cloud Platform instance equipped with **340GB** of
+system RAM and 4 GPUs **Tesla A-100** with **40GB**. The configuration file can be generated running the accelerate plugin.
+The reader can find more information on the FSDP accelerate documentation webpage ([link](https://huggingface.co/docs/accelerate/usage_guides/fsdp)).
+If the system fail to run the script with accelerate try to upgrade the torch and torchvision versions with the following
+command ([reference](https://github.com/huggingface/accelerate/issues/1473)):
+
+```shell
+pip install light-the-torch; ltt install torch torchvision -U
+```
+
+**Important note**: The model name and the tokenizer name are taken from the HuggingFace models collection, and must be 
+consistent with the model type defined and configured in the `src/pretrained/ModelClasses.py` file.
+
+**Important note**: Remember to set the path to csv version of the datasets if you want to train the model using the `CUDF` library.
 
 
-## Test the model (Inference)
+## 4. Test the model (Inference)
 
 To test the model on a given test dataset of a project, execute the following command:
    ```shell
@@ -209,7 +228,7 @@ dataset_dir
 if the project name is `gs-core`.
 
 
-## Server
+## 5. Server
 
 To run the server and perform predictions on new data (for example, in combination with the main tratto program), execute the following
 command to start the server:
@@ -232,5 +251,4 @@ The response to the request contains a string representing the next token class 
 
 **Important Note**: The bash scripts contain a list of different arguments that can be changed to use different models
 for the **token classes** and the **token values**.
-
 

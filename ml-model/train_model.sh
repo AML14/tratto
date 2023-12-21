@@ -4,6 +4,7 @@ model_type="codet5+"
 tokenizer_name="Salesforce/codet5p-770m"
 model_name_or_path="Salesforce/codet5p-770m"
 tratto_model_type="oracles"
+transformer_type="decoder"
 task_name="oraclesModel_classifier_decoder"
 max_seq_length=512
 batch_size=16
@@ -23,6 +24,7 @@ if [ "$#" -eq 1 ] && [ "$1" == "--accelerate" ]; then
     --tokenizer_name "$tokenizer_name" \
     --model_name_or_path "$model_name_or_path" \
     --tratto_model_type "$tratto_model_type" \
+    --transformer_type "$transformer_type" \
     --task_name "$task_name" \
     --max_seq_length "$max_seq_length" \
     --batch_size "$batch_size" \
@@ -41,6 +43,7 @@ else
     --tokenizer_name "$tokenizer_name" \
     --model_name_or_path "$model_name_or_path" \
     --tratto_model_type "$tratto_model_type" \
+    --transformer_type "$transformer_type" \
     --task_name "$task_name" \
     --max_seq_length "$max_seq_length" \
     --batch_size "$batch_size" \
