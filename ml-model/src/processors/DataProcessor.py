@@ -487,26 +487,23 @@ class DataProcessor:
         partial_dfs = []
         # Collects partial dataframes from oracles
         for file_name in os.listdir(dataset_path):
-            if not "gs-core" in file_name and not "jgrapht" in file_name and not "plume-lib" in file_name:
-                if utils.is_running_on_gpu():
-                    df = pd.read_csv(os.path.join(dataset_path, file_name))
-                else:
-                    df = pd.read_json(os.path.join(dataset_path, file_name))
-                if tratto_model_type == TrattoModelType.ORACLES:
-                    # Generate labels for oracles model and map column 'id` to `oracleId`
-                    if len(df) > 0:
-                        # The oracles model must return True if the oracle is not empty (there is an oracle to generate), False otherwise
-                        # An empty oracle is an oracle with ";" as value
-                        df["label"] = df["oracle"].apply(lambda o: "False" if o == ";" else "True")
-                        # Map id into oracleId
-                        if "oracleId" not in df.columns:
-                            if "id" in df.columns:
-                                df.rename(columns={'id': 'oracleId'}, inplace=True)
-                            else:
-                                raise Exception("Both columns 'id' and 'oracleId' not found in the dataset.")
-                partial_dfs.append(df)
+            if utils.is_running_on_gpu():
+                df = pd.read_csv(os.path.join(dataset_path, file_name))
             else:
-                print(f"Skipping file {file_name}.")
+                df = pd.read_json(os.path.join(dataset_path, file_name))
+            if tratto_model_type == TrattoModelType.ORACLES:
+                # Generate labels for oracles model and map column 'id` to `oracleId`
+                if len(df) > 0:
+                    # The oracles model must return True if the oracle is not empty (there is an oracle to generate), False otherwise
+                    # An empty oracle is an oracle with ";" as value
+                    df["label"] = df["oracle"].apply(lambda o: "False" if o == ";" else "True")
+                    # Map id into oracleId
+                    if "oracleId" not in df.columns:
+                        if "id" in df.columns:
+                            df.rename(columns={'id': 'oracleId'}, inplace=True)
+                        else:
+                            raise Exception("Both columns 'id' and 'oracleId' not found in the dataset.")
+            partial_dfs.append(df)
         # Concat the partial dataframes into a single dataframe
         df_dataset = pd.concat(partial_dfs)
         # Reset the index of the dataframe
