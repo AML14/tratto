@@ -237,7 +237,7 @@ class OracleTrainer:
                     # Update the total loss
                     total_loss += loss.item()
 
-                if (steps % num_steps) == 0:
+                if (steps % num_steps) == 0 or step == len(self._dl_train):
                     # Compute average statistics for the loss
                     mean_t_loss = total_loss / (num_steps / accumulation_steps)
                     # Compute the f1 score of the model within the accumulation steps
@@ -339,6 +339,7 @@ class OracleTrainer:
                 counter += 1
                 if counter > patience and epoch > 1:
                     print("Early stopping triggered. Training stopped.")
+                    self._save_checkpoint(epoch, step, stats)
                     return stats
         return stats
 
