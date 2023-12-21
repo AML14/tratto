@@ -82,6 +82,15 @@ macOS and Windows systems.
     pip install light-the-torch; ltt install torch torchvision -U
     ```
 
+**Important Note**: After the installation of all the above requirements, check the version of accelerate with the command:
+   ```shell
+     pip show accelerate
+   ```
+If the version is `0.21.0` run the following command to upgrade it to the version `0.25.0`:
+   ```shell
+     pip install accelerate==0.25.0
+   ```
+
 ## 2. Models Checkpoints & Datasets
 
 Execute the following command to download the datasets (and/or the checkpoints of the final trained models).
