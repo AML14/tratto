@@ -9,6 +9,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -38,6 +39,12 @@ public class FileUtilsTest {
     public void getFQNOutputPathTest() {
         assertEquals(Paths.get("output", "evosuite-prefixes", "example", "MyClassTest.java"), FileUtils.getFQNOutputPath("example.MyClass", "evosuite-prefixes"));
         assertEquals(Paths.get("output", "tog-tests", "toga", "MyClassTest.java"), FileUtils.getFQNOutputPath("MyClass", "tog-tests", "toga"));
+    }
+
+    @Test
+    public void swapParentDirectoryTest() {
+        Path simplePath = Paths.get("output", "evosuite-prefixes", "com", "example");
+        assertEquals(Paths.get("output", "evosuite-tests", "com", "example"), FileUtils.swapParentDirectory(simplePath, "evosuite-prefixes", "evosuite-tests"));
     }
 
     @Test
