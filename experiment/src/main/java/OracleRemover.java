@@ -12,7 +12,6 @@ import com.github.javaparser.ast.stmt.TryStmt;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -22,8 +21,6 @@ import java.util.stream.Stream;
  * suite.
  */
 public class OracleRemover {
-    /** The experiment project output path. */
-    private static final Path outputPath = Paths.get("output");
     /** A global unique ID to avoid duplicate test names. */
     private static int testID = 0;
     /** A list of all JUnit Assertions assert methods. */
@@ -288,28 +285,35 @@ public class OracleRemover {
                 }
             });
         } catch (IOException e) {
-            throw new Error("Unable to traverse test directory " + simpleTestDir);
+            throw new Error("Unable to traverse directory " + simpleTestDir);
         }
     }
 
     /**
-     * Removes all assertion and exceptional oracles from a simple test suite.
-     * This method assumes that EvoSuite tests have been generated and saved
-     * in "output/evosuite-simple-tests". This method does not modify the
-     * original simple tests.
+     * Removes all assertions and exceptional oracles from a simple test
+     * suite. This method assumes that
+     * {@link OracleRemover#generateSimpleTests(Path)} has already been
+     * called. This method does not modify the original EvoSuite tests or
+     * simple tests.
      *
-     * @param fullyQualifiedName the fully qualified name of the class under
-     *                           test
+     * @param testDir a directory containing a test suite
      */
-    private static void generatePrefixes(String fullyQualifiedName) {
-        // remove oracles from simple tests
-        Path simpleTestPath = FileUtils.getFQNOutputPath(fullyQualifiedName, "evosuite-simple-tests");
-        CompilationUnit cu = FileUtils.getCompilationUnit(simpleTestPath);
-        removeExceptionalOracles(cu);
-        removeAssertionOracles(cu);
-        // write output to evosuite-prefixes
-        Path prefixPath = FileUtils.getFQNOutputPath(fullyQualifiedName, "evosuite-prefixes");
-        FileUtils.writeString(prefixPath, cu.toString());
+    private static void generatePrefixes(Path testDir) {
+        Path simpleTestDir = FileUtils.swapParentDirectory(testDir, "evosuite-tests", "evosuite-simple-tests");
+        Path prefixDir = FileUtils.swapParentDirectory(testDir, "evosuite-tests", "evosuite-prefixes");
+        FileUtils.copy(simpleTestDir, prefixDir);
+        try (Stream<Path> walk = Files.walk(prefixDir)) {
+            walk.forEach(p -> {
+                if (!Files.isDirectory(p) && !FileUtils.isScaffolding(p)) {
+                    CompilationUnit cu = FileUtils.getCompilationUnit(p);
+                    removeExceptionalOracles(cu);
+                    removeAssertionOracles(cu);
+                    FileUtils.writeString(p, cu.toString());
+                }
+            });
+        } catch (IOException e) {
+            throw new Error("Unable to traverse directory " + prefixDir);
+        }
     }
 
     /**
@@ -324,6 +328,6 @@ public class OracleRemover {
      */
     public static void removeOracles(Path testDir) {
         generateSimpleTests(testDir);
-//        generatePrefixes(testDir);
+        generatePrefixes(testDir);
     }
 }
