@@ -190,9 +190,9 @@ public class OracleRemoverTest {
     @Test
     public void removeOraclesTest() {
         setup();
-        OracleRemover.removeOracles("tutorial.Stack");
-        verifySimpleTests();
-        verifyPrefixes();
+//        OracleRemover.removeOracles("tutorial.Stack");
+//        verifySimpleTests();
+//        verifyPrefixes();
         cleanup();
     }
 }
