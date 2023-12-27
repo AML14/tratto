@@ -1,7 +1,5 @@
 import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.ImportDeclaration;
 import com.github.javaparser.ast.NodeList;
-import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.expr.Expression;
@@ -11,9 +9,12 @@ import com.github.javaparser.ast.stmt.ExpressionStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.stmt.TryStmt;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * This class provides the functionality for removing oracles from a test
@@ -268,135 +269,67 @@ public class OracleRemover {
     }
 
     /**
-     * Removes all import statements from the {@code org.evosuite} package.
-     * This method does not override the original file.
+     * Splits an EvoSuite test with multiple oracles into multiple tests, each
+     * with a single oracle. This method does not modify the original EvoSuite
+     * tests.
      *
-     * @param testFile a JavaParser representation of a test file
+     * @param testDir a directory containing a test suite
      */
-    private static void removeEvosuiteImports(CompilationUnit testFile) {
-        NodeList<ImportDeclaration> nonEvoImports = new NodeList<>();
-        for (ImportDeclaration importDeclaration : testFile.getImports()) {
-            if (!importDeclaration.getNameAsString().startsWith("org.evosuite")) {
-                nonEvoImports.add(importDeclaration);
-            }
+    private static void generateSimpleTests(Path testDir) {
+        Path simpleTestDir = FileUtils.swapParentDirectory(testDir, "evosuite-tests", "evosuite-simple-tests");
+        FileUtils.copy(testDir, simpleTestDir);
+        try (Stream<Path> walk = Files.walk(simpleTestDir)) {
+            walk.forEach(p -> {
+                if (!Files.isDirectory(p) && !FileUtils.isScaffolding(p)) {
+                    CompilationUnit cu = FileUtils.getCompilationUnit(p);
+                    splitTests(cu);
+                    FileUtils.writeString(p, cu.toString());
+                }
+            });
+        } catch (IOException e) {
+            throw new Error("Unable to traverse directory " + simpleTestDir);
         }
-        testFile.setImports(nonEvoImports);
-    }
-
-    /** A list of all assertions from the {@code EvoAssertions} class. */
-    private static final List<String> evosuiteAssertions = List.of(
-            "assertThrownBy",
-            "verifyException"
-    );
-
-    /**
-     * Removes all EvoAssertions method call statements.
-     *
-     * @param testFile a JavaParser representation of a test file
-     */
-    private static void removeEvosuiteAssertions(CompilationUnit testFile) {
-        testFile
-                .findAll(Statement.class)
-                .stream()
-                .filter(Statement::isExpressionStmt)
-                .map(Statement::asExpressionStmt)
-                .forEach(exprStmt -> {
-                    Expression expr = exprStmt.getExpression();
-                    if (expr.isMethodCallExpr()) {
-                        MethodCallExpr methodCallExpr = expr.asMethodCallExpr();
-                        if (evosuiteAssertions.contains(methodCallExpr.getNameAsString())) {
-                            exprStmt.remove();
-                        }
-                    }
-                });
     }
 
     /**
-     * Removes all import statements, annotations, and superclasses related to
-     * EvoSuite. This method does not override the original file.
+     * Removes all assertions and exceptional oracles from a simple test
+     * suite. This method assumes that
+     * {@link OracleRemover#generateSimpleTests(Path)} has already been
+     * called. This method does not modify the original EvoSuite tests or
+     * simple tests.
      *
-     * @param testFile a JavaParser representation of a test file
+     * @param testDir a directory containing a test suite
      */
-    private static void removeEvosuiteDependency(CompilationUnit testFile) {
-        removeEvosuiteAssertions(testFile);
-        removeEvosuiteImports(testFile);
-        ClassOrInterfaceDeclaration testClass = testFile.getPrimaryType()
-                .orElseThrow()
-                .asClassOrInterfaceDeclaration();
-        testClass.setAnnotations(new NodeList<>());
-        testClass.setExtendedTypes(new NodeList<>());
+    private static void generatePrefixes(Path testDir) {
+        Path simpleTestDir = FileUtils.swapParentDirectory(testDir, "evosuite-tests", "evosuite-simple-tests");
+        Path prefixDir = FileUtils.swapParentDirectory(testDir, "evosuite-tests", "evosuite-prefixes");
+        FileUtils.copy(simpleTestDir, prefixDir);
+        try (Stream<Path> walk = Files.walk(prefixDir)) {
+            walk.forEach(p -> {
+                if (!Files.isDirectory(p) && !FileUtils.isScaffolding(p)) {
+                    CompilationUnit cu = FileUtils.getCompilationUnit(p);
+                    removeExceptionalOracles(cu);
+                    removeAssertionOracles(cu);
+                    FileUtils.writeString(p, cu.toString());
+                }
+            });
+        } catch (IOException e) {
+            throw new Error("Unable to traverse directory " + prefixDir);
+        }
     }
 
     /**
-     * Simplifies test generated by EvoSuite. The simplifications include:
-     * <ul>
-     *     <li>If a test has multiple assertions, then it is split into
-     *     multiple tests, each with a single assertion.</li>
-     *     <li>All dependencies related to {@code org.evosuite} are
-     *     removed.</li>
-     *     <li>Test file is renamed to "[simpleName]Test.java" (also renames
-     *     the primary type).</li>
-     *     <li>Removes EvoSuite scaffolding file.</li>
-     * </ul>
-     * This method assumes that EvoSuite tests have been generated and saved
-     * in "output/evosuite-tests". This method does not modify the original
-     * EvoSuite tests.
+     * Removes all oracles from all EvoSuite tests in a given directory. The
+     * approach for removing oracles depends on whether an oracle is
+     * exceptional or a normal assertion. Firstly, this method splits any test
+     * case with multiple oracles into multiple "simple" tests, each with a
+     * single oracle. Then, the oracles are removed from the simple tests to
+     * generate prefixes. This method does NOT modify the original test files.
      *
-     * @param fullyQualifiedName the fully qualified name of the class under
-     *                           test
+     * @param testDir a directory containing a test suite
      */
-    private static void generateSimpleTests(String fullyQualifiedName) {
-        String simpleName = FileUtils.getSimpleNameFromFQN(fullyQualifiedName);
-        Path testPath = FileUtils.getFQNOutputPath(fullyQualifiedName, "evosuite-tests")
-                .resolveSibling(simpleName + "_ESTest.java");
-        CompilationUnit cu = FileUtils.getCompilationUnit(testPath);
-        splitTests(cu);
-        removeEvosuiteDependency(cu);
-        cu.getPrimaryType().orElseThrow()
-                .setName(simpleName + "Test");
-        Path simpleTestPath = FileUtils.getFQNOutputPath(fullyQualifiedName, "evosuite-simple-tests");
-        FileUtils.writeString(simpleTestPath, cu.toString());
-    }
-
-    /**
-     * Removes all assertion and exceptional oracles from a simple test suite.
-     * This method assumes that EvoSuite tests have been generated and saved
-     * in "output/evosuite-simple-tests". This method does not modify the
-     * original simple tests.
-     *
-     * @param fullyQualifiedName the fully qualified name of the class under
-     *                           test
-     */
-    private static void generatePrefixes(String fullyQualifiedName) {
-        // remove oracles from simple tests
-        Path simpleTestPath = FileUtils.getFQNOutputPath(fullyQualifiedName, "evosuite-simple-tests");
-        CompilationUnit cu = FileUtils.getCompilationUnit(simpleTestPath);
-        removeExceptionalOracles(cu);
-        removeAssertionOracles(cu);
-        // write output to evosuite-prefixes
-        Path prefixPath = FileUtils.getFQNOutputPath(fullyQualifiedName, "evosuite-prefixes");
-        FileUtils.writeString(prefixPath, cu.toString());
-    }
-
-    /**
-     * Removes all oracles from all EvoSuite tests generated for a given
-     * class. The approach for removing oracles depends on whether an oracle
-     * is exceptional or a normal assertion. Firstly, this method splits any
-     * test case with multiple assertions into multiple simple tests, each
-     * with a single JUnit assertion. Additionally, the simple tests remove
-     * the scaffolding generated by EvoSuite. The smaller subtests are saved
-     * in "output/evosuite-simple-tests" and the test prefixes are saved in
-     * "output/evosuite-prefixes". This method assumes that EvoSuite tests
-     * have been generated and saved in "output/evosuite-tests". This method
-     * does not modify the original EvoSuite test files.
-     *
-     * @param fullyQualifiedName the fully qualified name of the class under
-     *                           test
-     * @see OracleRemover#generateSimpleTests(String)
-     * @see OracleRemover#generatePrefixes(String)
-     */
-    public static void removeOracles(String fullyQualifiedName) {
-        generateSimpleTests(fullyQualifiedName);
-        generatePrefixes(fullyQualifiedName);
+    public static void removeOracles(Path testDir) {
+        generateSimpleTests(testDir);
+        generatePrefixes(testDir);
     }
 }
