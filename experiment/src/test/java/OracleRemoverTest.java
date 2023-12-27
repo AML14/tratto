@@ -15,13 +15,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class OracleRemoverTest {
     /** The path to the output directory. */
     private static final Path output = Paths.get("output");
+    /** The path to the EvoSuite tests in the output directory. */
+    private static final Path testDir = Paths.get("output", "evosuite-tests");
 
     private void setup() {
         FileUtils.deleteDirectory(output);
         FileUtils.createDirectories(Paths.get("output", "evosuite-tests", "tutorial"));
         FileUtils.copy(
                 Paths.get("src", "test", "resources", "test"),
-                Paths.get("output", "evosuite-tests")
+                testDir
         );
     }
 
@@ -30,7 +32,7 @@ public class OracleRemoverTest {
     }
 
     private void verifySimpleTests() {
-        Path simplePath = FileUtils.getFQNOutputPath("tutorial.Stack", "evosuite-simple-tests");
+        Path simplePath = Paths.get("output", "evosuite-simple-tests", "tutorial", "Stack_ESTest.java");
         CompilationUnit cu;
         try {
             cu = StaticJavaParser.parse(simplePath);
@@ -84,6 +86,8 @@ public class OracleRemoverTest {
                             } catch (IllegalArgumentException e) {
                                 //
                                 // The given object is null!
+                                //
+                                verifyException("tutorial.Stack", e);
                             }
                         }""",
                 simpleTests.get(3).toString()
@@ -110,6 +114,8 @@ public class OracleRemoverTest {
                             } catch (RuntimeException e) {
                                 //
                                 // Stack exceeded capacity!
+                                //
+                                verifyException("tutorial.Stack", e);
                             }
                         }""",
                 simpleTests.get(4).toString()
@@ -117,12 +123,12 @@ public class OracleRemoverTest {
     }
 
     private void verifyPrefixes() {
-        Path simplePath = FileUtils.getFQNOutputPath("tutorial.Stack", "evosuite-prefixes");
+        Path prefixPath = Paths.get("output", "evosuite-prefixes", "tutorial", "Stack_ESTest.java");
         CompilationUnit cu;
         try {
-            cu = StaticJavaParser.parse(simplePath);
+            cu = StaticJavaParser.parse(prefixPath);
         } catch (IOException e) {
-            throw new IllegalArgumentException("Unable to parse simple test " + simplePath);
+            throw new IllegalArgumentException("Unable to parse prefix " + prefixPath);
         }
         List<MethodDeclaration> simpleTests = cu.findAll(MethodDeclaration.class);
         assertEquals(5, simpleTests.size());
@@ -190,9 +196,9 @@ public class OracleRemoverTest {
     @Test
     public void removeOraclesTest() {
         setup();
-//        OracleRemover.removeOracles("tutorial.Stack");
-//        verifySimpleTests();
-//        verifyPrefixes();
+        OracleRemover.removeOracles(testDir);
+        verifySimpleTests();
+        verifyPrefixes();
         cleanup();
     }
 }
