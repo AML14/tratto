@@ -36,9 +36,11 @@ import data.TogType;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -1243,8 +1245,16 @@ public class OracleInserter {
      * @param classpath the classpath of a project under analysis.
      */
     private static void setClassLoader(String classpath) {
-        URL[] classpathURLs = ((URLClassLoader) Thread.currentThread().getContextClassLoader()).getURLs();
-        classLoader = new URLClassLoader(classpathURLs);
+        String[] paths = classpath.split(":");
+        URL[] pathURLs = new URL[paths.length];
+        for (int i = 0; i < paths.length; i++) {
+            try {
+                pathURLs[i] = Paths.get(paths[i]).toUri().toURL();
+            } catch (MalformedURLException e) {
+                throw new Error("Unable to get URL from path " + paths[i]);
+            }
+        }
+        classLoader = new URLClassLoader(pathURLs);
     }
 
     /** A pattern used to find the "[tog]-oracles" segment of a path. */
@@ -1298,6 +1308,8 @@ public class OracleInserter {
             String classpath
     ) {
         setClassLoader(classpath);
+        TogType tog = getTogFromOraclePath(pathToOracles);
+        Path pathToTests = FileUtils.swapParentDirectory(pathToPrefixes, tog + "-oracles", tog + "-tests");
 
 
 //        Path prefixPath = FileUtils.getFQNOutputPath(fullyQualifiedName, "evosuite-prefixes");
