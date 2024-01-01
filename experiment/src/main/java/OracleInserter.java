@@ -34,11 +34,13 @@ import data.OracleOutput;
 import data.OracleType;
 import data.TogType;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -1257,6 +1259,27 @@ public class OracleInserter {
         classLoader = new URLClassLoader(pathURLs);
     }
 
+    /**
+     * Recursively gets all OracleOutputs from all JSON files in a given
+     * directory and its subdirectories.
+     *
+     * @param pathToOracles a directory containing OracleOutput JSON files
+     * @return the corresponding OracleOutput objects
+     */
+    private static List<OracleOutput> getOracleOutputs(Path pathToOracles) {
+        List<OracleOutput> oracleOutputs = new ArrayList<>();
+        try (Stream<Path> walk = Files.walk(pathToOracles)) {
+            walk.forEach(p -> {
+                if (p.endsWith("_Oracle.json")) {
+                    oracleOutputs.addAll(FileUtils.readJSONList(p, OracleOutput.class));
+                }
+            });
+        } catch (IOException e) {
+            throw new Error("Unable to traverse directory " + pathToOracles);
+        }
+        return oracleOutputs;
+    }
+
     /** A pattern used to find the "[tog]-oracles" segment of a path. */
     private static final Pattern oracleTogPattern = Pattern.compile("\\b[a-zA-Z]+-oracles\\b");
 
@@ -1308,20 +1331,24 @@ public class OracleInserter {
             String classpath
     ) {
         setClassLoader(classpath);
+        List<OracleOutput> oracleOutputs = getOracleOutputs(pathToOracles);
         TogType tog = getTogFromOraclePath(pathToOracles);
         Path pathToTests = FileUtils.swapParentDirectory(pathToPrefixes, tog + "-oracles", tog + "-tests");
-
-
-//        Path prefixPath = FileUtils.getFQNOutputPath(fullyQualifiedName, "evosuite-prefixes");
-//        Path testPath = FileUtils.getFQNOutputPath(fullyQualifiedName, "tog-tests", tog.toString().toLowerCase());
-//        FileUtils.copyFile(prefixPath, testPath);
-//        // insert oracles
-//        CompilationUnit cu = FileUtils.getCompilationUnit(testPath);
-//        if (tog.isAxiomatic()) {
-//            insertAxiomaticOracles(cu, oracles);
-//        } else {
-//            insertNonAxiomaticOracles(cu, oracles);
-//        }
-//        FileUtils.writeString(testPath, cu.toString());
+        FileUtils.copy(pathToPrefixes, pathToTests);
+        try (Stream<Path> walk = Files.walk(pathToTests)) {
+            walk.forEach(p -> {
+                if (!Files.isDirectory(p) && !FileUtils.isScaffolding(p)) {
+                    CompilationUnit cu = FileUtils.getCompilationUnit(p);
+                    if (tog.isAxiomatic()) {
+                        insertAxiomaticOracles(cu, oracleOutputs);
+                    } else {
+                        insertNonAxiomaticOracles(cu, oracleOutputs);
+                    }
+                    FileUtils.writeString(p, cu.toString());
+                }
+            });
+        } catch (IOException e) {
+            throw new Error("Unable to traverse directory " + pathToTests);
+        }
     }
 }
