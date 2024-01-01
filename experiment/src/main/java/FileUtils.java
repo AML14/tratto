@@ -66,6 +66,52 @@ public class FileUtils {
     }
 
     /**
+     * Checks if a given substring occurs more than once in a given string.
+     *
+     * @param originalString the original string
+     * @param substring the substring to find
+     * @return true if and only if the substring occurs more than once
+     */
+    private static boolean isSubstringRepeated(String originalString, String substring) {
+        int firstIdx = originalString.indexOf(substring);
+        if (firstIdx != -1) {
+            int secondIdx = originalString.indexOf(originalString, firstIdx + 1);
+            return secondIdx != -1;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Changes an arbitrary parent directory of a path to another directory.
+     * The original directory does not have to be the immediate parent and may
+     * occur at any point in the path. This method will throw an error if the
+     * original directory name occurs more than once in the path. This method
+     * does NOT modify the original path.
+     *
+     * @param path a file or directory path
+     * @param originalDir the original parent directory
+     * @param newDir the new parent directory
+     * @return the new path with swapped parent directories
+     * @throws Error if the original directory name does not occur or occurs
+     * more than once in the given path
+     */
+    public static Path swapParentDirectory(Path path, String originalDir, String newDir) {
+        int idx = path.toString().indexOf(originalDir);
+        if (idx != -1) {
+            if (isSubstringRepeated(path.toString(), originalDir)) {
+                throw new Error("Unable to modify path " + path + " with multiple occurrences of parent directory " + originalDir);
+            }
+            String newPath = path.toString().substring(0, idx) +
+                    newDir +
+                    path.toString().substring(idx + originalDir.length());
+            return Paths.get(newPath);
+        } else {
+            throw new Error("Unable to find original parent directory " + originalDir + " in file path " + path);
+        }
+    }
+
+    /**
      * Gets the ClassGetSimpleName from a fully qualified class name. For
      * example:
      *     {@code com.example.MyClass}    -&gt;    {@code MyClass}
