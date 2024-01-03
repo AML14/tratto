@@ -83,18 +83,18 @@ public class JavaParserUtils {
     private static JavaParser javaParser = getJavaParser();
     private static final Parser oracleParser = Parser.getInstance();
     // artificial source code used to parse arbitrary source code expressions using JavaParser
-    /** Artificial class name */
+    /** Artificial class name. */
     private static final String SYNTHETIC_CLASS_NAME = "Tratto__AuxiliaryClass";
-    /** Artificial class source code */
+    /** Artificial class source code. */
     private static final String SYNTHETIC_CLASS_SOURCE = "public class " + SYNTHETIC_CLASS_NAME + " {}";
-    /** Artificial method name */
+    /** Artificial method name. */
     private static final String SYNTHETIC_METHOD_NAME = "__tratto__auxiliaryMethod";
     /** Cache ResolvedType of Object to make subsequent accesses free. */
     private static ResolvedType objectType;
-    /** Cache Set&lt;MethodUsage&gt; of Object methods to make subsequent accesses free. */
+    /** Cache of Object methods to make subsequent accesses free. */
     private static Set<MethodUsage> objectMethods;
 
-    /** Private constructor to avoid creating an instance of this class. */
+    /** Do not instantiate this class. */
     private JavaParserUtils() {
         throw new UnsupportedOperationException("This class cannot be instantiated.");
     }
@@ -1000,7 +1000,7 @@ public class JavaParserUtils {
      * Gets all formal parameters in the method definition. This method
      * returns the type of each parameter, followed by an artificial name. For
      * example,
-     *     "MethodUsage[get(int i)]"    -&gt;    "List.of("int arg1")"
+     *     "MethodUsage[get(int i)]"    &rarr;    "List.of("int arg1")"
      */
     private static List<String> getParameters(MethodUsage methodUsage) {
         ResolvedMethodDeclaration methodDeclaration = methodUsage.getDeclaration();
@@ -1370,7 +1370,10 @@ public class JavaParserUtils {
                     .getResult().get().getJavadoc().get().getBlockTags().get(0);
             oldJavadocBlockTags.set(oldJavadocBlockTags.indexOf(oldJavadocBlockTag), newJavadocBlockTag);
         }
-        if (!javadoc.toText().contains(newJavadocTag) || (javadoc.toText().contains(oldJavadocTag) && !newJavadocTag.contains(oldJavadocTag))) {
+        if (!javadoc.toText().contains(newJavadocTag) ||
+                (javadoc.toText().contains(oldJavadocTag) && !newJavadocTag.contains(oldJavadocTag) && methodJavadoc.split(oldJavadocTag).length == 2)) {
+            // After ||: If the new Javadoc still contains the old tag, it might be because the new tag actually contains
+            // the old tag (is a substring) or because there's another tag whose param name contains the old param name
             throw new IllegalStateException("The Javadoc tag could not be correctly updated.");
         }
 

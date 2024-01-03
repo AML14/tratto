@@ -10,10 +10,8 @@ import com.github.javaparser.ast.stmt.IfStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import org.junit.jupiter.api.Test;
 import star.tratto.data.OracleDatapoint;
-import star.tratto.data.OracleType;
 import star.tratto.data.JPClassNotFoundException;
 import star.tratto.data.records.AttributeTokens;
-import star.tratto.data.records.JavadocTagTokens;
 import star.tratto.data.records.ValueTokens;
 import star.tratto.data.records.MethodArgumentTokens;
 import star.tratto.data.records.MethodTokens;
@@ -76,7 +74,7 @@ public class DatasetUtilsTest {
     public void removeDuplicatesTest() {
         List<String> original = List.of("first", "second", "first", "first", "third", "third");
         List<String> expected = List.of("first", "second", "third");
-        assertEquals(expected, removeDuplicates(original));
+        assertEquals(expected, withoutDuplicates(original));
     }
 
     @Test
@@ -109,7 +107,7 @@ public class DatasetUtilsTest {
         assertNotNull(jpCallable);
         String javadoc = getCallableJavadoc(jpCallable).trim();
         List<ValueTokens> expected = oracleDatapoint.getTokensMethodJavadocValues();
-        List<ValueTokens> actual = getJavadocValues(javadoc);
+        List<ValueTokens> actual = getJavadocLiterals(javadoc);
         assertEquals(expected, actual);
     }
 
@@ -122,15 +120,8 @@ public class DatasetUtilsTest {
         CallableDeclaration<?> jpCallable = getCallableDeclaration(jpClass, methodName, methodArgs);
         assertNotNull(jpCallable);
         List<MethodArgumentTokens> expected = oracleDatapoint.getTokensMethodArguments();
-        List<MethodArgumentTokens> actual = getTokensMethodArguments(jpClass, jpCallable);
+        List<MethodArgumentTokens> actual = getMethodArgumentTokens(jpClass, jpCallable);
         assertEquals(expected, actual);
-    }
-
-    @Test
-    public void reconstructTagTest() {
-        assertEquals("@throws IllegalArgumentException if username is null", DatasetUtils.reconstructTag(new JavadocTagTokens("", null, null, OracleType.EXCEPT_POST, "IllegalArgumentException", "if username is null")));
-        assertEquals("@return the number of users", DatasetUtils.reconstructTag(new JavadocTagTokens("", null, null, OracleType.NORMAL_POST, "", "the number of users")));
-        assertEquals("@param password the user's security key", DatasetUtils.reconstructTag(new JavadocTagTokens("", null, null, OracleType.PRE, "password", "the user's security key")));
     }
 
     @Test

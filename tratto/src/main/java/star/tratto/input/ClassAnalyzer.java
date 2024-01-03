@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleType;
+import star.tratto.data.oracles.FeatureLevel;
 import star.tratto.data.oracles.OracleDatapointBuilder;
 import star.tratto.data.JPClassNotFoundException;
 import star.tratto.util.javaparser.DatasetUtils;
@@ -83,7 +84,7 @@ public class ClassAnalyzer {
         oracleDPBuilder.setTokensProjectClasses(DatasetUtils.getProjectClassTokens(projectPathPath));
         oracleDPBuilder.setTokensProjectClassesNonPrivateStaticNonVoidMethods(DatasetUtils.getProjectNonPrivateStaticNonVoidMethodsTokens(projectPathPath));
         oracleDPBuilder.setTokensProjectClassesNonPrivateStaticAttributes(DatasetUtils.getProjectNonPrivateStaticAttributesTokens(projectPathPath));
-        oracleDPBuilder.reset("project", true);
+        oracleDPBuilder.reset(FeatureLevel.PROJECT, true);
     }
 
     private void updateOracleDPBuilderWithNewClassFeatures() {
@@ -91,22 +92,22 @@ public class ClassAnalyzer {
         oracleDPBuilder.setClassSourceCode(classSourceCode);
         oracleDPBuilder.setClassJavadoc(DatasetUtils.getClassJavadoc(classTd));
         oracleDPBuilder.setPackageName(DatasetUtils.getClassPackage(classCu));
-        oracleDPBuilder.reset("class", true);
+        oracleDPBuilder.reset(FeatureLevel.CLASS, true);
     }
 
     private void updateOracleDPBuilderWithNewMethodFeatures(CallableDeclaration<?> methodOrConstructor) {
         String methodJavadoc = DatasetUtils.getCallableJavadoc(methodOrConstructor);
         oracleDPBuilder.setMethodSourceCode(DatasetUtils.getCallableSourceCode(methodOrConstructor));
         oracleDPBuilder.setMethodJavadoc(methodJavadoc);
-        oracleDPBuilder.setTokensMethodJavadocValues(DatasetUtils.getJavadocValues(methodJavadoc));
-        oracleDPBuilder.setTokensMethodArguments(DatasetUtils.getTokensMethodArguments(classTd, methodOrConstructor));
+        oracleDPBuilder.setTokensMethodJavadocValues(DatasetUtils.getJavadocLiterals(methodJavadoc));
+        oracleDPBuilder.setTokensMethodArguments(DatasetUtils.getMethodArgumentTokens(classTd, methodOrConstructor));
         try {
             oracleDPBuilder.setTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(DatasetUtils.getTokensMethodVariablesNonPrivateNonStaticNonVoidMethods(classTd, methodOrConstructor));
             oracleDPBuilder.setTokensMethodVariablesNonPrivateNonStaticAttributes(DatasetUtils.getTokensMethodVariablesNonPrivateNonStaticAttributes(classTd, methodOrConstructor));
         } catch (JPClassNotFoundException e) {
             logger.warn("Class {} not found while trying to get variable tokens from method {}", className, methodOrConstructor.getNameAsString());
         }
-        oracleDPBuilder.reset("method", true);
+        oracleDPBuilder.reset(FeatureLevel.METHOD, true);
     }
 
     /**
@@ -214,7 +215,7 @@ public class ClassAnalyzer {
     private void addOracleToList(List<OracleDatapoint> oracleDatapoints, OracleType oracleType, String javadocTag) {
         oracleDPBuilder.setOracleType(oracleType);
         oracleDPBuilder.setJavadocTag(javadocTag);
-        oracleDatapoints.add(oracleDPBuilder.build("method", true));
+        oracleDatapoints.add(oracleDPBuilder.build(FeatureLevel.METHOD, true));
     }
 
     /** For testing purposes */

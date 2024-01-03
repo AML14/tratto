@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.*;
 import static star.tratto.util.FileUtils.readString;
 import static star.tratto.util.StringUtils.getClassNameFromPath;
-import static star.tratto.util.javaparser.DatasetUtils.getValidJavaFiles;
+import static star.tratto.util.javaparser.DatasetUtils.getJavaFiles;
 import static star.tratto.util.javaparser.JavaParserUtils.getClassOrInterface;
 
 public class ClassAnalyzerTest {
@@ -304,7 +304,7 @@ public class ClassAnalyzerTest {
             logger.info("------------------------------------------------------------");
 
             JavaParserUtils.updateSymbolSolver(projectPathAndJar.getValue2());
-            List<Path> javaFiles = getValidJavaFiles(Path.of(projectPathAndJar.getValue1())).stream().filter(jf -> {
+            List<Path> javaFiles = getJavaFiles(Path.of(projectPathAndJar.getValue1())).stream().filter(jf -> {
                     String jfPath = jf.toString();
                     return
                             !jfPath.contains("/test/") &&
