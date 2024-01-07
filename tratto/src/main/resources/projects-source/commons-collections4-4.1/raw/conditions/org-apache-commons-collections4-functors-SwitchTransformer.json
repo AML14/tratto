@@ -1,0 +1,132 @@
+[
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.functors.SwitchTransformer",
+      "name": "org.apache.commons.collections4.functors.SwitchTransformer",
+      "parameterTypes": [
+        "[Lorg.apache.commons.collections4.Predicate;",
+        "[Lorg.apache.commons.collections4.Transformer;",
+        "org.apache.commons.collections4.Transformer"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "predicates",
+        "transformers",
+        "defaultTransformer"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param defaultTransformer the transformer to use if no match. defaultTransformer is null means return null.",
+        "guard": {
+          "condition": "defaultTransformer==null",
+          "description": "the transformer to use if no match. defaultTransformer is null means return null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.functors.SwitchTransformer",
+      "name": "switchTransformer",
+      "parameterTypes": [
+        "[Lorg.apache.commons.collections4.Predicate;",
+        "[Lorg.apache.commons.collections4.Transformer;",
+        "org.apache.commons.collections4.Transformer"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "predicates",
+        "transformers",
+        "defaultTransformer"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException array is null.",
+        "guard": {
+          "condition": "predicates==null",
+          "description": "array is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param defaultTransformer the transformer to use if no match. defaultTransformer is null means return null.",
+        "guard": {
+          "condition": "defaultTransformer==null",
+          "description": "the transformer to use if no match. defaultTransformer is null means return null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.functors.SwitchTransformer",
+      "name": "switchTransformer",
+      "parameterTypes": [
+        "java.util.Map"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "map"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the map is null.",
+        "guard": {
+          "condition": "map==null",
+          "description": "the map is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.functors.SwitchTransformer",
+      "name": "transform",
+      "parameterTypes": [
+        "java.lang.Object"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "input"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID.equals(receiverObjectID)",
+          "description": "the transformed result."
+        },
+        "description": "the transformed result.",
+        "guard": {
+          "condition": "true",
+          "description": "the transformed result."
+        }
+      }
+    ],
+    "pre": []
+  }
+]

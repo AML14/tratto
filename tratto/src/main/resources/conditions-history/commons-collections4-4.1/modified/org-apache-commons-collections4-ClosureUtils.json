@@ -308,6 +308,22 @@
           "condition": "predicates==null || closures==null",
           "description": "the either array is null."
         }
+      },
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException if any element in the arrays is null.",
+        "guard": {
+          "condition": "Arrays.stream(predicates).anyMatch(jdVar -> jdVar==null) || Arrays.stream(closures).anyMatch(jdVar -> jdVar==null)",
+          "description": "if any element in the arrays is null."
+        }
+      },
+      {
+        "exception": "java.lang.IllegalArgumentException",
+        "description": "@throws java.lang.IllegalArgumentException if the arrays have different sizes.",
+        "guard": {
+          "condition": "predicates.length != closures.length",
+          "description": "if the arrays have different sizes."
+        }
       }
     ],
     "post": [],
@@ -355,6 +371,22 @@
           "condition": "predicates==null || closures==null",
           "description": "the either array is null."
         }
+      },
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException if any element in the arrays is null.",
+        "guard": {
+          "condition": "Arrays.stream(predicates).anyMatch(jdVar -> jdVar==null) || Arrays.stream(closures).anyMatch(jdVar -> jdVar==null)",
+          "description": "if any element in the arrays is null."
+        }
+      },
+      {
+        "exception": "java.lang.IllegalArgumentException",
+        "description": "@throws java.lang.IllegalArgumentException if the arrays have different sizes.",
+        "guard": {
+          "condition": "predicates.length != closures.length",
+          "description": "if the arrays have different sizes."
+        }
       }
     ],
     "post": [],
@@ -400,6 +432,14 @@
         }
       },
       {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException if any closure in the map is null.",
+        "guard": {
+          "condition": "predicatesAndClosures.containsValue(null)",
+          "description": "if any closure in the map is null."
+        }
+      },
+      {
         "exception": "java.lang.IllegalArgumentException",
         "description": "@throws java.lang.IllegalArgumentException the map is empty.",
         "guard": {
@@ -433,6 +473,14 @@
         "guard": {
           "condition": "objectsAndClosures==null",
           "description": "the map is null."
+        }
+      },
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException if any closure in the map is null.",
+        "guard": {
+          "condition": "objectsAndClosures.containsValue(null)",
+          "description": "if any closure in the map is null."
         }
       },
       {

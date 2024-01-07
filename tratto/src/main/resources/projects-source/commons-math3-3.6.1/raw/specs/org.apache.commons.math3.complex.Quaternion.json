@@ -1,0 +1,74 @@
+[
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.complex.Quaternion",
+      "name": "org.apache.commons.math3.complex.Quaternion",
+      "parameterTypes": [
+        "double",
+        "[D"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "scalar",
+        "v"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.DimensionMismatchException",
+        "description": "@throws org.apache.commons.math3.exception.DimensionMismatchException the array length is not 3.",
+        "guard": {
+          "condition": "v!=null && v.length==3",
+          "description": "the array length is not 3."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.complex.Quaternion",
+      "name": "isUnitQuaternion",
+      "parameterTypes": [
+        "double"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "eps"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID == true",
+          "description": "true if the norm is 1 within the given tolerance, false otherwise."
+        },
+        "description": "true if the norm is 1 within the given tolerance, false otherwise.",
+        "guard": {
+          "condition": "receiverObjectID.getNorm()==1",
+          "description": "true if the norm is 1 within the given tolerance, false otherwise."
+        }
+      },
+      {
+        "property": {
+          "condition": "methodResultID == false",
+          "description": "true if the norm is 1 within the given tolerance, false otherwise."
+        },
+        "description": "true if the norm is 1 within the given tolerance, false otherwise.",
+        "guard": {
+          "condition": "(receiverObjectID.getNorm()==1)==false",
+          "description": "true if the norm is 1 within the given tolerance, false otherwise."
+        }
+      }
+    ],
+    "pre": []
+  }
+]

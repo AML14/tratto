@@ -25,7 +25,7 @@ public class TokenDatapoint {
     private String tokenClass;
     private List<String> tokenInfo;
 
-    public TokenDatapoint(Long id, Boolean label, OracleDatapoint oracleDatapoint, String oracleSoFar, String token, String tokenClass, List<String> tokenInfo) {
+    public TokenDatapoint(Long id, Boolean label, OracleDatapoint oracleDatapoint, String oracleSoFar, List<String> tokenClassesSoFar, String token, String tokenClass, List<String> tokenInfo) {
         this.id = id;
         this.label = label;
         this.oracleId = oracleDatapoint.getId();
@@ -39,7 +39,7 @@ public class TokenDatapoint {
         this.classJavadoc = oracleDatapoint.getClassJavadoc();
         this.classSourceCode = oracleDatapoint.getClassSourceCode();
         this.oracleSoFar = oracleSoFar;
-        this.tokenClassesSoFar = null;
+        this.tokenClassesSoFar = tokenClassesSoFar;
         this.token = token;
         this.tokenClass = tokenClass;
         this.tokenInfo = tokenInfo;

@@ -1,6 +1,10 @@
 package star.tratto.util.javaparser;
 
 import com.github.javaparser.JavaParser;
+import com.github.javaparser.ParserConfiguration;
+import com.github.javaparser.ParseResult;
+import com.github.javaparser.ast.body.AnnotationDeclaration;
+import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
 import com.github.javaparser.ParseResult;
 import com.github.javaparser.ast.AccessSpecifier;
 import com.github.javaparser.ast.CompilationUnit;
@@ -20,7 +24,10 @@ import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.type.ReferenceType;
 import com.github.javaparser.ast.type.TypeParameter;
+import com.github.javaparser.javadoc.Javadoc;
+import com.github.javaparser.javadoc.JavadocBlockTag;
 import com.github.javaparser.resolution.MethodUsage;
+import com.github.javaparser.resolution.TypeSolver;
 import com.github.javaparser.resolution.UnsolvedSymbolException;
 import com.github.javaparser.resolution.declarations.ResolvedFieldDeclaration;
 import com.github.javaparser.resolution.declarations.ResolvedMethodDeclaration;
@@ -28,23 +35,29 @@ import com.github.javaparser.resolution.declarations.ResolvedReferenceTypeDeclar
 import com.github.javaparser.resolution.declarations.ResolvedTypeParameterDeclaration;
 import com.github.javaparser.resolution.types.ResolvedType;
 import com.github.javaparser.resolution.types.ResolvedWildcard;
+import com.github.javaparser.symbolsolver.JavaSymbolSolver;
+import com.github.javaparser.resolution.types.ResolvedWildcard;
 import com.github.javaparser.symbolsolver.javaparsermodel.declarations.JavaParserMethodDeclaration;
+import com.github.javaparser.symbolsolver.resolution.typesolvers.ClassLoaderTypeSolver;
+import com.github.javaparser.symbolsolver.resolution.typesolvers.CombinedTypeSolver;
+import com.github.javaparser.symbolsolver.resolution.typesolvers.ReflectionTypeSolver;
 import com.github.javaparser.symbolsolver.javassistmodel.JavassistMethodDeclaration;
 import com.github.javaparser.symbolsolver.reflectionmodel.ReflectionMethodDeclaration;
 import com.github.javaparser.symbolsolver.utils.SymbolSolverCollectionStrategy;
 import org.javatuples.Pair;
-import org.javatuples.Triplet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import star.tratto.data.OracleDatapoint;
 import star.tratto.data.JPClassNotFoundException;
 import star.tratto.data.PackageDeclarationNotFoundException;
 import star.tratto.data.ResolvedTypeNotFound;
+import star.tratto.data.records.MethodArgumentTokens;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.util.JavaTypes;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.lang.reflect.Field;
 import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.List;
@@ -66,34 +79,92 @@ import static star.tratto.util.StringUtils.fullyQualifiedClassName;
  */
 public class JavaParserUtils {
     private static final Logger logger = LoggerFactory.getLogger(JavaParserUtils.class);
+    private static final String ROOT = "src/main/resources/projects-packaged";
     private static JavaParser javaParser = getJavaParser();
     private static final Parser oracleParser = Parser.getInstance();
     // artificial source code used to parse arbitrary source code expressions using JavaParser
-    /** Artificial class name */
+    /** Artificial class name. */
     private static final String SYNTHETIC_CLASS_NAME = "Tratto__AuxiliaryClass";
-    /** Artificial class source code */
+    /** Artificial class source code. */
     private static final String SYNTHETIC_CLASS_SOURCE = "public class " + SYNTHETIC_CLASS_NAME + " {}";
-    /** Artificial method name */
+    /** Artificial method name. */
     private static final String SYNTHETIC_METHOD_NAME = "__tratto__auxiliaryMethod";
     /** Cache ResolvedType of Object to make subsequent accesses free. */
     private static ResolvedType objectType;
-    /** Cache Set<MethodUsage> of Object methods to make subsequent accesses free. */
+    /** Cache of Object methods to make subsequent accesses free. */
     private static Set<MethodUsage> objectMethods;
 
-    /** Private constructor to avoid creating an instance of this class. */
+    /** Do not instantiate this class. */
     private JavaParserUtils() {
         throw new UnsupportedOperationException("This class cannot be instantiated.");
     }
 
     public static JavaParser getJavaParser() {
         if (javaParser == null) {
-            String root = "src/main/resources/projects-packaged";
-            SymbolSolverCollectionStrategy strategy = new SymbolSolverCollectionStrategy();
-            strategy.collect(Paths.get(root));
-            javaParser = new JavaParser();
-            javaParser.getParserConfiguration().setSymbolResolver(strategy.getParserConfiguration().getSymbolResolver().get());
+            ParserConfiguration parserConfiguration = new ParserConfiguration();
+            parserConfiguration.setLanguageLevel(ParserConfiguration.LanguageLevel.JAVA_17);
+            CombinedTypeSolver typeSolver = createCombinedTypeSolver(ROOT);
+            parserConfiguration.setSymbolResolver(new JavaSymbolSolver(typeSolver));
+            javaParser = new JavaParser(parserConfiguration);
         }
         return javaParser;
+    }
+
+    /**
+     * This method is a bit cumbersome, but it is the only way I could think of to properly set up
+     * the SymbolSolver for JavaParser. Given a path which may contain both source code and JAR files,
+     * we need the SymbolSolver to consider all those. This can be done using the
+     * {@link SymbolSolverCollectionStrategy}, which creates a {@link CombinedTypeSolver} composed of
+     * multiple {@link TypeSolver}s plus one {@link ReflectionTypeSolver}. The latter is needed to
+     * resolve the types of the JDK classes. The problem is that the ReflectionTypeSolver, by default,
+     * includes not only JDK classes but also all the classes in the classpath. Since the
+     * javaparser-symbol-solver project includes Guava as a dependency, it collides with the Guava
+     * JAR that we use for generating the datasets (located at src/main/resources/projects-packaged),
+     * which is a lower version.
+     * <br><br>
+     * The alternative is to create a ReflectionTypeSolver with the parameter {@code jreOnly} set to
+     * {@code true}, and include it within the CombinedTypeSolver. To do this, we need to use
+     * reflection to first extract all TypeSolvers generated by the SymbolSolverCollectionStrategy,
+     * modify them, and add them to our custom CombinedTypeSolver. In addition to the ReflectionTypeSolver,
+     * we also need to add a {@link ClassLoaderTypeSolver} that resolves additional classes from the
+     * jdk.* packages.
+     */
+    private static CombinedTypeSolver createCombinedTypeSolver(String root) {
+        CombinedTypeSolver combinedTypeSolver = new CombinedTypeSolver();
+        combinedTypeSolver.add(new ReflectionTypeSolver(true));
+        combinedTypeSolver.add(new ClassLoaderTypeSolver(ClassLoader.getPlatformClassLoader()));
+        SymbolSolverCollectionStrategy strategy = new SymbolSolverCollectionStrategy();
+        strategy.collect(Paths.get(root));
+        try {
+            Field typeSolverField = strategy.getClass().getDeclaredField("typeSolver");
+            typeSolverField.setAccessible(true);
+            CombinedTypeSolver strategyTypeSolver = (CombinedTypeSolver) typeSolverField.get(strategy);
+            Field elementsField = strategyTypeSolver.getClass().getDeclaredField("elements");
+            elementsField.setAccessible(true);
+            List<TypeSolver> strategyTypeSolvers = (List<TypeSolver>) elementsField.get(strategyTypeSolver);
+            strategyTypeSolvers.stream().filter(ts -> !(ts instanceof ReflectionTypeSolver)).forEach(ts -> {
+                try {
+                    Field parentField = ts.getClass().getDeclaredField("parent");
+                    parentField.setAccessible(true);
+                    parentField.set(ts, null);
+                    parentField.setAccessible(false);
+                } catch (NoSuchFieldException | IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+                combinedTypeSolver.add(ts);
+            });
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+        return combinedTypeSolver;
+    }
+
+    public static void updateSymbolSolver(String root) {
+        javaParser.getParserConfiguration().setSymbolResolver(new JavaSymbolSolver(createCombinedTypeSolver(root)));
+    }
+
+    public static void resetSymbolSolver() {
+        javaParser.getParserConfiguration().setSymbolResolver(new JavaSymbolSolver(createCombinedTypeSolver(ROOT)));
     }
 
     /**
@@ -174,8 +245,7 @@ public class JavaParserUtils {
     private static void addNewMethodWithExpression(
             TypeDeclaration<?> jpClass,
             CallableDeclaration<?> originalMethod,
-            // NOTE: This is MethodArgumentTokens in the next pull request where records are integrated.
-            List<Triplet<String, String, String>> methodArgs,
+            List<MethodArgumentTokens> methodArgs,
             String expression
     ) throws ResolvedTypeNotFound {
         // throw error when given a constructor due to JavaParser behavior differences
@@ -185,8 +255,8 @@ public class JavaParserUtils {
         // create synthetic method
         BlockStmt methodBody = createNewMethodBody(jpClass);
         // add method arguments as variable statements in method body (e.g. "ArgType argName;")
-        for (Triplet<String, String, String> methodArg : methodArgs) {
-            methodBody.addStatement(methodArg.getValue2() + " " + methodArg.getValue0() + ";");
+        for (MethodArgumentTokens methodArg : methodArgs) {
+            methodBody.addStatement(methodArg.typeName() + " " + methodArg.argumentName() + ";");
         }
         // add return type (if non-void)
         addMethodResultIDStatementToMethod(
@@ -195,7 +265,7 @@ public class JavaParserUtils {
                 originalMethod.getNameAsString(),
                 methodArgs
                         .stream()
-                        .map(Triplet::getValue0)
+                        .map(MethodArgumentTokens::argumentName)
                         .toList()
         );
         // add expression
@@ -220,7 +290,7 @@ public class JavaParserUtils {
     public static ResolvedType getResolvedTypeOfExpression(
             TypeDeclaration<?> jpClass,
             CallableDeclaration<?> jpCallable,
-            List<Triplet<String, String, String>> methodArgs,
+            List<MethodArgumentTokens> methodArgs,
             String expression
     ) throws ResolvedTypeNotFound {
         if (jpClass instanceof ClassOrInterfaceDeclaration) {
@@ -387,8 +457,8 @@ public class JavaParserUtils {
 
     private static void addImports(CompilationUnit cu, String expression, OracleDatapoint oracleDatapoint) {
         oracleDatapoint.getTokensProjectClasses().forEach(projectClass -> {
-            if (containsWord(expression, projectClass.getValue0())) {
-                cu.addImport(fullyQualifiedClassName(projectClass.getValue1(), projectClass.getValue0()));
+            if (containsWord(expression, projectClass.className())) {
+                cu.addImport(fullyQualifiedClassName(projectClass.packageName(), projectClass.className()));
             }
         });
         if (expression.contains("\\bArrays\\.")) {
@@ -442,7 +512,7 @@ public class JavaParserUtils {
      * @return the type name without packages. Includes outer classes, e.g.,
      *     package.Outer.Inner    =>    Outer.Inner
      */
-    private static String getTypeWithoutPackages(String fullyQualifiedName) {
+    public static String getTypeWithoutPackages(String fullyQualifiedName) {
         // regex is used instead of String.lastIndexOf to avoid removing outer classes
         Matcher matcher = PACKAGE_CLASS.matcher(fullyQualifiedName);
         // continuously remove packages until none remain
@@ -508,7 +578,7 @@ public class JavaParserUtils {
     /**
      * @param fqName fully qualified name, e.g., {@code java.util.List}
      */
-    private static ResolvedType getResolvedType(String fqName) throws UnsupportedOperationException {
+    public static ResolvedType getResolvedType(String fqName) throws UnsupportedOperationException {
         CompilationUnit cu = javaParser.parse(SYNTHETIC_CLASS_SOURCE).getResult().get();
         BlockStmt syntheticMethodBody = getClassOrInterface(cu, SYNTHETIC_CLASS_NAME).addMethod(SYNTHETIC_METHOD_NAME).getBody().get();
         syntheticMethodBody.addStatement(fqName + " type1Var;");
@@ -739,8 +809,11 @@ public class JavaParserUtils {
         if (enum0.isPresent()) {
             return enum0.get();
         }
-
-        throw new RuntimeException("Could not find class, interface or enum " + name + " in compilation unit.");
+        Optional<AnnotationDeclaration> annotation = cu.getAnnotationDeclarationByName(name);
+        if (annotation.isPresent()) {
+            return annotation.get();
+        }
+        throw new RuntimeException("Could not find class, interface, enum or annotation '" + name + "' in compilation unit.");
     }
 
     public static TypeDeclaration<?> getClassOrInterface(String classSourceCode, String name) {
@@ -784,7 +857,7 @@ public class JavaParserUtils {
     private static String getFieldDeclarationWithoutModifiers(
             ResolvedFieldDeclaration resolvedField
     ) {
-        return 
+        return
                 getTypeWithoutPackages(resolvedField.getType()) + " " +
                 resolvedField.getName() +
                 ";";
@@ -908,10 +981,8 @@ public class JavaParserUtils {
             // Remove comments within method signature
             method = method.replace(comment.toString(), "");
         }
-        if (methodDeclaration.getComment().isPresent()) {
-            // At this point, last line is method signature. Remove everything before that
-            method = method.replaceAll("[\\s\\S]*\n", "");
-        }
+        // Last line is method signature, remove everything before that
+        method = method.replaceAll("[\\s\\S]*\n", "");
         return method.trim().replaceAll(";$", "");
     }
 
@@ -929,7 +1000,7 @@ public class JavaParserUtils {
      * Gets all formal parameters in the method definition. This method
      * returns the type of each parameter, followed by an artificial name. For
      * example,
-     *     "MethodUsage[get(int i)]"    -&gt;    "List.of("int arg1")"
+     *     "MethodUsage[get(int i)]"    &rarr;    "List.of("int arg1")"
      */
     private static List<String> getParameters(MethodUsage methodUsage) {
         ResolvedMethodDeclaration methodDeclaration = methodUsage.getDeclaration();
@@ -1260,5 +1331,52 @@ public class JavaParserUtils {
         } else {
             throw new IllegalArgumentException("Not a constructor or method body:" + System.lineSeparator() + bodyDeclaration);
         }
+    }
+
+    // Variables used in the next method
+    private static final String javadocBeginning = "/**\n * ";
+    private static final String javadocEnding = "\n */";
+    private static final String javadocMethod = "\nvoid someMethod();";
+    private static final String javadocIndent = "    ";
+    /**
+     * Change the Javadoc of a method so that it contains the new Javadoc tag instead
+     * of the old one.
+     * @param methodJavadoc the whole Javadoc of the method
+     * @param oldJavadocTag the Javadoc tag that we want to replace
+     * @param newJavadocTag the new Javadoc tag to replace the old one
+     * @throws IllegalArgumentException if the old Javadoc tag is not present in the method Javadoc
+     * @throws IllegalStateException should never be thrown, if it is, this method is probably buggy
+     * @return the new Javadoc of the method
+     */
+    public static String updateMethodJavadoc(String methodJavadoc, String oldJavadocTag, String newJavadocTag) {
+        if (oldJavadocTag.equals(newJavadocTag)) {
+            return methodJavadoc;
+        }
+
+        // Can't update Javadoc as String, so need to parse, modify and stringify it
+        Javadoc javadoc = javaParser.parseMethodDeclaration(methodJavadoc + javadocMethod).getResult().get().getJavadoc().get();
+        List<JavadocBlockTag> oldJavadocBlockTags = javadoc.getBlockTags();
+        JavadocBlockTag oldJavadocBlockTag = oldJavadocBlockTags.stream()
+                .filter(t -> t.toText().equals(oldJavadocTag))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("The old Javadoc tag is not present in the method Javadoc."));
+
+        if (newJavadocTag.equals("")) {
+            // Remove tag from Javadoc
+            oldJavadocBlockTags.remove(oldJavadocBlockTag);
+        } else {
+            // Replace tag in Javadoc
+            JavadocBlockTag newJavadocBlockTag = javaParser.parseMethodDeclaration(javadocBeginning + newJavadocTag + javadocEnding + javadocMethod)
+                    .getResult().get().getJavadoc().get().getBlockTags().get(0);
+            oldJavadocBlockTags.set(oldJavadocBlockTags.indexOf(oldJavadocBlockTag), newJavadocBlockTag);
+        }
+        if (!javadoc.toText().contains(newJavadocTag) ||
+                (javadoc.toText().contains(oldJavadocTag) && !newJavadocTag.contains(oldJavadocTag) && methodJavadoc.split(oldJavadocTag).length == 2)) {
+            // After ||: If the new Javadoc still contains the old tag, it might be because the new tag actually contains
+            // the old tag (is a substring) or because there's another tag whose param name contains the old param name
+            throw new IllegalStateException("The Javadoc tag could not be correctly updated.");
+        }
+
+        return javadocIndent + javadoc.toComment(javadocIndent).asString();
     }
 }

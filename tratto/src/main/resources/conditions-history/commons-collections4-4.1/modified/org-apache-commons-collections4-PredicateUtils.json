@@ -223,6 +223,14 @@
           "condition": "predicates==null",
           "description": "the predicates collection is null."
         }
+      },
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException if any predicate in the collection is null.",
+        "guard": {
+          "condition": "predicates.contains(null)",
+          "description": "if any predicate in the collection is null."
+        }
       }
     ],
     "post": [],
@@ -347,6 +355,14 @@
         "guard": {
           "condition": "predicates==null",
           "description": "the predicates collection is null."
+        }
+      },
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException if any predicate in the collection is null.",
+        "guard": {
+          "condition": "predicates.contains(null)",
+          "description": "if any predicate in the collection is null."
         }
       }
     ],
@@ -473,6 +489,14 @@
           "condition": "predicates==null",
           "description": "the predicates collection is null."
         }
+      },
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException if any predicate in the collection is null.",
+        "guard": {
+          "condition": "predicates.stream().anyMatch(jdVar->jdVar==null)",
+          "description": "if any predicate in the collection is null."
+        }
       }
     ],
     "post": [],
@@ -598,6 +622,14 @@
           "condition": "predicates==null",
           "description": "the predicates collection is null."
         }
+      },
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException if any predicate in the collection is null.",
+        "guard": {
+          "condition": "predicates.contains(null)",
+          "description": "if any predicate in the collection is null."
+        }
       }
     ],
     "post": [],
@@ -639,7 +671,7 @@
     "post": [
       {
         "property": {
-          "condition": "methodResultID.equals(predicate)",
+          "condition": "methodResultID.equals(NotPredicate.notPredicate(predicate))",
           "description": "the not predicate."
         },
         "description": "the not predicate.",
@@ -712,19 +744,7 @@
         }
       }
     ],
-    "post": [
-      {
-        "property": {
-          "condition": "methodResultID.equals(predicate)",
-          "description": "the predicate."
-        },
-        "description": "the predicate.",
-        "guard": {
-          "condition": "true",
-          "description": "the predicate."
-        }
-      }
-    ],
+    "post": [],
     "pre": [
       {
         "description": "@param predicate the predicate to wrap. predicate is not null.",
@@ -763,7 +783,7 @@
     "post": [
       {
         "property": {
-          "condition": "methodResultID.equals(predicate)",
+          "condition": "methodResultID.equals(NullIsFalsePredicate.nullIsFalsePredicate(predicate))",
           "description": "the predicate."
         },
         "description": "the predicate.",
@@ -811,7 +831,7 @@
     "post": [
       {
         "property": {
-          "condition": "methodResultID.equals(predicate)",
+          "condition": "methodResultID.equals(NullIsTruePredicate.nullIsTruePredicate(predicate))",
           "description": "the predicate."
         },
         "description": "the predicate.",
@@ -861,7 +881,7 @@
     "post": [
       {
         "property": {
-          "condition": "methodResultID.equals(predicate)",
+          "condition": "methodResultID.equals(TransformedPredicate.transformedPredicate(transformer, predicate))",
           "description": "the predicate."
         },
         "description": "the predicate.",

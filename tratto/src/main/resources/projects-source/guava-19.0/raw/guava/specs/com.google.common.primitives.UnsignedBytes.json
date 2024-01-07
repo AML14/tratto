@@ -1,0 +1,102 @@
+[
+  {
+    "operation": {
+      "classname": "com.google.common.primitives.UnsignedBytes",
+      "name": "checkedCast",
+      "parameterTypes": [
+        "long"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "value"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.IllegalArgumentException",
+        "description": "@throws java.lang.IllegalArgumentException value is negative or greater than 255.",
+        "guard": {
+          "condition": "value<0 || value>255",
+          "description": "value is negative or greater than 255."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "com.google.common.primitives.UnsignedBytes",
+      "name": "min",
+      "parameterTypes": [
+        "[B"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "array"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.IllegalArgumentException",
+        "description": "@throws java.lang.IllegalArgumentException array is empty.",
+        "guard": {
+          "condition": "array!=null && array.length==0",
+          "description": "array is empty."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param array array is not empty. not empty array of byte values.",
+        "guard": {
+          "condition": "array!=null && (array.length==0) == false",
+          "description": "array is not empty. not empty array of byte values."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "com.google.common.primitives.UnsignedBytes",
+      "name": "max",
+      "parameterTypes": [
+        "[B"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "array"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.IllegalArgumentException",
+        "description": "@throws java.lang.IllegalArgumentException array is empty.",
+        "guard": {
+          "condition": "array!=null && array.length==0",
+          "description": "array is empty."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param array array is not empty. not empty array of byte values.",
+        "guard": {
+          "condition": "array!=null && (array.length==0) == false",
+          "description": "array is not empty. not empty array of byte values."
+        }
+      }
+    ]
+  }
+]

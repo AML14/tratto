@@ -32,37 +32,6 @@
   {
     "operation": {
       "classname": "com.google.common.base.CharMatcher",
-      "name": "matchesNoneOf",
-      "parameterTypes": [
-        "java.lang.CharSequence"
-      ]
-    },
-    "identifiers": {
-      "parameters": [
-        "sequence"
-      ],
-      "receiverName": "receiverObjectID",
-      "returnName": "methodResultID"
-    },
-    "throws": [],
-    "post": [
-      {
-        "property": {
-          "condition": "methodResultID == true",
-          "description": "true if this matcher matches every character in the sequence, including when the sequence is empty."
-        },
-        "description": "true if this matcher matches every character in the sequence, including when the sequence is empty.",
-        "guard": {
-          "condition": "receiverObjectID.matchesAllOf(sequence)",
-          "description": "true if this matcher matches every character in the sequence, including when the sequence is empty."
-        }
-      }
-    ],
-    "pre": []
-  },
-  {
-    "operation": {
-      "classname": "com.google.common.base.CharMatcher",
       "name": "indexIn",
       "parameterTypes": [
         "java.lang.CharSequence",
@@ -87,7 +56,27 @@
         }
       }
     ],
-    "post": [],
-    "pre": []
+    "post": [
+      {
+        "property": {
+          "condition": "(methodResultID < start) == false || methodResultID == -1",
+          "description": "the index of the first matching character, guaranteed to be no less than {@code start}, or {@code -1} if no character matches"
+        },
+        "description": "the index of the first matching character, guaranteed to be no less than {@code start}, or {@code -1} if no character matches",
+        "guard": {
+          "condition": "true",
+          "description": "the index of the first matching character, guaranteed to be no less than {@code start}, or {@code -1} if no character matches"
+        }
+      }
+    ],
+    "pre": [
+      {
+        "description": "@param start the first index to examine; must be nonnegative and no greater than sequence.length().",
+        "guard": {
+          "condition": "(start<0) == false && (start>sequence.length()) == false",
+          "description": "the first index to examine; must be nonnegative and no greater than sequence.length()."
+        }
+      }
+    ]
   }
 ]

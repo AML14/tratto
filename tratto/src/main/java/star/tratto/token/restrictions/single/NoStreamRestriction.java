@@ -39,9 +39,9 @@ public class NoStreamRestriction extends SingleTokenRestriction {
 
         // If any of the variables is a collection, then "stream()" should be a method available within the oracleDatapoint
         boolean noneIsCollection = oracleDatapoint.getTokensMethodVariablesNonPrivateNonStaticNonVoidMethods().stream().noneMatch(m ->
-                m.getValue0().equals("stream") &&
-                m.getValue1().equals("java.util") &&
-                m.getValue2().equals("Collection")
+                m.methodName().equals("stream") &&
+                m.packageName().equals("java.util") &&
+                m.className().equals("Collection")
         );
         if (noneIsCollection) {
             return true;
