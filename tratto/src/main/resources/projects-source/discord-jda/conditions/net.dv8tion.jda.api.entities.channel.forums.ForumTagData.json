@@ -1,0 +1,74 @@
+[
+    {
+        "operation": {
+            "name": "net.dv8tion.jda.api.entities.channel.forums.ForumTagData",
+            "parameterTypes": [
+                "String"
+            ],
+            "classname": "net.dv8tion.jda.api.entities.channel.forums.ForumTagData"
+        },
+        "identifiers": {
+            "parameters": [
+                "name"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "",
+                "guard": {
+                    "condition": "name != null && (name.length() >= 1 && name.length() <= ForumTag.MAX_NAME_LENGTH)",
+                    "description": ""
+                }
+            }
+        ],
+        "post": [],
+        "throws": [
+            {
+                "exception": "java.lang.IllegalArgumentException",
+                "description": " @throws IllegalArgumentException If the provided name is null or not between 1 and {@value ForumTag#MAX_NAME_LENGTH} characters long",
+                "guard": {
+                    "condition": "tag == null || tag.getName().length() < 1 || tag.getName().length() > ForumTag.MAX_NAME_LENGTH",
+                    "description": " @throws IllegalArgumentException If the provided name is null or not between 1 and {@value ForumTag#MAX_NAME_LENGTH} characters long"
+                }
+            }
+        ]
+    },
+    {
+        "operation": {
+            "name": "from",
+            "parameterTypes": [
+                "BaseForumTag"
+            ],
+            "classname": "net.dv8tion.jda.api.entities.channel.forums.ForumTagData"
+        },
+        "identifiers": {
+            "parameters": [
+                "tag"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param  tag The base tag to use",
+                "guard": {
+                    "condition": "tag != null || (tag.getName().length() >= 1 && tag.getName().length() <= ForumTag.MAX_NAME_LENGTH)",
+                    "description": "@param  tag The base tag to use"
+                }
+            }
+        ],
+        "post": [],
+        "throws": [
+            {
+                "exception": "java.lang.IllegalArgumentException",
+                "description": "@throws IllegalArgumentException If null is provided or the tag has an invalid name",
+                "guard": {
+                    "condition": "tag == null || tag.getName().length() < 1 || tag.getName().length() > ForumTag.MAX_NAME_LENGTH",
+                    "description": "@throws IllegalArgumentException If null is provided or the tag has an invalid name"
+                }
+            }
+        ]
+    }
+]

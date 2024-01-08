@@ -475,6 +475,16 @@ public class DatasetUtils {
                 // iterate through each Javadoc tag.
                 Optional<Javadoc> optionalJavadoc = jpCallable.getJavadoc();
                 if (optionalJavadoc.isEmpty()) {
+                    for (OracleType oracleTypeIdentifier : OracleType.values()) {
+                        tagList.add(new TagAndText(
+                                fileContent,
+                                jpClass,
+                                jpCallable,
+                                oracleTypeIdentifier,
+                                "",
+                                ""
+                        ));
+                    }
                     continue;
                 }
                 List<JavadocBlockTag> blockTags = optionalJavadoc.get().getBlockTags();
@@ -500,6 +510,17 @@ public class DatasetUtils {
                             name,
                             content
                     ));
+                    // add new tag with empty Javadoc Tag text.
+                    for (OracleType oracleTypeIdentifier : OracleType.values()) {
+                        tagList.add(new TagAndText(
+                                fileContent,
+                                jpClass,
+                                jpCallable,
+                                oracleTypeIdentifier,
+                                name,
+                                ""
+                        ));
+                    }
                 }
             }
         }

@@ -222,13 +222,15 @@ public class ProjectOracleGenerator {
                 .filter(tagInfo -> tagInfo.jpClass().equals(targetClass) &&
                         tagInfo.jpCallable().equals(targetCallable) &&
                         tagInfo.oracleType().equals(targetOracleType) &&
-                        tagHasName(targetTag, tagInfo.tagName()))
+                        (tagHasName(targetTag, tagInfo.tagName()) || (tagInfo.tagBody().length() == 0 && targetTag.length() == 0))
+                )
                 .toList();
         if (filteredTags.size() == 1) {
             return filteredTags.get(0);
         }
         if (filteredTags.size() == 0) {
-            throw new Error("Unable to find a tag corresponding to " + targetTag);
+            throw
+                    new Error("Unable to find a tag corresponding to " + targetTag);
         }
         // find index of most semantically similar tag (cosine similarity).
         TagAndText mostSimilarTag = null;
