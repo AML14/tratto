@@ -265,6 +265,7 @@ public class ClassAnalyzerTest {
                 .collect(Collectors.toList());
 
         // Projects for which to generate oracle datapoints
+        // TODO: Retrieve from input_projects.json
         List<Triplet<String, String, String>> projectPathsAndJars = List.of(
                 Triplet.with(
                         "plume",

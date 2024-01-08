@@ -35,6 +35,7 @@ public class OraclesDatasetTrainValidation {
     public static String ORACLES_DATASET_VALIDATION_FOLDER = "src/main/resources/oracles-dataset-validation/";
 
     // The train and validation sets must contain at least one file of each project, including both positive and negative oracles
+    // TODO: Retrieve from input_projects.json
     private static List<String> projects = List.of(
             "guava",
             "gs-core",

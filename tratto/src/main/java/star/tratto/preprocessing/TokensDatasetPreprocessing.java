@@ -79,6 +79,7 @@ public class TokensDatasetPreprocessing {
             "Comma",
             "ClassModifier"
     );
+    // TODO: Retrieve from input_projects.json
     private static final List<String> projects = List.of(
             "plume-lib-1.1.0",
             "jgrapht-core-0.9.2",
