@@ -340,25 +340,24 @@ public class JavaParserUtils {
         // Generate synthetic method
         CompilationUnit cu = javaParser.parse(oracleDatapoint.getClassSourceCode()).getResult().get();
         String className = oracleDatapoint.getClassName();
+        BodyDeclaration<?> method = getMethodOrConstructorDeclaration(oracleDatapoint.getMethodSourceCode());
         MethodDeclaration syntheticMethod = createSyntheticMethod(
                 getClassOrInterface(cu, className),
-                getMethodOrConstructorDeclaration(oracleDatapoint.getMethodSourceCode())
+                method
         );
         BlockStmt syntheticMethodBody = syntheticMethod.getBody().get();
 
-        // If the method is not a constructor and not void, add a statement to save methodResultID.
-        MethodDeclaration method = getMethodDeclaration(oracleDatapoint.getMethodSourceCode());
-        if (method != null) {
-            addMethodResultIDStatementToMethod(
-                    syntheticMethodBody,
-                    method.getType().asString(),
-                    method.getNameAsString(),
-                    syntheticMethod.getParameters()
-                            .stream()
-                            .map(Parameter::getNameAsString)
-                            .toList()
-            );
-        }
+        String methodType = method.isMethodDeclaration() ? method.asMethodDeclaration().getType().asString() : null;
+        String methodName = method.isMethodDeclaration() ? method.asMethodDeclaration().getNameAsString() : method.asConstructorDeclaration().getNameAsString();
+        addMethodResultIDStatementToMethod(
+                syntheticMethodBody,
+                methodType,
+                methodName,
+                syntheticMethod.getParameters()
+                        .stream()
+                        .map(Parameter::getNameAsString)
+                        .toList()
+        );
 
         // Handle jdVar if necessary
         handleJdVarIfNecessary(syntheticMethodBody, expression, oracleDatapoint);
@@ -381,13 +380,16 @@ public class JavaParserUtils {
     /**
      * Add a statement to parentMethod that saves the result of a method call to a variable.
      * @param parentMethod the method to which the statement will be added
-     * @param methodReturnType the return type of the method to add. If "void", no statement will be added
+     * @param methodReturnType the return type of the method to add. If "void", no statement will be added.
+     *                         If null, the method passed is a constructor
      * @param methodName the name of the method to add
      * @param methodParameters the parameters of the method to add
      */
     private static void addMethodResultIDStatementToMethod(BlockStmt parentMethod, String methodReturnType, String methodName, List<String> methodParameters) {
         if (!"void".equals(methodReturnType)) {
-            parentMethod.addStatement(methodReturnType + " methodResultID = " + methodName +
+            String type = methodReturnType == null ? methodName : methodReturnType;
+            String methodCall = methodReturnType == null ? "new " + methodName : methodName;
+            parentMethod.addStatement(type + " methodResultID = " + methodCall +
                     "(" + String.join(", ", methodParameters) + ");");
         }
     }
