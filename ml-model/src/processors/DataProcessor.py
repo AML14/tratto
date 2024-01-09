@@ -690,11 +690,11 @@ class DataProcessor:
             )
             if not os.path.exists(file_dir_path):
                 os.makedirs(file_dir_path)
-            with open(os.path.join(file_dir_path, f"train_{filename}"), 'w', newline='') as csvfile:
+            with open(os.path.join(file_dir_path, "train", f"train_{filename}"), 'w', newline='') as csvfile:
                 csv_writer = csv.writer(csvfile)
                 csv_writer.writerow(['src', 'tgt'])
                 csv_writer.writerows(zip(t_src, t_tgt))
-            with open(os.path.join(file_dir_path, f"validation_{filename}"), 'w', newline='') as csvfile:
+            with open(os.path.join(file_dir_path, "validation", f"validation_{filename}"), 'w', newline='') as csvfile:
                 csv_writer = csv.writer(csvfile)
                 csv_writer.writerow(['src', 'tgt'])
                 csv_writer.writerows(zip(v_src, v_tgt))
