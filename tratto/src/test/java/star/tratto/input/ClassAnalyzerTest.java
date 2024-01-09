@@ -29,6 +29,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -265,39 +266,17 @@ public class ClassAnalyzerTest {
                 .collect(Collectors.toList());
 
         // Projects for which to generate oracle datapoints
-        // TODO: Retrieve from input_projects.json
-        List<Triplet<String, String, String>> projectPathsAndJars = List.of(
-                Triplet.with(
-                        "plume",
-                        "src/main/resources/projects-source/plume-lib-1.1.0/raw/java/src",
-                        "src/main/resources/projects-source/plume-lib-1.1.0/jar"
-                ),
-                Triplet.with(
-                        "jgrapht",
-                        "src/main/resources/projects-source/jgrapht-core-0.9.2/raw",
-                        "src/main/resources/projects-source/jgrapht-core-0.9.2/jar"
-                ),
-                Triplet.with(
-                        "gs-core",
-                        "src/main/resources/projects-source/gs-core-1.3/raw/src",
-                        "src/main/resources/projects-source/gs-core-1.3/jar"
-                ),
-                Triplet.with(
-                        "guava",
-                        "src/main/resources/projects-source/guava-19.0/raw",
-                        "src/main/resources/projects-source/guava-19.0/jar"
-                ),
-                Triplet.with(
-                        "commons-collections4",
-                        "src/main/resources/projects-source/commons-collections4-4.1/raw/src/main/java",
-                        "src/main/resources/projects-source/commons-collections4-4.1/jar"
-                ),
-                Triplet.with(
-                        "commons-math3",
-                        "src/main/resources/projects-source/commons-math3-3.6.1/raw/src/main/java",
-                        "src/main/resources/projects-source/commons-math3-3.6.1/jar"
-                )
-        );
+        String rsrcsPath = TrattoPath.RESOURCES.getPath().toString() + "/";
+        List<Triplet<String, String, String>> projectPathsAndJars = FileUtils.readJSONList(TrattoPath.INPUT_PROJECTS.getPath(), Map.class)
+                .stream()
+                .map(projectObject -> {
+                    String p = (String) projectObject.get("projectName");
+                    return Triplet.with(
+                            p,
+                            rsrcsPath + p + "/" + String.join("/", (List)projectObject.get("srcPathList")),
+                            rsrcsPath + p + "/" + String.join("/", (List)projectObject.get("jarPathList")));
+                })
+                .toList();
 
         for (Triplet<String, String, String> projectPathAndJar : projectPathsAndJars) {
             logger.info("------------------------------------------------------------");

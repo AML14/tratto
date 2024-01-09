@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.javatuples.Triplet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import star.tratto.data.TrattoPath;
 import star.tratto.util.FileUtils;
 
 import java.io.IOException;
@@ -35,15 +36,11 @@ public class OraclesDatasetTrainValidation {
     public static String ORACLES_DATASET_VALIDATION_FOLDER = "src/main/resources/oracles-dataset-validation/";
 
     // The train and validation sets must contain at least one file of each project, including both positive and negative oracles
-    // TODO: Retrieve from input_projects.json
-    private static List<String> projects = List.of(
-            "guava",
-            "gs-core",
-            "commons-collections4",
-            "plume-lib",
-            "commons-math3",
-            "jgrapht-core"
-    );
+    private static List<String> projects = FileUtils.readJSONList(TrattoPath.INPUT_PROJECTS.getPath())
+            .stream()
+            .map(p -> (String) ((Map)p).get("projectName"))
+            .toList();
+
 
     public static float TV_RATIO = 0.9f; // Train/Validation ratio
     public static float PN_RATIO = 0.5f; // Positive/negative ratio
