@@ -15,7 +15,8 @@ from tests.utils import generate_equivalent_src_input, generate_equivalent_token
 
 def test_load_dataset_as_dataframe_num_rows(
         arg_dataset_path,
-        arg_tratto_model_type
+        arg_tratto_model_type,
+        arg_pre_processing
 ):
     if skipTest(arg_dataset_path=arg_dataset_path, tratto_model_type=arg_tratto_model_type):
         pytest.skip(f"Skipping test because of the invalid combination of the arguments: {arg_dataset_path.split('/')[-1]} - {arg_tratto_model_type}")
@@ -26,7 +27,7 @@ def test_load_dataset_as_dataframe_num_rows(
             for file_name in os.listdir(path_to_dataset):
                 _, json_content = utils.import_json(os.path.join(path_to_dataset, file_name))
                 datapoints_counter += len(json_content)
-            df_dataset = DataProcessor.load_dataset_as_dataframe(path_to_dataset, arg_tratto_model_type)
+            df_dataset = DataProcessor.load_dataset_as_dataframe(path_to_dataset, arg_tratto_model_type, arg_pre_processing)
             assert df_dataset.shape[0] == datapoints_counter
 
 def test_compute_weights(

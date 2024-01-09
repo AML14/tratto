@@ -269,6 +269,16 @@ class ArgumentParser:
             type=str,
             help="Trasformer type: encoder or decoder. Default decoder."
         )
+        parser.add_argument(
+            "--pre-processing",
+            action='store_true',
+            help="Perform pre-processing of the dataset"
+        )
+        parser.add_argument(
+            "--rapids_cudf",
+            action='store_true',
+            help="Use RAPIDS cuDF library for faster data loading"
+        )
 
     @staticmethod
     def add_training_arguments(parser: Type[ArgumentParser]):

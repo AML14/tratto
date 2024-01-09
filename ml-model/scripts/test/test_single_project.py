@@ -357,7 +357,8 @@ def main(
         model_type: str,
         tokenizer_name: str,
         config_name: str,
-        model_name_or_path: str
+        model_name_or_path: str,
+        pre_processing: bool = True
 ):
     """
     The main method load the checkpoint and perform the analysis of the performance of the model on a given
@@ -370,7 +371,7 @@ def main(
     print("Connect to device")
     device = utils.connect_to_device(DeviceType.GPU)
     # Load test dataset
-    t_df = DataProcessor.load_dataset_as_dataframe(input_path, tratto_model_type)
+    t_df = DataProcessor.load_dataset_as_dataframe(input_path, tratto_model_type, pre_processing)
     print("Setup model")
     # Get configuration class, model class, and tokenizer class from the corresponding model type
     config_class, model_class, tokenizer_class = ModelClasses.getModelClass(model_type)
@@ -463,6 +464,9 @@ if __name__ == "__main__":
     # Check if the checkpoint path exists
     if not os.path.exists(args.checkpoint_path):
         raise ValueError(f"The checkpoint path argument contains a value that does not point to an existing checkpoint: {args.checkpoint_path}")
+    # Set the RAPIDS cuDF library if available
+    if args.rapids_cudf == "True":
+        utils.set_rapids_available()
     main(
         args.project_name,
         args.checkpoint_path,
@@ -474,5 +478,6 @@ if __name__ == "__main__":
         args.model_type,
         args.tokenizer_name,
         args.config_name,
-        args.model_name_or_path
+        args.model_name_or_path,
+        True if args.pre_processing == "True" else False
     )

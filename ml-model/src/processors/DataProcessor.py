@@ -450,7 +450,7 @@ class DataProcessor:
         The validation dataset as a pandas dataframe.
         """
         # Get the dataset to process
-        v_df = self.load_dataset_as_dataframe(self._validation_dataset_path, self._tratto_model_type)
+        v_df = self.load_dataset_as_dataframe(self._validation_dataset_path, self._tratto_model_type, self._pre_processing)
         # Apply values replacement if the dataset must be pre-processed
         if self._pre_processing:
             if self._tratto_model_type == TrattoModelType.TOKEN_CLASSES:
@@ -500,7 +500,7 @@ class DataProcessor:
         partial_dfs = []
         # Collects partial dataframes from oracles
         for file_name in os.listdir(dataset_path):
-            if utils.is_rapids_available():
+            if utils.is_rapids_available() or not pre_processing:
                 df = pd.read_csv(os.path.join(dataset_path, file_name))
             else:
                 df = pd.read_json(os.path.join(dataset_path, file_name))
@@ -678,7 +678,17 @@ class DataProcessor:
             gc.collect()
             # Save src and tgt datasets
             filename = f'src_tgt_{self._tratto_model_type.lower()}_{self._classification_type.lower()}_{self._transformer_type.lower()}.csv'
-            file_dir_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'resources', 'pre_processed_datasets')
+            file_dir_path = os.path.join(
+                os.path.dirname(os.path.abspath(__file__)),
+                '..',
+                '..',
+                '..',
+                'datasets',
+                'pre_processed_datasets',
+                self._tratto_model_type.lower(),
+                self._classification_type.lower(),
+                self._transformer_type.lower()
+            )
             if not os.path.exists(file_dir_path):
                 os.makedirs(file_dir_path)
             with open(os.path.join(file_dir_path, f"train_{filename}"), 'w', newline='') as csvfile:

@@ -15,7 +15,8 @@ def data_processor(
         tokenizer,
         arg_transformer_type,
         arg_classification_type,
-        arg_tratto_model_type
+        arg_tratto_model_type,
+        arg_pre_processing
 ):
     if utils.skipTest(arg_dataset_path, arg_transformer_type, arg_tratto_model_type, arg_classification_type):
         pytest.skip(f"Skipping test because of the invalid combination of the arguments: {arg_dataset_path.split('/')[-1]} - {arg_tratto_model_type}")
@@ -25,7 +26,8 @@ def data_processor(
         tokenizer,
         arg_transformer_type,
         arg_classification_type,
-        arg_tratto_model_type
+        arg_tratto_model_type,
+        arg_pre_processing
     )
     return data_processor
 
@@ -64,7 +66,8 @@ def data_processor_single_datapoint(
         tokenizer,
         arg_transformer_type,
         arg_classification_type,
-        arg_tratto_model_type
+        arg_tratto_model_type,
+        arg_pre_processing
 ):
     data_processor = DataProcessor(
         os.path.join(arg_dataset_path, "single", "train"),
@@ -72,7 +75,8 @@ def data_processor_single_datapoint(
         tokenizer,
         arg_transformer_type,
         arg_classification_type,
-        arg_tratto_model_type
+        arg_tratto_model_type,
+        arg_pre_processing
     )
     return data_processor
 
@@ -82,7 +86,8 @@ def data_processor_ten_datapoints(
         tokenizer,
         arg_transformer_type,
         arg_classification_type,
-        arg_tratto_model_type
+        arg_tratto_model_type,
+        arg_pre_processing
 ):
     if utils.skipTest(arg_dataset_path, arg_transformer_type, arg_tratto_model_type, arg_classification_type):
         pytest.skip(f"Skipping test because of the invalid combination of the arguments: {arg_dataset_path.split('/')[-1]} - {arg_tratto_model_type}")
@@ -92,7 +97,8 @@ def data_processor_ten_datapoints(
         tokenizer,
         arg_transformer_type,
         arg_classification_type,
-        arg_tratto_model_type
+        arg_tratto_model_type,
+        arg_pre_processing
     )
     return data_processor
 
