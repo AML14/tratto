@@ -16,6 +16,8 @@ train_path="./dataset/cleaned/oracles-dataset-train/csv"
 validation_path="./dataset/cleaned/oracles-dataset-validation/csv"
 output_dir="./output_oracles_model_decoder_label_770"
 classification_type="label_prediction"
+pre_processing="True"
+rapids_cudf="False"
 
 if [ "$#" -eq 1 ] && [ "$1" == "--accelerate" ]; then
   echo "Running with accelerate"
@@ -35,7 +37,9 @@ if [ "$#" -eq 1 ] && [ "$1" == "--accelerate" ]; then
     --train_path "$train_path" \
     --validation_path "$validation_path" \
     --output_dir "$output_dir" \
-    --classification_type "$classification_type"
+    --classification_type "$classification_type" \
+    --pre_processing "$pre_processing" \
+    --rapids_cudf "$rapids_cudf"
 else
   echo "Running without accelerate"
   python3 scripts/train/run_classifier.py \
@@ -54,5 +58,7 @@ else
     --train_path "$train_path" \
     --validation_path "$validation_path" \
     --output_dir "$output_dir" \
-    --classification_type "$classification_type"
+    --classification_type "$classification_type" \
+    --pre_processing "$pre_processing" \
+    --rapids_cudf "$rapids_cudf"
 fi

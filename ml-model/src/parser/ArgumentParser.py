@@ -470,6 +470,16 @@ class ArgumentParser:
             help="Avoid using CUDA when available"
         )
         parser.add_argument(
+            "--pre-processing",
+            action='store_true',
+            help="Perform pre-processing of the dataset"
+        )
+        parser.add_argument(
+            "--rapids_cudf",
+            action='store_true',
+            help="Use RAPIDS cuDF library for faster data loading"
+        )
+        parser.add_argument(
             "--overwrite_output_dir",
             action='store_true',
             help="Overwrite the content of the output directory"

@@ -1,6 +1,6 @@
 import ast
 from src.utils import utils
-if utils.is_running_on_gpu():
+if utils.is_rapids_available():
     import cudf.pandas
     cudf.pandas.install()
     import pandas as pd
@@ -13,9 +13,8 @@ from pandas import DataFrame
 import numpy as np
 import torch
 import random
-import math
+import csv
 from torch.utils.data import TensorDataset
-from sklearn.model_selection import train_test_split, StratifiedKFold
 from transformers import PreTrainedTokenizer
 from src.types.ClassificationType import ClassificationType
 from src.types.DatasetType import DatasetType
@@ -43,6 +42,8 @@ class DataProcessor:
         Category predictions or label predictions.
     tratto_model_type: Type[TrattoModelType]
         TokenClasses or tokenValues model.
+    pre_processing: bool
+        True if the dataset must be pre-processed, False otherwise.
 
     Attributes
     ----------
@@ -63,6 +64,8 @@ class DataProcessor:
         The name of the target column of the dataset
     _cache: Dict[str, Dict[str, List[str]]]
         The cache contains values computed while processing the dataset, to avoid to recompute them each time.
+    _pre_processing: bool
+        True if the dataset must be pre-processed, False otherwise.
     """
 
     def __init__(
@@ -72,7 +75,8 @@ class DataProcessor:
             tokenizer: PreTrainedTokenizer,
             transformerType: Type[TransformerType],
             classification_type: ClassificationType,
-            tratto_model_type: Type[TrattoModelType]
+            tratto_model_type: Type[TrattoModelType],
+            pre_processing: bool = False
     ):
         self._train_dataset_path = train_dataset_path
         self._validation_dataset_path = validation_dataset_path
@@ -80,16 +84,20 @@ class DataProcessor:
         self._classification_type = classification_type
         self._transformer_type = transformerType
         self._tratto_model_type = tratto_model_type
-        if classification_type == ClassificationType.LABEL_PREDICTION:
-            self._tgt_column_name = "label"
-        else:
-            if tratto_model_type == TrattoModelType.TOKEN_CLASSES:
-                self._tgt_column_name = "tokenClass"
-            elif tratto_model_type == TrattoModelType.TOKEN_VALUES:
-                self._tgt_column_name = "token"
+        self._pre_processing = pre_processing
+        if pre_processing:
+            if classification_type == ClassificationType.LABEL_PREDICTION:
+                self._tgt_column_name = "label"
             else:
-                raise Exception(
-                    f"Tratto model type {tratto_model_type} not allowed for classification type equals to CATEGORY_PREDICTION.")
+                if tratto_model_type == TrattoModelType.TOKEN_CLASSES:
+                    self._tgt_column_name = "tokenClass"
+                elif tratto_model_type == TrattoModelType.TOKEN_VALUES:
+                    self._tgt_column_name = "token"
+                else:
+                    raise Exception(
+                        f"Tratto model type {tratto_model_type} not allowed for classification type equals to CATEGORY_PREDICTION.")
+        else:
+            self._tgt_column_name = "tgt"
         self._tokenized_train_dataset = {
             "src": None,
             "mask": None,
@@ -325,10 +333,8 @@ class DataProcessor:
         if column_name is None:
             column_name = self._tgt_column_name
         # Assert arguments are legal
-        assert df_type is None or df_type in [DatasetType.TRAINING,
-                                              DatasetType.VALIDATION], f"Dataset type {df_type} not recognized."
+        assert df_type is None or df_type in [DatasetType.TRAINING, DatasetType.VALIDATION], f"Dataset type {df_type} not recognized."
         assert df_type is not None or (df_type is None and df is None), "Illegal arguments combination."
-
         return len(self.get_encoder_ids_labels(column_name, df_type, df))
 
     @staticmethod
@@ -417,20 +423,22 @@ class DataProcessor:
         The training dataset as a pandas dataframe.
         """
         # Get the dataset to process
-        t_df = self.load_dataset_as_dataframe(self._train_dataset_path, self._tratto_model_type)
-        if self._tratto_model_type == TrattoModelType.TOKEN_CLASSES:
-            # Get token classes value mappings
-            value_mappings = self.get_token_classes_value_mappings()
-            # Replace the values in the DataFrame column
-            t_df['tokenClass'] = t_df['tokenClass'].replace(value_mappings)
-            if utils.is_running_on_gpu():
-                # Create a dictionary compatible with Numba library
-                numba_value_mappings = self.create_numba_dict(tuple(value_mappings.items()))
-                # Map token classes so far to new values and transform it from array to string
-                t_df["tokenClassesSoFar"] = self.convert_values(numba_value_mappings, t_df)
-            else:
-                # Map token classes so far to new values and transform it from array to string
-                t_df["tokenClassesSoFar"] = t_df["tokenClassesSoFar"].apply(lambda x: [value_mappings[y] for y in x])
+        t_df = self.load_dataset_as_dataframe(self._train_dataset_path, self._tratto_model_type, self._pre_processing)
+        # Apply values replacement if the dataset must be pre-processed
+        if self._pre_processing:
+            if self._tratto_model_type == TrattoModelType.TOKEN_CLASSES:
+                # Get token classes value mappings
+                value_mappings = self.get_token_classes_value_mappings()
+                # Replace the values in the DataFrame column
+                t_df['tokenClass'] = t_df['tokenClass'].replace(value_mappings)
+                if utils.is_rapids_available():
+                    # Create a dictionary compatible with Numba library
+                    numba_value_mappings = self.create_numba_dict(tuple(value_mappings.items()))
+                    # Map token classes so far to new values and transform it from array to string
+                    t_df["tokenClassesSoFar"] = self.convert_values(numba_value_mappings, t_df)
+                else:
+                    # Map token classes so far to new values and transform it from array to string
+                    t_df["tokenClassesSoFar"] = t_df["tokenClassesSoFar"].apply(lambda x: [value_mappings[y] for y in x])
         return t_df
 
     def get_validation_dataframe(self):
@@ -443,25 +451,28 @@ class DataProcessor:
         """
         # Get the dataset to process
         v_df = self.load_dataset_as_dataframe(self._validation_dataset_path, self._tratto_model_type)
-        if self._tratto_model_type == TrattoModelType.TOKEN_CLASSES:
-            # Get token classes value mappings
-            value_mappings = self.get_token_classes_value_mappings()
-            # Replace the values in the DataFrame column
-            v_df['tokenClass'] = v_df['tokenClass'].replace(value_mappings)
-            if utils.is_running_on_gpu():
-                # Create a dictionary compatible with Numba library
-                numba_value_mappings = self.create_numba_dict(tuple(value_mappings.items()))
-                # Map token classes so far to new values and transform it from array to string
-                v_df["tokenClassesSoFar"] = self.convert_values(numba_value_mappings, v_df)
-            else:
-                # Map token classes so far to new values and transform it from array to string
-                v_df["tokenClassesSoFar"] = v_df["tokenClassesSoFar"].apply(lambda x: [value_mappings[y] for y in x])
+        # Apply values replacement if the dataset must be pre-processed
+        if self._pre_processing:
+            if self._tratto_model_type == TrattoModelType.TOKEN_CLASSES:
+                # Get token classes value mappings
+                value_mappings = self.get_token_classes_value_mappings()
+                # Replace the values in the DataFrame column
+                v_df['tokenClass'] = v_df['tokenClass'].replace(value_mappings)
+                if utils.is_rapids_available():
+                    # Create a dictionary compatible with Numba library
+                    numba_value_mappings = self.create_numba_dict(tuple(value_mappings.items()))
+                    # Map token classes so far to new values and transform it from array to string
+                    v_df["tokenClassesSoFar"] = self.convert_values(numba_value_mappings, v_df)
+                else:
+                    # Map token classes so far to new values and transform it from array to string
+                    v_df["tokenClassesSoFar"] = v_df["tokenClassesSoFar"].apply(lambda x: [value_mappings[y] for y in x])
         return v_df
 
     @staticmethod
     def load_dataset_as_dataframe(
             dataset_path: str,
-            tratto_model_type: Type[TrattoModelType]
+            tratto_model_type: Type[TrattoModelType],
+            pre_processing: bool = False
     ):
         """
             The method loads the dataset from specified paths,and generate the corresponding pandas DataFrames.
@@ -475,6 +486,8 @@ class DataProcessor:
                 The path to the dataset
             tratto_model_type: Type[TrattoModelType]
                 The type of Tratto model considered (tokenClasses, tokenValues, or oracles).
+            pre_processing: bool
+                True if the dataset must be pre-processed, False otherwise.
 
             Returns
             -------
@@ -487,22 +500,23 @@ class DataProcessor:
         partial_dfs = []
         # Collects partial dataframes from oracles
         for file_name in os.listdir(dataset_path):
-            if utils.is_running_on_gpu():
+            if utils.is_rapids_available():
                 df = pd.read_csv(os.path.join(dataset_path, file_name))
             else:
                 df = pd.read_json(os.path.join(dataset_path, file_name))
-            if tratto_model_type == TrattoModelType.ORACLES:
-                # Generate labels for oracles model and map column 'id` to `oracleId`
-                if len(df) > 0:
-                    # The oracles model must return True if the oracle is not empty (there is an oracle to generate), False otherwise
-                    # An empty oracle is an oracle with ";" as value
-                    df["label"] = df["oracle"].apply(lambda o: "False" if o == ";" else "True")
-                    # Map id into oracleId
-                    if "oracleId" not in df.columns:
-                        if "id" in df.columns:
-                            df.rename(columns={'id': 'oracleId'}, inplace=True)
-                        else:
-                            raise Exception("Both columns 'id' and 'oracleId' not found in the dataset.")
+            if pre_processing:
+                if tratto_model_type == TrattoModelType.ORACLES:
+                    # Generate labels for oracles model and map column 'id` to `oracleId`
+                    if len(df) > 0:
+                        # The oracles model must return True if the oracle is not empty (there is an oracle to generate), False otherwise
+                        # An empty oracle is an oracle with ";" as value
+                        df["label"] = df["oracle"].apply(lambda o: "False" if o == ";" else "True")
+                        # Map id into oracleId
+                        if "oracleId" not in df.columns:
+                            if "id" in df.columns:
+                                df.rename(columns={'id': 'oracleId'}, inplace=True)
+                            else:
+                                raise Exception("Both columns 'id' and 'oracleId' not found in the dataset.")
             partial_dfs.append(df)
         # Concat the partial dataframes into a single dataframe
         df_dataset = pd.concat(partial_dfs)
@@ -521,145 +535,165 @@ class DataProcessor:
         # Get train and validation dataframes
         t_df = self.get_train_dataframe()
         v_df = self.get_validation_dataframe()
-        # Map empty cells to empty strings
-        t_df.fillna('', inplace=True)
-        v_df.fillna('', inplace=True)
-        # Get the dictionary of encoder label ids
-        labels_ids_dict = self.get_encoder_labels_ids(self._tgt_column_name, df_type=DatasetType.TRAINING, df=t_df)
-        # Pre-process the dataset, according to the Tratto model
-        if self._tratto_model_type == TrattoModelType.ORACLES:
-            # Specify the type of each column in the dataset
-            df_types = {
-                'label': 'str',
-                'oracleId': 'int64',
-                'oracle': 'str',
-                'oracleType': 'str',
-                'javadocTag': 'str',
-                'methodJavadoc': 'str',
-                'methodSourceCode': 'str'
-            }
-            # Set the type of each column in the dataset
-            t_df = t_df.astype(df_types)
-            v_df = v_df.astype(df_types)
-            # Balance dataset
-            # t_df = self._balance_dataframe(t_df)
-            # Define the new order of columns
-            new_columns_order = [
-                'javadocTag', 'oracleType', 'methodSourceCode', 'methodJavadoc', 'oracleId', 'oracle', 'label'
-            ]
-            # Reindex the DataFrame with the new order
-            t_df = t_df.reindex(columns=new_columns_order)
-            v_df = v_df.reindex(columns=new_columns_order)
-            # Get the list of target values from the dataframe
-            if self._transformer_type == TransformerType.DECODER:
-                t_tgt = t_df[self._tgt_column_name].values.tolist()
-                v_tgt = v_df[self._tgt_column_name].values.tolist()
-            else:
-                t_tgt = list(map(lambda t: labels_ids_dict[t], t_df[self._tgt_column_name].values.tolist()))
-                v_tgt = list(map(lambda t: labels_ids_dict[t], v_df[self._tgt_column_name].values.tolist()))
-            # Drop oracle column
-            t_df.drop(['oracle'], axis=1, inplace=True)
-            v_df.drop(['oracle'], axis=1, inplace=True)
-        else:
-            # Specify the type of each column in the dataset
-            df_types = {
-                'label': 'str',
-                'oracleId': 'int64',
-                'oracleType': 'str',
-                'packageName': 'str',
-                'className': 'str',
-                'javadocTag': 'str',
-                'methodJavadoc': 'str',
-                'methodSourceCode': 'str',
-                'oracleSoFar': 'str',
-                'token': 'str',
-                'tokenClass': 'str',
-                'tokenInfo': 'str'
-            }
-            # Set the type of each column in the dataset
-            t_df = t_df.astype(df_types)
-            v_df = v_df.astype(df_types)
-            # Enrich vocabulary
-            self.enrich_vocabulary(self._tokenizer, self._tratto_model_type)
-            # Balance dataset
-            # t_df = self._balance_dataframe(t_df)
-            # Pre-process the dataset, according to the Tratto model considered (tokenClasses or tokenValues).
-            if self._tratto_model_type == TrattoModelType.TOKEN_CLASSES:
-                # Map token classes so far to new values and transform it from array to string
-                t_df = self.compute_tokenClassesSoFar(t_df)
-                v_df = self.compute_tokenClassesSoFar(v_df)
-                # Compute eligible token classes
-                t_df = self.compute_eligible_token_classes(t_df)
-                v_df = self.compute_eligible_token_classes(v_df)
+        # Apply pre-processing if required
+        if self._pre_processing:
+            # Map empty cells to empty strings
+            t_df.fillna('', inplace=True)
+            v_df.fillna('', inplace=True)
+            # Get the dictionary of encoder label ids
+            labels_ids_dict = self.get_encoder_labels_ids(self._tgt_column_name, df_type=DatasetType.TRAINING, df=t_df)
+            # Pre-process the dataset, according to the Tratto model
+            if self._tratto_model_type == TrattoModelType.ORACLES:
+                # Specify the type of each column in the dataset
+                df_types = {
+                    'label': 'str',
+                    'oracleId': 'int64',
+                    'oracle': 'str',
+                    'oracleType': 'str',
+                    'javadocTag': 'str',
+                    'methodJavadoc': 'str',
+                    'methodSourceCode': 'str'
+                }
+                # Set the type of each column in the dataset
+                t_df = t_df.astype(df_types)
+                v_df = v_df.astype(df_types)
+                # Balance dataset
+                # t_df = self._balance_dataframe(t_df)
                 # Define the new order of columns
                 new_columns_order = [
-                    'tokenClass', 'oracleSoFar', 'tokenClassesSoFar', 'eligibleTokenClasses',
-                    'javadocTag', 'oracleType', 'packageName', 'className', 'methodSourceCode', 'methodJavadoc',
-                    'classJavadoc', 'classSourceCode', 'oracleId', 'label', 'token', 'tokenInfo', 'projectName'
+                    'javadocTag', 'oracleType', 'methodSourceCode', 'methodJavadoc', 'oracleId', 'oracle', 'label'
                 ]
                 # Reindex the DataFrame with the new order
                 t_df = t_df.reindex(columns=new_columns_order)
                 v_df = v_df.reindex(columns=new_columns_order)
+                # Get the list of target values from the dataframe
+                if self._transformer_type == TransformerType.DECODER:
+                    t_tgt = t_df[self._tgt_column_name].values.tolist()
+                    v_tgt = v_df[self._tgt_column_name].values.tolist()
+                else:
+                    t_tgt = list(map(lambda t: labels_ids_dict[t], t_df[self._tgt_column_name].values.tolist()))
+                    v_tgt = list(map(lambda t: labels_ids_dict[t], v_df[self._tgt_column_name].values.tolist()))
+                # Drop oracle column
+                t_df.drop(['oracle'], axis=1, inplace=True)
+                v_df.drop(['oracle'], axis=1, inplace=True)
             else:
-                # Compute eligible token values
-                t_df = self.compute_eligible_token_values(t_df)
-                v_df = self.compute_eligible_token_values(v_df)
-                # Define the new order of columns
-                new_columns_order = [
-                    'token', 'oracleSoFar', 'eligibleTokens', 'javadocTag', 'oracleType',
-                    'packageName', 'className', 'methodSourceCode', 'methodJavadoc', 'tokenInfo',
-                    'classJavadoc', 'classSourceCode', 'oracleId', 'label', 'tokenClass', 'projectName'
-                ]
-                # Reindex the DataFrame with the new order
-                t_df = t_df.reindex(columns=new_columns_order)
-                v_df = v_df.reindex(columns=new_columns_order)
-            # Keep only the instance with label 'True', for each combination of oracleId and oracleSoFar, if the model
-            # predicts the categories (tokenClasses or tokenValues)
-            if self._classification_type == ClassificationType.CATEGORY_PREDICTION:
-                t_df = t_df[t_df['label'] == 'True']
-                v_df = v_df[v_df['label'] == 'True']
-            # Get the list of target values from the dataframe
-            if self._transformer_type == TransformerType.DECODER:
-                t_tgt = t_df[self._tgt_column_name].values.tolist()
-                v_tgt = v_df[self._tgt_column_name].values.tolist()
-            else:
-                t_tgt = list(map(lambda t: labels_ids_dict[t], t_df[self._tgt_column_name].values.tolist()))
-                v_tgt = list(map(lambda t: labels_ids_dict[t], v_df[self._tgt_column_name].values.tolist()))
-            # If the model predicts token classes, remove the token values from the input, else remove
-            # the token classes from the input
-            if self._tratto_model_type == TrattoModelType.TOKEN_CLASSES:
-                t_df = t_df.drop(['token', 'tokenInfo'], axis=1)
-                v_df = v_df.drop(['token', 'tokenInfo'], axis=1)
-                # Remove the tokenClass column if the model will predict the tokenClass as target
+                # Specify the type of each column in the dataset
+                df_types = {
+                    'label': 'str',
+                    'oracleId': 'int64',
+                    'oracleType': 'str',
+                    'packageName': 'str',
+                    'className': 'str',
+                    'javadocTag': 'str',
+                    'methodJavadoc': 'str',
+                    'methodSourceCode': 'str',
+                    'oracleSoFar': 'str',
+                    'token': 'str',
+                    'tokenClass': 'str',
+                    'tokenInfo': 'str'
+                }
+                # Set the type of each column in the dataset
+                t_df = t_df.astype(df_types)
+                v_df = v_df.astype(df_types)
+                # Enrich vocabulary
+                self.enrich_vocabulary(self._tokenizer, self._tratto_model_type)
+                # Balance dataset
+                # t_df = self._balance_dataframe(t_df)
+                # Pre-process the dataset, according to the Tratto model considered (tokenClasses or tokenValues).
+                if self._tratto_model_type == TrattoModelType.TOKEN_CLASSES:
+                    # Map token classes so far to new values and transform it from array to string
+                    t_df = self.compute_tokenClassesSoFar(t_df)
+                    v_df = self.compute_tokenClassesSoFar(v_df)
+                    # Compute eligible token classes
+                    t_df = self.compute_eligible_token_classes(t_df)
+                    v_df = self.compute_eligible_token_classes(v_df)
+                    # Define the new order of columns
+                    new_columns_order = [
+                        'tokenClass', 'oracleSoFar', 'tokenClassesSoFar', 'eligibleTokenClasses',
+                        'javadocTag', 'oracleType', 'packageName', 'className', 'methodSourceCode', 'methodJavadoc',
+                        'classJavadoc', 'classSourceCode', 'oracleId', 'label', 'token', 'tokenInfo', 'projectName'
+                    ]
+                    # Reindex the DataFrame with the new order
+                    t_df = t_df.reindex(columns=new_columns_order)
+                    v_df = v_df.reindex(columns=new_columns_order)
+                else:
+                    # Compute eligible token values
+                    t_df = self.compute_eligible_token_values(t_df)
+                    v_df = self.compute_eligible_token_values(v_df)
+                    # Define the new order of columns
+                    new_columns_order = [
+                        'token', 'oracleSoFar', 'eligibleTokens', 'javadocTag', 'oracleType',
+                        'packageName', 'className', 'methodSourceCode', 'methodJavadoc', 'tokenInfo',
+                        'classJavadoc', 'classSourceCode', 'oracleId', 'label', 'tokenClass', 'projectName'
+                    ]
+                    # Reindex the DataFrame with the new order
+                    t_df = t_df.reindex(columns=new_columns_order)
+                    v_df = v_df.reindex(columns=new_columns_order)
+                # Keep only the instance with label 'True', for each combination of oracleId and oracleSoFar, if the model
+                # predicts the categories (tokenClasses or tokenValues)
                 if self._classification_type == ClassificationType.CATEGORY_PREDICTION:
+                    t_df = t_df[t_df['label'] == 'True']
+                    v_df = v_df[v_df['label'] == 'True']
+                # Get the list of target values from the dataframe
+                if self._transformer_type == TransformerType.DECODER:
+                    t_tgt = t_df[self._tgt_column_name].values.tolist()
+                    v_tgt = v_df[self._tgt_column_name].values.tolist()
+                else:
+                    t_tgt = list(map(lambda t: labels_ids_dict[t], t_df[self._tgt_column_name].values.tolist()))
+                    v_tgt = list(map(lambda t: labels_ids_dict[t], v_df[self._tgt_column_name].values.tolist()))
+                # If the model predicts token classes, remove the token values from the input, else remove
+                # the token classes from the input
+                if self._tratto_model_type == TrattoModelType.TOKEN_CLASSES:
+                    t_df = t_df.drop(['token', 'tokenInfo'], axis=1)
+                    v_df = v_df.drop(['token', 'tokenInfo'], axis=1)
+                    # Remove the tokenClass column if the model will predict the tokenClass as target
+                    if self._classification_type == ClassificationType.CATEGORY_PREDICTION:
+                        t_df = t_df.drop(['tokenClass'], axis=1)
+                        v_df = v_df.drop(['tokenClass'], axis=1)
+                else:
                     t_df = t_df.drop(['tokenClass'], axis=1)
                     v_df = v_df.drop(['tokenClass'], axis=1)
+                    # Remove the token column if the model will predict the token as target
+                    if self._classification_type == ClassificationType.CATEGORY_PREDICTION:
+                        t_df = t_df.drop(['token'], axis=1)
+                        v_df = v_df.drop(['token'], axis=1)
+                    # TODO: Check if tokenInfo must be removed
+                    # Remove the tokenInfo column if the classificator is a decoder
+                    #if self._transformer_type == TransformerType.DECODER and not self._classification_type == ClassificationType.LABEL_PREDICTION:
+                    #    t_df = t_df.drop(['tokenInfo'], axis=1)
+                    #    v_df = v_df.drop(['tokenInfo'], axis=1)
+            # Delete the tgt labels from the input dataset, and others irrelevant columns
+            if self._tratto_model_type == TrattoModelType.ORACLES:
+                t_df.drop(['label', 'oracleId'], axis=1, inplace=True)
+                v_df.drop(['label', 'oracleId'], axis=1, inplace=True)
             else:
-                t_df = t_df.drop(['tokenClass'], axis=1)
-                v_df = v_df.drop(['tokenClass'], axis=1)
-                # Remove the token column if the model will predict the token as target
-                if self._classification_type == ClassificationType.CATEGORY_PREDICTION:
-                    t_df = t_df.drop(['token'], axis=1)
-                    v_df = v_df.drop(['token'], axis=1)
-                # TODO: Check if tokenInfo must be removed
-                # Remove the tokenInfo column if the classificator is a decoder
-                #if self._transformer_type == TransformerType.DECODER and not self._classification_type == ClassificationType.LABEL_PREDICTION:
-                #    t_df = t_df.drop(['tokenInfo'], axis=1)
-                #    v_df = v_df.drop(['tokenInfo'], axis=1)
-        # Delete the tgt labels from the input dataset, and others irrelevant columns
-        if self._tratto_model_type == TrattoModelType.ORACLES:
-            t_df.drop(['label', 'oracleId'], axis=1, inplace=True)
-            v_df.drop(['label', 'oracleId'], axis=1, inplace=True)
+                t_df.drop(['label', 'oracleId', 'classJavadoc', 'classSourceCode', 'projectName'], axis=1, inplace=True)
+                v_df.drop(['label', 'oracleId', 'classJavadoc', 'classSourceCode', 'projectName'], axis=1, inplace=True)
+            # Generate input strings for training and validation datasets
+            t_src = self.concat_src(t_df, self._tokenizer)
+            v_src = self.concat_src(v_df, self. _tokenizer)
+            # Release memory to reduce consumptions with large datasets
+            del t_df
+            del v_df
+            gc.collect()
+            # Save src and tgt datasets
+            filename = f'src_tgt_{self._tratto_model_type.lower()}_{self._classification_type.lower()}_{self._transformer_type.lower()}.csv'
+            file_dir_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'resources', 'pre_processed_datasets')
+            if not os.path.exists(file_dir_path):
+                os.makedirs(file_dir_path)
+            with open(os.path.join(file_dir_path, f"train_{filename}"), 'w', newline='') as csvfile:
+                csv_writer = csv.writer(csvfile)
+                csv_writer.writerow(['src', 'tgt'])
+                csv_writer.writerows(zip(t_src, t_tgt))
+            with open(os.path.join(file_dir_path, f"validation_{filename}"), 'w', newline='') as csvfile:
+                csv_writer = csv.writer(csvfile)
+                csv_writer.writerow(['src', 'tgt'])
+                csv_writer.writerows(zip(v_src, v_tgt))
         else:
-            t_df.drop(['label', 'oracleId', 'classJavadoc', 'classSourceCode', 'projectName'], axis=1, inplace=True)
-            v_df.drop(['label', 'oracleId', 'classJavadoc', 'classSourceCode', 'projectName'], axis=1, inplace=True)
-        # Generate input strings for training and validation datasets
-        t_src = self.concat_src(t_df, self._tokenizer)
-        v_src = self.concat_src(v_df, self. _tokenizer)
-        # Release memory to reduce consumptions with large datasets
-        del t_df
-        del v_df
-        gc.collect()
+            t_src = t_df['src'].values.tolist()
+            t_tgt = t_df['tgt'].values.tolist()
+            v_src = v_df['src'].values.tolist()
+            v_tgt = v_df['tgt'].values.tolist()
         # Generate tensors of tokenized input and target datapoints
         t_t_train = self.tokenize_dataset(t_src, t_tgt, self._tokenizer, self._transformer_type)
         t_t_validation = self.tokenize_dataset(v_src, v_tgt, self._tokenizer, self._transformer_type)
@@ -684,13 +718,13 @@ class DataProcessor:
             (df['oracleSoFar'] == '') &
             (df['token'] == ';') &
             (df['label'] == True)
-            ]
+        ]
         # Extract non-empty oracles from dataframe
         df_not_empty_semicolon_true = df[
             (df['oracleSoFar'].str.strip() != '') |
             (df['token'] != ';') |
             (df['label'] != True)
-            ]
+        ]
         # Compute the size of the two dataframes
         df_empty_size = len(df_empty_semicolon_true)
         df_not_empty_size = len(df_not_empty_semicolon_true)
