@@ -688,8 +688,10 @@ class DataProcessor:
                 self._classification_type.lower(),
                 self._transformer_type.lower()
             )
-            if not os.path.exists(file_dir_path):
-                os.makedirs(file_dir_path)
+            if not os.path.exists(os.path.join(file_dir_path, "train")):
+                os.makedirs(os.path.join(file_dir_path, "train"))
+            if not os.path.exists(os.path.join(file_dir_path, "validation")):
+                os.makedirs(os.path.join(file_dir_path, "validation"))
             with open(os.path.join(file_dir_path, "train", f"train_{filename}"), 'w', newline='') as csvfile:
                 csv_writer = csv.writer(csvfile)
                 csv_writer.writerow(['src', 'tgt'])
