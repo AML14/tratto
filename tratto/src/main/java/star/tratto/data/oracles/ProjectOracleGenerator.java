@@ -228,7 +228,25 @@ public class ProjectOracleGenerator {
             return filteredTags.get(0);
         }
         if (filteredTags.size() == 0) {
-            throw new Error("Unable to find a tag corresponding to " + targetTag);
+            if (targetTag.isEmpty()) { // happens when the condition Javadoc tag is deliberately set to ""
+                String fileContent = DatasetUtils.getOperationClassSource(
+                        new Operation(targetClass.resolve().getQualifiedName(), null, null),
+                        this.project.srcPath()
+                ).orElseThrow(() -> new Error("Unable to find source code for class " + targetClass.resolve().getQualifiedName()));
+                // create new TagAndText for condition which could not be created while processing project
+                TagAndText newTagAndText = new TagAndText(
+                        fileContent,
+                        targetClass,
+                        targetCallable,
+                        targetOracleType,
+                        "",
+                        ""
+                );
+                this.tagAndTexts.add(newTagAndText);
+                return newTagAndText;
+            } else {
+                throw new Error("Unable to find a tag corresponding to " + targetTag);
+            }
         }
         // find index of most semantically similar tag (cosine similarity).
         TagAndText mostSimilarTag = null;
