@@ -701,6 +701,10 @@ class DataProcessor:
                 csv_writer.writerow(['src', 'tgt'])
                 csv_writer.writerows(zip(v_src, v_tgt))
         else:
+            if t_df['tgt'].dtype == bool:
+                t_df['tgt'] = t_df['tgt'].astype(str)
+            if v_df['tgt'].dtype == bool:
+                v_df['tgt'] = v_df['tgt'].astype(str)
             t_src = t_df['src'].values.tolist()
             t_tgt = t_df['tgt'].values.tolist()
             v_src = v_df['src'].values.tolist()

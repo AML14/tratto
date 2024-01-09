@@ -270,13 +270,15 @@ class ArgumentParser:
             help="Trasformer type: encoder or decoder. Default decoder."
         )
         parser.add_argument(
-            "--pre-processing",
-            action='store_true',
+            "--pre_processing",
+            default="True",
+            type=str,
             help="Perform pre-processing of the dataset"
         )
         parser.add_argument(
             "--rapids_cudf",
-            action='store_true',
+            default="False",
+            type=str,
             help="Use RAPIDS cuDF library for faster data loading"
         )
 
@@ -480,13 +482,15 @@ class ArgumentParser:
             help="Avoid using CUDA when available"
         )
         parser.add_argument(
-            "--pre-processing",
-            action='store_true',
+            "--pre_processing",
+            default="True",
+            type=str,
             help="Perform pre-processing of the dataset"
         )
         parser.add_argument(
             "--rapids_cudf",
-            action='store_true',
+            default="False",
+            type=str,
             help="Use RAPIDS cuDF library for faster data loading"
         )
         parser.add_argument(
