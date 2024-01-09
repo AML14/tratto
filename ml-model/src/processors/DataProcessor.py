@@ -682,7 +682,6 @@ class DataProcessor:
                 os.path.dirname(os.path.abspath(__file__)),
                 '..',
                 '..',
-                '..',
                 'datasets',
                 'pre_processed_datasets',
                 self._tratto_model_type.lower(),
