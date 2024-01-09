@@ -16,6 +16,13 @@ class ArgumentParser:
             help="The server port."
         )
         parser.add_argument(
+            "--checkpoint_path_oracles",
+            default=None,
+            type=str,
+            required=True,
+            help="The path to the checkpoint of the oracles model to load."
+        )
+        parser.add_argument(
             "--checkpoint_path_token_classes",
             default=None,
             type=str,
@@ -28,6 +35,15 @@ class ArgumentParser:
             type=str,
             required=True,
             help="The path to the checkpoint of the tokenValues model to load."
+        )
+        parser.add_argument(
+            "--model_type_oracles",
+            default=None,
+            type=str,
+            required=True,
+            help="Oracles model type for the selected in the list: " + ", ".join(
+                ModelClasses.get_available_model_classes()
+            )
         )
         parser.add_argument(
             "--model_type_token_classes",
@@ -48,6 +64,12 @@ class ArgumentParser:
             )
         )
         parser.add_argument(
+            "--transformer_type_oracles",
+            default="decoder",
+            type=str,
+            help="Trasformer type: encoder or decoder. Default decoder."
+        )
+        parser.add_argument(
             "--transformer_type_token_classes",
             default="decoder",
             type=str,
@@ -58,6 +80,16 @@ class ArgumentParser:
             default="decoder",
             type=str,
             help="Trasformer type: encoder or decoder. Default decoder."
+        )
+        parser.add_argument(
+            "--classification_type_oracles",
+            default=None,
+            type=str,
+            required=True,
+            help="TokenClasses classification type for the selected in the list: " + ", ".join([
+                ClassificationType.CATEGORY_PREDICTION,
+                ClassificationType.LABEL_PREDICTION
+            ])
         )
         parser.add_argument(
             "--classification_type_token_classes",
@@ -80,6 +112,12 @@ class ArgumentParser:
             ])
         )
         parser.add_argument(
+            "--tokenizer_name_oracles",
+            default=None,
+            type=str,
+            help="Pretrained tokenizer name or path if not the same as model_name for the oracles model."
+        )
+        parser.add_argument(
             "--tokenizer_name_token_classes",
             default=None,
             type=str,
@@ -90,6 +128,13 @@ class ArgumentParser:
             default=None,
             type=str,
             help="Pretrained tokenizer name or path if not the same as model_name for the tokenValues model."
+        )
+        parser.add_argument(
+            "--model_name_or_path_oracles",
+            default=None,
+            type=str,
+            required=True,
+            help="Path to pre-trained model or shortcut name for the oracles model."
         )
         parser.add_argument(
             "--model_name_or_path_token_classes",
@@ -104,6 +149,12 @@ class ArgumentParser:
             type=str,
             required=True,
             help="Path to pre-trained model or shortcut name for the tokenValues model."
+        )
+        parser.add_argument(
+            "--config_name_oracles",
+            default=None,
+            type=str,
+            help="Pretrained config name or path if not the same as model_name for the oracles model."
         )
         parser.add_argument(
             "--config_name_token_classes",

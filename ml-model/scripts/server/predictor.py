@@ -46,6 +46,16 @@ classificator_converter_out_label = {k: i for i, k in classificator_converter_in
 
 SINGLE_PUNCTUATION_SEMICOLON = "single_punctuation_semiColon"
 
+"""def generate_oracle(
+        device,
+        model,
+        dl_src,
+        tokenizer,
+        classification_type,
+        transformer_type
+):"""
+
+
 def predict_next(
         device,
         model,
@@ -242,6 +252,25 @@ def pre_process_dataset(
     # Return pre-processed dataset
     return df_dataset
 
+def get_input_model_oracles(
+        df_dataset,
+        tokenizer,
+        classification_type,
+        transformer_type
+):
+    # Remove useless columns
+    df_dataset = df_dataset.drop([
+        'projectName', 'packageName', 'className', 'classJavadoc', 'classSourceCode',
+        'oracleSoFar', 'token', 'tokenClass', 'tokenInfo'
+    ], axis=1)
+    # Define the new order of columns
+    new_columns_order = [
+        'javadocTag', 'oracleType', 'methodSourceCode', 'methodJavadoc', 'oracleId', 'oracle'
+    ]
+    # Reindex the DataFrame with the new order
+    df_dataset = df_dataset.reindex(columns=new_columns_order)
+    return df_dataset
+
 def get_input_model_classes(
         df_dataset,
         tokenizer,
@@ -379,12 +408,16 @@ def tokenize_input(
 def next_token(
         device,
         filename: str,
+        classification_type_oracles: Type[ClassificationType],
         classification_type_token_classes: Type[ClassificationType],
         classification_type_token_values: Type[ClassificationType],
+        transformer_type_oracles: Type[TransformerType],
         transformer_type_token_classes: Type[TransformerType],
         transformer_type_token_values: Type[TransformerType],
+        model_oracles: Type[PreTrainedModel],
         model_classes: Type[PreTrainedModel],
         model_values: Type[PreTrainedModel],
+        tokenizer_oracles: PreTrainedTokenizer,
         tokenizer_token_classes: PreTrainedTokenizer,
         tokenizer_token_values: PreTrainedTokenizer
 ):
