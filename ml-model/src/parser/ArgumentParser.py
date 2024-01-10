@@ -170,6 +170,94 @@ class ArgumentParser:
         )
 
     @staticmethod
+    def add_pre_process_dataset_arguments(parser: Type[ArgumentParser]):
+        @staticmethod
+        def add_training_arguments(parser: Type[ArgumentParser]):
+            """
+            Set up the arguments to parse from the command line.
+
+            Parameters
+            ----------
+            parser: Type[ArgumentParser]
+                The parser that extract the values of the parameters from the command line
+            """
+            # Required parameters
+            parser.add_argument(
+                "--train_path",
+                default=None,
+                type=str,
+                required=True,
+                help="The directory to the train dataset."
+            )
+            parser.add_argument(
+                "--validation_path",
+                default=None,
+                type=str,
+                required=True,
+                help="The directory to the validation dataset."
+            )
+            parser.add_argument(
+                "--model_type",
+                default=None,
+                type=str,
+                required=True,
+                help="Model type selected in the list: " + ", ".join(ModelClasses.get_available_model_classes())
+            )
+            parser.add_argument(
+                "--tokenizer_name",
+                default=None,
+                type=str,
+                help="Pretrained tokenizer name or path if not the same as model_name"
+            )
+            # Optional parameters
+            parser.add_argument(
+                "--classification_type",
+                default="label_prediction",
+                type=str,
+                help="Classification type: category prediction (category_prediction) or label prediction (label_prediction)."
+            )
+            parser.add_argument(
+                "--tratto_model_type",
+                default="token_classes",
+                type=str,
+                help="Tratto model type: token classes (token_classes) or token values (token_values)."
+            )
+            parser.add_argument(
+                "--transformer_type",
+                default="decoder",
+                type=str,
+                help="Trasformer type: encoder or decoder. Default decoder."
+            )
+            parser.add_argument(
+                "--no_cuda",
+                action='store_true',
+                help="Avoid using CUDA when available"
+            )
+            parser.add_argument(
+                "--pre_processing",
+                default="True",
+                type=str,
+                help="Perform pre-processing of the dataset"
+            )
+            parser.add_argument(
+                "--rapids_cudf",
+                default="False",
+                type=str,
+                help="Use RAPIDS cuDF library for faster data loading"
+            )
+            parser.add_argument(
+                "--overwrite_output_dir",
+                action='store_true',
+                help="Overwrite the content of the output directory"
+            )
+            parser.add_argument(
+                "--seed",
+                type=int,
+                default=42,
+                help="random seed for initialization"
+            )
+
+    @staticmethod
     def add_init_arguments(parser: Type[ArgumentParser]):
         """
         Set up the arguments to parse from the command line.
