@@ -1,0 +1,701 @@
+[
+    {
+        "operation": {
+            "name": "io.lettuce.core.RedisURI",
+            "parameterTypes": [
+                "String",
+                "int",
+                "Duration"
+            ],
+            "classname": "io.lettuce.core.RedisURI"
+        },
+        "identifiers": {
+            "parameters": [
+                "host",
+                "port",
+                "timeout"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param host the host",
+                "guard": {
+                    "condition": "host != null && (host.equals(\"\"))==false",
+                    "description": "@param host the host"
+                }
+            },
+            {
+                "description": "@param timeout timeout value",
+                "guard": {
+                    "condition": "timeout != null && timeout >= 0",
+                    "description": "@param timeout timeout value"
+                }
+            }
+        ],
+        "post": [],
+        "throws": []
+    },
+    {
+        "operation": {
+            "name": "create",
+            "parameterTypes": [
+                "String"
+            ],
+            "classname": "io.lettuce.core.RedisURI"
+        },
+        "identifiers": {
+            "parameters": [
+                "uri"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param uri The URI string.",
+                "guard": {
+                    "condition": "uri != null && (uri.equals(\"\"))==false;",
+                    "description": "@param uri The URI string."
+                }
+            }
+        ],
+        "post": [],
+        "throws": []
+    },
+    {
+        "operation": {
+            "name": "builder",
+            "parameterTypes": [
+                "RedisURI"
+            ],
+            "classname": "io.lettuce.core.RedisURI"
+        },
+        "identifiers": {
+            "parameters": [
+                "source"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param source the initialization source, must not be {@code null}.",
+                "guard": {
+                    "condition": "source != null",
+                    "description": "@param source the initialization source, must not be {@code null}."
+                }
+            }
+        ],
+        "post": [],
+        "throws": []
+    },
+    {
+        "operation": {
+            "name": "applyAuthentication",
+            "parameterTypes": [
+                "RedisURI"
+            ],
+            "classname": "io.lettuce.core.RedisURI"
+        },
+        "identifiers": {
+            "parameters": [
+                "source"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param source must not be {@code null}.",
+                "guard": {
+                    "condition": "source != null",
+                    "description": "@param source must not be {@code null}."
+                }
+            }
+        ],
+        "post": [],
+        "throws": []
+    },
+    {
+        "operation": {
+            "name": "setUsername",
+            "parameterTypes": [
+                "String"
+            ],
+            "classname": "io.lettuce.core.RedisURI"
+        },
+        "identifiers": {
+            "parameters": [
+                "username"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param username the username, must not be {@code null}.",
+                "guard": {
+                    "condition": "username != null",
+                    "description": "@param username the username, must not be {@code null}."
+                }
+            }
+        ],
+        "post": [],
+        "throws": [
+            {
+                "exception": "java.lang.IllegalStateException",
+                "description": "@throws IllegalStateException if a {@link RedisCredentialsProvider} is configured",
+                "guard": {
+                    "condition": "receiverObjectID.credentialsProvider != null",
+                    "description": "@throws IllegalStateException if a {@link RedisCredentialsProvider} is configured"
+                }
+            }
+        ]
+    },
+    {
+        "operation": {
+            "name": "setTimeout",
+            "parameterTypes": [
+                "Duration"
+            ],
+            "classname": "io.lettuce.core.RedisURI"
+        },
+        "identifiers": {
+            "parameters": [
+                "timeout"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param timeout the command timeout for synchronous command execution.",
+                "guard": {
+                    "condition": "timeout != null && timeout >= 0",
+                    "description": "@param timeout the command timeout for synchronous command execution."
+                }
+            }
+        ],
+        "post": [],
+        "throws": []
+    },
+    {
+        "operation": {
+            "name": "setDatabase",
+            "parameterTypes": [
+                "int"
+            ],
+            "classname": "io.lettuce.core.RedisURI"
+        },
+        "identifiers": {
+            "parameters": [
+                "database"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param database the Redis database number.",
+                "guard": {
+                    "condition": "database >= 0",
+                    "description": "@param database the Redis database number."
+                }
+            }
+        ],
+        "post": [],
+        "throws": []
+    },
+    {
+        "operation": {
+            "name": "setLibraryName",
+            "parameterTypes": [
+                "String"
+            ],
+            "classname": "io.lettuce.core.RedisURI"
+        },
+        "identifiers": {
+            "parameters": [
+                "libraryName"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param libraryName the library name.",
+                "guard": {
+                    "condition": "libraryName == null || (libraryName.contains(\" \"))==false",
+                    "description": "@param libraryName the library name."
+                }
+            }
+        ],
+        "post": [],
+        "throws": [
+            {
+                "exception": "java.lang.IllegalArgumentException",
+                "description": "",
+                "guard": {
+                    "condition": "libraryName != null && libraryName.contains(\" \")",
+                    "description": ""
+                }
+            }
+        ]
+    },
+    {
+        "operation": {
+            "name": "setLibraryVersion",
+            "parameterTypes": [
+                "String"
+            ],
+            "classname": "io.lettuce.core.RedisURI"
+        },
+        "identifiers": {
+            "parameters": [
+                "libraryVersion"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param libraryVersion the library version.",
+                "guard": {
+                    "condition": "libraryVersion == null || (libraryVersion.contains(\" \"))==false",
+                    "description": "@param libraryVersion the library version."
+                }
+            }
+        ],
+        "post": [],
+        "throws": [
+            {
+                "exception": "java.lang. IllegalArgumentException",
+                "description": "",
+                "guard": {
+                    "condition": "libraryVersion == null || (libraryVersion.contains(\" \"))==false",
+                    "description": ""
+                }
+            }
+        ]
+    },
+    {
+        "operation": {
+            "name": "applySsl",
+            "parameterTypes": [
+                "RedisURI"
+            ],
+            "classname": "io.lettuce.core.RedisURI"
+        },
+        "identifiers": {
+            "parameters": [
+                "source"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param source must not be {@code null}.",
+                "guard": {
+                    "condition": "source != null",
+                    "description": "@param source must not be {@code null}."
+                }
+            }
+        ],
+        "post": [],
+        "throws": []
+    },
+    {
+        "operation": {
+            "name": "setVerifyPeer",
+            "parameterTypes": [
+                "SslVerifyMode"
+            ],
+            "classname": "io.lettuce.core.RedisURI"
+        },
+        "identifiers": {
+            "parameters": [
+                "verifyMode"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param verifyMode verification mode to use when using {@link #isSsl() SSL}.",
+                "guard": {
+                    "condition": "verifyMode != null",
+                    "description": "@param verifyMode verification mode to use when using {@link #isSsl() SSL}."
+                }
+            }
+        ],
+        "post": [],
+        "throws": []
+    },
+    {
+        "operation": {
+            "name": "buildRedisUriFromUri",
+            "parameterTypes": [
+                "URI"
+            ],
+            "classname": "io.lettuce.core.RedisURI"
+        },
+        "identifiers": {
+            "parameters": [
+                "uri"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "",
+                "guard": {
+                    "condition": "uri != null && uri.getScheme() != null",
+                    "description": ""
+                }
+            }
+        ],
+        "post": [],
+        "throws": []
+    },
+    {
+        "operation": {
+            "name": "redis",
+            "parameterTypes": [
+                "String",
+                "int"
+            ],
+            "classname": "io.lettuce.core.RedisURI"
+        },
+        "identifiers": {
+            "parameters": [
+                "host",
+                "port"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param host the host name",
+                "guard": {
+                    "condition": "host != null && (host.equals(\"\"))==false",
+                    "description": "@param host the host name"
+                }
+            },
+            {
+                "description": "@param port the port",
+                "guard": {
+                    "condition": "port >= 0",
+                    "description": "@param port the port"
+                }
+            }
+        ],
+        "post": [],
+        "throws": []
+    },
+    {
+        "operation": {
+            "name": "sentinel",
+            "parameterTypes": [
+                "String"
+            ],
+            "classname": "io.lettuce.core.RedisURI"
+        },
+        "identifiers": {
+            "parameters": [
+                "host"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "",
+                "guard": {
+                    "condition": "host != null && (host.equals(\"\"))==false",
+                    "description": ""
+                }
+            }
+        ],
+        "post": [],
+        "throws": []
+    },
+    {
+        "operation": {
+            "name": "withSentinel",
+            "parameterTypes": [
+                "String"
+            ],
+            "classname": "io.lettuce.core.RedisURI"
+        },
+        "identifiers": {
+            "parameters": [
+                "host"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "",
+                "guard": {
+                    "condition": "receiverObjectID.sentinels.isEmpty();",
+                    "description": ""
+                }
+            },
+            {
+                "description": "@param host the host name",
+                "guard": {
+                    "condition": "host != null && (host.equals(\"\"))==false",
+                    "description": "@param host the host name"
+                }
+            }
+        ],
+        "post": [],
+        "throws": []
+    },
+    {
+        "operation": {
+            "name": "withLibraryName",
+            "parameterTypes": [
+                "String"
+            ],
+            "classname": "io.lettuce.core.RedisURI"
+        },
+        "identifiers": {
+            "parameters": [
+                "libraryName"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param libraryName the library name",
+                "guard": {
+                    "condition": "libraryName == null || (libraryName.contains(\" \"))==false",
+                    "description": "@param libraryName the library name"
+                }
+            }
+        ],
+        "post": [],
+        "throws": [
+            {
+                "exception": "java.lang.IllegalArgumentException",
+                "description": "",
+                "guard": {
+                    "condition": "libraryName != null && libraryName.contains(\" \")",
+                    "description": ""
+                }
+            }
+        ]
+    },
+    {
+        "operation": {
+            "name": "withLibraryVersion",
+            "parameterTypes": [
+                "String"
+            ],
+            "classname": "io.lettuce.core.RedisURI"
+        },
+        "identifiers": {
+            "parameters": [
+                "libraryVersion"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param libraryVersion the library version",
+                "guard": {
+                    "condition": " libraryVersion == null || (libraryVersion.contains(\" \"))==false",
+                    "description": "@param libraryVersion the library version"
+                }
+            }
+        ],
+        "post": [],
+        "throws": [
+            {
+                "exception": "java.lang.IllegalArgumentException",
+                "description": "",
+                "guard": {
+                    "condition": "libraryVersion != null && libraryVersion.contains(\" \")",
+                    "description": ""
+                }
+            }
+        ]
+    },
+    {
+        "operation": {
+            "name": "withAuthentication",
+            "parameterTypes": [
+                "String",
+                "CharSequence"
+            ],
+            "classname": "io.lettuce.core.RedisURI"
+        },
+        "identifiers": {
+            "parameters": [
+                "username",
+                "password"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param username the user name",
+                "guard": {
+                    "condition": "username != null",
+                    "description": "@param username the user name"
+                }
+            },
+            {
+                "description": "@param password the password name",
+                "guard": {
+                    "condition": "password != null",
+                    "description": "@param password the password name"
+                }
+            }
+        ],
+        "post": [],
+        "throws": []
+    },
+    {
+        "operation": {
+            "name": "withPassword",
+            "parameterTypes": [
+                "String"
+            ],
+            "classname": "io.lettuce.core.RedisURI"
+        },
+        "identifiers": {
+            "parameters": [
+                "password"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param password the password",
+                "guard": {
+                    "condition": "password != null",
+                    "description": "@param password the password"
+                }
+            }
+        ],
+        "post": [],
+        "throws": []
+    },
+    {
+        "operation": {
+            "name": "withPassword",
+            "parameterTypes": [
+                "CharSequence"
+            ],
+            "classname": "io.lettuce.core.RedisURI"
+        },
+        "identifiers": {
+            "parameters": [
+                "password"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param password the password",
+                "guard": {
+                    "condition": "password != null",
+                    "description": "@param password the password"
+                }
+            }
+        ],
+        "post": [],
+        "throws": []
+    },
+    {
+        "operation": {
+            "name": "withTimeout",
+            "parameterTypes": [
+                "Duration"
+            ],
+            "classname": "io.lettuce.core.RedisURI"
+        },
+        "identifiers": {
+            "parameters": [
+                "timeout"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param timeout must not be {@code null} or negative.",
+                "guard": {
+                    "condition": "timeout != null && timeout >= 0",
+                    "description": "@param timeout must not be {@code null} or negative."
+                }
+            }
+        ],
+        "post": [],
+        "throws": []
+    },
+    {
+        "operation": {
+            "name": "withSentinelMasterId",
+            "parameterTypes": [
+                "String"
+            ],
+            "classname": "io.lettuce.core.RedisURI"
+        },
+        "identifiers": {
+            "parameters": [
+                "sentinelMasterId"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param sentinelMasterId sentinel master id, must not be empty or {@code null}",
+                "guard": {
+                    "condition": "(sentinelMasterId != null && (sentinelMasterId.equals(\"\"))==false) || sentinelMasterId == null",
+                    "description": "@param sentinelMasterId sentinel master id, must not be empty or {@code null}"
+                }
+            }
+        ],
+        "post": [],
+        "throws": []
+    },
+    {
+        "operation": {
+            "name": "build",
+            "parameterTypes": [],
+            "classname": "io.lettuce.core.RedisURI"
+        },
+        "identifiers": {
+            "parameters": [],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [],
+        "post": [],
+        "throws": [
+            {
+                "exception": "java.lang.IllegalStateException",
+                "description": "",
+                "guard": {
+                    "condition": "receiverObjectID.sentinels.isEmpty() && (receiverObjectID.host==null || receiverObjectID.host.equals(\"\")) && (receiverObjectID.socket==null || receiverObjectID.socket.equals(\"\"))",
+                    "description": ""
+                }
+            }
+        ]
+    }
+]
