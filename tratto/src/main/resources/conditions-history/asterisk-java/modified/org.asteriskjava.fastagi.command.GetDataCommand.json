@@ -14,20 +14,12 @@
             "receiverName": "receiverObjectID",
             "returnName": "methodResultID"
         },
-        "pre": [
-            {
-                "description": "@param file the name of the file to stream, must not include extension.",
-                "guard": {
-                    "condition": "file.lastIndexOf('.') == -1 || file.lastIndexOf('.') == 0",
-                    "description": "@param file the name of the file to stream, must not include extension."
-                }
-            }
-        ],
+        "pre": [],
         "post": [
             {
                 "description": "",
                 "property": {
-                    "condition": "methodResultID.maxDigits == 1024 && methodResultID.timeout=1024",
+                    "condition": "methodResultID.getMaxDigits() == 1024 && methodResultID.getTimeout() == 0",
                     "description": ""
                 },
                 "guard": {
@@ -62,20 +54,13 @@
                     "condition": "timeout >= -1",
                     "description": "@param timeout the timeout in milliseconds to wait for data. 0 means standard timeout value, -1 means \"ludicrous time\" (essentially never times out)."
                 }
-            },
-            {
-                "description": "@param file    the name of the file to stream, must not include extension.",
-                "guard": {
-                    "condition": "file.lastIndexOf('.') == -1 || file.lastIndexOf('.') == 0",
-                    "description": "@param file    the name of the file to stream, must not include extension."
-                }
             }
         ],
         "post": [
             {
                 "description": "",
                 "property": {
-                    "condition": "methodResultID.timeout >= -1",
+                    "condition": "methodResultID.getTimeout() >= -1",
                     "description": ""
                 },
                 "guard": {
