@@ -12,7 +12,7 @@ rapids_cudf="False"
 
 if [ "$#" -eq 1 ] && [ "$1" == "--accelerate" ]; then
   echo "Running with accelerate"
-  accelerate launch --config_file accelerate_config_fsdp.yaml scripts/train/run_classifier_accelerate.py \
+  accelerate launch --config_file accelerate_config_fsdp.yaml scripts/setup/pre_process_dataset.py \
     --model_type "$model_type" \
     --tokenizer_name "$tokenizer_name" \
     --tratto_model_type "$tratto_model_type" \
@@ -24,7 +24,7 @@ if [ "$#" -eq 1 ] && [ "$1" == "--accelerate" ]; then
     --rapids_cudf "$rapids_cudf"
 else
   echo "Running without accelerate"
-  python3 scripts/train/run_classifier.py \
+  python3 scripts/setup/pre_process_dataset.py \
     --model_type "$model_type" \
     --tokenizer_name "$tokenizer_name" \
     --tratto_model_type "$tratto_model_type" \
