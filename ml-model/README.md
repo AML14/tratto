@@ -63,15 +63,8 @@ macOS and Windows systems.
     pip install -r requirements.txt
     ```
 
-9. If you have the GPU available, and you want to use the RAPIDS library to perform pandas operations on the GPU, install the `cudf` library, and its dependencies.
-    ```shell
-    pip install \
-    --extra-index-url=https://pypi.nvidia.com \
-    cudf-cu11==23.12.* dask-cudf-cu11==23.12.* cuml-cu11==23.12.* \
-    cugraph-cu11==23.12.* cuspatial-cu11==23.12.* cuproj-cu11==23.12.* \
-    cuxfilter-cu11==23.12.* cucim-cu11==23.12.* pylibraft-cu11==23.12.* \
-    raft-dask-cu11==23.12.*
-    ```
+9. If you have the GPU available, and you want to use the RAPIDS library to perform pandas operations on the GPU, install the `cudf` library and its dependencies, following the instructions on the official documentation ([link](https://docs.rapids.ai/install?_gl=1*1awki0p*_ga*MTQ2NjU1MDc5MS4xNzAyNjQzMzM4*_ga_RKXFW6CM42*MTcwNDg3OTE3My40LjEuMTcwNDg3OTE4OS40NC4wLjA.)).
+
    Otherwise, install the additional requirements with the following command:
     ```shell
     pip install -r additional_requirements.txt
