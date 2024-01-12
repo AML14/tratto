@@ -42,20 +42,12 @@ public class OracleInserterTest {
     private List<OracleOutput> getNonAxiomaticOracles() {
         return List.of(
                 new OracleOutput(
-                        "java.lang.Integer",
-                        "valueOf(int i)",
-                        OracleType.NON_AXIOMATIC,
-                        "assertTrue(primitiveInt == objectInt.intValue())",
+                        "tutorial.Stack",
                         "",
-                        "assertionTest"
-                ),
-                new OracleOutput(
-                        "java.lang.Integer",
-                        "parseInt(java.lang.String s)",
                         OracleType.NON_AXIOMATIC,
+                        "assertTrue(stack0.isEmpty())",
                         "",
-                        "java.lang.NumberFormatException",
-                        "exceptionalTest"
+                        "test0"
                 )
         );
     }
@@ -69,13 +61,16 @@ public class OracleInserterTest {
         );
         // get oracles
         List<OracleOutput> oracles;
+        String tog;
         if (isAxiomatic) {
             oracles = getAxiomaticOracles();
+            tog = "jdoctor";
         } else {
             oracles = getNonAxiomaticOracles();
+            tog = "toga";
         }
         // write oracles
-        FileUtils.writeJSON(Paths.get("output", "jdoctor-oracles", "tutorial", "Stack_Oracle.json"), oracles);
+        FileUtils.writeJSON(Paths.get("output", tog + "-oracles", "tutorial", "Stack_Oracle.json"), oracles);
     }
 
     private void cleanup() {
@@ -128,8 +123,20 @@ public class OracleInserterTest {
         setup(false);
         OracleInserter.insertOracles(
                 Paths.get("output", "evosuite-prefixes"),
-                Paths.get("output", "toga-tests"),
+                Paths.get("output", "toga-oracles"),
                 projectClasspath
+        );
+        Path testPath = Paths.get("output", "toga-tests", "tutorial", "Stack_ESTest.java");
+        CompilationUnit cu = FileUtils.getCompilationUnit(testPath);
+        List<MethodDeclaration> testCases = cu.findAll(MethodDeclaration.class);
+        assertEquals(
+                """
+                        @Test(timeout = 4000)
+                        public void test0() throws Throwable {
+                            Stack<String> stack0 = new Stack<String>();
+                            assertTrue(stack0.isEmpty());
+                        }""",
+                testCases.get(0).toString()
         );
         cleanup();
     }
