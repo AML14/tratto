@@ -1270,7 +1270,7 @@ public class OracleInserter {
         List<OracleOutput> oracleOutputs = new ArrayList<>();
         try (Stream<Path> walk = Files.walk(pathToOracles)) {
             walk.forEach(p -> {
-                if (p.endsWith("_Oracle.json")) {
+                if (p.toString().endsWith("_Oracle.json")) {
                     oracleOutputs.addAll(FileUtils.readJSONList(p, OracleOutput.class));
                 }
             });
@@ -1333,6 +1333,8 @@ public class OracleInserter {
         setClassLoader(classpath);
         List<OracleOutput> oracleOutputs = getOracleOutputs(pathToOracles);
         TogType tog = getTogFromOraclePath(pathToOracles);
+        System.out.println(oracleOutputs);
+        System.out.println(tog);
         String togName = tog.toString().toLowerCase();
         Path pathToTests = FileUtils.swapParentDirectory(pathToOracles, togName + "-oracles", togName + "-tests");
         FileUtils.copy(pathToPrefixes, pathToTests);
