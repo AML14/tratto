@@ -11,6 +11,7 @@ from src.types.TransformerType import TransformerType
 from src.types.TrattoModelType import TrattoModelType
 
 accelerator = Accelerator()
+rapids_available = False
 
 def check_cuda_device():
     device_ids = list(range(torch.cuda.device_count()))
@@ -125,12 +126,31 @@ def import_json(file_path: str):
 
 def is_running_on_gpu():
     """
+    The method checks if the code is running on a GPU.
 
     Returns
     -------
-
+    True if the code is running on a GPU. False, otherwise.
     """
     return torch.cuda.is_available()
+
+def is_rapids_available():
+    """
+    The method checks if the Rapids CUDF library is available.
+
+    Returns
+    -------
+    True if the Rapids cuDF library is available. False, otherwise.
+    """
+    global rapids_available
+    return rapids_available
+
+def set_rapids_available():
+    """
+    The method sets the Rapids cuDF library as available.
+    """
+    global rapids_available
+    rapids_available = True
 
 def is_valid_combination(
         tratto_model_type: Type[TrattoModelType],

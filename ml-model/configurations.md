@@ -15,7 +15,6 @@ The scripts for the training of the model requires the following arguments:
 --tokenizer_name [ The name of the tokenizer, from HuggingFace - e.g. Salesforce/codet5p-770m ] \
 --model_name_or_path [ The name of the pre-trained model, from HuggingFace - e.g. Salesforce/codet5p-770m ] \
 --tratto_model_type [ oracles, token_classes, or token_values ] \
---transformer_type [ The transformer type, encoder or decoder - e.g. decoder ] \
 --task_name [ Custom name - e.g. oraclesModel_classifier_decoder ] \
 --max_seq_length [ Max number of input tokens to the model - e.g. 512 ] \
 --batch_size [ Batch size to train the model - e.g. 16] \
@@ -45,7 +44,6 @@ The script for the inference of the model requires the following arguments:
 --tokenizer_name [ The name of the tokenizer, from HuggingFace - e.g. Salesforce/codet5p-770m ] \
 --model_name_or_path [ The name of the pre-trained model, from HuggingFace - e.g. Salesforce/codet5p-770m ] \
 --tratto_model_type [ oracles, token_classes, or token_values ] \
---transformer_type [ The transformer type, encoder or decoder - e.g. decoder ] \
 --checkpoint_path [ Path to the checkpoint to load and use for inference - e.g. checkpoints/token-classes-checkpoint/classes_decoder_category_770/pytorch_model.bin ] \
 --input_path [ Path to the test dataset - e.g. dataset/token-classes-dataset] \
 --output_path [ Path to the output directory where to save the results of the test - test_token_classes_decoder_category_770 ] \

@@ -9,4 +9,6 @@ python3 scripts/test/test_single_project.py \
 --input_path dataset/token-classes-dataset \
 --output_path test_token_classes_decoder_category_770 \
 --project_name gs-core \
---classification_type CATEGORY_PREDICTION
+--classification_type CATEGORY_PREDICTION \
+--pre_processing "True" \
+--rapids_cudf "False"

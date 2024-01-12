@@ -60,3 +60,12 @@ def arg_classification_type(request):
 )
 def arg_transformer_type(request):
     return request.param
+
+@pytest.fixture(
+    scope='session',
+    params=[
+        True
+    ]
+)
+def arg_pre_processing(request):
+    return request.param

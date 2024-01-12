@@ -237,7 +237,7 @@ class OracleTrainer:
                     # Update the total loss
                     total_loss += loss.item()
 
-                if (steps % num_steps) == 0 or step == len(self._dl_train):
+                if (steps % num_steps) == 0:
                     # Compute average statistics for the loss
                     mean_t_loss = total_loss / (num_steps / accumulation_steps)
                     # Compute the f1 score of the model within the accumulation steps
@@ -327,22 +327,19 @@ class OracleTrainer:
 
                     # Save checkpoints
                     self._save_checkpoint(epoch, step, stats)
-                    # Check if the validation loss has improved at the end of the epoch
-                    if step == len(self._dl_train):
-                        print("Check for early stopping...")
-                        # Round F1-Score to discard minor improvments and speed-up convergence
-                        v_f1_micro = round(v_f1_micro, 2)
-                        # Check if validation loss has improved
-                        if v_f1_micro > best_f1_score_micro:
-                            print("Validation loss improved. Reset patience counter...")
-                            counter = 0
-                            best_f1_score_micro = v_f1_micro
-                        else:
-                            print("Validation loss not improved. Increase patience counter...")
-                            counter += 1
-                            if counter > patience and epoch > 1:
-                                print("Early stopping triggered. Training stopped.")
-                                return stats
+            # Validation phase
+            mean_v_loss, v_f1, v_f1_micro, v_accuracy, v_precision, v_recall = self.validation(device)
+            # Round F1-Score to discard minor improvments and speed-up convergence
+            v_f1_micro = round(v_f1_micro, 2)
+            # Check if validation loss has improved
+            if v_f1_micro > best_f1_score_micro:
+                counter = 0
+                best_f1_score_micro = v_f1_micro
+            else:
+                counter += 1
+                if counter > patience and epoch > 1:
+                    print("Early stopping triggered. Training stopped.")
+                    return stats
         return stats
 
     def validation(

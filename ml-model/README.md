@@ -63,15 +63,8 @@ macOS and Windows systems.
     pip install -r requirements.txt
     ```
 
-9. If you have the GPU available, and you want to use the RAPIDS library to perform pandas operations on the GPU, install the `cudf` library, and its dependencies.
-    ```shell
-    pip install \
-    --extra-index-url=https://pypi.nvidia.com \
-    cudf-cu11==23.12.* dask-cudf-cu11==23.12.* cuml-cu11==23.12.* \
-    cugraph-cu11==23.12.* cuspatial-cu11==23.12.* cuproj-cu11==23.12.* \
-    cuxfilter-cu11==23.12.* cucim-cu11==23.12.* pylibraft-cu11==23.12.* \
-    raft-dask-cu11==23.12.*
-    ```
+9. If you have the GPU available, and you want to use the RAPIDS library to perform pandas operations on the GPU, install the `cudf` library and its dependencies, following the instructions on the official documentation ([link](https://docs.rapids.ai/install?_gl=1*1awki0p*_ga*MTQ2NjU1MDc5MS4xNzAyNjQzMzM4*_ga_RKXFW6CM42*MTcwNDg3OTE3My40LjEuMTcwNDg3OTE4OS40NC4wLjA.)).
+
    Otherwise, install the additional requirements with the following command:
     ```shell
     pip install -r additional_requirements.txt
@@ -81,15 +74,6 @@ macOS and Windows systems.
     ```shell
     pip install light-the-torch; ltt install torch torchvision -U
     ```
-
-**Important Note**: After the installation of all the above requirements, check the version of accelerate with the command:
-   ```shell
-     pip show accelerate
-   ```
-If the version is `0.21.0` run the following command to upgrade it to the version `0.25.0`:
-   ```shell
-     pip install accelerate==0.25.0
-   ```
 
 ## 2. Models Checkpoints & Datasets
 
@@ -186,17 +170,10 @@ command ([reference](https://github.com/huggingface/accelerate/issues/1473)):
 pip install light-the-torch; ltt install torch torchvision -U
 ```
 
-The configuration file for the training with accelerate is already provided in the `accelerate_config_fsdp.yaml` file.
-The configuration is set to train the model on 4 GPUs. If you want to train the model on a different number of GPUs, change
-the `num_processes` parameter to the desired number of GPUs. The default configuration is tested, but can be changed and
-customized. The reader can find more information on the FSDP accelerate documentation webpage ([link](https://huggingface.co/docs/accelerate/usage_guides/fsdp)),
-and can generate other type of configuration, using DeepSpeed ([link](https://huggingface.co/docs/accelerate/usage_guides/deepspeed))
-or others approaches.
-
 **Important note**: The model name and the tokenizer name are taken from the HuggingFace models collection, and must be 
 consistent with the model type defined and configured in the `src/pretrained/ModelClasses.py` file.
 
-**Important note**: Remember to set the path to csv version of the datasets if you want to train the model using the `CUDF` library.
+**Important note**: Remember to set the path to `csv` version of the datasets if you want to train the model using the `CUDF` library (otherwise use the `json` version).
 
 
 ## 4. Test the model (Inference)

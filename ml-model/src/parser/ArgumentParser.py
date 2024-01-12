@@ -574,16 +574,16 @@ class ArgumentParser:
             help="Perform pre-processing of the dataset"
         )
         parser.add_argument(
-            "--save_pre_processing",
-            default="False",
-            type=str,
-            help="Perform pre-processing of the dataset"
-        )
-        parser.add_argument(
             "--rapids_cudf",
             default="False",
             type=str,
             help="Use RAPIDS cuDF library for faster data loading"
+        )
+        parser.add_argument(
+            "--save_pre_processing",
+            default="False",
+            type=str,
+            help="Perform pre-processing of the dataset"
         )
         parser.add_argument(
             "--overwrite_output_dir",

@@ -5,6 +5,7 @@ import torch
 from transformers import PreTrainedModel
 from typing import Type
 from src.pretrained.ModelClasses import ModelClasses
+from src.processors.DataProcessor import DataProcessor
 from src.server.Server import Server
 from src.parser.ArgumentParser import ArgumentParser
 from src.types.ClassificationType import ClassificationType
@@ -38,40 +39,8 @@ def setup_model(
     config_class, model_class, tokenizer_class = ModelClasses.getModelClass(model_type)
     # Setup tokenizer
     tokenizer = tokenizer_class.from_pretrained(tokenizer_name)
-
-    # Map token class names
-    _, value_mappings = utils.import_json(
-        os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            '..',
-            '..',
-            'src',
-            'resources',
-            'token_classes_values_mappings.json'
-        )
-    )
-    # If the model is for the token values consider only a subset of words
-    # (the other ones will never appear whitin the dataset)
-    if tratto_model_type == TrattoModelType.TOKEN_VALUES:
-        _, ignore_values = utils.import_json(
-            os.path.join(
-                os.path.dirname(os.path.abspath(__file__)),
-                '..',
-                '..',
-                'src',
-                'resources',
-                'token_classes_ignore_value_mappings.json'
-            )
-        )
-    vocab = tokenizer.get_vocab()
-    for old_word, new_word in value_mappings.items():
-        if tratto_model_type == TrattoModelType.TOKEN_VALUES and old_word in ignore_values:
-            continue
-        for new_sub_word in new_word.split("_"):
-            if not new_sub_word in vocab.keys():
-                tokenizer.add_tokens([new_sub_word])
-
-
+    # Enrich vocabulary
+    DataProcessor.enrich_vocabulary(tokenizer, tratto_model_type)
     # Setup model
     config = config_class.from_pretrained(config_name if config_name else model_name_or_path)
     pt_model = model_class.from_pretrained(model_name_or_path, config=config)
@@ -94,6 +63,16 @@ if __name__ == '__main__':
     args = parser.parse_args()
     # Connect to device
     device = utils.connect_to_device(DeviceType.GPU)
+    # Setup oracles model
+    model_oracles, tokenizer_oracles = setup_model(
+        device,
+        args.model_type_oracles,
+        args.tokenizer_name_oracles,
+        args.model_name_or_path_oracles,
+        args.checkpoint_path_oracles,
+        TrattoModelType.ORACLES,
+        args.config_name_oracles
+    )
     # Setup tokenClasses model
     model_token_classes, tokenizer_token_classes = setup_model(
         device,
@@ -116,19 +95,24 @@ if __name__ == '__main__':
         args.config_name_token_values
     )
     # Get transformer type
+    transformer_type_oracles = TransformerType(args.transformer_type_oracles.upper())
     transformer_type_token_classes = TransformerType(args.transformer_type_token_classes.upper())
     transformer_type_token_values = TransformerType(args.transformer_type_token_values.upper())
     # Instantiate server
     server = Server(
         device,
+        ClassificationType(args.classification_type_oracles.upper()),
         ClassificationType(args.classification_type_token_classes.upper()),
         ClassificationType(args.classification_type_token_values.upper()),
+        transformer_type_oracles,
         transformer_type_token_classes,
         transformer_type_token_values,
+        model_oracles,
         model_token_classes,
         model_token_values,
+        tokenizer_oracles,
         tokenizer_token_classes,
-        tokenizer_token_values,
+        tokenizer_token_values
     )
     # Run server
     server.run(args.port)
