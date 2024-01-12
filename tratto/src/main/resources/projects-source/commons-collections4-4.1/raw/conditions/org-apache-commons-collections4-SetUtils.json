@@ -1,0 +1,685 @@
+[
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.SetUtils",
+      "name": "isEqualSet",
+      "parameterTypes": [
+        "java.util.Collection",
+        "java.util.Collection"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "set1",
+        "set2"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID == true",
+          "description": "True if the sets are equal by value comparison., false otherwise"
+        },
+        "description": "True if the sets are equal by value comparison., false otherwise",
+        "guard": {
+          "condition": "((set1==null)==false) && (set1.equals(set2))",
+          "description": "True if the sets are equal by value comparison., false otherwise"
+        }
+      },
+      {
+        "property": {
+          "condition": "methodResultID == false",
+          "description": "True if the sets are equal by value comparison., false otherwise"
+        },
+        "description": "True if the sets are equal by value comparison., false otherwise",
+        "guard": {
+          "condition": "(((set1==null)==false) && (set1.equals(set2)))==false",
+          "description": "True if the sets are equal by value comparison., false otherwise"
+        }
+      }
+    ],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.SetUtils",
+      "name": "synchronizedSet",
+      "parameterTypes": [
+        "java.util.Set"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "set"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the set is null.",
+        "guard": {
+          "condition": "set==null",
+          "description": "the set is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param set the set to synchronize. set is not null.",
+        "guard": {
+          "condition": "(set==null) == false",
+          "description": "the set to synchronize. set is not null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.SetUtils",
+      "name": "unmodifiableSet",
+      "parameterTypes": [
+        "java.util.Set"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "set"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the set is null.",
+        "guard": {
+          "condition": "set==null",
+          "description": "the set is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param set the set to make unmodifiable. set is not null.",
+        "guard": {
+          "condition": "(set==null) == false",
+          "description": "the set to make unmodifiable. set is not null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.SetUtils",
+      "name": "predicatedSet",
+      "parameterTypes": [
+        "java.util.Set",
+        "org.apache.commons.collections4.Predicate"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "set",
+        "predicate"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the set or predicate is null.",
+        "guard": {
+          "condition": "set==null || predicate==null",
+          "description": "the set or predicate is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param set the set to predicate. set is not null.",
+        "guard": {
+          "condition": "(set==null) == false",
+          "description": "the set to predicate. set is not null."
+        }
+      },
+      {
+        "description": "@param predicate the predicate for the set. predicate is not null.",
+        "guard": {
+          "condition": "(predicate==null) == false",
+          "description": "the predicate for the set. predicate is not null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.SetUtils",
+      "name": "transformedSet",
+      "parameterTypes": [
+        "java.util.Set",
+        "org.apache.commons.collections4.Transformer"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "set",
+        "transformer"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the set or transformer is null.",
+        "guard": {
+          "condition": "set==null || transformer==null",
+          "description": "the set or transformer is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param set the set to transform. set is not null.",
+        "guard": {
+          "condition": "(set==null) == false",
+          "description": "the set to transform. set is not null."
+        }
+      },
+      {
+        "description": "@param transformer the transformer for the set. transformer is not null.",
+        "guard": {
+          "condition": "(transformer==null) == false",
+          "description": "the transformer for the set. transformer is not null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.SetUtils",
+      "name": "orderedSet",
+      "parameterTypes": [
+        "java.util.Set"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "set"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the set is null.",
+        "guard": {
+          "condition": "set==null",
+          "description": "the set is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param set the set to order. set is not null.",
+        "guard": {
+          "condition": "(set==null) == false",
+          "description": "the set to order. set is not null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.SetUtils",
+      "name": "synchronizedSortedSet",
+      "parameterTypes": [
+        "java.util.SortedSet"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "set"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the set is null.",
+        "guard": {
+          "condition": "set==null",
+          "description": "the set is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param set the sorted set to synchronize. set is not null.",
+        "guard": {
+          "condition": "(set==null) == false",
+          "description": "the sorted set to synchronize. set is not null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.SetUtils",
+      "name": "unmodifiableSortedSet",
+      "parameterTypes": [
+        "java.util.SortedSet"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "set"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the set is null.",
+        "guard": {
+          "condition": "set==null",
+          "description": "the set is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param set the sorted set to make unmodifiable. set is not null.",
+        "guard": {
+          "condition": "(set==null) == false",
+          "description": "the sorted set to make unmodifiable. set is not null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.SetUtils",
+      "name": "predicatedSortedSet",
+      "parameterTypes": [
+        "java.util.SortedSet",
+        "org.apache.commons.collections4.Predicate"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "set",
+        "predicate"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the set or predicate is null.",
+        "guard": {
+          "condition": "set==null || predicate==null",
+          "description": "the set or predicate is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param set the sorted set to predicate. set is not null.",
+        "guard": {
+          "condition": "(set==null) == false",
+          "description": "the sorted set to predicate. set is not null."
+        }
+      },
+      {
+        "description": "@param predicate the predicate for the sorted set. predicate is not null.",
+        "guard": {
+          "condition": "(predicate==null) == false",
+          "description": "the predicate for the sorted set. predicate is not null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.SetUtils",
+      "name": "transformedSortedSet",
+      "parameterTypes": [
+        "java.util.SortedSet",
+        "org.apache.commons.collections4.Transformer"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "set",
+        "transformer"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the set or transformer is null.",
+        "guard": {
+          "condition": "set==null || transformer==null",
+          "description": "the set or transformer is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param set the set to transform. set is not null.",
+        "guard": {
+          "condition": "(set==null) == false",
+          "description": "the set to transform. set is not null."
+        }
+      },
+      {
+        "description": "@param transformer the transformer for the set. transformer is not null.",
+        "guard": {
+          "condition": "(transformer==null) == false",
+          "description": "the transformer for the set. transformer is not null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.SetUtils",
+      "name": "unmodifiableNavigableSet",
+      "parameterTypes": [
+        "java.util.NavigableSet"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "set"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the set is null.",
+        "guard": {
+          "condition": "set==null",
+          "description": "the set is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param set the navigable set to make unmodifiable. set is not null.",
+        "guard": {
+          "condition": "(set==null) == false",
+          "description": "the navigable set to make unmodifiable. set is not null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.SetUtils",
+      "name": "predicatedNavigableSet",
+      "parameterTypes": [
+        "java.util.NavigableSet",
+        "org.apache.commons.collections4.Predicate"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "set",
+        "predicate"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the set or predicate is null.",
+        "guard": {
+          "condition": "set==null || predicate==null",
+          "description": "the set or predicate is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param set the navigable set to predicate. set is not null.",
+        "guard": {
+          "condition": "(set==null) == false",
+          "description": "the navigable set to predicate. set is not null."
+        }
+      },
+      {
+        "description": "@param predicate the predicate for the navigable set. predicate is not null.",
+        "guard": {
+          "condition": "(predicate==null) == false",
+          "description": "the predicate for the navigable set. predicate is not null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.SetUtils",
+      "name": "transformedNavigableSet",
+      "parameterTypes": [
+        "java.util.NavigableSet",
+        "org.apache.commons.collections4.Transformer"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "set",
+        "transformer"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the set or transformer is null.",
+        "guard": {
+          "condition": "set==null || transformer==null",
+          "description": "the set or transformer is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param set the navigable set to transform. set is not null.",
+        "guard": {
+          "condition": "(set==null) == false",
+          "description": "the navigable set to transform. set is not null."
+        }
+      },
+      {
+        "description": "@param transformer the transformer for the set. transformer is not null.",
+        "guard": {
+          "condition": "(transformer==null) == false",
+          "description": "the transformer for the set. transformer is not null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.SetUtils",
+      "name": "union",
+      "parameterTypes": [
+        "java.util.Set",
+        "java.util.Set"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "a",
+        "b"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException either input set is null.",
+        "guard": {
+          "condition": "a==null || b==null",
+          "description": "either input set is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param a the first set. a is not null.",
+        "guard": {
+          "condition": "(a==null) == false",
+          "description": "the first set. a is not null."
+        }
+      },
+      {
+        "description": "@param b the second set. b is not null.",
+        "guard": {
+          "condition": "(b==null) == false",
+          "description": "the second set. b is not null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.SetUtils",
+      "name": "difference",
+      "parameterTypes": [
+        "java.util.Set",
+        "java.util.Set"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "a",
+        "b"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param a the set to subtract from. a is not null.",
+        "guard": {
+          "condition": "(a==null) == false",
+          "description": "the set to subtract from. a is not null."
+        }
+      },
+      {
+        "description": "@param b the set to subtract. b is not null.",
+        "guard": {
+          "condition": "(b==null) == false",
+          "description": "the set to subtract. b is not null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.SetUtils",
+      "name": "intersection",
+      "parameterTypes": [
+        "java.util.Set",
+        "java.util.Set"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "a",
+        "b"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param a the first set. a is not null.",
+        "guard": {
+          "condition": "(a==null) == false",
+          "description": "the first set. a is not null."
+        }
+      },
+      {
+        "description": "@param b the second set. b is not null.",
+        "guard": {
+          "condition": "(b==null) == false",
+          "description": "the second set. b is not null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.SetUtils",
+      "name": "disjunction",
+      "parameterTypes": [
+        "java.util.Set",
+        "java.util.Set"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "a",
+        "b"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param a the first set. a is not null.",
+        "guard": {
+          "condition": "(a==null) == false",
+          "description": "the first set. a is not null."
+        }
+      },
+      {
+        "description": "@param b the second set. b is not null.",
+        "guard": {
+          "condition": "(b==null) == false",
+          "description": "the second set. b is not null."
+        }
+      }
+    ]
+  }
+]

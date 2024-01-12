@@ -25,7 +25,7 @@ public class NoBitwiseNegateOperatorRestriction extends SingleTokenRestriction {
     private static final List<String> disablingPreviousTokens = Stream.concat(
             Tokens.RULES_TOKENS.get("BitwiseLogicalOperator").stream(),
             Tokens.RULES_TOKENS.get("BitwiseShiftOperator").stream()
-    ).collect(Collectors.toList());
+    ).toList();
 
     private NoBitwiseNegateOperatorRestriction() {
         this.restrictedToken = "~";

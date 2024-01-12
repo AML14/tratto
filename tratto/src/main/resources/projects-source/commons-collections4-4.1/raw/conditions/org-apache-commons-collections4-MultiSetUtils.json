@@ -1,0 +1,146 @@
+[
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.MultiSetUtils",
+      "name": "synchronizedMultiSet",
+      "parameterTypes": [
+        "org.apache.commons.collections4.MultiSet"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "multiset"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the MultiSet is null.",
+        "guard": {
+          "condition": "multiset==null",
+          "description": "the MultiSet is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param multiset the multiset to synchronize. multiset is not null.",
+        "guard": {
+          "condition": "(multiset==null) == false",
+          "description": "the multiset to synchronize. multiset is not null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.MultiSetUtils",
+      "name": "unmodifiableMultiSet",
+      "parameterTypes": [
+        "org.apache.commons.collections4.MultiSet"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "multiset"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the MultiSet is null.",
+        "guard": {
+          "condition": "multiset==null",
+          "description": "the MultiSet is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param multiset the multiset whose unmodifiable view is to be returned. multiset is not null.",
+        "guard": {
+          "condition": "(multiset==null) == false",
+          "description": "the multiset whose unmodifiable view is to be returned. multiset is not null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.MultiSetUtils",
+      "name": "predicatedMultiSet",
+      "parameterTypes": [
+        "org.apache.commons.collections4.MultiSet",
+        "org.apache.commons.collections4.Predicate"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "multiset",
+        "predicate"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the MultiSet or Predicate is null.",
+        "guard": {
+          "condition": "multiset==null || predicate==null",
+          "description": "the MultiSet or Predicate is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param multiset the multiset to predicate. multiset is not null.",
+        "guard": {
+          "condition": "(multiset==null) == false",
+          "description": "the multiset to predicate. multiset is not null."
+        }
+      },
+      {
+        "description": "@param predicate the predicate for the multiset. predicate is not null.",
+        "guard": {
+          "condition": "(predicate==null) == false",
+          "description": "the predicate for the multiset. predicate is not null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.MultiSetUtils",
+      "name": "emptyMultiSet",
+      "parameterTypes": []
+    },
+    "identifiers": {
+      "parameters": [],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID.equals(receiverObjectID.EMPTY_MULTISET)",
+          "description": "an empty MultiSet."
+        },
+        "description": "an empty MultiSet.",
+        "guard": {
+          "condition": "true",
+          "description": "an empty MultiSet."
+        }
+      }
+    ],
+    "pre": []
+  }
+]

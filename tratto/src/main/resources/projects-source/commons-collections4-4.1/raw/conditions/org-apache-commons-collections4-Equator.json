@@ -1,0 +1,46 @@
+[
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.Equator",
+      "name": "equate",
+      "parameterTypes": [
+        "java.lang.Object",
+        "java.lang.Object"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "o1",
+        "o2"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID == true",
+          "description": "True if the two objects are equal., false otherwise"
+        },
+        "description": "True if the two objects are equal., false otherwise",
+        "guard": {
+          "condition": "((o1==null)==false) && (o1.equals(o2))",
+          "description": "True if the two objects are equal., false otherwise"
+        }
+      },
+      {
+        "property": {
+          "condition": "methodResultID == false",
+          "description": "True if the two objects are equal., false otherwise"
+        },
+        "description": "True if the two objects are equal., false otherwise",
+        "guard": {
+          "condition": "(((o1==null)==false) && (o1.equals(o2)))==false",
+          "description": "True if the two objects are equal., false otherwise"
+        }
+      }
+    ],
+    "pre": []
+  }
+]

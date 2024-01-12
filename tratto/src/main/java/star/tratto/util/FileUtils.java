@@ -18,7 +18,7 @@ import java.util.stream.Stream;
  * utilities, such as: creating, copying, moving, writing, reading, etc.
  */
 public class FileUtils {
-    /** Private constructor to avoid creating an instance of this class. */
+    /** Do not instantiate this class. */
     private FileUtils() {
         throw new UnsupportedOperationException("This class cannot be instantiated.");
     }
@@ -258,7 +258,7 @@ public class FileUtils {
      * Reads a list of objects from a JSON file. This method is used instead
      * of {@link FileUtils#readJSONList(Path, Class)} for parameterized types,
      * where it is not possible to retrieve the corresponding class, such as
-     * lists of List&lt;Integer&gt;.
+     * lists of {@code List<Integer>}.
      *
      * @param jsonPath a JSON file
      * @return a list of objects

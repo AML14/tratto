@@ -1,0 +1,112 @@
+[
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.map.MultiKeyMap",
+      "name": "multiKeyMap",
+      "parameterTypes": [
+        "org.apache.commons.collections4.map.AbstractHashedMap"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "map"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException map is null.",
+        "guard": {
+          "condition": "map==null",
+          "description": "map is null."
+        }
+      },
+      {
+        "exception": "java.lang.IllegalArgumentException",
+        "description": "@throws java.lang.IllegalArgumentException the map is not empty.",
+        "guard": {
+          "condition": "(map.isEmpty()) == false",
+          "description": "the map is not empty."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param map the map to decorate. map is not null.",
+        "guard": {
+          "condition": "(map==null) == false",
+          "description": "the map to decorate. map is not null."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.map.MultiKeyMap",
+      "name": "put",
+      "parameterTypes": [
+        "org.apache.commons.collections4.keyvalue.MultiKey",
+        "java.lang.Object"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "key",
+        "value"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the key is null.",
+        "guard": {
+          "condition": "key==null",
+          "description": "the key is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param key key is !=null. !=null MultiKey object.",
+        "guard": {
+          "condition": "key!=null",
+          "description": "key is !=null. !=null MultiKey object."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.map.MultiKeyMap",
+      "name": "putAll",
+      "parameterTypes": [
+        "java.util.Map"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "mapToCopy"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException the mapToCopy or any key within is null.",
+        "guard": {
+          "condition": "mapToCopy==null",
+          "description": "the mapToCopy or any key within is null."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  }
+]
