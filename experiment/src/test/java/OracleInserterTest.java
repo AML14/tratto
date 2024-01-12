@@ -1,3 +1,5 @@
+import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.body.MethodDeclaration;
 import data.OracleOutput;
 import data.OracleType;
 import org.junit.jupiter.api.Test;
@@ -6,6 +8,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith({OutputManager.class})
 public class OracleInserterTest {
@@ -86,7 +90,37 @@ public class OracleInserterTest {
                 Paths.get("output", "jdoctor-oracles"),
                 projectClasspath
         );
-//        cleanup();
+        Path testPath = Paths.get("output", "jdoctor-tests", "tutorial", "Stack_ESTest.java");
+        CompilationUnit cu = FileUtils.getCompilationUnit(testPath);
+        List<MethodDeclaration> testCases = cu.findAll(MethodDeclaration.class);
+        assertEquals(
+        """
+                @Test(timeout = 4000)
+                public void test0() throws Throwable {
+                    Stack<String> stack0 = new Stack<String>();
+                }""",
+                testCases.get(0).toString()
+        );
+        assertEquals(
+        """
+                @Test(timeout = 4000)
+                public void test1() throws Throwable {
+                    Stack<Object> stack0 = new Stack<Object>();
+                    assertTrue(((Object) null == null) == false);
+                    if ((Object) null == null) {
+                        try {
+                            stack0.push((Object) null);
+                            fail();
+                        } catch (java.lang.IllegalArgumentException e) {
+                            // Successfully thrown exception
+                        }
+                    } else {
+                        stack0.push((Object) null);
+                    }
+                }""",
+                testCases.get(1).toString()
+        );
+        cleanup();
     }
 
     @Test
