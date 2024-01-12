@@ -24,14 +24,6 @@ public class Stack_ESTest extends Stack_ESTest_scaffolding {
 
     @Test(timeout = 4000)
     public void test1()  throws Throwable  {
-        Stack<String> stack0 = new Stack<String>();
-        stack0.push("i.%");
-        stack0.pop();
-        boolean boolean0 = stack0.isEmpty();
-    }
-
-    @Test(timeout = 4000)
-    public void test2()  throws Throwable  {
         Stack<Object> stack0 = new Stack<Object>();
         stack0.push((Object) null);
     }
