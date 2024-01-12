@@ -23,6 +23,14 @@ public class OracleInserterTest {
                         "(o == null) == false",
                         "",
                         ""
+                ),
+                new OracleOutput(
+                        "tutorial.Stack",
+                        "push(java.lang.Object o)",
+                        OracleType.EXCEPT_POST,
+                        "o == null",
+                        "java.lang.IllegalArgumentException",
+                        ""
                 )
         );
     }
@@ -78,7 +86,7 @@ public class OracleInserterTest {
                 Paths.get("output", "jdoctor-oracles"),
                 projectClasspath
         );
-        cleanup();
+//        cleanup();
     }
 
     @Test
