@@ -46,6 +46,9 @@ def main():
     parser = argparse.ArgumentParser()
     ArgumentParser.add_training_arguments(parser)
     args = parser.parse_args()
+    # Set the RAPIDS cuDF library if available
+    if args.rapids_cudf == "True":
+        utils.set_rapids_available()
     # Set TRATTO model, classification, and transformer types
     classification_type = ClassificationType(args.classification_type.upper())
     transformer_type = TransformerType(args.transformer_type.upper())
@@ -69,11 +72,12 @@ def main():
         tokenizer,
         transformer_type,
         classification_type,
-        tratto_model_type
+        tratto_model_type,
+        True if args.pre_processing == "True" else False
     )
     # Pre-processing data
     logger.print_pre_processing()
-    data_processor.pre_processing()
+    data_processor.pre_processing(True if args.save_pre_processing == "True" else False)
     # Initialize statistics
     stats = {}
     # Get the train, validation, and test sorted datasets
