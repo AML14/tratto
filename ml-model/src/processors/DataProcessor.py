@@ -526,12 +526,21 @@ class DataProcessor:
         return df_dataset
 
     def pre_processing(
-            self
+            self,
+            save: bool = False
     ):
         """
         The method pre-processes the loaded dataset that will be used to train and validate the model.
         It generates the final tokenized dataset, ready to be used to train and validate the model.
+        The method also saves the pre-processed dataset, if required.
+
+        Parameters
+        ----------
+        save: bool
+            True if the pre-processed dataset must be saved, False otherwise.
         """
+        if not self._pre_processing and save:
+            print("Pre-processing is not enabled, but save is set to True. The dataset will not be saved since the dataset will be considered already pre-processed.")
         # Get train and validation dataframes
         t_df = self.get_train_dataframe()
         v_df = self.get_validation_dataframe()
@@ -677,29 +686,30 @@ class DataProcessor:
             del v_df
             gc.collect()
             # Save src and tgt datasets
-            filename = f'src_tgt_{self._tratto_model_type.lower()}_{self._classification_type.lower()}_{self._transformer_type.lower()}.csv'
-            file_dir_path = os.path.join(
-                os.path.dirname(os.path.abspath(__file__)),
-                '..',
-                '..',
-                'datasets',
-                'pre_processed_datasets',
-                self._tratto_model_type.lower(),
-                self._classification_type.lower(),
-                self._transformer_type.lower()
-            )
-            if not os.path.exists(os.path.join(file_dir_path, "train")):
-                os.makedirs(os.path.join(file_dir_path, "train"))
-            if not os.path.exists(os.path.join(file_dir_path, "validation")):
-                os.makedirs(os.path.join(file_dir_path, "validation"))
-            with open(os.path.join(file_dir_path, "train", f"train_{filename}"), 'w', newline='') as csvfile:
-                csv_writer = csv.writer(csvfile)
-                csv_writer.writerow(['src', 'tgt'])
-                csv_writer.writerows(zip(t_src, t_tgt))
-            with open(os.path.join(file_dir_path, "validation", f"validation_{filename}"), 'w', newline='') as csvfile:
-                csv_writer = csv.writer(csvfile)
-                csv_writer.writerow(['src', 'tgt'])
-                csv_writer.writerows(zip(v_src, v_tgt))
+            if save:
+                filename = f'src_tgt_{self._tratto_model_type.lower()}_{self._classification_type.lower()}_{self._transformer_type.lower()}.csv'
+                file_dir_path = os.path.join(
+                    os.path.dirname(os.path.abspath(__file__)),
+                    '..',
+                    '..',
+                    'dataset',
+                    'pre_processed_datasets',
+                    self._tratto_model_type.lower(),
+                    self._classification_type.lower(),
+                    self._transformer_type.lower()
+                )
+                if not os.path.exists(os.path.join(file_dir_path, "train")):
+                    os.makedirs(os.path.join(file_dir_path, "train"))
+                if not os.path.exists(os.path.join(file_dir_path, "validation")):
+                    os.makedirs(os.path.join(file_dir_path, "validation"))
+                with open(os.path.join(file_dir_path, "train", f"train_{filename}"), 'w', newline='') as csvfile:
+                    csv_writer = csv.writer(csvfile)
+                    csv_writer.writerow(['src', 'tgt'])
+                    csv_writer.writerows(zip(t_src, t_tgt))
+                with open(os.path.join(file_dir_path, "validation", f"validation_{filename}"), 'w', newline='') as csvfile:
+                    csv_writer = csv.writer(csvfile)
+                    csv_writer.writerow(['src', 'tgt'])
+                    csv_writer.writerows(zip(v_src, v_tgt))
         else:
             if t_df['tgt'].dtype == bool:
                 t_df['tgt'] = t_df['tgt'].astype(str)

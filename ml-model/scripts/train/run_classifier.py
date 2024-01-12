@@ -77,7 +77,7 @@ def main():
     )
     # Pre-processing data
     logger.print_pre_processing()
-    data_processor.pre_processing()
+    data_processor.pre_processing(True if args.save_pre_processing == "True" else False)
     # Initialize statistics
     stats = {}
     # Get the train, validation, and test sorted datasets
