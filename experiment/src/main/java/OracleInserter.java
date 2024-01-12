@@ -1333,7 +1333,8 @@ public class OracleInserter {
         setClassLoader(classpath);
         List<OracleOutput> oracleOutputs = getOracleOutputs(pathToOracles);
         TogType tog = getTogFromOraclePath(pathToOracles);
-        Path pathToTests = FileUtils.swapParentDirectory(pathToPrefixes, tog + "-oracles", tog + "-tests");
+        String togName = tog.toString().toLowerCase();
+        Path pathToTests = FileUtils.swapParentDirectory(pathToOracles, togName + "-oracles", togName + "-tests");
         FileUtils.copy(pathToPrefixes, pathToTests);
         try (Stream<Path> walk = Files.walk(pathToTests)) {
             walk.forEach(p -> {
