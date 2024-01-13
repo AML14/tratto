@@ -106,7 +106,7 @@ public class RestrictionsUtils {
         }
 
         // At this point there should be at least one matching method
-        assert !matchingMethods.isEmpty();
+        if (matchingMethods.isEmpty()) throw new AssertionError();
 
         return matchingMethods;
     }

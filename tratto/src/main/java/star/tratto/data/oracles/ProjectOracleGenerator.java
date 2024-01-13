@@ -289,9 +289,9 @@ public class ProjectOracleGenerator {
         Optional<CompilationUnit> cuOptional = DatasetUtils.getOperationCompilationUnit(operation, sourcePath);
         if (cuOptional.isPresent()) {
             TypeDeclaration<?> jpClass = DatasetUtils.getTypeDeclaration(cuOptional.get(), className);
-            assert jpClass != null;
+            if (jpClass == null) throw new AssertionError();
             CallableDeclaration<?> jpCallable = DatasetUtils.getCallableDeclaration(jpClass, callableName, parameterTypes);
-            assert jpCallable != null;
+            if (jpCallable == null) throw new AssertionError();
             // remove tag with maximum similarity.
             this.tagAndTexts.remove(findMaximumSimilarityTag(
                     jpClass,
@@ -395,10 +395,10 @@ public class ProjectOracleGenerator {
         String classSourceCode = DatasetUtils.getOperationClassSource(operation, sourcePath).orElseThrow();
         // get TypeDeclaration of class in CompilationUnit.
         TypeDeclaration<?> jpClass = DatasetUtils.getTypeDeclaration(cu, className);
-        assert jpClass != null;
+        if (jpClass == null) throw new AssertionError();
         // get CallableDeclaration of method in TypeDeclaration.
         CallableDeclaration<?> jpCallable = DatasetUtils.getCallableDeclaration(jpClass, callableName, parameterTypes);
-        assert jpCallable != null;
+        if (jpCallable == null) throw new AssertionError();
         // set data point information.
         builder.setConditionInfo(condition);
         // override JavaDoc tag with tag from source code.

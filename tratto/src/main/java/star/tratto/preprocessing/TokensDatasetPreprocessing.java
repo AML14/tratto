@@ -250,7 +250,7 @@ public class TokensDatasetPreprocessing {
             }
         }
 
-        assert removedIds == idsToRemove.size();
+        if (removedIds != idsToRemove.size()) throw new AssertionError();
 
         logger.info("Finished updating TokenDatapoints files. Final stats:");
         logger.info("Total number of TokenDatapoints removed: {}", idsToRemove.size());
