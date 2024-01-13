@@ -97,6 +97,8 @@ public class ProjectOracleGenerator {
                 // Do not add oracles if unable to parse corresponding class file.
                 if (nextDatapoint != null) {
                     oracleDPs.add(nextDatapoint);
+                } else {
+                    throw new Error("Unable to parse class file for " + operation.className());
                 }
                 removeProjectClassesTag(operation, OracleType.EXCEPT_POST, throwsCondition.description());
             }
@@ -106,6 +108,8 @@ public class ProjectOracleGenerator {
                 OracleDatapoint nextDatapoint = getDatapoint(operation, preCondition);
                 if (nextDatapoint != null) {
                     oracleDPs.add(nextDatapoint);
+                } else {
+                    throw new Error("Unable to parse class file for " + operation.className());
                 }
                 removeProjectClassesTag(operation, OracleType.PRE, preCondition.description());
             }
@@ -115,6 +119,8 @@ public class ProjectOracleGenerator {
                 OracleDatapoint nextDatapoint = getDatapoint(operation, postConditions);
                 if (nextDatapoint != null) {
                     oracleDPs.add(nextDatapoint);
+                } else {
+                    throw new Error("Unable to parse class file for " + operation.className());
                 }
                 // first description corresponds to source tag.
                 removeProjectClassesTag(operation, OracleType.NORMAL_POST, postConditions.get(0).description());
