@@ -1,6 +1,6 @@
 #!/bin/bash
 # This script generates a test suite for a class using Evosuite.
-# Then, for every supported TOG, it creates a variant of teh test suite that uses the TOG's oracle.
+# Then, for every supported TOG, it creates a variant of the test suite that uses the TOG's oracle.
 # An invocation follows the format,
 #     "bash experiment.sh [target-class] [src-dir] [bin-dir] [jar]"
 # This script adds the following sub-directories to the output directory, `experiment/output/`:

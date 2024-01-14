@@ -1,7 +1,7 @@
 package data;
 
 /**
- * This record represents a generated oracles and its corresponding contextual
+ * This record represents a generated oracle and its corresponding contextual
  * information.
  *
  * @param className the fully qualified name of the declaring class of
