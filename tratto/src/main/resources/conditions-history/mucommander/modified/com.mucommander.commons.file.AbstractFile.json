@@ -15,11 +15,22 @@
             {
                 "description": "@return this file's name",
                 "property": {
-                    "condition": "methodResultID.equals(receiverObjectID.fileURL.getHost())",
+                    "condition": "methodResultID.equals(receiverObjectID.getFileURL().getHost()) || methodResultID.equals(\"\")",
                     "description": "@return this file's name"
                 },
                 "guard": {
-                    "condition": "name == null && receiverObjectID.fileURL.getHost() != null",
+                    "condition": "receiverObjectID.getURL().getFilename() == null",
+                    "description": "@return this file's name"
+                }
+            },
+            {
+                "description": "@return this file's name",
+                "property": {
+                    "condition": "methodResultID.equals(receiverObjectID.getURL().getFilename())",
+                    "description": "@return this file's name"
+                },
+                "guard": {
+                    "condition": "receiverObjectID.getURL().getFilename() != null",
                     "description": "@return this file's name"
                 }
             }
@@ -286,6 +297,36 @@
     },
     {
         "operation": {
+            "name": "getDirectChild",
+            "parameterTypes": [
+                "String",
+                "AbstractFile"
+            ],
+            "classname": "com.mucommander.commons.file.AbstractFile"
+        },
+        "identifiers": {
+            "parameters": [
+                "filename",
+                "template"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [],
+        "post": [],
+        "throws": [
+            {
+                "exception": "java.io.IOException",
+                "description": "@throws IOException in any of the cases listed above",
+                "guard": {
+                    "condition": "filename.contains(receiverObjectID.getSeparator())",
+                    "description": "@throws IOException in any of the cases listed above"
+                }
+            }
+        ]
+    },
+    {
+        "operation": {
             "name": "mkdir",
             "parameterTypes": [
                 "String"
@@ -308,6 +349,30 @@
                 "guard": {
                     "condition": "receiverObjectID.getChild(name).exists()",
                     "description": "@throws IOException if the directory could not be created, either because the file already exists or for any other reason."
+                }
+            }
+        ]
+    },
+    {
+        "operation": {
+            "name": "mkdirs",
+            "parameterTypes": [],
+            "classname": "com.mucommander.commons.file.AbstractFile"
+        },
+        "identifiers": {
+            "parameters": [],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [],
+        "post": [],
+        "throws": [
+            {
+                "exception": "java.io.IOException",
+                "description": "@throws IOException if this file already exists or if an I/O error occurred.",
+                "guard": {
+                    "condition": "receiverObjectID.exists()",
+                    "description": "@throws IOException if this file already exists or if an I/O error occurred."
                 }
             }
         ]
