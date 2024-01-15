@@ -360,9 +360,7 @@ public class FileUtils {
      */
     public static Object readJSON(Path path, TypeReference<?> typeReference) {
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            File jsonFile = new File(path.toString());
-            return objectMapper.readValue(jsonFile, typeReference);
+            return new ObjectMapper().readValue(path.toFile(), typeReference);
         } catch (IOException e) {
             throw new Error("Error in processing file " + path, e);
         }

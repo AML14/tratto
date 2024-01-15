@@ -102,8 +102,8 @@ public class E2ETests {
     }
 
     private static List<String> getOriginalAndAlternateOracles() throws IOException {
-        String oraclesPath = "src/main/resources/data-augmentation/oracles.json";
-        return ((Map<String, List<String>>)new ObjectMapper().readValue(new File(oraclesPath), new TypeReference<>(){})).entrySet()
+        String oraclesJsonFilename = "src/main/resources/data-augmentation/oracles.json";
+        return ((Map<String, List<String>>)new ObjectMapper().readValue(new File(oraclesJsonFilename), new TypeReference<>(){})).entrySet()
                 .stream()
                 .map(entry -> {
                     List<String> allOracles = new ArrayList<>(List.of(entry.getKey()));
