@@ -232,24 +232,24 @@ public class FileUtils {
      * then returns a list of unknown type (wildcard).
      *
      * @param jsonPath a JSON file
-     * @param type the class type of the elements to which the JSON data will
-     *             be deserialized
+     * @param clazz the class of the elements to which the JSON data will
+     *             be deserialized,
+     *             or null (in which case the list element type is arbitrary)
      * @return a list of objects
      * @param <T> the type of the list elements,
-     *             or null (in which case the list element type is arbitrary)
      */
-    public static <T> List<T> readJSONList(Path jsonPath, Class<T> type) {
+    public static <T> List<T> readJSONList(Path jsonPath, Class<T> clazz) {
         if (!Files.exists(jsonPath)) {
           throw new Error("JSON file " + jsonPath + " not found");
         }
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            if (type == null) {
+            if (clazz == null) {
                 return objectMapper.readValue(jsonPath.toFile(), new TypeReference<>() {});
             } else {
                 return objectMapper.readValue(
                         jsonPath.toFile(),
-                        objectMapper.getTypeFactory().constructCollectionType(List.class, type)
+                        objectMapper.getTypeFactory().constructCollectionType(List.class, clazz)
                 );
             }
         } catch (IOException e) {

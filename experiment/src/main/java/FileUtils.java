@@ -434,7 +434,7 @@ public class FileUtils {
      * if no such class is found.
      * @see FileUtils#fqnToPath(String)
      */
-            public static Path findPathToClass(Path dir, Path fqnPath) {
+    public static Path findPathToClass(Path dir, Path fqnPath) {
         try (Stream<Path> walk = Files.walk(dir)) {
             return walk
                     .filter(p -> p.endsWith(fqnPath))
