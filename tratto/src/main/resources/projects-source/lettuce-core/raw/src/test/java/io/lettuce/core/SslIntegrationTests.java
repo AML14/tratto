@@ -395,16 +395,16 @@ class SslIntegrationTests extends TestSupport {
         connection2.getStatefulConnection().close();
     }
 
-    private static RedisURI.Builder sslURIBuilder(int portOffset) {
-        return RedisURI.Builder.redis(TestSettings.host(), sslPort(portOffset)).withSsl(true);
+    private static RedisURIBuilder sslURIBuilder(int portOffset) {
+        return RedisURIBuilder.redis(TestSettings.host(), sslPort(portOffset)).withSsl(true);
     }
 
     private static List<RedisURI> sslUris(IntStream masterSlaveOffsets,
-            Function<RedisURI.Builder, RedisURI.Builder> builderCustomizer) {
+            Function<RedisURIBuilder, RedisURIBuilder> builderCustomizer) {
 
         return masterSlaveOffsets.map(it -> it + MASTER_SLAVE_BASE_PORT_OFFSET)
-                .mapToObj(offset -> RedisURI.Builder.redis(TestSettings.host(), sslPort(offset)).withSsl(true))
-                .map(builderCustomizer).map(RedisURI.Builder::build).collect(Collectors.toList());
+                .mapToObj(offset -> RedisURIBuilder.redis(TestSettings.host(), sslPort(offset)).withSsl(true))
+                .map(builderCustomizer).map(RedisURIBuilder::build).collect(Collectors.toList());
     }
 
     private URL truststoreURL() throws MalformedURLException {

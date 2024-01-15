@@ -22,6 +22,7 @@ import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 
+import io.lettuce.core.RedisURIBuilder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -97,7 +98,7 @@ public class SentinelServerCommandIntegrationTests extends TestSupport {
     @Test
     public void clientKillExtended() {
 
-        RedisURI redisURI = RedisURI.Builder.sentinel(TestSettings.host(), SentinelTestSettings.MASTER_ID).build();
+        RedisURI redisURI = RedisURIBuilder.sentinel(TestSettings.host(), SentinelTestSettings.MASTER_ID).build();
         RedisSentinelCommands<String, String> connection2 = redisClient.connectSentinel(redisURI).sync();
         connection2.clientSetname("killme");
 

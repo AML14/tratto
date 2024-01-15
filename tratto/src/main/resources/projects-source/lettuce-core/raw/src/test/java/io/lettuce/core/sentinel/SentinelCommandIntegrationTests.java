@@ -25,6 +25,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import io.lettuce.core.RedisURIBuilder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -109,7 +110,7 @@ public class SentinelCommandIntegrationTests extends TestSupport {
     @Test
     void sentinelConnectWith() {
 
-        RedisURI uri = RedisURI.Builder.sentinel(TestSettings.host(), 1234, SentinelTestSettings.MASTER_ID)
+        RedisURI uri = RedisURIBuilder.sentinel(TestSettings.host(), 1234, SentinelTestSettings.MASTER_ID)
                 .withSentinel(TestSettings.host()).build();
 
         RedisSentinelCommands<String, String> sentinelConnection = this.redisClient.connectSentinel(uri).sync();
@@ -130,7 +131,7 @@ public class SentinelCommandIntegrationTests extends TestSupport {
     @Test
     void sentinelConnectWrongMaster() {
 
-        RedisURI nonexistent = RedisURI.Builder.sentinel(TestSettings.host(), 1234, "nonexistent")
+        RedisURI nonexistent = RedisURIBuilder.sentinel(TestSettings.host(), 1234, "nonexistent")
                 .withSentinel(TestSettings.host()).build();
 
         assertThatThrownBy(() -> redisClient.connect(nonexistent)).isInstanceOf(RedisConnectionException.class);
@@ -147,7 +148,7 @@ public class SentinelCommandIntegrationTests extends TestSupport {
     @Test
     void role() {
 
-        RedisCommands<String, String> connection = redisClient.connect(RedisURI.Builder.redis(host, 26380).build()).sync();
+        RedisCommands<String, String> connection = redisClient.connect(RedisURIBuilder.redis(host, 26380).build()).sync();
         try {
 
             List<Object> objects = connection.role();

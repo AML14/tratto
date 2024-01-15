@@ -16,6 +16,7 @@
 package io.lettuce.core.sentinel;
 
 import io.lettuce.core.RedisURI;
+import io.lettuce.core.RedisURIBuilder;
 import io.lettuce.core.TestSupport;
 import io.lettuce.test.settings.TestSettings;
 
@@ -24,7 +25,7 @@ import io.lettuce.test.settings.TestSettings;
  */
 public abstract class SentinelTestSettings extends TestSupport {
 
-    public static final RedisURI SENTINEL_URI = RedisURI.Builder.sentinel(TestSettings.host(), SentinelTestSettings.MASTER_ID)
+    public static final RedisURI SENTINEL_URI = RedisURIBuilder.sentinel(TestSettings.host(), SentinelTestSettings.MASTER_ID)
             .build();
     public static final String MASTER_ID = "mymaster";
 

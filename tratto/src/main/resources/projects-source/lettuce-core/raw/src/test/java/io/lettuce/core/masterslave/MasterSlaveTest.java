@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import io.lettuce.core.RedisURIBuilder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -45,7 +46,7 @@ import io.lettuce.test.settings.TestSettings;
  */
 class MasterSlaveTest extends AbstractRedisClientTest {
 
-    private RedisURI upstreamURI = RedisURI.Builder.redis(host, TestSettings.port(3)).withPassword(passwd)
+    private RedisURI upstreamURI = RedisURIBuilder.redis(host, TestSettings.port(3)).withPassword(passwd)
             .withClientName("my-client").withDatabase(5).build();
 
     private StatefulRedisMasterSlaveConnection<String, String> connection;
@@ -59,8 +60,8 @@ class MasterSlaveTest extends AbstractRedisClientTest {
     @BeforeEach
     void before() throws Exception {
 
-        RedisURI node1 = RedisURI.Builder.redis(host, TestSettings.port(3)).withDatabase(2).build();
-        RedisURI node2 = RedisURI.Builder.redis(host, TestSettings.port(4)).withDatabase(2).build();
+        RedisURI node1 = RedisURIBuilder.redis(host, TestSettings.port(3)).withDatabase(2).build();
+        RedisURI node2 = RedisURIBuilder.redis(host, TestSettings.port(4)).withDatabase(2).build();
 
         this.connection1 = client.connect(node1).sync();
         this.connection2 = client.connect(node2).sync();
@@ -153,7 +154,7 @@ class MasterSlaveTest extends AbstractRedisClientTest {
 
         connection.close();
 
-        RedisURI slaveUri = RedisURI.Builder.redis(host, TestSettings.port(4)).withPassword(passwd).build();
+        RedisURI slaveUri = RedisURIBuilder.redis(host, TestSettings.port(4)).withPassword(passwd).build();
         connection = MasterSlave.connect(client, StringCodec.UTF8, slaveUri);
 
         RedisCommands<String, String> sync = connection.sync();

@@ -22,6 +22,7 @@ import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import io.lettuce.core.RedisURIBuilder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -53,8 +54,8 @@ class StaticMasterSlaveTest extends AbstractRedisClientTest {
     @BeforeEach
     void before() {
 
-        RedisURI node1 = RedisURI.Builder.redis(host, TestSettings.port(3)).withClientName("my-client").withDatabase(2).build();
-        RedisURI node2 = RedisURI.Builder.redis(host, TestSettings.port(4)).withClientName("my-client").withDatabase(2).build();
+        RedisURI node1 = RedisURIBuilder.redis(host, TestSettings.port(3)).withClientName("my-client").withDatabase(2).build();
+        RedisURI node2 = RedisURIBuilder.redis(host, TestSettings.port(4)).withClientName("my-client").withDatabase(2).build();
 
         this.connection1 = client.connect(node1).sync();
         this.connection2 = client.connect(node2).sync();

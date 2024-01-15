@@ -178,7 +178,7 @@ class UnixDomainSocketIntegrationTests {
     }
 
     private static RedisClient getRedisSentinelClient() {
-        return RedisClient.create(TestClientResources.get(), RedisURI.Builder.sentinel(TestSettings.host(), MASTER_ID).build());
+        return RedisClient.create(TestClientResources.get(), RedisURIBuilder.sentinel(TestSettings.host(), MASTER_ID).build());
     }
 
     private void assumeTestSupported() {

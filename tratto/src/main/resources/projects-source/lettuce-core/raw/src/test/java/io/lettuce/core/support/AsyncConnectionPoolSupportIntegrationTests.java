@@ -49,7 +49,7 @@ class AsyncConnectionPoolSupportIntegrationTests extends TestSupport {
 
     private static RedisClient client;
     private static Set<?> channels;
-    private static RedisURI uri = RedisURI.Builder.redis(host, port).build();
+    private static RedisURI uri = RedisURIBuilder.redis(host, port).build();
 
     @BeforeAll
     static void setupClient() {

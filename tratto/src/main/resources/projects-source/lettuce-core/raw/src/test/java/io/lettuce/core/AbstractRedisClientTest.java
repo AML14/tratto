@@ -39,7 +39,7 @@ public abstract class AbstractRedisClientTest extends TestSupport {
     }
 
     private static RedisClient newRedisClient() {
-        return RedisClient.create(TestClientResources.get(), RedisURI.Builder.redis(host, port).build());
+        return RedisClient.create(TestClientResources.get(), RedisURIBuilder.redis(host, port).build());
     }
 
     protected RedisCommands<String, String> connect() {

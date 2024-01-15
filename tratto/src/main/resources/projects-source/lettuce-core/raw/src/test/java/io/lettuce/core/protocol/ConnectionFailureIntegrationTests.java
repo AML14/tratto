@@ -34,9 +34,6 @@ import javax.inject.Inject;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.platform.commons.util.ReflectionUtils;
-
-import io.lettuce.test.ReflectionTestUtils;
 
 import io.lettuce.core.*;
 import io.lettuce.core.api.StatefulRedisConnection;
@@ -60,7 +57,7 @@ import io.netty.channel.local.LocalAddress;
 class ConnectionFailureIntegrationTests extends TestSupport {
 
     private final RedisClient client;
-    private final RedisURI defaultRedisUri = RedisURI.Builder.redis(TestSettings.host(), TestSettings.port()).build();
+    private final RedisURI defaultRedisUri = RedisURIBuilder.redis(TestSettings.host(), TestSettings.port()).build();
 
     @Inject
     ConnectionFailureIntegrationTests(RedisClient client) {
@@ -79,7 +76,7 @@ class ConnectionFailureIntegrationTests extends TestSupport {
 
         RandomResponseServer ts = getRandomResponseServer();
 
-        RedisURI redisUri = RedisURI.Builder.redis(TestSettings.host(), TestSettings.nonexistentPort())
+        RedisURI redisUri = RedisURIBuilder.redis(TestSettings.host(), TestSettings.nonexistentPort())
                 .withTimeout(Duration.ofMinutes(10)).build();
 
         try {
@@ -108,7 +105,7 @@ class ConnectionFailureIntegrationTests extends TestSupport {
 
         RandomResponseServer ts = getRandomResponseServer();
 
-        RedisURI redisUri = RedisURI.Builder.redis(TestSettings.host(), TestSettings.port()).build();
+        RedisURI redisUri = RedisURIBuilder.redis(TestSettings.host(), TestSettings.port()).build();
         redisUri.setTimeout(Duration.ofSeconds(5));
 
         try {
@@ -378,7 +375,7 @@ class ConnectionFailureIntegrationTests extends TestSupport {
 
         client.setOptions(ClientOptions.create());
 
-        RedisURI redisUri = RedisURI.Builder.redis(TestSettings.host(), TestSettings.port()).withTimeout(Duration.ofMinutes(10))
+        RedisURI redisUri = RedisURIBuilder.redis(TestSettings.host(), TestSettings.port()).withTimeout(Duration.ofMinutes(10))
                 .build();
 
         StatefulRedisConnection<String, String> connection = client.connect(redisUri);

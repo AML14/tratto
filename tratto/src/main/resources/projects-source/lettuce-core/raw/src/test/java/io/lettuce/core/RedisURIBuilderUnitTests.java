@@ -26,7 +26,7 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.OS;
 
 /**
- * Unit tests for {@link RedisURI.Builder}.
+ * Unit tests for {@link RedisURIBuilder}.
  *
  * @author Mark Paluch
  * @author Guy Korland
@@ -35,20 +35,20 @@ class RedisURIBuilderUnitTests {
 
     @Test
     void sentinel() {
-        RedisURI result = RedisURI.Builder.sentinel("localhost").withTimeout(Duration.ofHours(2)).build();
+        RedisURI result = RedisURIBuilder.sentinel("localhost").withTimeout(Duration.ofHours(2)).build();
         assertThat(result.getSentinels()).hasSize(1);
         assertThat(result.getTimeout()).isEqualTo(Duration.ofHours(2));
     }
 
     @Test
     void sentinelWithHostShouldFail() {
-        assertThatThrownBy(() -> RedisURI.Builder.sentinel("localhost").withHost("localhost"))
+        assertThatThrownBy(() -> RedisURIBuilder.sentinel("localhost").withHost("localhost"))
                 .isInstanceOf(IllegalStateException.class);
     }
 
     @Test
     void sentinelWithPort() {
-        RedisURI result = RedisURI.Builder.sentinel("localhost", 1).withTimeout(Duration.ofHours(2)).build();
+        RedisURI result = RedisURIBuilder.sentinel("localhost", 1).withTimeout(Duration.ofHours(2)).build();
         assertThat(result.getSentinels()).hasSize(1);
         assertThat(result.getTimeout()).isEqualTo(Duration.ofHours(2));
     }
@@ -69,7 +69,7 @@ class RedisURIBuilderUnitTests {
 
     @Test
     void redisWithPort() {
-        RedisURI result = RedisURI.Builder.redis("localhost").withPort(1234).build();
+        RedisURI result = RedisURIBuilder.redis("localhost").withPort(1234).build();
 
         assertThat(result.getSentinels()).isEmpty();
         assertThat(result.getHost()).isEqualTo("localhost");
@@ -78,7 +78,7 @@ class RedisURIBuilderUnitTests {
 
     @Test
     void redisWithClientName() {
-        RedisURI result = RedisURI.Builder.redis("localhost").withClientName("hello").build();
+        RedisURI result = RedisURIBuilder.redis("localhost").withClientName("hello").build();
 
         assertThat(result.getHost()).isEqualTo("localhost");
         assertThat(result.getClientName()).isEqualTo("hello");
@@ -86,7 +86,7 @@ class RedisURIBuilderUnitTests {
 
     @Test
     void redisWithLibrary() {
-        RedisURI result = RedisURI.Builder.redis("localhost").withLibraryName("name").withLibraryVersion("1.foo").build();
+        RedisURI result = RedisURIBuilder.redis("localhost").withLibraryName("name").withLibraryVersion("1.foo").build();
 
         assertThat(result.getLibraryName()).isEqualTo("name");
         assertThat(result.getLibraryVersion()).isEqualTo("1.foo");
@@ -94,12 +94,12 @@ class RedisURIBuilderUnitTests {
 
     @Test
     void redisHostAndPortWithInvalidPort() {
-        assertThatThrownBy(() -> RedisURI.Builder.redis("localhost", -1)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> RedisURIBuilder.redis("localhost", -1)).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     void redisWithInvalidPort() {
-        assertThatThrownBy(() -> RedisURI.Builder.redis("localhost").withPort(65536))
+        assertThatThrownBy(() -> RedisURIBuilder.redis("localhost").withPort(65536))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -135,7 +135,7 @@ class RedisURIBuilderUnitTests {
 
     @Test
     void redisWithSSL() {
-        RedisURI result = RedisURI.Builder.redis("localhost").withSsl(true).withStartTls(true).build();
+        RedisURI result = RedisURIBuilder.redis("localhost").withSsl(true).withStartTls(true).build();
 
         assertThat(result.getSentinels()).isEmpty();
         assertThat(result.getHost()).isEqualTo("localhost");
@@ -145,7 +145,7 @@ class RedisURIBuilderUnitTests {
 
     @Test
     void redisWithSSLFromUri() {
-        RedisURI template = RedisURI.Builder.redis("localhost").withSsl(true).withVerifyPeer(SslVerifyMode.CA)
+        RedisURI template = RedisURIBuilder.redis("localhost").withSsl(true).withVerifyPeer(SslVerifyMode.CA)
                 .withStartTls(true).build();
         RedisURI result = RedisURI.builder().withHost("localhost").withSsl(template).build();
 
@@ -201,7 +201,7 @@ class RedisURIBuilderUnitTests {
     @Test
     void withAuthenticatedSentinel() {
 
-        RedisURI result = RedisURI.Builder.sentinel("host", 1234, "master", "foo").build();
+        RedisURI result = RedisURIBuilder.sentinel("host", 1234, "master", "foo").build();
 
         RedisURI sentinel = result.getSentinels().get(0);
         assertThat(new String(sentinel.getPassword())).isEqualTo("foo");
@@ -210,7 +210,7 @@ class RedisURIBuilderUnitTests {
     @Test
     void withTlsSentinel() {
 
-        RedisURI result = RedisURI.Builder.sentinel("host", 1234, "master", "foo").withSsl(true).withStartTls(true)
+        RedisURI result = RedisURIBuilder.sentinel("host", 1234, "master", "foo").withSsl(true).withStartTls(true)
                 .withVerifyPeer(false).build();
 
         RedisURI sentinel = result.getSentinels().get(0);
@@ -225,7 +225,7 @@ class RedisURIBuilderUnitTests {
 
         RedisURI sentinel = new RedisURI("host", 1234, Duration.ZERO);
         sentinel.setPassword("bar");
-        RedisURI result = RedisURI.Builder.sentinel("host", 1234, "master").withSentinel(sentinel).build();
+        RedisURI result = RedisURIBuilder.sentinel("host", 1234, "master").withSentinel(sentinel).build();
 
         assertThat(result.getSentinels().get(0).getPassword()).isNull();
         assertThat(new String(result.getSentinels().get(1).getPassword())).isEqualTo("bar");
@@ -234,12 +234,12 @@ class RedisURIBuilderUnitTests {
     @Test
     void withAuthenticatedSentinelWithSentinel() {
 
-        RedisURI result = RedisURI.Builder.sentinel("host", 1234, "master", "foo").withSentinel("bar").build();
+        RedisURI result = RedisURIBuilder.sentinel("host", 1234, "master", "foo").withSentinel("bar").build();
 
         assertThat(new String(result.getSentinels().get(0).getPassword())).isEqualTo("foo");
         assertThat(new String(result.getSentinels().get(1).getPassword())).isEqualTo("foo");
 
-        result = RedisURI.Builder.sentinel("host", 1234, "master", "foo").withSentinel("bar", 1234, "baz").build();
+        result = RedisURIBuilder.sentinel("host", 1234, "master", "foo").withSentinel("bar", 1234, "baz").build();
 
         assertThat(new String(result.getSentinels().get(0).getPassword())).isEqualTo("foo");
         assertThat(new String(result.getSentinels().get(1).getPassword())).isEqualTo("baz");
@@ -247,17 +247,17 @@ class RedisURIBuilderUnitTests {
 
     @Test
     void redisSentinelWithInvalidPort() {
-        assertThatThrownBy(() -> RedisURI.Builder.sentinel("a", 65536)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> RedisURIBuilder.sentinel("a", 65536)).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     void redisSentinelWithMasterIdAndInvalidPort() {
-        assertThatThrownBy(() -> RedisURI.Builder.sentinel("a", 65536, "")).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> RedisURIBuilder.sentinel("a", 65536, "")).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     void redisSentinelWithNullMasterId() {
-        assertThatThrownBy(() -> RedisURI.Builder.sentinel("a", 1, null)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> RedisURIBuilder.sentinel("a", 1, null)).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test

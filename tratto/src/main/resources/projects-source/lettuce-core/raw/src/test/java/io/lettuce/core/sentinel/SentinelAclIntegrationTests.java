@@ -19,6 +19,7 @@ import static org.assertj.core.api.Assertions.*;
 
 import javax.inject.Inject;
 
+import io.lettuce.core.RedisURIBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -44,11 +45,11 @@ public class SentinelAclIntegrationTests extends TestSupport {
 
     private final RedisClient redisClient;
 
-    private final RedisURI redisURI = RedisURI.Builder.sentinel(TestSettings.host(), 26381, SentinelTestSettings.MASTER_ID)
+    private final RedisURI redisURI = RedisURIBuilder.sentinel(TestSettings.host(), 26381, SentinelTestSettings.MASTER_ID)
             // data node auth
             .withAuthentication("default", TestSettings.password()).build();
 
-    private final RedisURI sentinelWithAcl = RedisURI.Builder
+    private final RedisURI sentinelWithAcl = RedisURIBuilder
             .sentinel(TestSettings.host(), 26381, SentinelTestSettings.MASTER_ID)
             // data node auth
             .withAuthentication("default", TestSettings.password()).build();

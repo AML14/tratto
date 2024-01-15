@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assumptions.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import io.lettuce.core.RedisURIBuilder;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -52,7 +53,7 @@ class RedisClusterPasswordSecuredSslIntegrationTests extends TestSupport {
     private static final String SLOT_1_KEY = "8HMdi";
     private static final String SLOT_16352_KEY = "UyAa4KqoWgPGKa";
 
-    private static RedisURI redisURI = RedisURI.Builder.redis(host(), CLUSTER_PORT_SSL_1).withPassword("foobared").withSsl(true)
+    private static RedisURI redisURI = RedisURIBuilder.redis(host(), CLUSTER_PORT_SSL_1).withPassword("foobared").withSsl(true)
             .withVerifyPeer(false).build();
     private static RedisClusterClient redisClient = RedisClusterClient.create(TestClientResources.get(), redisURI);
 
@@ -137,7 +138,7 @@ class RedisClusterPasswordSecuredSslIntegrationTests extends TestSupport {
     @Test
     void connectionWithoutPasswordShouldFail() {
 
-        RedisURI redisURI = RedisURI.Builder.redis(host(), CLUSTER_PORT_SSL_1).withSsl(true).withVerifyPeer(false).build();
+        RedisURI redisURI = RedisURIBuilder.redis(host(), CLUSTER_PORT_SSL_1).withSsl(true).withVerifyPeer(false).build();
         RedisClusterClient redisClusterClient = RedisClusterClient.create(TestClientResources.get(), redisURI);
 
         try {
@@ -152,7 +153,7 @@ class RedisClusterPasswordSecuredSslIntegrationTests extends TestSupport {
     @Test
     void connectionWithoutPasswordShouldFail2() {
 
-        RedisURI redisURI = RedisURI.Builder.redis(host(), CLUSTER_PORT_SSL_1).withSsl(true).withVerifyPeer(false).build();
+        RedisURI redisURI = RedisURIBuilder.redis(host(), CLUSTER_PORT_SSL_1).withSsl(true).withVerifyPeer(false).build();
         RedisClusterClient redisClusterClient = RedisClusterClient.create(TestClientResources.get(), redisURI);
 
         try {

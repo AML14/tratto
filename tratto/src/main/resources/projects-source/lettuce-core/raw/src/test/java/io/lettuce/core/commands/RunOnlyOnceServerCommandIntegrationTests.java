@@ -23,13 +23,13 @@ import java.util.Arrays;
 
 import javax.inject.Inject;
 
+import io.lettuce.core.RedisURIBuilder;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import io.lettuce.core.MigrateArgs;
 import io.lettuce.core.RedisClient;
-import io.lettuce.core.RedisURI;
 import io.lettuce.core.TestSupport;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.async.RedisAsyncCommands;
@@ -68,7 +68,7 @@ class RunOnlyOnceServerCommandIntegrationTests extends TestSupport {
 
         assumeTrue(CanConnect.to(host(), port(1)));
 
-        final RedisAsyncCommands<String, String> commands = client.connect(RedisURI.Builder.redis(host(), port(1)).build())
+        final RedisAsyncCommands<String, String> commands = client.connect(RedisURIBuilder.redis(host(), port(1)).build())
                 .async();
         try {
             commands.debugSegfault();
@@ -123,7 +123,7 @@ class RunOnlyOnceServerCommandIntegrationTests extends TestSupport {
 
         assumeTrue(CanConnect.to(host(), port(2)));
 
-        final RedisAsyncCommands<String, String> commands = client.connect(RedisURI.Builder.redis(host(), port(2)).build())
+        final RedisAsyncCommands<String, String> commands = client.connect(RedisURIBuilder.redis(host(), port(2)).build())
                 .async();
         try {
 

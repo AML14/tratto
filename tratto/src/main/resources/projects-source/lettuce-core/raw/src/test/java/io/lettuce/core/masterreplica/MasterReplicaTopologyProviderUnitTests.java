@@ -20,9 +20,9 @@ import static org.mockito.Mockito.*;
 
 import java.util.List;
 
+import io.lettuce.core.RedisURIBuilder;
 import org.junit.jupiter.api.Test;
 
-import io.lettuce.core.RedisURI;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.models.role.RedisInstance;
 import io.lettuce.core.models.role.RedisNodeDescription;
@@ -38,7 +38,7 @@ class MasterReplicaTopologyProviderUnitTests {
     private StatefulRedisConnection<String, String> connectionMock = mock(StatefulRedisConnection.class);
 
     private ReplicaTopologyProvider sut = new ReplicaTopologyProvider(connectionMock,
-            RedisURI.Builder.redis(TestSettings.host(), TestSettings.port()).build());
+            RedisURIBuilder.redis(TestSettings.host(), TestSettings.port()).build());
 
     @Test
     void shouldParseMaster() {

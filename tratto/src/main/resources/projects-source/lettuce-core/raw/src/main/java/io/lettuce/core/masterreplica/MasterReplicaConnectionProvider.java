@@ -30,6 +30,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Function;
 
+import io.lettuce.core.RedisURIBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import io.lettuce.core.ConnectionFuture;
@@ -334,7 +335,7 @@ class MasterReplicaConnectionProvider<K, V> {
         @Override
         public ConnectionFuture<StatefulRedisConnection<K, V>> apply(ConnectionKey key) {
 
-            RedisURI.Builder builder = RedisURI.builder(initialRedisUri).withHost(key.host).withPort(key.port);
+            RedisURIBuilder builder = RedisURI.builder(initialRedisUri).withHost(key.host).withPort(key.port);
 
             ConnectionFuture<StatefulRedisConnection<K, V>> connectionFuture = redisClient.connectAsync(redisCodec,
                     builder.build());

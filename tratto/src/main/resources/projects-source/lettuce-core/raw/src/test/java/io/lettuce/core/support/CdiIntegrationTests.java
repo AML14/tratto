@@ -22,6 +22,7 @@ import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.se.SeContainer;
 import javax.enterprise.inject.se.SeContainerInitializer;
 
+import io.lettuce.core.RedisURIBuilder;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -57,7 +58,7 @@ class CdiIntegrationTests {
 
     @Produces
     RedisURI redisURI() {
-        return RedisURI.Builder.redis(AbstractRedisClientTest.host, AbstractRedisClientTest.port).build();
+        return RedisURIBuilder.redis(AbstractRedisClientTest.host, AbstractRedisClientTest.port).build();
     }
 
     @Produces
@@ -74,7 +75,7 @@ class CdiIntegrationTests {
     @PersonDB
     @Produces
     RedisURI redisURIQualified() {
-        return RedisURI.Builder.redis(AbstractRedisClientTest.host, AbstractRedisClientTest.port + 1).build();
+        return RedisURIBuilder.redis(AbstractRedisClientTest.host, AbstractRedisClientTest.port + 1).build();
     }
 
     @Test

@@ -23,13 +23,13 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.lettuce.core.RedisURIBuilder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisFuture;
-import io.lettuce.core.RedisURI;
 import io.lettuce.core.TestSupport;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
@@ -65,7 +65,7 @@ class ClusterCommandIntegrationTests extends TestSupport {
         this.client = client;
         this.clusterClient = clusterClient;
 
-        this.connection = client.connect(RedisURI.Builder.redis(host, ClusterTestSettings.port1).build());
+        this.connection = client.connect(RedisURIBuilder.redis(host, ClusterTestSettings.port1).build());
         this.sync = connection.sync();
         this.async = connection.async();
     }
@@ -202,7 +202,7 @@ class ClusterCommandIntegrationTests extends TestSupport {
 
         // assume cluster node 3 is a replica for the master 1
         RedisCommands<String, String> connect3 = client
-                .connect(RedisURI.Builder.redis(host, ClusterTestSettings.port3).build()).sync();
+                .connect(RedisURIBuilder.redis(host, ClusterTestSettings.port3).build()).sync();
 
         assertThat(connect3.readOnly()).isEqualTo("OK");
         waitUntilValueIsVisible(key, connect3);
@@ -225,7 +225,7 @@ class ClusterCommandIntegrationTests extends TestSupport {
 
         // assume cluster node 3 is a replica for the master 1
         RedisCommands<String, String> connect3 = client
-                .connect(RedisURI.Builder.redis(host, ClusterTestSettings.port3).build()).sync();
+                .connect(RedisURIBuilder.redis(host, ClusterTestSettings.port3).build()).sync();
 
         assertThat(connect3.readOnly()).isEqualTo("OK");
         connect3.quit();
@@ -245,7 +245,7 @@ class ClusterCommandIntegrationTests extends TestSupport {
 
         // assume cluster node 3 is a replica for the master 1
         final RedisCommands<String, String> connect3 = client.connect(
-                RedisURI.Builder.redis(host, ClusterTestSettings.port3).build()).sync();
+                RedisURIBuilder.redis(host, ClusterTestSettings.port3).build()).sync();
 
         try {
             connect3.get("b");

@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 
+import io.lettuce.core.RedisURIBuilder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,7 +35,6 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import io.lettuce.core.AbstractRedisClientTest;
 import io.lettuce.core.RedisClient;
-import io.lettuce.core.RedisURI;
 import io.lettuce.core.internal.LettuceFactories;
 import io.lettuce.core.pubsub.api.reactive.ChannelMessage;
 import io.lettuce.core.pubsub.api.reactive.PatternMessage;
@@ -297,7 +297,7 @@ class PubSubReactiveTest extends AbstractRedisClientTest implements RedisPubSubL
     @Test
     void pubsubCloseOnClientShutdown() {
 
-        RedisClient redisClient = RedisClient.create(TestClientResources.get(), RedisURI.Builder.redis(host, port).build());
+        RedisClient redisClient = RedisClient.create(TestClientResources.get(), RedisURIBuilder.redis(host, port).build());
 
         RedisPubSubCommands<String, String> connection = redisClient.connectPubSub().sync();
         FastShutdown.shutdown(redisClient);

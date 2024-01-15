@@ -27,6 +27,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import io.lettuce.core.RedisURIBuilder;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -41,7 +42,6 @@ import io.lettuce.core.RedisChannelHandler;
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisException;
 import io.lettuce.core.RedisFuture;
-import io.lettuce.core.RedisURI;
 import io.lettuce.core.TestSupport;
 import io.lettuce.core.api.async.RedisAsyncCommands;
 import io.lettuce.core.api.sync.RedisCommands;
@@ -88,7 +88,7 @@ public class RedisClusterSetupTest extends TestSupport {
     @BeforeAll
     public static void setupClient() {
         clusterClient = RedisClusterClient.create(TestClientResources.get(),
-                RedisURI.Builder.redis(host, ClusterTestSettings.port5).build());
+                RedisURIBuilder.redis(host, ClusterTestSettings.port5).build());
         clusterHelper = new ClusterTestHelper(clusterClient, ClusterTestSettings.port5, ClusterTestSettings.port6);
     }
 
@@ -100,8 +100,8 @@ public class RedisClusterSetupTest extends TestSupport {
     @BeforeEach
     public void openConnection() {
         clusterHelper.flushdb();
-        redis1 = client.connect(RedisURI.Builder.redis(ClusterTestSettings.host, ClusterTestSettings.port5).build()).sync();
-        redis2 = client.connect(RedisURI.Builder.redis(ClusterTestSettings.host, ClusterTestSettings.port6).build()).sync();
+        redis1 = client.connect(RedisURIBuilder.redis(ClusterTestSettings.host, ClusterTestSettings.port5).build()).sync();
+        redis2 = client.connect(RedisURIBuilder.redis(ClusterTestSettings.host, ClusterTestSettings.port6).build()).sync();
         clusterHelper.clusterReset();
     }
 
@@ -375,7 +375,7 @@ public class RedisClusterSetupTest extends TestSupport {
         ClusterSetup.setup2Masters(clusterHelper);
 
         RedisClusterClient redisClusterClient = RedisClusterClient.create(TestClientResources.get(),
-                RedisURI.Builder.redis(host, port5).build());
+                RedisURIBuilder.redis(host, port5).build());
         redisClusterClient.setOptions(ClusterClientOptions.builder()
                 .topologyRefreshOptions(ClusterTopologyRefreshOptions.builder().dynamicRefreshSources(false).build()).build());
 
@@ -408,7 +408,7 @@ public class RedisClusterSetupTest extends TestSupport {
         ClusterSetup.setup2Masters(clusterHelper);
 
         RedisClusterClient redisClusterClient = RedisClusterClient.create(TestClientResources.get(),
-                RedisURI.Builder.redis(host, port5).build());
+                RedisURIBuilder.redis(host, port5).build());
         redisClusterClient.setOptions(ClusterClientOptions.builder()
                 .topologyRefreshOptions(ClusterTopologyRefreshOptions.builder().dynamicRefreshSources(false).build()).build());
 

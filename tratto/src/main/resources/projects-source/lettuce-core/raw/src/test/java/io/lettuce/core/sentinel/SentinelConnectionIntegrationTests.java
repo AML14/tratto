@@ -164,7 +164,7 @@ public class SentinelConnectionIntegrationTests extends TestSupport {
     @Test
     void sentinelConnectionShouldDiscardPassword() {
 
-        RedisURI redisURI = RedisURI.Builder.sentinel(TestSettings.host(), SentinelTestSettings.MASTER_ID)
+        RedisURI redisURI = RedisURIBuilder.sentinel(TestSettings.host(), SentinelTestSettings.MASTER_ID)
                 .withPassword("hello-world").build();
 
         redisClient.setOptions(ClientOptions.builder().build());
@@ -180,7 +180,7 @@ public class SentinelConnectionIntegrationTests extends TestSupport {
     @Test
     void sentinelConnectionShouldSetClientName() {
 
-        RedisURI redisURI = RedisURI.Builder.sentinel(TestSettings.host(), SentinelTestSettings.MASTER_ID)
+        RedisURI redisURI = RedisURIBuilder.sentinel(TestSettings.host(), SentinelTestSettings.MASTER_ID)
                 .withClientName("my-client").build();
 
         StatefulRedisSentinelConnection<String, String> connection = redisClient.connectSentinel(redisURI);
@@ -193,7 +193,7 @@ public class SentinelConnectionIntegrationTests extends TestSupport {
     @Test
     void sentinelManagedConnectionShouldSetClientName() {
 
-        RedisURI redisURI = RedisURI.Builder.sentinel(TestSettings.host(), SentinelTestSettings.MASTER_ID)
+        RedisURI redisURI = RedisURIBuilder.sentinel(TestSettings.host(), SentinelTestSettings.MASTER_ID)
                 .withClientName("my-client").build();
 
         StatefulRedisConnection<String, String> connection = redisClient.connect(redisURI);
@@ -209,7 +209,7 @@ public class SentinelConnectionIntegrationTests extends TestSupport {
     @Test
     void sentinelWithAuthentication() {
 
-        RedisURI redisURI = RedisURI.Builder.sentinel(TestSettings.host(), 26381, SentinelTestSettings.MASTER_ID, "foobared")
+        RedisURI redisURI = RedisURIBuilder.sentinel(TestSettings.host(), 26381, SentinelTestSettings.MASTER_ID, "foobared")
                 .withClientName("my-client").build();
 
         redisClient.setOptions(ClientOptions.builder().pingBeforeActivateConnection(true).build());

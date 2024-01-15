@@ -67,7 +67,7 @@ class MasterSlaveSentinelIntegrationTests extends TestSupport {
     @Test
     void masterSlaveConnectionShouldSetClientName() {
 
-        RedisURI redisURI = RedisURI.Builder.sentinel(TestSettings.host(), SentinelTestSettings.MASTER_ID)
+        RedisURI redisURI = RedisURIBuilder.sentinel(TestSettings.host(), SentinelTestSettings.MASTER_ID)
                 .withClientName("my-client").build();
 
         StatefulRedisMasterSlaveConnection<String, String> connection = MasterSlave.connect(redisClient, StringCodec.UTF8,

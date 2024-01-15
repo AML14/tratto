@@ -25,11 +25,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import io.lettuce.core.RedisURIBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import io.lettuce.core.ReadFrom;
-import io.lettuce.core.RedisURI;
 import io.lettuce.core.cluster.models.partitions.Partitions;
 import io.lettuce.core.cluster.models.partitions.RedisClusterNode;
 import io.lettuce.core.models.role.RedisNodeDescription;
@@ -199,7 +199,7 @@ class ReadFromUnitTests {
 
     private RedisClusterNode createNodeWithHost(String host) {
         RedisClusterNode node = new RedisClusterNode();
-        node.setUri(RedisURI.Builder.redis(host).build());
+        node.setUri(RedisURIBuilder.redis(host).build());
         return node;
     }
 

@@ -15,7 +15,7 @@
  */
 package io.lettuce.test.resource;
 
-import io.lettuce.core.RedisURI;
+import io.lettuce.core.RedisURIBuilder;
 import io.lettuce.core.cluster.ClusterClientOptions;
 import io.lettuce.core.cluster.RedisClusterClient;
 import io.lettuce.test.settings.TestSettings;
@@ -30,7 +30,7 @@ public class DefaultRedisClusterClient {
     private RedisClusterClient redisClient;
 
     private DefaultRedisClusterClient() {
-        redisClient = RedisClusterClient.create(RedisURI.Builder.redis(TestSettings.host(), TestSettings.port(900))
+        redisClient = RedisClusterClient.create(RedisURIBuilder.redis(TestSettings.host(), TestSettings.port(900))
                 .withClientName("my-client").build());
         Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override

@@ -383,7 +383,7 @@ class PubSubCommandTest extends AbstractRedisClientTest implements RedisPubSubLi
     @Test
     void pubsubCloseOnClientShutdown() {
 
-        RedisClient redisClient = RedisClient.create(TestClientResources.get(), RedisURI.Builder.redis(host, port).build());
+        RedisClient redisClient = RedisClient.create(TestClientResources.get(), RedisURIBuilder.redis(host, port).build());
 
         RedisPubSubAsyncCommands<String, String> connection = redisClient.connectPubSub().async();
 

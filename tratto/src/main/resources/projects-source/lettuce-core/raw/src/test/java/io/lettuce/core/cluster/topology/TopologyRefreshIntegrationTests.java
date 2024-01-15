@@ -25,6 +25,7 @@ import java.util.function.BiFunction;
 
 import javax.inject.Inject;
 
+import io.lettuce.core.RedisURIBuilder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,7 +33,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import io.lettuce.category.SlowTests;
 import io.lettuce.core.RedisClient;
-import io.lettuce.core.RedisURI;
 import io.lettuce.core.TestSupport;
 import io.lettuce.core.api.async.BaseRedisAsyncCommands;
 import io.lettuce.core.api.sync.RedisCommands;
@@ -80,9 +80,9 @@ class TopologyRefreshIntegrationTests extends TestSupport {
     @BeforeEach
     void openConnection() {
         clusterClient = RedisClusterClient.create(client.getResources(),
-                RedisURI.Builder.redis(host, ClusterTestSettings.port1).build());
-        redis1 = client.connect(RedisURI.Builder.redis(ClusterTestSettings.host, ClusterTestSettings.port1).build()).sync();
-        redis2 = client.connect(RedisURI.Builder.redis(ClusterTestSettings.host, ClusterTestSettings.port2).build()).sync();
+                RedisURIBuilder.redis(host, ClusterTestSettings.port1).build());
+        redis1 = client.connect(RedisURIBuilder.redis(ClusterTestSettings.host, ClusterTestSettings.port1).build()).sync();
+        redis2 = client.connect(RedisURIBuilder.redis(ClusterTestSettings.host, ClusterTestSettings.port2).build()).sync();
     }
 
     @AfterEach

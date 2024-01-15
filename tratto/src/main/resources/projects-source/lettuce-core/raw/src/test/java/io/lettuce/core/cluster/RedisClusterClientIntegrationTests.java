@@ -30,6 +30,7 @@ import java.util.stream.IntStream;
 
 import javax.inject.Inject;
 
+import io.lettuce.core.RedisURIBuilder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -108,10 +109,10 @@ class RedisClusterClientIntegrationTests extends TestSupport {
 
         clusterClient.setOptions(ClusterClientOptions.create());
 
-        redis1 = client.connect(RedisURI.Builder.redis(host, ClusterTestSettings.port1).build());
-        redis2 = client.connect(RedisURI.Builder.redis(host, ClusterTestSettings.port2).build());
-        redis3 = client.connect(RedisURI.Builder.redis(host, ClusterTestSettings.port3).build());
-        redis4 = client.connect(RedisURI.Builder.redis(host, ClusterTestSettings.port4).build());
+        redis1 = client.connect(RedisURIBuilder.redis(host, ClusterTestSettings.port1).build());
+        redis2 = client.connect(RedisURIBuilder.redis(host, ClusterTestSettings.port2).build());
+        redis3 = client.connect(RedisURIBuilder.redis(host, ClusterTestSettings.port3).build());
+        redis4 = client.connect(RedisURIBuilder.redis(host, ClusterTestSettings.port4).build());
 
         redissync1 = redis1.sync();
         redissync2 = redis2.sync();
@@ -207,7 +208,7 @@ class RedisClusterClientIntegrationTests extends TestSupport {
     void suspendedTopologyRefreshCanBeResumed() {
 
         RedisClusterClient client = RedisClusterClient.create(clusterClient.getResources(),
-                RedisURI.Builder.redis(host, ClusterTestSettings.port1).build());
+                RedisURIBuilder.redis(host, ClusterTestSettings.port1).build());
         try {
 
             client.setOptions(ClusterClientOptions.builder().topologyRefreshOptions(ClusterTopologyRefreshOptions.builder()
@@ -407,7 +408,7 @@ class RedisClusterClientIntegrationTests extends TestSupport {
     void clusterAuth() {
 
         RedisClusterClient clusterClient = RedisClusterClient.create(TestClientResources.get(),
-                RedisURI.Builder.redis(TestSettings.host(), ClusterTestSettings.port7).withPassword("foobared").build());
+                RedisURIBuilder.redis(TestSettings.host(), ClusterTestSettings.port7).withPassword("foobared").build());
 
         StatefulRedisClusterConnection<String, String> connection = clusterClient.connect();
         RedisAdvancedClusterCommands<String, String> sync = connection.sync();
@@ -433,7 +434,7 @@ class RedisClusterClientIntegrationTests extends TestSupport {
                 .enableAllAdaptiveRefreshTriggers().enablePeriodicRefresh(Duration.ofSeconds(1)).build();
 
         RedisClusterClient clusterClient = RedisClusterClient.create(TestClientResources.get(),
-                RedisURI.Builder.redis(TestSettings.host(), ClusterTestSettings.port1).build());
+                RedisURIBuilder.redis(TestSettings.host(), ClusterTestSettings.port1).build());
 
         clusterClient.setOptions(ClusterClientOptions.builder().topologyRefreshOptions(refreshOptions).build());
 
@@ -446,7 +447,7 @@ class RedisClusterClientIntegrationTests extends TestSupport {
     void partitionRetrievalShouldFail() {
 
         RedisClusterClient clusterClient = RedisClusterClient.create(TestClientResources.get(),
-                RedisURI.Builder.redis(TestSettings.host(), ClusterTestSettings.port7).build());
+                RedisURIBuilder.redis(TestSettings.host(), ClusterTestSettings.port7).build());
 
         assertThatThrownBy(clusterClient::getPartitions).isInstanceOf(RedisException.class)
                 .hasMessageContaining("Cannot obtain initial Redis Cluster topology");
@@ -458,7 +459,7 @@ class RedisClusterClientIntegrationTests extends TestSupport {
     void clusterNeedsAuthButNotSupplied() {
 
         RedisClusterClient clusterClient = RedisClusterClient.create(TestClientResources.get(),
-                RedisURI.Builder.redis(TestSettings.host(), ClusterTestSettings.port7).build());
+                RedisURIBuilder.redis(TestSettings.host(), ClusterTestSettings.port7).build());
 
         try {
             assertThatThrownBy(clusterClient::connect).isInstanceOf(RedisException.class);
@@ -472,7 +473,7 @@ class RedisClusterClientIntegrationTests extends TestSupport {
     void appliesNodeFilter() {
 
         RedisClusterClient clusterClient = RedisClusterClient.create(TestClientResources.get(),
-                RedisURI.Builder.redis(host, ClusterTestSettings.port1).build());
+                RedisURIBuilder.redis(host, ClusterTestSettings.port1).build());
         try {
 
             clusterClient.setOptions(
@@ -488,7 +489,7 @@ class RedisClusterClientIntegrationTests extends TestSupport {
     void noClusterNodeAvailable() {
 
         RedisClusterClient clusterClient = RedisClusterClient.create(TestClientResources.get(),
-                RedisURI.Builder.redis(host, 40400).build());
+                RedisURIBuilder.redis(host, 40400).build());
         try {
             clusterClient.connect();
             fail("Missing RedisException");
@@ -591,7 +592,7 @@ class RedisClusterClientIntegrationTests extends TestSupport {
 
         assertThat(connection).extracting("connectionState").extracting("readOnly").isEqualTo(Boolean.FALSE);
         RedisClusterClient clusterClient = RedisClusterClient.create(TestClientResources.get(),
-                RedisURI.Builder.redis(host, 40400).build());
+                RedisURIBuilder.redis(host, 40400).build());
         try {
             clusterClient.connect();
             fail("Missing RedisException");

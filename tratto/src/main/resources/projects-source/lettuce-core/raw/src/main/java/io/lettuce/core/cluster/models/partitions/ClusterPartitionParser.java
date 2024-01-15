@@ -19,6 +19,7 @@ import java.util.*;
 
 import io.lettuce.core.RedisException;
 import io.lettuce.core.RedisURI;
+import io.lettuce.core.RedisURIBuilder;
 import io.lettuce.core.cluster.SlotHash;
 import io.lettuce.core.internal.HostAndPort;
 import io.lettuce.core.internal.LettuceLists;
@@ -235,7 +236,7 @@ public class ClusterPartitionParser {
         }
 
         if (LettuceStrings.isNotEmpty(hostAndPort.getHostText())) {
-            uri = RedisURI.Builder.redis(hostAndPort.getHostText(), hostAndPort.getPort()).build();
+            uri = RedisURIBuilder.redis(hostAndPort.getHostText(), hostAndPort.getPort()).build();
         }
 
         String flags = iterator.next();

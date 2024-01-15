@@ -20,6 +20,7 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.util.Collections;
 
+import io.lettuce.core.RedisURIBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.AfterAll;
@@ -34,7 +35,6 @@ import io.lettuce.category.SlowTests;
 import io.lettuce.core.RedisChannelHandler;
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisException;
-import io.lettuce.core.RedisURI;
 import io.lettuce.core.StatefulRedisConnectionImpl;
 import io.lettuce.core.TestSupport;
 import io.lettuce.core.api.StatefulRedisConnection;
@@ -71,9 +71,9 @@ public class RedisClusterStressScenariosTest extends TestSupport {
 
     @BeforeAll
     public static void setupClient() {
-        client = RedisClient.create(TestClientResources.get(), RedisURI.Builder.redis(host, ClusterTestSettings.port5).build());
+        client = RedisClient.create(TestClientResources.get(), RedisURIBuilder.redis(host, ClusterTestSettings.port5).build());
         clusterClient = RedisClusterClient.create(TestClientResources.get(),
-                Collections.singletonList(RedisURI.Builder.redis(host, ClusterTestSettings.port5).build()));
+                Collections.singletonList(RedisURIBuilder.redis(host, ClusterTestSettings.port5).build()));
         clusterHelper = new ClusterTestHelper(clusterClient, ClusterTestSettings.port5, ClusterTestSettings.port6);
     }
 
@@ -87,8 +87,8 @@ public class RedisClusterStressScenariosTest extends TestSupport {
         clusterHelper.flushdb();
         ClusterSetup.setupMasterWithReplica(clusterHelper);
 
-        redis5 = client.connect(RedisURI.Builder.redis(host, ClusterTestSettings.port5).build());
-        redis6 = client.connect(RedisURI.Builder.redis(host, ClusterTestSettings.port6).build());
+        redis5 = client.connect(RedisURIBuilder.redis(host, ClusterTestSettings.port5).build());
+        redis6 = client.connect(RedisURIBuilder.redis(host, ClusterTestSettings.port6).build());
 
         redissync5 = redis5.sync();
         redissync6 = redis6.sync();

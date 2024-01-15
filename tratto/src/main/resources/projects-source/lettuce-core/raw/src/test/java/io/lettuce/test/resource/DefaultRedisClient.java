@@ -18,7 +18,7 @@ package io.lettuce.test.resource;
 import java.util.concurrent.TimeUnit;
 
 import io.lettuce.core.RedisClient;
-import io.lettuce.core.RedisURI;
+import io.lettuce.core.RedisURIBuilder;
 import io.lettuce.test.settings.TestSettings;
 
 /**
@@ -31,7 +31,7 @@ public class DefaultRedisClient {
     private RedisClient redisClient;
 
     private DefaultRedisClient() {
-        redisClient = RedisClient.create(RedisURI.Builder.redis(TestSettings.host(), TestSettings.port()).build());
+        redisClient = RedisClient.create(RedisURIBuilder.redis(TestSettings.host(), TestSettings.port()).build());
         Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
             public void run() {

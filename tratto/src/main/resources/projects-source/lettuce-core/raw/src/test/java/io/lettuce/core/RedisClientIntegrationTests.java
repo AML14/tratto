@@ -57,7 +57,7 @@ class RedisClientIntegrationTests extends TestSupport {
 
         TestConnectionListener listener = new TestConnectionListener();
 
-        RedisClient client = RedisClient.create(clientResources, RedisURI.Builder.redis(host, port).build());
+        RedisClient client = RedisClient.create(clientResources, RedisURIBuilder.redis(host, port).build());
 
         client.addListener(listener);
 
@@ -90,7 +90,7 @@ class RedisClientIntegrationTests extends TestSupport {
         final TestConnectionListener removedListener = new TestConnectionListener();
         final TestConnectionListener retainedListener = new TestConnectionListener();
 
-        RedisClient client = RedisClient.create(clientResources, RedisURI.Builder.redis(host, port).build());
+        RedisClient client = RedisClient.create(clientResources, RedisURIBuilder.redis(host, port).build());
         client.addListener(removedListener);
         client.addListener(retainedListener);
         client.removeListener(removedListener);
@@ -141,7 +141,7 @@ class RedisClientIntegrationTests extends TestSupport {
 
         TestCommandListener commandListener = new TestCommandListener();
 
-        RedisClient client = RedisClient.create(clientResources, RedisURI.Builder.redis(host, port).build());
+        RedisClient client = RedisClient.create(clientResources, RedisURIBuilder.redis(host, port).build());
         client.addListener(commandListener);
         ClientOptions options = ClientOptions.builder().timeoutOptions(TimeoutOptions.enabled()).build();
         client.setOptions(options);

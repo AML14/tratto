@@ -23,6 +23,7 @@ import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
+import io.lettuce.core.RedisURIBuilder;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,7 +35,6 @@ import brave.Tracing;
 import brave.propagation.CurrentTraceContext;
 import brave.propagation.TraceContext;
 import io.lettuce.core.RedisClient;
-import io.lettuce.core.RedisURI;
 import io.lettuce.core.TestSupport;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.resource.ClientResources;
@@ -71,7 +71,7 @@ class BraveTracingIntegrationTests extends TestSupport {
 
         clientResources = DefaultClientResources.builder().tracing(BraveTracing.create(clientTracing)).build();
         client = RedisClient.create(clientResources,
-                RedisURI.Builder.redis(host, port).withLibraryVersion("").withLibraryName("").build());
+                RedisURIBuilder.redis(host, port).withLibraryVersion("").withLibraryName("").build());
     }
 
     @BeforeEach
@@ -142,7 +142,7 @@ class BraveTracingIntegrationTests extends TestSupport {
         ClientResources clientResources = ClientResources.builder()
                 .tracing(BraveTracing.builder().tracing(clientTracing).excludeCommandArgsFromSpanTags().build()).build();
         RedisClient client = RedisClient.create(clientResources,
-                RedisURI.Builder.redis(host, port).withLibraryName("").withLibraryVersion("").build());
+                RedisURIBuilder.redis(host, port).withLibraryName("").withLibraryVersion("").build());
 
         ScopedSpan trace = clientTracing.tracer().startScopedSpan("foo");
 

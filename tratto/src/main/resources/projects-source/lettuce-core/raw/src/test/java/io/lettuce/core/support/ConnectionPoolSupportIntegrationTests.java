@@ -62,7 +62,7 @@ class ConnectionPoolSupportIntegrationTests extends TestSupport {
 
     @BeforeAll
     static void setupClient() {
-        client = RedisClient.create(TestClientResources.create(), RedisURI.Builder.redis(host, port).build());
+        client = RedisClient.create(TestClientResources.create(), RedisURIBuilder.redis(host, port).build());
         client.setOptions(ClientOptions.create());
         channels = (ChannelGroup) ReflectionTestUtils.getField(client, "channels");
     }

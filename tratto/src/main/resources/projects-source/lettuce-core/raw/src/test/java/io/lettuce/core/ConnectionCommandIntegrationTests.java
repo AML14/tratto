@@ -80,7 +80,7 @@ class ConnectionCommandIntegrationTests extends TestSupport {
             assertThat(connection.auth(passwd)).isEqualTo("OK");
             assertThat(connection.set(key, value)).isEqualTo("OK");
 
-            RedisURI redisURI = RedisURI.Builder.redis(host, port).withDatabase(2).withPassword(passwd).build();
+            RedisURI redisURI = RedisURIBuilder.redis(host, port).withDatabase(2).withPassword(passwd).build();
             RedisCommands<String, String> authConnection = client.connect(redisURI).sync();
             authConnection.ping();
             authConnection.getStatefulConnection().close();
@@ -111,7 +111,7 @@ class ConnectionCommandIntegrationTests extends TestSupport {
             assertThatThrownBy(() -> connection.get(key)).isInstanceOf(RedisCommandExecutionException.class);
             assertThat(connection.del("cached:demo")).isEqualTo(1);
 
-            RedisURI redisURI = RedisURI.Builder.redis(host, port).withDatabase(2).withPassword(passwd).build();
+            RedisURI redisURI = RedisURIBuilder.redis(host, port).withDatabase(2).withPassword(passwd).build();
             RedisCommands<String, String> authConnection = client.connect(redisURI).sync();
             authConnection.ping();
             authConnection.getStatefulConnection().close();
@@ -126,7 +126,7 @@ class ConnectionCommandIntegrationTests extends TestSupport {
             client.setOptions(
                     ClientOptions.builder().pingBeforeActivateConnection(false).protocolVersion(ProtocolVersion.RESP2).build());
 
-            RedisURI redisURI = RedisURI.Builder.redis(host, port).withDatabase(2)
+            RedisURI redisURI = RedisURIBuilder.redis(host, port).withDatabase(2)
                     .withAuthentication(TestSettings.aclUsername(), TestSettings.aclPassword()).build();
             StatefulRedisConnection<String, String> connection = client.connect(redisURI);
 
@@ -152,7 +152,7 @@ class ConnectionCommandIntegrationTests extends TestSupport {
             RedisCredentialsProvider.ImmediateRedisCredentialsProvider rcp = () -> RedisCredentials
                     .just(TestSettings.aclUsername(), passwd.get());
 
-            RedisURI redisURI = RedisURI.Builder.redis(host, port).withDatabase(2).withAuthentication(rcp).build();
+            RedisURI redisURI = RedisURIBuilder.redis(host, port).withDatabase(2).withAuthentication(rcp).build();
             StatefulRedisConnection<String, String> connection = client.connect(redisURI);
 
             Command<String, String, List<Object>> command = CliParser.parse("ACL SETUSER " + TestSettings.aclUsername()
@@ -172,7 +172,7 @@ class ConnectionCommandIntegrationTests extends TestSupport {
     @EnabledOnCommand("ACL")
     void resp2HandShakeWithUsernamePassword() {
 
-        RedisURI redisURI = RedisURI.Builder.redis(host, port).withAuthentication(username, passwd).build();
+        RedisURI redisURI = RedisURIBuilder.redis(host, port).withAuthentication(username, passwd).build();
         RedisClient clientResp2 = RedisClient.create(redisURI);
         clientResp2.setOptions(
                 ClientOptions.builder().pingBeforeActivateConnection(false).protocolVersion(ProtocolVersion.RESP2).build());

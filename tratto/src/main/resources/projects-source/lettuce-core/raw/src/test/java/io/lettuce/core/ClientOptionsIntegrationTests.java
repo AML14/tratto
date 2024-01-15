@@ -309,7 +309,7 @@ class ClientOptionsIntegrationTests extends TestSupport {
 
         try (ServerSocket serverSocket = new ServerSocket(0)) {
 
-            RedisURI redisURI = RedisURI.Builder.redis(TestSettings.host(), serverSocket.getLocalPort())
+            RedisURI redisURI = RedisURIBuilder.redis(TestSettings.host(), serverSocket.getLocalPort())
                     .withTimeout(Duration.ofMillis(500)).build();
 
             try {
@@ -326,7 +326,7 @@ class ClientOptionsIntegrationTests extends TestSupport {
     void connectWithAuthentication() {
 
         WithPassword.run(client, () -> {
-            RedisURI redisURI = RedisURI.Builder.redis(host, port).withPassword(passwd).build();
+            RedisURI redisURI = RedisURIBuilder.redis(host, port).withPassword(passwd).build();
 
             RedisCommands<String, String> connection = client.connect(redisURI).sync();
 
@@ -346,7 +346,7 @@ class ClientOptionsIntegrationTests extends TestSupport {
 
             try (ServerSocket serverSocket = new ServerSocket(0)) {
 
-                RedisURI redisURI = RedisURI.Builder.redis(TestSettings.host(), serverSocket.getLocalPort())
+                RedisURI redisURI = RedisURIBuilder.redis(TestSettings.host(), serverSocket.getLocalPort())
                         .withPassword(passwd).withTimeout(Duration.ofMillis(500)).build();
 
                 try {
@@ -365,7 +365,7 @@ class ClientOptionsIntegrationTests extends TestSupport {
 
         WithPassword.run(client, () -> {
 
-            RedisURI redisURI = RedisURI.Builder.redis(host, 6443).withPassword(passwd).withVerifyPeer(false).withSsl(true)
+            RedisURI redisURI = RedisURIBuilder.redis(host, 6443).withPassword(passwd).withVerifyPeer(false).withSsl(true)
                     .build();
 
             RedisCommands<String, String> connection = client.connect(redisURI).sync();
@@ -385,7 +385,7 @@ class ClientOptionsIntegrationTests extends TestSupport {
 
         WithPassword.run(client, () -> {
 
-            RedisURI redisURI = RedisURI.Builder.redis(host, port).build();
+            RedisURI redisURI = RedisURIBuilder.redis(host, port).build();
 
             try {
                 client.connect(redisURI);
@@ -401,7 +401,7 @@ class ClientOptionsIntegrationTests extends TestSupport {
 
         WithPassword.run(client, () -> {
 
-            RedisURI redisURI = RedisURI.Builder.redis(host, 6443).withVerifyPeer(false).withSsl(true).build();
+            RedisURI redisURI = RedisURIBuilder.redis(host, 6443).withVerifyPeer(false).withSsl(true).build();
 
             try {
                 client.connect(redisURI);
@@ -508,7 +508,7 @@ class ClientOptionsIntegrationTests extends TestSupport {
 
         WithPassword.run(client, () -> {
 
-            RedisURI redisURI = RedisURI.Builder.redis(host, port).withPassword(passwd).withDatabase(5).build();
+            RedisURI redisURI = RedisURIBuilder.redis(host, port).withPassword(passwd).withDatabase(5).build();
             StatefulRedisConnection<String, String> controlConnection = client.connect(redisURI);
 
             StatefulRedisConnection<String, String> redisConnection = client.connect(redisURI);

@@ -15,7 +15,7 @@
  */
 package io.lettuce.core;
 
-import static io.lettuce.core.RedisURI.Builder.redis;
+import static io.lettuce.core.RedisURIBuilder.redis;
 import static io.lettuce.core.codec.StringCodec.UTF8;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

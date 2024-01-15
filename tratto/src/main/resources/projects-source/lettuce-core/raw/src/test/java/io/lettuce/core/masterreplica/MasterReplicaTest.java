@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import io.lettuce.core.RedisURIBuilder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -47,7 +48,7 @@ import io.lettuce.test.settings.TestSettings;
  */
 class MasterReplicaTest extends AbstractRedisClientTest {
 
-    private RedisURI masterURI = RedisURI.Builder.redis(host, TestSettings.port(3)).withPassword(passwd)
+    private RedisURI masterURI = RedisURIBuilder.redis(host, TestSettings.port(3)).withPassword(passwd)
             .withClientName("my-client").withDatabase(5).build();
 
     private StatefulRedisMasterReplicaConnection<String, String> connection;
@@ -61,8 +62,8 @@ class MasterReplicaTest extends AbstractRedisClientTest {
     @BeforeEach
     void before() {
 
-        RedisURI node1 = RedisURI.Builder.redis(host, TestSettings.port(3)).withDatabase(2).build();
-        RedisURI node2 = RedisURI.Builder.redis(host, TestSettings.port(4)).withDatabase(2).build();
+        RedisURI node1 = RedisURIBuilder.redis(host, TestSettings.port(3)).withDatabase(2).build();
+        RedisURI node2 = RedisURIBuilder.redis(host, TestSettings.port(4)).withDatabase(2).build();
 
         connection1 = client.connect(node1).sync();
         connection2 = client.connect(node2).sync();
@@ -155,7 +156,7 @@ class MasterReplicaTest extends AbstractRedisClientTest {
 
         connection.close();
 
-        RedisURI replicaUri = RedisURI.Builder.redis(host, TestSettings.port(4)).withPassword(passwd).build();
+        RedisURI replicaUri = RedisURIBuilder.redis(host, TestSettings.port(4)).withPassword(passwd).build();
         connection = MasterReplica.connect(client, StringCodec.UTF8, replicaUri);
 
         RedisCommands<String, String> sync = connection.sync();
@@ -191,7 +192,7 @@ class MasterReplicaTest extends AbstractRedisClientTest {
 
         connection.close();
 
-        RedisURI replicaUri = RedisURI.Builder.redis(host, TestSettings.port(900 + 6)).withAuthentication("default", passwd)
+        RedisURI replicaUri = RedisURIBuilder.redis(host, TestSettings.port(900 + 6)).withAuthentication("default", passwd)
                 .build();
         connection = MasterReplica.connect(client, StringCodec.UTF8, replicaUri);
 

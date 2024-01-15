@@ -19,6 +19,7 @@ import java.util.concurrent.CompletableFuture;
 
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisURI;
+import io.lettuce.core.RedisURIBuilder;
 import io.lettuce.core.codec.RedisCodec;
 import io.lettuce.core.internal.LettuceAssert;
 import io.lettuce.core.masterreplica.MasterReplica;
@@ -144,7 +145,7 @@ public class MasterSlave {
      * <p>
      * When using Redis Sentinel, ensure that {@link Iterable redisURIs} contains only a single entry as only the first URI is
      * considered. {@link RedisURI} pointing to multiple Sentinels can be configured through
-     * {@link RedisURI.Builder#withSentinel}.
+     * {@link RedisURIBuilder#withSentinel}.
      * </p>
      *
      * @param redisClient the Redis client.
@@ -170,7 +171,7 @@ public class MasterSlave {
      * <p>
      * When using Redis Sentinel, ensure that {@link Iterable redisURIs} contains only a single entry as only the first URI is
      * considered. {@link RedisURI} pointing to multiple Sentinels can be configured through
-     * {@link RedisURI.Builder#withSentinel}.
+     * {@link RedisURIBuilder#withSentinel}.
      * </p>
      *
      * @param redisClient the Redis client.

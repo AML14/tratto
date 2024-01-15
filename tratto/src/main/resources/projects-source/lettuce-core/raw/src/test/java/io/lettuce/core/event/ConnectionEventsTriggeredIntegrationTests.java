@@ -20,12 +20,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 
+import io.lettuce.core.RedisURIBuilder;
 import org.junit.jupiter.api.Test;
 
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 import io.lettuce.core.RedisClient;
-import io.lettuce.core.RedisURI;
 import io.lettuce.core.TestSupport;
 import io.lettuce.core.event.connection.ConnectionEvent;
 import io.lettuce.test.resource.FastShutdown;
@@ -39,7 +39,7 @@ class ConnectionEventsTriggeredIntegrationTests extends TestSupport {
     @Test
     void testConnectionEvents() {
 
-        RedisClient client = RedisClient.create(TestClientResources.get(), RedisURI.Builder.redis(host, port).build());
+        RedisClient client = RedisClient.create(TestClientResources.get(), RedisURIBuilder.redis(host, port).build());
 
         Flux<ConnectionEvent> publisher = client.getResources().eventBus().get()
                 .filter(event -> event instanceof ConnectionEvent).cast(ConnectionEvent.class);
