@@ -1,12 +1,12 @@
-import data.OperationType;
+import data.ExperimentOperationType;
 import data.TogType;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
- * This class is the main file used in the build {@code experiment.jar}, with
- * all necessary operations for the experiment pipeline, including:
+ * This class's {@link #main} method handles the functionality of {@code experiment.jar}.
+ * Each invocation of {@link #main} does one of these operations for the experiment pipeline:
  * <ul>
  *     <li>Removing oracles</li>
  *     <li>Inserting oracles</li>
@@ -140,7 +140,7 @@ public class Tog {
      * @param args arguments passed for each JAR invocation
      */
     public static void main(String[] args) {
-        OperationType operationType = OperationType.valueOf(args[0].toUpperCase());
+        ExperimentOperationType operationType = ExperimentOperationType.valueOf(args[0].toUpperCase());
         switch (operationType) {
             case REMOVE_ORACLES -> removeOracles(
                     args[2]
@@ -175,7 +175,7 @@ public class Tog {
             case COMBINE_DEFECTS4J_OUTPUT -> combineDefects4JOutput(
                     TogType.valueOf(args[1].toUpperCase())
             );
-            default -> throw new IllegalArgumentException("Unknown operation " + operationType);
+            default -> throw new Error("Unhandled operation " + operationType);
         }
     }
 }

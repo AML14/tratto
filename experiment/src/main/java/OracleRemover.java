@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This class provides the functionality for removing oracles from a test
+ * This class provides static methods for removing oracles from a test
  * suite.
  */
 public class OracleRemover {
