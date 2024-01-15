@@ -30,9 +30,9 @@ public class FileUtilsTest {
     }
 
     @Test
-    public void getFQNPathTest() {
-        assertEquals(Paths.get("com", "example", "github", "MyClass.java"), FileUtils.getFQNPath("com.example.github.MyClass"));
-        assertEquals(Paths.get("MyClass.java"), FileUtils.getFQNPath("MyClass"));
+    public void fqnToPathTest() {
+        assertEquals(Paths.get("com", "example", "github", "MyClass.java"), FileUtils.fqnToPath("com.example.github.MyClass"));
+        assertEquals(Paths.get("MyClass.java"), FileUtils.fqnToPath("MyClass"));
     }
 
     @Test
@@ -48,9 +48,9 @@ public class FileUtilsTest {
     }
 
     @Test
-    public void getSimpleNameFromFQN() {
-        assertEquals("MyClass", FileUtils.getSimpleNameFromFQN("com.example.MyClass"));
-        assertEquals("MyClass", FileUtils.getSimpleNameFromFQN("MyClass"));
+    public void fqnToSimpleName() {
+        assertEquals("MyClass", FileUtils.fqnToSimpleName("com.example.MyClass"));
+        assertEquals("MyClass", FileUtils.fqnToSimpleName("MyClass"));
     }
 
     @Test
