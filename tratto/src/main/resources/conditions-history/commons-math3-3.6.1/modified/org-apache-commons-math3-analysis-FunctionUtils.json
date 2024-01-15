@@ -1,1 +1,44 @@
-[]
+[
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.analysis.FunctionUtils",
+      "name": "sample",
+      "parameterTypes": [
+        "org.apache.commons.math3.analysis.UnivariateFunction",
+        "double",
+        "double",
+        "int"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "f",
+        "min",
+        "max",
+        "n"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NumberIsTooLargeException",
+        "description": "@throws org.apache.commons.math3.exception.NumberIsTooLargeException if the lower bound min is greater than, or equal to the upper bound max.",
+        "guard": {
+          "condition": "min <= max",
+          "description": "if the lower bound min is greater than, or equal to the upper bound max."
+        }
+      },
+      {
+        "exception": "org.apache.commons.math3.exception.NotStrictlyPositiveException",
+        "description": "@throws org.apache.commons.math3.exception.NotStrictlyPositiveException if the number of sample points n is negative.",
+        "guard": {
+          "condition": "n < 0",
+          "description": "if the number of sample points n is negative."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  }
+]

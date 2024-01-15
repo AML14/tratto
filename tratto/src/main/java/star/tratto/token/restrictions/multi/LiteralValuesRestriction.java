@@ -90,7 +90,7 @@ public class LiteralValuesRestriction extends MultiTokenRestriction {
                 return false; // This may happen if false is suggested but it's not a comparison (e.g., "(a==b)==false") or if true is suggested as a whole predicate
             }
 
-            restrictedTokens.addAll(possiblyRestrictedTokens.stream().filter(t -> !allowedTokens.contains(t)).collect(Collectors.toList()));
+            restrictedTokens.addAll(possiblyRestrictedTokens.stream().filter(t -> !allowedTokens.contains(t)).toList());
 
             return !restrictedTokens.isEmpty();
         }

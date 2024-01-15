@@ -23,7 +23,7 @@ public class TypeUtils {
      */
     private final static List<String> primitiveFieldDescriptors = List.of("Z", "B", "C", "S", "I", "J", "F", "D");
 
-    /** Private constructor to avoid creating an instance of this class. */
+    /** Do not instantiate this class. */
     private TypeUtils() {
         throw new UnsupportedOperationException("This class cannot be instantiated.");
     }
@@ -111,8 +111,8 @@ public class TypeUtils {
      * Gets the ClassGetName form of the element type for a given ClassGetName
      * array type. For example,
      * <pre>
-     *     "[[I"    =&gt;    "I"
-     *     "[Ljava.lang.String;"    =&gt;    "java.lang.String"
+     *     "[[I"    &rArr;    "I"
+     *     "[Ljava.lang.String;"    &rArr;    "java.lang.String"
      * </pre>
      *
      * @param classGetNameArray a ClassGetName form of an array type

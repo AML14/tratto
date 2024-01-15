@@ -57,7 +57,7 @@ public class ParserTest {
             List<Integer> flattenedErrorColumns = errorColumns
                     .stream()
                     .flatMap(List::stream)
-                    .collect(Collectors.toList());
+                    .toList();
 
             TreeMap<Integer, Integer> columnFrequencies = new TreeMap<>(frequencyMap(flattenedErrorColumns));
 
@@ -375,8 +375,8 @@ public class ParserTest {
         List<EObject> methodsAndAttributes = parser.getAllMethodsAndAttributes(oracle);
         assertEquals(expectedMethodsAndAttributes.size(), methodsAndAttributes.size());
         assertTrue(
-                expectedMethodsAndAttributes.stream().map(StringUtils::compactExpression).collect(Collectors.toList()).containsAll(
-                        methodsAndAttributes.stream().map(eo -> compactExpression(split(eo))).collect(Collectors.toList()))
+                expectedMethodsAndAttributes.stream().map(StringUtils::compactExpression).toList().containsAll(
+                        methodsAndAttributes.stream().map(eo -> compactExpression(split(eo))).toList())
         );
     }
 

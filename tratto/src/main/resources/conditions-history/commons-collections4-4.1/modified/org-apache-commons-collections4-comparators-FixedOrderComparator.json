@@ -102,6 +102,72 @@
           "condition": "unknownObjectBehavior==null",
           "description": "unknownObjectBehavior is null."
         }
+      },
+      {
+        "exception": "java.lang.UnsupportedOperationException",
+        "description": "@throws java.lang.UnsupportedOperationException if a comparison has been performed.",
+        "guard": {
+          "condition": "receiverObjectID.isLocked()",
+          "description": "if a comparison has been performed."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.comparators.FixedOrderComparator",
+      "name": "add",
+      "parameterTypes": [
+        "java.lang.Object"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "obj"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.UnsupportedOperationException",
+        "description": "@throws java.lang.UnsupportedOperationException if a comparison has already been made.",
+        "guard": {
+          "condition": "receiverObjectID.isLocked()",
+          "description": "if a comparison has already been made."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.collections4.comparators.FixedOrderComparator",
+      "name": "addAsEqual",
+      "parameterTypes": [
+        "java.lang.Object",
+        "java.lang.Object"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "existingObj",
+        "newObj"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.UnsupportedOperationException",
+        "description": "@throws java.lang.UnsupportedOperationException if a comparison has already been made.",
+        "guard": {
+          "condition": "receiverObjectID.isLocked()",
+          "description": "if a comparison has already been made."
+        }
       }
     ],
     "post": [],

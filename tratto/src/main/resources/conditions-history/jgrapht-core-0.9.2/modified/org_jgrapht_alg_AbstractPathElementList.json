@@ -23,7 +23,15 @@
     "throws": [
       {
         "exception": "java.lang.IllegalArgumentException",
-        "description": "@throws java.lang.IllegalArgumentException maxSize is negative or 0.",
+        "description": "@throws java.lang.IllegalArgumentException if the specified prevPathElementList or edge is null.",
+        "guard": {
+          "condition": "elementList==null || edge==null",
+          "description": "if the specified prevPathElementList or edge is null."
+        }
+      },
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException if the specified prevPathElementList or edge is null.",
         "guard": {
           "condition": "maxSize<0 || maxSize==0",
           "description": "maxSize is negative or 0."

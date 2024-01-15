@@ -1,0 +1,65 @@
+[
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.random.RandomAdaptor",
+      "name": "nextBytes",
+      "parameterTypes": [
+        "[B"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "bytes"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param bytes bytes is !=null. !=null byte array in which to put the random bytes.",
+        "guard": {
+          "condition": "bytes!=null",
+          "description": "bytes is !=null. !=null byte array in which to put the random bytes."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.random.RandomAdaptor",
+      "name": "nextInt",
+      "parameterTypes": [
+        "int"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "n"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.IllegalArgumentException",
+        "description": "@throws java.lang.IllegalArgumentException n is not positive.",
+        "guard": {
+          "condition": "(n>0) == false",
+          "description": "n is not positive."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param n the bound on the random number to be returned. . n is positive.",
+        "guard": {
+          "condition": "n>0",
+          "description": "the bound on the random number to be returned. . n is positive."
+        }
+      }
+    ]
+  }
+]

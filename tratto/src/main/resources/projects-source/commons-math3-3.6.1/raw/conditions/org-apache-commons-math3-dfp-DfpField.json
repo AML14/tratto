@@ -1,0 +1,64 @@
+[
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.dfp.DfpField",
+      "name": "newDfp",
+      "parameterTypes": [
+        "byte",
+        "byte"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "sign",
+        "nans"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param nans code of the value. nans is one of Dfp#INFINITE Dfp#SNAN Dfp#QNAN.",
+        "guard": {
+          "condition": "nans==1",
+          "description": "code of the value. nans is one of Dfp#INFINITE Dfp#SNAN Dfp#QNAN."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.dfp.DfpField",
+      "name": "computeExp",
+      "parameterTypes": [
+        "org.apache.commons.math3.dfp.Dfp",
+        "org.apache.commons.math3.dfp.Dfp"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "a",
+        "one"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID.equals(a)",
+          "description": "exp(a)."
+        },
+        "description": "exp(a).",
+        "guard": {
+          "condition": "true",
+          "description": "exp(a)."
+        }
+      }
+    ],
+    "pre": []
+  }
+]

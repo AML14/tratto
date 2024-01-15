@@ -634,6 +634,44 @@
   {
     "operation": {
       "classname": "org.apache.commons.math3.util.ArithmeticUtils",
+      "name": "pow",
+      "parameterTypes": [
+        "java.math.BigInteger",
+        "java.math.BigInteger"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "k",
+        "e"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NotPositiveException",
+        "description": "@throws org.apache.commons.math3.exception.NotPositiveException e < 0.",
+        "guard": {
+          "condition": "e.doubleValue()<0",
+          "description": "e < 0."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param e Exponent (. e is positive or zero).",
+        "guard": {
+          "condition": "e.doubleValue()>0 || e.doubleValue()==0",
+          "description": "Exponent (. e is positive or zero)."
+        }
+      }
+    ]
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.util.ArithmeticUtils",
       "name": "stirlingS2",
       "parameterTypes": [
         "int",

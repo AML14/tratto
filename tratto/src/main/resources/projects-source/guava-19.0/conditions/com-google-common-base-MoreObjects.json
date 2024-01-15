@@ -1,0 +1,55 @@
+[
+  {
+    "operation": {
+      "classname": "com.google.common.base.MoreObjects",
+      "name": "firstNonNull",
+      "parameterTypes": [
+        "java.lang.Object",
+        "java.lang.Object"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "first",
+        "second"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.NullPointerException",
+        "description": "@throws java.lang.NullPointerException both first and second are null.",
+        "guard": {
+          "condition": "first==null && second==null",
+          "description": "both first and second are null."
+        }
+      }
+    ],
+    "post": [
+      {
+        "property": {
+          "condition": "methodResultID.equals(first)",
+          "description": "first if first is !=null, otherwise second if first is !=null."
+        },
+        "description": "first if first is !=null, otherwise second if first is !=null.",
+        "guard": {
+          "condition": "first!=null",
+          "description": "first if first is !=null, otherwise second if first is !=null."
+        }
+      },
+      {
+        "property": {
+          "condition": "methodResultID.equals(second)",
+          "description": "first if first is !=null, otherwise second if first is !=null."
+        },
+        "description": "first if first is !=null, otherwise second if first is !=null.",
+        "guard": {
+          "condition": "(first!=null)==false",
+          "description": "first if first is !=null, otherwise second if first is !=null."
+        }
+      }
+    ],
+    "pre": []
+  }
+]

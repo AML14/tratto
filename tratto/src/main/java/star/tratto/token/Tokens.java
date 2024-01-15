@@ -228,7 +228,7 @@ public class Tokens {
             .values()
             .stream()
             .flatMap(List::stream)
-            .collect(Collectors.toList());
+            .toList();
     private static final Set<String> duplicateTokens = new HashSet<>();
 
     /**
