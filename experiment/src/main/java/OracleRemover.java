@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 /**
- * This class provides the functionality for removing oracles from a test
+ * This class provides static methods for removing oracles from a test
  * suite.
  */
 public class OracleRemover {
