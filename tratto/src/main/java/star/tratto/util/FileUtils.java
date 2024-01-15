@@ -98,21 +98,24 @@ public class FileUtils {
      * NOTE: This method does NOT perform the move. This method is different
      * from {@link Path#relativize(Path)}, which gives a path to the
      * destination, relative to the source.
+     * <p>
      *
-     * @param sourceDir the source directory
-     * @param destination the destination directory
-     * @param target the target file in the source directory
-     * @return the path of the target file if hypothetically moved from the
-     * source directory to the destination directory. For example, let
+     * For example, let
      * <pre>
      *     sourceDir = [sourcePath]
      *     destination = [destinationPath]
      *     target = [sourcePath]/[internalDirectories]/[fileName]
      * </pre>
-     * then the method outputs,
+     * then the method outputs
      * <pre>
      *     relativePath = [destinationPath]/[internalDirectories]/[fileName]
      * </pre>
+
+     * @param sourceDir the source directory
+     * @param destination the destination directory
+     * @param target the target file in the source directory
+     * @return the path of the target file if hypothetically moved from the
+     * source directory to the destination directory. 
      */
     private static Path getRelativePath(Path sourceDir, Path destination, Path target) {
         if (sourceDir.equals(target)) {

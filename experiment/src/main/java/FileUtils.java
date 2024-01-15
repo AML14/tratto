@@ -36,9 +36,9 @@ public class FileUtils {
      *     {@code com/example/MyClass.java}
      *
      * @param fullyQualifiedName a fully qualified class name
-     * @return the path corresponding to the fully qualified class name
+     * @return the relative path corresponding to the fully qualified class name
      */
-    public static Path getFQNPath(String fullyQualifiedName) {
+    public static Path fqnToPath(String fullyQualifiedName) {
         return Paths.get(fullyQualifiedName.replaceAll("[.]", "/") + ".java");
     }
 
@@ -58,8 +58,8 @@ public class FileUtils {
      * base directories
      */
     public static Path getFQNOutputPath(String fullyQualifiedName, String... baseDir) {
-        Path fqnPath = FileUtils.getFQNPath(String.join(".", baseDir) + "." + fullyQualifiedName);
-        String fileName = getSimpleNameFromFQN(fullyQualifiedName) + "Test.java";
+        Path fqnPath = FileUtils.fqnToPath(String.join(".", baseDir) + "." + fullyQualifiedName);
+        String fileName = fqnToSimpleName(fullyQualifiedName) + "Test.java";
         return Paths.get("output")
                 .resolve(fqnPath)
                 .resolveSibling(fileName);
@@ -73,7 +73,7 @@ public class FileUtils {
      * @param fullyQualifiedName a fully qualified class name
      * @return the corresponding simple name without packages
      */
-    public static String getSimpleNameFromFQN(String fullyQualifiedName) {
+    public static String fqnToSimpleName(String fullyQualifiedName) {
         int classNameIdx = fullyQualifiedName.lastIndexOf(".");
         if (classNameIdx != -1) {
             return fullyQualifiedName.substring(classNameIdx + 1);
@@ -388,7 +388,7 @@ public class FileUtils {
      * @param fqnPath the fully qualified name of the class as a Path
      * @return the path to the class in the given root directory. Returns null
      * if no such class is found.
-     * @see FileUtils#getFQNPath(String)
+     * @see FileUtils#fqnToPath(String)
      */
     public static Path findClassPath(Path dir, Path fqnPath) {
         try (Stream<Path> walk = Files.walk(dir)) {
