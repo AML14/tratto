@@ -14,9 +14,10 @@ fi
 target_class="${1}"
 src_dir="${2}"
 classpath="${3}"
+qualifiers=$(echo "${target_class}" | sed 's/\./\//g')
 
 java -jar "${current_dir}/resources/toradocu-1.0-all.jar" \
   --target-class "${target_class}" \
   --source-dir "${src_dir}" \
   --class-dir "${classpath}" \
-  --condition-translator-output "${root_dir}/output/jdoctor-oracles/${target_class}_jdoctor_output.json"
+  --condition-translator-output "${root_dir}/output/jdoctor-oracles/${qualifiers}_jdoctor_output.json"
