@@ -29,7 +29,7 @@
             {
                 "description": "@param timeout timeout value",
                 "guard": {
-                    "condition": "timeout != null && timeout >= 0",
+                    "condition": "timeout != null && timeout.toNanos() >= 0",
                     "description": "@param timeout timeout value"
                 }
             }
@@ -143,16 +143,7 @@
             }
         ],
         "post": [],
-        "throws": [
-            {
-                "exception": "java.lang.IllegalStateException",
-                "description": "@throws IllegalStateException if a {@link RedisCredentialsProvider} is configured",
-                "guard": {
-                    "condition": "receiverObjectID.credentialsProvider != null",
-                    "description": "@throws IllegalStateException if a {@link RedisCredentialsProvider} is configured"
-                }
-            }
-        ]
+        "throws": []
     },
     {
         "operation": {
@@ -173,7 +164,7 @@
             {
                 "description": "@param timeout the command timeout for synchronous command execution.",
                 "guard": {
-                    "condition": "timeout != null && timeout >= 0",
+                    "condition": "timeout != null && timeout.toNanos() >= 0",
                     "description": "@param timeout the command timeout for synchronous command execution."
                 }
             }
@@ -1016,7 +1007,7 @@
             {
                 "description": "@param timeout must not be {@code null} or negative.",
                 "guard": {
-                    "condition": "timeout != null && timeout >= 0",
+                    "condition": "timeout != null && timeout.toNanos() >= 0",
                     "description": "@param timeout must not be {@code null} or negative."
                 }
             }
