@@ -206,7 +206,7 @@ public class RestrictionsUtils {
                         && !Tokens.TOKENS.contains(partialExpressionTokens.get(nTokens - 1)) // Last token must be a method name, i.e., not from the grammar
                         && partialExpressionTokens.get(nTokens - 2).equals(".") // 2nd to last token must be "."
                         && (
-                        List.of(")", "this", "methodResultID").contains(partialExpressionTokens.get(nTokens - 3)) // 3rd to last token must be ")", "this", "methodResultID"
+                        List.of(")", "this", "methodResultID", "jdVar").contains(partialExpressionTokens.get(nTokens - 3)) // 3rd to last token must be ")", "this", "methodResultID", "jdVar"
                                 || !Tokens.TOKENS.contains(partialExpressionTokens.get(nTokens - 3)) // or class/field name, i.e., not from the grammar
                 )
         );
