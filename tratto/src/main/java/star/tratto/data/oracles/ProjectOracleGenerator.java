@@ -245,8 +245,8 @@ public class ProjectOracleGenerator {
                         targetClass,
                         targetCallable,
                         targetOracleType,
-                        "",
-                        ""
+                        null,
+                        null
                 );
                 this.tagAndTexts.add(newTagAndText);
                 return newTagAndText;
