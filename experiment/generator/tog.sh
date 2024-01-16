@@ -27,12 +27,11 @@ while IFS=, read -r project_id bug_id modified_class; do
   src_dir="${project_dir}/$(defects4j export -p "dir.src.classes" -w "${project_dir}")"
   # generate oracles using TOG
   if [ "${tog}" == "jdoctor" ]; then
-#    ./jdoctor.sh "${modified_class}" "${src_dir}" "${classpath}"
-    echo "${src_dir}"
+    "${current_dir}/jdoctor.sh" "${modified_class}" "${src_dir}" "${classpath}"
   elif [ "${tog}" == "toga" ]; then
-    ./toga.sh "${modified_class}"
+    "${current_dir}/toga.sh" "${modified_class}"
   elif [ "${tog}" == "tratto" ]; then
-    ./tratto.sh
+    "${current_dir}/tratto.sh"
   else
     echo -e "tog.sh: Invalid TOG name, ${tog}"
     exit 1
