@@ -205,7 +205,7 @@ public class TokenEnricher {
         List<String> methodVariables = new ArrayList<>(List.of("this", "methodResultID"));
         methodVariables.addAll(oracleDatapoint.getTokensMethodArguments().stream().map(MethodArgumentTokens::argumentName).collect(Collectors.toList()));
         if (!methodVariables.contains(precedingExpr) &&
-                oracleDatapoint.getTokensOracleVariablesNonPrivateNonStaticAttributes().isEmpty() && oracleDatapoint.getTokensOracleVariablesNonPrivateNonStaticAttributes().isEmpty()) {
+                oracleDatapoint.getTokensOracleVariablesNonPrivateNonStaticNonVoidMethods().isEmpty() && oracleDatapoint.getTokensOracleVariablesNonPrivateNonStaticAttributes().isEmpty()) {
             ResolvedType precedingExprResolvedType = getResolvedType(fullyQualifiedClassName(precedingExprReturnType));
             oracleDatapoint.setTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(getMethodsFromType(precedingExprResolvedType));
             oracleDatapoint.setTokensOracleVariablesNonPrivateNonStaticAttributes(getFieldsFromType(precedingExprResolvedType));
