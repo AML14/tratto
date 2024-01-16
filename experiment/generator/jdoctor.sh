@@ -27,6 +27,8 @@ java -jar "${current_dir}/resources/toradocu-1.0-all.jar" \
   --source-dir "${src_dir}" \
   --class-dir "${classpath}" \
   --condition-translator-output "${jdoctor_output_file}"
+sdk use java "17.0.8-oracle"
+java -jar "${current_dir}/resources/experiment.jar" "generate_oracle_output" "jdoctor" "${jdoctor_output_file}"
 # cleanup
 rm -r "${root_dir}/glove-txt"
 rm -r "${root_dir}/wmd-glove-distances.csv"
