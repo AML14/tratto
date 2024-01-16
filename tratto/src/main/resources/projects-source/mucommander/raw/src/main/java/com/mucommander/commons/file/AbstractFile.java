@@ -241,7 +241,7 @@ public abstract class AbstractFile implements FileAttributes {
      * Returns <code>true</code> if this file is hidden.
      *
      * <p>This default implementation is solely based on the filename and returns <code>true</code> if this
-     * file's name starts with '.'. This method should be overridden if the underlying filesystem has a notion
+     * file's name starts with ".". This method should be overridden if the underlying filesystem has a notion
      * of hidden files.</p>
      *
      * @return true if this file is hidden
