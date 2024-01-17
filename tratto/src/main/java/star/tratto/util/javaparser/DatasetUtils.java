@@ -667,6 +667,22 @@ public class DatasetUtils {
                     .filter(JavaParserUtils::isNonPrivateNonStaticNonVoidMethod)
                     .toList();
             methodList.addAll(allMethods.stream().map(MethodTokens::new).toList());
+        } else if (jpResolvedType.isWildcard()) {
+            ResolvedType type = jpResolvedType.asWildcard().getBoundedType();
+            if (type.isReferenceType()) {
+                List<MethodUsage> allMethods = type.asReferenceType().getAllMethods()
+                        .stream()
+                        .map(MethodUsage::new)
+                        .filter(JavaParserUtils::isNonPrivateNonStaticNonVoidMethod)
+                        .toList();
+                methodList.addAll(allMethods.stream().map(MethodTokens::new).toList());
+            }
+        } else if (!(jpResolvedType.isPrimitive() || jpResolvedType.isVoid())) {
+            // unknown type.
+            logger.error(String.format(
+                    "Return type %s different from ReferenceType, PrimitiveType, " +
+                            "ArrayType, TypeVariable, VoidType and WildcardType not yet supported%n", jpResolvedType
+            ));
         }
         return methodList;
     }
@@ -834,11 +850,23 @@ public class DatasetUtils {
                                 "resolved type declaration not found.", jpResolvedType
                 ));
             }
+        } else if (jpResolvedType.isWildcard()) {
+            ResolvedType type = jpResolvedType.asWildcard().getBoundedType();
+            if (type.isReferenceType()) {
+                Optional<ResolvedReferenceTypeDeclaration> jpResolvedDeclaration = type.asReferenceType().getTypeDeclaration();
+                if (jpResolvedDeclaration.isPresent()) {
+                    List<ResolvedFieldDeclaration> jpResolvedFields = jpResolvedDeclaration.get().getAllFields()
+                            .stream()
+                            .filter(JavaParserUtils::isNonPrivateNonStaticAttribute)
+                            .toList();
+                    fieldList.addAll(convertFieldDeclarationToAttributeTokens(jpResolvedFields));
+                }
+            }
         } else if (!(jpResolvedType.isPrimitive() || jpResolvedType.isVoid() || jpResolvedType.isTypeVariable())) {
             // unknown type.
             logger.error(String.format(
                     "Return type %s different from ReferenceType, PrimitiveType, " +
-                            "ArrayType, TypeVariable, and VoidType not yet supported%n", jpResolvedType
+                            "ArrayType, TypeVariable, VoidType and WildcardType not yet supported%n", jpResolvedType
             ));
         }
         return fieldList;
