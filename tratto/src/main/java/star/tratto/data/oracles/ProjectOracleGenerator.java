@@ -441,20 +441,10 @@ public class ProjectOracleGenerator {
                     )
             );
             builder.setTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(
-                    DatasetUtils.getTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(
-                            jpClass,
-                            jpCallable,
-                            builder.copy().getTokensMethodArguments(),
-                            builder.copy().getOracle()
-                    )
+                    DatasetUtils.getTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(builder.copy())
             );
             builder.setTokensOracleVariablesNonPrivateNonStaticAttributes(
-                    DatasetUtils.getTokensOracleVariablesNonPrivateNonStaticAttributes(
-                            jpClass,
-                            jpCallable,
-                            builder.copy().getTokensMethodArguments(),
-                            builder.copy().getOracle()
-                    )
+                    DatasetUtils.getTokensOracleVariablesNonPrivateNonStaticAttributes(builder.copy())
             );
         } catch (JPClassNotFoundException | UnsolvedSymbolException e) {
             e.printStackTrace();

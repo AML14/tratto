@@ -225,96 +225,10 @@ public class JavaParserUtils {
     }
 
     /**
-     * Injects a new method declaration into a class, given an original method
-     * from the class. The statements in the NEW method include:
-     * <ul>
-     *     <li>a variable declaration for each method argument in the original
-     *     method</li>
-     *     <li>a variable declaration for the return type of the original
-     *     method</li>
-     *     <li>a variable declaration (of unknown type) using given
-     *     expression</li>
-     * </ul>
-     *
-     * @param jpClass the class in which to insert the new method
-     * @param originalMethod an original method from {@code jpClass}
-     * @param methodArgs tokens for the parameters of {@code originalMethod}
-     * @param expression an expression to add to the new method
-     * @throws ResolvedTypeNotFound if {@code originalMethod} is a constructor
+     * @return pair of strings, where the first string is the package and the second string is the class
      */
-    private static void addNewMethodWithExpression(
-            TypeDeclaration<?> jpClass,
-            CallableDeclaration<?> originalMethod,
-            List<MethodArgumentTokens> methodArgs,
-            String expression
-    ) throws ResolvedTypeNotFound {
-        // throw error when given a constructor due to JavaParser behavior differences
-        if (originalMethod.getNameAsString().equals(jpClass.getNameAsString())) {
-            throw new ResolvedTypeNotFound("Unable to generate synthetic constructor for class " + jpClass.getNameAsString());
-        }
-        // create synthetic method
-        BlockStmt methodBody = createNewMethodBody(jpClass);
-        // add method arguments as variable statements in method body (e.g. "ArgType argName;")
-        for (MethodArgumentTokens methodArg : methodArgs) {
-            methodBody.addStatement(methodArg.typeName() + " " + methodArg.argumentName() + ";");
-        }
-        // add return type (if non-void)
-        addMethodResultIDStatementToMethod(
-                methodBody,
-                ((MethodDeclaration) originalMethod).getType().asString(),
-                originalMethod.getNameAsString(),
-                methodArgs
-                        .stream()
-                        .map(MethodArgumentTokens::argumentName)
-                        .toList()
-        );
-        // add expression
-        methodBody.addStatement("var expressionReturnType = " + expression + ";");
-    }
-
-    /**
-     * Gets the type of the given Java expression. For example, given the
-     * expression {@code Integer.MAX_VALUE - Integer.MIN_VALUE}, this method
-     * returns a JavaParser representation of the type {@code int}.
-     *
-     * @param jpClass the declaring class of {@code jpCallable}
-     * @param jpCallable a method of {@code jpClass}
-     * @param methodArgs tokens for the parameters of {@code jpCallable}
-     * @param expression a Java expression
-     * @return the type of the expression
-     * @throws ResolvedTypeNotFound if {@code jpClass} is not a class/interface
-     * or if {@code jpCallable} is a constructor
-     * @throws NoSuchElementException if an error occurs while parsing the
-     * expression
-     */
-    public static ResolvedType getResolvedTypeOfExpression(
-            TypeDeclaration<?> jpClass,
-            CallableDeclaration<?> jpCallable,
-            List<MethodArgumentTokens> methodArgs,
-            String expression
-    ) throws ResolvedTypeNotFound {
-        if (jpClass instanceof ClassOrInterfaceDeclaration) {
-            addNewMethodWithExpression(
-                    jpClass,
-                    jpCallable,
-                    methodArgs,
-                    expression
-            );
-            // find expression in synthetic method and resolve return type
-            return jpClass.getMethodsByName(SYNTHETIC_METHOD_NAME).get(0)
-                    .getBody().orElseThrow()
-                    .getStatements().getLast().orElseThrow()
-                    .asExpressionStmt().getExpression()
-                    .asVariableDeclarationExpr().getVariables().get(0)
-                    .getInitializer().orElseThrow()
-                    .calculateResolvedType();
-        }
-        throw new ResolvedTypeNotFound(String.format(
-                "ResolvedType of expression %s of class %s and method %s not found.",
-                expression,
-                jpClass.getNameAsString(),
-                jpCallable.getNameAsString()
-        ));
+    public static Pair<String, String> getReturnTypeOfExpression(String expression, OracleDatapoint oracleDatapoint) {
+        return getTypePairFromResolvedType(getResolvedTypeOfExpression(expression, oracleDatapoint));
     }
 
     /**
@@ -329,12 +243,12 @@ public class JavaParserUtils {
      *                        oracle (e.g., it's the oracle being currently generated). Then, the last occurring
      *                        jdVar clause is looked for and its type is resolved, which will be used to resolve
      *                        the type of the expression
-     * @return pair of strings, where the first string is the package and the second string is the class
+     * @return resolved type of the expression
      */
-    public static Pair<String, String> getReturnTypeOfExpression(String expression, OracleDatapoint oracleDatapoint) {
+    public static ResolvedType getResolvedTypeOfExpression(String expression, OracleDatapoint oracleDatapoint) {
         // Handle null
         if ("null".equals(expression)) {
-            return JavaTypes.NULL;
+            return null;
         }
 
         // Generate synthetic method
@@ -366,15 +280,12 @@ public class JavaParserUtils {
         syntheticMethodBody.addStatement("var returnType = " + expression + ";");
 
         // Get return type of expression
-        ResolvedType returnType;
         try {
-            returnType = getReturnTypeOfLastStatementInSyntheticMethod(cu, className);
+            return getReturnTypeOfLastStatementInSyntheticMethod(cu, className);
         } catch (UnsolvedSymbolException e) { // The resolution may fail if imports are missing, try to fix it by adding them
             addImports(cu, expression, oracleDatapoint);
-            returnType = getReturnTypeOfLastStatementInSyntheticMethod(cu, className);
+            return getReturnTypeOfLastStatementInSyntheticMethod(cu, className);
         }
-
-        return getTypePairFromResolvedType(returnType);
     }
 
     /**
@@ -472,6 +383,9 @@ public class JavaParserUtils {
      * Note: if the class is something like "{@code List<String>}", this method will return "List" as the class name.
      */
     public static Pair<String, String> getTypePairFromResolvedType(ResolvedType resolvedType) {
+        if (resolvedType == null) {
+            return JavaTypes.NULL;
+        }
         if (resolvedType.isReferenceType()) {
             ResolvedReferenceTypeDeclaration type = resolvedType.asReferenceType().getTypeDeclaration().get();
             return Pair.with(type.getPackageName(), type.getClassName());

@@ -24,6 +24,7 @@ import com.github.javaparser.symbolsolver.javaparsermodel.declarations.JavaParse
 import com.github.javaparser.symbolsolver.reflectionmodel.ReflectionFieldDeclaration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleType;
 import star.tratto.data.JPClassNotFoundException;
 import star.tratto.data.PackageDeclarationNotFoundException;
@@ -991,30 +992,25 @@ public class DatasetUtils {
      * this), (2) the return type of getName(), and (3) the return type of
      * length().
      *
-     * @param jpClass the declaring class
-     * @param jpCallable a method
-     * @param methodArgs the arguments of the method
-     * @param oracle an oracle corresponding to the method
+     * @param oracleDatapoint an oracle data point which must have the following
+     *                        attributes populated:
+     *                        <ul>
+     *                        <li>classSourceCode</li>
+     *                        <li>className</li>
+     *                        <li>methodSourceCode</li>
+     *                        <li>tokensProjectClasses</li>
+     *                        <li>oracle</li>
+     *                        </ul>
      * @return a list of method tokens
      */
-    public static List<MethodTokens> getTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(
-            TypeDeclaration<?> jpClass,
-            CallableDeclaration<?> jpCallable,
-            List<MethodArgumentTokens> methodArgs,
-            String oracle
-    ) {
+    public static List<MethodTokens> getTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(OracleDatapoint oracleDatapoint) {
         List<MethodTokens> methodList = new ArrayList<>();
-        List<String> subexpressions = getSubexpressions(oracle);
+        List<String> subexpressions = getSubexpressions(oracleDatapoint.getOracle());
         for (String subexpression : subexpressions) {
             ResolvedType resolvedType;
             try {
-                resolvedType = JavaParserUtils.getResolvedTypeOfExpression(
-                        jpClass,
-                        jpCallable,
-                        methodArgs,
-                        subexpression
-                );
-            } catch (UnsolvedSymbolException | ResolvedTypeNotFound e) {
+                resolvedType = JavaParserUtils.getResolvedTypeOfExpression(subexpression, oracleDatapoint);
+            } catch (UnsolvedSymbolException e) {
                 resolvedType = JavaParserUtils.getObjectType();
             }
             if (!resolvedType.isPrimitive()) {
@@ -1030,30 +1026,25 @@ public class DatasetUtils {
      * given oracle. Includes attributes visible to each sub-expression within
      * an oracle.
      *
-     * @param jpClass the declaring class
-     * @param jpCallable a method
-     * @param methodArgs the arguments of the method
-     * @param oracle an oracle corresponding to the method
+     * @param oracleDatapoint an oracle data point which must have the following
+     *                        attributes populated:
+     *                        <ul>
+     *                        <li>classSourceCode</li>
+     *                        <li>className</li>
+     *                        <li>methodSourceCode</li>
+     *                        <li>tokensProjectClasses</li>
+     *                        <li>oracle</li>
+     *                        </ul>
      * @return a list of attribute tokens
      */
-    public static List<AttributeTokens> getTokensOracleVariablesNonPrivateNonStaticAttributes(
-            TypeDeclaration<?> jpClass,
-            CallableDeclaration<?> jpCallable,
-            List<MethodArgumentTokens> methodArgs,
-            String oracle
-    ) {
+    public static List<AttributeTokens> getTokensOracleVariablesNonPrivateNonStaticAttributes(OracleDatapoint oracleDatapoint) {
         List<AttributeTokens> attributeList = new ArrayList<>();
-        List<String> subexpressions = getSubexpressions(oracle);
+        List<String> subexpressions = getSubexpressions(oracleDatapoint.getOracle());
         for (String subexpression : subexpressions) {
             ResolvedType resolvedType;
             try {
-                resolvedType = JavaParserUtils.getResolvedTypeOfExpression(
-                        jpClass,
-                        jpCallable,
-                        methodArgs,
-                        subexpression
-                );
-            } catch (UnsolvedSymbolException | ResolvedTypeNotFound e) {
+                resolvedType = JavaParserUtils.getResolvedTypeOfExpression(subexpression, oracleDatapoint);
+            } catch (UnsolvedSymbolException e) {
                 resolvedType = JavaParserUtils.getObjectType();
             }
             attributeList.addAll(getFieldsFromType(resolvedType));
