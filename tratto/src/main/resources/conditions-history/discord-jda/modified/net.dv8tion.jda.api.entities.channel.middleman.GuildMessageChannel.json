@@ -141,13 +141,6 @@
         },
         "pre": [
             {
-                "description": "@param  messageId The messageId to remove the reaction from",
-                "guard": {
-                    "condition": "messageId != null",
-                    "description": "@param  messageId The messageId to remove the reaction from"
-                }
-            },
-            {
                 "description": "@param  emoji The emoji to remove",
                 "guard": {
                     "condition": "emoji != null",
@@ -168,7 +161,7 @@
                 "exception": "java.lang.IllegalArgumentException",
                 "description": "@throws java.lang.IllegalArgumentException <ul><li>If provided {@code messageId} is {@code null} or empty.</li><li>If provided {@code emoji} is {@code null}.</li></ul>",
                 "guard": {
-                    "condition": "messageId == null || emoji == null",
+                    "condition": "emoji == null",
                     "description": "@throws java.lang.IllegalArgumentException <ul><li>If provided {@code messageId} is {@code null} or empty.</li><li>If provided {@code emoji} is {@code null}.</li></ul>"
                 }
             },
@@ -288,7 +281,7 @@
                 "exception": "java.lang.IllegalArgumentException",
                 "description": "@throws java.lang.IllegalArgumentException If the size of the list less than 2 or more than 100 messages.",
                 "guard": {
-                    "condition": "messages.size() < 2 || messages.size() > 100",
+                    "condition": "messageIds.size() < 2 || messageIds.size() > 100",
                     "description": "@throws java.lang.IllegalArgumentException If the size of the list less than 2 or more than 100 messages."
                 }
             },
@@ -373,15 +366,7 @@
             "receiverName": "receiverObjectID",
             "returnName": "methodResultID"
         },
-        "pre": [
-            {
-                "description": "@param  messageId The message id",
-                "guard": {
-                    "condition": "messageId != null",
-                    "description": "@param  messageId The message id"
-                }
-            }
-        ],
+        "pre": [],
         "post": [
             {
                 "description": "@return {@link net.dv8tion.jda.api.requests.restaction.AuditableRestAction AuditableRestAction}",
@@ -478,13 +463,6 @@
         },
         "pre": [
             {
-                "description": "@param  messageId The id for the target message",
-                "guard": {
-                    "condition": "messageId != null",
-                    "description": "@param  messageId The id for the target message"
-                }
-            },
-            {
                 "description": "@param  emoji The {@link Emoji} to remove reactions for",
                 "guard": {
                     "condition": "emoji != null",
@@ -498,7 +476,7 @@
                 "exception": "java.lang.IllegalArgumentException",
                 "description": "@throws IllegalArgumentException If provided with null",
                 "guard": {
-                    "condition": "messageId == null || emoji == null",
+                    "condition": "emoji == null",
                     "description": "@throws IllegalArgumentException If provided with null"
                 }
             }
@@ -534,7 +512,7 @@
                 "exception": "java.lang.IllegalArgumentException",
                 "description": "@throws IllegalArgumentException <ul><li>If any of the provided stickers is a {@link GuildSticker}, which is either {@link GuildSticker#isAvailable() unavailable} or from a different guild.</li><li>If the list is empty or has more than 3 stickers</li><li>If null is provided</li></ul>",
                 "guard": {
-                    "condition": "stickers == null || stickers.isEmpty() || stickers.size() > 3 || stickers.stream().anyMatch(jdVar -> this.getJDA().retrieveSticker(jdVar).complete().getType()== Sticker.Type.STANDARD || (this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().isAvailable())==false || this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().getGuildIdLong() != this.getGuild().getIdLong())",
+                    "condition": "stickers == null || stickers.isEmpty() || stickers.size() > 3 || stickers.stream().anyMatch(jdVar -> this.getJDA().retrieveSticker(jdVar).complete().getType()== StickerType.STANDARD || (this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().isAvailable())==false || this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().getGuildIdLong() != this.getGuild().getIdLong())",
                     "description": "@throws IllegalArgumentException <ul><li>If any of the provided stickers is a {@link GuildSticker}, which is either {@link GuildSticker#isAvailable() unavailable} or from a different guild.</li><li>If the list is empty or has more than 3 stickers</li><li>If null is provided</li></ul>"
                 }
             },
@@ -602,7 +580,7 @@
                 "exception": "java.lang.IllegalArgumentException",
                 "description": "@throws IllegalArgumentException <ul><li>If any of the provided stickers is a {@link GuildSticker}, which is either {@link GuildSticker#isAvailable() unavailable} or from a different guild.</li><li>If the list is empty or has more than 3 stickers</li><li>If null is provided</li></ul>",
                 "guard": {
-                    "condition": "stickers == null || stickers.length == 0 || stickers.length > 3 || Arrays.stream(stickers).anyMatch(jdVar -> this.getJDA().retrieveSticker(jdVar).complete().getType()== Sticker.Type.STANDARD || (this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().isAvailable())==false || this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().getGuildIdLong() != this.getGuild().getIdLong())",
+                    "condition": "stickers == null || stickers.length == 0 || stickers.length > 3 || Arrays.stream(stickers).anyMatch(jdVar -> this.getJDA().retrieveSticker(jdVar).complete().getType()== StickerType.STANDARD || (this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().isAvailable())==false || this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().getGuildIdLong() != this.getGuild().getIdLong())",
                     "description": "@throws IllegalArgumentException <ul><li>If any of the provided stickers is a {@link GuildSticker}, which is either {@link GuildSticker#isAvailable() unavailable} or from a different guild.</li><li>If the list is empty or has more than 3 stickers</li><li>If null is provided</li></ul>"
                 }
             }
