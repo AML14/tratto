@@ -75,12 +75,14 @@ public class ProjectInitializer {
             Path jarPath = projectPath.resolve(arrayNodeToPath((ArrayNode) node.get("jarPathList")));
             Path conditionsPath = projectPath.resolve(arrayNodeToPath((ArrayNode) node.get("jDocConditionsPathList")));
             Path srcPath = projectPath.resolve(arrayNodeToPath((ArrayNode) node.get("srcPathList")));
+            boolean generateEmptyOracles = node.get("generateEmptyOracles").asBoolean();
             return new Project(
                     projectName,
                     projectPath,
                     jarPath,
                     conditionsPath,
-                    srcPath
+                    srcPath,
+                    generateEmptyOracles
             );
         }
     }

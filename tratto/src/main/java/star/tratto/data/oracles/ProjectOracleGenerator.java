@@ -76,7 +76,7 @@ public class ProjectOracleGenerator {
         this.methods = DatasetUtils.getProjectNonPrivateStaticNonVoidMethodsTokens(this.project.srcPath());
         this.fields = DatasetUtils.getProjectNonPrivateStaticAttributesTokens(this.project.srcPath());
         this.tagAndTexts = DatasetUtils.getProjectTagsTokens(this.project.srcPath());
-        System.out.printf("Identified %s total JavaDoc tags.%n", this.tagAndTexts.size());
+        logger.info("Identified {} total JavaDoc tags.", this.tagAndTexts.size());
     }
 
     /**
@@ -134,16 +134,18 @@ public class ProjectOracleGenerator {
             }
         }
         int numNonEmptyOracles = oracleDPs.size();
-        // Generate an OracleDatapoint for each remaining JavaDoc tag.
-//        for (TagAndText jpTag : this.tagAndTexts) {
-//            OracleDatapoint nextDatapoint = getEmptyDatapoint(jpTag);
-//            if (nextDatapoint != null) oracleDPs.add(nextDatapoint);
-//        }
+        // Generate an OracleDatapoint for each remaining JavaDoc tag, if enabled for this project.
+        if (project.generateEmptyOracles()) {
+            for (TagAndText jpTag : this.tagAndTexts) {
+                OracleDatapoint nextDatapoint = getEmptyDatapoint(jpTag);
+                if (nextDatapoint != null) oracleDPs.add(nextDatapoint);
+            }
+        }
         int numEmptyOracles = oracleDPs.size() - numNonEmptyOracles;
         // log information.
-        System.out.printf("Processed %s non-empty oracles.%n", numNonEmptyOracles);
-        System.out.printf("Processed %s empty oracles.%n", numEmptyOracles);
-        System.out.printf("Processed %s total oracles.%n", numNonEmptyOracles + numEmptyOracles);
+        logger.info("Processed {} non-empty oracles.", numNonEmptyOracles);
+        logger.info("Processed {} empty oracles.", numEmptyOracles);
+        logger.info("Processed {} total oracles.", numNonEmptyOracles + numEmptyOracles);
         return oracleDPs;
     }
 
