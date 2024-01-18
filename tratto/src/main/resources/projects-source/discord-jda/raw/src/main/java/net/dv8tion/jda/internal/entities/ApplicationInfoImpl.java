@@ -26,10 +26,7 @@ import net.dv8tion.jda.internal.utils.EntityString;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.List;
+import java.util.*;
 
 public class ApplicationInfoImpl implements ApplicationInfo
 {
@@ -216,7 +213,7 @@ public class ApplicationInfoImpl implements ApplicationInfo
 
     @Nonnull
     @Override
-    public EnumSet<Permission> getPermissions()
+    public Set<Permission> getPermissions()
     {
         return Permission.getPermissions(defaultAuthUrlPerms);
     }

@@ -302,8 +302,8 @@ public interface ChannelAction<T extends GuildChannel> extends FluentAuditableRe
      * <p>Example:
      * <pre>{@code
      * Role role = guild.getPublicRole();
-     * EnumSet<Permission> allow = EnumSet.of(Permission.VIEW_CHANNEL);
-     * EnumSet<Permission> deny = EnumSet.of(Permission.MESSAGE_SEND);
+     * Set<Permission> allow = EnumSet.of(Permission.VIEW_CHANNEL);
+     * Set<Permission> deny = EnumSet.of(Permission.MESSAGE_SEND);
      * channelAction.addPermissionOverride(role, allow, deny);
      * }</pre>
      *
@@ -394,8 +394,8 @@ public interface ChannelAction<T extends GuildChannel> extends FluentAuditableRe
      * <p>Example:
      * <pre>{@code
      * long userId = user.getIdLong();
-     * EnumSet<Permission> allow = EnumSet.of(Permission.VIEW_CHANNEL);
-     * EnumSet<Permission> deny = EnumSet.of(Permission.MESSAGE_SEND);
+     * Set<Permission> allow = EnumSet.of(Permission.VIEW_CHANNEL);
+     * Set<Permission> deny = EnumSet.of(Permission.MESSAGE_SEND);
      * channelAction.addMemberPermissionOverride(userId, allow, deny);
      * }</pre>
      *
@@ -433,8 +433,8 @@ public interface ChannelAction<T extends GuildChannel> extends FluentAuditableRe
      * <p>Example:
      * <pre>{@code
      * long roleId = role.getIdLong();
-     * EnumSet<Permission> allow = EnumSet.of(Permission.VIEW_CHANNEL);
-     * EnumSet<Permission> deny = EnumSet.of(Permission.MESSAGE_SEND);
+     * Set<Permission> allow = EnumSet.of(Permission.VIEW_CHANNEL);
+     * Set<Permission> deny = EnumSet.of(Permission.MESSAGE_SEND);
      * channelAction.addRolePermissionOverride(roleId, allow, deny);
      * }</pre>
      *

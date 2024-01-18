@@ -34,6 +34,7 @@ import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.EnumSet;
+import java.util.Set;
 
 public class RoleManagerImpl extends ManagerBase<RoleManager> implements RoleManager
 {
@@ -132,7 +133,7 @@ public class RoleManagerImpl extends ManagerBase<RoleManager> implements RoleMan
         // if any permissions remain, we have an issue
         if (missingPerms != 0 && isPermissionChecksEnabled())
         {
-            EnumSet<Permission> permissionList = Permission.getPermissions(missingPerms);
+            Set<Permission> permissionList = Permission.getPermissions(missingPerms);
             if (!permissionList.isEmpty())
                 throw new InsufficientPermissionException(getGuild(), permissionList.iterator().next());
         }

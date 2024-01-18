@@ -27,12 +27,12 @@ import java.util.Set;
 public interface RichSticker extends Sticker
 {
     /**
-     * The {@link Sticker.Type Sticker Type}
+     * The {@link StickerType Sticker Type}
      *
      * @return The type
      */
     @Nonnull
-    Sticker.Type getType();
+    StickerType getType();
 
     /**
      * Set of tags of the sticker. Tags can be used instead of the name of the sticker as aliases.

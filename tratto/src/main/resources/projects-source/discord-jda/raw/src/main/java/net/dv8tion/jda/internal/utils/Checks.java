@@ -283,7 +283,7 @@ public class Checks
         if (issuer.hasAccess(channel))
             return;
 
-        EnumSet<Permission> perms = issuer.getPermissionsExplicit(channel);
+        Set<Permission> perms = issuer.getPermissionsExplicit(channel);
         if (channel instanceof AudioChannel && !perms.contains(Permission.VOICE_CONNECT))
             throw new MissingAccessException(channel, Permission.VOICE_CONNECT);
         throw new MissingAccessException(channel, Permission.VIEW_CHANNEL);

@@ -39,6 +39,7 @@ import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.EnumSet;
+import java.util.Set;
 
 /**
  * Represents a Stage Channel.
@@ -87,8 +88,8 @@ public interface StageChannel extends StandardGuildChannel, GuildMessageChannel,
     @CheckReturnValue
     default StageInstanceAction createStageInstance(@Nonnull String topic)
     {
-        EnumSet<Permission> permissions = getGuild().getSelfMember().getPermissions(this);
-        EnumSet<Permission> required = EnumSet.of(Permission.MANAGE_CHANNEL, Permission.VOICE_MUTE_OTHERS, Permission.VOICE_MOVE_OTHERS);
+        Set<Permission> permissions = getGuild().getSelfMember().getPermissions(this);
+        Set<Permission> required = Set.of(Permission.MANAGE_CHANNEL, Permission.VOICE_MUTE_OTHERS, Permission.VOICE_MOVE_OTHERS);
         for (Permission perm : required)
         {
             if (!permissions.contains(perm))

@@ -22,6 +22,7 @@ import net.dv8tion.jda.api.entities.Role;
 
 import javax.annotation.Nonnull;
 import java.util.EnumSet;
+import java.util.Set;
 
 /**
  * Indicates that a {@link net.dv8tion.jda.api.entities.Role Role} updated its permissions.
@@ -30,7 +31,7 @@ import java.util.EnumSet;
  *
  * <p>Identifier: {@code permission}
  */
-public class RoleUpdatePermissionsEvent extends GenericRoleUpdateEvent<EnumSet<Permission>>
+public class RoleUpdatePermissionsEvent extends GenericRoleUpdateEvent<Set<Permission>>
 {
     public static final String IDENTIFIER = "permission";
 
@@ -50,7 +51,7 @@ public class RoleUpdatePermissionsEvent extends GenericRoleUpdateEvent<EnumSet<P
      * @return The old permissions
      */
     @Nonnull
-    public EnumSet<Permission> getOldPermissions()
+    public Set<Permission> getOldPermissions()
     {
         return getOldValue();
     }
@@ -71,7 +72,7 @@ public class RoleUpdatePermissionsEvent extends GenericRoleUpdateEvent<EnumSet<P
      * @return The new permissions
      */
     @Nonnull
-    public EnumSet<Permission> getNewPermissions()
+    public Set<Permission> getNewPermissions()
     {
         return getNewValue();
     }
@@ -88,14 +89,14 @@ public class RoleUpdatePermissionsEvent extends GenericRoleUpdateEvent<EnumSet<P
 
     @Nonnull
     @Override
-    public EnumSet<Permission> getOldValue()
+    public Set<Permission> getOldValue()
     {
         return super.getOldValue();
     }
 
     @Nonnull
     @Override
-    public EnumSet<Permission> getNewValue()
+    public Set<Permission> getNewValue()
     {
         return super.getNewValue();
     }

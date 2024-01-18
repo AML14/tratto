@@ -26,6 +26,7 @@ import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * POJO for the channels information provided by a template.
@@ -293,7 +294,7 @@ public class TemplateChannel implements ISnowflake
          * @return Possibly-empty set of allowed {@link net.dv8tion.jda.api.Permission Permissions}.
          */
         @Nonnull
-        public EnumSet<Permission> getAllowed()
+        public Set<Permission> getAllowed()
         {
             return Permission.getPermissions(allow);
         }
@@ -305,7 +306,7 @@ public class TemplateChannel implements ISnowflake
          * @return Possibly-empty set of unaffected {@link net.dv8tion.jda.api.Permission Permissions}.
          */
         @Nonnull
-        public EnumSet<Permission> getInherit()
+        public Set<Permission> getInherit()
         {
             return Permission.getPermissions(getInheritRaw());
         }
@@ -317,7 +318,7 @@ public class TemplateChannel implements ISnowflake
          * @return Possibly-empty set of denied {@link net.dv8tion.jda.api.Permission Permissions}.
          */
         @Nonnull
-        public EnumSet<Permission> getDenied()
+        public Set<Permission> getDenied()
         {
             return Permission.getPermissions(deny);
         }

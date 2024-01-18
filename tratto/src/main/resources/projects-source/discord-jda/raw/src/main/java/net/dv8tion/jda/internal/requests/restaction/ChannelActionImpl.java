@@ -56,6 +56,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BooleanSupplier;
 
@@ -356,7 +357,7 @@ public class ChannelActionImpl<T extends GuildChannel> extends AuditableRestActi
             // This is by far the most complex and weird permission logic in the entire API...
             long botPerms = PermissionUtil.getEffectivePermission(selfMember) & ~Permission.MANAGE_PERMISSIONS.getRawValue();
 
-            EnumSet<Permission> missingPerms = Permission.getPermissions((allow | deny) & ~botPerms);
+            Set<Permission> missingPerms = Permission.getPermissions((allow | deny) & ~botPerms);
             if (!missingPerms.isEmpty())
                 throw new InsufficientPermissionException(guild, Permission.MANAGE_PERMISSIONS, "You must have Permission.MANAGE_PERMISSIONS on the channel explicitly in order to set permissions you don't already have!");
         }

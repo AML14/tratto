@@ -31,7 +31,7 @@ public interface ForumTag extends ForumTagSnowflake, Comparable<ForumTag>, BaseF
     /**
      * The maximum length of a forum tag name ({@value #MAX_NAME_LENGTH})
      */
-    int MAX_NAME_LENGTH = 20;
+    static int MAX_NAME_LENGTH = 20;
 
     /**
      * The tag position, used for sorting.

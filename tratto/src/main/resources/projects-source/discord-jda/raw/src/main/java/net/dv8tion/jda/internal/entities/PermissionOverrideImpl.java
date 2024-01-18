@@ -34,6 +34,7 @@ import net.dv8tion.jda.internal.utils.EntityString;
 import javax.annotation.Nonnull;
 import java.util.EnumSet;
 import java.util.Objects;
+import java.util.Set;
 
 public class PermissionOverrideImpl implements PermissionOverride
 {
@@ -73,21 +74,21 @@ public class PermissionOverrideImpl implements PermissionOverride
 
     @Nonnull
     @Override
-    public EnumSet<Permission> getAllowed()
+    public Set<Permission> getAllowed()
     {
         return Permission.getPermissions(allow);
     }
 
     @Nonnull
     @Override
-    public EnumSet<Permission> getInherit()
+    public Set<Permission> getInherit()
     {
         return Permission.getPermissions(getInheritRaw());
     }
 
     @Nonnull
     @Override
-    public EnumSet<Permission> getDenied()
+    public Set<Permission> getDenied()
     {
         return Permission.getPermissions(deny);
     }

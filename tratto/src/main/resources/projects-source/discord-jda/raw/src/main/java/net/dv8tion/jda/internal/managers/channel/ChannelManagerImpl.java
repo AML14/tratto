@@ -54,10 +54,7 @@ import okhttp3.RequestBody;
 
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.EnumSet;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("unchecked") //We do a lot of (M) and (T) casting that we know is correct but the compiler warns about.
@@ -279,7 +276,7 @@ public class ChannelManagerImpl<T extends GuildChannel, M extends ChannelManager
                 // That is why we explicitly exclude it here!
                 // This is by far the most complex and weird permission logic in the entire API...
                 long botPerms = PermissionUtil.getEffectivePermission(channel, selfMember) & ~Permission.MANAGE_ROLES.getRawValue();
-                EnumSet<Permission> missing = Permission.getPermissions((allow | deny) & ~botPerms);
+                Set<Permission> missing = Permission.getPermissions((allow | deny) & ~botPerms);
                 if (!missing.isEmpty())
                     throw new InsufficientPermissionException(channel, Permission.MANAGE_PERMISSIONS, "You must have Permission.MANAGE_PERMISSIONS on the channel explicitly in order to set permissions you don't already have!");
             }

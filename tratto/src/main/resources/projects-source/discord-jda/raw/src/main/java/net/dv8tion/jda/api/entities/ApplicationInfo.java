@@ -23,10 +23,7 @@ import net.dv8tion.jda.internal.utils.Checks;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.EnumSet;
-import java.util.List;
+import java.util.*;
 
 /**
  * Represents a Discord Application from its bot's point of view.
@@ -343,7 +340,7 @@ public interface ApplicationInfo extends ISnowflake
      * @return Set of permissions the default authorization URL is set up with.
      */
     @Nonnull
-    EnumSet<Permission> getPermissions();
+    Set<Permission> getPermissions();
 
     /**
      * The {@code long} representation of the literal permissions the default authorization URL is set up with.

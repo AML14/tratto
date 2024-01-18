@@ -37,9 +37,9 @@ public interface GuildSticker extends RichSticker
 {
     @Nonnull
     @Override
-    default Type getType()
+    default StickerType getType()
     {
-        return Type.GUILD;
+        return StickerType.GUILD;
     }
 
     /**

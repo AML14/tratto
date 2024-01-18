@@ -30,6 +30,7 @@ import net.dv8tion.jda.internal.utils.EntityString;
 
 import javax.annotation.Nonnull;
 import java.util.EnumSet;
+import java.util.Set;
 
 public class StageInstanceImpl implements StageInstance
 {
@@ -121,8 +122,8 @@ public class StageInstanceImpl implements StageInstance
 
     private void checkPermissions()
     {
-        EnumSet<Permission> permissions = getGuild().getSelfMember().getPermissions(getChannel());
-        EnumSet<Permission> required = EnumSet.of(Permission.MANAGE_CHANNEL, Permission.VOICE_MUTE_OTHERS, Permission.VOICE_MOVE_OTHERS);
+        Set<Permission> permissions = getGuild().getSelfMember().getPermissions(getChannel());
+        Set<Permission> required = Set.of(Permission.MANAGE_CHANNEL, Permission.VOICE_MUTE_OTHERS, Permission.VOICE_MOVE_OTHERS);
         for (Permission perm : required)
         {
             if (!permissions.contains(perm))

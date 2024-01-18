@@ -24,6 +24,7 @@ import net.dv8tion.jda.internal.utils.Checks;
 import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.EnumSet;
+import java.util.Set;
 
 /**
  * Marker for entities that hold Permissions within JDA
@@ -50,7 +51,7 @@ public interface IPermissionHolder extends ISnowflake
      * @return An EnumSet of Permissions granted to this PermissionHolder.
      */
     @Nonnull
-    EnumSet<Permission> getPermissions();
+    Set<Permission> getPermissions();
 
     /**
      * The Permissions this PermissionHolder holds in the specified {@link GuildChannel GuildChannel}.
@@ -67,7 +68,7 @@ public interface IPermissionHolder extends ISnowflake
      * @return Set of Permissions granted to this Permission Holder in the specified channel.
      */
     @Nonnull
-    EnumSet<Permission> getPermissions(@Nonnull GuildChannel channel);
+    Set<Permission> getPermissions(@Nonnull GuildChannel channel);
 
     /**
      * The explicitly granted permissions for this permission holder in the guild.
@@ -78,7 +79,7 @@ public interface IPermissionHolder extends ISnowflake
      * @return EnumSet of the explicitly granted permissions
      */
     @Nonnull
-    EnumSet<Permission> getPermissionsExplicit();
+    Set<Permission> getPermissionsExplicit();
 
     /**
      * The explicitly granted permissions for this permission holder in the guild.
@@ -96,7 +97,7 @@ public interface IPermissionHolder extends ISnowflake
      * @return EnumSet of the explicitly granted permissions in the specified channel
      */
     @Nonnull
-    EnumSet<Permission> getPermissionsExplicit(@Nonnull GuildChannel channel);
+    Set<Permission> getPermissionsExplicit(@Nonnull GuildChannel channel);
 
     /**
      * Checks whether or not this PermissionHolder has the given {@link net.dv8tion.jda.api.Permission Permissions} in the Guild.
@@ -110,6 +111,21 @@ public interface IPermissionHolder extends ISnowflake
      * @return True, if all of the specified Permissions are granted to this PermissionHolder.
      */
     boolean hasPermission(@Nonnull Permission... permissions);
+
+    /**
+     * Checks whether or not this PermissionHolder has the given {@link net.dv8tion.jda.api.Permission Permission} in the Guild.
+     *
+     * @param  permission
+     *         Permission to check for.
+     *
+     * @throws IllegalArgumentException
+     *         If null is provided
+     *
+     * @return True, if the specified Permission is granted to this PermissionHolder.
+     */
+    default boolean hasPermission(@Nonnull Permission permission) {
+        return hasPermission(new Permission[]{permission});
+    }
 
     /**
      * Checks whether or not this PermissionHolder has the {@link net.dv8tion.jda.api.Permission Permissions} in the provided
@@ -143,6 +159,25 @@ public interface IPermissionHolder extends ISnowflake
      * @see    java.util.EnumSet EnumSet
      */
     boolean hasPermission(@Nonnull GuildChannel channel, @Nonnull Permission... permissions);
+
+    /**
+     * Checks whether or not this PermissionHolder has the given {@link net.dv8tion.jda.api.Permission Permission} in the specified GuildChannel.
+     *
+     * @param  channel
+     *         The {@link GuildChannel GuildChannel} in which to check.
+     * @param  permission
+     *         Permission to check for.
+     *
+     * @throws IllegalArgumentException
+     *         If null is provided
+     *
+     * @return True, if the specified Permission is granted to this PermissionHolder in the provided GuildChannel.
+     *
+     * @see    java.util.EnumSet EnumSet
+     */
+    default boolean hasPermission(@Nonnull GuildChannel channel, @Nonnull Permission permission) {
+        return hasPermission(channel, new Permission[]{permission});
+    }
 
     /**
      * Checks whether or not this PermissionHolder has the {@link net.dv8tion.jda.api.Permission Permissions} in the provided

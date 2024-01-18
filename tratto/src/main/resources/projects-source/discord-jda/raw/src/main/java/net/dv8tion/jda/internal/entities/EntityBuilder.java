@@ -89,6 +89,9 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.StreamSupport;
 
+import static net.dv8tion.jda.api.entities.sticker.StickerType.GUILD;
+import static net.dv8tion.jda.api.entities.sticker.StickerType.STANDARD;
+
 public class EntityBuilder
 {
     public static final Logger LOG = JDALogger.getLog(EntityBuilder.class);
@@ -235,7 +238,7 @@ public class EntityBuilder
                               guildObj.getId(), object);
                     continue;
                 }
-                if (object.getInt("type", -1) != Sticker.Type.GUILD.getId())
+                if (object.getInt("type", -1) != GUILD.getId())
                 {
                     LOG.error("Received GUILD_CREATE with sticker that had an unexpected type. GuildId: {} Type: {} JSON: {}",
                               guildObj.getId(), object.getInt("type", -1), object);
@@ -2063,7 +2066,7 @@ public class EntityBuilder
         long id = content.getLong("id");
         String name = content.getString("name");
         Sticker.StickerFormat format = Sticker.StickerFormat.fromId(content.getInt("format_type"));
-        Sticker.Type type = Sticker.Type.fromId(content.getInt("type", -1));
+        StickerType type = StickerType.fromId(content.getInt("type", -1));
 
         String description = content.getString("description", "");
         Set<String> tags = Collections.emptySet();
@@ -2073,14 +2076,14 @@ public class EntityBuilder
             tags = Helpers.setOf(array);
         }
 
-        switch (type)
+        switch (type.getId())
         {
-        case GUILD:
+        case 2:
             boolean available = content.getBoolean("available");
             long guildId = content.getUnsignedLong("guild_id", 0L);
             User owner = content.isNull("user") ? null : createUser(content.getObject("user"));
             return new GuildStickerImpl(id, format, name, tags, description, available, guildId, api, owner);
-        case STANDARD:
+        case 1:
             long packId = content.getUnsignedLong("pack_id", 0L);
             int sortValue = content.getInt("sort_value", -1);
             return new StandardStickerImpl(id, format, name, tags, description, packId, sortValue);

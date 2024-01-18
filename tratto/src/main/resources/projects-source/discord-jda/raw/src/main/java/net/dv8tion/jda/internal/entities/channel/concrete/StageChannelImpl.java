@@ -49,10 +49,7 @@ import net.dv8tion.jda.internal.utils.Checks;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.List;
+import java.util.*;
 
 public class StageChannelImpl extends AbstractStandardGuildChannelImpl<StageChannelImpl> implements
         StageChannel,
@@ -121,8 +118,8 @@ public class StageChannelImpl extends AbstractStandardGuildChannelImpl<StageChan
     @Override
     public StageInstanceAction createStageInstance(@Nonnull String topic)
     {
-        EnumSet<Permission> permissions = getGuild().getSelfMember().getPermissions(this);
-        EnumSet<Permission> required = EnumSet.of(Permission.MANAGE_CHANNEL, Permission.VOICE_MUTE_OTHERS, Permission.VOICE_MOVE_OTHERS);
+        Set<Permission> permissions = getGuild().getSelfMember().getPermissions(this);
+        Set<Permission> required = Set.of(Permission.MANAGE_CHANNEL, Permission.VOICE_MUTE_OTHERS, Permission.VOICE_MOVE_OTHERS);
         for (Permission perm : required)
         {
             if (!permissions.contains(perm))

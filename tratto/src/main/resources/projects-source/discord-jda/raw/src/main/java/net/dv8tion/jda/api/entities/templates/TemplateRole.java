@@ -24,6 +24,7 @@ import javax.annotation.Nullable;
 import java.awt.*;
 import java.time.OffsetDateTime;
 import java.util.EnumSet;
+import java.util.Set;
 
 /**
  * POJO for the roles information provided by a template.
@@ -135,7 +136,7 @@ public class TemplateRole implements ISnowflake
      * @return An EnumSet of Permissions granted to this PermissionHolder.
      */
     @Nonnull
-    public EnumSet<Permission> getPermissions()
+    public Set<Permission> getPermissions()
     {
         return Permission.getPermissions(rawPermissions);
     }

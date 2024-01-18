@@ -234,14 +234,14 @@ public class MemberImpl implements Member
 
     @Nonnull
     @Override
-    public EnumSet<Permission> getPermissions()
+    public Set<Permission> getPermissions()
     {
         return Permission.getPermissions(PermissionUtil.getEffectivePermission(this));
     }
 
     @Nonnull
     @Override
-    public EnumSet<Permission> getPermissions(@Nonnull GuildChannel channel)
+    public Set<Permission> getPermissions(@Nonnull GuildChannel channel)
     {
         Checks.notNull(channel, "Channel");
         if (!getGuild().equals(channel.getGuild()))
@@ -252,14 +252,14 @@ public class MemberImpl implements Member
 
     @Nonnull
     @Override
-    public EnumSet<Permission> getPermissionsExplicit()
+    public Set<Permission> getPermissionsExplicit()
     {
         return Permission.getPermissions(PermissionUtil.getExplicitPermission(this));
     }
 
     @Nonnull
     @Override
-    public EnumSet<Permission> getPermissionsExplicit(@Nonnull GuildChannel channel)
+    public Set<Permission> getPermissionsExplicit(@Nonnull GuildChannel channel)
     {
         return Permission.getPermissions(PermissionUtil.getExplicitPermission(channel.getPermissionContainer(), this));
     }

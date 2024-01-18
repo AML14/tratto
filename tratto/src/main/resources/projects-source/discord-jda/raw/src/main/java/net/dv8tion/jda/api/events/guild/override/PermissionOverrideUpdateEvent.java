@@ -23,6 +23,7 @@ import net.dv8tion.jda.api.entities.channel.attribute.IPermissionContainer;
 
 import javax.annotation.Nonnull;
 import java.util.EnumSet;
+import java.util.Set;
 
 /**
  * Indicates that a {@link PermissionOverride} in a {@link IPermissionContainer guild channel} has been updated.
@@ -76,7 +77,7 @@ public class PermissionOverrideUpdateEvent extends GenericPermissionOverrideEven
      * @return The old allowed permissions
      */
     @Nonnull
-    public EnumSet<Permission> getOldAllow()
+    public Set<Permission> getOldAllow()
     {
         return Permission.getPermissions(oldAllow);
     }
@@ -87,7 +88,7 @@ public class PermissionOverrideUpdateEvent extends GenericPermissionOverrideEven
      * @return The old denied permissions
      */
     @Nonnull
-    public EnumSet<Permission> getOldDeny()
+    public Set<Permission> getOldDeny()
     {
         return Permission.getPermissions(oldDeny);
     }
@@ -98,7 +99,7 @@ public class PermissionOverrideUpdateEvent extends GenericPermissionOverrideEven
      * @return The old inherited permissions
      */
     @Nonnull
-    public EnumSet<Permission> getOldInherited()
+    public Set<Permission> getOldInherited()
     {
         return Permission.getPermissions(getOldInheritedRaw());
     }

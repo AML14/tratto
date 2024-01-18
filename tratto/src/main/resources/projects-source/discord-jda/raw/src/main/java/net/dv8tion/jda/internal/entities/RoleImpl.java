@@ -49,6 +49,7 @@ import java.time.OffsetDateTime;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.Objects;
+import java.util.Set;
 
 public class RoleImpl implements Role
 {
@@ -134,28 +135,28 @@ public class RoleImpl implements Role
 
     @Nonnull
     @Override
-    public EnumSet<Permission> getPermissions()
+    public Set<Permission> getPermissions()
     {
         return Permission.getPermissions(rawPermissions);
     }
 
     @Nonnull
     @Override
-    public EnumSet<Permission> getPermissions(@Nonnull GuildChannel channel)
+    public Set<Permission> getPermissions(@Nonnull GuildChannel channel)
     {
         return Permission.getPermissions(PermissionUtil.getEffectivePermission(channel.getPermissionContainer(), this));
     }
 
     @Nonnull
     @Override
-    public EnumSet<Permission> getPermissionsExplicit()
+    public Set<Permission> getPermissionsExplicit()
     {
         return getPermissions();
     }
 
     @Nonnull
     @Override
-    public EnumSet<Permission> getPermissionsExplicit(@Nonnull GuildChannel channel)
+    public Set<Permission> getPermissionsExplicit(@Nonnull GuildChannel channel)
     {
         return Permission.getPermissions(PermissionUtil.getExplicitPermission(channel.getPermissionContainer(), this));
     }

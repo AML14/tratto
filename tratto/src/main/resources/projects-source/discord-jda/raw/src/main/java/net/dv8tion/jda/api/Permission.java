@@ -20,83 +20,135 @@ import net.dv8tion.jda.annotations.ReplaceWith;
 import net.dv8tion.jda.internal.utils.Checks;
 
 import javax.annotation.Nonnull;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.EnumSet;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
  * Represents the bit offsets used by Discord for Permissions.
  */
-public enum Permission
+public class Permission
 {
     // General Server / Channel Permissions
-    MANAGE_CHANNEL(                      4, true,  true,  "Manage Channels"),
-    MANAGE_SERVER(                       5, true,  false, "Manage Server"),
-    VIEW_AUDIT_LOGS(                     7, true,  false, "View Audit Logs"),
-    VIEW_CHANNEL(                       10, true,  true,  "View Channel(s)"),
-    VIEW_GUILD_INSIGHTS(                19, true,  false, "View Server Insights"),
-    MANAGE_ROLES(                       28, true,  false, "Manage Roles"),
-    MANAGE_PERMISSIONS(                 28, false, true,  "Manage Permissions"),
-    MANAGE_WEBHOOKS(                    29, true,  true,  "Manage Webhooks"),
+    public static Permission MANAGE_CHANNEL = new Permission(                      4, true,  true,  "Manage Channels");
+    public static Permission MANAGE_SERVER = new Permission(                       5, true,  false, "Manage Server");
+    public static Permission VIEW_AUDIT_LOGS = new Permission(                     7, true,  false, "View Audit Logs");
+    public static Permission VIEW_CHANNEL = new Permission(                       10, true,  true,  "View Channel(s)");
+    public static Permission VIEW_GUILD_INSIGHTS = new Permission(                19, true,  false, "View Server Insights");
+    public static Permission MANAGE_ROLES = new Permission(                       28, true,  false, "Manage Roles");
+    public static Permission MANAGE_PERMISSIONS = new Permission(                 28, false, true,  "Manage Permissions");
+    public static Permission MANAGE_WEBHOOKS = new Permission(                    29, true,  true,  "Manage Webhooks");
     @Deprecated
     @ForRemoval(deadline = "5.0.0")
     @ReplaceWith("MANAGE_GUILD_EXPRESSIONS")
-    MANAGE_EMOJIS_AND_STICKERS(         30, true,  false, "Manage Emojis and Stickers"),
-    MANAGE_GUILD_EXPRESSIONS(           30, true,  false, "Manage Emojis, Stickers, and Soundboards"),
-    MANAGE_EVENTS(                      33, true,  true,  "Manage Events"),
-    VIEW_CREATOR_MONETIZATION_ANALYTICS(41, true,  false, "View Creator Analytics"),
+    public static Permission MANAGE_EMOJIS_AND_STICKERS = new Permission(         30, true,  false, "Manage Emojis and Stickers");
+    public static Permission MANAGE_GUILD_EXPRESSIONS = new Permission(           30, true,  false, "Manage Emojis, Stickers, and Soundboards");
+    public static Permission MANAGE_EVENTS = new Permission(                      33, true,  true,  "Manage Events");
+    public static Permission VIEW_CREATOR_MONETIZATION_ANALYTICS = new Permission(41, true,  false, "View Creator Analytics");
 
     // Membership Permissions
-    CREATE_INSTANT_INVITE(0, true, true,  "Create Instant Invite"),
-    KICK_MEMBERS(         1, true, false, "Kick Members"),
-    BAN_MEMBERS(          2, true, false, "Ban Members"),
-    NICKNAME_CHANGE(     26, true, false, "Change Nickname"),
-    NICKNAME_MANAGE(     27, true, false, "Manage Nicknames"),
-    MODERATE_MEMBERS(    40, true, false, "Timeout Members"),
+    public static Permission CREATE_INSTANT_INVITE = new Permission(0, true, true,  "Create Instant Invite");
+    public static Permission KICK_MEMBERS = new Permission(         1, true, false, "Kick Members");
+    public static Permission BAN_MEMBERS = new Permission(          2, true, false, "Ban Members");
+    public static Permission NICKNAME_CHANGE = new Permission(     26, true, false, "Change Nickname");
+    public static Permission NICKNAME_MANAGE = new Permission(     27, true, false, "Manage Nicknames");
+    public static Permission MODERATE_MEMBERS = new Permission(    40, true, false, "Timeout Members");
 
     // Text Permissions
-    MESSAGE_ADD_REACTION(         6, true, true, "Add Reactions"),
-    MESSAGE_SEND(                11, true, true, "Send Messages"),
-    MESSAGE_TTS(                 12, true, true, "Send TTS Messages"),
-    MESSAGE_MANAGE(              13, true, true, "Manage Messages"),
-    MESSAGE_EMBED_LINKS(         14, true, true, "Embed Links"),
-    MESSAGE_ATTACH_FILES(        15, true, true, "Attach Files"),
-    MESSAGE_HISTORY(             16, true, true, "Read History"),
-    MESSAGE_MENTION_EVERYONE(    17, true, true, "Mention Everyone"),
-    MESSAGE_EXT_EMOJI(           18, true, true, "Use External Emojis"),
-    USE_APPLICATION_COMMANDS(    31, true, true, "Use Application Commands"),
-    MESSAGE_EXT_STICKER(         37, true, true, "Use External Stickers"),
-    MESSAGE_ATTACH_VOICE_MESSAGE(46, true, true, "Send Voice Messages"),
+    public static Permission MESSAGE_ADD_REACTION = new Permission(         6, true, true, "Add Reactions");
+    public static Permission MESSAGE_SEND = new Permission(                11, true, true, "Send Messages");
+    public static Permission MESSAGE_TTS = new Permission(                 12, true, true, "Send TTS Messages");
+    public static Permission MESSAGE_MANAGE = new Permission(              13, true, true, "Manage Messages");
+    public static Permission MESSAGE_EMBED_LINKS = new Permission(         14, true, true, "Embed Links");
+    public static Permission MESSAGE_ATTACH_FILES = new Permission(        15, true, true, "Attach Files");
+    public static Permission MESSAGE_HISTORY = new Permission(             16, true, true, "Read History");
+    public static Permission MESSAGE_MENTION_EVERYONE = new Permission(    17, true, true, "Mention Everyone");
+    public static Permission MESSAGE_EXT_EMOJI = new Permission(           18, true, true, "Use External Emojis");
+    public static Permission USE_APPLICATION_COMMANDS = new Permission(    31, true, true, "Use Application Commands");
+    public static Permission MESSAGE_EXT_STICKER = new Permission(         37, true, true, "Use External Stickers");
+    public static Permission MESSAGE_ATTACH_VOICE_MESSAGE = new Permission(46, true, true, "Send Voice Messages");
 
     // Thread Permissions
-    MANAGE_THREADS(          34, true, true, "Manage Threads"),
-    CREATE_PUBLIC_THREADS(   35, true, true, "Create Public Threads"),
-    CREATE_PRIVATE_THREADS(  36, true, true, "Create Private Threads"),
-    MESSAGE_SEND_IN_THREADS( 38, true, true, "Send Messages in Threads"),
+    public static Permission MANAGE_THREADS = new Permission(          34, true, true, "Manage Threads");
+    public static Permission CREATE_PUBLIC_THREADS = new Permission(   35, true, true, "Create Public Threads");
+    public static Permission CREATE_PRIVATE_THREADS = new Permission(  36, true, true, "Create Private Threads");
+    public static Permission MESSAGE_SEND_IN_THREADS = new Permission( 38, true, true, "Send Messages in Threads");
 
     // Voice Permissions
-    PRIORITY_SPEAKER(          8, true, true, "Priority Speaker"),
-    VOICE_STREAM(              9, true, true, "Video"),
-    VOICE_CONNECT(            20, true, true, "Connect"),
-    VOICE_SPEAK(              21, true, true, "Speak"),
-    VOICE_MUTE_OTHERS(        22, true, true, "Mute Members"),
-    VOICE_DEAF_OTHERS(        23, true, true, "Deafen Members"),
-    VOICE_MOVE_OTHERS(        24, true, true, "Move Members"),
-    VOICE_USE_VAD(            25, true, true, "Use Voice Activity"),
-    VOICE_START_ACTIVITIES(   39, true, true, "Use Activities"),
-    VOICE_USE_SOUNDBOARD(     42, true, true, "Use Soundboard"),
-    VOICE_USE_EXTERNAL_SOUNDS(45, true, true, "Use External Sounds"),
-    VOICE_SET_STATUS(         48, true, true, "Set Voice Channel Status"),
+    public static Permission PRIORITY_SPEAKER = new Permission(          8, true, true, "Priority Speaker");
+    public static Permission VOICE_STREAM = new Permission(              9, true, true, "Video");
+    public static Permission VOICE_CONNECT = new Permission(            20, true, true, "Connect");
+    public static Permission VOICE_SPEAK = new Permission(              21, true, true, "Speak");
+    public static Permission VOICE_MUTE_OTHERS = new Permission(        22, true, true, "Mute Members");
+    public static Permission VOICE_DEAF_OTHERS = new Permission(        23, true, true, "Deafen Members");
+    public static Permission VOICE_MOVE_OTHERS = new Permission(        24, true, true, "Move Members");
+    public static Permission VOICE_USE_VAD = new Permission(            25, true, true, "Use Voice Activity");
+    public static Permission VOICE_START_ACTIVITIES = new Permission(   39, true, true, "Use Activities");
+    public static Permission VOICE_USE_SOUNDBOARD = new Permission(     42, true, true, "Use Soundboard");
+    public static Permission VOICE_USE_EXTERNAL_SOUNDS = new Permission(45, true, true, "Use External Sounds");
+    public static Permission VOICE_SET_STATUS = new Permission(         48, true, true, "Set Voice Channel Status");
 
     // Stage Channel Permissions
-    REQUEST_TO_SPEAK(      32, true, true, "Request to Speak"),
+    public static Permission REQUEST_TO_SPEAK = new Permission(      32, true, true, "Request to Speak");
 
     // Advanced Permissions
-    ADMINISTRATOR(3, true, false, "Administrator"),
+    public static Permission ADMINISTRATOR = new Permission(3, true, false, "Administrator");
 
 
-    UNKNOWN(-1, false, false, "Unknown");
+    public static Permission UNKNOWN = new Permission(-1, false, false, "Unknown");
+
+    public static Permission[] values() {
+        return new Permission[]{
+                MANAGE_CHANNEL,
+                MANAGE_SERVER,
+                VIEW_AUDIT_LOGS,
+                VIEW_CHANNEL,
+                VIEW_GUILD_INSIGHTS,
+                MANAGE_ROLES,
+                MANAGE_PERMISSIONS,
+                MANAGE_WEBHOOKS,
+                MANAGE_EMOJIS_AND_STICKERS,
+                MANAGE_GUILD_EXPRESSIONS,
+                MANAGE_EVENTS,
+                VIEW_CREATOR_MONETIZATION_ANALYTICS,
+                CREATE_INSTANT_INVITE,
+                KICK_MEMBERS,
+                BAN_MEMBERS,
+                NICKNAME_CHANGE,
+                NICKNAME_MANAGE,
+                MODERATE_MEMBERS,
+                MESSAGE_ADD_REACTION,
+                MESSAGE_SEND,
+                MESSAGE_TTS,
+                MESSAGE_MANAGE,
+                MESSAGE_EMBED_LINKS,
+                MESSAGE_ATTACH_FILES,
+                MESSAGE_HISTORY,
+                MESSAGE_MENTION_EVERYONE,
+                MESSAGE_EXT_EMOJI,
+                USE_APPLICATION_COMMANDS,
+                MESSAGE_EXT_STICKER,
+                MESSAGE_ATTACH_VOICE_MESSAGE,
+                MANAGE_THREADS,
+                CREATE_PUBLIC_THREADS,
+                CREATE_PRIVATE_THREADS,
+                MESSAGE_SEND_IN_THREADS,
+                PRIORITY_SPEAKER,
+                VOICE_STREAM,
+                VOICE_CONNECT,
+                VOICE_SPEAK,
+                VOICE_MUTE_OTHERS,
+                VOICE_DEAF_OTHERS,
+                VOICE_MOVE_OTHERS,
+                VOICE_USE_VAD,
+                VOICE_START_ACTIVITIES,
+                VOICE_USE_SOUNDBOARD,
+                VOICE_USE_EXTERNAL_SOUNDS,
+                VOICE_SET_STATUS,
+                REQUEST_TO_SPEAK,
+                ADMINISTRATOR,
+                UNKNOWN
+        };
+    }
 
     /**
      * Empty array of Permission enum, useful for optimized use in {@link java.util.Collection#toArray(Object[])}.
@@ -257,18 +309,15 @@ public enum Permission
      *
      * <p>Example: {@link net.dv8tion.jda.api.entities.Role#getPermissionsRaw() Role.getPermissionsRaw()}
      *
-     * @param  permissions
-     *         The raw {@code long} representation of permissions.
-     *
+     * @param permissions The raw {@code long} representation of permissions.
      * @return Possibly-empty EnumSet of {@link net.dv8tion.jda.api.Permission Permissions}.
-     *
      */
     @Nonnull
-    public static EnumSet<Permission> getPermissions(long permissions)
+    public static Set<Permission> getPermissions(long permissions)
     {
         if (permissions == 0)
-            return EnumSet.noneOf(Permission.class);
-        EnumSet<Permission> perms = EnumSet.noneOf(Permission.class);
+            return new HashSet<>();
+        Set<Permission> perms = new HashSet<>();
         for (Permission perm : Permission.values())
         {
             if (perm != UNKNOWN && (permissions & perm.raw) == perm.raw)

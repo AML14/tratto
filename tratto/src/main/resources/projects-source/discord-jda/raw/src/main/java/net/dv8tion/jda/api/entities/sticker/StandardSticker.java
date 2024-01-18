@@ -27,9 +27,9 @@ public interface StandardSticker extends RichSticker
 {
     @Nonnull
     @Override
-    default Type getType()
+    default StickerType getType()
     {
-        return Type.STANDARD;
+        return StickerType.STANDARD;
     }
 
     /**

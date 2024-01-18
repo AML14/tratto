@@ -1715,7 +1715,7 @@ public interface JDA extends IGuildChannelContainer
      * Attempts to retrieve a {@link Sticker} object based on the provided snowflake reference.
      * <br>This works for both {@link StandardSticker} and {@link GuildSticker}, and you can resolve them using the provided {@link StickerUnion}.
      *
-     * <p>If the sticker is not one of the supported {@link Sticker.Type Types}, the request fails with {@link IllegalArgumentException}.
+     * <p>If the sticker is not one of the supported {@link StickerType Types}, the request fails with {@link IllegalArgumentException}.
      *
      * <p>The returned {@link net.dv8tion.jda.api.requests.RestAction RestAction} can encounter the following Discord errors:
      * <ul>

@@ -39,6 +39,7 @@ import okhttp3.RequestBody;
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
 import java.util.EnumSet;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BooleanSupplier;
 
@@ -238,7 +239,7 @@ public class PermissionOverrideActionImpl
             {
                 // This implies we can only set permissions the bot also has in the channel
                 long botPerms = PermissionUtil.getEffectivePermission(channel, selfMember);
-                EnumSet<Permission> missing = Permission.getPermissions(changed & ~botPerms);
+                Set<Permission> missing = Permission.getPermissions(changed & ~botPerms);
                 if (!missing.isEmpty())
                     throw new InsufficientPermissionException(channel, Permission.MANAGE_PERMISSIONS, "You must have Permission.MANAGE_PERMISSIONS on the channel explicitly in order to set permissions you don't already have!");
             }

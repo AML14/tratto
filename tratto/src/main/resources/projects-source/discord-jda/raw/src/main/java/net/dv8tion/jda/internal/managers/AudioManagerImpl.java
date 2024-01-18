@@ -38,6 +38,7 @@ import net.dv8tion.jda.internal.utils.PermissionUtil;
 import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.EnumSet;
+import java.util.Set;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class AudioManagerImpl implements AudioManager
@@ -94,7 +95,7 @@ public class AudioManagerImpl implements AudioManager
 
     private void checkChannel(AudioChannel channel, Member self)
     {
-        EnumSet<Permission> perms = Permission.getPermissions(PermissionUtil.getEffectivePermission(channel.getPermissionContainer(), self));
+        Set<Permission> perms = Permission.getPermissions(PermissionUtil.getEffectivePermission(channel.getPermissionContainer(), self));
         if (!perms.contains(Permission.VOICE_CONNECT))
             throw new InsufficientPermissionException(channel, Permission.VOICE_CONNECT);
 

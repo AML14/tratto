@@ -27,6 +27,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.EnumSet;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BooleanSupplier;
 
@@ -140,7 +141,7 @@ public interface PermissionOverrideAction extends AuditableRestAction<Permission
      * @return set of granted {@link net.dv8tion.jda.api.Permission Permissions}
      */
     @Nonnull
-    default EnumSet<Permission> getAllowedPermissions()
+    default Set<Permission> getAllowedPermissions()
     {
         return Permission.getPermissions(getAllowed());
     }
@@ -165,7 +166,7 @@ public interface PermissionOverrideAction extends AuditableRestAction<Permission
      * @return set of denied {@link net.dv8tion.jda.api.Permission Permissions}
      */
     @Nonnull
-    default EnumSet<Permission> getDeniedPermissions()
+    default Set<Permission> getDeniedPermissions()
     {
         return Permission.getPermissions(getDenied());
     }
@@ -195,7 +196,7 @@ public interface PermissionOverrideAction extends AuditableRestAction<Permission
      * @see    #getInherited()
      */
     @Nonnull
-    default EnumSet<Permission> getInheritedPermissions()
+    default Set<Permission> getInheritedPermissions()
     {
         return Permission.getPermissions(getInherited());
     }

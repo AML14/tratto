@@ -29,10 +29,7 @@ import net.dv8tion.jda.api.utils.data.SerializableData;
 import net.dv8tion.jda.internal.utils.Checks;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.EnumMap;
-import java.util.EnumSet;
+import java.util.*;
 
 /**
  * Data class used to create new {@link AutoModRule AutoModRules}.
@@ -406,12 +403,12 @@ public class AutoModRuleData implements SerializableData
      * @return The required permissions to create this rule
      */
     @Nonnull
-    public EnumSet<Permission> getRequiredPermissions()
+    public Set<Permission> getRequiredPermissions()
     {
         if (actions.containsKey(AutoModResponse.Type.TIMEOUT))
-            return EnumSet.of(Permission.MANAGE_SERVER, Permission.MODERATE_MEMBERS);
+            return Set.of(Permission.MANAGE_SERVER, Permission.MODERATE_MEMBERS);
         else
-            return EnumSet.of(Permission.MANAGE_SERVER);
+            return Set.of(Permission.MANAGE_SERVER);
     }
 
     @Nonnull

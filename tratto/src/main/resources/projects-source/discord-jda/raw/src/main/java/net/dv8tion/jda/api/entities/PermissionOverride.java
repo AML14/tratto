@@ -26,6 +26,7 @@ import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.EnumSet;
+import java.util.Set;
 
 /**
  * Represents the specific {@link net.dv8tion.jda.api.entities.Member Member} or {@link net.dv8tion.jda.api.entities.Role Role}
@@ -71,7 +72,7 @@ public interface PermissionOverride extends ISnowflake
      * @return Possibly-empty set of allowed {@link net.dv8tion.jda.api.Permission Permissions}.
      */
     @Nonnull
-    EnumSet<Permission> getAllowed();
+    Set<Permission> getAllowed();
 
     /**
      * EnumSet of all {@link net.dv8tion.jda.api.Permission Permission} that are unaffected by this override.
@@ -80,7 +81,7 @@ public interface PermissionOverride extends ISnowflake
      * @return Possibly-empty set of unaffected {@link net.dv8tion.jda.api.Permission Permissions}.
      */
     @Nonnull
-    EnumSet<Permission> getInherit();
+    Set<Permission> getInherit();
 
     /**
      * EnumSet of all {@link net.dv8tion.jda.api.Permission Permissions} that are denied by this override.
@@ -89,7 +90,7 @@ public interface PermissionOverride extends ISnowflake
      * @return Possibly-empty set of denied {@link net.dv8tion.jda.api.Permission Permissions}.
      */
     @Nonnull
-    EnumSet<Permission> getDenied();
+    Set<Permission> getDenied();
 
     /**
      * The {@link net.dv8tion.jda.api.JDA JDA} instance that this PermissionOverride is related to.
