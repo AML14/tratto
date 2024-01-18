@@ -27,7 +27,6 @@ public class TokensDataset {
     private static int fileIndex = 0;
 
     public static void main(String[] args) throws IOException {
-        OracleDP2TokenDPs.CRASH_WRONG_ORACLE = true;
         validateArgs(args);
         logger.info("Dataset type: {}", DATASET_TYPE);
         Path tokensDatasetFolder = Paths.get(TOKENS_DATASET_FOLDER);
