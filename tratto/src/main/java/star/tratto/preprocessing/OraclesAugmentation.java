@@ -49,7 +49,7 @@ public class OraclesAugmentation {
                 OracleDatapoint oracleDatapoint = new OracleDatapoint(rawOracleDatapoint);
                 String compactOracle = compactExpression(oracleDatapoint.getOracle());
                 if (!alternateOracles.containsKey(compactOracle)) {
-                    alternateOracles.put(compactOracle, getAlternateOracles(oracleDatapoint));
+                    alternateOracles.put(compactOracle, getAlternateOracles(compactOracle));
                 }
             }
         }
@@ -58,9 +58,9 @@ public class OraclesAugmentation {
         logger.info("Finished generating alternate versions of existing oracles.");
     }
 
-    private static List<String> getAlternateOracles(OracleDatapoint oracle) {
+    private static List<String> getAlternateOracles(String oracle) {
         List<String> alternateOracles = new ArrayList<>();
-        String oracleString = compactExpression(oracle.getOracle());
+        String oracleString = compactExpression(oracle);
 
         alternateOracles.addAll(getAlternateOraclePostcondition(oracleString));
         alternateOracles.addAll(getAlternateOraclesClausesWithParentheses(oracleString));
