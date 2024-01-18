@@ -4,6 +4,8 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.CallableDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.resolution.UnsolvedSymbolException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleType;
 import star.tratto.data.JPClassNotFoundException;
@@ -50,6 +52,11 @@ public class ProjectOracleGenerator {
     private List<AttributeTokens> fields;
     /** All Javadoc tags and their text in the current project. */
     private List<TagAndText> tagAndTexts;
+
+    private static final String WARN_LOST_CONDITIONS =
+            "Unable to parse class file for {}. It contains Jdoctor conditions, so they will be lost.";
+
+    private static final Logger logger = LoggerFactory.getLogger(ProjectOracleGenerator.class);
 
     /**
      * Sets the project under analysis and project-level features. This avoids
@@ -98,7 +105,7 @@ public class ProjectOracleGenerator {
                 if (nextDatapoint != null) {
                     oracleDPs.add(nextDatapoint);
                 } else {
-                    throw new Error("Unable to parse class file for " + operation.className());
+                    logger.warn(WARN_LOST_CONDITIONS, operation.className());
                 }
                 removeProjectClassesTag(operation, OracleType.EXCEPT_POST, throwsCondition.description());
             }
@@ -109,7 +116,7 @@ public class ProjectOracleGenerator {
                 if (nextDatapoint != null) {
                     oracleDPs.add(nextDatapoint);
                 } else {
-                    throw new Error("Unable to parse class file for " + operation.className());
+                    logger.warn(WARN_LOST_CONDITIONS, operation.className());
                 }
                 removeProjectClassesTag(operation, OracleType.PRE, preCondition.description());
             }
@@ -120,7 +127,7 @@ public class ProjectOracleGenerator {
                 if (nextDatapoint != null) {
                     oracleDPs.add(nextDatapoint);
                 } else {
-                    throw new Error("Unable to parse class file for " + operation.className());
+                    logger.warn(WARN_LOST_CONDITIONS, operation.className());
                 }
                 // first description corresponds to source tag.
                 removeProjectClassesTag(operation, OracleType.NORMAL_POST, postConditions.get(0).description());
