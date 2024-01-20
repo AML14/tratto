@@ -11,12 +11,13 @@ from src.utils import utils
 load_dotenv()
 
 OPEN_AI_API_KEY = os.getenv('OPEN_AI_API_KEY')
+print(f"OPEN_AI_API_KEY: {OPEN_AI_API_KEY}")
 openai.api_key = OPEN_AI_API_KEY
 
-_, preface = utils.import_json(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "resources", "openai_preface_assistant.json"))
-_, original_javadoctags_set = utils.import_json(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "resources", "original_javadoctags_set.json"))
+_, preface = utils.import_json(os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "openai_preface_assistant.json"))
+_, original_javadoctags_set = utils.import_json(os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "original_javadoctags_set.json"))
 
-output_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "resources", "open_ai_results")
+output_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "open_ai_results")
 encoding = tiktoken.encoding_for_model("gpt-3.5-turbo")
 
 
@@ -44,10 +45,11 @@ if __name__ == '__main__':
                 "content": f"input={original_javadoctags}"
             }
         ]
+
         # Compute total number of tokens as input to the OpenAI request (to monitor costs)
         num_tokens = 0
         for msg in messages:
-            num_tokens += num_tokens_from_string(msg["content"], "gpt-3.5-turbo")
+            num_tokens += num_tokens_from_string(msg["content"], "gpt-3.5-turbo-instruct")
         print(f"Processing batch {idx}/{len(original_javadoctags_set)} - Tokens: {num_tokens}")
         try:
             # Perform request to OpenAI and save response

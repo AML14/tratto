@@ -8,7 +8,7 @@ sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)),"..", ".
 from src.utils import utils
 
 # Path to the OpenAI responses
-input_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "output", "open_ai_results")
+input_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "open_ai_results")
 # Path where to save the final dictionary of all the alternatives, for each javadoc tag
 output_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "output")
 # Import list of patterns to apply to improve variety of javagoc tags
