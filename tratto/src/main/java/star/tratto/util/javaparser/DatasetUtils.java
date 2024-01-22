@@ -19,6 +19,7 @@ import com.github.javaparser.resolution.MethodUsage;
 import com.github.javaparser.resolution.UnsolvedSymbolException;
 import com.github.javaparser.resolution.declarations.ResolvedFieldDeclaration;
 import com.github.javaparser.resolution.declarations.ResolvedReferenceTypeDeclaration;
+import com.github.javaparser.resolution.types.ResolvedReferenceType;
 import com.github.javaparser.resolution.types.ResolvedType;
 import com.github.javaparser.symbolsolver.javaparsermodel.declarations.JavaParserFieldDeclaration;
 import com.github.javaparser.symbolsolver.reflectionmodel.ReflectionFieldDeclaration;
@@ -660,21 +661,11 @@ public class DatasetUtils {
             if (JavaParserUtils.isTypeVariable(type)) {
                 type = JavaParserUtils.getObjectType();
             }
-            List<MethodUsage> allMethods = type.asReferenceType().getAllMethods()
-                    .stream()
-                    .map(MethodUsage::new)
-                    .filter(JavaParserUtils::isNonPrivateNonStaticNonVoidMethod)
-                    .toList();
-            methodList.addAll(allMethods.stream().map(MethodTokens::new).toList());
+            methodList.addAll(getMethodsFromResolvedReferenceType(type.asReferenceType()));
         } else if (jpResolvedType.isWildcard()) {
             ResolvedType type = jpResolvedType.asWildcard().getBoundedType();
             if (type.isReferenceType()) {
-                List<MethodUsage> allMethods = type.asReferenceType().getAllMethods()
-                        .stream()
-                        .map(MethodUsage::new)
-                        .filter(JavaParserUtils::isNonPrivateNonStaticNonVoidMethod)
-                        .toList();
-                methodList.addAll(allMethods.stream().map(MethodTokens::new).toList());
+                methodList.addAll(getMethodsFromResolvedReferenceType(type.asReferenceType()));
             }
         } else if (!(jpResolvedType.isPrimitive() || jpResolvedType.isVoid())) {
             // unknown type.
@@ -684,6 +675,37 @@ public class DatasetUtils {
             ));
         }
         return methodList;
+    }
+
+    /**
+     * Collects information for all non-private, non-static, non-void methods
+     * available to a given type, which must be a reference type.
+     * @param type a resolved reference type
+     * @throws IllegalArgumentException if the given type is primitive, or array,
+     * or void, or a type variable, or a wildcard type
+     * @return a list of method tokens for all available methods. Returns an
+     * empty list if it was impossible to get the methods of the given type. This
+     * happens, for example, for types that are instance of {@link
+     * com.github.javaparser.symbolsolver.javassistmodel.JavassistAnnotationDeclaration
+     * JavassistAnnotationDeclaration}.
+     */
+    private static List<MethodTokens> getMethodsFromResolvedReferenceType(
+            ResolvedReferenceType type
+    ) throws IllegalArgumentException {
+        if (type.isPrimitive() || type.isArray() || type.isVoid() || type.isTypeVariable() || type.isWildcard()) {
+            throw new IllegalArgumentException("Type must be a reference type.");
+        }
+        try {
+            return type.getAllMethods()
+                    .stream()
+                    .map(MethodUsage::new)
+                    .filter(JavaParserUtils::isNonPrivateNonStaticNonVoidMethod)
+                    .map(MethodTokens::new)
+                    .toList();
+        } catch (UnsupportedOperationException e) {
+            logger.warn("Unable to get methods from type {}", type);
+            return Collections.emptyList();
+        }
     }
 
     /**
@@ -837,11 +859,7 @@ public class DatasetUtils {
             // add all fields accessible to the class.
             Optional<ResolvedReferenceTypeDeclaration> jpResolvedDeclaration = jpResolvedType.asReferenceType().getTypeDeclaration();
             if (jpResolvedDeclaration.isPresent()) {
-                List<ResolvedFieldDeclaration> jpResolvedFields = jpResolvedDeclaration.get().getAllFields()
-                        .stream()
-                        .filter(JavaParserUtils::isNonPrivateNonStaticAttribute)
-                        .toList();
-                fieldList.addAll(convertFieldDeclarationToAttributeTokens(jpResolvedFields));
+                fieldList.addAll(getFieldsFromResolvedReferenceTypeDeclaration(jpResolvedDeclaration.get()));
             } else {
                 // unable to recover type declaration.
                 logger.error(String.format(
@@ -854,11 +872,7 @@ public class DatasetUtils {
             if (type.isReferenceType()) {
                 Optional<ResolvedReferenceTypeDeclaration> jpResolvedDeclaration = type.asReferenceType().getTypeDeclaration();
                 if (jpResolvedDeclaration.isPresent()) {
-                    List<ResolvedFieldDeclaration> jpResolvedFields = jpResolvedDeclaration.get().getAllFields()
-                            .stream()
-                            .filter(JavaParserUtils::isNonPrivateNonStaticAttribute)
-                            .toList();
-                    fieldList.addAll(convertFieldDeclarationToAttributeTokens(jpResolvedFields));
+                    fieldList.addAll(getFieldsFromResolvedReferenceTypeDeclaration(jpResolvedDeclaration.get()));
                 }
             }
         } else if (!(jpResolvedType.isPrimitive() || jpResolvedType.isVoid() || jpResolvedType.isTypeVariable())) {
@@ -869,6 +883,21 @@ public class DatasetUtils {
             ));
         }
         return fieldList;
+    }
+
+    /**
+     * Collects information for all non-private, non-static fields (attributes)
+     * available to a given resolved reference type declaration
+     * @param type a resolved reference type declaration
+     * @return a list of attribute tokens for all available attributes.
+     */
+    private static List<AttributeTokens> getFieldsFromResolvedReferenceTypeDeclaration(
+            ResolvedReferenceTypeDeclaration type
+    ) {
+        return convertFieldDeclarationToAttributeTokens(type.getAllFields()
+                .stream()
+                .filter(JavaParserUtils::isNonPrivateNonStaticAttribute)
+                .toList());
     }
 
     /**
