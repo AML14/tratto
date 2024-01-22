@@ -1,11 +1,16 @@
 #!/bin/bash
 # This script generates a list of axiomatic oracles using JDoctor. Saves the
 # output to "output/jdoctor-oracles" as a list of OracleOutput records.
-current_dir=$(realpath "$(dirname "${BASH_SOURCE[0]}")")
+
+# Get current directory
+# shellcheck disable=SC2128
+current_dir=$(realpath "$(dirname "${BASH_SOURCE}")")
+# Setup global variables
+source "${current_dir}/utils/global_variables.sh"
 root_dir=$(dirname "${current_dir}")
 # setup sdkman
 source "${current_dir}/utils/init_sdkman.sh"
-sdk use java "8.0.382-amzn"
+sdk use java "$JAVA8"
 # check arguments
 if [ ! $# -eq 3 ]; then
   echo -e "jdoctor.sh: Expected 3 arguments (target_class, src_dir, classpath), but got $#"

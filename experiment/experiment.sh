@@ -25,10 +25,10 @@ target_class=${2}
 src_dir=${3}
 bin_dir=${4}
 project_jar=${5}
-dependencies_path=${6}
 evosuite_flag=$( [[ "$7" == "true" ]] && echo true || echo false )
 qualifiers="${target_class%.*}"
-#evosuite_output="${ROOT_DIR}/output/evosuite-tests/${qualifiers//.//}"   #!!!
+tog_oracles_output_dir="${ROOT_DIR}/output/${tog}-oracles/${qualifiers//.//}"
+evosuite_output_dir="${ROOT_DIR}/output/evosuite-tests/${qualifiers//.//}"
 
 
 # Check given arguments
@@ -80,16 +80,16 @@ else
 fi
 # Generate oracles using TOG
 if [ "${tog}" == "jdoctor" ]; then
-  bash ./generator/jdoctor.sh "${target_class}" "${src_dir}" "${project_jar}" "${dependencies_path}"
+  bash ./generator/jdoctor.sh "${target_class}" "${src_dir}" "${bin_dir}"
 elif [ "${tog}" == "toga" ]; then
-  bash ./generator/toga.sh "${target_class}" "${src_dir}" "${dependencies_path}" #"${evosuite_output}"
+  bash ./generator/toga.sh "${target_class}" "${src_dir}" #"${evosuite_output}"
 elif [ "${tog}" == "tratto" ]; then
-  bash ./generator/tratto.sh "${target_class}" "${src_dir}" "${project_jar}" "${dependencies_path}"
+  bash ./generator/tratto.sh "${target_class}" "${src_dir}" "${project_jar}"
 fi
 #cp "${oracle_output}" "${ROOT_DIR}/output/${tog}-oracles.json" #!!!
 # insert oracles into EvoSuite prefixes
 echo "[7] Insert oracles in test prefixes"
-java -jar "${EXPERIMENT_JAR}" "insert_oracles" "${tog}" "${target_class}" "${project_jar}"
+java -jar "${EXPERIMENT_JAR}" "insert_oracles" "${evosuite_output_dir}" "${tog_oracles_output_dir}" "${bin_dir}"
 #echo "[8] Running tests and generating test output"
 #bash ./runner.sh "$tog" "$target_class" "$src_dir" "$bin_dir"
 #echo "[9] Experiment complete!"
