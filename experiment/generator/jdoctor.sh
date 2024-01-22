@@ -27,7 +27,7 @@ if [ ! -d "$(dirname "${jdoctor_output_file}")" ]; then
   mkdir -p "$(dirname "${jdoctor_output_file}")"
 fi
 touch "${jdoctor_output_file}"
-java -jar "${current_dir}/resources/toradocu-1.0-all.jar" \
+java -jar "$JDOCTOR_JAR" \
   --target-class "${target_class}" \
   --source-dir "${src_dir}" \
   --class-dir "${classpath}" \
