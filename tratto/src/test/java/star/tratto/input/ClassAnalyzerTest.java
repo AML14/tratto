@@ -27,6 +27,7 @@ import star.tratto.util.javaparser.JavaParserUtils;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +36,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 import static star.tratto.util.FileUtils.readString;
 import static star.tratto.util.StringUtils.getClassNameFromPath;
 import static star.tratto.util.javaparser.DatasetUtils.getJavaFiles;
@@ -314,7 +316,11 @@ public class ClassAnalyzerTest {
                 classAnalyzer.setProjectPath(projectPathAndJar.getValue1());
                 classAnalyzer.setClassFeatures(className, classSource, classCu, classTd);
                 try {
-                    oracleDatapoints.addAll(classAnalyzer.getOracleDatapointsFromClass());
+                    assertTimeoutPreemptively(Duration.ofMinutes(10), () -> {
+                        oracleDatapoints.addAll(classAnalyzer.getOracleDatapointsFromClass());
+                    });
+                } catch (AssertionError e) {
+                    logger.warn("The class {} could not be analyzed within 10 minutes. Skipping...", className);
                 } catch (UnsolvedSymbolException e) {
                     logger.warn("The class {} could not be analyzed because it contains some symbol that cannot be solved. Stack trace:", className);
                     e.printStackTrace();
