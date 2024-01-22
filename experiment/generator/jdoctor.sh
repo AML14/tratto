@@ -27,6 +27,10 @@ if [ ! -d "$(dirname "${jdoctor_output_file}")" ]; then
   mkdir -p "$(dirname "${jdoctor_output_file}")"
 fi
 touch "${jdoctor_output_file}"
+
+echo "jdoctor.sh: Setup JDoctor project"
+bash "${ROOT_DIR}/generator/utils/jdoctor_setup.sh"
+
 java -jar "$JDOCTOR_JAR" \
   --target-class "${target_class}" \
   --source-dir "${src_dir}" \
