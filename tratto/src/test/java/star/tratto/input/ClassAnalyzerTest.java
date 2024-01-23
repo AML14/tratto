@@ -57,6 +57,7 @@ public class ClassAnalyzerTest {
     static { JavaParserUtils.updateSymbolSolver(JAR); }
     private static final CompilationUnit CLASS_CU = javaParser.parse(CLASS_SOURCE).getResult().get();
     private static final TypeDeclaration<?> CLASS_TD = getClassOrInterface(CLASS_CU, CLASS_NAME);
+    private static final int MAX_METHODS = 500; // to avoid test hanging due to huge classes
 
     @BeforeEach
     public void reset() {
@@ -316,11 +317,11 @@ public class ClassAnalyzerTest {
                 classAnalyzer.setProjectPath(projectPathAndJar.getValue1());
                 classAnalyzer.setClassFeatures(className, classSource, classCu, classTd);
                 try {
-                    assertTimeoutPreemptively(Duration.ofMinutes(10), () -> {
+                    if (classTd.getMethods().size() + classTd.getConstructors().size() <= MAX_METHODS) {
                         oracleDatapoints.addAll(classAnalyzer.getOracleDatapointsFromClass());
-                    });
-                } catch (AssertionError e) {
-                    logger.warn("The class {} could not be analyzed within 10 minutes. Skipping...", className);
+                    } else {
+                        logger.warn("The class {} has more than {} methods and constructors. Skipping...", className, MAX_METHODS);
+                    }
                 } catch (UnsolvedSymbolException e) {
                     logger.warn("The class {} could not be analyzed because it contains some symbol that cannot be solved. Stack trace:", className);
                     e.printStackTrace();
