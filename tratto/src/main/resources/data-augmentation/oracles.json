@@ -1305,11 +1305,6 @@
         "(maximalIterationCount>TrapezoidIntegrator.TRAPEZOID_MAX_ITERATIONS_COUNT);",
         "(maximalIterationCount<=TrapezoidIntegrator.TRAPEZOID_MAX_ITERATIONS_COUNT)==false;"
     ],
-    "order==null||(this.getSupportedOrders().contains(order))==false;": [
-        "(order==null)||(this.getSupportedOrders().contains(order))==false;",
-        "order==null||((this.getSupportedOrders().contains(order)))==false;",
-        "(order!=null)==false||(this.getSupportedOrders().contains(order))==false;"
-    ],
     "k<=0;": [
         "(k<=0);",
         "(k>0)==false;"
@@ -1867,6 +1862,15 @@
     "omega>0;": [
         "(omega>0);",
         "(omega<=0)==false;"
+    ],
+    "this.getSentinels().isEmpty()||this.getHost()==null||this.getHost().equals(\"\")||this.getSocket()==null||this.getSocket().equals(\"\");": [
+        "(this.getSentinels().isEmpty())||this.getHost()==null||this.getHost().equals(\"\")||this.getSocket()==null||this.getSocket().equals(\"\");",
+        "this.getSentinels().isEmpty()||(this.getHost()==null)||this.getHost().equals(\"\")||this.getSocket()==null||this.getSocket().equals(\"\");",
+        "this.getSentinels().isEmpty()||this.getHost()==null||(this.getHost().equals(\"\"))||this.getSocket()==null||this.getSocket().equals(\"\");",
+        "this.getSentinels().isEmpty()||this.getHost()==null||this.getHost().equals(\"\")||(this.getSocket()==null)||this.getSocket().equals(\"\");",
+        "this.getSentinels().isEmpty()||this.getHost()==null||this.getHost().equals(\"\")||this.getSocket()==null||(this.getSocket().equals(\"\"));",
+        "this.getSentinels().isEmpty()||(this.getHost()!=null)==false||this.getHost().equals(\"\")||this.getSocket()==null||this.getSocket().equals(\"\");",
+        "this.getSentinels().isEmpty()||this.getHost()==null||this.getHost().equals(\"\")||(this.getSocket()!=null)==false||this.getSocket().equals(\"\");"
     ],
     "other==null;": [
         "(other==null);",
@@ -3301,6 +3305,11 @@
         "a==null||(b!=null)==false||x0==null;",
         "a==null||b==null||(x0!=null)==false;"
     ],
+    "order==null||(this.getSupportedOrders().contains(order))==false;": [
+        "(order==null)||(this.getSupportedOrders().contains(order))==false;",
+        "order==null||((this.getSupportedOrders().contains(order)))==false;",
+        "(order!=null)==false||(this.getSupportedOrders().contains(order))==false;"
+    ],
     "className.isEmpty();": [
         "(className.isEmpty());"
     ],
@@ -3552,12 +3561,6 @@
         "list1==null||(list2==null);",
         "(list1!=null)==false||list2==null;",
         "list1==null||(list2!=null)==false;"
-    ],
-    "this.getSentinels().isEmpty()||this.getHost()==null||this.getHost().equals(\"\"))||this.getSocket()==null||this.getSocket().equals(\"\");": [
-        "(this.getSentinels().isEmpty())||this.getHost()==null||this.getHost().equals(\"\")",
-        "this.getSentinels().isEmpty()||(this.getHost()==null)||this.getHost().equals(\"\")",
-        "this.getSentinels().isEmpty()||this.getHost()==null||(this.getHost().equals(\"\"))",
-        "this.getSentinels().isEmpty()||(this.getHost()!=null)==false||this.getHost().equals(\"\")"
     ],
     "this.getNorm()==0||v.getNorm()==0;": [
         "(this.getNorm()==0)||v.getNorm()==0;",
