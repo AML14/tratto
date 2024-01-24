@@ -51,10 +51,7 @@ while IFS=, read -r project_id bug_id modified_classes; do
     src_path=$(defects4j export -p "dir.src.classes" -w "$buggy_project_bug_dir")
     binary_path=$(defects4j export -p "dir.bin.classes" -w "$buggy_project_bug_dir")
     test_path=$(defects4j export -p "dir.src.tests" -w "$buggy_project_bug_dir")
-    #classpath=$(defects4j export -p "cp.compile" -w "$buggy_project_bug_dir")
-    classpath="/Users/davidemolinelli/Downloads/temptemp/tratto/experiment/generator/resources/defects4j/temp/Closure_1b/build/classes:/Users/davidemolinelli/Downloads/temptemp/tratto/experiment/generator/resources/defects4j/temp/Closure_1b/lib/args4j.jar:/Users/davidemolinelli/Downloads/temptemp/tratto/experiment/generator/resources/defects4j/temp/Closure_1b/lib/guava.jar:/Users/davidemolinelli/Downloads/temptemp/tratto/experiment/generator/resources/defects4j/temp/Closure_1b/lib/json.jar:/Users/davidemolinelli/Downloads/temptemp/tratto/experiment/generator/resources/defects4j/temp/Closure_1b/lib/jsr305.jar:/Users/davidemolinelli/Downloads/temptemp/tratto/experiment/generator/resources/defects4j/temp/Closure_1b/lib/protobuf-java.jar:/Users/davidemolinelli/Downloads/temptemp/tratto/experiment/generator/resources/defects4j/temp/Closure_1b/build/lib/rhino.jar:/Users/davidemolinelli/Downloads/temptemp/tratto/experiment/generator/resources/defects4j/temp/Closure_1b/lib/ant.jar:/Users/davidemolinelli/Downloads/temptemp/tratto/experiment/generator/resources/defects4j/temp/lib2:/Users/davidemolinelli/Downloads/temptemp/tratto/experiment/generator/resources/defects4j/temp/lib2/com/google/common/collect/Multimap.class"
-
-    echo "$classpath"
+    classpath=$(defects4j export -p "cp.compile" -w "$buggy_project_bug_dir")
 
     cd "$ROOT_DIR"
 
