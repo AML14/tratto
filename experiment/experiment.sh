@@ -24,7 +24,7 @@ tog=${1}
 target_class=${2}
 src_dir=${3}
 bin_dir=${4}
-project_jar=${5}
+classpath=${5}
 evosuite_flag=$( [[ "$7" == "true" ]] && echo true || echo false )
 qualifiers="${target_class%.*}"
 tog_oracles_output_dir="${ROOT_DIR}/output/${tog}-oracles/${qualifiers//.//}"
@@ -80,7 +80,7 @@ else
 fi
 # Generate oracles using TOG
 if [ "${tog}" == "jdoctor" ]; then
-  bash ./generator/jdoctor.sh "${target_class}" "${src_dir}" "${bin_dir}"
+  bash ./generator/jdoctor.sh "${target_class}" "${src_dir}" "${classpath}"
 elif [ "${tog}" == "toga" ]; then
   bash ./generator/toga.sh "${target_class}" "${src_dir}" #"${evosuite_output}"
 elif [ "${tog}" == "tratto" ]; then
@@ -88,8 +88,8 @@ elif [ "${tog}" == "tratto" ]; then
 fi
 #cp "${oracle_output}" "${ROOT_DIR}/output/${tog}-oracles.json" #!!!
 # insert oracles into EvoSuite prefixes
-echo "[7] Insert oracles in test prefixes"
-java -jar "${EXPERIMENT_JAR}" "insert_oracles" "${evosuite_output_dir}" "${tog_oracles_output_dir}" "${bin_dir}"
+# echo "[7] Insert oracles in test prefixes"
+# java -jar "${EXPERIMENT_JAR}" "insert_oracles" "${evosuite_output_dir}" "${tog_oracles_output_dir}" "${bin_dir}"
 #echo "[8] Running tests and generating test output"
 #bash ./runner.sh "$tog" "$target_class" "$src_dir" "$bin_dir"
 #echo "[9] Experiment complete!"
