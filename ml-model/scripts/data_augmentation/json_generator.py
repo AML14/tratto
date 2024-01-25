@@ -73,6 +73,7 @@ if __name__ == '__main__':
     print(f"Processing: {openai_filename}")
     _, openai_output_str = utils.import_json(os.path.join(input_path, openai_filename))
     idx_openai_output = int(openai_filename.replace("output_","").replace(".json",""))
+    print(idx_openai_output)
     original_set = original_javadoctags_set[idx_openai_output]
     # Pattern for matching content between "[\n  {\n" and " ]\n  }\n]"
     pattern = r"\[\s*{([\s\S]*?)]\s*}\s*]"

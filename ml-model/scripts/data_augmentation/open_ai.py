@@ -3,9 +3,7 @@ import os
 import sys
 import openai
 import tiktoken
-
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".."))
-
 from src.utils import utils
 
 load_dotenv()
@@ -14,8 +12,10 @@ OPEN_AI_API_KEY = os.getenv('OPEN_AI_API_KEY')
 print(f"OPEN_AI_API_KEY: {OPEN_AI_API_KEY}")
 openai.api_key = OPEN_AI_API_KEY
 
-_, preface = utils.import_json(os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "openai_preface_assistant.json"))
-_, original_javadoctags_set = utils.import_json(os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "original_javadoctags_set.json"))
+_, preface = utils.import_json(
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "openai_preface_assistant.json"))
+_, original_javadoctags_set = utils.import_json(
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "original_javadoctags_set.json"))
 
 output_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "open_ai_results")
 encoding = tiktoken.encoding_for_model("gpt-3.5-turbo")
@@ -26,6 +26,7 @@ def num_tokens_from_string(string: str, encoding_name: str) -> int:
     encoding = tiktoken.encoding_for_model("gpt-3.5-turbo")
     num_tokens = len(encoding.encode(string))
     return num_tokens
+
 
 if __name__ == '__main__':
     # Iterate over the sets of original javadoc tags
@@ -54,8 +55,8 @@ if __name__ == '__main__':
         try:
             # Perform request to OpenAI and save response
             response = openai.ChatCompletion.create(
-                model = "gpt-3.5-turbo",
-                messages = messages
+                model="gpt-3.5-turbo",
+                messages=messages
             )
             # Read content of the response
             content = response["choices"][0]["message"]["content"]
@@ -64,4 +65,5 @@ if __name__ == '__main__':
                 os.makedirs(output_path)
             utils.export_stats(os.path.join(output_path, f"output_{idx}.json"), content)
         except:
-            print(f"Failed to process batch {idx}/{len(original_javadoctags_set)} - Tokens: {num_tokens} (502 Bad Gataway error)")
+            print(
+                f"Failed to process batch {idx}/{len(original_javadoctags_set)} - Tokens: {num_tokens} (502 Bad Gataway error)")
