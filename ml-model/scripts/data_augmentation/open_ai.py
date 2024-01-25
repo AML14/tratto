@@ -8,7 +8,7 @@ from src.utils import utils
 
 load_dotenv()
 
-print(f"OPEN_AI_API_KEY: {OPEN_AI_API_KEY}")
+OPEN_AI_API_KEY = os.getenv('OPEN_AI_API_KEY')
 openai.api_key = OPEN_AI_API_KEY
 
 _, preface = utils.import_json(
