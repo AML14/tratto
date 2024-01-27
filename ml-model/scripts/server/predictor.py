@@ -255,21 +255,36 @@ def pre_process_dataset(
 def get_input_model_oracles(
         df_dataset,
         tokenizer,
-        classification_type,
         transformer_type
 ):
     # Remove useless columns
     df_dataset = df_dataset.drop([
-        'projectName', 'packageName', 'className', 'classJavadoc', 'classSourceCode',
-        'oracleSoFar', 'token', 'tokenClass', 'tokenInfo'
+        'packageName', 'className', 'oracleSoFar', 'token', 'tokenClass', 'tokenInfo', 'oracleId'
     ], axis=1)
     # Define the new order of columns
     new_columns_order = [
-        'javadocTag', 'oracleType', 'methodSourceCode', 'methodJavadoc', 'oracleId', 'oracle'
+        'javadocTag', 'oracleType', 'methodSourceCode', 'methodJavadoc'
     ]
     # Reindex the DataFrame with the new order
     df_dataset = df_dataset.reindex(columns=new_columns_order)
-    return df_dataset
+    # Delete spurious columns for predicting the next token class
+    df_dataset = df_dataset.drop(['oracleId', 'token', 'tokenInfo'], axis=1)
+    # Drop duplicates (leave only one occurrence)
+    df_dataset = df_dataset.drop_duplicates()
+    # Assert that the dataset is composed of a single row
+    assert len(df_dataset) == 1
+    if transformer_type == TransformerType.ENCODER:
+        # Duplicate the row and add the label column with value 'True' and 'False' as targets
+        df_dataset = pd.concat([df_dataset, df_dataset])
+        tgt = ['True', 'False']
+    else:
+        tgt = []
+    # Generate string datapoints concatenating the fields of each column and separating them with a special token
+    df_src_concat = df_dataset.apply(lambda row: tokenizer.sep_token.join(row.values), axis=1)
+    # The pandas dataframe is transformed in a list of strings: each string is an input to the model
+    src = df_src_concat.to_numpy().tolist()
+    # Return source input and targets
+    return src, tgt
 
 def get_input_model_classes(
         df_dataset,
@@ -421,6 +436,41 @@ def next_token(
         tokenizer_token_classes: PreTrainedTokenizer,
         tokenizer_token_values: PreTrainedTokenizer
 ):
+    # Read json file
+    df_dataset = pd.read_json(filename)
+
+    if len(df_dataset['oracleSoFar']) == 0:
+        print("Predict if oracles must be generated")
+        # Get model token classes input
+        print("Get model token classes input")
+        src_oracles, tgt_oracles = get_input_model_oracles(df_dataset, tokenizer_oracles, transformer_type_oracles)
+        # Tokenize input
+        print("Tokenize model token classes input")
+        t_src_oracles = tokenize_input(
+            src_oracles,
+            tgt_oracles,
+            tokenizer_token_classes,
+            classification_type_token_classes
+        )
+        t_t_src_oracles = TensorDataset(*t_src_oracles)
+        dl_src_token_classes = DataLoader(
+            t_t_src_oracles,
+            batch_size=32
+        )
+        # Predict next token class
+        print("Predict next token class")
+        next_token_class = predict_next(
+            device,
+            model_classes,
+            dl_src_token_classes,
+            tokenizer_token_classes,
+            eligible_token_classes,
+            classification_type_token_classes,
+            transformer_type_token_classes,
+            TrattoModelType.TOKEN_CLASSES
+        )
+
+
     # Collect partial dataframes from oracles
     print("Predict next token")
     df_dataset = pd.read_json(filename)
