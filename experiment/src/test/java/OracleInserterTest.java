@@ -48,6 +48,14 @@ public class OracleInserterTest {
                         "assertTrue(stack0.isEmpty())",
                         "",
                         "test0"
+                ),
+                new OracleOutput(
+                        "tutorial.Stack",
+                        "",
+                        OracleType.NON_AXIOMATIC,
+                        "",
+                        "IllegalArgumentException",
+                        "test1"
                 )
         );
     }
