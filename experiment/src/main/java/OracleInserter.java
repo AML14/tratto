@@ -107,7 +107,9 @@ public class OracleInserter {
      */
     private static List<MethodCallExpr> getAllMethodCallsOfStatement(Statement statement) {
         List<MethodCallExpr> methodCalls = new ArrayList<>();
-        statement.clone().walk(MethodCallExpr.class, methodCalls::add);
+        statement
+                .clone()
+                .walk(MethodCallExpr.class, methodCalls::add);
         return methodCalls;
     }
 
@@ -1212,7 +1214,10 @@ public class OracleInserter {
     private static void insertAxiomaticOracles(CompilationUnit testFile, List<OracleOutput> oracles) {
         testFile.findAll(MethodDeclaration.class).forEach(testCase -> {
             NodeList<Statement> newBody = new NodeList<>();
-            NodeList<Statement> originalBody = testCase.getBody().orElseThrow().getStatements();
+            NodeList<Statement> originalBody = testCase
+                    .getBody()
+                    .orElseThrow()
+                    .getStatements();
             for (Statement testStatement : originalBody) {
                 List<OracleOutput> relatedOracles = getRelatedOracles(testFile, originalBody, testStatement, oracles);
                 if (relatedOracles.size() != 0) {
