@@ -12,10 +12,6 @@ public enum OperationType {
     GENERATE_TOG_INPUT,
     /** Post-processes the output of a TOG into an {@link OracleOutput}. */
     GENERATE_ORACLE_OUTPUT,
-    /** Converts an {@link OracleOutput} into a {@link TestOutput}. */
-    GENERATE_TEST_OUTPUT,
-    /** Converts a collection of {@link TestOutput} into a {@link Defects4JOutput}. */
-    GENERATE_DEFECTS4J_OUTPUT,
-    /** Combines all {@link Defects4JOutput} records into a single summary. */
-    COMBINE_DEFECTS4J_OUTPUT
+    /** Converts Defects4J run_bug_detection output into a {@link Defects4JOutput}. */
+    GENERATE_DEFECTS4J_OUTPUT
 }
