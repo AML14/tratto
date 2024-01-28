@@ -1263,7 +1263,9 @@ public class OracleInserter {
         ExpressionStmt failStatement = StaticJavaParser.parseStatement("fail();").asExpressionStmt();
         TryStmt tryStatement = new TryStmt()
                 .setTryBlock(testPrefix.addStatement(failStatement));
-        tryStatement.getCatchClauses().add(catchClause);
+        tryStatement
+                .getCatchClauses()
+                .add(catchClause);
         // set new test body to wrapped try/catch block
         testCase.setBody(new BlockStmt(NodeList.nodeList(tryStatement)));
     }
