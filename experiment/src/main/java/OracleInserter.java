@@ -49,6 +49,11 @@ import com.github.javaparser.ast.stmt.TryStmt;
 import com.github.javaparser.ast.type.PrimitiveType;
 import com.github.javaparser.ast.type.Type;
 import com.github.javaparser.ast.type.VoidType;
+import com.github.javaparser.symbolsolver.JavaSymbolSolver;
+import com.github.javaparser.symbolsolver.resolution.typesolvers.CombinedTypeSolver;
+import com.github.javaparser.symbolsolver.resolution.typesolvers.JarTypeSolver;
+import com.github.javaparser.symbolsolver.resolution.typesolvers.JavaParserTypeSolver;
+import com.github.javaparser.symbolsolver.resolution.typesolvers.ReflectionTypeSolver;
 import data.OracleOutput;
 import data.OracleType;
 import data.TogType;
@@ -1326,6 +1331,34 @@ public class OracleInserter {
     }
 
     /**
+     * Sets the SymbolSolver used by the StaticJavaParser for a given
+     * classpath. This method must be called before attempting to resolve
+     * types from the given classpath.
+     *
+     * @param classpath a classpath
+     */
+    public static void setJavaParser(String classpath) {
+        CombinedTypeSolver combinedSolver = new CombinedTypeSolver();
+        combinedSolver.add(new ReflectionTypeSolver());
+        // add each path to combined type solver
+        String[] classpathElements = classpath.split(":");
+        for (String classpathElement : classpathElements) {
+            if (classpathElement.endsWith(".jar")) {
+                try {
+                    combinedSolver.add(new JarTypeSolver(classpathElement));
+                } catch (IOException e) {
+                    throw new Error("Unable to parse JAR path " + classpathElement);
+                }
+            } else {
+                combinedSolver.add(new JavaParserTypeSolver(classpathElement));
+            }
+        }
+        StaticJavaParser
+                .getParserConfiguration()
+                .setSymbolResolver(new JavaSymbolSolver(combinedSolver));
+    }
+
+    /**
      * Recursively gets all OracleOutputs from all JSON files in a given
      * directory and its subdirectories.
      *
@@ -1397,6 +1430,7 @@ public class OracleInserter {
             String classpath
     ) {
         setClassLoader(classpath);
+        setJavaParser(classpath);
         List<OracleOutput> oracleOutputs = getOracleOutputs(pathToOracles);
         TogType tog = getTogFromOraclePath(pathToOracles);
         String togName = tog.toString().toLowerCase();
