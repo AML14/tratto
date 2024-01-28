@@ -1,7 +1,16 @@
 # Sdkman Java versions
-JAVA8="8.0.382-amzn"
-JAVA11="11.0.19-amzn"
+JAVA8="8.0.392-amzn"
+JAVA11="11.0.21-amzn"
 JAVA17="17.0.8-oracle"
+
+# Sdkman Maven version
+MAVEN_VERSION="3.9.4"
+
+# Sdkman Ant version
+ANT_VERSION="1.10.13"
+
+# Sdkman Gradle version
+GRADLE_VERSION="8.3"
 
 # Directories
 ROOT_DIR=$(dirname "$(dirname "$(realpath "$(dirname "$BASH_SOURCE")")")")
@@ -35,3 +44,4 @@ TOGA_ASSERTION_MODEL_LINK="https://drive.google.com/u/0/uc?id=1TvZMlpXeN3DQUwwgO
 TOGA_EXCEPTION_MODEL_LINK="https://drive.google.com/u/0/uc?id=1JeRod7jtR8CdWTB_wn-HRNMgtgoRFpc7&export=download"
 TRATTO_TOKEN_CLASSES_LINK="https://drive.switch.ch/index.php/s/vkuzseJ7YeiO1Vh/download"
 TRATTO_TOKEN_VALUES_LINK="https://drive.switch.ch/index.php/s/IXNa0fMFTfzVp7V/download"
+JDOCTOR_JAR_LINK="https://drive.switch.ch/index.php/s/dAkxslN83PvXhLo/download"
