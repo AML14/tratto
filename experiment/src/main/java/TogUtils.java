@@ -790,12 +790,14 @@ public class TogUtils {
             Map<String, List<String>> buggyFailingTests,
             Map<String, List<String>> fixedFailingTests
     ) {
+        int numBugsFound = 0;
         int numTruePositive = 0;
         int numFalsePositive = 0;
         int numTrueNegative = 0;
         int numFalseNegative = 0;
         return new Defects4JOutput(
                 tog.toString(),
+                numBugsFound,
                 numTruePositive,
                 numFalsePositive,
                 numTrueNegative,
