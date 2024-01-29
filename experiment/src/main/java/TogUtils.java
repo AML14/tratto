@@ -658,6 +658,16 @@ public class TogUtils {
             Path resultsDir,
             boolean isBuggyVersion
     ) {
+        try (Stream<Path> walk = Files.walk(resultsDir)) {
+            walk
+                    .filter(p -> {
+                        String bugSuffix = isBuggyVersion ? "b" : "f";
+                        return p.toString().endsWith(bugSuffix + ".1.trigger.log");
+                    })
+                    .forEach(System.out::println);
+        } catch (IOException e) {
+            throw new Error("Unable to traverse directory " + resultsDir, e);
+        }
         return new HashMap<>();
     }
 
