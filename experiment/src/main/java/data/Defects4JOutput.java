@@ -15,6 +15,7 @@ package data;
  */
 public record Defects4JOutput(
         String tog,
+        int numBugsFound,
         int numTruePositive,
         int numFalsePositive,
         int numTrueNegative,
