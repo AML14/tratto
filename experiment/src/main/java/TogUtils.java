@@ -32,6 +32,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -691,19 +692,29 @@ public class TogUtils {
             Path resultsDir,
             boolean isBuggyVersion
     ) {
+        Map<String, List<String>> failingTests = new HashMap<>();
         String bugSuffix = isBuggyVersion ? "b" : "f";
         String logSuffix = bugSuffix + ".1.trigger.log";
         try (Stream<Path> walk = Files.walk(resultsDir)) {
             walk
                     .filter(p -> p.toString().endsWith(logSuffix))
                     .forEach(p -> {
+                        String projectId = getSubstringBetweenWords(p.toString(), "bug_detection_log/", "/evosuite");
                         String bugId = getSubstringBetweenWords(p.toString(), "evosuite/", logSuffix);
-                        System.out.println(bugId);
+                        String key = projectId + "_" + bugId;
+                        List<String> value = Arrays.stream(FileUtils.readString(p)
+                                .split("\n"))
+                                .toList()
+                                .stream()
+                                .filter(l -> l.startsWith("---"))
+                                .map(l -> getSubstringBetweenWords(l, "--- ", null))
+                                .toList();
+                        failingTests.put(key, value);
                     });
         } catch (IOException e) {
             throw new Error("Unable to traverse directory " + resultsDir, e);
         }
-        return new HashMap<>();
+        return failingTests;
     }
 
     private static Map<String, List<String>> getAllTests(Path testDir) {
@@ -748,5 +759,12 @@ public class TogUtils {
         Defects4JOutput defects4JOutput = getDefects4JOutput(tog, allTests, buggyFailingTests, fixedFailingTests);
         Path defects4JOutputPath = testDir.resolveSibling(tog.toString().toLowerCase() + "_defects4joutput.json");
         FileUtils.writeJSON(defects4JOutputPath, defects4JOutput);
+    }
+
+    public static void main(String[] args) {
+        TogType tog = TogType.JDOCTOR;
+        Path testDir = Paths.get("output", "jdoctor-tests");
+        Path resultsDir = Paths.get("test-suite");
+        generateDefects4JOutput(tog, testDir, resultsDir);
     }
 }
