@@ -781,7 +781,7 @@ public class TogUtils {
         } catch (IOException e) {
             throw new Error("Unable to traverse directory " + testDir, e);
         }
-        return new HashMap<>();
+        return allTests;
     }
 
     private static Defects4JOutput getDefects4JOutput(
