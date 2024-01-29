@@ -760,11 +760,4 @@ public class TogUtils {
         Path defects4JOutputPath = testDir.resolveSibling(tog.toString().toLowerCase() + "_defects4joutput.json");
         FileUtils.writeJSON(defects4JOutputPath, defects4JOutput);
     }
-
-    public static void main(String[] args) {
-        TogType tog = TogType.JDOCTOR;
-        Path testDir = Paths.get("output", "jdoctor-tests");
-        Path resultsDir = Paths.get("test-suite");
-        generateDefects4JOutput(tog, testDir, resultsDir);
-    }
 }
