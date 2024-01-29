@@ -784,17 +784,58 @@ public class TogUtils {
         return allTests;
     }
 
+    private static String classifyTest(
+            String test,
+            List<String> buggyFailingTests,
+            List<String> fixedFailingTests
+    ) {
+        String trueFalse;
+        String positiveNegative;
+        if (buggyFailingTests.contains(test)) {
+            positiveNegative = "P";
+        } else {
+            positiveNegative = "N";
+        }
+        if (fixedFailingTests.contains(test)) {
+            trueFalse = "F";
+        } else {
+            trueFalse = "T";
+        }
+        return trueFalse + positiveNegative;
+    }
+
     private static Defects4JOutput getDefects4JOutput(
             TogType tog,
             Map<String, List<String>> allTests,
-            Map<String, List<String>> buggyFailingTests,
-            Map<String, List<String>> fixedFailingTests
+            Map<String, List<String>> allBuggyFailingTests,
+            Map<String, List<String>> allFixedFailingTests
     ) {
         int numBugsFound = 0;
         int numTruePositive = 0;
         int numFalsePositive = 0;
         int numTrueNegative = 0;
         int numFalseNegative = 0;
+        for (String bugKey : allTests.keySet()) {
+            boolean bugFound = false;
+            List<String> tests = allTests.get(bugKey);
+            List<String> buggyFailingTests = allBuggyFailingTests.get(bugKey);
+            List<String> fixedFailingTests = allFixedFailingTests.get(bugKey);
+            for (String test : tests) {
+                String testClassification = classifyTest(test, buggyFailingTests, fixedFailingTests);
+                switch (testClassification) {
+                    case "TP" -> numTruePositive += 1;
+                    case "FP" -> numFalsePositive += 1;
+                    case "TN" -> numTrueNegative += 1;
+                    case "FN" -> numFalseNegative += 1;
+                }
+                if (testClassification.equals("TP")) {
+                    bugFound = true;
+                }
+            }
+            if (bugFound) {
+                numBugsFound += 1;
+            }
+        }
         return new Defects4JOutput(
                 tog.toString(),
                 numBugsFound,
