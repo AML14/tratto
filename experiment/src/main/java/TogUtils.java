@@ -9,6 +9,7 @@ import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.*;
 import com.github.javaparser.ast.comments.JavadocComment;
 import com.github.javaparser.ast.expr.*;
+import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
 import com.github.javaparser.ast.type.ReferenceType;
 import com.github.javaparser.ast.type.TypeParameter;
 import com.github.javaparser.resolution.SymbolResolver;
@@ -41,6 +42,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -705,7 +707,7 @@ public class TogUtils {
                 .stream()
                 .filter(l -> l.startsWith("---"))
                 .map(l -> getSubstringBetweenWords(l, "--- ", null))
-                .toList();
+                .collect(Collectors.toList());
     }
 
     private static Map<String, List<String>> getFailingTests(
@@ -731,7 +733,54 @@ public class TogUtils {
         return allFailingTests;
     }
 
+    private static String getBugKeyFromTestPath(Path p) {
+        List<String> pathSegments = Arrays.stream(p.toString().split("/")).toList();
+        List<String> outputPathSegments = pathSegments.subList(pathSegments.indexOf("output"), pathSegments.size());
+        String projectName = outputPathSegments.get(2);
+        String bugNumber = outputPathSegments.get(3);
+        return projectName + "_" + bugNumber;
+    }
+
+    private static List<String> getAllTestsFromFile(Path testFile, String bugNumber) {
+        String fullyQualifiedName = getSubstringBetweenWords(testFile.toString(), bugNumber + "/", ".java");
+        CompilationUnit cu;
+        try {
+            cu = StaticJavaParser.parse(testFile);
+        } catch (IOException e) {
+            throw new Error("Unable to parse test file " + testFile, e);
+        }
+        List<String> methodNames = cu.findAll(MethodDeclaration.class)
+                .stream()
+                .map(NodeWithSimpleName::getNameAsString)
+                .filter(m -> m.startsWith("test"))
+                .toList();
+        return methodNames
+                .stream()
+                .map(m -> fullyQualifiedName + "::" + m)
+                .collect(Collectors.toList());
+    }
+
     private static Map<String, List<String>> getAllTests(Path testDir) {
+        Map<String, List<String>> allTests = new HashMap<>();
+        try (Stream<Path> walk = Files.walk(testDir)) {
+            walk
+                    .filter(p -> !Files.isDirectory(p) && !FileUtils.isScaffolding(p))
+                    .forEach(p -> {
+                        String bugKey = getBugKeyFromTestPath(p);
+                        String bugNumber = getSubstringBetweenWords(bugKey, "_", null);
+                        List<String> bugTests = getAllTestsFromFile(p, bugNumber);
+                        if (allTests.containsKey(bugKey)) {
+                            // group tests from all modified classes of a bug
+                            List<String> otherTests = allTests.get(bugKey);
+                            otherTests.addAll(bugTests);
+                            allTests.put(bugKey, otherTests);
+                        } else {
+                            allTests.put(bugKey, bugTests);
+                        }
+                    });
+        } catch (IOException e) {
+            throw new Error("Unable to traverse directory " + testDir, e);
+        }
         return new HashMap<>();
     }
 
