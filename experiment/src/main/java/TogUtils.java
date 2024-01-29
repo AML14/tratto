@@ -658,7 +658,8 @@ public class TogUtils {
      * Gets the substring between two specified words in a given input string.
      * If the prefix or suffix occur multiple times, this method will return
      * the substring between the first instance of the prefix and the first
-     * instance of the suffix.
+     * instance of the suffix. If prefix is null, uses the start of the base
+     * string. If the suffix is null, uses the end of the base string.
      *
      * @param base the input string from which to extract the substring
      * @param prefix the word that marks the start of the substring
@@ -672,12 +673,16 @@ public class TogUtils {
         int endIdx = base.length();
         if (prefix != null) {
             beginIdx = base.indexOf(prefix);
+            if (beginIdx == -1) {
+                throw new Error("Unable to find delimiter \"" + prefix + "\" in: " + base);
+            }
+            beginIdx += prefix.length();
         }
         if (suffix != null) {
             endIdx = base.indexOf(suffix);
-        }
-        if (beginIdx == -1 || endIdx == -1) {
-            throw new Error("Unable to find delimiters \"" + prefix + "\" or \"" + suffix + "\" in: " + base);
+            if (endIdx == -1) {
+                throw new Error("Unable to find delimiter \"" + suffix + "\" in: " + base);
+            }
         }
         return base.substring(beginIdx, endIdx);
     }
@@ -692,6 +697,8 @@ public class TogUtils {
             walk
                     .filter(p -> p.toString().endsWith(logSuffix))
                     .forEach(p -> {
+                        String bugId = getSubstringBetweenWords(p.toString(), "evosuite/", logSuffix);
+                        System.out.println(bugId);
                     });
         } catch (IOException e) {
             throw new Error("Unable to traverse directory " + resultsDir, e);
