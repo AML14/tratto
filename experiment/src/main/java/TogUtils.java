@@ -688,33 +688,37 @@ public class TogUtils {
         return base.substring(beginIdx, endIdx);
     }
 
+    private static List<String> getFailingTestsFromLog(Path logPath) {
+        return Arrays.stream(FileUtils.readString(logPath)
+                .split("\n"))
+                .toList()
+                .stream()
+                .filter(l -> l.startsWith("---"))
+                .map(l -> getSubstringBetweenWords(l, "--- ", null))
+                .toList();
+    }
+
     private static Map<String, List<String>> getFailingTests(
             Path resultsDir,
             boolean isBuggyVersion
     ) {
-        Map<String, List<String>> failingTests = new HashMap<>();
+        Map<String, List<String>> allFailingTests = new HashMap<>();
         String bugSuffix = isBuggyVersion ? "b" : "f";
         String logSuffix = bugSuffix + ".1.trigger.log";
         try (Stream<Path> walk = Files.walk(resultsDir)) {
             walk
                     .filter(p -> p.toString().endsWith(logSuffix))
                     .forEach(p -> {
-                        String projectId = getSubstringBetweenWords(p.toString(), "bug_detection_log/", "/evosuite");
-                        String bugId = getSubstringBetweenWords(p.toString(), "evosuite/", logSuffix);
-                        String key = projectId + "_" + bugId;
-                        List<String> value = Arrays.stream(FileUtils.readString(p)
-                                .split("\n"))
-                                .toList()
-                                .stream()
-                                .filter(l -> l.startsWith("---"))
-                                .map(l -> getSubstringBetweenWords(l, "--- ", null))
-                                .toList();
-                        failingTests.put(key, value);
+                        String projectName = getSubstringBetweenWords(p.toString(), "bug_detection_log/", "/evosuite");
+                        String bugNumber = getSubstringBetweenWords(p.toString(), "evosuite/", logSuffix);
+                        String bugKey = projectName + "_" + bugNumber;
+                        List<String> failingTests = getFailingTestsFromLog(p);
+                        allFailingTests.put(bugKey, failingTests);
                     });
         } catch (IOException e) {
             throw new Error("Unable to traverse directory " + resultsDir, e);
         }
-        return failingTests;
+        return allFailingTests;
     }
 
     private static Map<String, List<String>> getAllTests(Path testDir) {
