@@ -272,10 +272,10 @@ def pre_processing(
                 # Remove the token column if the model will predict the token as target
                 if classification_type == ClassificationType.CATEGORY_PREDICTION:
                     src_group_data = src_group_data.drop(['token'], axis=1)
-                # Remove the tokenInfo column if the classificator is a decoder
                 # TODO: Check if tokenInfo must be removed
-                #if transformer_type == TransformerType.DECODER and not classification_type == ClassificationType.LABEL_PREDICTION:
-                #    src_group_data = src_group_data.drop(['tokenInfo'], axis=1)
+                # Remove the tokenInfo column if the classificator is a decoder and the model will predict the token as target
+                if transformer_type == TransformerType.DECODER and classification_type == ClassificationType.CATEGORY_PREDICTION:
+                    src_group_data = src_group_data.drop(['tokenInfo'], axis=1)
         # The pandas dataframe is transformed in a list of strings: each string is an input to the model
         src = DataProcessor.concat_src(src_group_data, tokenizer)
         # Get the list of target values from the dataframe

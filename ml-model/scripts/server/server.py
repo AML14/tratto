@@ -39,8 +39,9 @@ def setup_model(
     config_class, model_class, tokenizer_class = ModelClasses.getModelClass(model_type)
     # Setup tokenizer
     tokenizer = tokenizer_class.from_pretrained(tokenizer_name)
-    # Enrich vocabulary
-    DataProcessor.enrich_vocabulary(tokenizer, tratto_model_type)
+    if tratto_model_type in [TrattoModelType.TOKEN_CLASSES, TrattoModelType.TOKEN_VALUES]:
+        # Enrich vocabulary
+        DataProcessor.enrich_vocabulary(tokenizer, tratto_model_type)
     # Setup model
     config = config_class.from_pretrained(config_name if config_name else model_name_or_path)
     pt_model = model_class.from_pretrained(model_name_or_path, config=config)
@@ -91,7 +92,6 @@ if __name__ == '__main__':
         args.model_name_or_path_token_values,
         args.checkpoint_path_token_values,
         TrattoModelType.TOKEN_VALUES,
-        TransformerType(args.transformer_type_token_values.upper()),
         args.config_name_token_values
     )
     # Get transformer type

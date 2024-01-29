@@ -667,10 +667,10 @@ class DataProcessor:
                         t_df = t_df.drop(['token'], axis=1)
                         v_df = v_df.drop(['token'], axis=1)
                     # TODO: Check if tokenInfo must be removed
-                    # Remove the tokenInfo column if the classificator is a decoder
-                    #if self._transformer_type == TransformerType.DECODER and not self._classification_type == ClassificationType.LABEL_PREDICTION:
-                    #    t_df = t_df.drop(['tokenInfo'], axis=1)
-                    #    v_df = v_df.drop(['tokenInfo'], axis=1)
+                    # Remove the tokenInfo column if the classificator is a decoder and the model will predict the token as target
+                    if self._transformer_type == TransformerType.DECODER and self._classification_type == ClassificationType.CATEGORY_PREDICTION:
+                        t_df = t_df.drop(['tokenInfo'], axis=1)
+                        v_df = v_df.drop(['tokenInfo'], axis=1)
             # Delete the tgt labels from the input dataset, and others irrelevant columns
             if self._tratto_model_type == TrattoModelType.ORACLES:
                 t_df.drop(['label', 'oracleId'], axis=1, inplace=True)

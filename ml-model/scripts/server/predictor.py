@@ -46,14 +46,45 @@ classificator_converter_out_label = {k: i for i, k in classificator_converter_in
 
 SINGLE_PUNCTUATION_SEMICOLON = "single_punctuation_semiColon"
 
-"""def generate_oracle(
+def predict_generate_oracle(
         device,
         model,
         dl_src,
         tokenizer,
-        classification_type,
         transformer_type
-):"""
+):
+    # Model in evaluation mode
+    model.eval()
+    num_beams = 1
+    true_predictions = []
+    false_predictions = []
+    # The prediction is performed without accumulating the gradient descent and without updating the weights of the model
+    with torch.no_grad():
+        for batch_id, batch in enumerate(dl_src, 1):
+            # Extract the inputs, the attention masks and the targets from the batch
+            src_input = batch[0].to(device)
+            src_masks = batch[1].to(device)
+
+            if transformer_type == TransformerType.DECODER:
+                # Model predictions with beam-search
+                outputs_generate = model.generate(
+                    input_ids=src_input,
+                    attention_mask=src_masks,
+                    num_beams=num_beams,
+                    output_scores=True,
+                    return_dict_in_generate=True
+                )
+                predicted_generate = np.array(
+                    tokenizer.batch_decode(
+                        outputs_generate['sequences'],
+                        skip_special_tokens=True
+                    )
+                )
+                assert len(predicted_generate) == 1
+                assert predicted_generate[0] == 'True' or predicted_generate[0] == 'False'
+                return predicted_generate[0] == 'True'
+            else:
+                raise Exception("Not implemented yet")
 
 
 def predict_next(
@@ -99,11 +130,17 @@ def predict_next(
                     # First-choice beam search
                     true_predictions.append((predicted_generate[0], 1.0))
                 else:
+                    # The attribute scores is a tuple of tensors. Each tensors represents the scores of each vocabulary token
+                    # at a given step (0 -> start token, 1 -> first token, ..., n -> last token)
+                    # When the classification type is LABEL_PREDICTION, the scores must be composed of three tokens:
+                    # the start token, the True/False token and the end token
                     assert len(outputs_generate['scores']) == 3
+                    # Get the index of the token with the highest score for each sequence, at step 2 (True/False token) (index 1)
                     ids_max_logits_predicted = [
                         torch.argmax(outputs_generate['scores'][1][i], dim=-1).item()
                         for i in range(len(outputs_generate['scores'][0]))
                     ]
+                    # Get the value of the token with the highest score for each sequence, at step 2 (True/False token) (index 1)
                     max_logits_predicted = [
                         outputs_generate['scores'][1][i][k].item()
                         for i, k in enumerate(ids_max_logits_predicted)
@@ -114,8 +151,8 @@ def predict_next(
                             true_predictions.append((tgt_decoded, max_logits_predicted[i]))
                         else:
                             false_predictions.append((tgt_decoded, max_logits_predicted[i]))
-
             else:
+                raise Exception("Not tested yet")
                 # Model predictions with ranking
                 outputs_generate = model(
                     input_ids=src_input,
@@ -248,7 +285,7 @@ def pre_process_dataset(
     # Map token classes so far to new values and transform it from array to string
     df_dataset['tokenClassesSoFar'] = df_dataset['tokenClassesSoFar'].apply(lambda x: "[ " + " ".join([value_mappings[y] for y in x]) + " ]")
     # Delete spurious columns for predicting the next token class
-    df_dataset = df_dataset.drop(['projectName', 'classJavadoc', 'classSourceCode'], axis=1)
+    df_dataset = df_dataset.drop(['projectName', 'classJavadoc', 'classSourceCode', 'label'], axis=1)
     # Return pre-processed dataset
     return df_dataset
 
@@ -267,24 +304,16 @@ def get_input_model_oracles(
     ]
     # Reindex the DataFrame with the new order
     df_dataset = df_dataset.reindex(columns=new_columns_order)
-    # Delete spurious columns for predicting the next token class
-    df_dataset = df_dataset.drop(['oracleId', 'token', 'tokenInfo'], axis=1)
     # Drop duplicates (leave only one occurrence)
     df_dataset = df_dataset.drop_duplicates()
     # Assert that the dataset is composed of a single row
     assert len(df_dataset) == 1
-    if transformer_type == TransformerType.ENCODER:
-        # Duplicate the row and add the label column with value 'True' and 'False' as targets
-        df_dataset = pd.concat([df_dataset, df_dataset])
-        tgt = ['True', 'False']
-    else:
-        tgt = []
     # Generate string datapoints concatenating the fields of each column and separating them with a special token
     df_src_concat = df_dataset.apply(lambda row: tokenizer.sep_token.join(row.values), axis=1)
     # The pandas dataframe is transformed in a list of strings: each string is an input to the model
     src = df_src_concat.to_numpy().tolist()
     # Return source input and targets
-    return src, tgt
+    return src, None
 
 def get_input_model_classes(
         df_dataset,
@@ -305,7 +334,7 @@ def get_input_model_classes(
     new_columns_order = [
         'tokenClass', 'oracleSoFar', 'tokenClassesSoFar', 'eligibleTokenClasses',
         'javadocTag', 'oracleType', 'packageName', 'className', 'methodSourceCode', 'methodJavadoc',
-        'classJavadoc', 'classSourceCode', 'oracleId', 'label', 'token', 'tokenInfo', 'projectName'
+        'oracleId', 'token', 'tokenInfo'
     ]
     # Reindex the DataFrame with the new order
     df_dataset = df_dataset.reindex(columns=new_columns_order)
@@ -360,7 +389,7 @@ def get_input_model_values(
     new_columns_order = [
         'token', 'oracleSoFar', 'eligibleTokens', 'javadocTag', 'oracleType',
         'packageName', 'className', 'methodSourceCode', 'methodJavadoc', 'tokenInfo',
-        'classJavadoc', 'classSourceCode', 'oracleId', 'label', 'tokenClass', 'projectName'
+        'oracleId', 'tokenClass'
     ]
     # Reindex the DataFrame with the new order
     df_dataset = df_dataset.reindex(columns=new_columns_order)
@@ -374,7 +403,8 @@ def get_input_model_values(
         tgt = df_dataset["token"].values.tolist()
     if transformer_type == TransformerType.DECODER and classification_type == ClassificationType.CATEGORY_PREDICTION:
         # TODO: Check if tokenInfo must be removed
-        # df_dataset = df_dataset.drop(['tokenInfo'], axis=1)
+        # Remove the tokenInfo column if the classificator is a decoder and the model will predict the token as target
+        df_dataset = df_dataset.drop(['tokenInfo'], axis=1)
         # Delete duplicates
         df_dataset = df_dataset.drop_duplicates()
         assert len(df_dataset) == 1
@@ -405,7 +435,7 @@ def tokenize_input(
     # Transform the list into a tensor stack
     t_inputs = torch.stack([ids.clone().detach() for ids in inputs_dict['input_ids']])
     t_attention_masks = torch.stack([mask.clone().detach() for mask in inputs_dict['attention_mask']])
-    if classification_type == ClassificationType.CATEGORY_PREDICTION:
+    if classification_type == ClassificationType.CATEGORY_PREDICTION or tgt is None:
         t_tgt = torch.stack([torch.empty((0,1)) for i in range(len(src))])
     elif classification_type == ClassificationType.LABEL_PREDICTION:
         tgt_dict = tokenizer.batch_encode_plus(
@@ -439,8 +469,8 @@ def next_token(
     # Read json file
     df_dataset = pd.read_json(filename)
 
-    if len(df_dataset['oracleSoFar']) == 0:
-        print("Predict if oracles must be generated")
+    if len(df_dataset['oracleSoFar'][0]) == 0:
+        print("Predict if oracle must be generated")
         # Get model token classes input
         print("Get model token classes input")
         src_oracles, tgt_oracles = get_input_model_oracles(df_dataset, tokenizer_oracles, transformer_type_oracles)
@@ -453,23 +483,21 @@ def next_token(
             classification_type_token_classes
         )
         t_t_src_oracles = TensorDataset(*t_src_oracles)
-        dl_src_token_classes = DataLoader(
+        dl_src_oracles = DataLoader(
             t_t_src_oracles,
             batch_size=32
         )
         # Predict next token class
         print("Predict next token class")
-        next_token_class = predict_next(
+        generate_oracle = predict_generate_oracle(
             device,
             model_classes,
-            dl_src_token_classes,
+            dl_src_oracles,
             tokenizer_token_classes,
-            eligible_token_classes,
-            classification_type_token_classes,
-            transformer_type_token_classes,
-            TrattoModelType.TOKEN_CLASSES
+            transformer_type_oracles
         )
-
+        if not generate_oracle:
+            return ';' + "\n" + SINGLE_PUNCTUATION_SEMICOLON
 
     # Collect partial dataframes from oracles
     print("Predict next token")

@@ -35,9 +35,9 @@ def generate_src_input(
         input += f"{datapoint.methodJavadoc}"
         if tratto_model_type == TrattoModelType.TOKEN_VALUES:
             # TODO: Check if tokenInfo must be removed
-            # if transformer_type == TransformerType.ENCODER or classification_type == ClassificationType.LABEL_PREDICTION:
-            # input += f"{datapoint.tokenInfo}{tokenizer.sep_token}"
-            input += f"{tokenizer.sep_token}{datapoint.tokenInfo}"
+            # Remove the tokenInfo column if the classificator is a decoder and the model will predict the token as target
+            if not (transformer_type == TransformerType.DECODER and classification_type == ClassificationType.CATEGORY_PREDICTION):
+                input += f"{tokenizer.sep_token}{datapoint.tokenInfo}"
     elif tratto_model_type == TrattoModelType.ORACLES:
         input += f"{datapoint.javadocTag}{tokenizer.sep_token}"
         input += f"{datapoint.oracleType}{tokenizer.sep_token}"

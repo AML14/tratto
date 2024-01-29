@@ -19,9 +19,13 @@ def arg_dataset_path(request):
 
 @pytest.fixture(
     scope='session',
+    params=[
+        os.path.join(os.path.dirname(__file__), '..', 'dataset', 'server-dataset', 'empty'),
+        os.path.join(os.path.dirname(__file__), '..', 'dataset', 'server-dataset', 'not-empty')
+    ]
 )
-def arg_dataset_path_server():
-    return os.path.join(os.path.dirname(__file__), '..', 'dataset', 'server-dataset')
+def arg_dataset_path_server(request):
+    return request.param
 
 @pytest.fixture(
     scope='session',
