@@ -654,17 +654,45 @@ public class TogUtils {
         FileUtils.writeJSON(prefixPath.resolve("oracle_output.json"), oracleOutputs);
     }
 
+    /**
+     * Gets the substring between two specified words in a given input string.
+     * If the prefix or suffix occur multiple times, this method will return
+     * the substring between the first instance of the prefix and the first
+     * instance of the suffix.
+     *
+     * @param base the input string from which to extract the substring
+     * @param prefix the word that marks the start of the substring
+     * @param suffix the word that marks the end of the substring
+     * @return the substring between the starting and ending words
+     * @throws Error if either the prefix or the suffix do not appear in the
+     * base string
+     */
+    private static String getSubstringBetweenWords(String base, String prefix, String suffix) {
+        int beginIdx = 0;
+        int endIdx = base.length();
+        if (prefix != null) {
+            beginIdx = base.indexOf(prefix);
+        }
+        if (suffix != null) {
+            endIdx = base.indexOf(suffix);
+        }
+        if (beginIdx == -1 || endIdx == -1) {
+            throw new Error("Unable to find delimiters \"" + prefix + "\" or \"" + suffix + "\" in: " + base);
+        }
+        return base.substring(beginIdx, endIdx);
+    }
+
     private static Map<String, List<String>> getFailingTests(
             Path resultsDir,
             boolean isBuggyVersion
     ) {
+        String bugSuffix = isBuggyVersion ? "b" : "f";
+        String logSuffix = bugSuffix + ".1.trigger.log";
         try (Stream<Path> walk = Files.walk(resultsDir)) {
             walk
-                    .filter(p -> {
-                        String bugSuffix = isBuggyVersion ? "b" : "f";
-                        return p.toString().endsWith(bugSuffix + ".1.trigger.log");
-                    })
-                    .forEach(System.out::println);
+                    .filter(p -> p.toString().endsWith(logSuffix))
+                    .forEach(p -> {
+                    });
         } catch (IOException e) {
             throw new Error("Unable to traverse directory " + resultsDir, e);
         }
