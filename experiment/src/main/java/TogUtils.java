@@ -671,12 +671,16 @@ public class TogUtils {
             Map<String, List<String>> buggyFailingTests,
             Map<String, List<String>> fixedFailingTests
     ) {
+        int numTruePositive = 0;
+        int numFalsePositive = 0;
+        int numTrueNegative = 0;
+        int numFalseNegative = 0;
         return new Defects4JOutput(
                 tog.toString(),
-                -1,
-                -1,
-                -1,
-                -1
+                numTruePositive,
+                numFalsePositive,
+                numTrueNegative,
+                numFalseNegative
         );
     }
 
