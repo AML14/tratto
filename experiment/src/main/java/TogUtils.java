@@ -688,6 +688,16 @@ public class TogUtils {
         return base.substring(beginIdx, endIdx);
     }
 
+    /**
+     * Gets the failing tests from a Defects4J bug detection log. Each log
+     * denotes a failing test in the form:
+     * <pre>
+     * {@code --- [fullyQualifiedName]_ESTest::[testName]}
+     * </pre>
+     *
+     * @param logPath the path to a bug detection log
+     * @return all failing tests for the bug
+     */
     private static List<String> getFailingTestsFromLog(Path logPath) {
         return Arrays.stream(FileUtils.readString(logPath)
                 .split("\n"))
