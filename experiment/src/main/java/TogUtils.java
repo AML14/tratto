@@ -742,7 +742,8 @@ public class TogUtils {
     }
 
     private static List<String> getAllTestsFromFile(Path testFile, String bugNumber) {
-        String fullyQualifiedName = getSubstringBetweenWords(testFile.toString(), bugNumber + "/", ".java");
+        String fullyQualifiedName = getSubstringBetweenWords(testFile.toString(), bugNumber + "/", ".java")
+                .replaceAll("/", ".");
         CompilationUnit cu;
         try {
             cu = StaticJavaParser.parse(testFile);
