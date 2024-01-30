@@ -19,7 +19,7 @@ while IFS=, read -r project_id bug_id _; do
       fi
     fi
   fi
-  sdk use java "8.0.382-amzn"
+  sdk use java "$JAVA8"
   # checkout Defects4J project and export classpath
   project_dir="${root_dir}/temp/${project_id}_${bug_id}"
   defects4j checkout -p "${project_id}" -v "${bug_id}b" -w "${project_dir}"

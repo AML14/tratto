@@ -2,12 +2,14 @@
 # This script generates oracles for all bugs in Defects4J for a given TOG.
 current_dir=$(realpath "$(dirname "${BASH_SOURCE[0]}")")
 root_dir=$(dirname "${current_dir}")
+# Setup global variables
+source "${root_dir}/generator/utils/global_variables.sh"
 # setup defects4j and sdkman
 export PATH=$PATH:"${DEFECTS4J_HOME}"/framework/bin
 source "${current_dir}/utils/init_sdkman.sh"
 tog=${1}
 
-sdk use java "8.0.382-amzn"
+sdk use java "$JAVA8"
 while IFS=, read -r project_id bug_id modified_class; do
   # check for a given project or bug id
   if [ ${#} -gt 1 ]; then

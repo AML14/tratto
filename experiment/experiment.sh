@@ -24,7 +24,7 @@ tog=${1}
 target_class=${2}
 src_dir=${3}
 bin_dir=${4}
-classpath=${5}
+classpath_or_jar=${5}
 evosuite_flag=$( [[ "$7" == "true" ]] && echo true || echo false )
 qualifiers="${target_class%.*}"
 tog_oracles_output_dir="${ROOT_DIR}/output/${tog}-oracles/${qualifiers//.//}"
@@ -80,11 +80,11 @@ else
 fi
 # Generate oracles using TOG
 if [ "${tog}" == "jdoctor" ]; then
-  bash ./generator/jdoctor.sh "${target_class}" "${src_dir}" "${classpath}"
+  bash ./generator/jdoctor.sh "${target_class}" "${src_dir}" "${classpath_or_jar}"
 elif [ "${tog}" == "toga" ]; then
-  bash ./generator/toga.sh "${target_class}" "${src_dir}" #"${evosuite_output}"
+  bash ./generator/toga.sh "${target_class}" "${src_dir}" "${classpath_or_jar}"
 elif [ "${tog}" == "tratto" ]; then
-  bash ./generator/tratto.sh "${target_class}" "${src_dir}" "${project_jar}"
+  bash ./generator/tratto.sh "${target_class}" "${src_dir}" "${classpath_or_jar}"
 fi
 #cp "${oracle_output}" "${ROOT_DIR}/output/${tog}-oracles.json" #!!!
 # insert oracles into EvoSuite prefixes

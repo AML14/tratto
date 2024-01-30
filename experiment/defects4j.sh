@@ -61,6 +61,7 @@ while IFS=, read -r project_id bug_id modified_classes; do
         evosuite_prefix_path="${DEFECTS4J_DIR}/defects4jprefix/src/main/evosuite-prefixes/${project_id}/${bug_id}/${fqn_path}_ESTest.java"
         evosuite_simple_test_path="${DEFECTS4J_DIR}/defects4jprefix/src/main/evosuite-simple-tests/${project_id}/${bug_id}/${fqn_path}_ESTest.java"
         evosuite_tests_path="${DEFECTS4J_DIR}/defects4jprefix/src/main/evosuite-tests/${project_id}/${bug_id}/${fqn_path}_ESTest.java"
+        fat_jar_path="${DEFECTS4J_DIR}/defects4jprefix/src/main/project-jars/${project_id}/${bug_id}/${project_id}_${bug_id}b.jar"
         output_evosuite_prefix_path="${OUTPUT_DIR}/evosuite-prefixes/$(dirname "$fqn_path")"
         output_evosuite_simple_test_path="${OUTPUT_DIR}/evosuite-simple-tests/$(dirname "$fqn_path")"
         output_evosuite_tests_path="${OUTPUT_DIR}/evosuite-tests/$(dirname "$fqn_path")"
@@ -86,7 +87,7 @@ while IFS=, read -r project_id bug_id modified_classes; do
           bash experiment.sh jdoctor "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${classpath}"
           cp -r "$OUTPUT_DIR/jdoctor-oracles" "$fqn_output"
           # Generate toga oracles
-          #bash experiment.sh toga "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${buggy_project_bug_dir}/${project_id}.jar"
+          #bash experiment.sh toga "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${fat_jar_path}"
           #cp -r "$OUTPUT_DIR/toga-oracles" "$fqn_output"
           # Generate tratto oracles
           #bash experiment.sh tratto "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${buggy_project_bug_dir}/${project_id}.jar" "false"
@@ -119,7 +120,7 @@ while IFS=, read -r project_id bug_id modified_classes; do
 #            "${buggy_project_bug_dir}/${binary_path}" \
 #            "${buggy_project_bug_dir}/${test_path}"
           # cleanup
-#          rm -r "${OUTPUT_DIR}"
+          rm -r "${OUTPUT_DIR}"
         fi
     done
 done < "$D4J_PROJECTS_BUGS"
