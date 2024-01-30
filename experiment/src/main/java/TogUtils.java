@@ -734,7 +734,7 @@ public class TogUtils {
     }
 
     private static String getBugKeyFromTestPath(Path p) {
-        List<String> pathSegments = Arrays.stream(p.toString().split("/")).toList();
+        List<String> pathSegments = Arrays.stream(p.toString().split("/")).collect(Collectors.toList());
         List<String> outputPathSegments = pathSegments.subList(pathSegments.indexOf("output"), pathSegments.size());
         String projectName = outputPathSegments.get(2);
         String bugNumber = outputPathSegments.get(3);
