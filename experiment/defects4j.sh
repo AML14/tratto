@@ -9,8 +9,14 @@ source "${current_dir}/generator/utils/global_variables.sh"
 # Setup sdkman
 source "${UTILS_DIR}/init_sdkman.sh"
 
-# Scope
-scope="${1:-generate_oracle}"
+# Arguments and setup check
+if [ ! $# -eq 1 ]; then
+  echo -e "defects4j.sh: Incorrect number of arguments. Expected 1 argument, but got ${#}".
+  exit 1
+fi
+
+# Tog name
+tog="${1}"
 
 # Clone defects4jprefix project
 if [ ! -d "$DEFECTS4J_DIR/defects4jprefix" ]; then
@@ -58,70 +64,53 @@ while IFS=, read -r project_id bug_id modified_classes; do
     # Iterate over the modified classes and generate test cases for each class
     for modified_class in "${modified_classes_list[@]}"; do
         fqn_path=$(echo "$modified_class" | sed 's/\./\//g')
-        evosuite_prefix_path="${DEFECTS4J_DIR}/defects4jprefix/src/main/evosuite-prefixes/${project_id}/${bug_id}/${fqn_path}_ESTest.java"
-        evosuite_simple_test_path="${DEFECTS4J_DIR}/defects4jprefix/src/main/evosuite-simple-tests/${project_id}/${bug_id}/${fqn_path}_ESTest.java"
-        evosuite_tests_path="${DEFECTS4J_DIR}/defects4jprefix/src/main/evosuite-tests/${project_id}/${bug_id}/${fqn_path}_ESTest.java"
+        evosuite_prefix_fqn_file_path="${DEFECTS4J_DIR}/defects4jprefix/src/main/evosuite-prefixes/${project_id}/${bug_id}/${fqn_path}_ESTest.java"
+        evosuite_prefix_scaffolding_fqn_file_path="${DEFECTS4J_DIR}/defects4jprefix/src/main/evosuite-prefixes/${project_id}/${bug_id}/${fqn_path}_ESTest_scaffolding.java"
+        evosuite_simple_test_fqn_file_path="${DEFECTS4J_DIR}/defects4jprefix/src/main/evosuite-simple-tests/${project_id}/${bug_id}/${fqn_path}_ESTest.java"
+        evosuite_tests_fqn_file_path="${DEFECTS4J_DIR}/defects4jprefix/src/main/evosuite-tests/${project_id}/${bug_id}/${fqn_path}_ESTest.java"
         fat_jar_path="${DEFECTS4J_DIR}/defects4jprefix/src/main/project-jars/${project_id}/${bug_id}/${project_id}_${bug_id}b.jar"
-        output_evosuite_prefix_path="${OUTPUT_DIR}/evosuite-prefixes/$(dirname "$fqn_path")"
-        output_evosuite_simple_test_path="${OUTPUT_DIR}/evosuite-simple-tests/$(dirname "$fqn_path")"
-        output_evosuite_tests_path="${OUTPUT_DIR}/evosuite-tests/$(dirname "$fqn_path")"
+        output_tog_oracles_path="${OUTPUT_DIR}/${tog}-oracles"
+        output_evosuite_prefix_path="${OUTPUT_DIR}/evosuite-prefixes"
+        output_evosuite_prefix_fqn_path="${OUTPUT_DIR}/evosuite-prefixes/$(dirname "$fqn_path")"
+        output_evosuite_simple_test_fqn_path="${OUTPUT_DIR}/evosuite-simple-tests/$(dirname "$fqn_path")"
+        output_evosuite_tests_fqn_path="${OUTPUT_DIR}/evosuite-tests/$(dirname "$fqn_path")"
         defects4j_output="${DEFECTS4J_DIR}/output"
-        fqn_output="${defects4j_output}/${project_id}/${bug_id}/${fqn_path}"
-        if [ ! -d "$output_evosuite_prefix_path" ]; then
-            mkdir -p "$output_evosuite_prefix_path"
+        output_fqn_path="${defects4j_output}/${project_id}/${bug_id}/${fqn_path}"
+        if [ ! -d "$output_evosuite_prefix_fqn_path" ]; then
+            mkdir -p "$output_evosuite_prefix_fqn_path"
         fi
-        if [ ! -d "$output_evosuite_simple_test_path" ]; then
-            mkdir -p "$output_evosuite_simple_test_path"
+        if [ ! -d "$output_evosuite_simple_test_fqn_path" ]; then
+            mkdir -p "$output_evosuite_simple_test_fqn_path"
         fi
-        if [ ! -d "$output_evosuite_tests_path" ]; then
-            mkdir -p "$output_evosuite_tests_path"
+        if [ ! -d "$output_evosuite_tests_fqn_path" ]; then
+            mkdir -p "$output_evosuite_tests_fqn_path"
         fi
-        if [ ! -d "$fqn_output" ]; then
-            mkdir -p "$fqn_output"
+        if [ ! -d "$output_fqn_path" ]; then
+            mkdir -p "$output_fqn_path"
         fi
-        cp "$evosuite_prefix_path" "$output_evosuite_prefix_path"
-        cp "$evosuite_simple_test_path" "$output_evosuite_simple_test_path"
-        cp "$evosuite_tests_path" "$output_evosuite_tests_path"
-        if [ "${scope}" == "generate_oracle" ]; then
-          # Generate jdoctor oracles
-          bash experiment.sh jdoctor "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${classpath}"
-          cp -r "$OUTPUT_DIR/jdoctor-oracles" "$fqn_output"
-          # Generate toga oracles
-          #bash experiment.sh toga "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${fat_jar_path}"
-          #cp -r "$OUTPUT_DIR/toga-oracles" "$fqn_output"
-          # Generate tratto oracles
-          #bash experiment.sh tratto "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${buggy_project_bug_dir}/${project_id}.jar" "false"
-          #cp -r "$OUTPUT_DIR/tratto-oracles" "$fqn_output"
-          #rm -rf "$OUTPUT_DIR"
-        elif [ "${scope}" == "run_test" ]; then
-          qualifiers=$(echo "${modified_class}" | sed 's/\./\//g')
-          # Run jdoctor tests
-          cp "${DEFECTS4J_DIR}/output/${project_id}/${bug_id}/${qualifiers}/jdoctor/tog-tests/"* "${OUTPUT_DIR}/jdoctor/tog-tests/"
-          bash runner.sh \
-            "jdoctor" \
-            "${modified_class}" \
-            "${buggy_project_bug_dir}/${src_path}" \
-            "${buggy_project_bug_dir}/${binary_path}" \
-            "${buggy_project_bug_dir}/${test_path}"
-          # Run toga tests
-          #cp "${DEFECTS4J_DIR}/output/${project_id}/${bug_id}/${qualifiers}/toga/tog-tests/"* "${OUTPUT_DIR}/toga/tog-tests/"
-#          bash runner.sh \
-#            "toga" \
-#            "${modified_class}" \
-#            "${buggy_project_bug_dir}/${src_path}" \
-#            "${buggy_project_bug_dir}/${binary_path}" \
-#            "${buggy_project_bug_dir}/${test_path}"
-          # Run tratto tests
-          #cp "${DEFECTS4J_DIR}/output/${project_id}/${bug_id}/${qualifiers}/tratto/tog-tests/"* "${OUTPUT_DIR}/tratto/tog-tests/"
-#          bash runner.sh \
-#            "tratto" \
-#            "${modified_class}" \
-#            "${buggy_project_bug_dir}/${src_path}" \
-#            "${buggy_project_bug_dir}/${binary_path}" \
-#            "${buggy_project_bug_dir}/${test_path}"
-          # cleanup
-          rm -r "${OUTPUT_DIR}"
+        cp "$evosuite_prefix_fqn_file_path" "$output_evosuite_prefix_fqn_path"
+        cp "$evosuite_prefix_scaffolding_fqn_file_path" "$output_evosuite_prefix_fqn_path"
+        cp "$evosuite_simple_test_fqn_file_path" "$output_evosuite_simple_test_fqn_path"
+        cp "$evosuite_tests_fqn_file_path" "$output_evosuite_tests_fqn_path"
+
+        # Generate jdoctor oracles
+        if [ "${tog}" == "jdoctor" ]; then
+          bash experiment.sh jdoctor "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${classpath}" "false" "${project_id}" ${bug_id}
+        # Generate toga oracles
+        elif [ "${tog}" == "toga" ]; then
+          bash experiment.sh toga "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${fat_jar_path}" "false" "${project_id}" ${bug_id}
+        # Generate tratto oracles
+        elif [ "${tog}" == "tratto" ]; then
+          bash experiment.sh tratto "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${buggy_project_bug_dir}/${project_id}.jar" "false" "${project_id}" "${bug_id}"
+        else
+          echo -e "tog.sh: Invalid TOG name, ${tog}"
+          exit 1
         fi
+        cp -r "$OUTPUT_DIR/${tog}-oracles" "$output_fqn_path"
+        cp -r "$OUTPUT_DIR/${tog}-tests" "$output_fqn_path"
+        cp -r "$OUTPUT_DIR/${tog}-test-suite" "$output_fqn_path"
+        # Cleanup
+        #rm -r "${OUTPUT_DIR}"
     done
 done < "$D4J_PROJECTS_BUGS"
 

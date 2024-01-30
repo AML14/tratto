@@ -25,7 +25,9 @@ target_class=${2}
 src_dir=${3}
 bin_dir=${4}
 classpath_or_jar=${5}
-evosuite_flag=$( [[ "$7" == "true" ]] && echo true || echo false )
+evosuite_flag=$( [[ "$6" == "true" ]] && echo true || echo false )
+project_id=${7-"none"}
+bug_id=${8-"none"}
 qualifiers="${target_class%.*}"
 tog_oracles_output_dir="${ROOT_DIR}/output/${tog}-oracles/${qualifiers//.//}"
 evosuite_output_dir="${ROOT_DIR}/output/evosuite-tests/${qualifiers//.//}"
@@ -88,8 +90,14 @@ elif [ "${tog}" == "tratto" ]; then
 fi
 #cp "${oracle_output}" "${ROOT_DIR}/output/${tog}-oracles.json" #!!!
 # insert oracles into EvoSuite prefixes
-# echo "[7] Insert oracles in test prefixes"
-# java -jar "${EXPERIMENT_JAR}" "insert_oracles" "${evosuite_output_dir}" "${tog_oracles_output_dir}" "${bin_dir}"
-#echo "[8] Running tests and generating test output"
-#bash ./runner.sh "$tog" "$target_class" "$src_dir" "$bin_dir"
-#echo "[9] Experiment complete!"
+echo "[7] Insert oracles in test prefixes"
+evosuite_prefix_path="${OUTPUT_DIR}/evosuite-prefixes"
+tog_oracles_path="${OUTPUT_DIR}/${tog}-oracles"
+java -jar "${EXPERIMENT_JAR}" "insert_oracles" "${evosuite_prefix_path}" "${tog_oracles_path}" "${classpath_or_jar}"
+if [ "$project_id" != "none" ]; then
+  echo "[8] Running tests and generating test output"
+  bash ./runner_d4j.sh "$tog" "$project_id" "$bug_id" "${OUTPUT_DIR}/${tog}-test-suite"
+else
+  echo "[8] Running tests not yet implemented for non-defects4j projects."
+fi
+echo "[9] Experiment complete!"
