@@ -97,6 +97,11 @@ java -jar "${EXPERIMENT_JAR}" "insert_oracles" "${evosuite_prefix_path}" "${tog_
 if [ "$project_id" != "none" ]; then
   echo "[8] Running tests and generating test output"
   bash ./runner_d4j.sh "$tog" "$project_id" "$bug_id" "${OUTPUT_DIR}/${tog}-test-suite"
+  if [ ! -d "${OUTPUT_DIR}/${tog}-tests/${project_id}/${bug_id}" ]; then
+    mkdir -p "${OUTPUT_DIR}/${tog}-tests/${project_id}/${bug_id}"
+  fi
+  mv "${OUTPUT_DIR}/${tog}-tests/"* "${OUTPUT_DIR}/${tog}-tests/${project_id}/${bug_id}"
+  java -jar "$EXPERIMENT_JAR" generate_defects4j_output "$tog" "${OUTPUT_DIR}/${tog}-tests" "${OUTPUT_DIR}/${tog}-test-suite"
 else
   echo "[8] Running tests not yet implemented for non-defects4j projects."
 fi

@@ -109,8 +109,9 @@ while IFS=, read -r project_id bug_id modified_classes; do
         cp -r "$OUTPUT_DIR/${tog}-oracles" "$output_fqn_path"
         cp -r "$OUTPUT_DIR/${tog}-tests" "$output_fqn_path"
         cp -r "$OUTPUT_DIR/${tog}-test-suite" "$output_fqn_path"
+        cp -r "$OUTPUT_DIR/jdoctor_defects4joutput.json" "$output_fqn_path"
         # Cleanup
-        #rm -r "${OUTPUT_DIR}"
+        rm -r "${OUTPUT_DIR}"
     done
 done < "$D4J_PROJECTS_BUGS"
 
