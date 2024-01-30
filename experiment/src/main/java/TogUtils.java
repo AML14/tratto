@@ -154,7 +154,7 @@ public class TogUtils {
                         }
 
                         if (mut == null) {
-                            List<MethodDeclaration> classMethodsList = cuClassFile.getPrimaryType().get().getMethods();
+                            List<MethodDeclaration> classMethodsList = cuClassFile.getPrimaryType().orElseThrow().getMethods();
                             List<MethodDeclaration> candidatesMethods = new ArrayList<>();
 
                             for (MethodDeclaration method : classMethodsList) {
@@ -641,7 +641,7 @@ public class TogUtils {
         List<OracleOutput> oracleOutputs = new ArrayList<>();
         for (TrattoOutput trattoOutput : trattoOutputs) {
             // Parse the method string as a compilation unit
-            CompilationUnit cu = javaParser.parse("public class " + trattoOutput.className() + "{ " + trattoOutput.methodSourceCode() + " }").getResult().get();
+            CompilationUnit cu = javaParser.parse("public class " + trattoOutput.className() + "{ " + trattoOutput.methodSourceCode() + " }").getResult().orElseThrow();
             CallableDeclaration<?> mut = cu.findFirst(CallableDeclaration.class).orElseThrow();
             String signature = getCallableSignature(mut);
             OracleOutput oracleOutput = new OracleOutput(
