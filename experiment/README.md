@@ -106,11 +106,7 @@ Then, we generate new oracles using an arbitrary TOG, and add these assertions t
 
 ## 2.1 Experimental Pipeline
 
-For reference, we provide a simplified graphic of the experimental pipeline:
-
-![experiment pipeline](./doc/experiment-pipeline.png)
-
-and a brief description of the relevant files:
+For reference, we provide a brief description of the relevant files:
 
 - `generator`: this package contains scripts for generating test prefixes and test oracles
   - `evosuite.sh`: a script that creates a test suite using EvoSuite for a given class
