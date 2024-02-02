@@ -23,6 +23,11 @@ while IFS=, read -r project_id bug_id _; do
       fi
     fi
   fi
+  # check if bug has already been evaluated
+  if [ -f "${root_dir}/test-suite/bug_detection_log/${project_id}/evosuite/${bug_id}b.1.trigger.log" ]; then
+    echo "Tests already evaluated for ${project_id}-${bug_id}"
+    continue
+  fi
   # compress test suite
   cd "${root_dir}/output/${tog}-tests/${project_id}/${bug_id}" || exit 1
   tar -cvjSf "${project_id}-${bug_id}b-evosuite.tar.bz2" .
