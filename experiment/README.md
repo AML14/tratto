@@ -280,7 +280,7 @@ To answer the above research questions, we perform two experiments: [Classificat
 
 We say an oracle <span style="color:red">"fails"</span> the code if its corresponding test assertion fails using the current implementation. We say an oracle <span style="color:green">"passes"</span> the specification if the assertion *should* pass according to the specification.
 
-|                     | Code                                  | Specification                         |
+|                     | Buggy                                 | Fixed                                 |
 |---------------------|---------------------------------------|---------------------------------------|
 | True Positive (TP)  | <span style="color:red">Fail</span>   | <span style="color:green">Pass</span> |
 | False Positive (FP) | <span style="color:red">Fail</span>   | <span style="color:red">Fail</span>   |
