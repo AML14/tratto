@@ -21,9 +21,9 @@ import java.util.stream.StreamSupport;
 
 /**
  * This class splits the oracles located at src/main/resources/oracles-dataset into
- * train (90%) and validation (10%) sets, with a margin of +/- 2%. The split is
+ * train (90%) and validation (10%) sets, with a margin of +/- 1%. The split is
  * done randomly, but aiming to keep a balanced distribution of positive and negative
- * oracles in both sets (50% +/- 5%) and preventing data leakage (this is ensured
+ * oracles in both sets (50% +/- 1%) and preventing data leakage (this is ensured
  * by placing all oracles of every file in a single set).
  */
 public class OraclesDatasetTrainValidation {
@@ -35,9 +35,11 @@ public class OraclesDatasetTrainValidation {
     public static String ORACLES_DATASET_TRAIN_FOLDER = "src/main/resources/oracles-dataset-train/";
     public static String ORACLES_DATASET_VALIDATION_FOLDER = "src/main/resources/oracles-dataset-validation/";
 
-    // The train and validation sets must contain at least one file of each project, including both positive and negative oracles
+    // The train and validation sets must contain at least one file of each project, including both positive and negative oracles.
+    // Exceptionally, projects for which only positive oracles were generated are not considered.
     private static List<String> projects = FileUtils.readJSONList(TrattoPath.INPUT_PROJECTS.getPath())
             .stream()
+            .filter(p -> (boolean)((Map)p).get("generateEmptyOracles"))
             .map(p -> (String) ((Map)p).get("projectName"))
             .toList();
 
@@ -45,7 +47,7 @@ public class OraclesDatasetTrainValidation {
     public static float TV_RATIO = 0.9f; // Train/Validation ratio
     public static float PN_RATIO = 0.5f; // Positive/negative ratio
     public static float DELTA_TV = 0.01f; // Margin of error for train/validation ratio
-    public static float DELTA_PN = 0.02f; // Margin of error for positive/negative ratio
+    public static float DELTA_PN = 0.01f; // Margin of error for positive/negative ratio
 
     public static void main(String[] args) throws IOException {
         // Set up files and folders

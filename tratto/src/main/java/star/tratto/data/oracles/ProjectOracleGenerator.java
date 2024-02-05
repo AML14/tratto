@@ -4,6 +4,8 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.CallableDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.resolution.UnsolvedSymbolException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleType;
 import star.tratto.data.JPClassNotFoundException;
@@ -51,6 +53,11 @@ public class ProjectOracleGenerator {
     /** All Javadoc tags and their text in the current project. */
     private List<TagAndText> tagAndTexts;
 
+    private static final String WARN_LOST_CONDITIONS =
+            "Unable to parse class file for {}. It contains Jdoctor conditions, so they will be lost.";
+
+    private static final Logger logger = LoggerFactory.getLogger(ProjectOracleGenerator.class);
+
     /**
      * Sets the project under analysis and project-level features. This avoids
      * repeatedly reloading shared features.
@@ -69,7 +76,7 @@ public class ProjectOracleGenerator {
         this.methods = DatasetUtils.getProjectNonPrivateStaticNonVoidMethodsTokens(this.project.srcPath());
         this.fields = DatasetUtils.getProjectNonPrivateStaticAttributesTokens(this.project.srcPath());
         this.tagAndTexts = DatasetUtils.getProjectTagsTokens(this.project.srcPath());
-        System.out.printf("Identified %s total JavaDoc tags.%n", this.tagAndTexts.size());
+        logger.info("Identified {} total JavaDoc tags.", this.tagAndTexts.size());
     }
 
     /**
@@ -97,6 +104,8 @@ public class ProjectOracleGenerator {
                 // Do not add oracles if unable to parse corresponding class file.
                 if (nextDatapoint != null) {
                     oracleDPs.add(nextDatapoint);
+                } else {
+                    logger.warn(WARN_LOST_CONDITIONS, operation.className());
                 }
                 removeProjectClassesTag(operation, OracleType.EXCEPT_POST, throwsCondition.description());
             }
@@ -106,6 +115,8 @@ public class ProjectOracleGenerator {
                 OracleDatapoint nextDatapoint = getDatapoint(operation, preCondition);
                 if (nextDatapoint != null) {
                     oracleDPs.add(nextDatapoint);
+                } else {
+                    logger.warn(WARN_LOST_CONDITIONS, operation.className());
                 }
                 removeProjectClassesTag(operation, OracleType.PRE, preCondition.description());
             }
@@ -115,22 +126,26 @@ public class ProjectOracleGenerator {
                 OracleDatapoint nextDatapoint = getDatapoint(operation, postConditions);
                 if (nextDatapoint != null) {
                     oracleDPs.add(nextDatapoint);
+                } else {
+                    logger.warn(WARN_LOST_CONDITIONS, operation.className());
                 }
                 // first description corresponds to source tag.
                 removeProjectClassesTag(operation, OracleType.NORMAL_POST, postConditions.get(0).description());
             }
         }
         int numNonEmptyOracles = oracleDPs.size();
-        // Generate an OracleDatapoint for each remaining JavaDoc tag.
-        for (TagAndText jpTag : this.tagAndTexts) {
-            OracleDatapoint nextDatapoint = getEmptyDatapoint(jpTag);
-            if (nextDatapoint != null) oracleDPs.add(nextDatapoint);
+        // Generate an OracleDatapoint for each remaining JavaDoc tag, if enabled for this project.
+        if (project.generateEmptyOracles()) {
+            for (TagAndText jpTag : this.tagAndTexts) {
+                OracleDatapoint nextDatapoint = getEmptyDatapoint(jpTag);
+                if (nextDatapoint != null) oracleDPs.add(nextDatapoint);
+            }
         }
         int numEmptyOracles = oracleDPs.size() - numNonEmptyOracles;
         // log information.
-        System.out.printf("Processed %s non-empty oracles.%n", numNonEmptyOracles);
-        System.out.printf("Processed %s empty oracles.%n", numEmptyOracles);
-        System.out.printf("Processed %s total oracles.%n", numNonEmptyOracles + numEmptyOracles);
+        logger.info("Processed {} non-empty oracles.", numNonEmptyOracles);
+        logger.info("Processed {} empty oracles.", numEmptyOracles);
+        logger.info("Processed {} total oracles.", numNonEmptyOracles + numEmptyOracles);
         return oracleDPs;
     }
 
@@ -239,8 +254,8 @@ public class ProjectOracleGenerator {
                         targetClass,
                         targetCallable,
                         targetOracleType,
-                        "",
-                        ""
+                        null,
+                        null
                 );
                 this.tagAndTexts.add(newTagAndText);
                 return newTagAndText;
@@ -289,9 +304,9 @@ public class ProjectOracleGenerator {
         Optional<CompilationUnit> cuOptional = DatasetUtils.getOperationCompilationUnit(operation, sourcePath);
         if (cuOptional.isPresent()) {
             TypeDeclaration<?> jpClass = DatasetUtils.getTypeDeclaration(cuOptional.get(), className);
-            assert jpClass != null;
+            if (jpClass == null) throw new AssertionError();
             CallableDeclaration<?> jpCallable = DatasetUtils.getCallableDeclaration(jpClass, callableName, parameterTypes);
-            assert jpCallable != null;
+            if (jpCallable == null) throw new AssertionError();
             // remove tag with maximum similarity.
             this.tagAndTexts.remove(findMaximumSimilarityTag(
                     jpClass,
@@ -395,10 +410,10 @@ public class ProjectOracleGenerator {
         String classSourceCode = DatasetUtils.getOperationClassSource(operation, sourcePath).orElseThrow();
         // get TypeDeclaration of class in CompilationUnit.
         TypeDeclaration<?> jpClass = DatasetUtils.getTypeDeclaration(cu, className);
-        assert jpClass != null;
+        if (jpClass == null) throw new AssertionError();
         // get CallableDeclaration of method in TypeDeclaration.
         CallableDeclaration<?> jpCallable = DatasetUtils.getCallableDeclaration(jpClass, callableName, parameterTypes);
-        assert jpCallable != null;
+        if (jpCallable == null) throw new AssertionError();
         // set data point information.
         builder.setConditionInfo(condition);
         // override JavaDoc tag with tag from source code.
@@ -435,20 +450,10 @@ public class ProjectOracleGenerator {
                     )
             );
             builder.setTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(
-                    DatasetUtils.getTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(
-                            jpClass,
-                            jpCallable,
-                            builder.copy().getTokensMethodArguments(),
-                            builder.copy().getOracle()
-                    )
+                    DatasetUtils.getTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(builder.copy())
             );
             builder.setTokensOracleVariablesNonPrivateNonStaticAttributes(
-                    DatasetUtils.getTokensOracleVariablesNonPrivateNonStaticAttributes(
-                            jpClass,
-                            jpCallable,
-                            builder.copy().getTokensMethodArguments(),
-                            builder.copy().getOracle()
-                    )
+                    DatasetUtils.getTokensOracleVariablesNonPrivateNonStaticAttributes(builder.copy())
             );
         } catch (JPClassNotFoundException | UnsolvedSymbolException e) {
             e.printStackTrace();

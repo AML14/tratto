@@ -1,0 +1,95 @@
+[
+    {
+        "operation": {
+            "name": "net.dv8tion.jda.internal.requests.restaction.order.ChannelOrderActionImpl",
+            "parameterTypes": [
+                "Guild",
+                "int",
+                "Collection"
+            ],
+            "classname": "net.dv8tion.jda.internal.requests.restaction.order.ChannelOrderActionImpl"
+        },
+        "identifiers": {
+            "parameters": [
+                "guild",
+                "bucket",
+                "channels"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param  channels  The {@link GuildChannel Channels} to order, all of which are on the same Guild specified, and all of which are of the same generic type of GuildChannel corresponding to the the ChannelType specified.",
+                "guard": {
+                    "condition": "channels != null && channels.size() > 0 && channels.stream().allMatch(jdVar -> jdVar.getGuild().equals(guild) && jdVar.getType().getSortBucket() == bucket)",
+                    "description": "@param  channels  The {@link GuildChannel Channels} to order, all of which are on the same Guild specified, and all of which are of the same generic type of GuildChannel corresponding to the the ChannelType specified."
+                }
+            }
+        ],
+        "post": [],
+        "throws": [
+            {
+                "exception": "java.lang.IllegalArgumentException",
+                "description": "@throws java.lang.IllegalArgumentException If the channels are {@code null}, an empty collection, or any of them do not have the same ChannelType as the one provided.",
+                "guard": {
+                    "condition": "channels == null || channels.size() == 0 || channels.stream().anyMatch(jdVar -> (jdVar.getGuild().equals(guild))==false || jdVar.getType().getSortBucket() != bucket)",
+                    "description": "@throws java.lang.IllegalArgumentException If the channels are {@code null}, an empty collection, or any of them do not have the same ChannelType as the one provided."
+                }
+            }
+        ]
+    },
+    {
+        "operation": {
+            "name": "setCategory",
+            "parameterTypes": [
+                "Category",
+                "boolean"
+            ],
+            "classname": "net.dv8tion.jda.internal.requests.restaction.order.ChannelOrderActionImpl"
+        },
+        "identifiers": {
+            "parameters": [
+                "category",
+                "syncPermissions"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "",
+                "guard": {
+                    "condition": "category == null || category.getGuild().equals(receiverObjectID.getGuild())",
+                    "description": ""
+                }
+            }
+        ],
+        "post": [],
+        "throws": []
+    },
+    {
+        "operation": {
+            "name": "finalizeData",
+            "parameterTypes": [],
+            "classname": "net.dv8tion.jda.internal.requests.restaction.order.ChannelOrderActionImpl"
+        },
+        "identifiers": {
+            "parameters": [],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [],
+        "post": [],
+        "throws": [
+            {
+                "exception": "net.dv8tion.jda.api.exceptions.InsufficientPermissionException",
+                "description": "",
+                "guard": {
+                    "condition": "(receiverObjectID.getGuild().getSelfMember().hasPermission(Permission.MANAGE_CHANNEL))==false",
+                    "description": ""
+                }
+            }
+        ]
+    }
+]

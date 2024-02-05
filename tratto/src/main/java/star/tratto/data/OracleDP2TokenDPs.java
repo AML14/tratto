@@ -75,7 +75,9 @@ public class OracleDP2TokenDPs {
      * @param tokenDPType type of TokenDatapoints to generate (token, class or value).
      */
     public static List<TokenDatapoint> oracleSoFarAndTokenToTokenDatapoints(OracleDatapoint oracleDatapoint, List<String> oracleSoFarTokens, List<String> tokenClassesSoFar, String nextOracleToken, TokenDPType tokenDPType) {
-        assert oracleSoFarTokens.size() == tokenClassesSoFar.size();
+        if (oracleSoFarTokens.size() != tokenClassesSoFar.size()) {
+            throw new IllegalArgumentException("oracleSoFarTokens and tokenClassesSoFar must have the same size");
+        }
 
         // Create copies of oracleSoFarTokens and tokenClassesSoFar since they may be modified
         List<String> oracleSoFarTokensCopy = new ArrayList<>(oracleSoFarTokens);
@@ -126,11 +128,11 @@ public class OracleDP2TokenDPs {
 
         // Update original oracleSoFarTokens and tokenClassesSoFar for next iteration
         if (!nextOracleToken.equals("")) {
-            assert nextOracleTokenClass != null;
+            if (nextOracleTokenClass == null) throw new AssertionError();
             oracleSoFarTokens.add(nextOracleToken);
             tokenClassesSoFar.add(nextOracleTokenClass);
         } else {
-            assert nextOracleTokenClass == null;
+            if (nextOracleTokenClass != null) throw new AssertionError();
         }
 
         assertTokenLegal(nextTokenActuallyLegal, nextOracleToken, oracleSoFarTokensCopy);

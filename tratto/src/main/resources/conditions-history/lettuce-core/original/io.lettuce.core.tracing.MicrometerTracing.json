@@ -1,0 +1,76 @@
+[
+    {
+        "operation": {
+            "name": "io.lettuce.core.tracing.MicrometerTracing",
+            "parameterTypes": [
+                "ObservationRegistry",
+                "String"
+            ],
+            "classname": "io.lettuce.core.tracing.MicrometerTracing"
+        },
+        "identifiers": {
+            "parameters": [
+                "observationRegistry",
+                "serviceName"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param observationRegistry must not be {@literal null}.",
+                "guard": {
+                    "condition": "observationRegistry != null",
+                    "description": "@param observationRegistry must not be {@literal null}."
+                }
+            }
+        ],
+        "post": [],
+        "throws": []
+    },
+    {
+        "operation": {
+            "name": "io.lettuce.core.tracing.MicrometerTracing",
+            "parameterTypes": [
+                "ObservationRegistry",
+                "String",
+                "LettuceObservationConvention"
+            ],
+            "classname": "io.lettuce.core.tracing.MicrometerTracing"
+        },
+        "identifiers": {
+            "parameters": [
+                "observationRegistry",
+                "serviceName",
+                "convention"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param observationRegistry must not be {@literal null}.",
+                "guard": {
+                    "condition": "observationRegistry != null",
+                    "description": "@param observationRegistry must not be {@literal null}."
+                }
+            },
+            {
+                "description": "@param serviceName service name to be used.",
+                "guard": {
+                    "condition": "serviceName.isEmpty() == false",
+                    "description": "@param serviceName service name to be used."
+                }
+            },
+            {
+                "description": "@param convention the observation convention to use",
+                "guard": {
+                    "condition": "convention != null",
+                    "description": "@param convention the observation convention to use"
+                }
+            }
+        ],
+        "post": [],
+        "throws": []
+    }
+]

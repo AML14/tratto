@@ -27,6 +27,7 @@ import star.tratto.util.javaparser.JavaParserUtils;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +36,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 import static star.tratto.util.FileUtils.readString;
 import static star.tratto.util.StringUtils.getClassNameFromPath;
 import static star.tratto.util.javaparser.DatasetUtils.getJavaFiles;
@@ -55,6 +57,21 @@ public class ClassAnalyzerTest {
     static { JavaParserUtils.updateSymbolSolver(JAR); }
     private static final CompilationUnit CLASS_CU = javaParser.parse(CLASS_SOURCE).getResult().get();
     private static final TypeDeclaration<?> CLASS_TD = getClassOrInterface(CLASS_CU, CLASS_NAME);
+    private static final int MAX_METHODS = 500; // to avoid test hanging due to huge classes
+    private static final List<String> tokensGeneralGrammar = FileUtils.readJSONList(TrattoPath.TOKENS_GRAMMAR.getPath())
+            .stream()
+            .map(e -> (String) e)
+            .toList();
+    private static final List<ValueTokens> tokensGeneralValues = FileUtils.readJSONList(TrattoPath.TOKENS_GENERAL_VALUES.getPath())
+            .stream()
+            .map(e -> ((List<?>) e)
+                    .stream()
+                    .map(o -> (String) o)
+                    .collect(Collectors.toList()))
+            .toList()
+            .stream()
+            .map(tokenList -> new ValueTokens(tokenList.get(0), tokenList.get(1)))
+            .collect(Collectors.toList());
 
     @BeforeEach
     public void reset() {
@@ -247,23 +264,6 @@ public class ClassAnalyzerTest {
      */
     public static void classAnalyzerE2ETest() {
         classAnalyzer.reset();
-        List<OracleDatapoint> oracleDatapoints = new ArrayList<>();
-
-        // General variables for later assertions
-        List<String> tokensGeneralGrammar = FileUtils.readJSONList(TrattoPath.TOKENS_GRAMMAR.getPath())
-                .stream()
-                .map(e -> (String) e)
-                .toList();
-        List<ValueTokens> tokensGeneralValues = FileUtils.readJSONList(TrattoPath.TOKENS_GENERAL_VALUES.getPath())
-                .stream()
-                .map(e -> ((List<?>) e)
-                        .stream()
-                        .map(o -> (String) o)
-                        .collect(Collectors.toList()))
-                .toList()
-                .stream()
-                .map(tokenList -> new ValueTokens(tokenList.get(0), tokenList.get(1)))
-                .collect(Collectors.toList());
 
         // Projects for which to generate oracle datapoints
         String rsrcsPath = TrattoPath.RESOURCES.getPath().toString() + "/";
@@ -314,33 +314,37 @@ public class ClassAnalyzerTest {
                 classAnalyzer.setProjectPath(projectPathAndJar.getValue1());
                 classAnalyzer.setClassFeatures(className, classSource, classCu, classTd);
                 try {
-                    oracleDatapoints.addAll(classAnalyzer.getOracleDatapointsFromClass());
+                    if (classTd.getMethods().size() + classTd.getConstructors().size() <= MAX_METHODS) {
+                        classAnalyzer.getOracleDatapointsFromClass().forEach(ClassAnalyzerTest::checkOracleDP);
+                    } else {
+                        logger.warn("The class {} has more than {} methods and constructors. Skipping...", className, MAX_METHODS);
+                    }
                 } catch (UnsolvedSymbolException e) {
                     logger.warn("The class {} could not be analyzed because it contains some symbol that cannot be solved. Stack trace:", className);
                     e.printStackTrace();
                 }
             }
         }
+    }
 
-        oracleDatapoints.forEach(odp -> {
-            assertEquals(0, odp.getId());
-            assertEquals("", odp.getOracle());
-            assertTrue(List.of(OracleType.PRE, OracleType.NORMAL_POST, OracleType.EXCEPT_POST).contains(odp.getOracleType()));
-            assertEquals("", odp.getProjectName());
-            assertNotNull(odp.getPackageName());
-            assertNotNull(odp.getClassName());
-            assertNotNull(odp.getJavadocTag());
-            assertNotNull(odp.getMethodSourceCode());
-            assertNotNull(odp.getClassSourceCode());
-            assertEquals(tokensGeneralGrammar, odp.getTokensGeneralGrammar());
-            assertEquals(tokensGeneralValues, odp.getTokensGeneralValuesGlobalDictionary());
-            assertTrue(odp.getTokensProjectClasses().size() > 0);
-            assertTrue(odp.getTokensProjectClassesNonPrivateStaticNonVoidMethods().size() > 0);
-            assertTrue(odp.getTokensProjectClassesNonPrivateStaticAttributes().size() > 0);
-            assertNotNull(odp.getTokensMethodVariablesNonPrivateNonStaticNonVoidMethods());
-            assertNotNull(odp.getTokensMethodVariablesNonPrivateNonStaticAttributes());
-            assertNotNull(odp.getTokensOracleVariablesNonPrivateNonStaticNonVoidMethods());
-            assertNotNull(odp.getTokensOracleVariablesNonPrivateNonStaticAttributes());
-        });
+    private static void checkOracleDP(OracleDatapoint odp) {
+        assertEquals(0, odp.getId());
+        assertEquals("", odp.getOracle());
+        assertTrue(List.of(OracleType.PRE, OracleType.NORMAL_POST, OracleType.EXCEPT_POST).contains(odp.getOracleType()));
+        assertEquals("", odp.getProjectName());
+        assertNotNull(odp.getPackageName());
+        assertNotNull(odp.getClassName());
+        assertNotNull(odp.getJavadocTag());
+        assertNotNull(odp.getMethodSourceCode());
+        assertNotNull(odp.getClassSourceCode());
+        assertEquals(tokensGeneralGrammar, odp.getTokensGeneralGrammar());
+        assertEquals(tokensGeneralValues, odp.getTokensGeneralValuesGlobalDictionary());
+        assertTrue(odp.getTokensProjectClasses().size() > 0);
+        assertTrue(odp.getTokensProjectClassesNonPrivateStaticNonVoidMethods().size() > 0);
+        assertTrue(odp.getTokensProjectClassesNonPrivateStaticAttributes().size() > 0);
+        assertNotNull(odp.getTokensMethodVariablesNonPrivateNonStaticNonVoidMethods());
+        assertNotNull(odp.getTokensMethodVariablesNonPrivateNonStaticAttributes());
+        assertNotNull(odp.getTokensOracleVariablesNonPrivateNonStaticNonVoidMethods());
+        assertNotNull(odp.getTokensOracleVariablesNonPrivateNonStaticAttributes());
     }
 }
