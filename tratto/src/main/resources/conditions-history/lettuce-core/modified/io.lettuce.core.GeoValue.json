@@ -1,0 +1,138 @@
+[
+    {
+        "operation": {
+            "name": "from",
+            "parameterTypes": [
+                "GeoCoordinates",
+                "Optional"
+            ],
+            "classname": "io.lettuce.core.GeoValue"
+        },
+        "identifiers": {
+            "parameters": [
+                "coordinates",
+                "optional"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param coordinates the score.",
+                "guard": {
+                    "condition": "optional.isPresent() == false || (optional.isPresent() && coordinates != null)",
+                    "description": "@param coordinates the score."
+                }
+            },
+            {
+                "description": "@param optional the optional. May be empty but never {@code null}.",
+                "guard": {
+                    "condition": "optional != null",
+                    "description": "@param optional the optional. May be empty but never {@code null}."
+                }
+            }
+        ],
+        "post": [],
+        "throws": []
+    },
+    {
+        "operation": {
+            "name": "just",
+            "parameterTypes": [
+                "GeoCoordinates",
+                "V"
+            ],
+            "classname": "io.lettuce.core.GeoValue"
+        },
+        "identifiers": {
+            "parameters": [
+                "coordinates",
+                "value"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param value the value. Must not be {@code null}.",
+                "guard": {
+                    "condition": "value != null",
+                    "description": "@param value the value. Must not be {@code null}."
+                }
+            },
+            {
+                "description": "@param coordinates the coordinates.",
+                "guard": {
+                    "condition": "coordinates != null",
+                    "description": "@param coordinates the coordinates."
+                }
+            }
+        ],
+        "post": [],
+        "throws": []
+    },
+    {
+        "operation": {
+            "name": "getLongitude",
+            "parameterTypes": [],
+            "classname": "io.lettuce.core.GeoValue"
+        },
+        "identifiers": {
+            "parameters": [],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "",
+                "guard": {
+                    "condition": "receiverObjectID.getCoordinates() != null",
+                    "description": ""
+                }
+            }
+        ],
+        "post": [],
+        "throws": [
+            {
+                "exception": " java.util.NoSuchElementException",
+                "description": "@throws NoSuchElementException if the value is not present.",
+                "guard": {
+                    "condition": "receiverObjectID.getCoordinates() == null",
+                    "description": "@throws NoSuchElementException if the value is not present."
+                }
+            }
+        ]
+    },
+    {
+        "operation": {
+            "name": "getLatitude",
+            "parameterTypes": [],
+            "classname": "io.lettuce.core.GeoValue"
+        },
+        "identifiers": {
+            "parameters": [],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "",
+                "guard": {
+                    "condition": "receiverObjectID.getCoordinates() != null",
+                    "description": ""
+                }
+            }
+        ],
+        "post": [],
+        "throws": [
+            {
+                "exception": "java.utils.NoSuchElementException",
+                "description": "@throws NoSuchElementException if the value is not present.",
+                "guard": {
+                    "condition": "receiverObjectID.getCoordinates() == null",
+                    "description": "@throws NoSuchElementException if the value is not present."
+                }
+            }
+        ]
+    }
+]

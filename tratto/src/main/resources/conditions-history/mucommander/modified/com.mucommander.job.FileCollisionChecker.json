@@ -1,0 +1,54 @@
+[
+    {
+        "operation": {
+            "name": "checkForCollision",
+            "parameterTypes": [
+                "AbstractFile",
+                "AbstractFile"
+            ],
+            "classname": "com.mucommander.job.FileCollisionChecker"
+        },
+        "identifiers": {
+            "parameters": [
+                "sourceFile",
+                "destFile"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param destFile destination file, cannot be null",
+                "guard": {
+                    "condition": "destFile != null",
+                    "description": "@param destFile destination file, cannot be null"
+                }
+            }
+        ],
+        "post": [
+            {
+                "description": "@return an int describing the collision type, or {@link #NO_COLLISION} if no collision was detected (see constants)",
+                "property": {
+                    "condition": "methodResultID == FileCollisionChecker.NO_COLLISION || methodResultID == FileCollisionChecker.DESTINATION_FILE_ALREADY_EXISTS || methodResultID == FileCollisionChecker.SAME_SOURCE_AND_DESTINATION || methodResultID == FileCollisionChecker.SOURCE_PARENT_OF_DESTINATION",
+                    "description": "@return an int describing the collision type, or {@link #NO_COLLISION} if no collision was detected (see constants)"
+                },
+                "guard": {
+                    "condition": "sourceFile != null",
+                    "description": "@return an int describing the collision type, or {@link #NO_COLLISION} if no collision was detected (see constants)"
+                }
+            },
+            {
+                "description": "@return an int describing the collision type, or {@link #NO_COLLISION} if no collision was detected (see constants)",
+                "property": {
+                    "condition": "methodResultID == FileCollisionChecker.NO_COLLISION || methodResultID == FileCollisionChecker.DESTINATION_FILE_ALREADY_EXISTS",
+                    "description": "@return an int describing the collision type, or {@link #NO_COLLISION} if no collision was detected (see constants)"
+                },
+                "guard": {
+                    "condition": "sourceFile == null",
+                    "description": "@return an int describing the collision type, or {@link #NO_COLLISION} if no collision was detected (see constants)"
+                }
+            }
+        ],
+        "throws": []
+    }
+]

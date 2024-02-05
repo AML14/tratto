@@ -1,6 +1,7 @@
 package star.tratto;
 
 import org.junit.jupiter.api.Test;
+import star.tratto.data.OracleDP2TokenDPs;
 import star.tratto.data.TokenDPType;
 
 import java.io.IOException;
@@ -12,6 +13,7 @@ public class TokensDatasetTest {
         TokensDataset.ORACLES_DATASET_FOLDER = "src/test/resources/oracles-dataset/";
         TokensDataset.TOKENS_DATASET_FOLDER = "src/test/resources/tokens-dataset/";
         TokensDataset.DATASET_TYPE = TokenDPType.TOKEN;
+        OracleDP2TokenDPs.CRASH_WRONG_ORACLE = true;
         TokensDataset.main(new String[] {});
 
         /*

@@ -1,4 +1,8 @@
 {
+    "target!=null;": [
+        "(target!=null);",
+        "(target==null)==false;"
+    ],
     "true?methodResultID.equals(BagUtils.EMPTY_BAG):true;": [
         "true?(methodResultID.equals(BagUtils.EMPTY_BAG)):true;"
     ],
@@ -28,6 +32,10 @@
     "get==null;": [
         "(get==null);",
         "(get!=null)==false;"
+    ],
+    "order!=null;": [
+        "(order!=null);",
+        "(order==null)==false;"
     ],
     "elements<=0;": [
         "(elements<=0);",
@@ -59,6 +67,10 @@
         "((type==null))==false;",
         "((type!=null)==false)==false;"
     ],
+    "rule==null;": [
+        "(rule==null);",
+        "(rule!=null)==false;"
+    ],
     "iteratorChain.stream().anyMatch(jdVar->jdVar!=IteratorUtils.getIterator(jdVar));": [
         "(iteratorChain.stream().anyMatch(jdVar->jdVar!=IteratorUtils.getIterator(jdVar)));",
         "iteratorChain.stream().anyMatch(jdVar->(jdVar!=IteratorUtils.getIterator(jdVar)));",
@@ -68,6 +80,10 @@
     "others==null;": [
         "(others==null);",
         "(others!=null)==false;"
+    ],
+    "action==null;": [
+        "(action==null);",
+        "(action!=null)==false;"
     ],
     "newInitialStepBoundFactor==100.0;": [
         "(newInitialStepBoundFactor==100.0);",
@@ -116,9 +132,18 @@
         "true?(methodResultID==x-y):true;",
         "true?(methodResultID!=x-y)==false:true;"
     ],
+    "this.getGuild().getSelfMember().hasPermission(this,Permission.MESSAGE_MANAGE)==false;": [
+        "(this.getGuild().getSelfMember().hasPermission(this,Permission.MESSAGE_MANAGE)==false);",
+        "(this.getGuild().getSelfMember().hasPermission(this,Permission.MESSAGE_MANAGE)!=false)==false;"
+    ],
     "abs<=0;": [
         "(abs<=0);",
         "(abs>0)==false;"
+    ],
+    "libraryName==null||(libraryName.contains(\"\"))==false;": [
+        "(libraryName==null)||(libraryName.contains(\"\"))==false;",
+        "libraryName==null||((libraryName.contains(\"\")))==false;",
+        "(libraryName!=null)==false||(libraryName.contains(\"\"))==false;"
     ],
     "((interfaceType==null)==false)&&(interfaceType.isEnum());": [
         "(((interfaceType==null))==false)&&(interfaceType.isEnum());",
@@ -257,6 +282,10 @@
         "((elementsToSkip<0))==false;",
         "((elementsToSkip>=0)==false)==false;"
     ],
+    "instance!=null;": [
+        "(instance!=null);",
+        "(instance==null)==false;"
+    ],
     "(degree>0)==false;": [
         "((degree>0))==false;",
         "((degree<=0)==false)==false;"
@@ -268,6 +297,11 @@
     "(others==null)==false;": [
         "((others==null))==false;",
         "((others!=null)==false)==false;"
+    ],
+    "libraryName==null||libraryName.contains(\"\");": [
+        "(libraryName==null)||libraryName.contains(\"\");",
+        "libraryName==null||(libraryName.contains(\"\"));",
+        "(libraryName!=null)==false||libraryName.contains(\"\");"
     ],
     "concurrencyLevel<=0;": [
         "(concurrencyLevel<=0);",
@@ -285,6 +319,12 @@
     "z==null;": [
         "(z==null);",
         "(z!=null)==false;"
+    ],
+    "limit<this.getMinLimit()||limit>this.getMaxLimit();": [
+        "(limit<this.getMinLimit())||limit>this.getMaxLimit();",
+        "limit<this.getMinLimit()||(limit>this.getMaxLimit());",
+        "(limit>=this.getMinLimit())==false||limit>this.getMaxLimit();",
+        "limit<this.getMinLimit()||(limit<=this.getMaxLimit())==false;"
     ],
     "predicatesAndTransformers==null;": [
         "(predicatesAndTransformers==null);",
@@ -309,9 +349,20 @@
         "(tasks==null);",
         "(tasks!=null)==false;"
     ],
+    "this.getChild(name).exists();": [
+        "(this.getChild(name).exists());"
+    ],
     "data==null;": [
         "(data==null);",
         "(data!=null)==false;"
+    ],
+    "name==null||name.length()<1||name.length()>ForumTag.MAX_NAME_LENGTH;": [
+        "(name==null)||name.length()<1||name.length()>ForumTag.MAX_NAME_LENGTH;",
+        "name==null||(name.length()<1)||name.length()>ForumTag.MAX_NAME_LENGTH;",
+        "name==null||name.length()<1||(name.length()>ForumTag.MAX_NAME_LENGTH);",
+        "(name!=null)==false||name.length()<1||name.length()>ForumTag.MAX_NAME_LENGTH;",
+        "name==null||(name.length()>=1)==false||name.length()>ForumTag.MAX_NAME_LENGTH;",
+        "name==null||name.length()<1||(name.length()<=ForumTag.MAX_NAME_LENGTH)==false;"
     ],
     "expansion<=1;": [
         "(expansion<=1);",
@@ -325,6 +376,10 @@
     "iterables==null;": [
         "(iterables==null);",
         "(iterables!=null)==false;"
+    ],
+    "permissions!=null;": [
+        "(permissions!=null);",
+        "(permissions==null)==false;"
     ],
     "stepSize>=tUpper;": [
         "(stepSize>=tUpper);",
@@ -363,6 +418,9 @@
     "(out==null)==false;": [
         "((out==null))==false;",
         "((out!=null)==false)==false;"
+    ],
+    "(this.getGuild().getSelfMember().hasPermission(Permission.MANAGE_CHANNEL))==false;": [
+        "((this.getGuild().getSelfMember().hasPermission(Permission.MANAGE_CHANNEL)))==false;"
     ],
     "source==null;": [
         "(source==null);",
@@ -429,6 +487,11 @@
         "nMaxHops<0||(nMaxHops!=0)==false;",
         "(nMaxHops>=0)==false||nMaxHops==0;"
     ],
+    "uri!=null&&(uri.equals(\"\"))==false;": [
+        "(uri!=null)&&(uri.equals(\"\"))==false;",
+        "uri!=null&&((uri.equals(\"\")))==false;",
+        "(uri==null)==false&&(uri.equals(\"\"))==false;"
+    ],
     "max<0;": [
         "(max<0);",
         "(max>=0)==false;"
@@ -438,6 +501,10 @@
         "permitsPerSecond<0||(permitsPerSecond==0);",
         "permitsPerSecond<0||(permitsPerSecond!=0)==false;",
         "(permitsPerSecond>=0)==false||permitsPerSecond==0;"
+    ],
+    "name!=null;": [
+        "(name!=null);",
+        "(name==null)==false;"
     ],
     "maxTime<0;": [
         "(maxTime<0);",
@@ -452,6 +519,12 @@
     "denominator==0;": [
         "(denominator==0);",
         "(denominator!=0)==false;"
+    ],
+    "messageIds.stream().anyMatch(jdVar->jdVar==null||jdVar.isEmpty());": [
+        "(messageIds.stream().anyMatch(jdVar->jdVar==null||jdVar.isEmpty()));",
+        "messageIds.stream().anyMatch(jdVar->(jdVar==null)||jdVar.isEmpty());",
+        "messageIds.stream().anyMatch(jdVar->jdVar==null||(jdVar.isEmpty()));",
+        "messageIds.stream().anyMatch(jdVar->(jdVar!=null)==false||jdVar.isEmpty());"
     ],
     "(string==null||string.isEmpty())==false?methodResultID.equals(string):methodResultID==null;": [
         "(string==null||string.isEmpty())?methodResultID==null:methodResultID.equals(string);",
@@ -505,6 +578,13 @@
         "(value2==null);",
         "(value2!=null)==false;"
     ],
+    "root==null||path==null||path.isEmpty();": [
+        "(root==null)||path==null||path.isEmpty();",
+        "root==null||(path==null)||path.isEmpty();",
+        "root==null||path==null||(path.isEmpty());",
+        "(root!=null)==false||path==null||path.isEmpty();",
+        "root==null||(path!=null)==false||path.isEmpty();"
+    ],
     "(p>0)==false&&p<=100;": [
         "((p>0))==false&&p<=100;",
         "(p>0)==false&&(p<=100);",
@@ -531,6 +611,10 @@
         "(coefficients==null);",
         "(coefficients!=null)==false;"
     ],
+    "circuit!=null;": [
+        "(circuit!=null);",
+        "(circuit==null)==false;"
+    ],
     "list==null;": [
         "(list==null);",
         "(list!=null)==false;"
@@ -555,6 +639,24 @@
         "dimension<1||(dimension>40);",
         "(dimension>=1)==false||dimension>40;",
         "dimension<1||(dimension<=40)==false;"
+    ],
+    "stickers==null||stickers.length==0||stickers.length>3||Arrays.stream(stickers).anyMatch(jdVar->this.getJDA().retrieveSticker(jdVar).complete().getType()==StickerType.STANDARD||(this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().isAvailable())==false||this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().getGuildIdLong()!=this.getGuild().getIdLong());": [
+        "(stickers==null)||stickers.length==0||stickers.length>3||Arrays.stream(stickers).anyMatch(jdVar->this.getJDA().retrieveSticker(jdVar).complete().getType()==StickerType.STANDARD||(this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().isAvailable())==false||this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().getGuildIdLong()!=this.getGuild().getIdLong());",
+        "stickers==null||(stickers.length==0)||stickers.length>3||Arrays.stream(stickers).anyMatch(jdVar->this.getJDA().retrieveSticker(jdVar).complete().getType()==StickerType.STANDARD||(this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().isAvailable())==false||this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().getGuildIdLong()!=this.getGuild().getIdLong());",
+        "stickers==null||stickers.length==0||(stickers.length>3)||Arrays.stream(stickers).anyMatch(jdVar->this.getJDA().retrieveSticker(jdVar).complete().getType()==StickerType.STANDARD||(this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().isAvailable())==false||this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().getGuildIdLong()!=this.getGuild().getIdLong());",
+        "stickers==null||stickers.length==0||stickers.length>3||(Arrays.stream(stickers).anyMatch(jdVar->this.getJDA().retrieveSticker(jdVar).complete().getType()==StickerType.STANDARD||(this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().isAvailable())==false||this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().getGuildIdLong()!=this.getGuild().getIdLong()));",
+        "stickers==null||stickers.length==0||stickers.length>3||Arrays.stream(stickers).anyMatch(jdVar->(this.getJDA().retrieveSticker(jdVar).complete().getType()==StickerType.STANDARD)||(this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().isAvailable())==false||this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().getGuildIdLong()!=this.getGuild().getIdLong());",
+        "stickers==null||stickers.length==0||stickers.length>3||Arrays.stream(stickers).anyMatch(jdVar->this.getJDA().retrieveSticker(jdVar).complete().getType()==StickerType.STANDARD||((this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().isAvailable()))==false||this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().getGuildIdLong()!=this.getGuild().getIdLong());",
+        "stickers==null||stickers.length==0||stickers.length>3||Arrays.stream(stickers).anyMatch(jdVar->this.getJDA().retrieveSticker(jdVar).complete().getType()==StickerType.STANDARD||(this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().isAvailable())==false||(this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().getGuildIdLong()!=this.getGuild().getIdLong()));",
+        "stickers==null||stickers.length==0||stickers.length>3||Arrays.stream(stickers).anyMatch(jdVar->this.getJDA().retrieveSticker(jdVar).complete().getType()==StickerType.STANDARD||(this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().isAvailable())==false||(this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().getGuildIdLong()==this.getGuild().getIdLong())==false);",
+        "(stickers!=null)==false||stickers.length==0||stickers.length>3||Arrays.stream(stickers).anyMatch(jdVar->this.getJDA().retrieveSticker(jdVar).complete().getType()==StickerType.STANDARD||(this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().isAvailable())==false||this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().getGuildIdLong()!=this.getGuild().getIdLong());",
+        "stickers==null||(stickers.length!=0)==false||stickers.length>3||Arrays.stream(stickers).anyMatch(jdVar->this.getJDA().retrieveSticker(jdVar).complete().getType()==StickerType.STANDARD||(this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().isAvailable())==false||this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().getGuildIdLong()!=this.getGuild().getIdLong());",
+        "stickers==null||stickers.length==0||stickers.length>3||Arrays.stream(stickers).anyMatch(jdVar->(this.getJDA().retrieveSticker(jdVar).complete().getType()!=StickerType.STANDARD)==false||(this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().isAvailable())==false||this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().getGuildIdLong()!=this.getGuild().getIdLong());",
+        "stickers==null||stickers.length==0||(stickers.length<=3)==false||Arrays.stream(stickers).anyMatch(jdVar->this.getJDA().retrieveSticker(jdVar).complete().getType()==StickerType.STANDARD||(this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().isAvailable())==false||this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().getGuildIdLong()!=this.getGuild().getIdLong());"
+    ],
+    "this.getCoordinates()!=null;": [
+        "(this.getCoordinates()!=null);",
+        "(this.getCoordinates()==null)==false;"
     ],
     "a<=b?methodResultID==b:methodResultID==a;": [
         "(a<=b)==false?methodResultID==a:methodResultID==b;",
@@ -592,6 +694,10 @@
         "(subMatrix==null);",
         "(subMatrix!=null)==false;"
     ],
+    "clientName!=null;": [
+        "(clientName!=null);",
+        "(clientName==null)==false;"
+    ],
     "(minimalIterationCount>0)==false;": [
         "((minimalIterationCount>0))==false;",
         "((minimalIterationCount<=0)==false)==false;"
@@ -628,6 +734,12 @@
     "(iterator1==null)==false;": [
         "((iterator1==null))==false;",
         "((iterator1!=null)==false)==false;"
+    ],
+    "true?methodResultID.getMaxDigits()==1024&&methodResultID.getTimeout()==0:true;": [
+        "true?(methodResultID.getMaxDigits()==1024)&&methodResultID.getTimeout()==0:true;",
+        "true?methodResultID.getMaxDigits()==1024&&(methodResultID.getTimeout()==0):true;",
+        "true?(methodResultID.getMaxDigits()!=1024)==false&&methodResultID.getTimeout()==0:true;",
+        "true?methodResultID.getMaxDigits()==1024&&(methodResultID.getTimeout()!=0)==false:true;"
     ],
     "(inputIterator==null)==false&&(transformer==null)==false||(outputCollection==null)==false;": [
         "((inputIterator==null))==false&&(transformer==null)==false||(outputCollection==null)==false;",
@@ -709,6 +821,14 @@
         "(beta<=0);",
         "(beta>0)==false;"
     ],
+    "member!=null;": [
+        "(member!=null);",
+        "(member==null)==false;"
+    ],
+    "port>=0;": [
+        "(port>=0);",
+        "(port<0)==false;"
+    ],
     "equator==null;": [
         "(equator==null);",
         "(equator!=null)==false;"
@@ -755,6 +875,10 @@
     ],
     "predicates.contains(null);": [
         "(predicates.contains(null));"
+    ],
+    "pinMap!=null;": [
+        "(pinMap!=null);",
+        "(pinMap==null)==false;"
     ],
     "fraction.getDenominator()==0;": [
         "(fraction.getDenominator()==0);",
@@ -901,6 +1025,15 @@
         "(rowData.length==0);",
         "(rowData.length!=0)==false;"
     ],
+    "clazz1==null?methodResultID==clazz2:methodResultID==clazz1;": [
+        "(clazz1==null)==false?methodResultID==clazz1:methodResultID==clazz2;",
+        "(clazz1==null)?methodResultID==clazz2:methodResultID==clazz1;",
+        "clazz1==null?(methodResultID==clazz2):methodResultID==clazz1;",
+        "clazz1==null?methodResultID==clazz2:(methodResultID==clazz1);",
+        "(clazz1!=null)==false?methodResultID==clazz2:methodResultID==clazz1;",
+        "clazz1==null?(methodResultID!=clazz2)==false:methodResultID==clazz1;",
+        "clazz1==null?methodResultID==clazz2:(methodResultID!=clazz1)==false;"
+    ],
     "a.length!=c.length+1;": [
         "(a.length!=c.length+1);",
         "(a.length==c.length+1)==false;"
@@ -928,11 +1061,20 @@
         "((x==null))==false;",
         "((x!=null)==false)==false;"
     ],
+    "this.getGuild().getSelfMember().hasPermission(this,Permission.VIEW_CHANNEL)==false;": [
+        "(this.getGuild().getSelfMember().hasPermission(this,Permission.VIEW_CHANNEL)==false);",
+        "(this.getGuild().getSelfMember().hasPermission(this,Permission.VIEW_CHANNEL)!=false)==false;"
+    ],
     "a==null||b==null;": [
         "(a==null)||b==null;",
         "a==null||(b==null);",
         "(a!=null)==false||b==null;",
         "a==null||(b!=null)==false;"
+    ],
+    "category==null||category.getGuild().equals(this.getGuild());": [
+        "(category==null)||category.getGuild().equals(this.getGuild());",
+        "category==null||(category.getGuild().equals(this.getGuild()));",
+        "(category!=null)==false||category.getGuild().equals(this.getGuild());"
     ],
     "limitSize<0;": [
         "(limitSize<0);",
@@ -965,6 +1107,10 @@
         "string!=null?methodResultID.equals(string):(methodResultID.equals(\"\"));",
         "(string==null)==false?methodResultID.equals(string):methodResultID.equals(\"\");"
     ],
+    "role!=null;": [
+        "(role!=null);",
+        "(role==null)==false;"
+    ],
     "collection==null||remove==null;": [
         "(collection==null)||remove==null;",
         "collection==null||(remove==null);",
@@ -978,6 +1124,10 @@
     "file==null;": [
         "(file==null);",
         "(file!=null)==false;"
+    ],
+    "this.getCoordinates()==null;": [
+        "(this.getCoordinates()==null);",
+        "(this.getCoordinates()!=null)==false;"
     ],
     "start<0;": [
         "(start<0);",
@@ -1013,9 +1163,22 @@
         "(iteratorChain!=null)==false||Arrays.stream(iteratorChain).anyMatch(jdVar->jdVar==null);",
         "iteratorChain==null||Arrays.stream(iteratorChain).anyMatch(jdVar->(jdVar!=null)==false);"
     ],
+    "this.getURL().getFilename()==null?methodResultID.equals(this.getURL().getHost())||methodResultID.equals(\"\"):methodResultID.equals(this.getURL().getFilename());": [
+        "(this.getURL().getFilename()==null)==false?methodResultID.equals(this.getURL().getFilename()):methodResultID.equals(this.getURL().getHost())||methodResultID.equals(\"\");",
+        "(this.getURL().getFilename()==null)?methodResultID.equals(this.getURL().getHost())||methodResultID.equals(\"\"):methodResultID.equals(this.getURL().getFilename());",
+        "this.getURL().getFilename()==null?(methodResultID.equals(this.getURL().getHost()))||methodResultID.equals(\"\"):methodResultID.equals(this.getURL().getFilename());",
+        "this.getURL().getFilename()==null?methodResultID.equals(this.getURL().getHost())||(methodResultID.equals(\"\")):methodResultID.equals(this.getURL().getFilename());",
+        "this.getURL().getFilename()==null?methodResultID.equals(this.getURL().getHost())||methodResultID.equals(\"\"):(methodResultID.equals(this.getURL().getFilename()));",
+        "(this.getURL().getFilename()!=null)==false?methodResultID.equals(this.getURL().getHost())||methodResultID.equals(\"\"):methodResultID.equals(this.getURL().getFilename());"
+    ],
     "initValue<=0;": [
         "(initValue<=0);",
         "(initValue>0)==false;"
+    ],
+    "libraryVersion==null||libraryVersion.contains(\"\");": [
+        "(libraryVersion==null)||libraryVersion.contains(\"\");",
+        "libraryVersion==null||(libraryVersion.contains(\"\"));",
+        "(libraryVersion!=null)==false||libraryVersion.contains(\"\");"
     ],
     "true?methodResultID==0:true;": [
         "true?(methodResultID==0):true;",
@@ -1045,6 +1208,10 @@
     "timeUnit==null;": [
         "(timeUnit==null);",
         "(timeUnit!=null)==false;"
+    ],
+    "stickers!=null;": [
+        "(stickers!=null);",
+        "(stickers==null)==false;"
     ],
     "predicate==null||closure==null;": [
         "(predicate==null)||closure==null;",
@@ -1110,6 +1277,10 @@
     "true?methodResultID>=n:true;": [
         "true?(methodResultID>=n):true;",
         "true?(methodResultID<n)==false:true;"
+    ],
+    "source!=null;": [
+        "(source!=null);",
+        "(source==null)==false;"
     ],
     "this.remove(element);": [
         "(this.remove(element));"
@@ -1178,9 +1349,17 @@
         "(subMatrix.length==0);",
         "(subMatrix.length!=0)==false;"
     ],
+    "failure!=null;": [
+        "(failure!=null);",
+        "(failure==null)==false;"
+    ],
     "subtrahend==null;": [
         "(subtrahend==null);",
         "(subtrahend!=null)==false;"
+    ],
+    "redisURI!=null;": [
+        "(redisURI!=null);",
+        "(redisURI==null)==false;"
     ],
     "true?methodResultID.equals(MultiSetUtils.EMPTY_MULTISET):true;": [
         "true?(methodResultID.equals(MultiSetUtils.EMPTY_MULTISET)):true;"
@@ -1204,9 +1383,17 @@
         "(elements!=null)==false||comparator==null;",
         "elements==null||(comparator!=null)==false;"
     ],
+    "true?methodResultID.equals(\"/\"):true;": [
+        "true?(methodResultID.equals(\"/\")):true;"
+    ],
     "(xval.length==yval.length)==false;": [
         "((xval.length==yval.length))==false;",
         "((xval.length!=yval.length)==false)==false;"
+    ],
+    "sentinelMasterId!=null&&(sentinelMasterId.equals(\"\"))==false;": [
+        "(sentinelMasterId!=null)&&(sentinelMasterId.equals(\"\"))==false;",
+        "sentinelMasterId!=null&&((sentinelMasterId.equals(\"\")))==false;",
+        "(sentinelMasterId==null)==false&&(sentinelMasterId.equals(\"\"))==false;"
     ],
     "(separator==null)==false;": [
         "((separator==null))==false;",
@@ -1225,6 +1412,10 @@
     "(maxSize<0)==false;": [
         "((maxSize<0))==false;",
         "((maxSize>=0)==false)==false;"
+    ],
+    "channel!=null;": [
+        "(channel!=null);",
+        "(channel==null)==false;"
     ],
     "(element==null)||(oldCount==0&&newCount==0);": [
         "((element==null))||(oldCount==0&&newCount==0);",
@@ -1248,6 +1439,9 @@
         "(maxIter<=0);",
         "(maxIter>0)==false;"
     ],
+    "true?methodResultID.endsWith(\".class\"):true;": [
+        "true?(methodResultID.endsWith(\".class\")):true;"
+    ],
     "true?methodResultID.equals(coll):true;": [
         "true?(methodResultID.equals(coll)):true;"
     ],
@@ -1265,15 +1459,38 @@
         "(a!=null)==false||c==null;",
         "a==null||(c!=null)==false;"
     ],
+    "action!=null;": [
+        "(action!=null);",
+        "(action==null)==false;"
+    ],
     "(v.length==3)==false;": [
         "((v.length==3))==false;",
         "((v.length!=3)==false)==false;"
+    ],
+    "v!=null;": [
+        "(v!=null);",
+        "(v==null)==false;"
+    ],
+    "permissionHolder==null||permissionHolder.getGuild().equals(this.getGuild())==false;": [
+        "(permissionHolder==null)||permissionHolder.getGuild().equals(this.getGuild())==false;",
+        "permissionHolder==null||(permissionHolder.getGuild().equals(this.getGuild())==false);",
+        "(permissionHolder!=null)==false||permissionHolder.getGuild().equals(this.getGuild())==false;",
+        "permissionHolder==null||(permissionHolder.getGuild().equals(this.getGuild())!=false)==false;"
     ],
     "maxSize<0||maxSize==0;": [
         "(maxSize<0)||maxSize==0;",
         "maxSize<0||(maxSize==0);",
         "maxSize<0||(maxSize!=0)==false;",
         "(maxSize>=0)==false||maxSize==0;"
+    ],
+    "true?methodResultID.length()<=className.length():true;": [
+        "true?(methodResultID.length()<=className.length()):true;",
+        "true?(methodResultID.length()>className.length())==false:true;"
+    ],
+    "messageId!=null&&(messageId.isEmpty())==false;": [
+        "(messageId!=null)&&(messageId.isEmpty())==false;",
+        "messageId!=null&&((messageId.isEmpty()))==false;",
+        "(messageId==null)==false&&(messageId.isEmpty())==false;"
     ],
     "(rowDimension>0)==false;": [
         "((rowDimension>0))==false;",
@@ -1299,6 +1516,9 @@
         "(n>0)==false||minimalIterationCount<=0;",
         "n<=0||(minimalIterationCount>0)==false;"
     ],
+    "filename.contains(this.getSeparator());": [
+        "(filename.contains(this.getSeparator()));"
+    ],
     "(bases==null)==false;": [
         "((bases==null))==false;",
         "((bases!=null)==false)==false;"
@@ -1313,6 +1533,10 @@
     ],
     "true?methodResultID.equals(closure):true;": [
         "true?(methodResultID.equals(closure)):true;"
+    ],
+    "username!=null;": [
+        "(username!=null);",
+        "(username==null)==false;"
     ],
     "expectedRows<0||expectedCellsPerRow<0;": [
         "(expectedRows<0)||expectedCellsPerRow<0;",
@@ -1355,6 +1579,10 @@
     "bytes!=null;": [
         "(bytes!=null);",
         "(bytes==null)==false;"
+    ],
+    "database>=0;": [
+        "(database>=0);",
+        "(database<0)==false;"
     ],
     "lists==null;": [
         "(lists==null);",
@@ -1450,6 +1678,10 @@
     "true?methodResultID.equals(dest):true;": [
         "true?(methodResultID.equals(dest)):true;"
     ],
+    "permissionHolder!=null;": [
+        "(permissionHolder!=null);",
+        "(permissionHolder==null)==false;"
+    ],
     "reverse==true;": [
         "(reverse==true);",
         "reverse;",
@@ -1477,6 +1709,13 @@
         "(alpha>0)==false||beta<=0;",
         "alpha<=0||(beta>0)==false;"
     ],
+    "resourcePath.contains(\"/\")?methodResultID.contains(\".\")&&(methodResultID.contains(\"/\"))==false:(methodResultID.contains(\"/\"))==false;": [
+        "(resourcePath.contains(\"/\"))==false?(methodResultID.contains(\"/\"))==false:methodResultID.contains(\".\")&&(methodResultID.contains(\"/\"))==false;",
+        "(resourcePath.contains(\"/\"))?methodResultID.contains(\".\")&&(methodResultID.contains(\"/\"))==false:(methodResultID.contains(\"/\"))==false;",
+        "resourcePath.contains(\"/\")?(methodResultID.contains(\".\"))&&(methodResultID.contains(\"/\"))==false:(methodResultID.contains(\"/\"))==false;",
+        "resourcePath.contains(\"/\")?methodResultID.contains(\".\")&&((methodResultID.contains(\"/\")))==false:(methodResultID.contains(\"/\"))==false;",
+        "resourcePath.contains(\"/\")?methodResultID.contains(\".\")&&(methodResultID.contains(\"/\"))==false:((methodResultID.contains(\"/\")))==false;"
+    ],
     "alpha>0;": [
         "(alpha>0);",
         "(alpha<=0)==false;"
@@ -1484,6 +1723,18 @@
     "vertices==null;": [
         "(vertices==null);",
         "(vertices!=null)==false;"
+    ],
+    "true?methodResultID.getLeft()==null&&methodResultID.getRight()==null:true;": [
+        "true?(methodResultID.getLeft()==null)&&methodResultID.getRight()==null:true;",
+        "true?methodResultID.getLeft()==null&&(methodResultID.getRight()==null):true;",
+        "true?(methodResultID.getLeft()!=null)==false&&methodResultID.getRight()==null:true;",
+        "true?methodResultID.getLeft()==null&&(methodResultID.getRight()!=null)==false:true;"
+    ],
+    "messageIds.size()<2||messageIds.size()>100;": [
+        "(messageIds.size()<2)||messageIds.size()>100;",
+        "messageIds.size()<2||(messageIds.size()>100);",
+        "(messageIds.size()>=2)==false||messageIds.size()>100;",
+        "messageIds.size()<2||(messageIds.size()<=100)==false;"
     ],
     "((guard==null)==false)&&(guard.isSatisfied())?methodResultID==true:methodResultID==false;": [
         "(((guard==null)==false)&&(guard.isSatisfied()))==false?methodResultID==false:methodResultID==true;",
@@ -1584,6 +1835,13 @@
         "(defaultTransformer==null);",
         "(defaultTransformer!=null)==false;"
     ],
+    "messageId==null||messageId.isEmpty()||emoji==null;": [
+        "(messageId==null)||messageId.isEmpty()||emoji==null;",
+        "messageId==null||(messageId.isEmpty())||emoji==null;",
+        "messageId==null||messageId.isEmpty()||(emoji==null);",
+        "(messageId!=null)==false||messageId.isEmpty()||emoji==null;",
+        "messageId==null||messageId.isEmpty()||(emoji!=null)==false;"
+    ],
     "bg==null;": [
         "(bg==null);",
         "(bg!=null)==false;"
@@ -1604,6 +1862,15 @@
     "omega>0;": [
         "(omega>0);",
         "(omega<=0)==false;"
+    ],
+    "this.getSentinels().isEmpty()||this.getHost()==null||this.getHost().equals(\"\")||this.getSocket()==null||this.getSocket().equals(\"\");": [
+        "(this.getSentinels().isEmpty())||this.getHost()==null||this.getHost().equals(\"\")||this.getSocket()==null||this.getSocket().equals(\"\");",
+        "this.getSentinels().isEmpty()||(this.getHost()==null)||this.getHost().equals(\"\")||this.getSocket()==null||this.getSocket().equals(\"\");",
+        "this.getSentinels().isEmpty()||this.getHost()==null||(this.getHost().equals(\"\"))||this.getSocket()==null||this.getSocket().equals(\"\");",
+        "this.getSentinels().isEmpty()||this.getHost()==null||this.getHost().equals(\"\")||(this.getSocket()==null)||this.getSocket().equals(\"\");",
+        "this.getSentinels().isEmpty()||this.getHost()==null||this.getHost().equals(\"\")||this.getSocket()==null||(this.getSocket().equals(\"\"));",
+        "this.getSentinels().isEmpty()||(this.getHost()!=null)==false||this.getHost().equals(\"\")||this.getSocket()==null||this.getSocket().equals(\"\");",
+        "this.getSentinels().isEmpty()||this.getHost()==null||this.getHost().equals(\"\")||(this.getSocket()!=null)==false||this.getSocket().equals(\"\");"
     ],
     "other==null;": [
         "(other==null);",
@@ -1639,6 +1906,14 @@
         "(multiset!=null)==false||predicate==null;",
         "multiset==null||(predicate!=null)==false;"
     ],
+    "observationRegistry!=null;": [
+        "(observationRegistry!=null);",
+        "(observationRegistry==null)==false;"
+    ],
+    "destFile!=null;": [
+        "(destFile!=null);",
+        "(destFile==null)==false;"
+    ],
     "in==null;": [
         "(in==null);",
         "(in!=null)==false;"
@@ -1651,8 +1926,29 @@
         "(methodName==null);",
         "(methodName!=null)==false;"
     ],
+    "tag!=null||(tag.getName().length()>=1&&tag.getName().length()<=ForumTag.MAX_NAME_LENGTH);": [
+        "(tag!=null)||(tag.getName().length()>=1&&tag.getName().length()<=ForumTag.MAX_NAME_LENGTH);",
+        "tag!=null||((tag.getName().length()>=1)&&tag.getName().length()<=ForumTag.MAX_NAME_LENGTH);",
+        "tag!=null||(tag.getName().length()>=1&&(tag.getName().length()<=ForumTag.MAX_NAME_LENGTH));",
+        "(tag==null)==false||(tag.getName().length()>=1&&tag.getName().length()<=ForumTag.MAX_NAME_LENGTH);",
+        "tag!=null||((tag.getName().length()<1)==false&&tag.getName().length()<=ForumTag.MAX_NAME_LENGTH);",
+        "tag!=null||(tag.getName().length()>=1&&(tag.getName().length()>ForumTag.MAX_NAME_LENGTH)==false);"
+    ],
     "true?methodResultID.equals(this.getTransformer()):true;": [
         "true?(methodResultID.equals(this.getTransformer())):true;"
+    ],
+    "stickers==null||stickers.isEmpty()||stickers.size()>3||stickers.stream().anyMatch(jdVar->this.getJDA().retrieveSticker(jdVar).complete().getType()==StickerType.STANDARD||(this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().isAvailable())==false||this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().getGuildIdLong()!=this.getGuild().getIdLong());": [
+        "(stickers==null)||stickers.isEmpty()||stickers.size()>3||stickers.stream().anyMatch(jdVar->this.getJDA().retrieveSticker(jdVar).complete().getType()==StickerType.STANDARD||(this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().isAvailable())==false||this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().getGuildIdLong()!=this.getGuild().getIdLong());",
+        "stickers==null||(stickers.isEmpty())||stickers.size()>3||stickers.stream().anyMatch(jdVar->this.getJDA().retrieveSticker(jdVar).complete().getType()==StickerType.STANDARD||(this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().isAvailable())==false||this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().getGuildIdLong()!=this.getGuild().getIdLong());",
+        "stickers==null||stickers.isEmpty()||(stickers.size()>3)||stickers.stream().anyMatch(jdVar->this.getJDA().retrieveSticker(jdVar).complete().getType()==StickerType.STANDARD||(this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().isAvailable())==false||this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().getGuildIdLong()!=this.getGuild().getIdLong());",
+        "stickers==null||stickers.isEmpty()||stickers.size()>3||(stickers.stream().anyMatch(jdVar->this.getJDA().retrieveSticker(jdVar).complete().getType()==StickerType.STANDARD||(this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().isAvailable())==false||this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().getGuildIdLong()!=this.getGuild().getIdLong()));",
+        "stickers==null||stickers.isEmpty()||stickers.size()>3||stickers.stream().anyMatch(jdVar->(this.getJDA().retrieveSticker(jdVar).complete().getType()==StickerType.STANDARD)||(this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().isAvailable())==false||this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().getGuildIdLong()!=this.getGuild().getIdLong());",
+        "stickers==null||stickers.isEmpty()||stickers.size()>3||stickers.stream().anyMatch(jdVar->this.getJDA().retrieveSticker(jdVar).complete().getType()==StickerType.STANDARD||((this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().isAvailable()))==false||this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().getGuildIdLong()!=this.getGuild().getIdLong());",
+        "stickers==null||stickers.isEmpty()||stickers.size()>3||stickers.stream().anyMatch(jdVar->this.getJDA().retrieveSticker(jdVar).complete().getType()==StickerType.STANDARD||(this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().isAvailable())==false||(this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().getGuildIdLong()!=this.getGuild().getIdLong()));",
+        "stickers==null||stickers.isEmpty()||stickers.size()>3||stickers.stream().anyMatch(jdVar->this.getJDA().retrieveSticker(jdVar).complete().getType()==StickerType.STANDARD||(this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().isAvailable())==false||(this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().getGuildIdLong()==this.getGuild().getIdLong())==false);",
+        "(stickers!=null)==false||stickers.isEmpty()||stickers.size()>3||stickers.stream().anyMatch(jdVar->this.getJDA().retrieveSticker(jdVar).complete().getType()==StickerType.STANDARD||(this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().isAvailable())==false||this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().getGuildIdLong()!=this.getGuild().getIdLong());",
+        "stickers==null||stickers.isEmpty()||stickers.size()>3||stickers.stream().anyMatch(jdVar->(this.getJDA().retrieveSticker(jdVar).complete().getType()!=StickerType.STANDARD)==false||(this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().isAvailable())==false||this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().getGuildIdLong()!=this.getGuild().getIdLong());",
+        "stickers==null||stickers.isEmpty()||(stickers.size()<=3)==false||stickers.stream().anyMatch(jdVar->this.getJDA().retrieveSticker(jdVar).complete().getType()==StickerType.STANDARD||(this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().isAvailable())==false||this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().getGuildIdLong()!=this.getGuild().getIdLong());"
     ],
     "(multiset==null)==false;": [
         "((multiset==null))==false;",
@@ -1685,6 +1981,16 @@
         "(collection.isEmpty())||collection.size()>1;",
         "collection.isEmpty()||(collection.size()>1);",
         "collection.isEmpty()||(collection.size()<=1)==false;"
+    ],
+    "timeout!=null&&timeout.toNanos()>=0;": [
+        "(timeout!=null)&&timeout.toNanos()>=0;",
+        "timeout!=null&&(timeout.toNanos()>=0);",
+        "(timeout==null)==false&&timeout.toNanos()>=0;",
+        "timeout!=null&&(timeout.toNanos()<0)==false;"
+    ],
+    "name==null;": [
+        "(name==null);",
+        "(name!=null)==false;"
     ],
     "(InternetDomainName.isValid(domain))==false;": [
         "((InternetDomainName.isValid(domain)))==false;"
@@ -1842,6 +2148,15 @@
         "((map==null)==false)&&(map.isEmpty())?(methodResultID!=true)==false:methodResultID==false;",
         "((map==null)==false)&&(map.isEmpty())?methodResultID==true:(methodResultID!=false)==false;"
     ],
+    "path!=null;": [
+        "(path!=null);",
+        "(path==null)==false;"
+    ],
+    "libraryName!=null&&libraryName.contains(\"\");": [
+        "(libraryName!=null)&&libraryName.contains(\"\");",
+        "libraryName!=null&&(libraryName.contains(\"\"));",
+        "(libraryName==null)==false&&libraryName.contains(\"\");"
+    ],
     "s==null;": [
         "(s==null);",
         "(s!=null)==false;"
@@ -1899,6 +2214,10 @@
         "stateTransition==null||(control!=null)==false||processNoise==null;",
         "stateTransition==null||control==null||(processNoise!=null)==false;"
     ],
+    "credentialsProvider!=null;": [
+        "(credentialsProvider!=null);",
+        "(credentialsProvider==null)==false;"
+    ],
     "numberOfTrials<0||numberOfSuccesses<0;": [
         "(numberOfTrials<0)||numberOfSuccesses<0;",
         "numberOfTrials<0||(numberOfSuccesses<0);",
@@ -1912,6 +2231,10 @@
         "(x.length!=0)==false||y.length==0||f.length==0;",
         "x.length==0||(y.length!=0)==false||f.length==0;",
         "x.length==0||y.length==0||(f.length!=0)==false;"
+    ],
+    "coordinates!=null;": [
+        "(coordinates!=null);",
+        "(coordinates==null)==false;"
     ],
     "defaultValue==null;": [
         "(defaultValue==null);",
@@ -1940,6 +2263,16 @@
     ],
     "true?methodResultID.equals(CollectionUtils.EMPTY_COLLECTION):true;": [
         "true?(methodResultID.equals(CollectionUtils.EMPTY_COLLECTION)):true;"
+    ],
+    "channels==null||channels.size()==0||channels.stream().anyMatch(jdVar->(jdVar.getGuild().equals(guild))==false||jdVar.getType().getSortBucket()!=bucket);": [
+        "(channels==null)||channels.size()==0||channels.stream().anyMatch(jdVar->(jdVar.getGuild().equals(guild))==false||jdVar.getType().getSortBucket()!=bucket);",
+        "channels==null||(channels.size()==0)||channels.stream().anyMatch(jdVar->(jdVar.getGuild().equals(guild))==false||jdVar.getType().getSortBucket()!=bucket);",
+        "channels==null||channels.size()==0||(channels.stream().anyMatch(jdVar->(jdVar.getGuild().equals(guild))==false||jdVar.getType().getSortBucket()!=bucket));",
+        "channels==null||channels.size()==0||channels.stream().anyMatch(jdVar->((jdVar.getGuild().equals(guild)))==false||jdVar.getType().getSortBucket()!=bucket);",
+        "channels==null||channels.size()==0||channels.stream().anyMatch(jdVar->(jdVar.getGuild().equals(guild))==false||(jdVar.getType().getSortBucket()!=bucket));",
+        "channels==null||channels.size()==0||channels.stream().anyMatch(jdVar->(jdVar.getGuild().equals(guild))==false||(jdVar.getType().getSortBucket()==bucket)==false);",
+        "(channels!=null)==false||channels.size()==0||channels.stream().anyMatch(jdVar->(jdVar.getGuild().equals(guild))==false||jdVar.getType().getSortBucket()!=bucket);",
+        "channels==null||(channels.size()!=0)==false||channels.stream().anyMatch(jdVar->(jdVar.getGuild().equals(guild))==false||jdVar.getType().getSortBucket()!=bucket);"
     ],
     "generator==null;": [
         "(generator==null);",
@@ -1978,6 +2311,12 @@
         "(array==null)==false&&array.length==0;",
         "array!=null&&(array!=null)==false;"
     ],
+    "rule==null||limit<0;": [
+        "(rule==null)||limit<0;",
+        "rule==null||(limit<0);",
+        "(rule!=null)==false||limit<0;",
+        "rule==null||(limit>=0)==false;"
+    ],
     "collection==null||retain==null||equator==null;": [
         "(collection==null)||retain==null||equator==null;",
         "collection==null||(retain==null)||equator==null;",
@@ -2015,6 +2354,10 @@
         "true?methodResultID.isEmpty():true;",
         "true?(methodResultID.isEmpty()!=true)==false:true;"
     ],
+    "timeout>=-1;": [
+        "(timeout>=-1);",
+        "(timeout<-1)==false;"
+    ],
     "length>0;": [
         "(length>0);",
         "(length<=0)==false;"
@@ -2024,6 +2367,10 @@
         "sourceVertex==null||(targetVertex==null);",
         "(sourceVertex!=null)==false||targetVertex==null;",
         "sourceVertex==null||(targetVertex!=null)==false;"
+    ],
+    "emoji!=null;": [
+        "(emoji!=null);",
+        "(emoji==null)==false;"
     ],
     "values.length==0;": [
         "(values.length==0);",
@@ -2046,12 +2393,21 @@
     "true?methodResultID.equals(value):true;": [
         "true?(methodResultID.equals(value)):true;"
     ],
+    "messageId!=null;": [
+        "(messageId!=null);",
+        "(messageId==null)==false;"
+    ],
     "y.getDimension()!=this.getDimension();": [
         "(y.getDimension()!=this.getDimension());",
         "(y.getDimension()==this.getDimension())==false;"
     ],
     "predicatesAndClosures.containsValue(null);": [
         "(predicatesAndClosures.containsValue(null));"
+    ],
+    "host!=null&&(host.equals(\"\"))==false;": [
+        "(host!=null)&&(host.equals(\"\"))==false;",
+        "host!=null&&((host.equals(\"\")))==false;",
+        "(host==null)==false&&(host.equals(\"\"))==false;"
     ],
     "iteratorChain==null||((iteratorChain==null)==false)&&(iteratorChain.contains(null));": [
         "(iteratorChain==null)||((iteratorChain==null)==false)&&(iteratorChain.contains(null));",
@@ -2102,6 +2458,10 @@
         "(removeAllowed==true);",
         "removeAllowed;",
         "(removeAllowed!=true)==false;"
+    ],
+    "fromArray!=null;": [
+        "(fromArray!=null);",
+        "(fromArray==null)==false;"
     ],
     "value1==null;": [
         "(value1==null);",
@@ -2156,6 +2516,10 @@
     "true?methodResultID==x>>>y:true;": [
         "true?(methodResultID==x>>>y):true;",
         "true?(methodResultID!=x>>>y)==false:true;"
+    ],
+    "true?methodResultID>=0:true;": [
+        "true?(methodResultID>=0):true;",
+        "true?(methodResultID<0)==false:true;"
     ],
     "observed.length<2;": [
         "(observed.length<2);",
@@ -2352,6 +2716,13 @@
     "(MatrixUtils.isSymmetric(matrix,eps))==false;": [
         "((MatrixUtils.isSymmetric(matrix,eps)))==false;"
     ],
+    "channel==null||role==null||(channel.getGuild().equals(role.getGuild()))==false;": [
+        "(channel==null)||role==null||(channel.getGuild().equals(role.getGuild()))==false;",
+        "channel==null||(role==null)||(channel.getGuild().equals(role.getGuild()))==false;",
+        "channel==null||role==null||((channel.getGuild().equals(role.getGuild())))==false;",
+        "(channel!=null)==false||role==null||(channel.getGuild().equals(role.getGuild()))==false;",
+        "channel==null||(role!=null)==false||(channel.getGuild().equals(role.getGuild()))==false;"
+    ],
     "replay==true;": [
         "(replay==true);",
         "replay;",
@@ -2398,6 +2769,13 @@
         "(newValue==null);",
         "(newValue!=null)==false;"
     ],
+    "(destFile.getURL().schemeEquals(this.getURL()))==false||(destFile.getTopAncestor().getClass().equals(this.getTopAncestor().getClass()))==false||(allowDifferentHosts==false&&(destFile.getURL().hostEquals(this.getURL()))==false);": [
+        "((destFile.getURL().schemeEquals(this.getURL())))==false||(destFile.getTopAncestor().getClass().equals(this.getTopAncestor().getClass()))==false||(allowDifferentHosts==false&&(destFile.getURL().hostEquals(this.getURL()))==false);",
+        "(destFile.getURL().schemeEquals(this.getURL()))==false||((destFile.getTopAncestor().getClass().equals(this.getTopAncestor().getClass())))==false||(allowDifferentHosts==false&&(destFile.getURL().hostEquals(this.getURL()))==false);",
+        "(destFile.getURL().schemeEquals(this.getURL()))==false||(destFile.getTopAncestor().getClass().equals(this.getTopAncestor().getClass()))==false||((allowDifferentHosts==false)&&(destFile.getURL().hostEquals(this.getURL()))==false);",
+        "(destFile.getURL().schemeEquals(this.getURL()))==false||(destFile.getTopAncestor().getClass().equals(this.getTopAncestor().getClass()))==false||(allowDifferentHosts==false&&((destFile.getURL().hostEquals(this.getURL())))==false);",
+        "(destFile.getURL().schemeEquals(this.getURL()))==false||(destFile.getTopAncestor().getClass().equals(this.getTopAncestor().getClass()))==false||((allowDifferentHosts!=false)==false&&(destFile.getURL().hostEquals(this.getURL()))==false);"
+    ],
     "(iteratorChain==null)==false;": [
         "((iteratorChain==null))==false;",
         "((iteratorChain!=null)==false)==false;"
@@ -2422,6 +2800,10 @@
     "valuePredicate==null;": [
         "(valuePredicate==null);",
         "(valuePredicate!=null)==false;"
+    ],
+    "user!=null;": [
+        "(user!=null);",
+        "(user==null)==false;"
     ],
     "xval.length==0||yval.length==0;": [
         "(xval.length==0)||yval.length==0;",
@@ -2458,6 +2840,11 @@
         "(df<=0);",
         "(df>0)==false;"
     ],
+    "messages!=null&&(messages.isEmpty())==false;": [
+        "(messages!=null)&&(messages.isEmpty())==false;",
+        "messages!=null&&((messages.isEmpty()))==false;",
+        "(messages==null)==false&&(messages.isEmpty())==false;"
+    ],
     "(d==null)==false;": [
         "((d==null))==false;",
         "((d!=null)==false)==false;"
@@ -2486,6 +2873,11 @@
     "iterator==null;": [
         "(iterator==null);",
         "(iterator!=null)==false;"
+    ],
+    "messageId==null||messageId.isEmpty();": [
+        "(messageId==null)||messageId.isEmpty();",
+        "messageId==null||(messageId.isEmpty());",
+        "(messageId!=null)==false||messageId.isEmpty();"
     ],
     "nans==1;": [
         "(nans==1);",
@@ -2533,6 +2925,23 @@
         "(min>=max);",
         "(min<max)==false;"
     ],
+    "sourceFile!=null?methodResultID==FileCollisionChecker.NO_COLLISION||methodResultID==FileCollisionChecker.DESTINATION_FILE_ALREADY_EXISTS||methodResultID==FileCollisionChecker.SAME_SOURCE_AND_DESTINATION||methodResultID==FileCollisionChecker.SOURCE_PARENT_OF_DESTINATION:methodResultID==FileCollisionChecker.NO_COLLISION||methodResultID==FileCollisionChecker.DESTINATION_FILE_ALREADY_EXISTS;": [
+        "(sourceFile!=null)==false?methodResultID==FileCollisionChecker.NO_COLLISION||methodResultID==FileCollisionChecker.DESTINATION_FILE_ALREADY_EXISTS:methodResultID==FileCollisionChecker.NO_COLLISION||methodResultID==FileCollisionChecker.DESTINATION_FILE_ALREADY_EXISTS||methodResultID==FileCollisionChecker.SAME_SOURCE_AND_DESTINATION||methodResultID==FileCollisionChecker.SOURCE_PARENT_OF_DESTINATION;",
+        "(sourceFile!=null)?methodResultID==FileCollisionChecker.NO_COLLISION||methodResultID==FileCollisionChecker.DESTINATION_FILE_ALREADY_EXISTS||methodResultID==FileCollisionChecker.SAME_SOURCE_AND_DESTINATION||methodResultID==FileCollisionChecker.SOURCE_PARENT_OF_DESTINATION:methodResultID==FileCollisionChecker.NO_COLLISION||methodResultID==FileCollisionChecker.DESTINATION_FILE_ALREADY_EXISTS;",
+        "sourceFile!=null?(methodResultID==FileCollisionChecker.NO_COLLISION)||methodResultID==FileCollisionChecker.DESTINATION_FILE_ALREADY_EXISTS||methodResultID==FileCollisionChecker.SAME_SOURCE_AND_DESTINATION||methodResultID==FileCollisionChecker.SOURCE_PARENT_OF_DESTINATION:methodResultID==FileCollisionChecker.NO_COLLISION||methodResultID==FileCollisionChecker.DESTINATION_FILE_ALREADY_EXISTS;",
+        "sourceFile!=null?methodResultID==FileCollisionChecker.NO_COLLISION||(methodResultID==FileCollisionChecker.DESTINATION_FILE_ALREADY_EXISTS)||methodResultID==FileCollisionChecker.SAME_SOURCE_AND_DESTINATION||methodResultID==FileCollisionChecker.SOURCE_PARENT_OF_DESTINATION:methodResultID==FileCollisionChecker.NO_COLLISION||methodResultID==FileCollisionChecker.DESTINATION_FILE_ALREADY_EXISTS;",
+        "sourceFile!=null?methodResultID==FileCollisionChecker.NO_COLLISION||methodResultID==FileCollisionChecker.DESTINATION_FILE_ALREADY_EXISTS||(methodResultID==FileCollisionChecker.SAME_SOURCE_AND_DESTINATION)||methodResultID==FileCollisionChecker.SOURCE_PARENT_OF_DESTINATION:methodResultID==FileCollisionChecker.NO_COLLISION||methodResultID==FileCollisionChecker.DESTINATION_FILE_ALREADY_EXISTS;",
+        "sourceFile!=null?methodResultID==FileCollisionChecker.NO_COLLISION||methodResultID==FileCollisionChecker.DESTINATION_FILE_ALREADY_EXISTS||methodResultID==FileCollisionChecker.SAME_SOURCE_AND_DESTINATION||(methodResultID==FileCollisionChecker.SOURCE_PARENT_OF_DESTINATION):methodResultID==FileCollisionChecker.NO_COLLISION||methodResultID==FileCollisionChecker.DESTINATION_FILE_ALREADY_EXISTS;",
+        "sourceFile!=null?methodResultID==FileCollisionChecker.NO_COLLISION||methodResultID==FileCollisionChecker.DESTINATION_FILE_ALREADY_EXISTS||methodResultID==FileCollisionChecker.SAME_SOURCE_AND_DESTINATION||methodResultID==FileCollisionChecker.SOURCE_PARENT_OF_DESTINATION:(methodResultID==FileCollisionChecker.NO_COLLISION)||methodResultID==FileCollisionChecker.DESTINATION_FILE_ALREADY_EXISTS;",
+        "sourceFile!=null?methodResultID==FileCollisionChecker.NO_COLLISION||methodResultID==FileCollisionChecker.DESTINATION_FILE_ALREADY_EXISTS||methodResultID==FileCollisionChecker.SAME_SOURCE_AND_DESTINATION||methodResultID==FileCollisionChecker.SOURCE_PARENT_OF_DESTINATION:methodResultID==FileCollisionChecker.NO_COLLISION||(methodResultID==FileCollisionChecker.DESTINATION_FILE_ALREADY_EXISTS);",
+        "(sourceFile==null)==false?methodResultID==FileCollisionChecker.NO_COLLISION||methodResultID==FileCollisionChecker.DESTINATION_FILE_ALREADY_EXISTS||methodResultID==FileCollisionChecker.SAME_SOURCE_AND_DESTINATION||methodResultID==FileCollisionChecker.SOURCE_PARENT_OF_DESTINATION:methodResultID==FileCollisionChecker.NO_COLLISION||methodResultID==FileCollisionChecker.DESTINATION_FILE_ALREADY_EXISTS;",
+        "sourceFile!=null?(methodResultID!=FileCollisionChecker.NO_COLLISION)==false||methodResultID==FileCollisionChecker.DESTINATION_FILE_ALREADY_EXISTS||methodResultID==FileCollisionChecker.SAME_SOURCE_AND_DESTINATION||methodResultID==FileCollisionChecker.SOURCE_PARENT_OF_DESTINATION:methodResultID==FileCollisionChecker.NO_COLLISION||methodResultID==FileCollisionChecker.DESTINATION_FILE_ALREADY_EXISTS;",
+        "sourceFile!=null?methodResultID==FileCollisionChecker.NO_COLLISION||(methodResultID!=FileCollisionChecker.DESTINATION_FILE_ALREADY_EXISTS)==false||methodResultID==FileCollisionChecker.SAME_SOURCE_AND_DESTINATION||methodResultID==FileCollisionChecker.SOURCE_PARENT_OF_DESTINATION:methodResultID==FileCollisionChecker.NO_COLLISION||methodResultID==FileCollisionChecker.DESTINATION_FILE_ALREADY_EXISTS;",
+        "sourceFile!=null?methodResultID==FileCollisionChecker.NO_COLLISION||methodResultID==FileCollisionChecker.DESTINATION_FILE_ALREADY_EXISTS||(methodResultID!=FileCollisionChecker.SAME_SOURCE_AND_DESTINATION)==false||methodResultID==FileCollisionChecker.SOURCE_PARENT_OF_DESTINATION:methodResultID==FileCollisionChecker.NO_COLLISION||methodResultID==FileCollisionChecker.DESTINATION_FILE_ALREADY_EXISTS;",
+        "sourceFile!=null?methodResultID==FileCollisionChecker.NO_COLLISION||methodResultID==FileCollisionChecker.DESTINATION_FILE_ALREADY_EXISTS||methodResultID==FileCollisionChecker.SAME_SOURCE_AND_DESTINATION||(methodResultID!=FileCollisionChecker.SOURCE_PARENT_OF_DESTINATION)==false:methodResultID==FileCollisionChecker.NO_COLLISION||methodResultID==FileCollisionChecker.DESTINATION_FILE_ALREADY_EXISTS;",
+        "sourceFile!=null?methodResultID==FileCollisionChecker.NO_COLLISION||methodResultID==FileCollisionChecker.DESTINATION_FILE_ALREADY_EXISTS||methodResultID==FileCollisionChecker.SAME_SOURCE_AND_DESTINATION||methodResultID==FileCollisionChecker.SOURCE_PARENT_OF_DESTINATION:(methodResultID!=FileCollisionChecker.NO_COLLISION)==false||methodResultID==FileCollisionChecker.DESTINATION_FILE_ALREADY_EXISTS;",
+        "sourceFile!=null?methodResultID==FileCollisionChecker.NO_COLLISION||methodResultID==FileCollisionChecker.DESTINATION_FILE_ALREADY_EXISTS||methodResultID==FileCollisionChecker.SAME_SOURCE_AND_DESTINATION||methodResultID==FileCollisionChecker.SOURCE_PARENT_OF_DESTINATION:methodResultID==FileCollisionChecker.NO_COLLISION||(methodResultID!=FileCollisionChecker.DESTINATION_FILE_ALREADY_EXISTS)==false;"
+    ],
     "closure==null;": [
         "(closure==null);",
         "(closure!=null)==false;"
@@ -2552,9 +2961,17 @@
         "((supplier==null))==false;",
         "((supplier!=null)==false)==false;"
     ],
+    "true?methodResultID.length()<=ClassUtils.getQualifiedName(clazz).length():true;": [
+        "true?(methodResultID.length()<=ClassUtils.getQualifiedName(clazz).length()):true;",
+        "true?(methodResultID.length()>ClassUtils.getQualifiedName(clazz).length())==false:true;"
+    ],
     "expression==false;": [
         "(expression==false);",
         "(expression!=false)==false;"
+    ],
+    "expression!=null;": [
+        "(expression!=null);",
+        "(expression==null)==false;"
     ],
     "this.containsValue(value)?methodResultID==null:true;": [
         "(this.containsValue(value))?methodResultID==null:true;",
@@ -2570,6 +2987,13 @@
         "xval==null||(yval==null);",
         "(xval!=null)==false||yval==null;",
         "xval==null||(yval!=null)==false;"
+    ],
+    "issuer==null||emoji==null||(issuer.getGuild().equals(emoji.getGuild()))==false;": [
+        "(issuer==null)||emoji==null||(issuer.getGuild().equals(emoji.getGuild()))==false;",
+        "issuer==null||(emoji==null)||(issuer.getGuild().equals(emoji.getGuild()))==false;",
+        "issuer==null||emoji==null||((issuer.getGuild().equals(emoji.getGuild())))==false;",
+        "(issuer!=null)==false||emoji==null||(issuer.getGuild().equals(emoji.getGuild()))==false;",
+        "issuer==null||(emoji!=null)==false||(issuer.getGuild().equals(emoji.getGuild()))==false;"
     ],
     "true?(methodResultID==null)==false:true;": [
         "true?((methodResultID==null))==false:true;",
@@ -2623,6 +3047,10 @@
         "(value>=0)==false||value>255;",
         "value<0||(value<=255)==false;"
     ],
+    "root!=null;": [
+        "(root!=null);",
+        "(root==null)==false;"
+    ],
     "iterators==null||((iterators==null)==false)&&(iterators.contains(null));": [
         "(iterators==null)||((iterators==null)==false)&&(iterators.contains(null));",
         "iterators==null||(((iterators==null))==false)&&(iterators.contains(null));",
@@ -2675,6 +3103,16 @@
     "newEstimationType==null;": [
         "(newEstimationType==null);",
         "(newEstimationType!=null)==false;"
+    ],
+    "channels!=null&&channels.size()>0&&channels.stream().allMatch(jdVar->jdVar.getGuild().equals(guild)&&jdVar.getType().getSortBucket()==bucket);": [
+        "(channels!=null)&&channels.size()>0&&channels.stream().allMatch(jdVar->jdVar.getGuild().equals(guild)&&jdVar.getType().getSortBucket()==bucket);",
+        "channels!=null&&(channels.size()>0)&&channels.stream().allMatch(jdVar->jdVar.getGuild().equals(guild)&&jdVar.getType().getSortBucket()==bucket);",
+        "channels!=null&&channels.size()>0&&(channels.stream().allMatch(jdVar->jdVar.getGuild().equals(guild)&&jdVar.getType().getSortBucket()==bucket));",
+        "channels!=null&&channels.size()>0&&channels.stream().allMatch(jdVar->(jdVar.getGuild().equals(guild))&&jdVar.getType().getSortBucket()==bucket);",
+        "channels!=null&&channels.size()>0&&channels.stream().allMatch(jdVar->jdVar.getGuild().equals(guild)&&(jdVar.getType().getSortBucket()==bucket));",
+        "(channels==null)==false&&channels.size()>0&&channels.stream().allMatch(jdVar->jdVar.getGuild().equals(guild)&&jdVar.getType().getSortBucket()==bucket);",
+        "channels!=null&&channels.size()>0&&channels.stream().allMatch(jdVar->jdVar.getGuild().equals(guild)&&(jdVar.getType().getSortBucket()!=bucket)==false);",
+        "channels!=null&&(channels.size()<=0)==false&&channels.stream().allMatch(jdVar->jdVar.getGuild().equals(guild)&&jdVar.getType().getSortBucket()==bucket);"
     ],
     "this.isEmpty();": [
         "(this.isEmpty());"
@@ -2742,6 +3180,15 @@
         "((objectsAndClosures==null)==false)&&((objectsAndClosures.isEmpty()));",
         "(((objectsAndClosures!=null)==false)==false)&&(objectsAndClosures.isEmpty());"
     ],
+    "this.getName().startsWith(\".\")?methodResultID==true:methodResultID==false;": [
+        "(this.getName().startsWith(\".\"))==false?methodResultID==false:methodResultID==true;",
+        "(this.getName().startsWith(\".\"))?methodResultID==true:methodResultID==false;",
+        "this.getName().startsWith(\".\")?(methodResultID==true):methodResultID==false;",
+        "this.getName().startsWith(\".\")?methodResultID==true:(methodResultID==false);",
+        "this.getName().startsWith(\".\")?methodResultID:methodResultID==false;",
+        "this.getName().startsWith(\".\")?(methodResultID!=true)==false:methodResultID==false;",
+        "this.getName().startsWith(\".\")?methodResultID==true:(methodResultID!=false)==false;"
+    ],
     "inputCollection==null;": [
         "(inputCollection==null);",
         "(inputCollection!=null)==false;"
@@ -2762,6 +3209,10 @@
         "Arrays.stream(a).allMatch(jdVar->jdVar>=0&&(jdVar<=arange));",
         "Arrays.stream(a).allMatch(jdVar->(jdVar<0)==false&&jdVar<=arange);",
         "Arrays.stream(a).allMatch(jdVar->jdVar>=0&&(jdVar>arange)==false);"
+    ],
+    "socket!=null;": [
+        "(socket!=null);",
+        "(socket==null)==false;"
     ],
     "(factory==null)==false;": [
         "((factory==null))==false;",
@@ -2784,6 +3235,19 @@
         "numberOfElements<=0||(exponent<=0);",
         "(numberOfElements>0)==false||exponent<=0;",
         "numberOfElements<=0||(exponent>0)==false;"
+    ],
+    "libraryVersion==null||(libraryVersion.contains(\"\"))==false;": [
+        "(libraryVersion==null)||(libraryVersion.contains(\"\"))==false;",
+        "libraryVersion==null||((libraryVersion.contains(\"\")))==false;",
+        "(libraryVersion!=null)==false||(libraryVersion.contains(\"\"))==false;"
+    ],
+    "tag==null||tag.getName().length()<1||tag.getName().length()>ForumTag.MAX_NAME_LENGTH;": [
+        "(tag==null)||tag.getName().length()<1||tag.getName().length()>ForumTag.MAX_NAME_LENGTH;",
+        "tag==null||(tag.getName().length()<1)||tag.getName().length()>ForumTag.MAX_NAME_LENGTH;",
+        "tag==null||tag.getName().length()<1||(tag.getName().length()>ForumTag.MAX_NAME_LENGTH);",
+        "(tag!=null)==false||tag.getName().length()<1||tag.getName().length()>ForumTag.MAX_NAME_LENGTH;",
+        "tag==null||(tag.getName().length()>=1)==false||tag.getName().length()>ForumTag.MAX_NAME_LENGTH;",
+        "tag==null||tag.getName().length()<1||(tag.getName().length()<=ForumTag.MAX_NAME_LENGTH)==false;"
     ],
     "multiset==null||lock==null;": [
         "(multiset==null)||lock==null;",
@@ -2824,6 +3288,11 @@
         "((pair==null))==false;",
         "((pair!=null)==false)==false;"
     ],
+    "this.isCacheEnabled()&&id>this.getLastKey();": [
+        "(this.isCacheEnabled())&&id>this.getLastKey();",
+        "this.isCacheEnabled()&&(id>this.getLastKey());",
+        "this.isCacheEnabled()&&(id<=this.getLastKey())==false;"
+    ],
     "fraction==null;": [
         "(fraction==null);",
         "(fraction!=null)==false;"
@@ -2835,6 +3304,14 @@
         "(a!=null)==false||b==null||x0==null;",
         "a==null||(b!=null)==false||x0==null;",
         "a==null||b==null||(x0!=null)==false;"
+    ],
+    "order==null||(this.getSupportedOrders().contains(order))==false;": [
+        "(order==null)||(this.getSupportedOrders().contains(order))==false;",
+        "order==null||((this.getSupportedOrders().contains(order)))==false;",
+        "(order!=null)==false||(this.getSupportedOrders().contains(order))==false;"
+    ],
+    "className.isEmpty();": [
+        "(className.isEmpty());"
     ],
     "(closures==null)==false;": [
         "((closures==null))==false;",
@@ -2852,6 +3329,12 @@
     "obj==null;": [
         "(obj==null);",
         "(obj!=null)==false;"
+    ],
+    "inputs==null||inputs.size()==0;": [
+        "(inputs==null)||inputs.size()==0;",
+        "inputs==null||(inputs.size()==0);",
+        "(inputs!=null)==false||inputs.size()==0;",
+        "inputs==null||(inputs.size()!=0)==false;"
     ],
     "upper>=lower;": [
         "(upper>=lower);",
@@ -2897,6 +3380,10 @@
         "true?(methodResultID>=lower):true;",
         "true?(methodResultID<lower)==false:true;"
     ],
+    "verifyMode!=null;": [
+        "(verifyMode!=null);",
+        "(verifyMode==null)==false;"
+    ],
     "(bytes==null)==false;": [
         "((bytes==null))==false;",
         "((bytes!=null)==false)==false;"
@@ -2904,6 +3391,9 @@
     "true?methodResultID<=v:true;": [
         "true?(methodResultID<=v):true;",
         "true?(methodResultID>v)==false:true;"
+    ],
+    "this.exists();": [
+        "(this.exists());"
     ],
     "a==null||b==null||c==null||d==null;": [
         "(a==null)||b==null||c==null||d==null;",
@@ -2927,9 +3417,18 @@
         "(maximalIterationCount>RombergIntegrator.ROMBERG_MAX_ITERATIONS_COUNT);",
         "(maximalIterationCount<=RombergIntegrator.ROMBERG_MAX_ITERATIONS_COUNT)==false;"
     ],
+    "(this.isEmpty())==false;": [
+        "((this.isEmpty()))==false;"
+    ],
     "nodeList==null;": [
         "(nodeList==null);",
         "(nodeList!=null)==false;"
+    ],
+    "inputs!=null&&inputs.size()>0;": [
+        "(inputs!=null)&&inputs.size()>0;",
+        "inputs!=null&&(inputs.size()>0);",
+        "(inputs==null)==false&&inputs.size()>0;",
+        "inputs!=null&&(inputs.size()<=0)==false;"
     ],
     "initialStepSize>0;": [
         "(initialStepSize>0);",
@@ -3016,6 +3515,9 @@
         "(list!=null)==false||factory==null;",
         "list==null||(factory!=null)==false;"
     ],
+    "this.getSentinels().isEmpty();": [
+        "(this.getSentinels().isEmpty());"
+    ],
     "minStep>0;": [
         "(minStep>0);",
         "(minStep<=0)==false;"
@@ -3041,9 +3543,18 @@
         "(v==null);",
         "(v!=null)==false;"
     ],
+    "maxDigits>=1&&maxDigits<=1024;": [
+        "(maxDigits>=1)&&maxDigits<=1024;",
+        "maxDigits>=1&&(maxDigits<=1024);",
+        "(maxDigits<1)==false&&maxDigits<=1024;",
+        "maxDigits>=1&&(maxDigits>1024)==false;"
+    ],
     "categoryData==null;": [
         "(categoryData==null);",
         "(categoryData!=null)==false;"
+    ],
+    "true?methodResultID instanceof AuditableRestAction:true;": [
+        "true?(methodResultID instanceof AuditableRestAction):true;"
     ],
     "list1==null||list2==null;": [
         "(list1==null)||list2==null;",
@@ -3080,6 +3591,10 @@
         "e>0||(e!=0)==false;",
         "(e<=0)==false||e==0;"
     ],
+    "issuer!=null;": [
+        "(issuer!=null);",
+        "(issuer==null)==false;"
+    ],
     "x0>x1;": [
         "(x0>x1);",
         "(x0<=x1)==false;"
@@ -3113,6 +3628,14 @@
         "((num==null))==false;",
         "((num!=null)==false)==false;"
     ],
+    "name!=null&&(name.length()>=1&&name.length()<=ForumTag.MAX_NAME_LENGTH);": [
+        "(name!=null)&&(name.length()>=1&&name.length()<=ForumTag.MAX_NAME_LENGTH);",
+        "name!=null&&((name.length()>=1)&&name.length()<=ForumTag.MAX_NAME_LENGTH);",
+        "name!=null&&(name.length()>=1&&(name.length()<=ForumTag.MAX_NAME_LENGTH));",
+        "(name==null)==false&&(name.length()>=1&&name.length()<=ForumTag.MAX_NAME_LENGTH);",
+        "name!=null&&((name.length()<1)==false&&name.length()<=ForumTag.MAX_NAME_LENGTH);",
+        "name!=null&&(name.length()>=1&&(name.length()>ForumTag.MAX_NAME_LENGTH)==false);"
+    ],
     "a==null?methodResultID==null:methodResultID!=null;": [
         "(a==null)==false?methodResultID!=null:methodResultID==null;",
         "(a==null)?methodResultID==null:methodResultID!=null;",
@@ -3121,6 +3644,22 @@
         "a==null?methodResultID==null:(methodResultID==null)==false;",
         "(a!=null)==false?methodResultID==null:methodResultID!=null;",
         "a==null?(methodResultID!=null)==false:methodResultID!=null;"
+    ],
+    "fromObject!=null;": [
+        "(fromObject!=null);",
+        "(fromObject==null)==false;"
+    ],
+    "messages.size()<2||messages.size()>100;": [
+        "(messages.size()<2)||messages.size()>100;",
+        "messages.size()<2||(messages.size()>100);",
+        "(messages.size()>=2)==false||messages.size()>100;",
+        "messages.size()<2||(messages.size()<=100)==false;"
+    ],
+    "(maxDigits>=1&&maxDigits<=1024)==false;": [
+        "((maxDigits>=1)&&maxDigits<=1024)==false;",
+        "(maxDigits>=1&&(maxDigits<=1024))==false;",
+        "((maxDigits<1)==false&&maxDigits<=1024)==false;",
+        "(maxDigits>=1&&(maxDigits>1024)==false)==false;"
     ],
     "a==null;": [
         "(a==null);",
@@ -3144,6 +3683,21 @@
         "map==null||(expiringPolicy==null);",
         "(map!=null)==false||expiringPolicy==null;",
         "map==null||(expiringPolicy!=null)==false;"
+    ],
+    "messages==null;": [
+        "(messages==null);",
+        "(messages!=null)==false;"
+    ],
+    "root==null||path==null||path.isEmpty()||fromObject==null||fromArray==null;": [
+        "(root==null)||path==null||path.isEmpty()||fromObject==null||fromArray==null;",
+        "root==null||(path==null)||path.isEmpty()||fromObject==null||fromArray==null;",
+        "root==null||path==null||(path.isEmpty())||fromObject==null||fromArray==null;",
+        "root==null||path==null||path.isEmpty()||(fromObject==null)||fromArray==null;",
+        "root==null||path==null||path.isEmpty()||fromObject==null||(fromArray==null);",
+        "(root!=null)==false||path==null||path.isEmpty()||fromObject==null||fromArray==null;",
+        "root==null||(path!=null)==false||path.isEmpty()||fromObject==null||fromArray==null;",
+        "root==null||path==null||path.isEmpty()||(fromObject!=null)==false||fromArray==null;",
+        "root==null||path==null||path.isEmpty()||fromObject==null||(fromArray!=null)==false;"
     ],
     "(((targetGraph==null)==false)&&(targetGraph.containsEdge(edge)))==false?methodResultID==true:methodResultID==false;": [
         "(((targetGraph==null)==false)&&(targetGraph.containsEdge(edge)))?methodResultID==false:methodResultID==true;",
@@ -3185,6 +3739,10 @@
         "forward;",
         "(forward!=true)==false;"
     ],
+    "true?methodResultID.getTimeout()>=-1:true;": [
+        "true?(methodResultID.getTimeout()>=-1):true;",
+        "true?(methodResultID.getTimeout()<-1)==false:true;"
+    ],
     "collection==null||remove==null||equator==null;": [
         "(collection==null)||remove==null||equator==null;",
         "collection==null||(remove==null)||equator==null;",
@@ -3203,6 +3761,14 @@
     "stepSize<=0;": [
         "(stepSize<=0);",
         "(stepSize>0)==false;"
+    ],
+    "this.iterator().hitEnd()?methodResultID.size()==this.spliterator().estimateSize():methodResultID.size()<this.spliterator().estimateSize();": [
+        "(this.iterator().hitEnd())==false?methodResultID.size()<this.spliterator().estimateSize():methodResultID.size()==this.spliterator().estimateSize();",
+        "(this.iterator().hitEnd())?methodResultID.size()==this.spliterator().estimateSize():methodResultID.size()<this.spliterator().estimateSize();",
+        "this.iterator().hitEnd()?(methodResultID.size()==this.spliterator().estimateSize()):methodResultID.size()<this.spliterator().estimateSize();",
+        "this.iterator().hitEnd()?methodResultID.size()==this.spliterator().estimateSize():(methodResultID.size()<this.spliterator().estimateSize());",
+        "this.iterator().hitEnd()?(methodResultID.size()!=this.spliterator().estimateSize())==false:methodResultID.size()<this.spliterator().estimateSize();",
+        "this.iterator().hitEnd()?methodResultID.size()==this.spliterator().estimateSize():(methodResultID.size()>=this.spliterator().estimateSize())==false;"
     ],
     "f==null||t==null||w==null||startPoint==null;": [
         "(f==null)||t==null||w==null||startPoint==null;",
@@ -3286,6 +3852,16 @@
         "(t==null);",
         "(t!=null)==false;"
     ],
+    "this.cacheSize()==0?methodResultID==true:methodResultID==false;": [
+        "(this.cacheSize()==0)==false?methodResultID==false:methodResultID==true;",
+        "(this.cacheSize()==0)?methodResultID==true:methodResultID==false;",
+        "this.cacheSize()==0?(methodResultID==true):methodResultID==false;",
+        "this.cacheSize()==0?methodResultID==true:(methodResultID==false);",
+        "this.cacheSize()==0?methodResultID:methodResultID==false;",
+        "(this.cacheSize()!=0)==false?methodResultID==true:methodResultID==false;",
+        "this.cacheSize()==0?(methodResultID!=true)==false:methodResultID==false;",
+        "this.cacheSize()==0?methodResultID==true:(methodResultID!=false)==false;"
+    ],
     "den.signum()==0;": [
         "(den.signum()==0);",
         "(den.signum()!=0)==false;"
@@ -3311,6 +3887,12 @@
     "(enumeration==null)==false;": [
         "((enumeration==null))==false;",
         "((enumeration!=null)==false)==false;"
+    ],
+    "messageId==null||emoji==null;": [
+        "(messageId==null)||emoji==null;",
+        "messageId==null||(emoji==null);",
+        "(messageId!=null)==false||emoji==null;",
+        "messageId==null||(emoji!=null)==false;"
     ],
     "this.containsVertex(v)==false;": [
         "(this.containsVertex(v)==false);",
@@ -3354,6 +3936,10 @@
         "(sample.length<2);",
         "(sample.length>=2)==false;"
     ],
+    "clazz.isArray()?methodResultID.endsWith(\"[]\"):true;": [
+        "(clazz.isArray())?methodResultID.endsWith(\"[]\"):true;",
+        "clazz.isArray()?(methodResultID.endsWith(\"[]\")):true;"
+    ],
     "(comp==null)==false;": [
         "((comp==null))==false;",
         "((comp!=null)==false)==false;"
@@ -3373,6 +3959,10 @@
     "keyPred==null;": [
         "(keyPred==null);",
         "(keyPred!=null)==false;"
+    ],
+    "className!=null;": [
+        "(className!=null);",
+        "(className==null)==false;"
     ],
     "steps.length==0;": [
         "(steps.length==0);",
@@ -3410,6 +4000,10 @@
     "base>0;": [
         "(base>0);",
         "(base<=0)==false;"
+    ],
+    "rule!=null;": [
+        "(rule!=null);",
+        "(rule==null)==false;"
     ],
     "obj1==null;": [
         "(obj1==null);",
@@ -3482,6 +4076,10 @@
         "((values==null))==false;",
         "((values!=null)==false)==false;"
     ],
+    "password!=null;": [
+        "(password!=null);",
+        "(password==null)==false;"
+    ],
     "(initialCapacity>0)==false;": [
         "((initialCapacity>0))==false;",
         "((initialCapacity<=0)==false)==false;"
@@ -3530,6 +4128,13 @@
     "starts==1;": [
         "(starts==1);",
         "(starts!=1)==false;"
+    ],
+    "this.getJDA().getSelfUser().isBot()&&((this.getType().isThread()&&(this.getGuild().getSelfMember().hasPermission(this,Permission.MESSAGE_SEND_IN_THREADS))==false)||((this.getType().isThread())==false&&(this.getGuild().getSelfMember().hasPermission(this,Permission.MESSAGE_SEND))==false));": [
+        "(this.getJDA().getSelfUser().isBot())&&((this.getType().isThread()&&(this.getGuild().getSelfMember().hasPermission(this,Permission.MESSAGE_SEND_IN_THREADS))==false)||((this.getType().isThread())==false&&(this.getGuild().getSelfMember().hasPermission(this,Permission.MESSAGE_SEND))==false));",
+        "this.getJDA().getSelfUser().isBot()&&(((this.getType().isThread())&&(this.getGuild().getSelfMember().hasPermission(this,Permission.MESSAGE_SEND_IN_THREADS))==false)||((this.getType().isThread())==false&&(this.getGuild().getSelfMember().hasPermission(this,Permission.MESSAGE_SEND))==false));",
+        "this.getJDA().getSelfUser().isBot()&&((this.getType().isThread()&&((this.getGuild().getSelfMember().hasPermission(this,Permission.MESSAGE_SEND_IN_THREADS)))==false)||((this.getType().isThread())==false&&(this.getGuild().getSelfMember().hasPermission(this,Permission.MESSAGE_SEND))==false));",
+        "this.getJDA().getSelfUser().isBot()&&((this.getType().isThread()&&(this.getGuild().getSelfMember().hasPermission(this,Permission.MESSAGE_SEND_IN_THREADS))==false)||(((this.getType().isThread()))==false&&(this.getGuild().getSelfMember().hasPermission(this,Permission.MESSAGE_SEND))==false));",
+        "this.getJDA().getSelfUser().isBot()&&((this.getType().isThread()&&(this.getGuild().getSelfMember().hasPermission(this,Permission.MESSAGE_SEND_IN_THREADS))==false)||((this.getType().isThread())==false&&((this.getGuild().getSelfMember().hasPermission(this,Permission.MESSAGE_SEND)))==false));"
     ],
     "a==null||m==null||b==null||x0==null;": [
         "(a==null)||m==null||b==null||x0==null;",
@@ -3672,6 +4277,10 @@
         "(coll!=null)==false||transformer==null;",
         "coll==null||(transformer!=null)==false;"
     ],
+    "member==null;": [
+        "(member==null);",
+        "(member!=null)==false;"
+    ],
     "binCount<=0;": [
         "(binCount<=0);",
         "(binCount>0)==false;"
@@ -3727,6 +4336,20 @@
         "true?(methodResultID==x):true;",
         "true?(methodResultID!=x)==false:true;"
     ],
+    "issuer==null||target==null||(issuer.getGuild().equals(target.getGuild()))==false;": [
+        "(issuer==null)||target==null||(issuer.getGuild().equals(target.getGuild()))==false;",
+        "issuer==null||(target==null)||(issuer.getGuild().equals(target.getGuild()))==false;",
+        "issuer==null||target==null||((issuer.getGuild().equals(target.getGuild())))==false;",
+        "(issuer!=null)==false||target==null||(issuer.getGuild().equals(target.getGuild()))==false;",
+        "issuer==null||(target!=null)==false||(issuer.getGuild().equals(target.getGuild()))==false;"
+    ],
+    "optional.isPresent()==false||(optional.isPresent()&&coordinates!=null);": [
+        "(optional.isPresent()==false)||(optional.isPresent()&&coordinates!=null);",
+        "optional.isPresent()==false||((optional.isPresent())&&coordinates!=null);",
+        "optional.isPresent()==false||(optional.isPresent()&&(coordinates!=null));",
+        "optional.isPresent()==false||(optional.isPresent()&&(coordinates==null)==false);",
+        "(optional.isPresent()!=false)==false||(optional.isPresent()&&coordinates!=null);"
+    ],
     "coll==null;": [
         "(coll==null);",
         "(coll!=null)==false;"
@@ -3748,6 +4371,13 @@
     "divisor==0;": [
         "(divisor==0);",
         "(divisor!=0)==false;"
+    ],
+    "this.exists()==false||(this.equalsCanonical(destFile)==false&&this.isParentOf(destFile));": [
+        "(this.exists()==false)||(this.equalsCanonical(destFile)==false&&this.isParentOf(destFile));",
+        "this.exists()==false||((this.equalsCanonical(destFile)==false)&&this.isParentOf(destFile));",
+        "this.exists()==false||(this.equalsCanonical(destFile)==false&&(this.isParentOf(destFile)));",
+        "(this.exists()!=false)==false||(this.equalsCanonical(destFile)==false&&this.isParentOf(destFile));",
+        "this.exists()==false||((this.equalsCanonical(destFile)!=false)==false&&this.isParentOf(destFile));"
     ],
     "sigma<=0;": [
         "(sigma<=0);",
@@ -3776,9 +4406,21 @@
         "(coefficients.length!=1)==false?methodResultID==null:true;",
         "coefficients.length==1?(methodResultID!=null)==false:true;"
     ],
+    "member==null||permissions==null;": [
+        "(member==null)||permissions==null;",
+        "member==null||(permissions==null);",
+        "(member!=null)==false||permissions==null;",
+        "member==null||(permissions!=null)==false;"
+    ],
     "(this.getValuesFileURL()!=null)==false;": [
         "((this.getValuesFileURL()!=null))==false;",
         "((this.getValuesFileURL()==null)==false)==false;"
+    ],
+    "uri!=null&&uri.getScheme()!=null;": [
+        "(uri!=null)&&uri.getScheme()!=null;",
+        "uri!=null&&(uri.getScheme()!=null);",
+        "(uri==null)==false&&uri.getScheme()!=null;",
+        "uri!=null&&(uri.getScheme()==null)==false;"
     ],
     "offset<0||max<0;": [
         "(offset<0)||max<0;",
@@ -3790,6 +4432,10 @@
         "(i>this.getNumElements());",
         "(i<=this.getNumElements())==false;"
     ],
+    "value!=null;": [
+        "(value!=null);",
+        "(value==null)==false;"
+    ],
     "max<=0;": [
         "(max<=0);",
         "(max>0)==false;"
@@ -3797,6 +4443,10 @@
     "offset<0;": [
         "(offset<0);",
         "(offset>=0)==false;"
+    ],
+    "convention!=null;": [
+        "(convention!=null);",
+        "(convention==null)==false;"
     ],
     "(element==null)||(count==0);": [
         "((element==null))||(count==0);",
@@ -3819,6 +4469,9 @@
         "predicate1==null||(predicate2==null);",
         "(predicate1!=null)==false||predicate2==null;",
         "predicate1==null||(predicate2!=null)==false;"
+    ],
+    "true?methodResultID instanceof ModificationDateBasedMonitoredFile:true;": [
+        "true?(methodResultID instanceof ModificationDateBasedMonitoredFile):true;"
     ],
     "values!=null&&values.length==0;": [
         "(values!=null)&&values.length==0;",
@@ -3863,6 +4516,17 @@
     ],
     "true?methodResultID.equals(checker):true;": [
         "true?(methodResultID.equals(checker)):true;"
+    ],
+    "true?methodResultID.length()>1&&(methodResultID.startsWith(\"l\")||methodResultID.startsWith(\"d\")||methodResultID.startsWith(\"-\"))&&(methodResultID.endsWith(\"r\")||methodResultID.endsWith(\"w\")||methodResultID.endsWith(\"x\")||methodResultID.endsWith(\"-\")):true;": [
+        "true?(methodResultID.length()>1)&&(methodResultID.startsWith(\"l\")||methodResultID.startsWith(\"d\")||methodResultID.startsWith(\"-\"))&&(methodResultID.endsWith(\"r\")||methodResultID.endsWith(\"w\")||methodResultID.endsWith(\"x\")||methodResultID.endsWith(\"-\")):true;",
+        "true?methodResultID.length()>1&&((methodResultID.startsWith(\"l\"))||methodResultID.startsWith(\"d\")||methodResultID.startsWith(\"-\"))&&(methodResultID.endsWith(\"r\")||methodResultID.endsWith(\"w\")||methodResultID.endsWith(\"x\")||methodResultID.endsWith(\"-\")):true;",
+        "true?methodResultID.length()>1&&(methodResultID.startsWith(\"l\")||(methodResultID.startsWith(\"d\"))||methodResultID.startsWith(\"-\"))&&(methodResultID.endsWith(\"r\")||methodResultID.endsWith(\"w\")||methodResultID.endsWith(\"x\")||methodResultID.endsWith(\"-\")):true;",
+        "true?methodResultID.length()>1&&(methodResultID.startsWith(\"l\")||methodResultID.startsWith(\"d\")||(methodResultID.startsWith(\"-\")))&&(methodResultID.endsWith(\"r\")||methodResultID.endsWith(\"w\")||methodResultID.endsWith(\"x\")||methodResultID.endsWith(\"-\")):true;",
+        "true?methodResultID.length()>1&&(methodResultID.startsWith(\"l\")||methodResultID.startsWith(\"d\")||methodResultID.startsWith(\"-\"))&&((methodResultID.endsWith(\"r\"))||methodResultID.endsWith(\"w\")||methodResultID.endsWith(\"x\")||methodResultID.endsWith(\"-\")):true;",
+        "true?methodResultID.length()>1&&(methodResultID.startsWith(\"l\")||methodResultID.startsWith(\"d\")||methodResultID.startsWith(\"-\"))&&(methodResultID.endsWith(\"r\")||(methodResultID.endsWith(\"w\"))||methodResultID.endsWith(\"x\")||methodResultID.endsWith(\"-\")):true;",
+        "true?methodResultID.length()>1&&(methodResultID.startsWith(\"l\")||methodResultID.startsWith(\"d\")||methodResultID.startsWith(\"-\"))&&(methodResultID.endsWith(\"r\")||methodResultID.endsWith(\"w\")||(methodResultID.endsWith(\"x\"))||methodResultID.endsWith(\"-\")):true;",
+        "true?methodResultID.length()>1&&(methodResultID.startsWith(\"l\")||methodResultID.startsWith(\"d\")||methodResultID.startsWith(\"-\"))&&(methodResultID.endsWith(\"r\")||methodResultID.endsWith(\"w\")||methodResultID.endsWith(\"x\")||(methodResultID.endsWith(\"-\"))):true;",
+        "true?(methodResultID.length()<=1)==false&&(methodResultID.startsWith(\"l\")||methodResultID.startsWith(\"d\")||methodResultID.startsWith(\"-\"))&&(methodResultID.endsWith(\"r\")||methodResultID.endsWith(\"w\")||methodResultID.endsWith(\"x\")||methodResultID.endsWith(\"-\")):true;"
     ],
     "coll==null||predicate==null;": [
         "(coll==null)||predicate==null;",
@@ -3918,6 +4582,10 @@
         "count==0?(methodResultID.equals(Strings.nullToEmpty(null))):true;",
         "(count!=0)==false?methodResultID.equals(Strings.nullToEmpty(null)):true;"
     ],
+    "this.isBrowsable()==false;": [
+        "(this.isBrowsable()==false);",
+        "(this.isBrowsable()!=false)==false;"
+    ],
     "true?methodResultID==~a:true;": [
         "true?(methodResultID==~a):true;",
         "true?(methodResultID!=~a)==false:true;"
@@ -3939,6 +4607,10 @@
     "this.getCoefficients().length==0;": [
         "(this.getCoefficients().length==0);",
         "(this.getCoefficients().length!=0)==false;"
+    ],
+    "optional!=null;": [
+        "(optional!=null);",
+        "(optional==null)==false;"
     ],
     "pathElement==null;": [
         "(pathElement==null);",
@@ -3977,6 +4649,10 @@
         "isLast;",
         "(isLast!=true)==false;"
     ],
+    "expression==null;": [
+        "(expression==null);",
+        "(expression!=null)==false;"
+    ],
     "unknownObjectBehavior==null;": [
         "(unknownObjectBehavior==null);",
         "(unknownObjectBehavior!=null)==false;"
@@ -3994,6 +4670,16 @@
         "length==0||(length<0);",
         "(length!=0)==false||length<0;",
         "length==0||(length>=0)==false;"
+    ],
+    "member.hasPermission(this,Permission.VIEW_CHANNEL)&&member.hasPermission(this,Permission.MESSAGE_SEND)?methodResultID==true:methodResultID==false;": [
+        "(member.hasPermission(this,Permission.VIEW_CHANNEL)&&member.hasPermission(this,Permission.MESSAGE_SEND))==false?methodResultID==false:methodResultID==true;",
+        "(member.hasPermission(this,Permission.VIEW_CHANNEL))&&member.hasPermission(this,Permission.MESSAGE_SEND)?methodResultID==true:methodResultID==false;",
+        "member.hasPermission(this,Permission.VIEW_CHANNEL)&&(member.hasPermission(this,Permission.MESSAGE_SEND))?methodResultID==true:methodResultID==false;",
+        "member.hasPermission(this,Permission.VIEW_CHANNEL)&&member.hasPermission(this,Permission.MESSAGE_SEND)?(methodResultID==true):methodResultID==false;",
+        "member.hasPermission(this,Permission.VIEW_CHANNEL)&&member.hasPermission(this,Permission.MESSAGE_SEND)?methodResultID==true:(methodResultID==false);",
+        "member.hasPermission(this,Permission.VIEW_CHANNEL)&&member.hasPermission(this,Permission.MESSAGE_SEND)?methodResultID:methodResultID==false;",
+        "member.hasPermission(this,Permission.VIEW_CHANNEL)&&member.hasPermission(this,Permission.MESSAGE_SEND)?(methodResultID!=true)==false:methodResultID==false;",
+        "member.hasPermission(this,Permission.VIEW_CHANNEL)&&member.hasPermission(this,Permission.MESSAGE_SEND)?methodResultID==true:(methodResultID!=false)==false;"
     ],
     "maximumIterations<=0;": [
         "(maximumIterations<=0);",
@@ -4035,6 +4721,12 @@
     ],
     "this.isLocked();": [
         "(this.isLocked());"
+    ],
+    "action==null||failure==null;": [
+        "(action==null)||failure==null;",
+        "action==null||(failure==null);",
+        "(action!=null)==false||failure==null;",
+        "action==null||(failure!=null)==false;"
     ],
     "(sampleSize>0)==false;": [
         "((sampleSize>0))==false;",
@@ -4157,6 +4849,10 @@
     "(map.isEmpty())==false;": [
         "((map.isEmpty()))==false;"
     ],
+    "emoji==null;": [
+        "(emoji==null);",
+        "(emoji!=null)==false;"
+    ],
     "estimationType==null||nanStrategy==null;": [
         "(estimationType==null)||nanStrategy==null;",
         "estimationType==null||(nanStrategy==null);",
@@ -4202,6 +4898,14 @@
     "trie==null;": [
         "(trie==null);",
         "(trie!=null)==false;"
+    ],
+    "this.getSupportedOrders().size()<=1;": [
+        "(this.getSupportedOrders().size()<=1);",
+        "(this.getSupportedOrders().size()>1)==false;"
+    ],
+    "serviceName.isEmpty()==false;": [
+        "(serviceName.isEmpty()==false);",
+        "(serviceName.isEmpty()!=false)==false;"
     ],
     "true?methodResultID.equals(this):true;": [
         "true?(methodResultID.equals(this)):true;"

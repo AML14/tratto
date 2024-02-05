@@ -1542,5 +1542,252 @@
         "tokensMethodVariablesNonPrivateNonStaticAttributes": [],
         "tokensOracleVariablesNonPrivateNonStaticNonVoidMethods": [],
         "tokensOracleVariablesNonPrivateNonStaticAttributes": []
+    },
+    {
+        "id": 7,
+        "oracle": "true ? methodResultID.degree() == c.length - 1 : true;",
+        "oracleType": "NORMAL_POST",
+        "projectName": "commons-math3-3.6.1",
+        "packageName": "org.apache.commons.math3.analysis.polynomials",
+        "className": "PolynomialFunction",
+        "javadocTag": "",
+        "methodJavadoc": "/**\n     * Construct a polynomial with the given coefficients.  The first element\n     * of the coefficients array is the constant term.  Higher degree\n     * coefficients follow in sequence.  The degree of the resulting polynomial\n     * is the index of the last non-null element of the array, or 0 if all elements\n     * are null.\n     * <p>\n     * The constructor makes a copy of the input array and assigns the copy to\n     * the coefficients property.</p>\n     *\n     * @param c Polynomial coefficients.\n     * @throws NullArgumentException if {@code c} is {@code null}.\n     * @throws NoDataException if {@code c} is empty.\n     */",
+        "methodSourceCode": "public PolynomialFunction(double c[])\n        throws NullArgumentException, NoDataException {\n        super();\n        MathUtils.checkNotNull(c);\n        int n = c.length;\n        if (n == 0) {\n            throw new NoDataException(LocalizedFormats.EMPTY_POLYNOMIALS_COEFFICIENTS_ARRAY);\n        }\n        while ((n > 1) && (c[n - 1] == 0)) {\n            --n;\n        }\n        this.coefficients = new double[n];\n        System.arraycopy(c, 0, this.coefficients, 0, n);\n    }",
+        "classJavadoc": "/**\n * Immutable representation of a real polynomial function with real coefficients.\n * <p>\n * <a href=\"http://mathworld.wolfram.com/HornersMethod.html\">Horner's Method</a>\n * is used to evaluate the function.</p>\n *\n */",
+        "classSourceCode": "/*\n * Licensed to the Apache Software Foundation (ASF) under one or more\n * contributor license agreements.  See the NOTICE file distributed with\n * this work for additional information regarding copyright ownership.\n * The ASF licenses this file to You under the Apache License, Version 2.0\n * (the \"License\"); you may not use this file except in compliance with\n * the License.  You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\npackage org.apache.commons.math3.analysis.polynomials;\n\nimport java.io.Serializable;\nimport java.util.Arrays;\n\nimport org.apache.commons.math3.analysis.DifferentiableUnivariateFunction;\nimport org.apache.commons.math3.analysis.ParametricUnivariateFunction;\nimport org.apache.commons.math3.analysis.UnivariateFunction;\nimport org.apache.commons.math3.analysis.differentiation.DerivativeStructure;\nimport org.apache.commons.math3.analysis.differentiation.UnivariateDifferentiableFunction;\nimport org.apache.commons.math3.exception.NoDataException;\nimport org.apache.commons.math3.exception.NullArgumentException;\nimport org.apache.commons.math3.exception.util.LocalizedFormats;\nimport org.apache.commons.math3.util.FastMath;\nimport org.apache.commons.math3.util.MathUtils;\n\n/**\n * Immutable representation of a real polynomial function with real coefficients.\n * <p>\n * <a href=\"http://mathworld.wolfram.com/HornersMethod.html\">Horner's Method</a>\n * is used to evaluate the function.</p>\n *\n */\npublic class PolynomialFunction implements UnivariateDifferentiableFunction, DifferentiableUnivariateFunction, Serializable {\n    /**\n     * Serialization identifier\n     */\n    private static final long serialVersionUID = -7726511984200295583L;\n    /**\n     * The coefficients of the polynomial, ordered by degree -- i.e.,\n     * coefficients[0] is the constant term and coefficients[n] is the\n     * coefficient of x^n where n is the degree of the polynomial.\n     */\n    private final double coefficients[];\n\n    /**\n     * Construct a polynomial with the given coefficients.  The first element\n     * of the coefficients array is the constant term.  Higher degree\n     * coefficients follow in sequence.  The degree of the resulting polynomial\n     * is the index of the last non-null element of the array, or 0 if all elements\n     * are null.\n     * <p>\n     * The constructor makes a copy of the input array and assigns the copy to\n     * the coefficients property.</p>\n     *\n     * @param c Polynomial coefficients.\n     * @throws NullArgumentException if {@code c} is {@code null}.\n     * @throws NoDataException if {@code c} is empty.\n     */\n    public PolynomialFunction(double c[])\n        throws NullArgumentException, NoDataException {\n        super();\n        MathUtils.checkNotNull(c);\n        int n = c.length;\n        if (n == 0) {\n            throw new NoDataException(LocalizedFormats.EMPTY_POLYNOMIALS_COEFFICIENTS_ARRAY);\n        }\n        while ((n > 1) && (c[n - 1] == 0)) {\n            --n;\n        }\n        this.coefficients = new double[n];\n        System.arraycopy(c, 0, this.coefficients, 0, n);\n    }\n\n    /**\n     * Compute the value of the function for the given argument.\n     * <p>\n     *  The value returned is </p><p>\n     *  {@code coefficients[n] * x^n + ... + coefficients[1] * x  + coefficients[0]}\n     * </p>\n     *\n     * @param x Argument for which the function value should be computed.\n     * @return the value of the polynomial at the given point.\n     * @see UnivariateFunction#value(double)\n     */\n    public double value(double x) {\n       return evaluate(coefficients, x);\n    }\n\n    /**\n     * Returns the degree of the polynomial.\n     *\n     * @return the degree of the polynomial.\n     */\n    public int degree() {\n        return coefficients.length - 1;\n    }\n\n    /**\n     * Returns a copy of the coefficients array.\n     * <p>\n     * Changes made to the returned copy will not affect the coefficients of\n     * the polynomial.</p>\n     *\n     * @return a fresh copy of the coefficients array.\n     */\n    public double[] getCoefficients() {\n        return coefficients.clone();\n    }\n\n    /**\n     * Uses Horner's Method to evaluate the polynomial with the given coefficients at\n     * the argument.\n     *\n     * @param coefficients Coefficients of the polynomial to evaluate.\n     * @param argument Input value.\n     * @return the value of the polynomial.\n     * @throws NoDataException if {@code coefficients} is empty.\n     * @throws NullArgumentException if {@code coefficients} is {@code null}.\n     */\n    protected static double evaluate(double[] coefficients, double argument)\n        throws NullArgumentException, NoDataException {\n        MathUtils.checkNotNull(coefficients);\n        int n = coefficients.length;\n        if (n == 0) {\n            throw new NoDataException(LocalizedFormats.EMPTY_POLYNOMIALS_COEFFICIENTS_ARRAY);\n        }\n        double result = coefficients[n - 1];\n        for (int j = n - 2; j >= 0; j--) {\n            result = argument * result + coefficients[j];\n        }\n        return result;\n    }\n\n\n    /** {@inheritDoc}\n     * @since 3.1\n     * @throws NoDataException if {@code coefficients} is empty.\n     * @throws NullArgumentException if {@code coefficients} is {@code null}.\n     */\n    public DerivativeStructure value(final DerivativeStructure t)\n        throws NullArgumentException, NoDataException {\n        MathUtils.checkNotNull(coefficients);\n        int n = coefficients.length;\n        if (n == 0) {\n            throw new NoDataException(LocalizedFormats.EMPTY_POLYNOMIALS_COEFFICIENTS_ARRAY);\n        }\n        DerivativeStructure result =\n                new DerivativeStructure(t.getFreeParameters(), t.getOrder(), coefficients[n - 1]);\n        for (int j = n - 2; j >= 0; j--) {\n            result = result.multiply(t).add(coefficients[j]);\n        }\n        return result;\n    }\n\n    /**\n     * Add a polynomial to the instance.\n     *\n     * @param p Polynomial to add.\n     * @return a new polynomial which is the sum of the instance and {@code p}.\n     */\n    public PolynomialFunction add(final PolynomialFunction p) {\n        // identify the lowest degree polynomial\n        final int lowLength  = FastMath.min(coefficients.length, p.coefficients.length);\n        final int highLength = FastMath.max(coefficients.length, p.coefficients.length);\n\n        // build the coefficients array\n        double[] newCoefficients = new double[highLength];\n        for (int i = 0; i < lowLength; ++i) {\n            newCoefficients[i] = coefficients[i] + p.coefficients[i];\n        }\n        System.arraycopy((coefficients.length < p.coefficients.length) ?\n                         p.coefficients : coefficients,\n                         lowLength,\n                         newCoefficients, lowLength,\n                         highLength - lowLength);\n\n        return new PolynomialFunction(newCoefficients);\n    }\n\n    /**\n     * Subtract a polynomial from the instance.\n     *\n     * @param p Polynomial to subtract.\n     * @return a new polynomial which is the instance minus {@code p}.\n     */\n    public PolynomialFunction subtract(final PolynomialFunction p) {\n        // identify the lowest degree polynomial\n        int lowLength  = FastMath.min(coefficients.length, p.coefficients.length);\n        int highLength = FastMath.max(coefficients.length, p.coefficients.length);\n\n        // build the coefficients array\n        double[] newCoefficients = new double[highLength];\n        for (int i = 0; i < lowLength; ++i) {\n            newCoefficients[i] = coefficients[i] - p.coefficients[i];\n        }\n        if (coefficients.length < p.coefficients.length) {\n            for (int i = lowLength; i < highLength; ++i) {\n                newCoefficients[i] = -p.coefficients[i];\n            }\n        } else {\n            System.arraycopy(coefficients, lowLength, newCoefficients, lowLength,\n                             highLength - lowLength);\n        }\n\n        return new PolynomialFunction(newCoefficients);\n    }\n\n    /**\n     * Negate the instance.\n     *\n     * @return a new polynomial with all coefficients negated\n     */\n    public PolynomialFunction negate() {\n        double[] newCoefficients = new double[coefficients.length];\n        for (int i = 0; i < coefficients.length; ++i) {\n            newCoefficients[i] = -coefficients[i];\n        }\n        return new PolynomialFunction(newCoefficients);\n    }\n\n    /**\n     * Multiply the instance by a polynomial.\n     *\n     * @param p Polynomial to multiply by.\n     * @return a new polynomial equal to this times {@code p}\n     */\n    public PolynomialFunction multiply(final PolynomialFunction p) {\n        double[] newCoefficients = new double[coefficients.length + p.coefficients.length - 1];\n\n        for (int i = 0; i < newCoefficients.length; ++i) {\n            newCoefficients[i] = 0.0;\n            for (int j = FastMath.max(0, i + 1 - p.coefficients.length);\n                 j < FastMath.min(coefficients.length, i + 1);\n                 ++j) {\n                newCoefficients[i] += coefficients[j] * p.coefficients[i-j];\n            }\n        }\n\n        return new PolynomialFunction(newCoefficients);\n    }\n\n    /**\n     * Returns the coefficients of the derivative of the polynomial with the given coefficients.\n     *\n     * @param coefficients Coefficients of the polynomial to differentiate.\n     * @return the coefficients of the derivative or {@code null} if coefficients has length 1.\n     * @throws NoDataException if {@code coefficients} is empty.\n     * @throws NullArgumentException if {@code coefficients} is {@code null}.\n     */\n    protected static double[] differentiate(double[] coefficients)\n        throws NullArgumentException, NoDataException {\n        MathUtils.checkNotNull(coefficients);\n        int n = coefficients.length;\n        if (n == 0) {\n            throw new NoDataException(LocalizedFormats.EMPTY_POLYNOMIALS_COEFFICIENTS_ARRAY);\n        }\n        if (n == 1) {\n            return new double[]{0};\n        }\n        double[] result = new double[n - 1];\n        for (int i = n - 1; i > 0; i--) {\n            result[i - 1] = i * coefficients[i];\n        }\n        return result;\n    }\n\n    /**\n     * Returns the derivative as a {@link PolynomialFunction}.\n     *\n     * @return the derivative polynomial.\n     */\n    public PolynomialFunction polynomialDerivative() {\n        return new PolynomialFunction(differentiate(coefficients));\n    }\n\n    /**\n     * Returns the derivative as a {@link UnivariateFunction}.\n     *\n     * @return the derivative function.\n     */\n    public UnivariateFunction derivative() {\n        return polynomialDerivative();\n    }\n\n    /**\n     * Returns a string representation of the polynomial.\n     *\n     * <p>The representation is user oriented. Terms are displayed lowest\n     * degrees first. The multiplications signs, coefficients equals to\n     * one and null terms are not displayed (except if the polynomial is 0,\n     * in which case the 0 constant term is displayed). Addition of terms\n     * with negative coefficients are replaced by subtraction of terms\n     * with positive coefficients except for the first displayed term\n     * (i.e. we display <code>-3</code> for a constant negative polynomial,\n     * but <code>1 - 3 x + x^2</code> if the negative coefficient is not\n     * the first one displayed).</p>\n     *\n     * @return a string representation of the polynomial.\n     */\n    @Override\n    public String toString() {\n        StringBuilder s = new StringBuilder();\n        if (coefficients[0] == 0.0) {\n            if (coefficients.length == 1) {\n                return \"0\";\n            }\n        } else {\n            s.append(toString(coefficients[0]));\n        }\n\n        for (int i = 1; i < coefficients.length; ++i) {\n            if (coefficients[i] != 0) {\n                if (s.length() > 0) {\n                    if (coefficients[i] < 0) {\n                        s.append(\" - \");\n                    } else {\n                        s.append(\" + \");\n                    }\n                } else {\n                    if (coefficients[i] < 0) {\n                        s.append(\"-\");\n                    }\n                }\n\n                double absAi = FastMath.abs(coefficients[i]);\n                if ((absAi - 1) != 0) {\n                    s.append(toString(absAi));\n                    s.append(' ');\n                }\n\n                s.append(\"x\");\n                if (i > 1) {\n                    s.append('^');\n                    s.append(Integer.toString(i));\n                }\n            }\n        }\n\n        return s.toString();\n    }\n\n    /**\n     * Creates a string representing a coefficient, removing \".0\" endings.\n     *\n     * @param coeff Coefficient.\n     * @return a string representation of {@code coeff}.\n     */\n    private static String toString(double coeff) {\n        final String c = Double.toString(coeff);\n        if (c.endsWith(\".0\")) {\n            return c.substring(0, c.length() - 2);\n        } else {\n            return c;\n        }\n    }\n\n    /** {@inheritDoc} */\n    @Override\n    public int hashCode() {\n        final int prime = 31;\n        int result = 1;\n        result = prime * result + Arrays.hashCode(coefficients);\n        return result;\n    }\n\n    /** {@inheritDoc} */\n    @Override\n    public boolean equals(Object obj) {\n        if (this == obj) {\n            return true;\n        }\n        if (!(obj instanceof PolynomialFunction)) {\n            return false;\n        }\n        PolynomialFunction other = (PolynomialFunction) obj;\n        if (!Arrays.equals(coefficients, other.coefficients)) {\n            return false;\n        }\n        return true;\n    }\n\n    /**\n     * Dedicated parametric polynomial class.\n     *\n     * @since 3.0\n     */\n    public static class Parametric implements ParametricUnivariateFunction {\n        /** {@inheritDoc} */\n        public double[] gradient(double x, double ... parameters) {\n            final double[] gradient = new double[parameters.length];\n            double xn = 1.0;\n            for (int i = 0; i < parameters.length; ++i) {\n                gradient[i] = xn;\n                xn *= x;\n            }\n            return gradient;\n        }\n\n        /** {@inheritDoc} */\n        public double value(final double x, final double ... parameters)\n            throws NoDataException {\n            return PolynomialFunction.evaluate(parameters, x);\n        }\n    }\n}",
+        "tokensGeneralGrammar": [
+            "null",
+            "true",
+            "false",
+            ",",
+            ".",
+            ":",
+            ";",
+            "?",
+            "jdVar",
+            "stream",
+            "Arrays",
+            "allMatch",
+            "noneMatch",
+            "anyMatch",
+            "~",
+            ">>",
+            "<<",
+            ">>>",
+            "|",
+            "&",
+            "^",
+            "+",
+            "-",
+            "/",
+            "*",
+            "%",
+            "&&",
+            "||",
+            ">=",
+            "<=",
+            ">",
+            "<",
+            "==",
+            "!=",
+            "instanceof",
+            "class",
+            "methodResultID",
+            "this"
+        ],
+        "tokensGeneralValuesGlobalDictionary": [
+            [
+                "0",
+                "int"
+            ],
+            [
+                "1",
+                "int"
+            ],
+            [
+                "2",
+                "int"
+            ],
+            [
+                "100.0",
+                "double"
+            ]
+        ],
+        "tokensProjectClasses": [
+            [
+                "RealFieldElement",
+                "org.apache.commons.math3"
+            ],
+            [
+                "Primes",
+                "org.apache.commons.math3.primes"
+            ],
+            [
+                "DifferentiableUnivariateFunction",
+                "org.apache.commons.math3.analysis"
+            ],
+            [
+                "UnivariateFunction",
+                "org.apache.commons.math3.analysis"
+            ],
+            [
+                "TrivariateFunction",
+                "org.apache.commons.math3.analysis"
+            ],
+            [
+                "MultivariateMatrixFunction",
+                "org.apache.commons.math3.analysis"
+            ],
+            [
+                "ParametricUnivariateFunction",
+                "org.apache.commons.math3.analysis"
+            ],
+            [
+                "UnivariateDifferentiableVectorFunction",
+                "org.apache.commons.math3.analysis.differentiation"
+            ],
+            [
+                "UnivariateDifferentiableMatrixFunction",
+                "org.apache.commons.math3.analysis.differentiation"
+            ],
+            [
+                "DSCompiler",
+                "org.apache.commons.math3.analysis.differentiation"
+            ],
+            [
+                "SparseGradient",
+                "org.apache.commons.math3.analysis.differentiation"
+            ],
+            [
+                "UnivariateFunctionDifferentiator",
+                "org.apache.commons.math3.analysis.differentiation"
+            ],
+            [
+                "UnivariateDifferentiableFunction",
+                "org.apache.commons.math3.analysis.differentiation"
+            ],
+            [
+                "MultivariateVectorFunction",
+                "org.apache.commons.math3.analysis"
+            ],
+            [
+                "DifferentiableMultivariateVectorFunction",
+                "org.apache.commons.math3.analysis"
+            ],
+            [
+                "PolynomialFunctionNewtonForm",
+                "org.apache.commons.math3.analysis.polynomials"
+            ],
+            [
+                "PolynomialFunctionLagrangeForm",
+                "org.apache.commons.math3.analysis.polynomials"
+            ],
+            [
+                "PolynomialSplineFunction",
+                "org.apache.commons.math3.analysis.polynomials"
+            ],
+            [
+                "PolynomialsUtils",
+                "org.apache.commons.math3.analysis.polynomials"
+            ],
+            [
+                "PolynomialFunction",
+                "org.apache.commons.math3.analysis.polynomials"
+            ],
+            [
+                "Complex",
+                "org.apache.commons.math3.complex"
+            ],
+            [
+                "Field",
+                "org.apache.commons.math3"
+            ],
+            [
+                "FieldElement",
+                "org.apache.commons.math3"
+            ],
+            [
+                "DerivativeStructure",
+                "org.apache.commons.math3.analysis.differentiation"
+            ]
+        ],
+        "tokensProjectClassesNonPrivateStaticNonVoidMethods": [
+            [
+                "collectionBag",
+                "org.apache.commons.collections4.bag",
+                "CollectionBag",
+                "public static <E> Bag<E> collectionBag(final Bag<E> bag)"
+            ],
+            [
+                "indexOf",
+                "org.apache.commons.collections4",
+                "ArrayUtils",
+                "static int indexOf(final Object[] array, final Object objectToFind, int startIndex)"
+            ]
+        ],
+        "tokensProjectClassesNonPrivateStaticAttributes": [
+            [
+                "INSTANCE",
+                "org.apache.commons.collections4.properties",
+                "PropertiesFactory",
+                "public static final PropertiesFactory INSTANCE = new PropertiesFactory()"
+            ],
+            [
+                "EMPTY_BAG",
+                "org.apache.commons.collections4",
+                "BagUtils",
+                "public static final Bag EMPTY_BAG = UnmodifiableBag.unmodifiableBag(new HashBag<>())"
+            ]
+        ],
+        "tokensMethodJavadocValues": [
+            [
+                "3.1",
+                "double"
+            ]
+        ],
+        "tokensMethodArguments": [
+            [
+                "c",
+                "",
+                "double[]"
+            ]
+        ],
+        "tokensMethodVariablesNonPrivateNonStaticNonVoidMethods": [
+            [
+                "degree",
+                "org.apache.commons.math3.analysis.polynomials",
+                "PolynomialFunction",
+                "public int degree()"
+            ],
+            [
+                "value",
+                "org.apache.commons.math3.analysis.polynomials",
+                "PolynomialFunction",
+                "public double value(double x)"
+            ],
+            [
+                "getCoefficients",
+                "org.apache.commons.math3.analysis.polynomials",
+                "PolynomialFunction",
+                "public double[] getCoefficients()"
+            ]
+        ],
+        "tokensMethodVariablesNonPrivateNonStaticAttributes": [],
+        "tokensOracleVariablesNonPrivateNonStaticNonVoidMethods": [
+            [
+                "clone",
+                "java.lang",
+                "Object",
+                "protected native Object clone() throws CloneNotSupportedException"
+            ]
+        ],
+        "tokensOracleVariablesNonPrivateNonStaticAttributes": [
+            [
+                "length",
+                "",
+                "double[]",
+                ""
+            ]
+        ]
     }
 ]

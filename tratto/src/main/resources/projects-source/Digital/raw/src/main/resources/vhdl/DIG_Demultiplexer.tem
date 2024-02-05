@@ -1,0 +1,31 @@
+LIBRARY ieee;
+USE ieee.std_logic_1164.all;
+USE ieee.numeric_std.all;
+<?
+  if (elem.Bits=1)
+      export entityName:="DEMUX_GATE_"+elem.'Selector Bits';
+  else
+      export entityName:="DEMUX_GATE_BUS_"+elem.'Selector Bits';
+
+  outputs:=1<<elem.'Selector Bits';
+?>
+entity <?=entityName?> is
+  generic (
+  <?- if (elem.Bits>1) { ?>
+    Bits : integer;<?  vhdl.registerGeneric("Bits");?>
+  <?- } ?>
+    Default : integer );<?  vhdl.registerGeneric("Default");?>
+  port (
+    <?- for (i:=0;i<outputs;i++) {?>
+    out_<?=i?>: out <?= vhdl.genericType(elem.Bits)?>;
+    <?- } ?>
+    sel: in <?= vhdl.type(elem.'Selector Bits')?>;
+    p_in: in <?= vhdl.genericType(elem.Bits)?> );
+end <?=entityName?>;
+
+architecture Behavioral of <?=entityName?> is
+begin
+<?- for (i:=0;i<outputs;i++) {?>
+    out_<?=i?> <= p_in when sel = <?= vhdl.value(i,elem.'Selector Bits')?> else <? if (elem.Bits>1) { ?>std_logic_vector(to_unsigned(Default, Bits));<? } else {?>std_logic(to_unsigned(Default, 1)(0));<? } ?>
+<?- } ?>
+end Behavioral;

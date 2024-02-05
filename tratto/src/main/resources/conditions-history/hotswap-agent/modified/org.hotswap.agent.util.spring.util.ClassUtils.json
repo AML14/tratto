@@ -1,0 +1,341 @@
+[
+    {
+        "operation": {
+            "name": "forName",
+            "parameterTypes": [
+                "String",
+                "ClassLoader"
+            ],
+            "classname": "org.hotswap.agent.util.spring.util.ClassUtils"
+        },
+        "identifiers": {
+            "parameters": [
+                "name",
+                "classLoader"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param name the name of the Class",
+                "guard": {
+                    "condition": "name != null",
+                    "description": "@param name the name of the Class"
+                }
+            }
+        ],
+        "post": [],
+        "throws": []
+    },
+    {
+        "operation": {
+            "name": "resolveClassName",
+            "parameterTypes": [
+                "String",
+                "ClassLoader"
+            ],
+            "classname": "org.hotswap.agent.util.spring.util.ClassUtils"
+        },
+        "identifiers": {
+            "parameters": [
+                "className",
+                "classLoader"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param className the name of the Class",
+                "guard": {
+                    "condition": "className != null",
+                    "description": "@param className the name of the Class"
+                }
+            }
+        ],
+        "post": [],
+        "throws": []
+    },
+    {
+        "operation": {
+            "name": "getUserClass",
+            "parameterTypes": [
+                "Object"
+            ],
+            "classname": "org.hotswap.agent.util.spring.util.ClassUtils"
+        },
+        "identifiers": {
+            "parameters": [
+                "instance"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param instance the instance to check",
+                "guard": {
+                    "condition": "instance != null",
+                    "description": "@param instance the instance to check"
+                }
+            }
+        ],
+        "post": [],
+        "throws": []
+    },
+    {
+        "operation": {
+            "name": "getShortName",
+            "parameterTypes": [
+                "String"
+            ],
+            "classname": "org.hotswap.agent.util.spring.util.ClassUtils"
+        },
+        "identifiers": {
+            "parameters": [
+                "className"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [],
+        "post": [
+            {
+                "description": "@return the class name of the class without the package name",
+                "property": {
+                    "condition": "methodResultID.length() <= className.length()",
+                    "description": "@return the class name of the class without the package name"
+                },
+                "guard": {
+                    "condition": "true",
+                    "description": "@return the class name of the class without the package name"
+                }
+            }
+        ],
+        "throws": [
+            {
+                "exception": "java.lang.IllegalArgumentException",
+                "description": "@throws IllegalArgumentException if the className is empty",
+                "guard": {
+                    "condition": "className.isEmpty()",
+                    "description": "@throws IllegalArgumentException if the className is empty"
+                }
+            }
+        ]
+    },
+    {
+        "operation": {
+            "name": "getShortName",
+            "parameterTypes": [
+                "Class"
+            ],
+            "classname": "org.hotswap.agent.util.spring.util.ClassUtils"
+        },
+        "identifiers": {
+            "parameters": [
+                "clazz"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [],
+        "post": [
+            {
+                "description": "@return the class name of the class without the package name",
+                "property": {
+                    "condition": "methodResultID.length() <= ClassUtils.getQualifiedName(clazz).length()",
+                    "description": "@return the class name of the class without the package name"
+                },
+                "guard": {
+                    "condition": "true",
+                    "description": "@return the class name of the class without the package name"
+                }
+            }
+        ],
+        "throws": []
+    },
+    {
+        "operation": {
+            "name": "getClassFileName",
+            "parameterTypes": [
+                "Class"
+            ],
+            "classname": "org.hotswap.agent.util.spring.util.ClassUtils"
+        },
+        "identifiers": {
+            "parameters": [
+                "clazz"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [],
+        "post": [
+            {
+                "description": "@return the file name of the \".class\" file",
+                "property": {
+                    "condition": "methodResultID.endsWith(\".class\")",
+                    "description": "@return the file name of the \".class\" file"
+                },
+                "guard": {
+                    "condition": "true",
+                    "description": "@return the file name of the \".class\" file"
+                }
+            }
+        ],
+        "throws": []
+    },
+    {
+        "operation": {
+            "name": "getQualifiedName",
+            "parameterTypes": [
+                "Class"
+            ],
+            "classname": "org.hotswap.agent.util.spring.util.ClassUtils"
+        },
+        "identifiers": {
+            "parameters": [
+                "clazz"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [],
+        "post": [
+            {
+                "description": "",
+                "property": {
+                    "condition": "methodResultID.endsWith(\"[]\")",
+                    "description": ""
+                },
+                "guard": {
+                    "condition": "clazz.isArray()",
+                    "description": ""
+                }
+            }
+        ],
+        "throws": []
+    },
+    {
+        "operation": {
+            "name": "getMethod",
+            "parameterTypes": [
+                "Class",
+                "String",
+                "[LClass;"
+            ],
+            "classname": "org.hotswap.agent.util.spring.util.ClassUtils"
+        },
+        "identifiers": {
+            "parameters": [
+                "clazz",
+                "methodName",
+                "paramTypes"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [],
+        "post": [
+            {
+                "description": "@return the method (never {@code null})",
+                "property": {
+                    "condition": "methodResultID != null",
+                    "description": "@return the method (never {@code null})"
+                },
+                "guard": {
+                    "condition": "true",
+                    "description": "@return the method (never {@code null})"
+                }
+            }
+        ],
+        "throws": []
+    },
+    {
+        "operation": {
+            "name": "convertResourcePathToClassName",
+            "parameterTypes": [
+                "String"
+            ],
+            "classname": "org.hotswap.agent.util.spring.util.ClassUtils"
+        },
+        "identifiers": {
+            "parameters": [
+                "resourcePath"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [],
+        "post": [
+            {
+                "description": "@return the corresponding fully qualified class name",
+                "property": {
+                    "condition": "methodResultID.contains(\".\") && (methodResultID.contains(\"/\"))==false",
+                    "description": "@return the corresponding fully qualified class name"
+                },
+                "guard": {
+                    "condition": "resourcePath.contains(\"/\")",
+                    "description": "@return the corresponding fully qualified class name"
+                }
+            },
+            {
+                "description": "@return the corresponding fully qualified class name",
+                "property": {
+                    "condition": "(methodResultID.contains(\"/\"))==false",
+                    "description": "@return the corresponding fully qualified class name"
+                },
+                "guard": {
+                    "condition": "resourcePath.contains(\"/\") == false",
+                    "description": "@return the corresponding fully qualified class name"
+                }
+            }
+        ],
+        "throws": []
+    },
+    {
+        "operation": {
+            "name": "determineCommonAncestor",
+            "parameterTypes": [
+                "Class",
+                "Class"
+            ],
+            "classname": "org.hotswap.agent.util.spring.util.ClassUtils"
+        },
+        "identifiers": {
+            "parameters": [
+                "clazz1",
+                "clazz2"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [],
+        "post": [
+            {
+                "description": "@return the common ancestor (i.e. common superclass, one interface extending the other), or {@code null} if none found. If any of the given classes is {@code null}, the other class will be returned.",
+                "property": {
+                    "condition": "methodResultID == clazz2",
+                    "description": "@return the common ancestor (i.e. common superclass, one interface extending the other), or {@code null} if none found. If any of the given classes is {@code null}, the other class will be returned."
+                },
+                "guard": {
+                    "condition": "clazz1 == null",
+                    "description": "@return the common ancestor (i.e. common superclass, one interface extending the other), or {@code null} if none found. If any of the given classes is {@code null}, the other class will be returned."
+                }
+            },
+            {
+                "description": "@return the common ancestor (i.e. common superclass, one interface extending the other), or {@code null} if none found. If any of the given classes is {@code null}, the other class will be returned.",
+                "property": {
+                    "condition": "methodResultID == clazz1",
+                    "description": "@return the common ancestor (i.e. common superclass, one interface extending the other), or {@code null} if none found. If any of the given classes is {@code null}, the other class will be returned."
+                },
+                "guard": {
+                    "condition": "(clazz1 == null) == false",
+                    "description": "@return the common ancestor (i.e. common superclass, one interface extending the other), or {@code null} if none found. If any of the given classes is {@code null}, the other class will be returned."
+                }
+            }
+        ],
+        "throws": []
+    }
+]

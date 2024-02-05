@@ -1,0 +1,227 @@
+[
+    {
+        "operation": {
+            "name": "canInteract",
+            "parameterTypes": [
+                "Member",
+                "Member"
+            ],
+            "classname": "net.dv8tion.jda.internal.utils.PermissionUtil"
+        },
+        "identifiers": {
+            "parameters": [
+                "issuer",
+                "target"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param issuer The member that tries to interact with 2nd member",
+                "guard": {
+                    "condition": "issuer != null",
+                    "description": "@param issuer The member that tries to interact with 2nd member"
+                }
+            },
+            {
+                "description": " @param target The member that is the target of the interaction",
+                "guard": {
+                    "condition": "target != null",
+                    "description": " @param target The member that is the target of the interaction"
+                }
+            }
+        ],
+        "post": [],
+        "throws": [
+            {
+                "exception": "java.lang.IllegalArgumentException",
+                "description": "@throws IllegalArgumentException if any of the provided parameters is {@code null} or the provided entities are not from the same guild",
+                "guard": {
+                    "condition": "issuer == null || target == null || (issuer.getGuild().equals(target.getGuild()))==false",
+                    "description": "@throws IllegalArgumentException if any of the provided parameters is {@code null} or the provided entities are not from the same guild"
+                }
+            }
+        ]
+    },
+    {
+        "operation": {
+            "name": "canInteract",
+            "parameterTypes": [
+                "Member",
+                "Role"
+            ],
+            "classname": "net.dv8tion.jda.internal.utils.PermissionUtil"
+        },
+        "identifiers": {
+            "parameters": [
+                "issuer",
+                "target"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param  issuer The member that tries to interact with the role",
+                "guard": {
+                    "condition": "issuer != null",
+                    "description": "@param  issuer The member that tries to interact with the role"
+                }
+            },
+            {
+                "description": "@param  target The role that is the target of the interaction",
+                "guard": {
+                    "condition": "target != null",
+                    "description": "@param  target The role that is the target of the interaction"
+                }
+            }
+        ],
+        "post": [],
+        "throws": [
+            {
+                "exception": "java.lang.IllegalArgumentException",
+                "description": "@throws IllegalArgumentException if any of the provided parameters is {@code null} or the provided entities are not from the same guild",
+                "guard": {
+                    "condition": "issuer == null || target == null || (issuer.getGuild().equals(target.getGuild()))==false",
+                    "description": "@throws IllegalArgumentException if any of the provided parameters is {@code null} or the provided entities are not from the same guild"
+                }
+            }
+        ]
+    },
+    {
+        "operation": {
+            "name": "canInteract",
+            "parameterTypes": [
+                "Member",
+                "RichCustomEmoji"
+            ],
+            "classname": "net.dv8tion.jda.internal.utils.PermissionUtil"
+        },
+        "identifiers": {
+            "parameters": [
+                "issuer",
+                "emoji"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param  issuer The member that tries to interact with the Emoji",
+                "guard": {
+                    "condition": "issuer != null",
+                    "description": "@param  issuer The member that tries to interact with the Emoji"
+                }
+            },
+            {
+                "description": "@param  emoji The emoji that is the target interaction",
+                "guard": {
+                    "condition": "emoji != null",
+                    "description": "@param  emoji The emoji that is the target interaction"
+                }
+            }
+        ],
+        "post": [],
+        "throws": [
+            {
+                "exception": "java.lang.IllegalArgumentException",
+                "description": "@throws IllegalArgumentException if any of the provided parameters is {@code null} or the provided entities are not from the same guild",
+                "guard": {
+                    "condition": "issuer == null || emoji == null || (issuer.getGuild().equals(emoji.getGuild()))==false",
+                    "description": "@throws IllegalArgumentException if any of the provided parameters is {@code null} or the provided entities are not from the same guild"
+                }
+            }
+        ]
+    },
+    {
+        "operation": {
+            "name": "checkPermission",
+            "parameterTypes": [
+                "Member",
+                "[LPermission;"
+            ],
+            "classname": "net.dv8tion.jda.internal.utils.PermissionUtil"
+        },
+        "identifiers": {
+            "parameters": [
+                "member",
+                "permissions"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param  member The {@link net.dv8tion.jda.api.entities.Member Member} whose permissions are being checked.",
+                "guard": {
+                    "condition": "member != null",
+                    "description": "@param  member The {@link net.dv8tion.jda.api.entities.Member Member} whose permissions are being checked."
+                }
+            },
+            {
+                "description": "@param  permissions The {@link net.dv8tion.jda.api.Permission Permissions} being checked for.",
+                "guard": {
+                    "condition": "permissions != null",
+                    "description": "@param  permissions The {@link net.dv8tion.jda.api.Permission Permissions} being checked for."
+                }
+            }
+        ],
+        "post": [],
+        "throws": [
+            {
+                "exception": "java.lang.IllegalArgumentException",
+                "description": " @throws IllegalArgumentException if any of the provided parameters is null",
+                "guard": {
+                    "condition": "member == null || permissions == null",
+                    "description": " @throws IllegalArgumentException if any of the provided parameters is null"
+                }
+            }
+        ]
+    },
+    {
+        "operation": {
+            "name": "getExplicitPermission",
+            "parameterTypes": [
+                "GuildChannel",
+                "Role"
+            ],
+            "classname": "net.dv8tion.jda.internal.utils.PermissionUtil"
+        },
+        "identifiers": {
+            "parameters": [
+                "channel",
+                "role"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param  role The non-null {@link net.dv8tion.jda.api.entities.Role Role} for which to get implicit permissions",
+                "guard": {
+                    "condition": "role != null",
+                    "description": "@param  role The non-null {@link net.dv8tion.jda.api.entities.Role Role} for which to get implicit permissions"
+                }
+            },
+            {
+                "description": "@param  channel The target channel of which to check {@link net.dv8tion.jda.api.entities.PermissionOverride PermissionOverrides}",
+                "guard": {
+                    "condition": "channel != null",
+                    "description": "@param  channel The target channel of which to check {@link net.dv8tion.jda.api.entities.PermissionOverride PermissionOverrides}"
+                }
+            }
+        ],
+        "post": [],
+        "throws": [
+            {
+                "exception": "java.lang.IllegalArgumentException",
+                "description": "@throws IllegalArgumentException If any of the arguments is {@code null} or the specified entities are not from the same {@link net.dv8tion.jda.api.entities.Guild Guild}",
+                "guard": {
+                    "condition": "channel == null || role == null || (channel.getGuild().equals(role.getGuild()))==false",
+                    "description": "@throws IllegalArgumentException If any of the arguments is {@code null} or the specified entities are not from the same {@link net.dv8tion.jda.api.entities.Guild Guild}"
+                }
+            }
+        ]
+    }
+]
