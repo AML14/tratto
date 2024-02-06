@@ -25,8 +25,8 @@ def generate_src_input(
         if tratto_model_type == TrattoModelType.TOKEN_CLASSES:
             input += f"{datapoint.tokenClassesSoFar}{tokenizer.sep_token}"
             input += f"{datapoint.eligibleTokenClasses}{tokenizer.sep_token}"
-        elif tratto_model_type == TrattoModelType.TOKEN_VALUES:
-            input += f"{datapoint.eligibleTokens}{tokenizer.sep_token}"
+        #elif tratto_model_type == TrattoModelType.TOKEN_VALUES:
+        #    input += f"{datapoint.eligibleTokens}{tokenizer.sep_token}"
         input += f"{datapoint.javadocTag}{tokenizer.sep_token}"
         input += f"{datapoint.oracleType}{tokenizer.sep_token}"
         input += f"{datapoint.packageName}{tokenizer.sep_token}"

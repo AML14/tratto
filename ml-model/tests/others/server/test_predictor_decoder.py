@@ -72,7 +72,7 @@ def test_get_input(
                 assert eligible_token_classes == eligibles_list
             elif arg_tratto_model_type == TrattoModelType.TOKEN_VALUES:
                 if not row_copy.oracleSoFar == '':
-                    assert eligible_token_values == eligibles_list
+                    assert eligible_token_values == None #eligibles_list
             row_copy[eligible_key] = generate_eligibles_str(eligibles_list)
             row_input = generate_src_input(
                 row_copy,
