@@ -1,0 +1,220 @@
+[
+    {
+        "operation": {
+            "name": "get",
+            "parameterTypes": [
+                "DataObject",
+                "String",
+                "BiFunction",
+                "BiFunction"
+            ],
+            "classname": "net.dv8tion.jda.api.utils.data.DataPath"
+        },
+        "identifiers": {
+            "parameters": [
+                "root",
+                "path",
+                "fromObject",
+                "fromArray"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param  root  The root data object, which is the top level accessor. <br>The very first element in the path corresponds to a field of that name within this root object.",
+                "guard": {
+                    "condition": "root != null",
+                    "description": "@param  root  The root data object, which is the top level accessor. <br>The very first element in the path corresponds to a field of that name within this root object."
+                }
+            },
+            {
+                "description": "@param  path The path of the value, in accordance with the described grammar by {@link DataPath}. This must start with a name element, such as {@code \"foo\"}.",
+                "guard": {
+                    "condition": "path != null",
+                    "description": "@param  path The path of the value, in accordance with the described grammar by {@link DataPath}. This must start with a name element, such as {@code \"foo\"}."
+                }
+            },
+            {
+                "description": "@param  fromObject Object relative resolver of the value, this is used for the final reference and resolves the value. The first parameter is the {@link DataObject} where you get the value from, and the second is the field name. An example would be {@code (obj, name) -> obj.getString(name)} or as a method reference {@code DataObject::getString}.",
+                "guard": {
+                    "condition": "fromObject != null",
+                    "description": "@param  fromObject Object relative resolver of the value, this is used for the final reference and resolves the value. The first parameter is the {@link DataObject} where you get the value from, and the second is the field name. An example would be {@code (obj, name) -> obj.getString(name)} or as a method reference {@code DataObject::getString}."
+                }
+            },
+            {
+                "description": "@param  fromArray  Array relative resolver of the value, this is used for the final reference and resolves the value. The first parameter is the {@link DataArray} where you get the value from, and the second is the field index. An example would be {@code (array, index) -> obj.getString(index)} or as a method reference {@code DataArray::getString}.",
+                "guard": {
+                    "condition": "fromArray != null",
+                    "description": "@param  fromArray  Array relative resolver of the value, this is used for the final reference and resolves the value. The first parameter is the {@link DataArray} where you get the value from, and the second is the field index. An example would be {@code (array, index) -> obj.getString(index)} or as a method reference {@code DataArray::getString}."
+                }
+            }
+        ],
+        "post": [],
+        "throws": [
+            {
+                "exception": "java.lang.IllegalArgumentException",
+                "description": "     * @throws IllegalArgumentException If null is provided or the path is empty",
+                "guard": {
+                    "condition": "root == null || path == null || path.isEmpty() || fromObject == null || fromArray == null",
+                    "description": "     * @throws IllegalArgumentException If null is provided or the path is empty"
+                }
+            }
+        ]
+    },
+    {
+        "operation": {
+            "name": "get",
+            "parameterTypes": [
+                "DataArray",
+                "String",
+                "BiFunction",
+                "BiFunction"
+            ],
+            "classname": "net.dv8tion.jda.api.utils.data.DataPath"
+        },
+        "identifiers": {
+            "parameters": [
+                "root",
+                "path",
+                "fromObject",
+                "fromArray"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param  root The root data array, which is the top level accessor. <br>The very first element in the path corresponds to a field of that name within this root object.",
+                "guard": {
+                    "condition": "root != null",
+                    "description": "@param  root The root data array, which is the top level accessor. <br>The very first element in the path corresponds to a field of that name within this root object."
+                }
+            },
+            {
+                "description": "@param  path The path of the value, in accordance with the described grammar by {@link DataPath}. This must start with an index element, such as {@code \"[0]\"}.",
+                "guard": {
+                    "condition": "path != null",
+                    "description": "@param  path The path of the value, in accordance with the described grammar by {@link DataPath}. This must start with an index element, such as {@code \"[0]\"}."
+                }
+            },
+            {
+                "description": "@param  fromObject Object relative resolver of the value, this is used for the final reference and resolves the value. The first parameter is the {@link DataObject} where you get the value from, and the second is the field name. An example would be {@code (obj, name) -> obj.getString(name)} or as a method reference {@code DataObject::getString}.",
+                "guard": {
+                    "condition": "fromObject != null",
+                    "description": "@param  fromObject Object relative resolver of the value, this is used for the final reference and resolves the value. The first parameter is the {@link DataObject} where you get the value from, and the second is the field name. An example would be {@code (obj, name) -> obj.getString(name)} or as a method reference {@code DataObject::getString}."
+                }
+            },
+            {
+                "description": "@param  fromArray  Array relative resolver of the value, this is used for the final reference and resolves the value. The first parameter is the {@link DataArray} where you get the value from, and the second is the field index. An example would be {@code (array, index) -> obj.getString(index)} or as a method reference {@code DataArray::getString}.",
+                "guard": {
+                    "condition": "fromArray != null",
+                    "description": "@param  fromArray  Array relative resolver of the value, this is used for the final reference and resolves the value. The first parameter is the {@link DataArray} where you get the value from, and the second is the field index. An example would be {@code (array, index) -> obj.getString(index)} or as a method reference {@code DataArray::getString}."
+                }
+            }
+        ],
+        "post": [],
+        "throws": [
+            {
+                "exception": "java.lang.IllegalArgumentException",
+                "description": "@throws IllegalArgumentException If null is provided or the path is empty",
+                "guard": {
+                    "condition": "root == null || path == null || path.isEmpty() || fromObject == null || fromArray == null",
+                    "description": "@throws IllegalArgumentException If null is provided or the path is empty"
+                }
+            }
+        ]
+    },
+    {
+        "operation": {
+            "name": "getBoolean",
+            "parameterTypes": [
+                "DataObject",
+                "String",
+                "boolean"
+            ],
+            "classname": "net.dv8tion.jda.api.utils.data.DataPath"
+        },
+        "identifiers": {
+            "parameters": [
+                "root",
+                "path",
+                "fallback"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param  root The root data object, which is the top level accessor. <br>The very first element in the path corresponds to a field of that name within this root object.",
+                "guard": {
+                    "condition": "root != null",
+                    "description": "@param  root The root data object, which is the top level accessor. <br>The very first element in the path corresponds to a field of that name within this root object."
+                }
+            },
+            {
+                "description": "@param  path The path of the value, in accordance with the described grammar by {@link DataPath}. This must start with a name element, such as {@code \"foo\"}.",
+                "guard": {
+                    "condition": "path != null",
+                    "description": "@param  path The path of the value, in accordance with the described grammar by {@link DataPath}. This must start with a name element, such as {@code \"foo\"}."
+                }
+            }
+        ],
+        "post": [],
+        "throws": [
+            {
+                "exception": "java.lang.IllegalArgumentException",
+                "description": "@throws IllegalArgumentException If null is provided or the path is empty",
+                "guard": {
+                    "condition": "root == null || path == null || path.isEmpty()",
+                    "description": "@throws IllegalArgumentException If null is provided or the path is empty"
+                }
+            }
+        ]
+    },
+    {
+        "operation": {
+            "name": "getInt",
+            "parameterTypes": [
+                "DataObject",
+                "String"
+            ],
+            "classname": "net.dv8tion.jda.api.utils.data.DataPath"
+        },
+        "identifiers": {
+            "parameters": [
+                "root",
+                "path"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param  root The root data object, which is the top level accessor. <br>The very first element in the path corresponds to a field of that name within this root object.",
+                "guard": {
+                    "condition": "root != null",
+                    "description": "@param  root The root data object, which is the top level accessor. <br>The very first element in the path corresponds to a field of that name within this root object."
+                }
+            },
+            {
+                "description": "@param  path The path of the value, in accordance with the described grammar by {@link DataPath}. This must start with a name element, such as {@code \"foo\"}.",
+                "guard": {
+                    "condition": "path != null",
+                    "description": "@param  path The path of the value, in accordance with the described grammar by {@link DataPath}. This must start with a name element, such as {@code \"foo\"}."
+                }
+            }
+        ],
+        "post": [],
+        "throws": [
+            {
+                "exception": "java.lang.IllegalArgumentException",
+                "description": "@throws IllegalArgumentException If null is provided or the path is empty",
+                "guard": {
+                    "condition": "root == null || path == null || path.isEmpty()",
+                    "description": "@throws IllegalArgumentException If null is provided or the path is empty"
+                }
+            }
+        ]
+    }
+]

@@ -19,15 +19,16 @@ import com.github.javaparser.resolution.MethodUsage;
 import com.github.javaparser.resolution.UnsolvedSymbolException;
 import com.github.javaparser.resolution.declarations.ResolvedFieldDeclaration;
 import com.github.javaparser.resolution.declarations.ResolvedReferenceTypeDeclaration;
+import com.github.javaparser.resolution.types.ResolvedReferenceType;
 import com.github.javaparser.resolution.types.ResolvedType;
 import com.github.javaparser.symbolsolver.javaparsermodel.declarations.JavaParserFieldDeclaration;
 import com.github.javaparser.symbolsolver.reflectionmodel.ReflectionFieldDeclaration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleType;
 import star.tratto.data.JPClassNotFoundException;
 import star.tratto.data.PackageDeclarationNotFoundException;
-import star.tratto.data.ResolvedTypeNotFound;
 import star.tratto.data.TrattoPath;
 import star.tratto.data.records.AttributeTokens;
 import star.tratto.data.records.ClassTokens;
@@ -660,14 +661,51 @@ public class DatasetUtils {
             if (JavaParserUtils.isTypeVariable(type)) {
                 type = JavaParserUtils.getObjectType();
             }
-            List<MethodUsage> allMethods = type.asReferenceType().getAllMethods()
+            methodList.addAll(getMethodsFromResolvedReferenceType(type.asReferenceType()));
+        } else if (jpResolvedType.isWildcard()) {
+            ResolvedType type = jpResolvedType.asWildcard().getBoundedType();
+            if (type.isReferenceType()) {
+                methodList.addAll(getMethodsFromResolvedReferenceType(type.asReferenceType()));
+            }
+        } else if (!(jpResolvedType.isPrimitive() || jpResolvedType.isVoid())) {
+            // unknown type.
+            logger.error(String.format(
+                    "Return type %s different from ReferenceType, PrimitiveType, " +
+                            "ArrayType, TypeVariable, VoidType and WildcardType not yet supported%n", jpResolvedType
+            ));
+        }
+        return methodList;
+    }
+
+    /**
+     * Collects information for all non-private, non-static, non-void methods
+     * available to a given type, which must be a reference type.
+     * @param type a resolved reference type
+     * @throws IllegalArgumentException if the given type is primitive, or array,
+     * or void, or a type variable, or a wildcard type
+     * @return a list of method tokens for all available methods. Returns an
+     * empty list if it was impossible to get the methods of the given type. This
+     * happens, for example, for types that are instance of {@link
+     * com.github.javaparser.symbolsolver.javassistmodel.JavassistAnnotationDeclaration
+     * JavassistAnnotationDeclaration}.
+     */
+    private static List<MethodTokens> getMethodsFromResolvedReferenceType(
+            ResolvedReferenceType type
+    ) throws IllegalArgumentException {
+        if (type.isPrimitive() || type.isArray() || type.isVoid() || type.isTypeVariable() || type.isWildcard()) {
+            throw new IllegalArgumentException("Type must be a reference type.");
+        }
+        try {
+            return type.getAllMethods()
                     .stream()
                     .map(MethodUsage::new)
                     .filter(JavaParserUtils::isNonPrivateNonStaticNonVoidMethod)
+                    .map(MethodTokens::new)
                     .toList();
-            methodList.addAll(allMethods.stream().map(MethodTokens::new).toList());
+        } catch (UnsupportedOperationException e) {
+            logger.warn("Unable to get methods from type {}", type);
+            return Collections.emptyList();
         }
-        return methodList;
     }
 
     /**
@@ -821,11 +859,7 @@ public class DatasetUtils {
             // add all fields accessible to the class.
             Optional<ResolvedReferenceTypeDeclaration> jpResolvedDeclaration = jpResolvedType.asReferenceType().getTypeDeclaration();
             if (jpResolvedDeclaration.isPresent()) {
-                List<ResolvedFieldDeclaration> jpResolvedFields = jpResolvedDeclaration.get().getAllFields()
-                        .stream()
-                        .filter(JavaParserUtils::isNonPrivateNonStaticAttribute)
-                        .toList();
-                fieldList.addAll(convertFieldDeclarationToAttributeTokens(jpResolvedFields));
+                fieldList.addAll(getFieldsFromResolvedReferenceTypeDeclaration(jpResolvedDeclaration.get()));
             } else {
                 // unable to recover type declaration.
                 logger.error(String.format(
@@ -833,14 +867,37 @@ public class DatasetUtils {
                                 "resolved type declaration not found.", jpResolvedType
                 ));
             }
+        } else if (jpResolvedType.isWildcard()) {
+            ResolvedType type = jpResolvedType.asWildcard().getBoundedType();
+            if (type.isReferenceType()) {
+                Optional<ResolvedReferenceTypeDeclaration> jpResolvedDeclaration = type.asReferenceType().getTypeDeclaration();
+                if (jpResolvedDeclaration.isPresent()) {
+                    fieldList.addAll(getFieldsFromResolvedReferenceTypeDeclaration(jpResolvedDeclaration.get()));
+                }
+            }
         } else if (!(jpResolvedType.isPrimitive() || jpResolvedType.isVoid() || jpResolvedType.isTypeVariable())) {
             // unknown type.
             logger.error(String.format(
                     "Return type %s different from ReferenceType, PrimitiveType, " +
-                            "ArrayType, TypeVariable, and VoidType not yet supported%n", jpResolvedType
+                            "ArrayType, TypeVariable, VoidType and WildcardType not yet supported%n", jpResolvedType
             ));
         }
         return fieldList;
+    }
+
+    /**
+     * Collects information for all non-private, non-static fields (attributes)
+     * available to a given resolved reference type declaration
+     * @param type a resolved reference type declaration
+     * @return a list of attribute tokens for all available attributes.
+     */
+    private static List<AttributeTokens> getFieldsFromResolvedReferenceTypeDeclaration(
+            ResolvedReferenceTypeDeclaration type
+    ) {
+        return convertFieldDeclarationToAttributeTokens(type.getAllFields()
+                .stream()
+                .filter(JavaParserUtils::isNonPrivateNonStaticAttribute)
+                .toList());
     }
 
     /**
@@ -991,30 +1048,25 @@ public class DatasetUtils {
      * this), (2) the return type of getName(), and (3) the return type of
      * length().
      *
-     * @param jpClass the declaring class
-     * @param jpCallable a method
-     * @param methodArgs the arguments of the method
-     * @param oracle an oracle corresponding to the method
+     * @param oracleDatapoint an oracle data point which must have the following
+     *                        attributes populated:
+     *                        <ul>
+     *                        <li>classSourceCode</li>
+     *                        <li>className</li>
+     *                        <li>methodSourceCode</li>
+     *                        <li>tokensProjectClasses</li>
+     *                        <li>oracle</li>
+     *                        </ul>
      * @return a list of method tokens
      */
-    public static List<MethodTokens> getTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(
-            TypeDeclaration<?> jpClass,
-            CallableDeclaration<?> jpCallable,
-            List<MethodArgumentTokens> methodArgs,
-            String oracle
-    ) {
+    public static List<MethodTokens> getTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(OracleDatapoint oracleDatapoint) {
         List<MethodTokens> methodList = new ArrayList<>();
-        List<String> subexpressions = getSubexpressions(oracle);
+        List<String> subexpressions = getSubexpressions(oracleDatapoint.getOracle());
         for (String subexpression : subexpressions) {
             ResolvedType resolvedType;
             try {
-                resolvedType = JavaParserUtils.getResolvedTypeOfExpression(
-                        jpClass,
-                        jpCallable,
-                        methodArgs,
-                        subexpression
-                );
-            } catch (UnsolvedSymbolException | ResolvedTypeNotFound e) {
+                resolvedType = JavaParserUtils.getResolvedTypeOfExpression(subexpression, oracleDatapoint);
+            } catch (UnsolvedSymbolException e) {
                 resolvedType = JavaParserUtils.getObjectType();
             }
             if (!resolvedType.isPrimitive()) {
@@ -1030,30 +1082,25 @@ public class DatasetUtils {
      * given oracle. Includes attributes visible to each sub-expression within
      * an oracle.
      *
-     * @param jpClass the declaring class
-     * @param jpCallable a method
-     * @param methodArgs the arguments of the method
-     * @param oracle an oracle corresponding to the method
+     * @param oracleDatapoint an oracle data point which must have the following
+     *                        attributes populated:
+     *                        <ul>
+     *                        <li>classSourceCode</li>
+     *                        <li>className</li>
+     *                        <li>methodSourceCode</li>
+     *                        <li>tokensProjectClasses</li>
+     *                        <li>oracle</li>
+     *                        </ul>
      * @return a list of attribute tokens
      */
-    public static List<AttributeTokens> getTokensOracleVariablesNonPrivateNonStaticAttributes(
-            TypeDeclaration<?> jpClass,
-            CallableDeclaration<?> jpCallable,
-            List<MethodArgumentTokens> methodArgs,
-            String oracle
-    ) {
+    public static List<AttributeTokens> getTokensOracleVariablesNonPrivateNonStaticAttributes(OracleDatapoint oracleDatapoint) {
         List<AttributeTokens> attributeList = new ArrayList<>();
-        List<String> subexpressions = getSubexpressions(oracle);
+        List<String> subexpressions = getSubexpressions(oracleDatapoint.getOracle());
         for (String subexpression : subexpressions) {
             ResolvedType resolvedType;
             try {
-                resolvedType = JavaParserUtils.getResolvedTypeOfExpression(
-                        jpClass,
-                        jpCallable,
-                        methodArgs,
-                        subexpression
-                );
-            } catch (UnsolvedSymbolException | ResolvedTypeNotFound e) {
+                resolvedType = JavaParserUtils.getResolvedTypeOfExpression(subexpression, oracleDatapoint);
+            } catch (UnsolvedSymbolException e) {
                 resolvedType = JavaParserUtils.getObjectType();
             }
             attributeList.addAll(getFieldsFromType(resolvedType));

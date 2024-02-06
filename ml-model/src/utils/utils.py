@@ -5,9 +5,13 @@ from typing import Type
 import torch
 from accelerate import Accelerator, load_checkpoint_and_dispatch
 
+from src.types.ClassificationType import ClassificationType
 from src.types.DeviceType import DeviceType
+from src.types.TransformerType import TransformerType
+from src.types.TrattoModelType import TrattoModelType
 
 accelerator = Accelerator()
+rapids_available = False
 
 def check_cuda_device():
     device_ids = list(range(torch.cuda.device_count()))
@@ -120,6 +124,63 @@ def import_json(file_path: str):
         input_obj = json.load(input_file)
         return input_file, input_obj
 
+def is_running_on_gpu():
+    """
+    The method checks if the code is running on a GPU.
+
+    Returns
+    -------
+    True if the code is running on a GPU. False, otherwise.
+    """
+    return torch.cuda.is_available()
+
+def is_rapids_available():
+    """
+    The method checks if the Rapids CUDF library is available.
+
+    Returns
+    -------
+    True if the Rapids cuDF library is available. False, otherwise.
+    """
+    global rapids_available
+    return rapids_available
+
+def set_rapids_available():
+    """
+    The method sets the Rapids cuDF library as available.
+    """
+    global rapids_available
+    rapids_available = True
+
+def is_valid_combination(
+        tratto_model_type: Type[TrattoModelType],
+        transformer_type: Type[TransformerType],
+        classification_type: Type[ClassificationType]
+):
+    """
+    The method checks if the given combination of TrattoModelType and TransformerType is valid.
+
+    Parameters
+    ----------
+    tratto_model_type: Type[TrattoModelType]
+        The type of Tratto model considered (tokenClasses, tokenValues, or oracles).
+    transformer_type: Type[TransformerType]
+        The type of transformer (encoder or decoder)
+    classification_type: Type[ClassificationType]
+        The type of classification (category or label prediction)
+
+    Returns
+    -------
+    True if the combination is valid. False, otherwise.
+    """
+    if tratto_model_type == TrattoModelType.ORACLES:
+        if classification_type == ClassificationType.CATEGORY_PREDICTION:
+                return False
+    if tratto_model_type == TrattoModelType.TOKEN_VALUES:
+        if classification_type == ClassificationType.CATEGORY_PREDICTION:
+            if transformer_type == TransformerType.ENCODER:
+                return False
+    return True
 
 def release_memory():
     # Release memory on GPU

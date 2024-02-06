@@ -154,7 +154,7 @@ public class OracleDatapointBuilder {
             case 2 -> {
                 PostCondition altCondition = conditionList.get(1);
                 String altTag = altCondition.description();
-                assert mainTag.equals(altTag);
+                if (!mainTag.equals(altTag)) throw new AssertionError();
                 Property altProperty = altCondition.property();
                 sb.append(altProperty.condition());
             }
@@ -168,7 +168,9 @@ public class OracleDatapointBuilder {
     }
 
     private void setPostConditionInfo(List<PostCondition> conditionList) {
-        assert conditionList.size() <= 2 && !conditionList.isEmpty();
+        if (conditionList.size() > 2 || conditionList.isEmpty()) {
+            throw new IllegalArgumentException("Expected condition list to have 1 or 2 conditions, but got " + conditionList.size());
+        }
         this.setOracleType(OracleType.NORMAL_POST);
         this.setJavadocTag(conditionList.get(0).description());
         this.setOracle(getPostConditionOracle(conditionList));

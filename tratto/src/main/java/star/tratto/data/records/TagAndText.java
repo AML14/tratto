@@ -66,12 +66,25 @@ public record TagAndText(
      * @return a String representation of the Javadoc tag and its text
      */
     public String getTagAsString() {
+        if (tagName == null && tagBody == null) {
+            return "";
+        }
         StringBuilder sb = new StringBuilder();
         sb.append(oracleTypeToJavadocTag(this.oracleType()));
-        if (!this.tagName().equals("")) {
+        if (!this.tagName().isEmpty()) {
             sb.append(this.tagName()).append(" ");
         }
         sb.append(this.tagBody());
         return sb.toString();
+    }
+
+    @Override
+    public String tagName() {
+        return tagName != null ? tagName : "";
+    }
+
+    @Override
+    public String tagBody() {
+        return tagBody != null ? tagBody : "";
     }
 }

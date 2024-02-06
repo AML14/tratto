@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import star.tratto.TokensDataset;
 import star.tratto.data.TokenDPType;
+import star.tratto.data.TrattoPath;
+import star.tratto.util.FileUtils;
 
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
@@ -79,14 +81,10 @@ public class TokensDatasetPreprocessing {
             "Comma",
             "ClassModifier"
     );
-    private static final List<String> projects = List.of(
-            "plume-lib-1.1.0",
-            "jgrapht-core-0.9.2",
-            "gs-core-1.3",
-            "guava-19.0",
-            "commons-collections4-4.1",
-            "commons-math3-3.6.1"
-    );
+    private static final List<String> projects = FileUtils.readJSONList(TrattoPath.INPUT_PROJECTS.getPath())
+            .stream()
+            .map(p -> (String) ((Map)p).get("projectName"))
+            .toList();
     private static final String oracleIdFeature = "oracleId";
     private static final String javadocTagFeature = "javadocTag";
     private static final String methodSourceCodeFeature = "methodSourceCode";
@@ -252,7 +250,7 @@ public class TokensDatasetPreprocessing {
             }
         }
 
-        assert removedIds == idsToRemove.size();
+        if (removedIds != idsToRemove.size()) throw new AssertionError();
 
         logger.info("Finished updating TokenDatapoints files. Final stats:");
         logger.info("Total number of TokenDatapoints removed: {}", idsToRemove.size());

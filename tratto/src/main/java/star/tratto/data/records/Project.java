@@ -16,5 +16,7 @@ public record Project(
         /* The directory of JDoctor conditions for the project.  */
         Path conditionsPath,
         /* The project source code directory. */
-        Path srcPath
+        Path srcPath,
+        /* Whether to generate empty oracles. */
+        boolean generateEmptyOracles
 ) {}

@@ -289,17 +289,7 @@ public class DatasetUtilsTest {
     @Test
     public void getTokensOracleVariablesNonPrivateNonStaticNonVoidMethodsTest() {
         OracleDatapoint oracleDatapoint = oracleDatapoints.get(1);
-        TypeDeclaration<?> jpClass = getClassOrInterface(oracleDatapoint.getClassSourceCode(), oracleDatapoint.getClassName());
-        String methodName = "value";
-        List<String> methodArgs = List.of("DerivativeStructure");
-        CallableDeclaration<?> jpCallable = getCallableDeclaration(jpClass, methodName, methodArgs);
-        assertNotNull(jpCallable);
-        List<MethodTokens> actualList = DatasetUtils.getTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(
-                jpClass,
-                jpCallable,
-                oracleDatapoint.getTokensMethodArguments(),
-                oracleDatapoint.getOracle()
-        );
+        List<MethodTokens> actualList = DatasetUtils.getTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(oracleDatapoint);
         List<String> possiblePackageNames = List.of(
                 "java.lang",
                 ""
@@ -321,17 +311,7 @@ public class DatasetUtilsTest {
     @Test
     public void getTokensOracleVariablesNonPrivateNonStaticAttributesTest() {
         OracleDatapoint oracleDatapoint = oracleDatapoints.get(1);
-        TypeDeclaration<?> jpClass = getClassOrInterface(oracleDatapoint.getClassSourceCode(), oracleDatapoint.getClassName());
-        String methodName = "value";
-        List<String> methodArgs = List.of("DerivativeStructure");
-        CallableDeclaration<?> jpCallable = getCallableDeclaration(jpClass, methodName, methodArgs);
-        assertNotNull(jpCallable);
-        List<AttributeTokens> actualList = DatasetUtils.getTokensOracleVariablesNonPrivateNonStaticAttributes(
-                jpClass,
-                jpCallable,
-                oracleDatapoint.getTokensMethodArguments(),
-                oracleDatapoint.getOracle()
-        );
+        List<AttributeTokens> actualList = DatasetUtils.getTokensOracleVariablesNonPrivateNonStaticAttributes(oracleDatapoint);
         assertEquals(List.of(new AttributeTokens("length", "", "double[]", "public final int length;")), actualList);
     }
 

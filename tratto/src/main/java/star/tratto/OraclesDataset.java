@@ -1,5 +1,7 @@
 package star.tratto;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import star.tratto.data.OracleDatapoint;
 import star.tratto.data.ProjectInitializer;
 import star.tratto.data.TrattoPath;
@@ -31,6 +33,8 @@ public class OraclesDataset {
      */
     private static final int chunkSize = 100;
 
+    private static final Logger logger = LoggerFactory.getLogger(OraclesDataset.class);
+
     /**
      * Reads all JSON files containing JDoctor conditions of a given project.
      *
@@ -57,7 +61,7 @@ public class OraclesDataset {
      * @return the oracle datapoints of the project 
      */
     private static List<OracleDatapoint> getProjectOracleDatapoints(Project project) {
-        System.out.printf("%nCollecting data from: " + project.projectName() + "%n");
+        logger.info("Collecting data from: {}", project.projectName());
         List<JDoctorCondition> jDoctorConditions = getConditions(project);
         return oracleDPGenerator.generate(project, jDoctorConditions);
     }

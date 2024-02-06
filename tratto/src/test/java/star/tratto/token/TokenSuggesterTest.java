@@ -1183,7 +1183,8 @@ public class TokenSuggesterTest {
                 Arguments.of("ArraysStreamDeadEnd", "true ? Arrays.stream(", oracleDatapoints.get(0), List.of(), Tokens.TOKENS),
                 Arguments.of("StreamDeadEnd", "true?methodResultID.stream().noneMatch(jdVar->jdVar==n", oracleDatapoints.get(4), List.of(), Tokens.TOKENS),
                 Arguments.of("ArraysStream", "true ? Arrays.stream(", oracleDatapoints.get(5), List.of("methodResultID", "coefficients"), Tokens.TOKENS.stream().filter(t -> !t.equals("methodResultID")).collect(Collectors.toList())),
-                Arguments.of("ArraysPeriod", "true ? Arrays.", oracleDatapoints.get(5), List.of("stream"), Tokens.TOKENS.stream().filter(t -> !t.equals("stream")).collect(Collectors.toList()))
+                Arguments.of("ArraysPeriod", "true ? Arrays.", oracleDatapoints.get(5), List.of("stream"), Tokens.TOKENS.stream().filter(t -> !t.equals("stream")).collect(Collectors.toList())),
+                Arguments.of("MethodResultIDConstructor", "true ? ", oracleDatapoints.get(6), List.of("methodResultID"), List.of("this"))
         );
     }
 }

@@ -1,0 +1,589 @@
+[
+    {
+        "operation": {
+            "name": "canTalk",
+            "parameterTypes": [
+                "Member"
+            ],
+            "classname": "net.dv8tion.jda.api.entities.channel.middleman.GuildMessageChannel"
+        },
+        "identifiers": {
+            "parameters": [
+                "member"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "",
+                "guard": {
+                    "condition": "member != null",
+                    "description": ""
+                }
+            }
+        ],
+        "post": [
+            {
+                "description": "@return True, if the specified member is able to read and send messages in this channel",
+                "property": {
+                    "condition": "methodResultID == true",
+                    "description": "@return True, if the specified member is able to read and send messages in this channel"
+                },
+                "guard": {
+                    "condition": "member.hasPermission(this, Permission.VIEW_CHANNEL) && member.hasPermission(this, Permission.MESSAGE_SEND)",
+                    "description": "@return True, if the specified member is able to read and send messages in this channel"
+                }
+            },
+            {
+                "description": "@return True, if the specified member is able to read and send messages in this channel",
+                "property": {
+                    "condition": "methodResultID == false",
+                    "description": "@return True, if the specified member is able to read and send messages in this channel"
+                },
+                "guard": {
+                    "condition": "(member.hasPermission(this, Permission.VIEW_CHANNEL) && member.hasPermission(this, Permission.MESSAGE_SEND)) == false ",
+                    "description": "@return True, if the specified member is able to read and send messages in this channel"
+                }
+            }
+        ],
+        "throws": [
+            {
+                "exception": "java.lang.IllegalArgumentException",
+                "description": "",
+                "guard": {
+                    "condition": "member == null",
+                    "description": ""
+                }
+            }
+        ]
+    },
+    {
+        "operation": {
+            "name": "removeReactionById",
+            "parameterTypes": [
+                "String",
+                "Emoji",
+                "User"
+            ],
+            "classname": "net.dv8tion.jda.api.entities.channel.middleman.GuildMessageChannel"
+        },
+        "identifiers": {
+            "parameters": [
+                "messageId",
+                "emoji",
+                "user"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param  messageId The messageId to remove the reaction from",
+                "guard": {
+                    "condition": "messageId != null",
+                    "description": "@param  messageId The messageId to remove the reaction from"
+                }
+            },
+            {
+                "description": "@param  emoji The emoji to remove",
+                "guard": {
+                    "condition": "emoji != null",
+                    "description": "@param  emoji The emoji to remove"
+                }
+            },
+            {
+                "description": "@param  user The target user of which to remove from",
+                "guard": {
+                    "condition": "user != null",
+                    "description": "@param  user The target user of which to remove from"
+                }
+            }
+        ],
+        "post": [],
+        "throws": [
+            {
+                "exception": "java.lang.IllegalArgumentException",
+                "description": " @throws java.lang.IllegalArgumentException <ul><li>If provided {@code messageId} is {@code null} or empty.</li><li>If provided {@code emoji} is {@code null}.</li></ul>",
+                "guard": {
+                    "condition": "messageId == null || messageId.isEmpty() || emoji == null",
+                    "description": " @throws java.lang.IllegalArgumentException <ul><li>If provided {@code messageId} is {@code null} or empty.</li><li>If provided {@code emoji} is {@code null}.</li></ul>"
+                }
+            },
+            {
+                "exception": "net.dv8tion.jda.api.exceptions.InsufficientPermissionException",
+                "description": "@throws net.dv8tion.jda.api.exceptions.InsufficientPermissionException. If the currently logged in account does not have {@link net.dv8tion.jda.api.Permission#MESSAGE_MANAGE Permission.MESSAGE_MANAGE} in this channel.",
+                "guard": {
+                    "condition": "this.getGuild().getSelfMember().hasPermission(this, Permission.MESSAGE_MANAGE) == false",
+                    "description": "@throws net.dv8tion.jda.api.exceptions.InsufficientPermissionException. If the currently logged in account does not have {@link net.dv8tion.jda.api.Permission#MESSAGE_MANAGE Permission.MESSAGE_MANAGE} in this channel."
+                }
+            }
+        ]
+    },
+    {
+        "operation": {
+            "name": "removeReactionById",
+            "parameterTypes": [
+                "long",
+                "Emoji",
+                "User"
+            ],
+            "classname": "net.dv8tion.jda.api.entities.channel.middleman.GuildMessageChannel"
+        },
+        "identifiers": {
+            "parameters": [
+                "messageId",
+                "emoji",
+                "user"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param  emoji The emoji to remove",
+                "guard": {
+                    "condition": "emoji != null",
+                    "description": "@param  emoji The emoji to remove"
+                }
+            },
+            {
+                "description": "@param  user  The target user of which to remove from",
+                "guard": {
+                    "condition": "user != null",
+                    "description": "@param  user  The target user of which to remove from"
+                }
+            }
+        ],
+        "post": [],
+        "throws": [
+            {
+                "exception": "java.lang.IllegalArgumentException",
+                "description": "@throws java.lang.IllegalArgumentException <ul><li>If provided {@code messageId} is {@code null} or empty.</li><li>If provided {@code emoji} is {@code null}.</li></ul>",
+                "guard": {
+                    "condition": "emoji == null",
+                    "description": "@throws java.lang.IllegalArgumentException <ul><li>If provided {@code messageId} is {@code null} or empty.</li><li>If provided {@code emoji} is {@code null}.</li></ul>"
+                }
+            },
+            {
+                "exception": " net.dv8tion.jda.api.exceptions.InsufficientPermissionException",
+                "description": "@throws net.dv8tion.jda.api.exceptions.InsufficientPermissionException If the currently logged in account does not have {@link net.dv8tion.jda.api.Permission#MESSAGE_MANAGE Permission.MESSAGE_MANAGE} in this channel.",
+                "guard": {
+                    "condition": "this.getGuild().getSelfMember().hasPermission(this, Permission.MESSAGE_MANAGE) == false",
+                    "description": "@throws net.dv8tion.jda.api.exceptions.InsufficientPermissionException If the currently logged in account does not have {@link net.dv8tion.jda.api.Permission#MESSAGE_MANAGE Permission.MESSAGE_MANAGE} in this channel."
+                }
+            }
+        ]
+    },
+    {
+        "operation": {
+            "name": "deleteMessages",
+            "parameterTypes": [
+                "Collection"
+            ],
+            "classname": "net.dv8tion.jda.api.entities.channel.middleman.GuildMessageChannel"
+        },
+        "identifiers": {
+            "parameters": [
+                "messages"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param messages The collection of messages to delete.",
+                "guard": {
+                    "condition": "messages != null && (messages.isEmpty())==false",
+                    "description": "@param messages The collection of messages to delete."
+                }
+            }
+        ],
+        "post": [
+            {
+                "description": "@return {@link net.dv8tion.jda.api.requests.restaction.AuditableRestAction AuditableRestAction}",
+                "property": {
+                    "condition": "methodResultID instanceof AuditableRestAction",
+                    "description": "@return {@link net.dv8tion.jda.api.requests.restaction.AuditableRestAction AuditableRestAction}"
+                },
+                "guard": {
+                    "condition": "true",
+                    "description": "@return {@link net.dv8tion.jda.api.requests.restaction.AuditableRestAction AuditableRestAction}"
+                }
+            }
+        ],
+        "throws": [
+            {
+                "exception": "java.lang.IllegalArgumentException",
+                "description": "",
+                "guard": {
+                    "condition": "messages == null",
+                    "description": ""
+                }
+            },
+            {
+                "exception": "net.dv8tion.jda.api.exceptions.InsufficientPermissionException",
+                "description": " @throws net.dv8tion.jda.api.exceptions.InsufficientPermissionException If this account does not have {@link net.dv8tion.jda.api.Permission#MESSAGE_MANAGE Permission.MESSAGE_MANAGE}",
+                "guard": {
+                    "condition": "this.getGuild().getSelfMember().hasPermission(this, Permission.MESSAGE_MANAGE) == false",
+                    "description": " @throws net.dv8tion.jda.api.exceptions.InsufficientPermissionException If this account does not have {@link net.dv8tion.jda.api.Permission#MESSAGE_MANAGE Permission.MESSAGE_MANAGE}"
+                }
+            },
+            {
+                "exception": "java.lang.IllegalArgumentException",
+                "description": "@throws IllegalArgumentException If the size of the list less than 2 or more than 100 messages.",
+                "guard": {
+                    "condition": "messages.size() < 2 || messages.size() > 100",
+                    "description": "@throws IllegalArgumentException If the size of the list less than 2 or more than 100 messages."
+                }
+            }
+        ]
+    },
+    {
+        "operation": {
+            "name": "deleteMessagesByIds",
+            "parameterTypes": [
+                "Collection"
+            ],
+            "classname": "net.dv8tion.jda.api.entities.channel.middleman.GuildMessageChannel"
+        },
+        "identifiers": {
+            "parameters": [
+                "messageIds"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [],
+        "post": [
+            {
+                "description": "@return {@link net.dv8tion.jda.api.requests.restaction.AuditableRestAction AuditableRestAction}",
+                "property": {
+                    "condition": "methodResultID instanceof AuditableRestAction",
+                    "description": "@return {@link net.dv8tion.jda.api.requests.restaction.AuditableRestAction AuditableRestAction}"
+                },
+                "guard": {
+                    "condition": "true",
+                    "description": "@return {@link net.dv8tion.jda.api.requests.restaction.AuditableRestAction AuditableRestAction}"
+                }
+            }
+        ],
+        "throws": [
+            {
+                "exception": "java.lang.NumberFormatException",
+                "description": "@throws java.lang.NumberFormatException If any of the provided ids cannot be parsed by {@link Long#parseLong(String)}",
+                "guard": {
+                    "condition": "messageIds.stream().anyMatch(jdVar -> jdVar == null || jdVar.isEmpty())",
+                    "description": "@throws java.lang.NumberFormatException If any of the provided ids cannot be parsed by {@link Long#parseLong(String)}"
+                }
+            },
+            {
+                "exception": "java.lang.IllegalArgumentException",
+                "description": "@throws java.lang.IllegalArgumentException If the size of the list less than 2 or more than 100 messages.",
+                "guard": {
+                    "condition": "messageIds.size() < 2 || messageIds.size() > 100",
+                    "description": "@throws java.lang.IllegalArgumentException If the size of the list less than 2 or more than 100 messages."
+                }
+            },
+            {
+                "exception": "net.dv8tion.jda.api.exceptions.InsufficientPermissionException",
+                "description": "@throws net.dv8tion.jda.api.exceptions.InsufficientPermissionException If this account does not have {@link net.dv8tion.jda.api.Permission#MESSAGE_MANAGE Permission.MESSAGE_MANAGE}",
+                "guard": {
+                    "condition": "this.getGuild().getSelfMember().hasPermission(this, Permission.MESSAGE_MANAGE) == false",
+                    "description": "@throws net.dv8tion.jda.api.exceptions.InsufficientPermissionException If this account does not have {@link net.dv8tion.jda.api.Permission#MESSAGE_MANAGE Permission.MESSAGE_MANAGE}"
+                }
+            }
+        ]
+    },
+    {
+        "operation": {
+            "name": "clearReactionsById",
+            "parameterTypes": [
+                "String"
+            ],
+            "classname": "net.dv8tion.jda.api.entities.channel.middleman.GuildMessageChannel"
+        },
+        "identifiers": {
+            "parameters": [
+                "messageId"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": " @param messageId The not-empty valid message id",
+                "guard": {
+                    "condition": " messageId != null && (messageId.isEmpty())==false",
+                    "description": " @param messageId The not-empty valid message id"
+                }
+            }
+        ],
+        "post": [
+            {
+                "description": "@return {@link net.dv8tion.jda.api.requests.restaction.AuditableRestAction AuditableRestAction}",
+                "property": {
+                    "condition": "methodResultID instanceof AuditableRestAction",
+                    "description": "@return {@link net.dv8tion.jda.api.requests.restaction.AuditableRestAction AuditableRestAction}"
+                },
+                "guard": {
+                    "condition": "true",
+                    "description": "@return {@link net.dv8tion.jda.api.requests.restaction.AuditableRestAction AuditableRestAction}"
+                }
+            }
+        ],
+        "throws": [
+            {
+                "exception": "net.dv8tion.jda.api.exceptions.InsufficientPermissionException",
+                "description": "@throws net.dv8tion.jda.api.exceptions.InsufficientPermissionException If the currently logged in account does not have {@link net.dv8tion.jda.api.Permission#MESSAGE_MANAGE Permission.MESSAGE_MANAGE} in this channel.",
+                "guard": {
+                    "condition": "this.getGuild().getSelfMember().hasPermission(this, Permission.MESSAGE_MANAGE) == false",
+                    "description": "@throws net.dv8tion.jda.api.exceptions.InsufficientPermissionException If the currently logged in account does not have {@link net.dv8tion.jda.api.Permission#MESSAGE_MANAGE Permission.MESSAGE_MANAGE} in this channel."
+                }
+            },
+            {
+                "exception": "java.lang.IllegalArgumentException",
+                "description": "@throws java.lang.IllegalArgumentException If the provided {@code id} is {@code null} or empty.",
+                "guard": {
+                    "condition": "messageId == null || messageId.isEmpty()",
+                    "description": "@throws java.lang.IllegalArgumentException If the provided {@code id} is {@code null} or empty."
+                }
+            }
+        ]
+    },
+    {
+        "operation": {
+            "name": "clearReactionsById",
+            "parameterTypes": [
+                "long"
+            ],
+            "classname": "net.dv8tion.jda.api.entities.channel.middleman.GuildMessageChannel"
+        },
+        "identifiers": {
+            "parameters": [
+                "messageId"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [],
+        "post": [
+            {
+                "description": "@return {@link net.dv8tion.jda.api.requests.restaction.AuditableRestAction AuditableRestAction}",
+                "property": {
+                    "condition": "methodResultID instanceof AuditableRestAction",
+                    "description": "@return {@link net.dv8tion.jda.api.requests.restaction.AuditableRestAction AuditableRestAction}"
+                },
+                "guard": {
+                    "condition": "true",
+                    "description": "@return {@link net.dv8tion.jda.api.requests.restaction.AuditableRestAction AuditableRestAction}"
+                }
+            }
+        ],
+        "throws": [
+            {
+                "exception": "net.dv8tion.jda.api.exceptions.InsufficientPermissionException",
+                "description": "@throws net.dv8tion.jda.api.exceptions.InsufficientPermissionException If the currently logged in account does not have {@link net.dv8tion.jda.api.Permission#MESSAGE_MANAGE Permission.MESSAGE_MANAGE} in this channel.",
+                "guard": {
+                    "condition": "this.getGuild().getSelfMember().hasPermission(this, Permission.MESSAGE_MANAGE) == false",
+                    "description": "@throws net.dv8tion.jda.api.exceptions.InsufficientPermissionException If the currently logged in account does not have {@link net.dv8tion.jda.api.Permission#MESSAGE_MANAGE Permission.MESSAGE_MANAGE} in this channel."
+                }
+            }
+        ]
+    },
+    {
+        "operation": {
+            "name": "clearReactionsById",
+            "parameterTypes": [
+                "String",
+                "Emoji"
+            ],
+            "classname": "net.dv8tion.jda.api.entities.channel.middleman.GuildMessageChannel"
+        },
+        "identifiers": {
+            "parameters": [
+                "messageId",
+                "emoji"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param  messageId The id for the target message",
+                "guard": {
+                    "condition": "messageId != null",
+                    "description": "@param  messageId The id for the target message"
+                }
+            },
+            {
+                "description": "@param  emoji The {@link Emoji} to remove reactions for",
+                "guard": {
+                    "condition": "emoji != null",
+                    "description": "@param  emoji The {@link Emoji} to remove reactions for"
+                }
+            }
+        ],
+        "post": [],
+        "throws": [
+            {
+                "exception": "net.dv8tion.jda.api.exceptions.InsufficientPermissionException",
+                "description": "@throws InsufficientPermissionException If the currently logged in account does not have {@link Permission#MESSAGE_MANAGE} in the channel",
+                "guard": {
+                    "condition": "this.getGuild().getSelfMember().hasPermission(this, Permission.MESSAGE_MANAGE) == false",
+                    "description": "@throws InsufficientPermissionException If the currently logged in account does not have {@link Permission#MESSAGE_MANAGE} in the channel"
+                }
+            },
+            {
+                "exception": "java.lang.IllegalArgumentException",
+                "description": "@throws IllegalArgumentException If provided with null",
+                "guard": {
+                    "condition": "messageId == null || emoji == null",
+                    "description": "@throws IllegalArgumentException If provided with null"
+                }
+            }
+        ]
+    },
+    {
+        "operation": {
+            "name": "clearReactionsById",
+            "parameterTypes": [
+                "long",
+                "Emoji"
+            ],
+            "classname": "net.dv8tion.jda.api.entities.channel.middleman.GuildMessageChannel"
+        },
+        "identifiers": {
+            "parameters": [
+                "messageId",
+                "emoji"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param  emoji The {@link Emoji} to remove reactions for",
+                "guard": {
+                    "condition": "emoji != null",
+                    "description": "@param  emoji The {@link Emoji} to remove reactions for"
+                }
+            }
+        ],
+        "post": [],
+        "throws": [
+            {
+                "exception": "java.lang.IllegalArgumentException",
+                "description": "@throws IllegalArgumentException If provided with null",
+                "guard": {
+                    "condition": "emoji == null",
+                    "description": "@throws IllegalArgumentException If provided with null"
+                }
+            }
+        ]
+    },
+    {
+        "operation": {
+            "name": "sendStickers",
+            "parameterTypes": [
+                "Collection"
+            ],
+            "classname": "net.dv8tion.jda.api.entities.channel.middleman.GuildMessageChannel"
+        },
+        "identifiers": {
+            "parameters": [
+                "stickers"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param  stickers Collection of 1-3 stickers to send",
+                "guard": {
+                    "condition": "stickers != null",
+                    "description": "@param  stickers Collection of 1-3 stickers to send"
+                }
+            }
+        ],
+        "post": [],
+        "throws": [
+            {
+                "exception": "java.lang.IllegalArgumentException",
+                "description": "@throws IllegalArgumentException <ul><li>If any of the provided stickers is a {@link GuildSticker}, which is either {@link GuildSticker#isAvailable() unavailable} or from a different guild.</li><li>If the list is empty or has more than 3 stickers</li><li>If null is provided</li></ul>",
+                "guard": {
+                    "condition": "stickers == null || stickers.isEmpty() || stickers.size() > 3 || stickers.stream().anyMatch(jdVar -> this.getJDA().retrieveSticker(jdVar).complete().getType()== StickerType.STANDARD || (this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().isAvailable())==false || this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().getGuildIdLong() != this.getGuild().getIdLong())",
+                    "description": "@throws IllegalArgumentException <ul><li>If any of the provided stickers is a {@link GuildSticker}, which is either {@link GuildSticker#isAvailable() unavailable} or from a different guild.</li><li>If the list is empty or has more than 3 stickers</li><li>If null is provided</li></ul>"
+                }
+            },
+            {
+                "exception": "net.dv8tion.jda.api.exceptions.MissingAccessException",
+                "description": "@throws MissingAccessException If the currently logged in account does not have {@link Permission#VIEW_CHANNEL Permission.VIEW_CHANNEL} in this channel",
+                "guard": {
+                    "condition": "this.getGuild().getSelfMember().hasPermission(this, Permission.VIEW_CHANNEL) == false",
+                    "description": "@throws MissingAccessException If the currently logged in account does not have {@link Permission#VIEW_CHANNEL Permission.VIEW_CHANNEL} in this channel"
+                }
+            },
+            {
+                "exception": "net.dv8tion.jda.api.exceptions.InsufficientPermissionException",
+                "description": "@throws InsufficientPermissionException <ul><li>If this is a {@link ThreadChannel} and the bot does not have {@link Permission#MESSAGE_SEND_IN_THREADS Permission.MESSAGE_SEND_IN_THREADS}</li><li>If this is not a {@link ThreadChannel} and the bot does not have {@link Permission#MESSAGE_SEND Permission.MESSAGE_SEND}</li></ul>",
+                "guard": {
+                    "condition": "this.getJDA().getSelfUser().isBot() && ((this.getType().isThread() && (this.getGuild().getSelfMember().hasPermission(this, Permission.MESSAGE_SEND_IN_THREADS))==false) || ((this.getType().isThread())==false && (this.getGuild().getSelfMember().hasPermission(this, Permission.MESSAGE_SEND))==false))",
+                    "description": "@throws InsufficientPermissionException <ul><li>If this is a {@link ThreadChannel} and the bot does not have {@link Permission#MESSAGE_SEND_IN_THREADS Permission.MESSAGE_SEND_IN_THREADS}</li><li>If this is not a {@link ThreadChannel} and the bot does not have {@link Permission#MESSAGE_SEND Permission.MESSAGE_SEND}</li></ul>"
+                }
+            }
+        ]
+    },
+    {
+        "operation": {
+            "name": "sendStickers",
+            "parameterTypes": [
+                "[LStickerSnowflake;"
+            ],
+            "classname": "net.dv8tion.jda.api.entities.channel.middleman.GuildMessageChannel"
+        },
+        "identifiers": {
+            "parameters": [
+                "stickers"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param stickers Collection of 1-3 stickers to send",
+                "guard": {
+                    "condition": "stickers != null",
+                    "description": "@param stickers Collection of 1-3 stickers to send"
+                }
+            }
+        ],
+        "post": [],
+        "throws": [
+            {
+                "exception": "net.dv8tion.jda.api.exceptions.MissingAccessException",
+                "description": "@throws MissingAccessException If the currently logged in account does not have {@link Permission#VIEW_CHANNEL Permission.VIEW_CHANNEL} in this channel",
+                "guard": {
+                    "condition": "this.getGuild().getSelfMember().hasPermission(this, Permission.VIEW_CHANNEL) == false",
+                    "description": "@throws MissingAccessException If the currently logged in account does not have {@link Permission#VIEW_CHANNEL Permission.VIEW_CHANNEL} in this channel"
+                }
+            },
+            {
+                "exception": "net.dv8tion.jda.api.exceptions.InsufficientPermissionException",
+                "description": "@throws InsufficientPermissionException <ul><li>If this is a {@link ThreadChannel} and the bot does not have {@link Permission#MESSAGE_SEND_IN_THREADS Permission.MESSAGE_SEND_IN_THREADS}</li><li>If this is not a {@link ThreadChannel} and the bot does not have {@link Permission#MESSAGE_SEND Permission.MESSAGE_SEND}</li></ul>",
+                "guard": {
+                    "condition": "this.getJDA().getSelfUser().isBot() && ((this.getType().isThread() && (this.getGuild().getSelfMember().hasPermission(this, Permission.MESSAGE_SEND_IN_THREADS))==false) || ((this.getType().isThread())==false && (this.getGuild().getSelfMember().hasPermission(this, Permission.MESSAGE_SEND))==false))",
+                    "description": "@throws InsufficientPermissionException <ul><li>If this is a {@link ThreadChannel} and the bot does not have {@link Permission#MESSAGE_SEND_IN_THREADS Permission.MESSAGE_SEND_IN_THREADS}</li><li>If this is not a {@link ThreadChannel} and the bot does not have {@link Permission#MESSAGE_SEND Permission.MESSAGE_SEND}</li></ul>"
+                }
+            },
+            {
+                "exception": "java.lang.IllegalArgumentException",
+                "description": "@throws IllegalArgumentException <ul><li>If any of the provided stickers is a {@link GuildSticker}, which is either {@link GuildSticker#isAvailable() unavailable} or from a different guild.</li><li>If the list is empty or has more than 3 stickers</li><li>If null is provided</li></ul>",
+                "guard": {
+                    "condition": "stickers == null || stickers.length == 0 || stickers.length > 3 || Arrays.stream(stickers).anyMatch(jdVar -> this.getJDA().retrieveSticker(jdVar).complete().getType()== StickerType.STANDARD || (this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().isAvailable())==false || this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().getGuildIdLong() != this.getGuild().getIdLong())",
+                    "description": "@throws IllegalArgumentException <ul><li>If any of the provided stickers is a {@link GuildSticker}, which is either {@link GuildSticker#isAvailable() unavailable} or from a different guild.</li><li>If the list is empty or has more than 3 stickers</li><li>If null is provided</li></ul>"
+                }
+            }
+        ]
+    }
+]

@@ -8,13 +8,15 @@ sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)),"..", ".
 from src.utils import utils
 
 # Path to the OpenAI responses
-input_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),"..", "..", "src", "resources", "open_ai_results")
+input_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "open_ai_results")
 # Path where to save the final dictionary of all the alternatives, for each javadoc tag
-output_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),"..", "..", "src", "resources", "data_augmentation")
+output_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "output")
 # Import list of patterns to apply to improve variety of javagoc tags
-_, patterns = utils.import_json(os.path.join(os.path.dirname(os.path.abspath(__file__)),"..", "..", "src", "resources", "data_augmentation_patterns.json"))
+_, patterns = utils.import_json(os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "data_augmentation_patterns.json"))
 # Import list of sets of original javadoc tags
-_,original_javadoctags_set = utils.import_json(os.path.join(os.path.dirname(os.path.abspath(__file__)),"..", "..", "src", "resources", "original_javadoctags_set.json"))
+_,original_javadoctags_set = utils.import_json(os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "original_javadoctags_set.json"))
+# Import list of original javadoc tags
+_,original_javadoctags = utils.import_json(os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "original_javadoctags.json"))
 # Auxiliary variables for statistics and analysis purposes
 matched_list = []
 not_matched_list = []
@@ -49,6 +51,37 @@ def apply_javadoc_patterns(javadoc_tags, patterns):
   # Return the final list of new alternatives
   return new_alternatives
 
+def check_missing_tags(output_dict, original_list):
+  missing_tags = []
+  for tag in output_dict.keys():
+    before_len = len(original_list)
+    original_list = [item for item in original_list if item != tag]
+    after_len = len(original_list)
+    if after_len < (before_len - 1):
+      raise Exception(f"Removed more than one occurence of tag: {tag}")
+    if before_len == after_len:
+      missing_tags.append(tag)
+    if before_len == after_len + 1:
+        print(f"Found tag - remaining tags: {after_len}")
+  return missing_tags, original_list
+
+
+def normalize_string(input_string):
+  cleaned_string = input_string.replace("\\n", " ")
+  cleaned_string = cleaned_string.replace("\\r", " ")
+  cleaned_string = cleaned_string.replace("\\v", " ")
+  cleaned_string = cleaned_string.replace("\\t", " ")
+  cleaned_string = re.sub(r'\s+', ' ', cleaned_string.strip())
+  cleaned_string = cleaned_string.replace('"', "'")
+  cleaned_string = cleaned_string.replace("@", " ")
+  cleaned_string = cleaned_string.replace("\\", "")
+  cleaned_string = cleaned_string.replace(">", "&gt;")
+  cleaned_string = cleaned_string.replace("<", "&lt;")
+  cleaned_string = cleaned_string.replace("&amp;", "&")
+  cleaned_string = cleaned_string.replace("∞", "&infin;")
+  cleaned_string = cleaned_string.replace("π", "&pi;")
+  cleaned_string = cleaned_string.replace("×", "&times;")
+  return cleaned_string
 
 def match_original_javadoc_tag(javadoc_tag, eligibles):
   # Initialize best distance to +inf
@@ -58,69 +91,86 @@ def match_original_javadoc_tag(javadoc_tag, eligibles):
   # Iterate over the eligible javadoc tags
   for eligible in eligibles:
     # Compute the Levenshtein distance among the javadoc tag reported by OpenAI and the current eligible original one
-    distance = Levenshtein.distance(javadoc_tag, eligible)
+    distance = Levenshtein.distance(normalize_string(javadoc_tag), normalize_string(eligible))
     # Check if the value of the distance is lower than the current best one
     if distance < best_distance:
       # Update best distance and matching javadoc tag
       best_distance = distance
       most_probable_javadoc_tag = eligible
+
+  if best_distance > 0:
+    print("Different")
+    # raise Exception(f"Original javadoc tag: {most_probable_javadoc_tag} - OpenAI javadoc tag: {javadoc_tag} (distance: {best_distance})")
+
+  match_javadoc_tag = re.search(r'@(param|throws)\s+(\w+)', javadoc_tag)
+  match_original = re.search(r'@(param|throws)\s+(\w+)', most_probable_javadoc_tag)
+
+  if match_original and match_javadoc_tag:
+    if match_original.group(2) != match_javadoc_tag.group(2):
+      raise Exception(f"Original javadoc tag: {most_probable_javadoc_tag} - OpenAI javadoc tag: {javadoc_tag}")
+
   # Return the matched original javadoc tag
   return most_probable_javadoc_tag
 
 
 if __name__ == '__main__':
   for idx, openai_filename in enumerate(os.listdir(input_path)):
-    print(f"Processing: {openai_filename}")
-    _, openai_output_str = utils.import_json(os.path.join(input_path, openai_filename))
-    idx_openai_output = int(openai_filename.replace("output_","").replace(".json",""))
-    original_set = original_javadoctags_set[idx_openai_output]
-    # Pattern for matching content between "[\n  {\n" and " ]\n  }\n]"
-    pattern = r"\[\s*{([\s\S]*?)]\s*}\s*]"
-    # Find the first match using the pattern
-    match = re.search(pattern, openai_output_str)
+    if not openai_filename in ["output_336.json"]: #, "output_435.json", "output_360.json", "output_201.json", "output_333.json"]:
+      print(f"Processing: {openai_filename}")
+      _, openai_output_str = utils.import_json(os.path.join(input_path, openai_filename))
+      idx_openai_output = int(openai_filename.replace("output_","").replace(".json",""))
+      original_set = original_javadoctags_set[idx_openai_output]
+      # Pattern for matching content between "[\n  {\n" and " ]\n  }\n]"
+      pattern = r"\[\s*{([\s\S]*?)]\s*}\s*]"
+      # Find the first match using the pattern
+      match = re.search(pattern, openai_output_str)
 
-    if match:
-      print("Match found! Generating alternative javadoc tags from OpenAI output...")
-      # Extract the matched content applying regex expression to fix OpenAI output and extract json from string
-      matched_content = match.group(0)
-      matched_content = matched_content.replace("'tag'", "\"tag\"")
-      matched_content = matched_content.replace("'alternatives'", "\"alternatives\"")
-      matched_content = matched_content.replace("\\\\n", " ")
-      matched_content = matched_content.replace("\\\\r", " ")
-      matched_content = matched_content.replace("\\\\t", " ")
-      matched_content = matched_content.replace("\\\\v", " ")
-      matched_content = matched_content.replace("\\n", " ")
-      matched_content = matched_content.replace("\\r", " ")
-      matched_content = matched_content.replace("\\t", " ")
-      matched_content = matched_content.replace("\\v", " ")
-      matched_content = re.sub(r"\s+", " ", matched_content.strip())
-      matched_content = re.sub(r"'@", "\"@", matched_content)
-      matched_content = re.sub(r"',\s*\"@", "\", \"@", matched_content)
-      matched_content = re.sub(r"',\s*\"alternatives\"", "\", \"alternatives\"", matched_content)
-      matched_content = re.sub(r"\"((?!((\\*n|\\*r|\\*v|\\*t|\\*f)*\s*@))(?!((\\*n|\\*r|\\*v|\\*t|\\*f)*(\\*n|\\*r|\\*v|\\*t|\\*f)*\s*]))(?!((\\*n|\\*r|\\*v|\\*t|\\*f)*\s*,(\\*n|\\*r|\\*v|\\*t|\\*f)*\s*\"@))(?!((\\*n|\\*r|\\*v|\\*t|\\*f)*\s*,(\\*n|\\*r|\\*v|\\*t|\\*f)*\s*\"alternatives))(?!alternatives)(?!(\\*n|\\*r|\\*v|\\*t|\\*f)*\s*:(\\*n|\\*r|\\*v|\\*t|\\*f)*\s*\"@)(?!(\\*n|\\*r|\\*v|\\*t|\\*f)*\s*:(\\*n|\\*r|\\*v|\\*t|\\*f)*\s*\[)(?!tag))", "'",matched_content)
-      matched_content = re.sub(r"'(\\*n|\\*r|\\*v|\\*t|\\*f)*\s*,(\\*n|\\*r|\\*v|\\*t|\\*f)*\s*]", "\" ]",matched_content)
-      matched_content = re.sub(r"'(\\*n|\\*r|\\*v|\\*t|\\*f)*\s*,(\\*n|\\*r|\\*v|\\*t|\\*f)*\s*\"@", "\"",matched_content)
-      matched_content = re.sub(r"'(\\*n|\\*r|\\*v|\\*t|\\*f)*\s*]", "\" ]",matched_content)
-      matched_content = re.sub(r"'(\\*n|\\*r|\\*v|\\*t|\\*f)*\s*\"@", "\", \"@",matched_content)
-      # Exctract json from processed OpenAI output string
-      output_json = ast.literal_eval(matched_content)
-      # Iterate over each javadoc tag
-      for javadoc_tag_obj in output_json:
-        # Apply patterns to generate variegate alternatives
-        javadoc_tag_obj["alternatives"] = apply_javadoc_patterns(javadoc_tag_obj["alternatives"], patterns)
-        # Match original javadoc tag with the one reported within the OpenAI output (it could be different due to OpenAI nondeterminism)
-        key = match_original_javadoc_tag(javadoc_tag_obj["tag"], original_set)
-        # Add javadoc tags alternatives to output dict of all the javadoc tags
-        output_dict[key] = javadoc_tag_obj["alternatives"]
-      matched_list.append(idx_openai_output)
-    else:
-      print("Match not found! OpenAI output not recognized...")
-      not_matched_list.append(idx_openai_output)
+      if match:
+        print("Match found! Generating alternative javadoc tags from OpenAI output...")
+        # Extract the matched content applying regex expression to fix OpenAI output and extract json from string
+        matched_content = match.group(0)
+        matched_content = matched_content.replace("'tag'", "\"tag\"")
+        matched_content = matched_content.replace("'alternatives'", "\"alternatives\"")
+        matched_content = matched_content.replace("\\\\n", " ")
+        matched_content = matched_content.replace("\\\\r", " ")
+        matched_content = matched_content.replace("\\\\t", " ")
+        matched_content = matched_content.replace("\\\\v", " ")
+        matched_content = matched_content.replace("\\n", " ")
+        matched_content = matched_content.replace("\\r", " ")
+        matched_content = matched_content.replace("\\t", " ")
+        matched_content = matched_content.replace("\\v", " ")
+        matched_content = re.sub(r"\s+", " ", matched_content.strip())
+        matched_content = re.sub(r"'@", "\"@", matched_content)
+        matched_content = re.sub(r"',\s*\"@", "\", \"@", matched_content)
+        matched_content = re.sub(r"',\s*\"alternatives\"", "\", \"alternatives\"", matched_content)
+        matched_content = re.sub(r"\"((?!((\\*n|\\*r|\\*v|\\*t|\\*f)*\s*@))(?!((\\*n|\\*r|\\*v|\\*t|\\*f)*(\\*n|\\*r|\\*v|\\*t|\\*f)*\s*]))(?!((\\*n|\\*r|\\*v|\\*t|\\*f)*\s*,(\\*n|\\*r|\\*v|\\*t|\\*f)*\s*\"@))(?!((\\*n|\\*r|\\*v|\\*t|\\*f)*\s*,(\\*n|\\*r|\\*v|\\*t|\\*f)*\s*\"alternatives))(?!alternatives)(?!(\\*n|\\*r|\\*v|\\*t|\\*f)*\s*:(\\*n|\\*r|\\*v|\\*t|\\*f)*\s*\"@)(?!(\\*n|\\*r|\\*v|\\*t|\\*f)*\s*:(\\*n|\\*r|\\*v|\\*t|\\*f)*\s*\[)(?!tag))", "'",matched_content)
+        matched_content = re.sub(r"'(\\*n|\\*r|\\*v|\\*t|\\*f)*\s*,(\\*n|\\*r|\\*v|\\*t|\\*f)*\s*]", "\" ]",matched_content)
+        matched_content = re.sub(r"'(\\*n|\\*r|\\*v|\\*t|\\*f)*\s*,(\\*n|\\*r|\\*v|\\*t|\\*f)*\s*\"@", "\"",matched_content)
+        matched_content = re.sub(r"'(\\*n|\\*r|\\*v|\\*t|\\*f)*\s*]", "\" ]",matched_content)
+        matched_content = re.sub(r"'(\\*n|\\*r|\\*v|\\*t|\\*f)*\s*\"@", "\", \"@",matched_content)
+        # Exctract json from processed OpenAI output string
+        output_json = ast.literal_eval(matched_content)
+        # Iterate over each javadoc tag
+        for javadoc_tag_obj in output_json:
+          # Apply patterns to generate variegate alternatives
+          javadoc_tag_obj["alternatives"] = apply_javadoc_patterns(javadoc_tag_obj["alternatives"], patterns)
+          # Match original javadoc tag with the one reported within the OpenAI output (it could be different due to OpenAI nondeterminism)
+          key = match_original_javadoc_tag(javadoc_tag_obj["tag"], original_set)
+          # Add javadoc tags alternatives to output dict of all the javadoc tags
+          output_dict[key] = javadoc_tag_obj["alternatives"]
+        matched_list.append(idx_openai_output)
+      else:
+        print("Match not found! OpenAI output not recognized...")
+        not_matched_list.append(idx_openai_output)
 
   # Save output dict of all the javadoc tags
   if not os.path.exists(output_path):
     os.makedirs(output_path)
   utils.export_stats(os.path.join(output_path, f"output_dict.json"), output_dict)
+  # Check if all the original javadoc tags are present in the output dict
+  missing_tags, remaining_tags = check_missing_tags(output_dict, original_javadoctags)
+  utils.export_stats(os.path.join(output_path, f"missing_tags.json"), missing_tags)
+  utils.export_stats(os.path.join(output_path, f"remaining_tags.json"), remaining_tags)
 
   # Log statistics
   print(f"OpenAI responses processed: {len(matched_list) + len(not_matched_list)}")
