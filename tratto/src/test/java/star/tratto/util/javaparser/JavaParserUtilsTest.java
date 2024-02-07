@@ -15,7 +15,6 @@ import com.github.javaparser.resolution.types.ResolvedArrayType;
 import com.github.javaparser.resolution.types.ResolvedPrimitiveType;
 import com.github.javaparser.resolution.types.ResolvedType;
 import org.javatuples.Pair;
-import org.javatuples.Triplet;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -24,11 +23,7 @@ import star.tratto.data.OracleDatapoint;
 import star.tratto.data.OracleDatapointTest;
 import star.tratto.data.JPClassNotFoundException;
 import star.tratto.data.PackageDeclarationNotFoundException;
-import star.tratto.data.ResolvedTypeNotFound;
 import star.tratto.data.records.MethodArgumentTokens;
-import star.tratto.data.JPClassNotFoundException;
-import star.tratto.data.PackageDeclarationNotFoundException;
-import star.tratto.data.ResolvedTypeNotFound;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -67,13 +62,9 @@ public class JavaParserUtilsTest {
         CallableDeclaration<?> jpCallable = getMethodDeclaration(oracleDatapoint.getMethodSourceCode());
         List<MethodArgumentTokens> methodArgs = oracleDatapoint.getTokensMethodArguments();
         String subExpression = oracleDatapoint.getOracle().substring(0, 20);
-        try {
-            ResolvedType resolvedType = getResolvedTypeOfExpression(jpClass, jpCallable, methodArgs, subExpression);
-            String typeName = resolvedType.describe();
-            assertEquals("boolean", typeName);
-        } catch (ResolvedTypeNotFound e) {
-            fail();
-        }
+        ResolvedType resolvedType = getResolvedTypeOfExpression(subExpression, oracleDatapoint);
+        String typeName = resolvedType.describe();
+        assertEquals("boolean", typeName);
     }
 
     @Test
@@ -83,13 +74,9 @@ public class JavaParserUtilsTest {
         CallableDeclaration<?> jpCallable = getMethodDeclaration(oracleDatapoint.getMethodSourceCode());
         List<MethodArgumentTokens> methodArgs = oracleDatapoint.getTokensMethodArguments();
         String subExpression = oracleDatapoint.getOracle().substring(0, 4);
-        try {
-            ResolvedType resolvedType = getResolvedTypeOfExpression(jpClass, jpCallable, methodArgs, subExpression);
-            String typeName = resolvedType.describe();
-            assertEquals("org.apache.commons.math3.analysis.polynomials.PolynomialFunction", typeName);
-        } catch (ResolvedTypeNotFound e) {
-            fail();
-        }
+        ResolvedType resolvedType = getResolvedTypeOfExpression(subExpression, oracleDatapoint);
+        String typeName = resolvedType.describe();
+        assertEquals("org.apache.commons.math3.analysis.polynomials.PolynomialFunction", typeName);
     }
 
 

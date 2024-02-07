@@ -394,7 +394,7 @@ def get_input_model_values(
     # Reindex the DataFrame with the new order
     df_dataset = df_dataset.reindex(columns=new_columns_order)
     # Delete spurious columns for predicting the next token class
-    df_dataset = df_dataset.drop(['oracleId', 'tokenClass'], axis=1)
+    df_dataset = df_dataset.drop(['oracleId', 'tokenClass', 'eligibleTokens'], axis=1)
     if classification_type == ClassificationType.CATEGORY_PREDICTION:
         # Remove category to predict
         df_dataset = df_dataset.drop(['token'], axis=1)
@@ -413,9 +413,9 @@ def get_input_model_values(
     # The pandas dataframe is transformed in a list of strings: each string is an input to the model
     src = df_src_concat.to_numpy().tolist()
     # Extract eligible token classes as list
-    eligible_token_values = df_dataset['eligibleTokens'][0].strip("[]").split()
+    #eligible_token_values = df_dataset['eligibleTokens'][0].strip("[]").split()
     # Return source input and token classes dictionary
-    return src, tgt, eligible_token_values, None
+    return src, tgt, None, None
 
 
 def tokenize_input(

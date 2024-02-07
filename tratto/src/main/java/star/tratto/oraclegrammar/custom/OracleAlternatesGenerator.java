@@ -176,7 +176,20 @@ public class OracleAlternatesGenerator {
                 parentPredicateNoTrueCopy = (PredicateNoTrue) parent3rdLevelCopy.eContainer();
             }
 
-            if (parentPredicateNoTrueCopy.getClauseContinuations() != null && !parentPredicateNoTrueCopy.getClauseContinuations().isEmpty()) {
+            if (parent3rdLevelCopy instanceof ClauseContinuation) {
+                Clause clauseToModify = ((ClauseContinuation) parent3rdLevelCopy).getClause();
+                PredicateNoTrue clauseToModifyAsPredicate = EcoreUtil.copy(parentPredicateNoTrueCopy);
+                clauseToModifyAsPredicate.setClause(EcoreUtil.copy(clauseToModify));
+                clauseToModifyAsPredicate.getClauseContinuations().clear();
+                clauseToModifyAsPredicate.getClause().setPredicateNoTrue(EcoreUtil.copy(clauseToModifyAsPredicate));
+                clauseToModifyAsPredicate.getClause().setClauseTrue(null);
+                clauseToModifyAsPredicate.getClause().setOpeningParenthesis("(");
+                clauseToModifyAsPredicate.getClause().setClosingParenthesis(")");
+                clauseToModifyAsPredicate.getClause().setEqOperator("==");
+                clauseToModifyAsPredicate.getClause().setFalse("false");
+                clauseToModify.setPredicateNoTrue(clauseToModifyAsPredicate);
+                clauseToModify.setClauseTrue(null);
+            } else if (parentPredicateNoTrueCopy.getClauseContinuations() != null && !parentPredicateNoTrueCopy.getClauseContinuations().isEmpty()) {
                 Clause parentClauseCopy = parent3rdLevelCopy instanceof ClauseContinuation ? ((ClauseContinuation)parent3rdLevelCopy).getClause() : parentPredicateNoTrueCopy.getClause();
 
                 if (parentClauseCopy.getEqOperator() == null) {

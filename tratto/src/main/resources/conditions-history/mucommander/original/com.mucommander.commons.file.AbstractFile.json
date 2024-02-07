@@ -1,0 +1,377 @@
+[
+    {
+        "operation": {
+            "name": "getName",
+            "parameterTypes": [],
+            "classname": "com.mucommander.commons.file.AbstractFile"
+        },
+        "identifiers": {
+            "parameters": [],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [],
+        "post": [
+            {
+                "description": "@return this file's name",
+                "property": {
+                    "condition": "methodResultID.equals(receiverObjectID.fileURL.getHost())",
+                    "description": "@return this file's name"
+                },
+                "guard": {
+                    "condition": "name == null && receiverObjectID.fileURL.getHost() != null",
+                    "description": "@return this file's name"
+                }
+            }
+        ],
+        "throws": []
+    },
+    {
+        "operation": {
+            "name": "getSeparator",
+            "parameterTypes": [],
+            "classname": "com.mucommander.commons.file.AbstractFile"
+        },
+        "identifiers": {
+            "parameters": [],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [],
+        "post": [
+            {
+                "description": "@return the path separator used by this file",
+                "property": {
+                    "condition": "methodResultID.equals(\"/\")",
+                    "description": "@return the path separator used by this file"
+                },
+                "guard": {
+                    "condition": "true",
+                    "description": "@return the path separator used by this file"
+                }
+            }
+        ],
+        "throws": []
+    },
+    {
+        "operation": {
+            "name": "isHidden",
+            "parameterTypes": [],
+            "classname": "com.mucommander.commons.file.AbstractFile"
+        },
+        "identifiers": {
+            "parameters": [],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [],
+        "post": [
+            {
+                "description": "@return true if this file is hidden",
+                "property": {
+                    "condition": "methodResultID == true",
+                    "description": "@return true if this file is hidden"
+                },
+                "guard": {
+                    "condition": "receiverObjectID.getName().startsWith(\".\")",
+                    "description": "@return true if this file is hidden"
+                }
+            },
+            {
+                "description": "@return true if this file is hidden",
+                "property": {
+                    "condition": "methodResultID == false",
+                    "description": "@return true if this file is hidden"
+                },
+                "guard": {
+                    "condition": "receiverObjectID.getName().startsWith(\".\") == false",
+                    "description": "@return true if this file is hidden"
+                }
+            }
+        ],
+        "throws": []
+    },
+    {
+        "operation": {
+            "name": "mkfile",
+            "parameterTypes": [],
+            "classname": "com.mucommander.commons.file.AbstractFile"
+        },
+        "identifiers": {
+            "parameters": [],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [],
+        "post": [],
+        "throws": [
+            {
+                "exception": "java.io.IOException",
+                "description": "@throws IOException if the file could not be created, either because it already exists or because of an I/O error",
+                "guard": {
+                    "condition": "receiverObjectID.exists()",
+                    "description": "@throws IOException if the file could not be created, either because it already exists or because of an I/O error"
+                }
+            }
+        ]
+    },
+    {
+        "operation": {
+            "name": "ls",
+            "parameterTypes": [
+                "FileFilter"
+            ],
+            "classname": "com.mucommander.commons.file.AbstractFile"
+        },
+        "identifiers": {
+            "parameters": [
+                "filter"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [],
+        "post": [],
+        "throws": [
+            {
+                "exception": "java.io.IOException",
+                "description": "@throws IOException if this operation is not possible (file is not browsable) or if an error occurred.",
+                "guard": {
+                    "condition": "receiverObjectID.isBrowsable() == false",
+                    "description": "@throws IOException if this operation is not possible (file is not browsable) or if an error occurred."
+                }
+            }
+        ]
+    },
+    {
+        "operation": {
+            "name": "ls",
+            "parameterTypes": [
+                "FilenameFilter"
+            ],
+            "classname": "com.mucommander.commons.file.AbstractFile"
+        },
+        "identifiers": {
+            "parameters": [
+                "filter"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [],
+        "post": [],
+        "throws": [
+            {
+                "exception": "java.io.IOException",
+                "description": "@throws IOException if this operation is not possible (file is not browsable) or if an error occurred.",
+                "guard": {
+                    "condition": "receiverObjectID.isBrowsable() == false",
+                    "description": "@throws IOException if this operation is not possible (file is not browsable) or if an error occurred."
+                }
+            }
+        ]
+    },
+    {
+        "operation": {
+            "name": "getPermissionsString",
+            "parameterTypes": [],
+            "classname": "com.mucommander.commons.file.AbstractFile"
+        },
+        "identifiers": {
+            "parameters": [],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [],
+        "post": [
+            {
+                "description": "@return a string representation of this file's permissions",
+                "property": {
+                    "condition": "methodResultID.length() > 1 && (methodResultID.startsWith(\"l\") || methodResultID.startsWith(\"d\") || methodResultID.startsWith(\"-\")) && (methodResultID.endsWith(\"r\") || methodResultID.endsWith(\"w\") || methodResultID.endsWith(\"x\") || methodResultID.endsWith(\"-\"))",
+                    "description": "@return a string representation of this file's permissions"
+                },
+                "guard": {
+                    "condition": "true",
+                    "description": "@return a string representation of this file's permissions"
+                }
+            }
+        ],
+        "throws": []
+    },
+    {
+        "operation": {
+            "name": "toMonitoredFile",
+            "parameterTypes": [],
+            "classname": "com.mucommander.commons.file.AbstractFile"
+        },
+        "identifiers": {
+            "parameters": [],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [],
+        "post": [
+            {
+                "description": "@return {@link MonitoredFile} that can monitor changes to the content of this file.",
+                "property": {
+                    "condition": "methodResultID instanceof ModificationDateBasedMonitoredFile",
+                    "description": "@return {@link MonitoredFile} that can monitor changes to the content of this file."
+                },
+                "guard": {
+                    "condition": "true",
+                    "description": "@return {@link MonitoredFile} that can monitor changes to the content of this file."
+                }
+            }
+        ],
+        "throws": []
+    },
+    {
+        "operation": {
+            "name": "getChild",
+            "parameterTypes": [
+                "String"
+            ],
+            "classname": "com.mucommander.commons.file.AbstractFile"
+        },
+        "identifiers": {
+            "parameters": [
+                "relativePath"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [],
+        "post": [
+            {
+                "description": "@return an AbstractFile representing the requested child file, never null",
+                "property": {
+                    "condition": "methodResultID != null",
+                    "description": "@return an AbstractFile representing the requested child file, never null"
+                },
+                "guard": {
+                    "condition": "true",
+                    "description": "@return an AbstractFile representing the requested child file, never null"
+                }
+            }
+        ],
+        "throws": []
+    },
+    {
+        "operation": {
+            "name": "getDirectChild",
+            "parameterTypes": [
+                "String"
+            ],
+            "classname": "com.mucommander.commons.file.AbstractFile"
+        },
+        "identifiers": {
+            "parameters": [
+                "filename"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [],
+        "post": [],
+        "throws": [
+            {
+                "exception": "java.io.IOException",
+                "description": "@throws IOException in any of the cases listed above",
+                "guard": {
+                    "condition": "filename.contains(receiverObjectID.getSeparator())",
+                    "description": "@throws IOException in any of the cases listed above"
+                }
+            }
+        ]
+    },
+    {
+        "operation": {
+            "name": "mkdir",
+            "parameterTypes": [
+                "String"
+            ],
+            "classname": "com.mucommander.commons.file.AbstractFile"
+        },
+        "identifiers": {
+            "parameters": [
+                "name"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [],
+        "post": [],
+        "throws": [
+            {
+                "exception": "java.io.IOException",
+                "description": "@throws IOException if the directory could not be created, either because the file already exists or for any other reason.",
+                "guard": {
+                    "condition": "receiverObjectID.getChild(name).exists()",
+                    "description": "@throws IOException if the directory could not be created, either because the file already exists or for any other reason."
+                }
+            }
+        ]
+    },
+    {
+        "operation": {
+            "name": "checkCopyPrerequisites",
+            "parameterTypes": [
+                "AbstractFile",
+                "boolean"
+            ],
+            "classname": "com.mucommander.commons.file.AbstractFile"
+        },
+        "identifiers": {
+            "parameters": [
+                "destFile",
+                "allowCaseVariations"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [],
+        "post": [],
+        "throws": [
+            {
+                "exception": "com.mucommander.commons.io.FileTransferException",
+                "description": "@throws FileTransferException in any of the cases listed above, use {@link FileTransferException#getReason()} to know the reason.",
+                "guard": {
+                    "condition": "receiverObjectID.exists() == false || (receiverObjectID.equalsCanonical(destFile) == false && receiverObjectID.isParentOf(destFile))",
+                    "description": "@throws FileTransferException in any of the cases listed above, use {@link FileTransferException#getReason()} to know the reason."
+                }
+            }
+        ]
+    },
+    {
+        "operation": {
+            "name": "checkCopyRemotelyPrerequisites",
+            "parameterTypes": [
+                "AbstractFile",
+                "boolean",
+                "boolean"
+            ],
+            "classname": "com.mucommander.commons.file.AbstractFile"
+        },
+        "identifiers": {
+            "parameters": [
+                "destFile",
+                "allowCaseVariations",
+                "allowDifferentHosts"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [],
+        "post": [],
+        "throws": [
+            {
+                "exception": "com.mucommander.commons.io.FileTransferException",
+                "description": "@throws FileTransferException in any of the cases listed above, use {@link FileTransferException#getReason()} to know the reason.",
+                "guard": {
+                    "condition": "(destFile.getURL().schemeEquals(receiverObjectID.getURL())) == false || (destFile.getTopAncestor().getClass().equals(receiverObjectID.getTopAncestor().getClass())) == false || (allowDifferentHosts == false && (destFile.getURL().hostEquals(receiverObjectID.getURL())) == false)",
+                    "description": "@throws FileTransferException in any of the cases listed above, use {@link FileTransferException#getReason()} to know the reason."
+                }
+            }
+        ]
+    }
+]

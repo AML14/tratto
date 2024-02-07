@@ -637,7 +637,9 @@ class DataProcessor:
                     ]
                     # Reindex the DataFrame with the new order
                     t_df = t_df.reindex(columns=new_columns_order)
+                    t_df = t_df.drop(['eligibleTokens'], axis=1)
                     v_df = v_df.reindex(columns=new_columns_order)
+                    v_df = v_df.drop(['eligibleTokens'], axis=1)
                 # Keep only the instance with label 'True', for each combination of oracleId and oracleSoFar, if the model
                 # predicts the categories (tokenClasses or tokenValues)
                 if self._classification_type == ClassificationType.CATEGORY_PREDICTION:
