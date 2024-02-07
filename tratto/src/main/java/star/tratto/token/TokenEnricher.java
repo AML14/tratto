@@ -4,8 +4,10 @@ import com.github.javaparser.resolution.types.ResolvedType;
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
 import star.tratto.data.OracleDatapoint;
+import star.tratto.data.records.AttributeTokens;
 import star.tratto.data.records.ClassTokens;
 import star.tratto.data.records.MethodArgumentTokens;
+import star.tratto.data.records.MethodTokens;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.oraclegrammar.trattoGrammar.CanEvaluateToPrimitive;
 import star.tratto.util.JavaTypes;
@@ -199,16 +201,23 @@ public class TokenEnricher {
         // Get return type of expression preceding "."
         List<String> lastElementWithModifierTokens = split(parser.findLastElementWithModifiers(String.join(" ", partialExpressionTokens)));
         String precedingExpr = compactExpression(lastElementWithModifierTokens.subList(0, lastElementWithModifierTokens.size()-1));
-        Pair<String, String> precedingExprReturnType = getReturnTypeOfExpression(precedingExpr, oracleDatapoint);
+        OracleDatapoint partialOracleDatapoint = new OracleDatapoint(oracleDatapoint);
+        partialOracleDatapoint.setOracle(String.join(" ", partialExpressionTokens)); // If there are multiple "jdVar"s of different types, this ensures the correct one is retrieved
+        ResolvedType precedingExprResolvedType = getResolvedTypeOfExpression(precedingExpr, partialOracleDatapoint);
+        Pair<String, String> precedingExprReturnType = getTypePairFromResolvedType(precedingExprResolvedType);
 
         // Special case: if preceding token is not "this", "methodResultID" or a method argument, and last two columns (oracle variables) are empty, need to populate them
         List<String> methodVariables = new ArrayList<>(List.of("this", "methodResultID"));
         methodVariables.addAll(oracleDatapoint.getTokensMethodArguments().stream().map(MethodArgumentTokens::argumentName).collect(Collectors.toList()));
-        if (!methodVariables.contains(precedingExpr) &&
-                oracleDatapoint.getTokensOracleVariablesNonPrivateNonStaticAttributes().isEmpty() && oracleDatapoint.getTokensOracleVariablesNonPrivateNonStaticAttributes().isEmpty()) {
-            ResolvedType precedingExprResolvedType = getResolvedType(fullyQualifiedClassName(precedingExprReturnType));
-            oracleDatapoint.setTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(getMethodsFromType(precedingExprResolvedType));
-            oracleDatapoint.setTokensOracleVariablesNonPrivateNonStaticAttributes(getFieldsFromType(precedingExprResolvedType));
+        // If the preceding expression is jdVar, or if it is not a method variable and the oracle variable columns are empty, we need to add new data to those columns on top of the existing ones
+        if ("jdVar".equals(precedingExpr) || // Special case: if preceding token is "jdVar", need to populate "variables" and "oracle" columns with "jdVar" and "jdVar" respectively
+                (!methodVariables.contains(precedingExpr) && oracleDatapoint.getTokensOracleVariablesNonPrivateNonStaticNonVoidMethods().isEmpty() && oracleDatapoint.getTokensOracleVariablesNonPrivateNonStaticAttributes().isEmpty())) {
+            List<MethodTokens> originalMethodTokens = new ArrayList<>(oracleDatapoint.getTokensOracleVariablesNonPrivateNonStaticNonVoidMethods());
+            List<AttributeTokens> originalAttributeTokens = new ArrayList<>(oracleDatapoint.getTokensOracleVariablesNonPrivateNonStaticAttributes());
+            originalMethodTokens.addAll(getMethodsFromType(precedingExprResolvedType));
+            originalAttributeTokens.addAll(getFieldsFromType(precedingExprResolvedType));
+            oracleDatapoint.setTokensOracleVariablesNonPrivateNonStaticNonVoidMethods(originalMethodTokens);
+            oracleDatapoint.setTokensOracleVariablesNonPrivateNonStaticAttributes(originalAttributeTokens);
         }
 
         // Get non-static attributes of class, including those whose this class is instance of

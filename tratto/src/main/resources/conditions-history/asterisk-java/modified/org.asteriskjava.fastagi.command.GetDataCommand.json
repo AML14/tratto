@@ -1,0 +1,121 @@
+[
+    {
+        "operation": {
+            "name": "org.asteriskjava.fastagi.command.GetDataCommand",
+            "parameterTypes": [
+                "String"
+            ],
+            "classname": "org.asteriskjava.fastagi.command.GetDataCommand"
+        },
+        "identifiers": {
+            "parameters": [
+                "file"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [],
+        "post": [
+            {
+                "description": "",
+                "property": {
+                    "condition": "methodResultID.getMaxDigits() == 1024 && methodResultID.getTimeout() == 0",
+                    "description": ""
+                },
+                "guard": {
+                    "condition": "true",
+                    "description": ""
+                }
+            }
+        ],
+        "throws": []
+    },
+    {
+        "operation": {
+            "name": "org.asteriskjava.fastagi.command.GetDataCommand",
+            "parameterTypes": [
+                "String",
+                "long"
+            ],
+            "classname": "org.asteriskjava.fastagi.command.GetDataCommand"
+        },
+        "identifiers": {
+            "parameters": [
+                "file",
+                "timeout"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param timeout the timeout in milliseconds to wait for data. 0 means standard timeout value, -1 means \"ludicrous time\" (essentially never times out).",
+                "guard": {
+                    "condition": "timeout >= -1",
+                    "description": "@param timeout the timeout in milliseconds to wait for data. 0 means standard timeout value, -1 means \"ludicrous time\" (essentially never times out)."
+                }
+            }
+        ],
+        "post": [
+            {
+                "description": "",
+                "property": {
+                    "condition": "methodResultID.getTimeout() >= -1",
+                    "description": ""
+                },
+                "guard": {
+                    "condition": "true",
+                    "description": ""
+                }
+            }
+        ],
+        "throws": []
+    },
+    {
+        "operation": {
+            "name": "org.asteriskjava.fastagi.command.GetDataCommand",
+            "parameterTypes": [
+                "String",
+                "long",
+                "int"
+            ],
+            "classname": "org.asteriskjava.fastagi.command.GetDataCommand"
+        },
+        "identifiers": {
+            "parameters": [
+                "file",
+                "timeout",
+                "maxDigits"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param timeout   the timeout in milliseconds to wait for data. 0 means standard timeout value, -1 means \"ludicrous time\" (essentially never times out).",
+                "guard": {
+                    "condition": "timeout >= -1",
+                    "description": "@param timeout   the timeout in milliseconds to wait for data. 0 means standard timeout value, -1 means \"ludicrous time\" (essentially never times out)."
+                }
+            },
+            {
+                "description": "@param maxDigits the maximum number of digits to read. Must be in [1..1024].",
+                "guard": {
+                    "condition": "maxDigits >= 1 && maxDigits <= 1024",
+                    "description": "@param maxDigits the maximum number of digits to read. Must be in [1..1024]."
+                }
+            }
+        ],
+        "post": [],
+        "throws": [
+            {
+                "exception": "java.lang.IllegalArgumentException",
+                "description": "@throws IllegalArgumentException if maxDigits is not in [1..1024]",
+                "guard": {
+                    "condition": "(maxDigits >= 1 && maxDigits <= 1024) == false",
+                    "description": "@throws IllegalArgumentException if maxDigits is not in [1..1024]"
+                }
+            }
+        ]
+    }
+]

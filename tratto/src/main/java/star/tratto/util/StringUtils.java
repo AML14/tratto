@@ -154,7 +154,9 @@ public class StringUtils {
     }
 
     public static String getClassNameFromPath(String path) {
-        assert path.endsWith(".java");
+        if (!path.endsWith(".java")) {
+            throw new IllegalArgumentException("Path does not end with .java: " + path);
+        }
         String[] pathTokens = path.split("/");
         String className = pathTokens[pathTokens.length - 1];
         return className.substring(0, className.length() - 5);

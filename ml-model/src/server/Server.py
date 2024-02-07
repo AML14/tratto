@@ -6,23 +6,31 @@ class Server:
     def __init__(
             self,
             device,
+            classification_type_oracles,
             classification_type_token_classes,
             classification_type_token_values,
+            transformer_type_oracles,
             transformer_type_token_classes,
             transformer_type_token_values,
+            model_oracles,
             model_token_classes,
             model_token_values,
+            tokenizer_oracles,
             tokenizer_token_classes,
             tokenizer_token_values
     ):
         self._app = Flask(__name__)
         self._device = device
+        self._classification_type_oracles = classification_type_oracles
         self._classification_type_token_classes = classification_type_token_classes
         self._classification_type_token_values = classification_type_token_values
+        self._transformer_type_oracles = transformer_type_oracles
         self._transformer_type_token_classes = transformer_type_token_classes
         self._transformer_type_token_values = transformer_type_token_values
+        self._model_oracles = model_oracles
         self._model_token_classes = model_token_classes
         self._model_token_values = model_token_values
+        self._tokenizer_oracles = tokenizer_oracles
         self._tokenizer_token_classes = tokenizer_token_classes
         self._tokenizer_token_values = tokenizer_token_values
         self.setup_routes()
@@ -33,12 +41,16 @@ class Server:
             token = predictor.next_token(
                 self._device,
                 filename,
+                self._classification_type_oracles,
                 self._classification_type_token_classes,
                 self._classification_type_token_values,
+                self._transformer_type_oracles,
                 self._transformer_type_token_classes,
                 self._transformer_type_token_values,
+                self._model_oracles,
                 self._model_token_classes,
                 self._model_token_values,
+                self._tokenizer_oracles,
                 self._tokenizer_token_classes,
                 self._tokenizer_token_values
             )

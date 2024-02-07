@@ -1,0 +1,632 @@
+[
+    {
+        "operation": {
+            "name": "skipTo",
+            "parameterTypes": [
+                "long"
+            ],
+            "classname": "net.dv8tion.jda.api.requests.restaction.pagination.PaginationAction"
+        },
+        "identifiers": {
+            "parameters": [
+                "id"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [],
+        "post": [],
+        "throws": [
+            {
+                "exception": "java.lang.IllegalArgumentException",
+                "description": "@throws IllegalArgumentException If cache is enabled, and you are attempting to skip forward in time {@literal (id > last)}",
+                "guard": {
+                    "condition": "receiverObjectID.isCacheEnabled() && id > receiverObjectID.getLastKey()",
+                    "description": "@throws IllegalArgumentException If cache is enabled, and you are attempting to skip forward in time {@literal (id > last)}"
+                }
+            }
+        ]
+    },
+    {
+        "operation": {
+            "name": "order",
+            "parameterTypes": [
+                "PaginationOrder"
+            ],
+            "classname": "net.dv8tion.jda.api.requests.restaction.pagination.PaginationAction"
+        },
+        "identifiers": {
+            "parameters": [
+                "order"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param  order The pagination order",
+                "guard": {
+                    "condition": "order != null",
+                    "description": "@param  order The pagination order"
+                }
+            }
+        ],
+        "post": [],
+        "throws": [
+            {
+                "exception": "java.lang.IllegalArgumentException",
+                "description": "@throws IllegalArgumentException If the provided pagination order is null or unsupported",
+                "guard": {
+                    "condition": "order == null || (receiverObjectID.getSupportedOrders().contains(order))==false",
+                    "description": "@throws IllegalArgumentException If the provided pagination order is null or unsupported"
+                }
+            },
+            {
+                "exception": "java.lang.IllegalStateException",
+                "description": "@throws IllegalStateException If this pagination action has already been used to retrieve entities",
+                "guard": {
+                    "condition": "(this.isEmpty())==false",
+                    "description": "@throws IllegalStateException If this pagination action has already been used to retrieve entities"
+                }
+            }
+        ]
+    },
+    {
+        "operation": {
+            "name": "isEmpty",
+            "parameterTypes": [],
+            "classname": "net.dv8tion.jda.api.requests.restaction.pagination.PaginationAction"
+        },
+        "identifiers": {
+            "parameters": [],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [],
+        "post": [
+            {
+                "description": "@return True, if no entities have been retrieved yet.",
+                "property": {
+                    "condition": "methodResultID == true",
+                    "description": "@return True, if no entities have been retrieved yet."
+                },
+                "guard": {
+                    "condition": "receiverObjectID.cacheSize() == 0",
+                    "description": "@return True, if no entities have been retrieved yet."
+                }
+            },
+            {
+                "description": "@return True, if no entities have been retrieved yet.",
+                "property": {
+                    "condition": " methodResultID == false",
+                    "description": "@return True, if no entities have been retrieved yet."
+                },
+                "guard": {
+                    "condition": " (receiverObjectID.cacheSize() == 0) == false",
+                    "description": "@return True, if no entities have been retrieved yet."
+                }
+            }
+        ],
+        "throws": []
+    },
+    {
+        "operation": {
+            "name": "getCached",
+            "parameterTypes": [],
+            "classname": "net.dv8tion.jda.api.requests.restaction.pagination.PaginationAction"
+        },
+        "identifiers": {
+            "parameters": [],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [],
+        "post": [
+            {
+                "description": "@return Immutable {@link java.util.List List} containing all currently cached entities for this PaginationAction",
+                "property": {
+                    "condition": "methodResultID.size() == receiverObjectID.spliterator().estimateSize() ",
+                    "description": "@return Immutable {@link java.util.List List} containing all currently cached entities for this PaginationAction"
+                },
+                "guard": {
+                    "condition": "receiverObjectID.iterator().hitEnd()",
+                    "description": "@return Immutable {@link java.util.List List} containing all currently cached entities for this PaginationAction"
+                }
+            },
+            {
+                "description": "@return Immutable {@link java.util.List List} containing all currently cached entities for this PaginationAction",
+                "property": {
+                    "condition": "methodResultID.size() < receiverObjectID.spliterator().estimateSize()",
+                    "description": "@return Immutable {@link java.util.List List} containing all currently cached entities for this PaginationAction"
+                },
+                "guard": {
+                    "condition": "receiverObjectID.iterator().hitEnd() == false",
+                    "description": "@return Immutable {@link java.util.List List} containing all currently cached entities for this PaginationAction"
+                }
+            }
+        ],
+        "throws": []
+    },
+    {
+        "operation": {
+            "name": "getLast",
+            "parameterTypes": [],
+            "classname": "net.dv8tion.jda.api.requests.restaction.pagination.PaginationAction"
+        },
+        "identifiers": {
+            "parameters": [],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [],
+        "post": [],
+        "throws": [
+            {
+                "exception": "java.util.NoSuchElementException",
+                "description": "@throws java.util.NoSuchElementException If no entities have been retrieved yet (see {@link #isEmpty()})",
+                "guard": {
+                    "condition": "receiverObjectID.isEmpty()",
+                    "description": "@throws java.util.NoSuchElementException If no entities have been retrieved yet (see {@link #isEmpty()})"
+                }
+            }
+        ]
+    },
+    {
+        "operation": {
+            "name": "getFirst",
+            "parameterTypes": [],
+            "classname": "net.dv8tion.jda.api.requests.restaction.pagination.PaginationAction"
+        },
+        "identifiers": {
+            "parameters": [],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [],
+        "post": [],
+        "throws": [
+            {
+                "exception": "java.util.NoSuchElementException",
+                "description": "@throws java.util.NoSuchElementException If no entities have been retrieved yet (see {@link #isEmpty()})",
+                "guard": {
+                    "condition": "receiverObjectID.isEmpty()",
+                    "description": "@throws java.util.NoSuchElementException If no entities have been retrieved yet (see {@link #isEmpty()})"
+                }
+            }
+        ]
+    },
+    {
+        "operation": {
+            "name": "limit",
+            "parameterTypes": [
+                "int"
+            ],
+            "classname": "net.dv8tion.jda.api.requests.restaction.pagination.PaginationAction"
+        },
+        "identifiers": {
+            "parameters": [
+                "limit"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [],
+        "post": [],
+        "throws": [
+            {
+                "exception": "java.lang.IllegalArgumentException",
+                "description": "@throws java.lang.IllegalArgumentException If the provided limit is out of range",
+                "guard": {
+                    "condition": "limit < this.getMinLimit() || limit > this.getMaxLimit()",
+                    "description": "@throws java.lang.IllegalArgumentException If the provided limit is out of range"
+                }
+            }
+        ]
+    },
+    {
+        "operation": {
+            "name": "getMaxLimit",
+            "parameterTypes": [],
+            "classname": "net.dv8tion.jda.api.requests.restaction.pagination.PaginationAction"
+        },
+        "identifiers": {
+            "parameters": [],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [],
+        "post": [
+            {
+                "description": "@return The maximum limit",
+                "property": {
+                    "condition": "methodResultID >= 0",
+                    "description": "@return The maximum limit"
+                },
+                "guard": {
+                    "condition": "true",
+                    "description": "@return The maximum limit"
+                }
+            }
+        ],
+        "throws": []
+    },
+    {
+        "operation": {
+            "name": "getMinLimit",
+            "parameterTypes": [],
+            "classname": "net.dv8tion.jda.api.requests.restaction.pagination.PaginationAction"
+        },
+        "identifiers": {
+            "parameters": [],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [],
+        "post": [
+            {
+                "description": "@return The minimum limit",
+                "property": {
+                    "condition": "methodResultID >= 0",
+                    "description": "@return The minimum limit"
+                },
+                "guard": {
+                    "condition": "true",
+                    "description": "@return The minimum limit"
+                }
+            }
+        ],
+        "throws": []
+    },
+    {
+        "operation": {
+            "name": "getLimit",
+            "parameterTypes": [],
+            "classname": "net.dv8tion.jda.api.requests.restaction.pagination.PaginationAction"
+        },
+        "identifiers": {
+            "parameters": [],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [],
+        "post": [
+            {
+                "description": "@return limit",
+                "property": {
+                    "condition": "methodResultID >= 0",
+                    "description": "@return limit"
+                },
+                "guard": {
+                    "condition": "true",
+                    "description": "@return limit"
+                }
+            }
+        ],
+        "throws": []
+    },
+    {
+        "operation": {
+            "name": "takeWhileAsync",
+            "parameterTypes": [
+                "Predicate"
+            ],
+            "classname": "net.dv8tion.jda.api.requests.restaction.pagination.PaginationAction"
+        },
+        "identifiers": {
+            "parameters": [
+                "rule"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param  rule The rule which must be fulfilled for an element to be added, returns false to discard the element and finish the task",
+                "guard": {
+                    "condition": "rule != null",
+                    "description": "@param  rule The rule which must be fulfilled for an element to be added, returns false to discard the element and finish the task"
+                }
+            }
+        ],
+        "post": [],
+        "throws": [
+            {
+                "exception": "java.lang.IllegalArgumentException",
+                "description": "@throws IllegalArgumentException If the provided rule is {@code null}",
+                "guard": {
+                    "condition": "rule == null",
+                    "description": "@throws IllegalArgumentException If the provided rule is {@code null}"
+                }
+            }
+        ]
+    },
+    {
+        "operation": {
+            "name": "takeWhileAsync",
+            "parameterTypes": [
+                "int",
+                "Predicate"
+            ],
+            "classname": "net.dv8tion.jda.api.requests.restaction.pagination.PaginationAction"
+        },
+        "identifiers": {
+            "parameters": [
+                "limit",
+                "rule"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param  rule The rule which must be fulfilled for an element to be added, returns false to discard the element and finish the task",
+                "guard": {
+                    "condition": "rule != null",
+                    "description": "@param  rule The rule which must be fulfilled for an element to be added, returns false to discard the element and finish the task"
+                }
+            }
+        ],
+        "post": [],
+        "throws": [
+            {
+                "exception": "java.lang.IllegalArgumentException",
+                "description": "@throws IllegalArgumentException If the provided rule is {@code null} or the limit is negative",
+                "guard": {
+                    "condition": "rule == null || limit < 0",
+                    "description": "@throws IllegalArgumentException If the provided rule is {@code null} or the limit is negative"
+                }
+            }
+        ]
+    },
+    {
+        "operation": {
+            "name": "takeUntilAsync",
+            "parameterTypes": [
+                "Predicate"
+            ],
+            "classname": "net.dv8tion.jda.api.requests.restaction.pagination.PaginationAction"
+        },
+        "identifiers": {
+            "parameters": [
+                "rule"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param  rule The rule which must be fulfilled for an element to be discarded, returns true to discard the element and finish the task",
+                "guard": {
+                    "condition": "rule != null",
+                    "description": "@param  rule The rule which must be fulfilled for an element to be discarded, returns true to discard the element and finish the task"
+                }
+            }
+        ],
+        "post": [],
+        "throws": [
+            {
+                "exception": "java.lang.IllegalArgumentException",
+                "description": "@throws IllegalArgumentException If the provided rule is {@code null}",
+                "guard": {
+                    "condition": "rule == null",
+                    "description": "@throws IllegalArgumentException If the provided rule is {@code null}"
+                }
+            }
+        ]
+    },
+    {
+        "operation": {
+            "name": "takeUntilAsync",
+            "parameterTypes": [
+                "int",
+                "Predicate"
+            ],
+            "classname": "net.dv8tion.jda.api.requests.restaction.pagination.PaginationAction"
+        },
+        "identifiers": {
+            "parameters": [
+                "limit",
+                "rule"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param  rule The rule which must be fulfilled for an element to be discarded, returns true to discard the element and finish the task",
+                "guard": {
+                    "condition": "rule != null",
+                    "description": "@param  rule The rule which must be fulfilled for an element to be discarded, returns true to discard the element and finish the task"
+                }
+            }
+        ],
+        "post": [],
+        "throws": []
+    },
+    {
+        "operation": {
+            "name": "forEachAsync",
+            "parameterTypes": [
+                "Procedure"
+            ],
+            "classname": "net.dv8tion.jda.api.requests.restaction.pagination.PaginationAction"
+        },
+        "identifiers": {
+            "parameters": [
+                "action"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param  action {@link net.dv8tion.jda.api.utils.Procedure Procedure} returning {@code true} if iteration should continue!",
+                "guard": {
+                    "condition": "action != null",
+                    "description": "@param  action {@link net.dv8tion.jda.api.utils.Procedure Procedure} returning {@code true} if iteration should continue!"
+                }
+            }
+        ],
+        "post": [],
+        "throws": [
+            {
+                "exception": "java.lang.IllegalArgumentException",
+                "description": "@throws java.lang.IllegalArgumentException If the provided Procedure is {@code null}",
+                "guard": {
+                    "condition": "action == null",
+                    "description": "@throws java.lang.IllegalArgumentException If the provided Procedure is {@code null}"
+                }
+            }
+        ]
+    },
+    {
+        "operation": {
+            "name": "forEachAsync",
+            "parameterTypes": [
+                "Procedure",
+                "Consumer"
+            ],
+            "classname": "net.dv8tion.jda.api.requests.restaction.pagination.PaginationAction"
+        },
+        "identifiers": {
+            "parameters": [
+                "action",
+                "failure"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param  action {@link net.dv8tion.jda.api.utils.Procedure Procedure} returning {@code true} if iteration should continue!",
+                "guard": {
+                    "condition": "action != null",
+                    "description": "@param  action {@link net.dv8tion.jda.api.utils.Procedure Procedure} returning {@code true} if iteration should continue!"
+                }
+            },
+            {
+                "description": "@param  failure {@link java.util.function.Consumer Consumer} that should handle any throwables from the action",
+                "guard": {
+                    "condition": "failure != null",
+                    "description": "@param  failure {@link java.util.function.Consumer Consumer} that should handle any throwables from the action"
+                }
+            }
+        ],
+        "post": [],
+        "throws": [
+            {
+                "exception": "java.lang.IllegalArgumentException",
+                "description": "@throws java.lang.IllegalArgumentException If the provided Procedure or the failure Consumer is {@code null}",
+                "guard": {
+                    "condition": "action == null || failure == null",
+                    "description": "@throws java.lang.IllegalArgumentException If the provided Procedure or the failure Consumer is {@code null}"
+                }
+            }
+        ]
+    },
+    {
+        "operation": {
+            "name": "forEachRemainingAsync",
+            "parameterTypes": [
+                "Procedure"
+            ],
+            "classname": "net.dv8tion.jda.api.requests.restaction.pagination.PaginationAction"
+        },
+        "identifiers": {
+            "parameters": [
+                "action"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param  action {@link net.dv8tion.jda.api.utils.Procedure Procedure} returning {@code true} if iteration should continue!",
+                "guard": {
+                    "condition": "action != null",
+                    "description": "@param  action {@link net.dv8tion.jda.api.utils.Procedure Procedure} returning {@code true} if iteration should continue!"
+                }
+            }
+        ],
+        "post": [],
+        "throws": [
+            {
+                "exception": "java.lang.IllegalArgumentException",
+                "description": "@throws java.lang.IllegalArgumentException If the provided Procedure is {@code null}",
+                "guard": {
+                    "condition": "action == null",
+                    "description": "@throws java.lang.IllegalArgumentException If the provided Procedure is {@code null}"
+                }
+            }
+        ]
+    },
+    {
+        "operation": {
+            "name": "forEachRemainingAsync",
+            "parameterTypes": [
+                "Procedure",
+                "Consumer"
+            ],
+            "classname": "net.dv8tion.jda.api.requests.restaction.pagination.PaginationAction"
+        },
+        "identifiers": {
+            "parameters": [
+                "action",
+                "failure"
+            ],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [
+            {
+                "description": "@param  action {@link net.dv8tion.jda.api.utils.Procedure Procedure} returning {@code true} if iteration should continue!",
+                "guard": {
+                    "condition": "action != null",
+                    "description": "@param  action {@link net.dv8tion.jda.api.utils.Procedure Procedure} returning {@code true} if iteration should continue!"
+                }
+            },
+            {
+                "description": "@param  failure  {@link java.util.function.Consumer Consumer} that should handle any throwables from the action",
+                "guard": {
+                    "condition": "failure != null",
+                    "description": "@param  failure  {@link java.util.function.Consumer Consumer} that should handle any throwables from the action"
+                }
+            }
+        ],
+        "post": [],
+        "throws": [
+            {
+                "exception": "java.lang.IllegalArgumentException",
+                "description": "@throws java.lang.IllegalArgumentException If the provided Procedure or the failure Consumer is {@code null}",
+                "guard": {
+                    "condition": "action == null || failure == null",
+                    "description": "@throws java.lang.IllegalArgumentException If the provided Procedure or the failure Consumer is {@code null}"
+                }
+            }
+        ]
+    },
+    {
+        "operation": {
+            "name": "reverse",
+            "parameterTypes": [],
+            "classname": "net.dv8tion.jda.api.requests.restaction.pagination.PaginationAction"
+        },
+        "identifiers": {
+            "parameters": [],
+            "receiverName": "receiverObjectID",
+            "returnName": "methodResultID"
+        },
+        "pre": [],
+        "post": [],
+        "throws": [
+            {
+                "exception": "java.lang.IllegalArgumentException",
+                "description": "@throws IllegalArgumentException If this pagination action does not support the reversed order",
+                "guard": {
+                    "condition": "this.getSupportedOrders().size() <= 1",
+                    "description": "@throws IllegalArgumentException If this pagination action does not support the reversed order"
+                }
+            }
+        ]
+    }
+]
