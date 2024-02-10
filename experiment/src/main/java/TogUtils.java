@@ -226,31 +226,33 @@ public class TogUtils {
                         }
                     }
 
-                    if (mut != null) {
-                        MethodDeclaration test = cuTestClassFile
+                    if (mut != null && !cuTestClassFile) {
+                        List<MethodDeclaration> tests = cuTestClassFile
                                 .findAll(MethodDeclaration.class)
                                 .stream()
                                 .filter(t -> t.getNameAsString().equals(testName))
-                                .toList()
-                                .get(0);
-                        String methodName = mut.getNameAsString();
-                        String focalMethod = getCallableSignature(mut);
-                        String javadocString = getCallableJavadoc(mut).replace("\"", "\"\"");
-                        String testStr = test.toString().replace("\"", "\"\"");
-                        String testPrefixStr = testPrefix.toString();
-                        Matcher matcher = testPrefixPattern.matcher(testPrefix.toString());
-                        if (matcher.find()) {
-                            int startIdx = matcher.start();
-                            testStr = testStr.substring(startIdx);
+                                .toList();
+                        if (tests.size() > 0) {
+                            MethodDeclaration test = tests.get(0);
+                            String methodName = mut.getNameAsString();
+                            String focalMethod = getCallableSignature(mut);
+                            String javadocString = getCallableJavadoc(mut).replace("\"", "\"\"");
+                            String testStr = test.toString().replace("\"", "\"\"");
+                            String testPrefixStr = testPrefix.toString();
+                            Matcher matcher = testPrefixPattern.matcher(testPrefix.toString());
+                            if (matcher.find()) {
+                                int startIdx = matcher.start();
+                                testStr = testStr.substring(startIdx);
+                            }
+                            togaInputBuilder.append(String.format("\"%s {}\",\"%s\",\"%s\"\n", focalMethod, testStr, javadocString));
+                            togaMetadataBuilder.append(String.format("project,0,%s,0,0,False,\"\",\"\"\n", testName));
+                            togaRow.put("className", cuClassFile.getPrimaryType().orElseThrow().getFullyQualifiedName().orElseThrow());
+                            togaRow.put("methodName", methodName);
+                            togaRow.put("methodSignature", focalMethod);
+                            togaRow.put("testPrefix", testPrefixStr);
+                            togaRow.put("testName", testName);
+                            togaInfo.put(testName, togaRow);
                         }
-                        togaInputBuilder.append(String.format("\"%s {}\",\"%s\",\"%s\"\n", focalMethod, testStr, javadocString));
-                        togaMetadataBuilder.append(String.format("project,0,%s,0,0,False,\"\",\"\"\n", testName));
-                        togaRow.put("className", cuClassFile.getPrimaryType().orElseThrow().getFullyQualifiedName().orElseThrow());
-                        togaRow.put("methodName", methodName);
-                        togaRow.put("methodSignature", focalMethod);
-                        togaRow.put("testPrefix", testPrefixStr);
-                        togaRow.put("testName", testName);
-                        togaInfo.put(testName, togaRow);
                     }
                 } catch (NoSuchElementException | UnsolvedSymbolException e) {
                     togaErrBuilder.append(generateLogTogaInputError(testPrefix, fullyQualifiedClassName, e.getClass().getName()));
