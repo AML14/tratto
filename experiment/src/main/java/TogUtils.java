@@ -226,7 +226,7 @@ public class TogUtils {
                         }
                     }
 
-                    if (mut != null && !cuTestClassFile) {
+                    if (mut != null) {
                         List<MethodDeclaration> tests = cuTestClassFile
                                 .findAll(MethodDeclaration.class)
                                 .stream()
