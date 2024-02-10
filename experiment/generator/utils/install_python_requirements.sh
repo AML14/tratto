@@ -7,8 +7,9 @@ current_dir=$(realpath "$(dirname "$BASH_SOURCE")")
 source "${current_dir}/global_variables.sh"
 
 project_dir="$1"
-requirements_file="${project_dir}/requirements.txt"
-packages=($(grep -Eo '^[^=#]+' "$requirements_file"))
+requirements_filename="${2:-requirements.txt}"
+requirements_file_path="${project_dir}/${requirements_filename}"
+packages=($(grep -Eo '^[^=#]+' "$requirements_file_path"))
 # Get a list of installed packages using pip freeze
 installed_packages=$(pip freeze)
 install_packages="N"
@@ -32,7 +33,7 @@ if [ "$install_packages" == "Y" ]; then
   #fi
   echo "Installing packages..."
   cd "$project_dir"
-  pip install -r requirements.txt
+  pip install -r "$requirements_filename"
   cd "$ROOT_DIR"
   echo "Installation complete!"
 fi

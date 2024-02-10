@@ -40,8 +40,8 @@ if [ ! -d "${src_dir}" ]; then
 elif [ ! -d "${bin_dir}" ]; then
   echo -e "The system binaries path \"${bin_dir}\" does not exist."
   exit 1
-elif [ "$tog" == "tratto" ] && [ ! -f "${project_jar}" ]; then
-  echo -e "The project jar file \"${project_jar}\" does not exist."
+elif [ "$tog" == "tratto" ] && [ ! -f "${classpath_or_jar}" ]; then
+  echo -e "The project jar file \"${classpath_or_jar}\" does not exist."
   exit 1
 fi
 # Check if given TOG is supported
@@ -84,7 +84,7 @@ fi
 if [ "${tog}" == "jdoctor" ]; then
   bash ./generator/jdoctor.sh "${target_class}" "${src_dir}" "${classpath_or_jar}"
 elif [ "${tog}" == "toga" ]; then
-  bash ./generator/toga.sh "${target_class}" "${src_dir}" "${classpath_or_jar}"
+  bash ./generator/toga.sh "${target_class}" "${src_dir}" "${project_id}" "${bug_id}"
 elif [ "${tog}" == "tratto" ]; then
   bash ./generator/tratto.sh "${target_class}" "${src_dir}" "${classpath_or_jar}"
 fi

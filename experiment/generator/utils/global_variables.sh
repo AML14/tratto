@@ -31,9 +31,10 @@ EXPERIMENT_JAR="${ROOT_DIR}/generator/resources/experiment.jar"
 EVOSUITE_JAR="${RESOURCES_DIR}/evosuite-1.0.6.jar"
 JDOCTOR_JAR="${RESOURCES_DIR}/jdoctor.jar"
 TRATTO_JAR="${RESOURCES_DIR}/tratto.jar"
+TOGA_INPUT_GENERATOR="${RESOURCES_DIR}/toga_input_generator.py"
 
 # Server
-SERVER_PORT=5050
+SERVER_PORT=5000
 
 # Github repositories
 JDOCTOR_GITHUB_REPO="https://github.com/albertogoffi/toradocu.git"
@@ -42,6 +43,7 @@ TOGA_GITHUB_REPO="https://github.com/microsoft/toga.git"
 # Links to resources
 TOGA_ASSERTION_MODEL_LINK="https://drive.google.com/u/0/uc?id=1TvZMlpXeN3DQUwwgOhlCRkn5-v1l_ZSK&export=download"
 TOGA_EXCEPTION_MODEL_LINK="https://drive.google.com/u/0/uc?id=1JeRod7jtR8CdWTB_wn-HRNMgtgoRFpc7&export=download"
-TRATTO_TOKEN_CLASSES_LINK="https://drive.switch.ch/index.php/s/vkuzseJ7YeiO1Vh/download"
-TRATTO_TOKEN_VALUES_LINK="https://drive.switch.ch/index.php/s/IXNa0fMFTfzVp7V/download"
+TRATTO_ORACLES_LINK="https://drive.switch.ch/index.php/s/Cd7cooCIW41U9tN/download"
+TRATTO_TOKEN_CLASSES_LINK="https://drive.switch.ch/index.php/s/R4V6aFOX49y2u5q/download"
+TRATTO_TOKEN_VALUES_LINK="https://drive.switch.ch/index.php/s/O3tWHMV9t99AcHu/download"
 JDOCTOR_JAR_LINK="https://drive.switch.ch/index.php/s/dAkxslN83PvXhLo/download"

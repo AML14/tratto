@@ -31,7 +31,7 @@ fi
 echo "Checking python packages."
 rm "${TOGA_PROJECT_DIR}/requirements.txt"
 cp "${RESOURCES_DIR}/toga_requirements.txt" "${TOGA_PROJECT_DIR}/requirements.txt"
-bash "${UTILS_DIR}/install_python_requirements.sh" "$TOGA_PROJECT_DIR" "toga"
+bash "${UTILS_DIR}/install_python_requirements.sh" "$TOGA_PROJECT_DIR" "requirements.txt"
 
 # Download models
 if [ ! -e "${toga_assertions_dir}/pytorch_model.bin" ]; then
