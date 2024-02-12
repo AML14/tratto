@@ -2,6 +2,7 @@ import argparse
 import os
 
 import torch
+from safetensors.torch import load_model
 from transformers import PreTrainedModel
 from typing import Type
 from src.pretrained.ModelClasses import ModelClasses
@@ -25,6 +26,8 @@ def resume_checkpoint(
     elif checkpoint_path.endswith(".pt"):
         checkpoint = torch.load(checkpoint_path, map_location=torch.device(device))
         pt_model.load_state_dict(checkpoint['model_state_dict'])
+    elif checkpoint_path.endswith(".safetensors"):
+        load_model(pt_model, checkpoint_path)
 
 
 def setup_model(

@@ -150,36 +150,7 @@ def predict_next(
                         else:
                             false_predictions.append((tgt_decoded, max_logits_predicted[i]))
             else:
-                raise Exception("Not tested yet")
-                # Model predictions with ranking
-                outputs_generate = model(
-                    input_ids=src_input,
-                    attention_mask=src_masks
-                )
-                tgt_decoded = list(map(lambda t: t.replace(" ",""), np.array(
-                    tokenizer.batch_decode(
-                        tgt,
-                        skip_special_tokens=True
-                    )
-                )))
-                logits = outputs_generate.logits
-                probabilities = torch.softmax(logits, dim=1)
-                predicted_generate_encoded = torch.argmax(probabilities, dim=1)
-
-                for i, p in enumerate(predicted_generate_encoded):
-                    if classification_type == ClassificationType.CATEGORY_PREDICTION:
-                        predicted_generate = classificator_converter_out_category[p.item()]
-                        true_predictions.append((
-                            probabilities[i][p.item()].item(),
-                            predicted_generate
-                        ))
-                    elif classification_type == ClassificationType.LABEL_PREDICTION:
-                        if classificator_converter_out_label[p.item()] == 'True':
-                            predicted_generate = tgt_decoded[i]
-                            true_predictions.append((
-                                probabilities[i][p.item()].item(),
-                                predicted_generate
-                            ))
+                raise Exception("Encoder predictions not implemented yet")
 
         if len(true_predictions) > 0:
             sorted_true_predictions = sorted(true_predictions, key=lambda p: p[1], reverse=True)
@@ -296,9 +267,11 @@ def get_input_model_oracles(
     df_dataset = df_dataset.drop([
         'packageName', 'className', 'oracleSoFar', 'token', 'tokenClass', 'tokenInfo', 'oracleId'
     ], axis=1)
+    # Add inputIdentifier column
+    df_dataset['inputIdentifier'] = "oracle"
     # Define the new order of columns
     new_columns_order = [
-        'javadocTag', 'oracleType', 'methodSourceCode', 'methodJavadoc'
+        'inputIdentifier', 'javadocTag', 'oracleType', 'methodJavadoc', 'methodSourceCode'
     ]
     # Reindex the DataFrame with the new order
     df_dataset = df_dataset.reindex(columns=new_columns_order)
@@ -328,9 +301,11 @@ def get_input_model_classes(
     df_dataset['tokenClass'] = df_dataset['tokenClass'].astype('string')
     df_dataset['tokenClassesSoFar'] = df_dataset['tokenClassesSoFar'].astype('string')
     df_dataset['eligibleTokenClasses'] = df_dataset['eligibleTokenClasses'].astype('string')
+    # Add inputIdentifier column
+    df_dataset['inputIdentifier'] = "token_class"
     # Define the new order of columns
     new_columns_order = [
-        'tokenClass', 'oracleSoFar', 'tokenClassesSoFar', 'eligibleTokenClasses',
+        'inputIdentifier','tokenClass', 'oracleSoFar', 'tokenClassesSoFar', 'eligibleTokenClasses',
         'javadocTag', 'oracleType', 'packageName', 'className', 'methodSourceCode', 'methodJavadoc',
         'oracleId', 'token', 'tokenInfo'
     ]
@@ -382,12 +357,14 @@ def get_input_model_values(
     df_dataset["eligibleTokens"] = df_dataset["eligibleTokens"].apply(lambda x: "[ " + " ".join(x) + " ]")
     # Set type of dataframe columns
     df_dataset['eligibleTokens'] = df_dataset['eligibleTokens'].astype('string')
+    # Add inputIdentifier column
+    df_dataset['inputIdentifier'] = "token_values"
 
     # Define the new order of columns
     new_columns_order = [
-        'token', 'oracleSoFar', 'eligibleTokens', 'javadocTag', 'oracleType',
-        'packageName', 'className', 'methodSourceCode', 'methodJavadoc', 'tokenInfo',
-        'oracleId', 'tokenClass'
+        'inputIdentifier', 'token', 'tokenInfo', 'oracleSoFar', 'javadocTag', 'oracleType',
+        'packageName', 'className', 'methodSourceCode', 'methodJavadoc',
+        'eligibleTokens', 'oracleId', 'tokenClass'
     ]
     # Reindex the DataFrame with the new order
     df_dataset = df_dataset.reindex(columns=new_columns_order)
@@ -457,12 +434,8 @@ def next_token(
         transformer_type_oracles: Type[TransformerType],
         transformer_type_token_classes: Type[TransformerType],
         transformer_type_token_values: Type[TransformerType],
-        model_oracles: Type[PreTrainedModel],
-        model_classes: Type[PreTrainedModel],
-        model_values: Type[PreTrainedModel],
-        tokenizer_oracles: PreTrainedTokenizer,
-        tokenizer_token_classes: PreTrainedTokenizer,
-        tokenizer_token_values: PreTrainedTokenizer
+        model: Type[PreTrainedModel],
+        tokenizer: PreTrainedTokenizer
 ):
     # Read json file
     df_dataset = pd.read_json(filename)
@@ -471,14 +444,14 @@ def next_token(
         print("Predict if oracle must be generated")
         # Get model token classes input
         print("Get model oracles input")
-        src_oracles, tgt_oracles = get_input_model_oracles(df_dataset, tokenizer_oracles, transformer_type_oracles)
+        src_oracles, tgt_oracles = get_input_model_oracles(df_dataset, tokenizer, transformer_type_oracles)
         # Tokenize input
         print("Tokenize model oracles input")
         t_src_oracles = tokenize_input(
             src_oracles,
             tgt_oracles,
-            tokenizer_token_classes,
-            classification_type_token_classes
+            tokenizer,
+            classification_type_oracles
         )
         t_t_src_oracles = TensorDataset(*t_src_oracles)
         dl_src_oracles = DataLoader(
@@ -489,9 +462,9 @@ def next_token(
         print("Predict next token class")
         generate_oracle = predict_generate_oracle(
             device,
-            model_classes,
+            model,
             dl_src_oracles,
-            tokenizer_token_classes,
+            tokenizer,
             transformer_type_oracles
         )
         if not generate_oracle:
@@ -502,7 +475,7 @@ def next_token(
     df_dataset = pd.read_json(filename)
     # Pre-process dataset
     print("Pre-processing dataset")
-    df_dataset = pre_process_dataset(df_dataset, tokenizer_token_classes)
+    df_dataset = pre_process_dataset(df_dataset, tokenizer)
 
     # If there is a single row, there is no need to make predictions. The unique possible value is returned
     if len(df_dataset) == 1:
@@ -512,7 +485,7 @@ def next_token(
     print("Get model token classes input")
     src_token_classes, tgt_token_classes, eligible_token_classes = get_input_model_classes(
         df_dataset,
-        tokenizer_token_classes,
+        tokenizer,
         classification_type_token_classes,
         transformer_type_token_classes
     )
@@ -521,7 +494,7 @@ def next_token(
     t_src_token_classes = tokenize_input(
         src_token_classes,
         tgt_token_classes,
-        tokenizer_token_classes,
+        tokenizer,
         classification_type_token_classes
     )
     # Generate data loader
@@ -534,9 +507,9 @@ def next_token(
     print("Predict next token class")
     next_token_class = predict_next(
         device,
-        model_classes,
+        model,
         dl_src_token_classes,
-        tokenizer_token_classes,
+        tokenizer,
         eligible_token_classes,
         classification_type_token_classes,
         transformer_type_token_classes,
@@ -547,7 +520,7 @@ def next_token(
     src_token_values, tgt_token_values, eligible_token_values, next_token_value = get_input_model_values(
         df_dataset,
         next_token_class,
-        tokenizer_token_values,
+        tokenizer,
         classification_type_token_values,
         transformer_type_token_values
     )
@@ -561,7 +534,7 @@ def next_token(
     t_src_token_values = tokenize_input(
         src_token_values,
         tgt_token_values,
-        tokenizer_token_values,
+        tokenizer,
         classification_type_token_values
     )
     # Generate data loader
@@ -574,9 +547,9 @@ def next_token(
     print("Predict next token value")
     next_token_value = predict_next(
         device,
-        model_values,
+        model,
         dl_src_token_values,
-        tokenizer_token_values,
+        tokenizer,
         eligible_token_values,
         classification_type_token_values,
         transformer_type_token_values,
@@ -585,8 +558,3 @@ def next_token(
     # Return next token
     original_next_token_class = next((key for key, val in value_mappings.items() if val == next_token_class), None)
     return next_token_value + "\n" + original_next_token_class
-
-
-
-
-

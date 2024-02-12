@@ -6,3 +6,4 @@ class TrattoModelType(str, Enum):
     TOKEN_VALUES = "TOKEN_VALUES"
     TOKEN_CLASSES = "TOKEN_CLASSES"
     ORACLES = "ORACLES"
+    MULTITASK = "MULTITASK"
