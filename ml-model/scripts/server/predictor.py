@@ -56,8 +56,6 @@ def predict_generate_oracle(
     # Model in evaluation mode
     model.eval()
     num_beams = 1
-    true_predictions = []
-    false_predictions = []
     # The prediction is performed without accumulating the gradient descent and without updating the weights of the model
     with torch.no_grad():
         for batch_id, batch in enumerate(dl_src, 1):
@@ -472,10 +470,10 @@ def next_token(
     if len(df_dataset['oracleSoFar'][0]) == 0:
         print("Predict if oracle must be generated")
         # Get model token classes input
-        print("Get model token classes input")
+        print("Get model oracles input")
         src_oracles, tgt_oracles = get_input_model_oracles(df_dataset, tokenizer_oracles, transformer_type_oracles)
         # Tokenize input
-        print("Tokenize model token classes input")
+        print("Tokenize model oracles input")
         t_src_oracles = tokenize_input(
             src_oracles,
             tgt_oracles,

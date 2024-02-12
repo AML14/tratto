@@ -16,31 +16,41 @@ class ArgumentParser:
             help="The server port."
         )
         parser.add_argument(
+            "--checkpoint_path_multitask",
+            default=None,
+            type=str,
+            help="The path to the checkpoint of the multitask model to load."
+        )
+        parser.add_argument(
             "--checkpoint_path_oracles",
             default=None,
             type=str,
-            required=True,
             help="The path to the checkpoint of the oracles model to load."
         )
         parser.add_argument(
             "--checkpoint_path_token_classes",
             default=None,
             type=str,
-            required=True,
             help="The path to the checkpoint of the tokenClasses model to load."
         )
         parser.add_argument(
             "--checkpoint_path_token_values",
             default=None,
             type=str,
-            required=True,
             help="The path to the checkpoint of the tokenValues model to load."
+        )
+        parser.add_argument(
+            "--model_type_multitask",
+            default=None,
+            type=str,
+            help="TokenValues model type for the selected in the list: " + ", ".join(
+                ModelClasses.get_available_model_classes()
+            )
         )
         parser.add_argument(
             "--model_type_oracles",
             default=None,
             type=str,
-            required=True,
             help="Oracles model type for the selected in the list: " + ", ".join(
                 ModelClasses.get_available_model_classes()
             )
@@ -49,7 +59,6 @@ class ArgumentParser:
             "--model_type_token_classes",
             default=None,
             type=str,
-            required=True,
             help="TokenClasses model type for the selected in the list: " + ", ".join(
                 ModelClasses.get_available_model_classes()
             )
@@ -58,10 +67,15 @@ class ArgumentParser:
             "--model_type_token_values",
             default=None,
             type=str,
-            required=True,
             help="TokenValues model type for the selected in the list: " + ", ".join(
                 ModelClasses.get_available_model_classes()
             )
+        )
+        parser.add_argument(
+            "--transformer_type_multitask",
+            default="decoder",
+            type=str,
+            help="Trasformer type: encoder or decoder. Default decoder."
         )
         parser.add_argument(
             "--transformer_type_oracles",
@@ -82,10 +96,18 @@ class ArgumentParser:
             help="Trasformer type: encoder or decoder. Default decoder."
         )
         parser.add_argument(
+            "--classification_type_multitask",
+            default=None,
+            type=str,
+            help="Multitask classification type for the selected in the list: " + ", ".join([
+                ClassificationType.CATEGORY_PREDICTION,
+                ClassificationType.LABEL_PREDICTION
+            ])
+        )
+        parser.add_argument(
             "--classification_type_oracles",
             default=None,
             type=str,
-            required=True,
             help="TokenClasses classification type for the selected in the list: " + ", ".join([
                 ClassificationType.CATEGORY_PREDICTION,
                 ClassificationType.LABEL_PREDICTION
@@ -95,7 +117,6 @@ class ArgumentParser:
             "--classification_type_token_classes",
             default=None,
             type=str,
-            required=True,
             help="TokenClasses classification type for the selected in the list: " + ", ".join([
                 ClassificationType.CATEGORY_PREDICTION,
                 ClassificationType.LABEL_PREDICTION
@@ -105,11 +126,16 @@ class ArgumentParser:
             "--classification_type_token_values",
             default=None,
             type=str,
-            required=True,
             help="TokenValues classification type for the selected in the list: " + ", ".join([
                 ClassificationType.CATEGORY_PREDICTION,
                 ClassificationType.LABEL_PREDICTION
             ])
+        )
+        parser.add_argument(
+            "--tokenizer_name_multitask",
+            default=None,
+            type=str,
+            help="Pretrained tokenizer name or path if not the same as model_name for the multitask model."
         )
         parser.add_argument(
             "--tokenizer_name_oracles",
@@ -130,25 +156,34 @@ class ArgumentParser:
             help="Pretrained tokenizer name or path if not the same as model_name for the tokenValues model."
         )
         parser.add_argument(
+            "--model_name_or_path_multitask",
+            default=None,
+            type=str,
+            help="Path to pre-trained model or shortcut name for the multitask model."
+        )
+        parser.add_argument(
             "--model_name_or_path_oracles",
             default=None,
             type=str,
-            required=True,
             help="Path to pre-trained model or shortcut name for the oracles model."
         )
         parser.add_argument(
             "--model_name_or_path_token_classes",
             default=None,
             type=str,
-            required=True,
             help="Path to pre-trained model or shortcut name for the tokenClasses model."
         )
         parser.add_argument(
             "--model_name_or_path_token_values",
             default=None,
             type=str,
-            required=True,
             help="Path to pre-trained model or shortcut name for the tokenValues model."
+        )
+        parser.add_argument(
+            "--config_name_multitask",
+            default=None,
+            type=str,
+            help="Pretrained config name or path if not the same as model_name for the multitask model."
         )
         parser.add_argument(
             "--config_name_oracles",
