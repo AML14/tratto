@@ -19,12 +19,16 @@ model_name_or_path_token_values="Salesforce/codet5p-770m"
 checkpoint_path_oracles="checkpoints/oracles-checkpoint/pytorch_model.bin"
 checkpoint_path_token_classes="checkpoints/token-classes-checkpoint/pytorch_model.bin"
 checkpoint_path_token_values="checkpoints/token-values-checkpoint/pytorch_model.bin"
+transformer_type_oracles="decoder"
+transformer_type_token_classes="decoder"
+transformer_type_token_values="decoder"
 
 # Parameters for server with multitask model
 model_type_multitask="codet5+"
 tokenizer_name_multitask="Salesforce/codet5p-220m"
 model_name_or_path_multitask="Salesforce/codet5p-220m"
 checkpoint_path_multitask="/Users/davidemolinelli/tratto/ml-model/checkpoints/multitask-checkpoint/model.safetensors"
+transformer_type_multitask="decoder"
 
 if [ "$#" -eq 2 ] && [ "$2" == "--multitask" ]; then
   echo "Starting server with multitask model"
@@ -55,5 +59,8 @@ else
     --model_name_or_path_token_values "$model_name_or_path_token_values" \
     --checkpoint_path_oracles "$checkpoint_path_oracles" \
     --checkpoint_path_token_classes "$checkpoint_path_token_classes" \
-    --checkpoint_path_token_values "$checkpoint_path_token_values"
+    --checkpoint_path_token_values "$checkpoint_path_token_values" \
+    --transformer_type_oracles "$transformer_type_oracles" \
+    --transformer_type_token_classes "$transformer_type_token_classes" \
+    --transformer_type_token_values "$transformer_type_token_values"
 fi
