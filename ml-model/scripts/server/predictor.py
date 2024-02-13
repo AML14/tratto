@@ -213,7 +213,9 @@ def predict_next(
                 else:
                     return first_choice
             elif classification_type == ClassificationType.LABEL_PREDICTION:
-                if first_choice in value_mappings.values():
+                if tratto_model_type == TrattoModelType.TOKEN_CLASSES and first_choice in value_mappings.values():
+                    return first_choice
+                elif tratto_model_type == TrattoModelType.TOKEN_VALUES and first_choice in eligible_tokens:
                     return first_choice
             # If no token has been found, compute the Levenshtein distance among the eligible token classes
             best_distance = float('inf')
@@ -391,6 +393,8 @@ def get_input_model_values(
     ]
     # Reindex the DataFrame with the new order
     df_dataset = df_dataset.reindex(columns=new_columns_order)
+    # Extract eligible token classes as list
+    eligible_token_values = df_dataset['eligibleTokens'][0].strip("[]").split()
     # Delete spurious columns for predicting the next token class
     df_dataset = df_dataset.drop(['oracleId', 'tokenClass', 'eligibleTokens'], axis=1)
     if classification_type == ClassificationType.CATEGORY_PREDICTION:
@@ -410,10 +414,8 @@ def get_input_model_values(
     df_src_concat = df_dataset.apply(lambda row: tokenizer.sep_token.join(row.values), axis=1)
     # The pandas dataframe is transformed in a list of strings: each string is an input to the model
     src = df_src_concat.to_numpy().tolist()
-    # Extract eligible token classes as list
-    #eligible_token_values = df_dataset['eligibleTokens'][0].strip("[]").split()
     # Return source input and token classes dictionary
-    return src, tgt, None, None
+    return src, tgt, eligible_token_values, None
 
 
 def tokenize_input(
@@ -494,6 +496,7 @@ def next_token(
             tokenizer_token_classes,
             transformer_type_oracles
         )
+        generate_oracle = True
         if not generate_oracle:
             return ';' + "\n" + SINGLE_PUNCTUATION_SEMICOLON
 
