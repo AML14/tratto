@@ -496,7 +496,6 @@ def next_token(
             tokenizer_token_classes,
             transformer_type_oracles
         )
-        generate_oracle = True
         if not generate_oracle:
             return ';' + "\n" + SINGLE_PUNCTUATION_SEMICOLON
 
