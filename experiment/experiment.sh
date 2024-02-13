@@ -40,7 +40,7 @@ if [ ! -d "${src_dir}" ]; then
 elif [ ! -d "${bin_dir}" ]; then
   echo -e "The system binaries path \"${bin_dir}\" does not exist."
   exit 1
-elif [ "$tog" == "tratto" ] && [ ! -f "${classpath_or_jar}" ]; then
+elif [ "$tog" == "tratto" ] && [ ! -e "${classpath_or_jar}" ]; then
   echo -e "The project jar file \"${classpath_or_jar}\" does not exist."
   exit 1
 fi

@@ -16,12 +16,15 @@ source "${current_dir}/utils/global_variables.sh"
 
 # Setup local variables
 fully_qualified_name="${1}"
+fqn_path=$(echo "$fully_qualified_name" | sed 's/\./\//g')
 src_path="${2}"
 project_jar_path="${3}"
 resources_dir="${ROOT_DIR}/generator/resources"
 utils_dir="${ROOT_DIR}/generator/utils"
 tratto_project_dir="${ROOT_DIR}/../tratto"
-tratto_output_dir="${ROOT_DIR}/output/tratto/output"
+tratto_output_dir="${ROOT_DIR}/output/tratto-oracles"
+tratto_output_file="${tratto_output_dir}/${fqn_path}_tratto_output.json"
+tratto_output_fqn_dir="$(dirname "${tratto_output_file}")"
 
 # Setup sdkman
 source "${utils_dir}/init_sdkman.sh" "${SDKMAN_DIR}"
@@ -34,12 +37,12 @@ cd "${tratto_project_dir}" || exit 1
 java -jar "${TRATTO_JAR}" "${fully_qualified_name}" "${src_path}" "${project_jar_path}" "${SERVER_PORT}"
 cd "${ROOT_DIR}" || exit 1
 
-if [ ! -d "${tratto_output_dir}" ]; then
+if [ ! -d "$tratto_output_fqn_dir" ]; then
     # If it doesn't exist, create the folder
-    mkdir -p "${tratto_output_dir}"
-    echo "Folder created: ${tratto_output_dir}"
+    mkdir -p "$tratto_output_fqn_dir"
+    echo "Folder created: ${tratto_output_fqn_dir}"
 fi
 
-mv "${tratto_project_dir}/src/main/resources/oracle_datapoints.json" "${tratto_output_dir}"
+mv "${tratto_project_dir}/src/main/resources/oracle_datapoints.json" "${tratto_output_file}"
 
-java -jar "${resources_dir}/experiment.jar" "generate_oracle_output" "tratto" "${src_path}"
+java -jar "$EXPERIMENT_JAR" "generate_oracle_output" "tratto" "${tratto_output_file}" "${src_path}"

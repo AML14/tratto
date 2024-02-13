@@ -51,17 +51,19 @@ public class Tog {
      *
      * @param togType a TOG
      * @param path a path to a file or directory for generating OracleOutputs
+     * @param srcPath the source directory of the project under test (can be null)
      */
     private static void generateOracleOutput(
             TogType togType,
-            Path path
+            Path path,
+            Path srcPath
     ) {
         if (togType == TogType.JDOCTOR) {
             TogUtils.jDoctorToOracleOutput(path);
         } else if (togType == TogType.TOGA) {
             TogUtils.togaToOracleOutput(path);
         } else if (togType == TogType.TRATTO) {
-            TogUtils.trattoToOracleOutput(path);
+            TogUtils.trattoToOracleOutput(path, srcPath);
         }
     }
 
@@ -86,7 +88,8 @@ public class Tog {
             );
             case GENERATE_ORACLE_OUTPUT -> generateOracleOutput(
                     TogType.valueOf(args[1].toUpperCase()),
-                    Paths.get(args[2])
+                    Paths.get(args[2]),
+                    args.length > 3 ? Paths.get(args[3]) : null
             );
             case GENERATE_DEFECTS4J_OUTPUT -> TogUtils.generateDefects4JOutput(
                     TogType.valueOf(args[1].toUpperCase()),
