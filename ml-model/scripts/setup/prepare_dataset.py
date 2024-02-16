@@ -22,8 +22,7 @@ for c_path in c_paths:
     if not os.path.exists(c_path):
         os.makedirs(os.path.join(c_path, 'json'))
         os.makedirs(os.path.join(c_path, 'csv'))
-# list of partial dataframes
-dfs = []
+
 # collects partial dataframes from oracles
 for d_path, c_path in zip(d_paths, c_paths):
     for file_name in os.listdir(d_path):

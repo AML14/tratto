@@ -289,6 +289,12 @@ class ArgumentParser:
             default=42,
             help="random seed for initialization"
         )
+        parser.add_argument(
+            "--is_multitask",
+            default="False",
+            type=str,
+            help="Perform pre-processing of the dataset"
+        )
 
     @staticmethod
     def add_init_arguments(parser: Type[ArgumentParser]):
@@ -630,4 +636,10 @@ class ArgumentParser:
             type=int,
             default=42,
             help="random seed for initialization"
+        )
+        parser.add_argument(
+            "--is_multitask",
+            default="False",
+            type=str,
+            help="Perform pre-processing of the dataset"
         )

@@ -73,11 +73,12 @@ def main():
         transformer_type,
         classification_type,
         tratto_model_type,
-        True if args.pre_processing == "True" else False
+        pre_processing=True,
+        is_multitask=True if args.is_multitask == "True" else False
     )
     # Pre-processing data
     logger.print_pre_processing()
-    data_processor.pre_processing(True if args.save_pre_processing == "True" else False)
+    data_processor.pre_processing(True)
 
 if __name__ == "__main__":
     main()
