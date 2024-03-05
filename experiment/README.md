@@ -10,10 +10,9 @@ This module has all scripts necessary to reproduce the results described in the 
 
 ---
 
-This section outlines all requirements and corresponding setup instructions for each tool used in the experimental pipeline.
-After the setup is complete, the user should be able to run each example command in the [Run the experiments](#3-run-the-experiments) section.
+This section outlines all requirements and corresponding setup instructions necessary to run the experimental pipeline. 
 
-## 1.0. General Requirements
+## 1.1. SDKMan
 
 [Sdkman](https://sdkman.io/) is used to easily manage the multiple Java Development Kit(s) (JDKs) required by the different
 tools of the experimental pipeline. **Sdkman** is a Software Development Kit (SDK) manager.
@@ -35,22 +34,12 @@ To download and install a local version of **Sdkman**. The script will also inst
 * Ant 1.10.13
 * Gradle 8.3
 
-## 1.1. Evosuite
-
-### 1.1.1. Java 8
-
-We use EvoSuite to generate test prefixes, which is written in Java 8. However, the experiment module uses Java 17. To run EvoSuite (and similarly, JDoctor), the user must configure a home directory for a local JDK 8 version. See [Oracle](https://www.oracle.com/java/technologies/downloads/#java8-linux) for JDK downloads (you may need an Oracle account to download older versions). Then, add the JDK to the `./generator/resources` directory. In `./generator/evosuite.sh`, modify the field at the top of the script, `JDK8_NAME`, to the name of the local JDK directory in `./generator/resources`. By default, the script searches for `jdk-1.8.jdk` (alternatively, you may rename your local JDK directory to match this name).
-
 ## 1.2. JDoctor
 
 ### 1.2.1. ToRaDoCu
 
 To set up JDoctor for analysis, visit the [ToRaDoCu](https://github.com/albertogoffi/toradocu) GitHub page, and follow the setup
-instructions to build the `toradocu-1.0-all.jar` file (may take a few minutes). Then, move the jar file to the `./generator/resources` directory.
-
-### 1.2.2. Java 8
-
-JDoctor is written in Java 8. Please complete the above [EvoSuite Java 8 setup](#111-java-8) instructions before continuing. Similar to the EvoSuite setup, modify the field at the top of the `./generator/jdoctor.sh` script, `JDK8_NAME`, to the name of the local JDK 8 directory in `./generator/resources`.
+instructions to build the `toradocu-1.0-all.jar` file (this may take a few minutes). Then, move the jar file to the `./generator/resources` directory.
 
 ## 1.3. Toga
 
@@ -64,29 +53,21 @@ Toga is written in `Python 3.8` and requires the user to install various python 
 
 ## 1.4. Tratto
 
-### 1.4.1 Conda (recommended)
+### 1.4.1. Conda (recommended)
 
 Similar to Toga, a package management system, such as conda, is recommended (but not required) to create an isolated environment to run the Tratto experiments (and debug any potential errors). See the [Miniconda homepage](https://docs.conda.io/projects/miniconda/en/latest/) for setup instructions. Otherwise, the setup is fully automated by `./generator/tratto.sh`.
 
-## 1.5 Runner
+## 1.5. Defects4J
 
-### 1.5.1 Java 8
+Follow the instructions on the [Defects4J](https://github.com/rjust/defects4j) GitHub page to set up the Defects4J project. Then, run the following command in your local terminal,
 
-Please complete the above [EvoSuite Java 8 setup](#111-java-8) instructions before continuing. Similar to the EvoSuite and JDoctor setup, modify the field at the top of the `./runner.sh` script, `JDK8_NAME`, to the name of the local JDK 8 directory in `./generator/resources`.
+```bash
+export DEFECTS4J_HOME=/path/to/defects4j
+```
 
-### 1.5.1 Dependencies
+## 1.6. Defects4JPrefix
 
-The runner script requires the following dependencies to be installed in your machine:
-
-```shell
-sudo cpan DBD::CSV
-````
-
-## 1.6 Defects4J
-
-To replicate the experiments with Defects4J, the Subversion command-line client tool must be installed.
-Execute `svn --version` command to check if the tool is installed in your machine, otherwise check the list of commands
-to install it in your machine, [here](https://command-not-found.com/svn).
+Clone the [Defects4JPrefix](https://github.com/ezackr/defects4jprefix) project into a sibling repository. Then, copy the `defects4jprefix/src/main/evosuite-prefixes` directory into the output directory of this project. The prefixes are pre-generated to expedite the experimental pipeline. 
 
 # 2. Overview
 
