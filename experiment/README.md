@@ -2,7 +2,7 @@
 
 ----
 
-This module has all scripts necessary to reproduce the experimental results described in the paper "Tratto: A Neuro-Symbolic Approach to Deriving Axiomatic Test Oracles".
+This module has all scripts necessary to reproduce the results described in the paper "Tratto: A Neuro-Symbolic Approach to Deriving Axiomatic Test Oracles".
 
 [//]: # (Add link to paper when available)
 
