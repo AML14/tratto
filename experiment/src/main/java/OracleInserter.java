@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This class provides the functionality for inserting oracles into test
+ * This class provides static methods for inserting oracles into test
  * prefixes.
  */
 public class OracleInserter {

@@ -1,0 +1,60 @@
+[
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.genetics.NPointCrossover",
+      "name": "org.apache.commons.math3.genetics.NPointCrossover",
+      "parameterTypes": [
+        "int"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "crossoverPoints"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NotStrictlyPositiveException",
+        "description": "@throws org.apache.commons.math3.exception.NotStrictlyPositiveException the number of crossoverPoints is not strictly positive.",
+        "guard": {
+          "condition": "(crossoverPoints>0) == false",
+          "description": "the number of crossoverPoints is not strictly positive."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.genetics.NPointCrossover",
+      "name": "crossover",
+      "parameterTypes": [
+        "org.apache.commons.math3.genetics.Chromosome",
+        "org.apache.commons.math3.genetics.Chromosome"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "first",
+        "second"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.MathIllegalArgumentException",
+        "description": "@throws org.apache.commons.math3.exception.MathIllegalArgumentException one of the chromosomes is not an instance of AbstractListChromosome",
+        "guard": {
+          "condition": "(first instanceof AbstractListChromosome) == false || (second instanceof AbstractListChromosome) == false",
+          "description": "one of the chromosomes is not an instance of AbstractListChromosome"
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  }
+]

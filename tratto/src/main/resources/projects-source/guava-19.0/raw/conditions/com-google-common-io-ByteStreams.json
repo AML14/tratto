@@ -1,0 +1,60 @@
+[
+  {
+    "operation": {
+      "classname": "com.google.common.io.ByteStreams",
+      "name": "newDataInput",
+      "parameterTypes": [
+        "[B",
+        "int"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "bytes",
+        "start"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.IndexOutOfBoundsException",
+        "description": "@throws java.lang.IndexOutOfBoundsException start is negative or greater than the length of the array.",
+        "guard": {
+          "condition": "start<0",
+          "description": "start is negative or greater than the length of the array."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  },
+  {
+    "operation": {
+      "classname": "com.google.common.io.ByteStreams",
+      "name": "newDataOutput",
+      "parameterTypes": [
+        "int"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "size"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "java.lang.IllegalArgumentException",
+        "description": "@throws java.lang.IllegalArgumentException size is negative.",
+        "guard": {
+          "condition": "size<0",
+          "description": "size is negative."
+        }
+      }
+    ],
+    "post": [],
+    "pre": []
+  }
+]

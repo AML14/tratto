@@ -1,0 +1,50 @@
+[
+  {
+    "operation": {
+      "classname": "org.apache.commons.math3.optimization.univariate.UnivariateMultiStartOptimizer",
+      "name": "org.apache.commons.math3.optimization.univariate.UnivariateMultiStartOptimizer",
+      "parameterTypes": [
+        "org.apache.commons.math3.optimization.univariate.BaseUnivariateOptimizer",
+        "int",
+        "org.apache.commons.math3.random.RandomGenerator"
+      ]
+    },
+    "identifiers": {
+      "parameters": [
+        "optimizer",
+        "starts",
+        "generator"
+      ],
+      "receiverName": "receiverObjectID",
+      "returnName": "methodResultID"
+    },
+    "throws": [
+      {
+        "exception": "org.apache.commons.math3.exception.NullArgumentException",
+        "description": "@throws org.apache.commons.math3.exception.NullArgumentException optimizer or generator is null.",
+        "guard": {
+          "condition": "optimizer==null || generator==null",
+          "description": "optimizer or generator is null."
+        }
+      },
+      {
+        "exception": "org.apache.commons.math3.exception.NotStrictlyPositiveException",
+        "description": "@throws org.apache.commons.math3.exception.NotStrictlyPositiveException starts < 1.",
+        "guard": {
+          "condition": "starts<1",
+          "description": "starts < 1."
+        }
+      }
+    ],
+    "post": [],
+    "pre": [
+      {
+        "description": "@param starts Number of starts to perform. If starts == 1. starts is the optimize methods will return the same solution as optimizer would.",
+        "guard": {
+          "condition": "starts==1",
+          "description": "Number of starts to perform. If starts == 1. starts is the optimize methods will return the same solution as optimizer would."
+        }
+      }
+    ]
+  }
+]

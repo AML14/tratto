@@ -100,7 +100,7 @@
         "exception": "java.lang.NullPointerException",
         "description": "@throws java.lang.NullPointerException iterators array is or contains null.",
         "guard": {
-          "condition": "iteratorChain==null",
+          "condition": "iteratorChain==null || Arrays.stream(iteratorChain).anyMatch(jdVar -> jdVar == null)",
           "description": "iterators array is or contains null."
         }
       }
@@ -137,6 +137,14 @@
         "description": "@throws java.lang.NullPointerException iterators collection is or contains null.",
         "guard": {
           "condition": "iteratorChain==null || ((iteratorChain==null)==false) && (iteratorChain.contains(null))",
+          "description": "iterators collection is or contains null."
+        }
+      },
+      {
+        "exception": "java.lang.ClassCastException",
+        "description": "@throws java.lang.ClassCastException if iterators collection doesn't contain an iterator",
+        "guard": {
+          "condition": "iteratorChain.stream().anyMatch(jdVar -> jdVar!=IteratorUtils.getIterator(jdVar))",
           "description": "iterators collection is or contains null."
         }
       }

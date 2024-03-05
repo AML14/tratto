@@ -34,7 +34,7 @@ public class StringUtils {
     private static final StanfordCoreNLP stanfordCoreNLP = getStanfordCoreNLP();
     private static final Pattern instanceofPattern = Pattern.compile(" instanceof( |$)");
 
-    /** Private constructor to avoid creating an instance of this class. */
+    /** Do not instantiate this class. */
     private StringUtils() {
         throw new UnsupportedOperationException("This class cannot be instantiated.");
     }
@@ -151,6 +151,13 @@ public class StringUtils {
 
     public static String fullyQualifiedClassName(Pair<String, String> packageClassPair) {
         return fullyQualifiedClassName(packageClassPair.getValue0(), packageClassPair.getValue1());
+    }
+
+    public static String getClassNameFromPath(String path) {
+        assert path.endsWith(".java");
+        String[] pathTokens = path.split("/");
+        String className = pathTokens[pathTokens.length - 1];
+        return className.substring(0, className.length() - 5);
     }
 
     /**
