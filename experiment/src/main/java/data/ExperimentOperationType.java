@@ -3,7 +3,7 @@ package data;
 /**
  * This enum defines all possible operations of the main Tog class.
  */
-public enum OperationType {
+public enum ExperimentOperationType {
     /** Removes oracles from a test suite. */
     REMOVE_ORACLES,
     /** Adds oracles to a test prefix. */
