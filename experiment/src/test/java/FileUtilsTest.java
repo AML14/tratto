@@ -29,9 +29,9 @@ public class FileUtilsTest {
     }
 
     @Test
-    public void fqnToPathTest() {
-        assertEquals(Paths.get("com", "example", "github", "MyClass.java"), FileUtils.fqnToPath("com.example.github.MyClass"));
-        assertEquals(Paths.get("MyClass.java"), FileUtils.fqnToPath("MyClass"));
+    public void getFQNPathTest() {
+        assertEquals(Paths.get("com", "example", "github", "MyClass.java"), FileUtils.getFQNPath("com.example.github.MyClass"));
+        assertEquals(Paths.get("MyClass.java"), FileUtils.getFQNPath("MyClass"));
     }
 
     @Test
@@ -41,9 +41,15 @@ public class FileUtilsTest {
     }
 
     @Test
-    public void fqnToSimpleName() {
-        assertEquals("MyClass", FileUtils.fqnToSimpleName("com.example.MyClass"));
-        assertEquals("MyClass", FileUtils.fqnToSimpleName("MyClass"));
+    public void swapParentDirectoryTest() {
+        Path simplePath = Paths.get("output", "evosuite-prefixes", "com", "example");
+        assertEquals(Paths.get("output", "evosuite-tests", "com", "example"), FileUtils.swapParentDirectory(simplePath, "evosuite-prefixes", "evosuite-tests"));
+    }
+
+    @Test
+    public void getSimpleNameFromFQN() {
+        assertEquals("MyClass", FileUtils.getSimpleNameFromFQN("com.example.MyClass"));
+        assertEquals("MyClass", FileUtils.getSimpleNameFromFQN("MyClass"));
     }
 
     @Test
@@ -125,12 +131,12 @@ public class FileUtilsTest {
     }
 
     @Test
-    public void findPathToClassTest() {
+    public void findClassPathTest() {
         Path baseDir = Paths.get("src");
         Path packageClass = Paths.get("data", "OracleOutput.java");
-        assertEquals(Paths.get("src", "main", "java", "data", "OracleOutput.java"), FileUtils.findPathToClass(baseDir, packageClass));
+        assertEquals(Paths.get("src", "main", "java", "data", "OracleOutput.java"), FileUtils.findClassPath(baseDir, packageClass));
         Path simpleClass = Paths.get("FileUtils.java");
-        assertEquals(Paths.get("src", "main", "java", "FileUtils.java"), FileUtils.findPathToClass(baseDir, simpleClass));
+        assertEquals(Paths.get("src", "main", "java", "FileUtils.java"), FileUtils.findClassPath(baseDir, simpleClass));
     }
 
     @Test

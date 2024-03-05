@@ -36,9 +36,9 @@ public class FileUtils {
      *     {@code com/example/MyClass.java}
      *
      * @param fullyQualifiedName a fully qualified class name
-     * @return the relative path corresponding to the fully qualified class name
+     * @return the path corresponding to the fully qualified class name
      */
-    public static Path fqnToPath(String fullyQualifiedName) {
+    public static Path getFQNPath(String fullyQualifiedName) {
         return Paths.get(fullyQualifiedName.replaceAll("[.]", "/") + ".java");
     }
 
@@ -58,11 +58,57 @@ public class FileUtils {
      * base directories
      */
     public static Path getFQNOutputPath(String fullyQualifiedName, String... baseDir) {
-        Path fqnPath = FileUtils.fqnToPath(String.join(".", baseDir) + "." + fullyQualifiedName);
-        String fileName = fqnToSimpleName(fullyQualifiedName) + "Test.java";
+        Path fqnPath = FileUtils.getFQNPath(String.join(".", baseDir) + "." + fullyQualifiedName);
+        String fileName = getSimpleNameFromFQN(fullyQualifiedName) + "Test.java";
         return Paths.get("output")
                 .resolve(fqnPath)
                 .resolveSibling(fileName);
+    }
+
+    /**
+     * Checks if a given substring occurs more than once in a given string.
+     *
+     * @param originalString the original string
+     * @param substring the substring to find
+     * @return true if and only if the substring occurs more than once
+     */
+    private static boolean isSubstringRepeated(String originalString, String substring) {
+        int firstIdx = originalString.indexOf(substring);
+        if (firstIdx != -1) {
+            int secondIdx = originalString.indexOf(originalString, firstIdx + 1);
+            return secondIdx != -1;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Changes an arbitrary parent directory of a path to another directory.
+     * The original directory does not have to be the immediate parent and may
+     * occur at any point in the path. This method will throw an error if the
+     * original directory name occurs more than once in the path. This method
+     * does NOT modify the original path.
+     *
+     * @param path a file or directory path
+     * @param originalDir the original parent directory
+     * @param newDir the new parent directory
+     * @return the new path with swapped parent directories
+     * @throws Error if the original directory name does not occur or occurs
+     * more than once in the given path
+     */
+    public static Path swapParentDirectory(Path path, String originalDir, String newDir) {
+        int idx = path.toString().indexOf(originalDir);
+        if (idx != -1) {
+            if (isSubstringRepeated(path.toString(), originalDir)) {
+                throw new Error("Unable to modify path " + path + " with multiple occurrences of parent directory " + originalDir);
+            }
+            String newPath = path.toString().substring(0, idx) +
+                    newDir +
+                    path.toString().substring(idx + originalDir.length());
+            return Paths.get(newPath);
+        } else {
+            throw new Error("Unable to find original parent directory " + originalDir + " in file path " + path);
+        }
     }
 
     /**
@@ -73,7 +119,7 @@ public class FileUtils {
      * @param fullyQualifiedName a fully qualified class name
      * @return the corresponding simple name without packages
      */
-    public static String fqnToSimpleName(String fullyQualifiedName) {
+    public static String getSimpleNameFromFQN(String fullyQualifiedName) {
         int classNameIdx = fullyQualifiedName.lastIndexOf(".");
         if (classNameIdx != -1) {
             return fullyQualifiedName.substring(classNameIdx + 1);
@@ -314,7 +360,9 @@ public class FileUtils {
      */
     public static Object readJSON(Path path, TypeReference<?> typeReference) {
         try {
-            return new ObjectMapper().readValue(path.toFile(), typeReference);
+            ObjectMapper objectMapper = new ObjectMapper();
+            File jsonFile = new File(path.toString());
+            return objectMapper.readValue(jsonFile, typeReference);
         } catch (IOException e) {
             throw new Error("Error in processing file " + path, e);
         }
@@ -386,9 +434,9 @@ public class FileUtils {
      * @param fqnPath the fully qualified name of the class as a Path
      * @return the path to the class in the given root directory. Returns null
      * if no such class is found.
-     * @see FileUtils#fqnToPath(String)
+     * @see FileUtils#getFQNPath(String)
      */
-    public static Path findPathToClass(Path dir, Path fqnPath) {
+    public static Path findClassPath(Path dir, Path fqnPath) {
         try (Stream<Path> walk = Files.walk(dir)) {
             return walk
                     .filter(p -> p.endsWith(fqnPath))
