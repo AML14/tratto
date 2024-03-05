@@ -116,7 +116,7 @@ Then, we generate new oracles using an arbitrary TOG, and add these assertions t
 
 For reference, we provide a simplified graphic of the experimental pipeline:
 
-![experiment pipeline](./doc/experiment-pipeline.png)
+![A picture of the Tratto experimental pipeline, as described below](./doc/experiment-pipeline.png)
 
 and a brief description of the relevant files:
 
