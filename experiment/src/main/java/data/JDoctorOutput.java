@@ -11,7 +11,7 @@ import java.util.List;
  * @param name the name of the method under test
  * @param containingClass the declaring class {@link Type}
  * @param targetClass the fully qualified declaring class name
- * @param isVarArgs true iff the method is a varargs method
+ * @param isVarArgs true iff the method is a varargs
  * @param returnType the method return type
  * @param parameters the method parameters
  * @param paramTags the method param tags
