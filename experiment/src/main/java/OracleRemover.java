@@ -3,11 +3,12 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.stmt.Statement;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This class provides static methods for removing oracles from a test
+ * This class provides the functionality for removing oracles from a test
  * suite.
  */
 public class OracleRemover {
@@ -18,6 +19,8 @@ public class OracleRemover {
             "assertArrayEquals",
             "assertEquals",
             "assertFalse",
+            "assertNoAnnotations",
+            "assertNotEquals",
             "assertNotNull",
             "assertNotSame",
             "assertNull",
@@ -86,7 +89,7 @@ public class OracleRemover {
      * Assertion
      */
     private static MethodCallExpr getMethodCallOfJUnitAssertion(Statement jUnitAssertion) {
-        return null;
+        return new MethodCallExpr();
     }
 
     /**
@@ -116,7 +119,9 @@ public class OracleRemover {
      *         fail();
      *     } catch (Exception e) {}
      * }
+     * </pre>
      * becomes,
+     * <pre>
      * {@code
      *     int x = 5;
      *     int y = 10;
@@ -142,7 +147,7 @@ public class OracleRemover {
      * index
      */
     private static MethodDeclaration getSimpleTestCase(MethodDeclaration testCase, int oracleIdx) {
-        return null;
+        return new MethodDeclaration();
     }
 
     /**
@@ -170,21 +175,37 @@ public class OracleRemover {
     }
 
     /**
-     * Removes all assertions from all EvoSuite tests generated for a given
-     * class. The approach for removing oracles depends on whether an oracle
-     * is exceptional or a normal assertion. Firstly, this method splits any
-     * test case with multiple assertions into multiple simple tests, each
-     * with a single JUnit assertion. The smaller subtests are saved in
-     * "output/evosuite-simple-tests" and the test prefixes are saved in
-     * "output/evosuite-prefixes". This method does not override the original
-     * test files.
+     * Splits an EvoSuite test with multiple oracles into multiple tests, each
+     * with a single oracle. This method does not modify the original EvoSuite
+     * tests.
      *
-     * @param fullyQualifiedName the fully qualified name of the class under
-     *                           test
-     * @see OracleRemover#splitTests(CompilationUnit)
-     * @see OracleRemover#removeExceptionalOracles(CompilationUnit)
-     * @see OracleRemover#removeAssertionOracles(CompilationUnit)
+     * @param testDir a directory containing a test suite
      */
-    public static void removeOracles(String fullyQualifiedName) {
+    private static void generateSimpleTests(Path testDir) {
+    }
+
+    /**
+     * Removes all assertions and exceptional oracles from a simple test
+     * suite. This method assumes that
+     * {@link OracleRemover#generateSimpleTests(Path)} has already been
+     * called. This method does not modify the original EvoSuite tests or
+     * simple tests.
+     *
+     * @param testDir a directory containing a test suite
+     */
+    private static void generatePrefixes(Path testDir) {
+    }
+
+    /**
+     * Removes all oracles from all EvoSuite tests in a given directory. The
+     * approach for removing oracles depends on whether an oracle is
+     * exceptional or a normal assertion. Firstly, this method splits any test
+     * case with multiple oracles into multiple "simple" tests, each with a
+     * single oracle. Then, the oracles are removed from the simple tests to
+     * generate prefixes. This method does NOT modify the original test files.
+     *
+     * @param testDir a directory containing a test suite
+     */
+    public static void removeOracles(Path testDir) {
     }
 }
