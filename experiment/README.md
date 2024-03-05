@@ -73,124 +73,99 @@ Clone the [Defects4JPrefix](https://github.com/ezackr/defects4jprefix) project i
 
 ----
 
-This module automates the experimental analysis of a test oracle generator (TOG) for the task of automated test generation.
-A unit test is composed of two parts: **the prefix** and **the oracle**.
+This module automates the experimental analysis of a test oracle generator (TOG) for the task of uncovering bugs, using the Defects4J repository. We provide a brief overview of the vocabulary used in this analysis. To begin, a unit test is composed of two parts: **the prefix** and **the oracle**.
 
 ```java
-public class Example {
-    public void exampleTest() {
+public class ExampleTest {
+    @Test
+    public void sumTest() {
         // prefix
-        int a = 5;
-        int b = 1;
+        Integer a = 5;
+        Integer b = 1;
         // oracle
         assertTrue(sum(a, b) == (a + b));
     }
 }
 ```
 
-To generate test prefixes, we use [EvoSuite](https://www.evosuite.org/), which generates complete unit tests (including
-oracles), and remove the generated oracles (assertions) using [JavaParser](https://javaparser.org/).
-Then, we generate new oracles using an arbitrary TOG, and add these assertions to the test prefixes. Finally, we run the tests using EvoSuite and record the number of passing/failing test cases, and report mutation score using [PITest](https://pitest.org/).
+Visit the [Defects4JPrefix](https://github.com/ezackr/defects4jprefix) repository for a description of how the test prefixes are generated. We generate oracles for each test prefix, and add these oracles as assertions to the pre-generated test prefixes. Then, we compile and run these tests on both the buggy and fixed Defects4J program versions, to observe which oracles uncovered the buggy behavior.
 
 
 ## 2.1 Experimental Pipeline
 
-For reference, we provide a simplified graphic of the experimental pipeline:
+We provide a brief description of the relevant files in the experimental pipeline, alongside their functionality:
 
-![A picture of the Tratto experimental pipeline, as described below](./doc/experiment-pipeline.png)
-
-and a brief description of the relevant files:
-
-- `generator`: this package contains scripts for generating test prefixes and test oracles
-  - `evosuite.sh`: a script that creates a test suite using EvoSuite for a given class
+- `generator`: this directory contains bash scripts for generating test oracles and inserting these oracles into a test prefix 
+  - `insert.sh`: a script for inserting oracles into a test prefix
   - `jdoctor.sh`: a script that creates oracles using JDoctor
   - `toga.sh`: a script that creates oracles using TOGA
   - `tratto.sh`: a script that creates oracles using Tratto
 - `src/main/java`: this directory contains all Java functionality for the end-to-end experimental pipeline
-  - `data`: a package with records for representing input and output
+  - `data`: a package with various enums and records used to represent data
   - `FileUtils.java`: a class with all necessary utilities to read, write, and move files
-  - `TestUtils.java`: a class for test suite utilities, such as removing/inserting oracles
+  - `OracleRemover.java`: a class for removing oracles from a test suite (used to generate Defects4J prefixes)
+  - `OracleInserter.java`: a class for inserting oracles into a test prefix
   - `Tog.java`: the main file for the `experiment.jar` build
   - `TogUtils.java`: a class for tog utilities, such as preprocessing input and postprocessing output
-- `experiment.sh`: the end-to-end script which performs the experiment
-- `runner.sh`: a script that compiles and runs a test suite
-
-Note that in the previous diagram, the script `tog.sh` is a placeholder for the user-specified tog (e.g. `jdoctor.sh`, `toga.sh`, `tratto.sh`).
+- `defects4j.sh`: the end-to-end script for reproducing the Tratto experimental results
 
 
-### 2.1.1. Prefix
+### 2.1.1. Oracles
 
-We run `evosuite.sh` to generate a test suite using EvoSuite. These full test cases
-include both the test prefix and the test oracle, and are saved in `experiment/output/evosuite-tests/`.
-Then, we remove the oracles (assertions): for each oracle found within the original Evosuite tests, we generate
-a dedicated test. Therefore, if an original Evosuite test has 4 oracles, we generate 4 corresponding tests, each of which
-is dedicated to a specific oracle. This process does not impact the effectiveness of the test but simplify the
-generation of the test prefixes and the re-insertion of the generated oracles.
-After splitting all oracles from the original Evosuite tests, the generated tests are saved in
-`experiment/output/evosuite-tests-simple/`, while the same tests without oracles (test prefixes) are saved in
-`experiment/output/evosuite-prefix/`.
-
-
-### 2.1.2. Oracle
-
-We use the test prefixes to generate oracles using a specified TOG.
-Each TOG has a corresponding script invoking the TOG (as a jar file or a python script).
-
-After being generated, the new oracles are inserted as assertions in the test prefixes. Our method for inserting oracles
+After running their corresponding bash scripts to generate test oracles, the new oracles are inserted as assertions into the pre-generated test prefixes. Our method for inserting oracles
 varies based on whether the TOG generates [axiomatic](#a-axiomatic) or [non-axiomatic](#b-non-axiomatic) oracles.
 
-The new tests are saved as separate files in `experiment/output/tog-test/[tog]/`, where `[tog]` is the given TOG.
+The new tests are saved as separate files in `experiment/output/[tog]-tests`, where `[tog]` is the corresponding TOG.
 
 #### A. Axiomatic
 
 If the oracles are axiomatic, then we insert the oracles wherever they are applicable. Consider the following oracles for the
-aforementioned `sum` example method: `sum(a, b) != null` and `a != null`. We may interpret these oracles as "method
-output must not be null" and "first method argument must not be null". Consequently, we should add the assertions after
-every appearance of the method output or first method argument, respectively. Consider the following test prefixes
-generated by EvoSuite.
+aforementioned `sum` example method: `sum(a, b) != null` and `a != null`. For maximal coverage, we should add these assertions wherever possible, (i.e. before and after each method call). Consider the following toy prefix:
 
 ```java
 public class ExampleTest {
-    void sumTest() {
-        int a = 2;
-        int b = 5;
+    @Test
+    public void sumTest() {
+        Integer a = 2;
+        Integer b = 5;
     }
 
-    void sumNegativeTest() {
-        int a = -1;
-        int b = 7;
+    @Test
+    public void sumNegativeTest() {
+        Integer a = -1;
+        Integer b = 7;
     }
 }
 ```
 
-For axiomatic oracles, we use JavaParser to insert assertions wherever possible, yielding the following test suite,
+and the corresponding test suite (after oracle insertion):
 
 ```java
 public class ExampleTest {
-    void sumTest() {
-        int a = 2;
-        assert a != null;  // first method argument must not be null
-        int b = 5;
-        assert sum(a, b) != null;  // method output must not be null
+    @Test
+    public void sumTest() {
+        Integer a = 2;
+        assertTrue(a != null);
+        Integer b = 5;
+        assertTrue(sum(a, b) != null);
     }
 
-    void sumNegativeTest() {
-        int a = -1;
-        assert a != null;  // first method argument must not be null
-        int b = 7;
-        sum(a, b) != null;  // method output must not be null
+    @Test
+    public void sumNegativeTest() {
+        Integer a = -1;
+        assertTrue(a != null);
+        Integer b = 7;
+        assertTrue(sum(a, b) != null);
     }
 }
 ```
 
-Consequently, each test case may have multiple oracles, and each oracle may be used more than once. Therefore, the number
-of oracles may not equal the number of prefixes.
+Consequently, each test case may have multiple oracles, and each oracle may be used more than once.
 
 #### B. Non-Axiomatic
 
 If the oracles are non-axiomatic, meaning they correspond to a test prefix, then we simply insert the oracle into its
-corresponding test prefix. In contrast to the axiomatic oracles, each test case contains precisely one oracle, and each
-oracle is used exactly once. Therefore, we will have an equal number of oracles and prefixes.
+corresponding test prefix.
 
 
 ### 2.1.3 Output
