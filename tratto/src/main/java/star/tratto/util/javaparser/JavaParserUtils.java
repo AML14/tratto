@@ -404,8 +404,12 @@ public class JavaParserUtils {
             ResolvedWildcard type = resolvedType.asWildcard();
             ResolvedType boundedType = type.getBoundedType();
             if (boundedType != null) {
-                ResolvedReferenceTypeDeclaration resolvedBoundedType = type.getBoundedType().asReferenceType().getTypeDeclaration().get();
-                return Pair.with(resolvedBoundedType.getPackageName(), resolvedBoundedType.getClassName());
+                if (boundedType.isReferenceType()) {
+                    ResolvedReferenceTypeDeclaration resolvedBoundedType = boundedType.asReferenceType().getTypeDeclaration().get();
+                    return Pair.with(resolvedBoundedType.getPackageName(), resolvedBoundedType.getClassName());
+                } else {
+                    return Pair.with("", boundedType.describe());
+                }
             } else { // e.g., in Collection<?>, "?" can be anything, so we return Object
                 return Pair.with("java.lang", "Object");
             }
