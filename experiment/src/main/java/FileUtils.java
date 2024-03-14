@@ -42,14 +42,9 @@ public class FileUtils {
     }
 
     /**
-     * Gets the output path for the fully qualified name of a given path. Each
-     * package is converted into a subdirectory of a given base directory.
-     * Then, the word "Test" is appended to the file name. For example:
-     *     {@code "evosuite-prefixes", "com.example.MyClass"}    -&gt;
-     *     {@code output/evosuite-prefixes/com/example/MyClassTest.java}
-     * This format is consistent for all subdirectories within output (except
-     * "evosuite-tests", which uses "[simpleName]_ESTest.java" as the file
-     * name).
+     * Converts a fully qualified name into a path of chained subdirectories
+     * for a given base path. The output directories for the experiment module
+     * follows the structure "output/[baseDir]/fully/qualified/name". 
      *
      * @param fullyQualifiedName a fully qualified name
      * @param baseDir the base subdirectories within the output directory
