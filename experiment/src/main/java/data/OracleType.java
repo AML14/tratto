@@ -5,7 +5,8 @@ package data;
  * a TOG. If an oracle is axiomatic, it can be a pre-condition ({@code PRE}),
  * normal post-condition ({@code NORMAL_POST}), or an exceptional
  * post-condition ({@code EXCEPT_POST}). Otherwise, if an oracle is
- * non-axiomatic, then it is labeled as {@code NON_AXIOMATIC}.
+ * non-axiomatic, then it is labeled as {@code NON_AXIOMATIC}, which is not
+ * strictly defined as a pre, post, or exceptional condition.
  */
 public enum OracleType {
     /** An axiomatic pre-condition. */
