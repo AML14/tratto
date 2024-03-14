@@ -182,7 +182,7 @@ public class FileUtils {
      *
      * @param sourceDir the source directory
      * @param destination the destination directory
-     * @param target the target file in the source directory
+     * @param target the absolute target file path
      * @return the path of the target file if hypothetically moved from the
      * source directory to the destination directory. For example, let
      * <pre>
