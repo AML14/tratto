@@ -32,8 +32,8 @@ public class DataAugmentation {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private static final Random random = new Random(42); // To make augmented datasets deterministic
-    private static final String ALTERNATE_ORACLES_PATH = "src/main/resources/data-augmentation/oracles.json";
-    public static String ALTERNATE_TAGS_PATH = "src/main/resources/data-augmentation/javadoc-tags.json"; // public for testing purposes
+    private static final String ALTERNATE_ORACLES_FILENAME = "src/main/resources/data-augmentation/oracles.json";
+    public static String ALTERNATE_TAGS_FILENAME = "src/main/resources/data-augmentation/javadoc-tags.json"; // public for testing purposes
     private static final String AUGMENTED_SUFFIX = "-augmented.json";
     private static Map<String, List<String>> alternateOracles;
     private static Map<String, List<String>> alternateTags;
@@ -60,12 +60,12 @@ public class DataAugmentation {
 
         logger.info("Augmenting oracles dataset...");
         logger.info("Reading oracle data points from: {}", ORACLES_DATASET.getPath());
-        logger.info("Reading alternate oracles from: {}", ALTERNATE_ORACLES_PATH);
-        logger.info("Reading alternate Javadoc tags from: {}", ALTERNATE_TAGS_PATH);
+        logger.info("Reading alternate oracles from: {}", ALTERNATE_ORACLES_FILENAME);
+        logger.info("Reading alternate Javadoc tags from: {}", ALTERNATE_TAGS_FILENAME);
 
         List<OracleDatapoint> newOracleDatapoints = new ArrayList<>();
-        alternateOracles = objectMapper.readValue(new File(ALTERNATE_ORACLES_PATH), new TypeReference<>(){});
-        alternateTags = objectMapper.readValue(new File(ALTERNATE_TAGS_PATH), new TypeReference<>(){});
+        alternateOracles = objectMapper.readValue(new File(ALTERNATE_ORACLES_FILENAME), new TypeReference<>(){});
+        alternateTags = objectMapper.readValue(new File(ALTERNATE_TAGS_FILENAME), new TypeReference<>(){});
 
         DirectoryStream<Path> oraclesDatasetStream = Files.newDirectoryStream(ORACLES_DATASET.getPath());
         for (Path oraclesDatasetFile : oraclesDatasetStream) {

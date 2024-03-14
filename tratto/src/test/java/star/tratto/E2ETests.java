@@ -58,7 +58,7 @@ public class E2ETests {
     public void datasetsE2ETest() {
         // Config for E2E test
         OracleDP2TokenDPs.CRASH_WRONG_ORACLE = true;
-        DataAugmentation.ALTERNATE_TAGS_PATH = "src/test/resources/data-augmentation/javadoc-tags.json";
+        DataAugmentation.ALTERNATE_TAGS_FILENAME = "src/test/resources/data-augmentation/javadoc-tags.json";
         TokensDataset.ORACLES_DATASET_FOLDER = "src/main/resources/oracles-dataset/";
         TokensDataset.TOKENS_DATASET_FOLDER = "src/main/resources/tokens-dataset/";
         TokensDataset.DATASET_TYPE = TokenDPType.TOKEN_VALUE; // To reduce the size of the generated dataset
@@ -102,8 +102,8 @@ public class E2ETests {
     }
 
     private static List<String> getOriginalAndAlternateOracles() throws IOException {
-        String oraclesPath = "src/main/resources/data-augmentation/oracles.json";
-        return ((Map<String, List<String>>)new ObjectMapper().readValue(new File(oraclesPath), new TypeReference<>(){})).entrySet()
+        String oraclesJsonFilename = "src/main/resources/data-augmentation/oracles.json";
+        return ((Map<String, List<String>>)new ObjectMapper().readValue(new File(oraclesJsonFilename), new TypeReference<>(){})).entrySet()
                 .stream()
                 .map(entry -> {
                     List<String> allOracles = new ArrayList<>(List.of(entry.getKey()));

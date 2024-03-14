@@ -20,7 +20,7 @@ public class TestUtilities {
     private static final Logger logger = LoggerFactory.getLogger(TestUtilities.class);
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    public static final String ORACLES_DATASET_PATH = "src/test/resources/oracles-dataset/test-dataset.json";
+    public static final String ORACLES_DATASET_FILENAME = "src/test/resources/oracles-dataset/test-dataset.json";
 
     public static List<String> readOraclesFromExternalFiles() {
         // Read oracles from external files
@@ -40,7 +40,7 @@ public class TestUtilities {
     public static List<OracleDatapoint> readOracleDatapointsFromOraclesDataset() {
         List<OracleDatapoint> oracleDatapoints;
         try {
-            oracleDatapoints = ((List<Map>)objectMapper.readValue(new File(ORACLES_DATASET_PATH), List.class))
+            oracleDatapoints = ((List<Map>)objectMapper.readValue(new File(ORACLES_DATASET_FILENAME), List.class))
                     .stream()
                     .map(OracleDatapoint::new)
                     .collect(Collectors.toList());
