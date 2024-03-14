@@ -19,9 +19,8 @@ import java.util.stream.Stream;
 
 
 /**
- * This class provides a collection of static methods for a variety of file
- * input and output utilities, such as: creating, copying, moving, writing,
- * reading, etc.
+ * This class provides static methods for file input and output, such as:
+ * creating, copying, moving, writing, reading, etc.
  */
 public class FileUtils {
     /** Private constructor to avoid creating an instance of this class. */
