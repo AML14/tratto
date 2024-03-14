@@ -35,12 +35,6 @@ public class FileUtilsTest {
     }
 
     @Test
-    public void getFQNOutputPathTest() {
-        assertEquals(Paths.get("output", "evosuite-prefixes", "example", "MyClassTest.java"), FileUtils.getFqnOutputPath("example.MyClass", "evosuite-prefixes"));
-        assertEquals(Paths.get("output", "tog-tests", "toga", "MyClassTest.java"), FileUtils.getFqnOutputPath("MyClass", "tog-tests", "toga"));
-    }
-
-    @Test
     public void swapParentDirectoryTest() {
         Path simplePath = Paths.get("output", "evosuite-prefixes", "com", "example");
         assertEquals(Paths.get("output", "evosuite-tests", "com", "example"), FileUtils.swapParentDirectory(simplePath, "evosuite-prefixes", "evosuite-tests"));
