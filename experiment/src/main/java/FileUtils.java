@@ -67,24 +67,24 @@ public class FileUtils {
      * path. This method does NOT modify the original path.
      *
      * @param path a file or directory path
-     * @param originalDir the original parent directory
-     * @param newDir the new parent directory
+     * @param originalParent the original parent directory
+     * @param newParent the new parent directory
      * @return the new path with swapped parent directories
      * @throws Error if the original directory name does not occur or occurs
      * more than once in the given path
      */
-    public static Path swapParentDirectory(Path path, String originalDir, String newDir) {
-        int idx = path.toString().indexOf(originalDir);
+    public static Path swapParentDirectory(Path path, String originalParent, String newParent) {
+        int idx = path.toString().indexOf(originalParent);
         if (idx != -1) {
-            if (isSubstringRepeated(path.toString(), originalDir)) {
-                throw new Error("Unable to modify path " + path + " with multiple occurrences of parent directory " + originalDir);
+            if (isSubstringRepeated(path.toString(), originalParent)) {
+                throw new Error("Unable to modify path " + path + " with multiple occurrences of parent directory " + originalParent);
             }
             String newPath = path.toString().substring(0, idx) +
-                    newDir +
-                    path.toString().substring(idx + originalDir.length());
+                    newParent +
+                    path.toString().substring(idx + originalParent.length());
             return Paths.get(newPath);
         } else {
-            throw new Error("Unable to find original parent directory " + originalDir + " in file path " + path);
+            throw new Error("Unable to find original parent directory " + originalParent + " in file path " + path);
         }
     }
 
