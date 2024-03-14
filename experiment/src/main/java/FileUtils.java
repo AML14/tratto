@@ -409,11 +409,11 @@ public class FileUtils {
      *
      * @param dir the root directory
      * @param fqnPath the fully qualified name of the class as a Path
-     * @return the path to the class in the given root directory. Returns null
-     * if no such class is found.
+     * @return the relative path to the class in the given root directory.
+     * Returns null if no such class is found.
      * @see FileUtils#getFqnPath(String)
      */
-    public static Path findClassPath(Path dir, Path fqnPath) {
+    public static Path findClassFile(Path dir, Path fqnPath) {
         try (Stream<Path> walk = Files.walk(dir)) {
             return walk
                     .filter(p -> p.endsWith(fqnPath))

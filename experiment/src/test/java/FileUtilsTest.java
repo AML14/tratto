@@ -128,9 +128,9 @@ public class FileUtilsTest {
     public void findClassPathTest() {
         Path baseDir = Paths.get("src");
         Path packageClass = Paths.get("data", "OracleOutput.java");
-        assertEquals(Paths.get("src", "main", "java", "data", "OracleOutput.java"), FileUtils.findClassPath(baseDir, packageClass));
+        assertEquals(Paths.get("src", "main", "java", "data", "OracleOutput.java"), FileUtils.findClassFile(baseDir, packageClass));
         Path simpleClass = Paths.get("FileUtils.java");
-        assertEquals(Paths.get("src", "main", "java", "FileUtils.java"), FileUtils.findClassPath(baseDir, simpleClass));
+        assertEquals(Paths.get("src", "main", "java", "FileUtils.java"), FileUtils.findClassFile(baseDir, simpleClass));
     }
 
     @Test
