@@ -36,8 +36,8 @@ public class FileUtilsTest {
 
     @Test
     public void getFQNOutputPathTest() {
-        assertEquals(Paths.get("output", "evosuite-prefixes", "example", "MyClassTest.java"), FileUtils.getFQNOutputPath("example.MyClass", "evosuite-prefixes"));
-        assertEquals(Paths.get("output", "tog-tests", "toga", "MyClassTest.java"), FileUtils.getFQNOutputPath("MyClass", "tog-tests", "toga"));
+        assertEquals(Paths.get("output", "evosuite-prefixes", "example", "MyClassTest.java"), FileUtils.getFqnOutputPath("example.MyClass", "evosuite-prefixes"));
+        assertEquals(Paths.get("output", "tog-tests", "toga", "MyClassTest.java"), FileUtils.getFqnOutputPath("MyClass", "tog-tests", "toga"));
     }
 
     @Test
@@ -48,8 +48,8 @@ public class FileUtilsTest {
 
     @Test
     public void getSimpleNameFromFQN() {
-        assertEquals("MyClass", FileUtils.getSimpleNameFromFQN("com.example.MyClass"));
-        assertEquals("MyClass", FileUtils.getSimpleNameFromFQN("MyClass"));
+        assertEquals("MyClass", FileUtils.getSimpleNameFromFqn("com.example.MyClass"));
+        assertEquals("MyClass", FileUtils.getSimpleNameFromFqn("MyClass"));
     }
 
     @Test

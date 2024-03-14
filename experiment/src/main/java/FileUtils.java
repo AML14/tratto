@@ -56,9 +56,9 @@ public class FileUtils {
      * @return the output path for a given fully qualified name in the given
      * base directories
      */
-    public static Path getFQNOutputPath(String fullyQualifiedName, String... baseDir) {
+    public static Path getFqnOutputPath(String fullyQualifiedName, String... baseDir) {
         Path fqnPath = FileUtils.getFqnPath(String.join(".", baseDir) + "." + fullyQualifiedName);
-        String fileName = getSimpleNameFromFQN(fullyQualifiedName) + "Test.java";
+        String fileName = getSimpleNameFromFqn(fullyQualifiedName) + "Test.java";
         return Paths.get("output")
                 .resolve(fqnPath)
                 .resolveSibling(fileName);
@@ -118,7 +118,7 @@ public class FileUtils {
      * @param fullyQualifiedName a fully qualified class name
      * @return the corresponding simple name without packages
      */
-    public static String getSimpleNameFromFQN(String fullyQualifiedName) {
+    public static String getSimpleNameFromFqn(String fullyQualifiedName) {
         int classNameIdx = fullyQualifiedName.lastIndexOf(".");
         if (classNameIdx != -1) {
             return fullyQualifiedName.substring(classNameIdx + 1);
