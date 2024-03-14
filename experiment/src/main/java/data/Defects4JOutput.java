@@ -4,6 +4,7 @@ package data;
  * This record represents the performance of a given TOG on Defects4J.
  *
  * @param tog a test oracle generator
+ * @param numBugsFound the number of Defects4J bugs with a true positive
  * @param numTruePositive the number of tests that fail on the buggy version,
  *                        but pass on the fixed version
  * @param numFalsePositive the number of tests that fail on the buggy version
