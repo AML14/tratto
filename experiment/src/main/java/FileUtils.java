@@ -38,7 +38,7 @@ public class FileUtils {
      * @return the path corresponding to the fully qualified class name
      */
     public static Path getFqnPath(String fullyQualifiedName) {
-        return Paths.get(fullyQualifiedName.replaceAll("[.]", "/") + ".java");
+        return Paths.get(fullyQualifiedName.replaceAll("[.]", File.separator) + ".java");
     }
 
     /**
