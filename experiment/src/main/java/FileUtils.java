@@ -383,7 +383,7 @@ public class FileUtils {
      * @param type     the class type of the elements to which the JSON data will
      *                 be deserialized
      * @param <T>      the generic type parameter representing the class of the
-     *                 elements in the list
+     *                 elements in the list, or null
      * @return a list of objects of the specified class type. If type is null,
      * then returns a list of a wildcard type.
      */
