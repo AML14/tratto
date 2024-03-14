@@ -233,8 +233,8 @@ public class FileUtils {
     /**
      * Recursively copies all files and directories from the source directory
      * to the destination directory. If a file in the source directory already
-     * exists in the destination directory, then the original file will be
-     * overwritten.
+     * exists as a file in the destination directory, then the original file
+     * will be overwritten.
      *
      * @param sourceDir the directory where the files are located
      * @param destinationDir the directory where the files will be copied to
