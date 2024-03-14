@@ -60,11 +60,11 @@ public class FileUtils {
     }
 
     /**
-     * Changes an arbitrary parent directory of a path to another directory.
-     * The original directory does not have to be the immediate parent and may
-     * occur at any point in the path. This method will throw an error if the
-     * original directory name occurs more than once in the path. This method
-     * does NOT modify the original path.
+     * Changes a specified sub-path of a path to another sequence of
+     * directories. The original directory does not have to be the immediate
+     * parent and may occur at any point in the path. This method will throw
+     * an error if the original directory name occurs more than once in the
+     * path. This method does NOT modify the original path.
      *
      * @param path a file or directory path
      * @param originalDir the original parent directory
