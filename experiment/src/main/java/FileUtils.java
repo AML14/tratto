@@ -211,10 +211,10 @@ public class FileUtils {
     /**
      * Copies a source file to a target file. If the target file already
      * exists, then it is overwritten. If target does not exist, then it will
-     * be created. <br> This method is a wrapper method of
-     * {@link Files#copy(Path, Path, CopyOption...)} to substitute
-     * {@link IOException} with {@link Error} and avoid superfluous try/catch
-     * blocks.
+     * be created, along with necessary parent directories. <br> This method
+     * is a wrapper method of {@link Files#copy(Path, Path, CopyOption...)}
+     * to substitute {@link IOException} with {@link Error} and avoid
+     * superfluous try/catch blocks.
      *
      * @param source the source file
      * @param target the target file
