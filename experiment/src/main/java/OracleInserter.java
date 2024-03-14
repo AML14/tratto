@@ -31,10 +31,10 @@ import java.util.regex.Pattern;
  * This class inserts oracles into test prefixes.
  */
 public class OracleInserter {
-    /** A ClassLoader used to load classes outside the JVM. */
+    /** A ClassLoader used to load classes within the JVM. */
     private static ClassLoader classLoader;
     /** A unique id for placeholder variable names when inserting oracles. */
-    private static int variableID = 0;
+    private static int variableId = 0;
     /** All primitive fully qualified type names.  */
     private static final List<String> primitiveTypes = List.of(
             "boolean",
