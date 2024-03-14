@@ -43,29 +43,6 @@ public class FileUtils {
     }
 
     /**
-     * Gets the output path for the fully qualified name of a given path. Each
-     * package is converted into a subdirectory of a given base directory.
-     * Then, the word "Test" is appended to the file name. For example:
-     *     {@code "evosuite-prefixes", "com.example.MyClass"}    -&gt;
-     *     {@code output/evosuite-prefixes/com/example/MyClassTest.java}
-     * This format is consistent for all subdirectories within output (except
-     * "evosuite-tests", which uses "[simpleName]_ESTest.java" as the file
-     * name).
-     *
-     * @param fullyQualifiedName a fully qualified name
-     * @param baseDir the base subdirectories within the output directory
-     * @return the output path for a given fully qualified name in the given
-     * base directories
-     */
-    public static Path getFQNOutputPath(String fullyQualifiedName, String... baseDir) {
-        Path fqnPath = FileUtils.getFQNPath(String.join(".", baseDir) + "." + fullyQualifiedName);
-        String fileName = getSimpleNameFromFQN(fullyQualifiedName) + "Test.java";
-        return Paths.get("output")
-                .resolve(fqnPath)
-                .resolveSibling(fileName);
-    }
-
-    /**
      * Checks if a given substring occurs more than once in a given string.
      *
      * @param originalString the original string
