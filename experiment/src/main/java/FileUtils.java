@@ -37,7 +37,7 @@ public class FileUtils {
      * @param fullyQualifiedName a fully qualified class name
      * @return the path corresponding to the fully qualified class name
      */
-    public static Path getFQNPath(String fullyQualifiedName) {
+    public static Path getFqnPath(String fullyQualifiedName) {
         return Paths.get(fullyQualifiedName.replaceAll("[.]", "/") + ".java");
     }
 
@@ -57,7 +57,7 @@ public class FileUtils {
      * base directories
      */
     public static Path getFQNOutputPath(String fullyQualifiedName, String... baseDir) {
-        Path fqnPath = FileUtils.getFQNPath(String.join(".", baseDir) + "." + fullyQualifiedName);
+        Path fqnPath = FileUtils.getFqnPath(String.join(".", baseDir) + "." + fullyQualifiedName);
         String fileName = getSimpleNameFromFQN(fullyQualifiedName) + "Test.java";
         return Paths.get("output")
                 .resolve(fqnPath)
@@ -433,7 +433,7 @@ public class FileUtils {
      * @param fqnPath the fully qualified name of the class as a Path
      * @return the path to the class in the given root directory. Returns null
      * if no such class is found.
-     * @see FileUtils#getFQNPath(String)
+     * @see FileUtils#getFqnPath(String)
      */
     public static Path findClassPath(Path dir, Path fqnPath) {
         try (Stream<Path> walk = Files.walk(dir)) {

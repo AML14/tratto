@@ -30,8 +30,8 @@ public class FileUtilsTest {
 
     @Test
     public void getFQNPathTest() {
-        assertEquals(Paths.get("com", "example", "github", "MyClass.java"), FileUtils.getFQNPath("com.example.github.MyClass"));
-        assertEquals(Paths.get("MyClass.java"), FileUtils.getFQNPath("MyClass"));
+        assertEquals(Paths.get("com", "example", "github", "MyClass.java"), FileUtils.getFqnPath("com.example.github.MyClass"));
+        assertEquals(Paths.get("MyClass.java"), FileUtils.getFqnPath("MyClass"));
     }
 
     @Test
