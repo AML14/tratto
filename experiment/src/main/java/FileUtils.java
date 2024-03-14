@@ -42,24 +42,6 @@ public class FileUtils {
     }
 
     /**
-     * Converts a fully qualified name into a path of chained subdirectories
-     * for a given base path. The output directories for the experiment module
-     * follows the structure "output/[baseDir]/fully/qualified/name". 
-     *
-     * @param fullyQualifiedName a fully qualified name
-     * @param baseDir the base subdirectories within the output directory
-     * @return the output path for a given fully qualified name in the given
-     * base directories
-     */
-    public static Path getFqnOutputPath(String fullyQualifiedName, String... baseDir) {
-        Path fqnPath = FileUtils.getFqnPath(String.join(".", baseDir) + "." + fullyQualifiedName);
-        String fileName = getSimpleNameFromFqn(fullyQualifiedName) + "Test.java";
-        return Paths.get("output")
-                .resolve(fqnPath)
-                .resolveSibling(fileName);
-    }
-
-    /**
      * Checks if a given substring occurs more than once in a given string
      * without overlaps.
      *
