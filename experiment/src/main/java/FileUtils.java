@@ -65,7 +65,8 @@ public class FileUtils {
     }
 
     /**
-     * Checks if a given substring occurs more than once in a given string.
+     * Checks if a given substring occurs more than once in a given string
+     * without overlaps.
      *
      * @param originalString the original string
      * @param substring the substring to find
