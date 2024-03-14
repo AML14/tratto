@@ -278,10 +278,10 @@ public class FileUtils {
      * @see FileUtils#copy(Path, Path)
      */
     public static void move(Path sourceDir, Path destinationDir) {
-        if (!Files.exists(sourceDir)) {
+        if (!Files.isDirectory(sourceDir)) {
             throw new Error("Directory " + sourceDir + " is not found");
         }
-        if (!Files.exists(destinationDir)) {
+        if (!Files.isDirectory(destinationDir)) {
             createDirectories(destinationDir);
         }
         copy(sourceDir, destinationDir);
