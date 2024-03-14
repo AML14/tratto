@@ -28,8 +28,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * This class provides the functionality for inserting oracles into test
- * prefixes.
+ * This class inserts oracles into test prefixes.
  */
 public class OracleInserter {
     /** A ClassLoader used to load classes outside the JVM. */
