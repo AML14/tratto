@@ -341,7 +341,7 @@ public class FileUtils {
             File jsonFile = new File(path.toString());
             return objectMapper.readValue(jsonFile, typeReference);
         } catch (IOException e) {
-            throw new Error("Error in processing file " + path, e);
+            throw new Error("Error in reading file " + path, e);
         }
     }
 
@@ -356,7 +356,7 @@ public class FileUtils {
         try {
             return Files.readString(path);
         } catch (IOException e) {
-            throw new Error("Error in processing file " + path, e);
+            throw new Error("Error in reading file " + path, e);
         }
     }
 
@@ -371,7 +371,7 @@ public class FileUtils {
         try {
             return new CSVParser(new FileReader(path.toString()), CSVFormat.DEFAULT);
         } catch (IOException e) {
-            throw new Error("Error in processing file " + path, e);
+            throw new Error("Error in reading file " + path, e);
         }
     }
 
@@ -398,7 +398,7 @@ public class FileUtils {
                     objectMapper.getTypeFactory().constructCollectionType(List.class, type)
             );
         } catch (IOException e) {
-            throw new Error("Error in processing the JSON file " + jsonPath, e);
+            throw new Error("Error in reading the JSON file " + jsonPath, e);
         }
     }
 
