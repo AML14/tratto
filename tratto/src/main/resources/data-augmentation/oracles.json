@@ -191,15 +191,6 @@
         "(this.getEnumeration()==null);",
         "(this.getEnumeration()!=null)==false;"
     ],
-    "values==null||weights==null||values.length!=weights.length||weights.anyMatch(jdVar->jdVar<0)||weights.allMatch(jdVar->jdVar==0);": [
-        "(values==null)||weights==null||values.length!=weights.length||",
-        "values==null||(weights==null)||values.length!=weights.length||",
-        "values==null||weights==null||(values.length!=weights.length)||",
-        "values==null||weights==null||values.length!=weights.length||()",
-        "values==null||weights==null||(values.length==weights.length)==false||",
-        "(values!=null)==false||weights==null||values.length!=weights.length||",
-        "values==null||(weights!=null)==false||values.length!=weights.length||"
-    ],
     "(original instanceof RandomKey)==false;": [
         "((original instanceof RandomKey))==false;"
     ],
@@ -244,6 +235,24 @@
     "in.length<0;": [
         "(in.length<0);",
         "(in.length>=0)==false;"
+    ],
+    "values==null||weights==null||values.length!=weights.length||begin<0||length<0||Arrays.stream(weights).anyMatch(jdVar->jdVar<0)||Arrays.stream(weights).allMatch(jdVar->jdVar==0);": [
+        "(values==null)||weights==null||values.length!=weights.length||begin<0||length<0||Arrays.stream(weights).anyMatch(jdVar->jdVar<0)||Arrays.stream(weights).allMatch(jdVar->jdVar==0);",
+        "values==null||(weights==null)||values.length!=weights.length||begin<0||length<0||Arrays.stream(weights).anyMatch(jdVar->jdVar<0)||Arrays.stream(weights).allMatch(jdVar->jdVar==0);",
+        "values==null||weights==null||(values.length!=weights.length)||begin<0||length<0||Arrays.stream(weights).anyMatch(jdVar->jdVar<0)||Arrays.stream(weights).allMatch(jdVar->jdVar==0);",
+        "values==null||weights==null||values.length!=weights.length||(begin<0)||length<0||Arrays.stream(weights).anyMatch(jdVar->jdVar<0)||Arrays.stream(weights).allMatch(jdVar->jdVar==0);",
+        "values==null||weights==null||values.length!=weights.length||begin<0||(length<0)||Arrays.stream(weights).anyMatch(jdVar->jdVar<0)||Arrays.stream(weights).allMatch(jdVar->jdVar==0);",
+        "values==null||weights==null||values.length!=weights.length||begin<0||length<0||(Arrays.stream(weights).anyMatch(jdVar->jdVar<0))||Arrays.stream(weights).allMatch(jdVar->jdVar==0);",
+        "values==null||weights==null||values.length!=weights.length||begin<0||length<0||Arrays.stream(weights).anyMatch(jdVar->(jdVar<0))||Arrays.stream(weights).allMatch(jdVar->jdVar==0);",
+        "values==null||weights==null||values.length!=weights.length||begin<0||length<0||Arrays.stream(weights).anyMatch(jdVar->jdVar<0)||(Arrays.stream(weights).allMatch(jdVar->jdVar==0));",
+        "values==null||weights==null||values.length!=weights.length||begin<0||length<0||Arrays.stream(weights).anyMatch(jdVar->jdVar<0)||Arrays.stream(weights).allMatch(jdVar->(jdVar==0));",
+        "values==null||weights==null||(values.length==weights.length)==false||begin<0||length<0||Arrays.stream(weights).anyMatch(jdVar->jdVar<0)||Arrays.stream(weights).allMatch(jdVar->jdVar==0);",
+        "(values!=null)==false||weights==null||values.length!=weights.length||begin<0||length<0||Arrays.stream(weights).anyMatch(jdVar->jdVar<0)||Arrays.stream(weights).allMatch(jdVar->jdVar==0);",
+        "values==null||(weights!=null)==false||values.length!=weights.length||begin<0||length<0||Arrays.stream(weights).anyMatch(jdVar->jdVar<0)||Arrays.stream(weights).allMatch(jdVar->jdVar==0);",
+        "values==null||weights==null||values.length!=weights.length||begin<0||length<0||Arrays.stream(weights).anyMatch(jdVar->jdVar<0)||Arrays.stream(weights).allMatch(jdVar->(jdVar!=0)==false);",
+        "values==null||weights==null||values.length!=weights.length||(begin>=0)==false||length<0||Arrays.stream(weights).anyMatch(jdVar->jdVar<0)||Arrays.stream(weights).allMatch(jdVar->jdVar==0);",
+        "values==null||weights==null||values.length!=weights.length||begin<0||(length>=0)==false||Arrays.stream(weights).anyMatch(jdVar->jdVar<0)||Arrays.stream(weights).allMatch(jdVar->jdVar==0);",
+        "values==null||weights==null||values.length!=weights.length||begin<0||length<0||Arrays.stream(weights).anyMatch(jdVar->(jdVar>=0)==false)||Arrays.stream(weights).allMatch(jdVar->jdVar==0);"
     ],
     "true?methodResultID==x-y:true;": [
         "true?(methodResultID==x-y):true;",
@@ -485,14 +494,6 @@
         "(upper<p);",
         "(upper>=p)==false;"
     ],
-    "(x.length>0&&(x.length&(x.length-1))==0)==false;": [
-        "((x.length>0)&&(x.length",
-        "(x.length>0&&((x.length)",
-        "((x.length<=0)==false&&(x.length"
-    ],
-    "this.getChromosomeList().size()+chromosomeColl.size()>this.getPopulationLimit();": [
-        "(this.getChromosomeList().size())"
-    ],
     "(others==null)==false;": [
         "((others==null))==false;",
         "((others!=null)==false)==false;"
@@ -514,12 +515,6 @@
         "(Arrays.stream(iterators).anyMatch(jdVar->jdVar==null));",
         "Arrays.stream(iterators).anyMatch(jdVar->(jdVar==null));",
         "Arrays.stream(iterators).anyMatch(jdVar->(jdVar!=null)==false);"
-    ],
-    "index1>=0||index1<=(this.getNodeCount()-1);": [
-        "(index1>=0)||index1<=",
-        "index1>=0||(index1<=)",
-        "(index1<0)==false||index1<=",
-        "index1>=0||(index1>)==false"
     ],
     "array.getClass().isArray()&&(array==null)==false;": [
         "(array.getClass().isArray())&&(array==null)==false;",
@@ -902,12 +897,6 @@
         "(a.length>0);",
         "(a.length<=0)==false;"
     ],
-    "fromIndex<0||fromIndex>(this.getNodeCount()-1)||toIndex<0||toIndex>(this.getNodeCount()-1);": [
-        "(fromIndex<0)||fromIndex>",
-        "fromIndex<0||(fromIndex>)",
-        "(fromIndex>=0)==false||fromIndex>",
-        "fromIndex<0||(fromIndex<=)==false"
-    ],
     "duration>=0;": [
         "(duration>=0);",
         "(duration<0)==false;"
@@ -1149,10 +1138,6 @@
     "true?methodResultID.equals(NotPredicate.notPredicate(predicate)):true;": [
         "true?(methodResultID.equals(NotPredicate.notPredicate(predicate))):true;"
     ],
-    "true?methodResultID.length<=seq.length;": [
-        "true?(methodResultID.length<=seq.length)",
-        "true?(methodResultID.length>seq.length)==false"
-    ],
     "(c==null)==false;": [
         "((c==null))==false;",
         "((c!=null)==false)==false;"
@@ -1213,6 +1198,16 @@
         "(port>=0);",
         "(port<0)==false;"
     ],
+    "index1<0||index1>this.getNodeCount()-1||index2<0||index2>this.getNodeCount()-1;": [
+        "(index1<0)||index1>this.getNodeCount()-1||index2<0||index2>this.getNodeCount()-1;",
+        "index1<0||(index1>this.getNodeCount()-1)||index2<0||index2>this.getNodeCount()-1;",
+        "index1<0||index1>this.getNodeCount()-1||(index2<0)||index2>this.getNodeCount()-1;",
+        "index1<0||index1>this.getNodeCount()-1||index2<0||(index2>this.getNodeCount()-1);",
+        "(index1>=0)==false||index1>this.getNodeCount()-1||index2<0||index2>this.getNodeCount()-1;",
+        "index1<0||(index1<=this.getNodeCount()-1)==false||index2<0||index2>this.getNodeCount()-1;",
+        "index1<0||index1>this.getNodeCount()-1||(index2>=0)==false||index2>this.getNodeCount()-1;",
+        "index1<0||index1>this.getNodeCount()-1||index2<0||(index2<=this.getNodeCount()-1)==false;"
+    ],
     "equator==null;": [
         "(equator==null);",
         "(equator!=null)==false;"
@@ -1264,12 +1259,6 @@
     "objectsAndTransformers==null;": [
         "(objectsAndTransformers==null);",
         "(objectsAndTransformers!=null)==false;"
-    ],
-    "lowerBound>=upperBound||confidenceLevel<=0andconfidenceLevel>=1;": [
-        "(lowerBound>=upperBound)||confidenceLevel<=",
-        "lowerBound>=upperBound||(confidenceLevel<=)",
-        "(lowerBound<upperBound)==false||confidenceLevel<=",
-        "lowerBound>=upperBound||(confidenceLevel>)==false"
     ],
     "estimatedSize<1;": [
         "(estimatedSize<1);",
@@ -1333,6 +1322,12 @@
         "(g==null);",
         "(g!=null)==false;"
     ],
+    "index>=0||index<=this.getNodeCount()-1;": [
+        "(index>=0)||index<=this.getNodeCount()-1;",
+        "index>=0||(index<=this.getNodeCount()-1);",
+        "(index<0)==false||index<=this.getNodeCount()-1;",
+        "index>=0||(index>this.getNodeCount()-1)==false;"
+    ],
     "map==null||transformerFactory==null;": [
         "(map==null)||transformerFactory==null;",
         "map==null||(transformerFactory==null);",
@@ -1342,6 +1337,12 @@
     "(predicate==null)==false;": [
         "((predicate==null))==false;",
         "((predicate!=null)==false)==false;"
+    ],
+    "values!=null&&values.length>begin+length;": [
+        "(values!=null)&&values.length>begin+length;",
+        "values!=null&&(values.length>begin+length);",
+        "(values==null)==false&&values.length>begin+length;",
+        "values!=null&&(values.length<=begin+length)==false;"
     ],
     "this.initialCapacity!=MapMaker.UNSET_INT;": [
         "(this.initialCapacity!=MapMaker.UNSET_INT);",
@@ -1408,9 +1409,6 @@
     "init<lo;": [
         "(init<lo);",
         "(init>=lo)==false;"
-    ],
-    "map.keySet().stream().anyMatch(jdVar->jdVar==null)||map.values().stream().anyMatch(jdVar->jdVar==null);": [
-        "(map.keySet())"
     ],
     "position<0||position>this.size();": [
         "(position<0)||position>this.size();",
@@ -1494,11 +1492,6 @@
         "(rowData.length==0);",
         "(rowData.length!=0)==false;"
     ],
-    "srcOffset<0||srcOffset+3>=source.length||destOffset<0||destOffset+2>=destination.length;": [
-        "(srcOffset<0)||",
-        "srcOffset<0||()",
-        "(srcOffset>=0)==false||"
-    ],
     "clazz1==null?methodResultID==clazz2:methodResultID==clazz1;": [
         "(clazz1==null)==false?methodResultID==clazz1:methodResultID==clazz2;",
         "(clazz1==null)?methodResultID==clazz2:methodResultID==clazz1;",
@@ -1546,6 +1539,11 @@
     "this.getGuild().getSelfMember().hasPermission(this,Permission.VIEW_CHANNEL)==false;": [
         "(this.getGuild().getSelfMember().hasPermission(this,Permission.VIEW_CHANNEL)==false);",
         "(this.getGuild().getSelfMember().hasPermission(this,Permission.VIEW_CHANNEL)!=false)==false;"
+    ],
+    "(clusters.stream().allMatch(jdVar->jdVar.getPoints().size()==0))==false;": [
+        "((clusters.stream().allMatch(jdVar->jdVar.getPoints().size()==0)))==false;",
+        "(clusters.stream().allMatch(jdVar->(jdVar.getPoints().size()==0)))==false;",
+        "(clusters.stream().allMatch(jdVar->(jdVar.getPoints().size()!=0)==false))==false;"
     ],
     "a==null||b==null;": [
         "(a==null)||b==null;",
@@ -1974,12 +1972,6 @@
         "(subtrahend==null);",
         "(subtrahend!=null)==false;"
     ],
-    "index>=0&&index<=(this.getGraph().getNodeCount()-1);": [
-        "(index>=0)&&index<=",
-        "index>=0&&(index<=)",
-        "(index<0)==false&&index<=",
-        "index>=0&&(index>)==false"
-    ],
     "redisURI!=null;": [
         "(redisURI!=null);",
         "(redisURI==null)==false;"
@@ -1990,11 +1982,6 @@
     "this.refreshNanos!=CacheBuilder.UNSET_INT;": [
         "(this.refreshNanos!=CacheBuilder.UNSET_INT);",
         "(this.refreshNanos==CacheBuilder.UNSET_INT)==false;"
-    ],
-    "clusters.stream().allMatch(jdVar->jdVar.getPoints().size()==0)==false;": [
-        "(clusters.stream().allMatch(jdVar->jdVar.getPoints().size()==0))",
-        "clusters.stream().allMatch(jdVar->(jdVar.getPoints().size()==0))",
-        "clusters.stream().allMatch(jdVar->(jdVar.getPoints().size()!=0)==false)"
     ],
     "root==null;": [
         "(root==null);",
@@ -2079,12 +2066,6 @@
         "collection==null||(elements==null);",
         "(collection!=null)==false||elements==null;",
         "collection==null||(elements!=null)==false;"
-    ],
-    "(numEdges>=0)&&(numEdges<=(numVertices*(numVertices-1)/2));": [
-        "((numEdges>=0))&&(numEdges<=",
-        "(numEdges>=0)&&((numEdges<=)",
-        "((numEdges<0)==false)&&(numEdges<=",
-        "(numEdges>=0)&&((numEdges>)==false"
     ],
     "directedGraph==null;": [
         "(directedGraph==null);",
@@ -2262,23 +2243,9 @@
         "(occurrences==0);",
         "(occurrences!=0)==false;"
     ],
-    "rel<2*Math.ulp(1.0);": [
-        "(rel<)",
-        "(rel>=)==false"
-    ],
-    "index<0||index>(this.getEdgeCount()-1);": [
-        "(index<0)||index>",
-        "index<0||(index>)",
-        "(index>=0)==false||index>",
-        "index<0||(index<=)==false"
-    ],
-    "true:methodResultID>=0:true;": [],
     "denominatorDegreesOfFreedom>0;": [
         "(denominatorDegreesOfFreedom>0);",
         "(denominatorDegreesOfFreedom<=0)==false;"
-    ],
-    "this.getEdgeSet().stream().anymatch(jdVar->(directed&&(jdVar.getSourceNode().equals(this.getNode(from))&&jdVar.getTargetNode().equals(this.getNode(to))))||(directed==false&&((jdVar.getNode0().equals(this.getNode(from))&&jdVar.getNode1().equals(this.getNode(to)))||(jdVar.getNode1().equals(this.getNode(from))&&jdVar.getNode0().equals(this.getNode(to)))))&&this.isStrict();": [
-        "(this.getEdgeSet())"
     ],
     "true?methodResultID.equals(closure):true;": [
         "true?(methodResultID.equals(closure)):true;"
@@ -2359,12 +2326,6 @@
         "start<0||(start>sequence.length());",
         "(start>=0)==false||start>sequence.length();",
         "start<0||(start<=sequence.length())==false;"
-    ],
-    "index2>=0||index2<=(this.getNodeCount()-1);": [
-        "(index2>=0)||index2<=",
-        "index2>=0||(index2<=)",
-        "(index2<0)==false||index2<=",
-        "index2>=0||(index2>)==false"
     ],
     "factor==null;": [
         "(factor==null);",
@@ -2613,12 +2574,6 @@
         "((crossoverPoints>0))==false;",
         "((crossoverPoints<=0)==false)==false;"
     ],
-    "index1<0||index1>(this.getNodeCount()-1)||index2<0||index2>(this.getNodeCount()-1);": [
-        "(index1<0)||index1>",
-        "index1<0||(index1>)",
-        "(index1>=0)==false||index1>",
-        "index1<0||(index1<=)==false"
-    ],
     "offset<0||length<0;": [
         "(offset<0)||length<0;",
         "offset<0||(length<0);",
@@ -2706,13 +2661,6 @@
     "(den==null)==false;": [
         "((den==null))==false;",
         "((den!=null)==false)==false;"
-    ],
-    "off<0||len<0||off+len>source.length;": [
-        "(off<0)||len<0||",
-        "off<0||(len<0)||",
-        "off<0||len<0||()",
-        "(off>=0)==false||len<0||",
-        "off<0||(len>=0)==false||"
     ],
     "true?methodResultID!=null:true;": [
         "true?(methodResultID!=null):true;",
@@ -2813,10 +2761,6 @@
         "(observationRegistry!=null);",
         "(observationRegistry==null)==false;"
     ],
-    "rel>=2*Math.ulp(1.0);": [
-        "(rel>=)",
-        "(rel<)==false"
-    ],
     "destFile!=null;": [
         "(destFile!=null);",
         "(destFile==null)==false;"
@@ -2828,11 +2772,6 @@
     "imaginaryFormat==null;": [
         "(imaginaryFormat==null);",
         "(imaginaryFormat!=null)==false;"
-    ],
-    "(f.length>0&&(f.length&(f.length-1))==0)==false;": [
-        "((f.length>0)&&(f.length",
-        "(f.length>0&&((f.length)",
-        "((f.length<=0)==false&&(f.length"
     ],
     "methodName==null;": [
         "(methodName==null);",
@@ -2969,11 +2908,6 @@
     ],
     "(InternetDomainName.isValid(domain))==false;": [
         "((InternetDomainName.isValid(domain)))==false;"
-    ],
-    "values!=null&&(begin+length)<values.length;": [
-        "(values!=null)&&(",
-        "values!=null&&(()",
-        "(values==null)==false&&("
     ],
     "len<=0;": [
         "(len<=0);",
@@ -3141,9 +3075,6 @@
         "this.getNeuron(a.getIdentifier())!=a||(this.getNeuron(b.getIdentifier())!=b);",
         "(this.getNeuron(a.getIdentifier())==a)==false||this.getNeuron(b.getIdentifier())!=b;",
         "this.getNeuron(a.getIdentifier())!=a||(this.getNeuron(b.getIdentifier())==b)==false;"
-    ],
-    "(start.subtract(end).getNormSq()-tolerance)<=0.0;": [
-        "((start.subtract(end).getNormSq())"
     ],
     "true?methodResultID==false:true;": [
         "true?(methodResultID==false):true;",
@@ -3318,11 +3249,6 @@
         "(divisor==null);",
         "(divisor!=null)==false;"
     ],
-    "(n>0&&(n&(n-1))==0)==false;": [
-        "((n>0)&&(",
-        "(n>0&&(()",
-        "((n<=0)==false&&("
-    ],
     "values==null;": [
         "(values==null);",
         "(values!=null)==false;"
@@ -3384,6 +3310,24 @@
     "maximalIterationCount<=minimalIterationCount;": [
         "(maximalIterationCount<=minimalIterationCount);",
         "(maximalIterationCount>minimalIterationCount)==false;"
+    ],
+    "begin<0||length<0||values==null||weights==null||values.length!=weights.length||Arrays.stream(weights).anyMatch(jdVar->jdVar<0)||Arrays.stream(weights).allMatch(jdVar->jdVar==0);": [
+        "(begin<0)||length<0||values==null||weights==null||values.length!=weights.length||Arrays.stream(weights).anyMatch(jdVar->jdVar<0)||Arrays.stream(weights).allMatch(jdVar->jdVar==0);",
+        "begin<0||(length<0)||values==null||weights==null||values.length!=weights.length||Arrays.stream(weights).anyMatch(jdVar->jdVar<0)||Arrays.stream(weights).allMatch(jdVar->jdVar==0);",
+        "begin<0||length<0||(values==null)||weights==null||values.length!=weights.length||Arrays.stream(weights).anyMatch(jdVar->jdVar<0)||Arrays.stream(weights).allMatch(jdVar->jdVar==0);",
+        "begin<0||length<0||values==null||(weights==null)||values.length!=weights.length||Arrays.stream(weights).anyMatch(jdVar->jdVar<0)||Arrays.stream(weights).allMatch(jdVar->jdVar==0);",
+        "begin<0||length<0||values==null||weights==null||(values.length!=weights.length)||Arrays.stream(weights).anyMatch(jdVar->jdVar<0)||Arrays.stream(weights).allMatch(jdVar->jdVar==0);",
+        "begin<0||length<0||values==null||weights==null||values.length!=weights.length||(Arrays.stream(weights).anyMatch(jdVar->jdVar<0))||Arrays.stream(weights).allMatch(jdVar->jdVar==0);",
+        "begin<0||length<0||values==null||weights==null||values.length!=weights.length||Arrays.stream(weights).anyMatch(jdVar->(jdVar<0))||Arrays.stream(weights).allMatch(jdVar->jdVar==0);",
+        "begin<0||length<0||values==null||weights==null||values.length!=weights.length||Arrays.stream(weights).anyMatch(jdVar->jdVar<0)||(Arrays.stream(weights).allMatch(jdVar->jdVar==0));",
+        "begin<0||length<0||values==null||weights==null||values.length!=weights.length||Arrays.stream(weights).anyMatch(jdVar->jdVar<0)||Arrays.stream(weights).allMatch(jdVar->(jdVar==0));",
+        "begin<0||length<0||values==null||weights==null||(values.length==weights.length)==false||Arrays.stream(weights).anyMatch(jdVar->jdVar<0)||Arrays.stream(weights).allMatch(jdVar->jdVar==0);",
+        "begin<0||length<0||(values!=null)==false||weights==null||values.length!=weights.length||Arrays.stream(weights).anyMatch(jdVar->jdVar<0)||Arrays.stream(weights).allMatch(jdVar->jdVar==0);",
+        "begin<0||length<0||values==null||(weights!=null)==false||values.length!=weights.length||Arrays.stream(weights).anyMatch(jdVar->jdVar<0)||Arrays.stream(weights).allMatch(jdVar->jdVar==0);",
+        "begin<0||length<0||values==null||weights==null||values.length!=weights.length||Arrays.stream(weights).anyMatch(jdVar->jdVar<0)||Arrays.stream(weights).allMatch(jdVar->(jdVar!=0)==false);",
+        "(begin>=0)==false||length<0||values==null||weights==null||values.length!=weights.length||Arrays.stream(weights).anyMatch(jdVar->jdVar<0)||Arrays.stream(weights).allMatch(jdVar->jdVar==0);",
+        "begin<0||(length>=0)==false||values==null||weights==null||values.length!=weights.length||Arrays.stream(weights).anyMatch(jdVar->jdVar<0)||Arrays.stream(weights).allMatch(jdVar->jdVar==0);",
+        "begin<0||length<0||values==null||weights==null||values.length!=weights.length||Arrays.stream(weights).anyMatch(jdVar->(jdVar>=0)==false)||Arrays.stream(weights).allMatch(jdVar->jdVar==0);"
     ],
     "nobs<nvars;": [
         "(nobs<nvars);",
@@ -3480,6 +3424,12 @@
     "keyPredicate==null;": [
         "(keyPredicate==null);",
         "(keyPredicate!=null)==false;"
+    ],
+    "index>=0&&index<=this.getGraph().getNodeCount()-1;": [
+        "(index>=0)&&index<=this.getGraph().getNodeCount()-1;",
+        "index>=0&&(index<=this.getGraph().getNodeCount()-1);",
+        "(index<0)==false&&index<=this.getGraph().getNodeCount()-1;",
+        "index>=0&&(index>this.getGraph().getNodeCount()-1)==false;"
     ],
     "maxy>=miny;": [
         "(maxy>=miny);",
@@ -3783,6 +3733,12 @@
     "map.isEmpty();": [
         "(map.isEmpty());"
     ],
+    "index2>=0||index2<=this.getNodeCount()-1;": [
+        "(index2>=0)||index2<=this.getNodeCount()-1;",
+        "index2>=0||(index2<=this.getNodeCount()-1);",
+        "(index2<0)==false||index2<=this.getNodeCount()-1;",
+        "index2>=0||(index2>this.getNodeCount()-1)==false;"
+    ],
     "((countMap==null)==false)&&(countMap.isEmpty());": [
         "(((countMap==null))==false)&&(countMap.isEmpty());",
         "((countMap==null)==false)&&((countMap.isEmpty()));",
@@ -3940,6 +3896,20 @@
         "(a>=0)==false||b<10;",
         "a<0||(b>=10)==false;"
     ],
+    "values==null||weights==null||values.length!=weights.length||Arrays.stream(weights).anyMatch(jdVar->jdVar<0)||Arrays.stream(weights).allMatch(jdVar->jdVar==0);": [
+        "(values==null)||weights==null||values.length!=weights.length||Arrays.stream(weights).anyMatch(jdVar->jdVar<0)||Arrays.stream(weights).allMatch(jdVar->jdVar==0);",
+        "values==null||(weights==null)||values.length!=weights.length||Arrays.stream(weights).anyMatch(jdVar->jdVar<0)||Arrays.stream(weights).allMatch(jdVar->jdVar==0);",
+        "values==null||weights==null||(values.length!=weights.length)||Arrays.stream(weights).anyMatch(jdVar->jdVar<0)||Arrays.stream(weights).allMatch(jdVar->jdVar==0);",
+        "values==null||weights==null||values.length!=weights.length||(Arrays.stream(weights).anyMatch(jdVar->jdVar<0))||Arrays.stream(weights).allMatch(jdVar->jdVar==0);",
+        "values==null||weights==null||values.length!=weights.length||Arrays.stream(weights).anyMatch(jdVar->(jdVar<0))||Arrays.stream(weights).allMatch(jdVar->jdVar==0);",
+        "values==null||weights==null||values.length!=weights.length||Arrays.stream(weights).anyMatch(jdVar->jdVar<0)||(Arrays.stream(weights).allMatch(jdVar->jdVar==0));",
+        "values==null||weights==null||values.length!=weights.length||Arrays.stream(weights).anyMatch(jdVar->jdVar<0)||Arrays.stream(weights).allMatch(jdVar->(jdVar==0));",
+        "values==null||weights==null||(values.length==weights.length)==false||Arrays.stream(weights).anyMatch(jdVar->jdVar<0)||Arrays.stream(weights).allMatch(jdVar->jdVar==0);",
+        "(values!=null)==false||weights==null||values.length!=weights.length||Arrays.stream(weights).anyMatch(jdVar->jdVar<0)||Arrays.stream(weights).allMatch(jdVar->jdVar==0);",
+        "values==null||(weights!=null)==false||values.length!=weights.length||Arrays.stream(weights).anyMatch(jdVar->jdVar<0)||Arrays.stream(weights).allMatch(jdVar->jdVar==0);",
+        "values==null||weights==null||values.length!=weights.length||Arrays.stream(weights).anyMatch(jdVar->jdVar<0)||Arrays.stream(weights).allMatch(jdVar->(jdVar!=0)==false);",
+        "values==null||weights==null||values.length!=weights.length||Arrays.stream(weights).anyMatch(jdVar->(jdVar>=0)==false)||Arrays.stream(weights).allMatch(jdVar->jdVar==0);"
+    ],
     "p<0||p>1;": [
         "(p<0)||p>1;",
         "p<0||(p>1);",
@@ -3948,12 +3918,6 @@
     ],
     "(MatrixUtils.isSymmetric(matrix,eps))==false;": [
         "((MatrixUtils.isSymmetric(matrix,eps)))==false;"
-    ],
-    "numVertices>=0&&(numEdges<=(numVertices*(numVertices-1)/2));": [
-        "(numVertices>=0)&&(numEdges<=",
-        "numVertices>=0&&((numEdges<=)",
-        "(numVertices<0)==false&&(numEdges<=",
-        "numVertices>=0&&((numEdges>)==false"
     ],
     "(this.rowKeySet().contains(rowKey))==false||(this.columnKeySet().contains(columnKey))==false;": [
         "((this.rowKeySet().contains(rowKey)))==false||(this.columnKeySet().contains(columnKey))==false;",
@@ -4157,6 +4121,10 @@
         "(original!=null);",
         "(original==null)==false;"
     ],
+    "true?methodResultID.length<=seq.length:true;": [
+        "true?(methodResultID.length<=seq.length):true;",
+        "true?(methodResultID.length>seq.length)==false:true;"
+    ],
     "((maxPathLength!=null)&&(maxPathLength<0))==false&&((simplePathsOnly==false)&&(maxPathLength==null))==false;": [
         "(((maxPathLength!=null))&&(maxPathLength<0))==false&&((simplePathsOnly==false)&&(maxPathLength==null))==false;",
         "((maxPathLength!=null)&&((maxPathLength<0)))==false&&((simplePathsOnly==false)&&(maxPathLength==null))==false;",
@@ -4178,10 +4146,6 @@
     "maxSize>=0;": [
         "(maxSize>=0);",
         "(maxSize<0)==false;"
-    ],
-    "true?(methodResultID==null)==false;": [
-        "true?((methodResultID==null))==false",
-        "true?((methodResultID!=null)==false)==false"
     ],
     "maxEval>=maxEval;": [
         "(maxEval>=maxEval);",
@@ -4401,10 +4365,11 @@
         "(values==null)==false&&(values.length==0)==false;",
         "values!=null&&((values.length!=0)==false)==false;"
     ],
-    "(f.length>0&&(f.length&(f.length-1))==0);": [
-        "((f.length>0)&&(f.length",
-        "(f.length>0&&((f.length)",
-        "((f.length<=0)==false&&(f.length"
+    "index<0||index>this.getEdgeCount()-1;": [
+        "(index<0)||index>this.getEdgeCount()-1;",
+        "index<0||(index>this.getEdgeCount()-1);",
+        "(index>=0)==false||index>this.getEdgeCount()-1;",
+        "index<0||(index<=this.getEdgeCount()-1)==false;"
     ],
     "value<0||value>255;": [
         "(value<0)||value>255;",
@@ -4602,10 +4567,6 @@
         "(numberOfTrials<=0);",
         "(numberOfTrials>0)==false;"
     ],
-    "this.isStrict()&&this.getEdgeSet().stream().anyMatch(jdVar->(jdVar.getNode0().equals(this.getNode(from))&&jdVar.getNode1().equals(this.getNode(to)))||(jdVar.getNode1().equals(this.getNode(from))&&jdVar.getNode0().equals(this.getNode(to))));": [
-        "(this.isStrict())&&this.getEdgeSet()",
-        "this.isStrict()&&(this.getEdgeSet())"
-    ],
     "((objectsAndClosures==null)==false)&&(objectsAndClosures.isEmpty());": [
         "(((objectsAndClosures==null))==false)&&(objectsAndClosures.isEmpty());",
         "((objectsAndClosures==null)==false)&&((objectsAndClosures.isEmpty()));",
@@ -4706,12 +4667,6 @@
         "(multiset!=null)==false||lock==null;",
         "multiset==null||(lock!=null)==false;"
     ],
-    "index>=0||index<=(this.getNodeCount()-1);": [
-        "(index>=0)||index<=",
-        "index>=0||(index<=)",
-        "(index<0)==false||index<=",
-        "index>=0||(index>)==false"
-    ],
     "this.getLowerBound()!=null||this.getUpperBound()!=null;": [
         "(this.getLowerBound()!=null)||this.getUpperBound()!=null;",
         "this.getLowerBound()!=null||(this.getUpperBound()!=null);",
@@ -4748,9 +4703,6 @@
         "queue==null||(transformer==null);",
         "(queue!=null)==false||transformer==null;",
         "queue==null||(transformer!=null)==false;"
-    ],
-    "observed1.length!+observed2.length;": [
-        "(observed1)"
     ],
     "permutedData.stream().anyMatch(jdVar->originalData.indexOf(jdVar)>=0);": [
         "(permutedData.stream().anyMatch(jdVar->originalData.indexOf(jdVar)>=0));",
@@ -4816,6 +4768,12 @@
         "((closures==null))==false;",
         "((closures!=null)==false)==false;"
     ],
+    "index<0||index>this.getGraph().getNodeCount()-1;": [
+        "(index<0)||index>this.getGraph().getNodeCount()-1;",
+        "index<0||(index>this.getGraph().getNodeCount()-1);",
+        "(index>=0)==false||index>this.getGraph().getNodeCount()-1;",
+        "index<0||(index<=this.getGraph().getNodeCount()-1)==false;"
+    ],
     "true?methodResultID.equals(trueTransformer):true;": [
         "true?(methodResultID.equals(trueTransformer)):true;"
     ],
@@ -4852,11 +4810,6 @@
     "(second==null)==false;": [
         "((second==null))==false;",
         "((second!=null)==false)==false;"
-    ],
-    "f.length>0&&(f.length&(f.length-1));": [
-        "(f.length>0)&&(f.length",
-        "f.length>0&&((f.length)",
-        "(f.length<=0)==false&&(f.length"
     ],
     "this.getChromosomeList().size()>this.getPopulationLimit();": [
         "(this.getChromosomeList().size()>this.getPopulationLimit());",
@@ -4924,9 +4877,6 @@
     "(set.isEmpty())==false||(list.isEmpty())==false;": [
         "((set.isEmpty()))==false||(list.isEmpty())==false;",
         "(set.isEmpty())==false||((list.isEmpty()))==false;"
-    ],
-    "map.keySet().stream().anyMatch(jdVar->jdVar instanceof Comparable)||map.values().stream().anyMatch(jdVar->jdVar instanceof Comparable);": [
-        "(map.keySet())"
     ],
     "x.length<2||y.length<2;": [
         "(x.length<2)||y.length<2;",
@@ -5163,6 +5113,10 @@
         "(maxLength<truncationIndicator.length());",
         "(maxLength>=truncationIndicator.length())==false;"
     ],
+    "chromosomeColl.size()>this.getPopulationLimit()-this.getChromosomeList().size();": [
+        "(chromosomeColl.size()>this.getPopulationLimit()-this.getChromosomeList().size());",
+        "(chromosomeColl.size()<=this.getPopulationLimit()-this.getChromosomeList().size())==false;"
+    ],
     "e>0||e==0;": [
         "(e>0)||e==0;",
         "e>0||(e==0);",
@@ -5204,6 +5158,18 @@
     "predicates==null;": [
         "(predicates==null);",
         "(predicates!=null)==false;"
+    ],
+    "begin>=values.length||values.length<=begin+length||values==null||p<=0||p>100;": [
+        "(begin>=values.length)||values.length<=begin+length||values==null||p<=0||p>100;",
+        "begin>=values.length||(values.length<=begin+length)||values==null||p<=0||p>100;",
+        "begin>=values.length||values.length<=begin+length||(values==null)||p<=0||p>100;",
+        "begin>=values.length||values.length<=begin+length||values==null||(p<=0)||p>100;",
+        "begin>=values.length||values.length<=begin+length||values==null||p<=0||(p>100);",
+        "begin>=values.length||values.length<=begin+length||(values!=null)==false||p<=0||p>100;",
+        "(begin<values.length)==false||values.length<=begin+length||values==null||p<=0||p>100;",
+        "begin>=values.length||(values.length>begin+length)==false||values==null||p<=0||p>100;",
+        "begin>=values.length||values.length<=begin+length||values==null||(p>0)==false||p>100;",
+        "begin>=values.length||values.length<=begin+length||values==null||p<=0||(p<=100)==false;"
     ],
     "this.getEdge(id)!=null;": [
         "(this.getEdge(id)!=null);",
@@ -5274,19 +5240,6 @@
         "(collection!=null)==false||iterator==null;",
         "collection==null||(iterator!=null)==false;"
     ],
-    "begin>=values.length||(begin+length)>=values.length||values==null||p<=0||p>100;": [
-        "(begin>=values.length)||(",
-        "begin>=values.length||(()",
-        "(begin<values.length)==false||("
-    ],
-    "numVertices<0||(numEdges<0)||(numEdges>(numVertices*(numVertices-1)/2));": [
-        "(numVertices<0)||(numEdges<0)||(numEdges>",
-        "numVertices<0||((numEdges<0))||(numEdges>",
-        "numVertices<0||(numEdges<0)||((numEdges>)",
-        "(numVertices>=0)==false||(numEdges<0)||(numEdges>",
-        "numVertices<0||((numEdges>=0)==false)||(numEdges>",
-        "numVertices<0||(numEdges<0)||((numEdges<=)==false"
-    ],
     "map==null||expiringPolicy==null;": [
         "(map==null)||expiringPolicy==null;",
         "map==null||(expiringPolicy==null);",
@@ -5307,6 +5260,16 @@
         "root==null||(path!=null)==false||path.isEmpty()||fromObject==null||fromArray==null;",
         "root==null||path==null||path.isEmpty()||(fromObject!=null)==false||fromArray==null;",
         "root==null||path==null||path.isEmpty()||fromObject==null||(fromArray!=null)==false;"
+    ],
+    "fromIndex<0||fromIndex>this.getNodeCount()-1||toIndex<0||toIndex>this.getNodeCount()-1;": [
+        "(fromIndex<0)||fromIndex>this.getNodeCount()-1||toIndex<0||toIndex>this.getNodeCount()-1;",
+        "fromIndex<0||(fromIndex>this.getNodeCount()-1)||toIndex<0||toIndex>this.getNodeCount()-1;",
+        "fromIndex<0||fromIndex>this.getNodeCount()-1||(toIndex<0)||toIndex>this.getNodeCount()-1;",
+        "fromIndex<0||fromIndex>this.getNodeCount()-1||toIndex<0||(toIndex>this.getNodeCount()-1);",
+        "(fromIndex>=0)==false||fromIndex>this.getNodeCount()-1||toIndex<0||toIndex>this.getNodeCount()-1;",
+        "fromIndex<0||(fromIndex<=this.getNodeCount()-1)==false||toIndex<0||toIndex>this.getNodeCount()-1;",
+        "fromIndex<0||fromIndex>this.getNodeCount()-1||(toIndex>=0)==false||toIndex>this.getNodeCount()-1;",
+        "fromIndex<0||fromIndex>this.getNodeCount()-1||toIndex<0||(toIndex<=this.getNodeCount()-1)==false;"
     ],
     "(((targetGraph==null)==false)&&(targetGraph.containsEdge(edge)))==false?methodResultID==true:methodResultID==false;": [
         "(((targetGraph==null)==false)&&(targetGraph.containsEdge(edge)))?methodResultID==false:methodResultID==true;",
@@ -5426,12 +5389,6 @@
         "(lower>=upper);",
         "(lower<upper)==false;"
     ],
-    "index<0||index>(this.getGraph().getNodeCount()-1);": [
-        "(index<0)||index>",
-        "index<0||(index>)",
-        "(index>=0)==false||index>",
-        "index<0||(index<=)==false"
-    ],
     "b<10;": [
         "(b<10);",
         "(b>=10)==false;"
@@ -5439,10 +5396,6 @@
     "axis.getNorm()==0.0;": [
         "(axis.getNorm()==0.0);",
         "(axis.getNorm()!=0.0)==false;"
-    ],
-    "true?methodResultID.length()<=arg.length();": [
-        "true?(methodResultID.length()<=arg.length())",
-        "true?(methodResultID.length()>arg.length())==false"
     ],
     "((set1==null)==false)&&(set1.equals(set2))?methodResultID==true:methodResultID==false;": [
         "(((set1==null)==false)&&(set1.equals(set2)))==false?methodResultID==false:methodResultID==true;",
@@ -5540,6 +5493,10 @@
         "this.cacheSize()==0?(methodResultID!=true)==false:methodResultID==false;",
         "this.cacheSize()==0?methodResultID==true:(methodResultID!=false)==false;"
     ],
+    "start.subtract(end).getNormSq()<=tolerance;": [
+        "(start.subtract(end).getNormSq()<=tolerance);",
+        "(start.subtract(end).getNormSq()>tolerance)==false;"
+    ],
     "den.signum()==0;": [
         "(den.signum()==0);",
         "(den.signum()!=0)==false;"
@@ -5557,26 +5514,6 @@
     "this.getData()==null;": [
         "(this.getData()==null);",
         "(this.getData()!=null)==false;"
-    ],
-    "base>=0?(base==0&&((expt==0)==false)&&methodResultID==0)||(base>0&&methodResultID>0):(expt==0&&methodResultID==1)||(expt%2==0&&methodResultID>0)||(expt%2==1&&methodResultID<0);": [
-        "(base>=0)==false?(expt==0&&methodResultID==1)||(:(base==0&&((expt==0)==false)&&methodResultID==0)||(base>0&&methodResultID>0)",
-        "(base>=0)?(base==0&&((expt==0)==false)&&methodResultID==0)||(base>0&&methodResultID>0):(expt==0&&methodResultID==1)||(",
-        "base>=0?((base==0)&&((expt==0)==false)&&methodResultID==0)||(base>0&&methodResultID>0):(expt==0&&methodResultID==1)||(",
-        "base>=0?(base==0&&(((expt==0))==false)&&methodResultID==0)||(base>0&&methodResultID>0):(expt==0&&methodResultID==1)||(",
-        "base>=0?(base==0&&((expt==0)==false)&&(methodResultID==0))||(base>0&&methodResultID>0):(expt==0&&methodResultID==1)||(",
-        "base>=0?(base==0&&((expt==0)==false)&&methodResultID==0)||((base>0)&&methodResultID>0):(expt==0&&methodResultID==1)||(",
-        "base>=0?(base==0&&((expt==0)==false)&&methodResultID==0)||(base>0&&(methodResultID>0)):(expt==0&&methodResultID==1)||(",
-        "base>=0?(base==0&&((expt==0)==false)&&methodResultID==0)||(base>0&&methodResultID>0):((expt==0)&&methodResultID==1)||(",
-        "base>=0?(base==0&&((expt==0)==false)&&methodResultID==0)||(base>0&&methodResultID>0):(expt==0&&(methodResultID==1))||(",
-        "base>=0?(base==0&&((expt==0)==false)&&methodResultID==0)||(base>0&&methodResultID>0):(expt==0&&methodResultID==1)||(()",
-        "base>=0?((base!=0)==false&&((expt==0)==false)&&methodResultID==0)||(base>0&&methodResultID>0):(expt==0&&methodResultID==1)||(",
-        "base>=0?(base==0&&(((expt!=0)==false)==false)&&methodResultID==0)||(base>0&&methodResultID>0):(expt==0&&methodResultID==1)||(",
-        "base>=0?(base==0&&((expt==0)==false)&&(methodResultID!=0)==false)||(base>0&&methodResultID>0):(expt==0&&methodResultID==1)||(",
-        "base>=0?(base==0&&((expt==0)==false)&&methodResultID==0)||(base>0&&methodResultID>0):((expt!=0)==false&&methodResultID==1)||(",
-        "base>=0?(base==0&&((expt==0)==false)&&methodResultID==0)||(base>0&&methodResultID>0):(expt==0&&(methodResultID!=1)==false)||(",
-        "(base<0)==false?(base==0&&((expt==0)==false)&&methodResultID==0)||(base>0&&methodResultID>0):(expt==0&&methodResultID==1)||(",
-        "base>=0?(base==0&&((expt==0)==false)&&methodResultID==0)||((base<=0)==false&&methodResultID>0):(expt==0&&methodResultID==1)||(",
-        "base>=0?(base==0&&((expt==0)==false)&&methodResultID==0)||(base>0&&(methodResultID<=0)==false):(expt==0&&methodResultID==1)||("
     ],
     "resourceBundle==null;": [
         "(resourceBundle==null);",
@@ -5693,6 +5630,14 @@
         "(Arrays.stream(closures).anyMatch(jdVar->jdVar==null));",
         "Arrays.stream(closures).anyMatch(jdVar->(jdVar==null));",
         "Arrays.stream(closures).anyMatch(jdVar->(jdVar!=null)==false);"
+    ],
+    "off<0||len<0||off>source.length-len;": [
+        "(off<0)||len<0||off>source.length-len;",
+        "off<0||(len<0)||off>source.length-len;",
+        "off<0||len<0||(off>source.length-len);",
+        "(off>=0)==false||len<0||off>source.length-len;",
+        "off<0||(len>=0)==false||off>source.length-len;",
+        "off<0||len<0||(off<=source.length-len)==false;"
     ],
     "this.contains(object)==true?methodResultID==this.indexOf(object)+1:methodResultID==-1;": [
         "(this.contains(object)==true)==false?methodResultID==-1:methodResultID==this.indexOf(object)+1;",
@@ -6255,6 +6200,14 @@
         "(convention!=null);",
         "(convention==null)==false;"
     ],
+    "lowerBound>=upperBound||confidenceLevel<=0&&confidenceLevel>=1;": [
+        "(lowerBound>=upperBound)||confidenceLevel<=0&&confidenceLevel>=1;",
+        "lowerBound>=upperBound||(confidenceLevel<=0)&&confidenceLevel>=1;",
+        "lowerBound>=upperBound||confidenceLevel<=0&&(confidenceLevel>=1);",
+        "(lowerBound<upperBound)==false||confidenceLevel<=0&&confidenceLevel>=1;",
+        "lowerBound>=upperBound||(confidenceLevel>0)==false&&confidenceLevel>=1;",
+        "lowerBound>=upperBound||confidenceLevel<=0&&(confidenceLevel<1)==false;"
+    ],
     "(element==null)||(count==0);": [
         "((element==null))||(count==0);",
         "(element==null)||((count==0));",
@@ -6499,6 +6452,12 @@
         "(this.getCoefficients().length==0);",
         "(this.getCoefficients().length!=0)==false;"
     ],
+    "index1>=0||index1<=this.getNodeCount()-1;": [
+        "(index1>=0)||index1<=this.getNodeCount()-1;",
+        "index1>=0||(index1<=this.getNodeCount()-1);",
+        "(index1<0)==false||index1<=this.getNodeCount()-1;",
+        "index1>=0||(index1>this.getNodeCount()-1)==false;"
+    ],
     "optional!=null;": [
         "(optional!=null);",
         "(optional==null)==false;"
@@ -6679,11 +6638,6 @@
         "(action!=null)==false||failure==null;",
         "action==null||(failure!=null)==false;"
     ],
-    "(initialCapacity>0)&&((initialCapacity&(initialCapacity-1))==0);": [
-        "((initialCapacity>0))&&((",
-        "(initialCapacity>0)&&((()",
-        "((initialCapacity<=0)==false)&&(("
-    ],
     "(sampleSize>0)==false;": [
         "((sampleSize>0))==false;",
         "((sampleSize<=0)==false)==false;"
@@ -6794,6 +6748,10 @@
     "columnData==null;": [
         "(columnData==null);",
         "(columnData!=null)==false;"
+    ],
+    "true?methodResultID.length()<=arg.length():true;": [
+        "true?(methodResultID.length()<=arg.length()):true;",
+        "true?(methodResultID.length()>arg.length())==false:true;"
     ],
     "index<0||index>=IteratorUtils.size(iterator);": [
         "(index<0)||index>=IteratorUtils.size(iterator);",
