@@ -802,9 +802,9 @@
         "start<0||start>=CollectionUtils.size(array)||(end<0)||end>=CollectionUtils.size(array);",
         "start<0||start>=CollectionUtils.size(array)||end<0||(end>=CollectionUtils.size(array));",
         "(start>=0)==false||start>=CollectionUtils.size(array)||end<0||end>=CollectionUtils.size(array);",
-        "start<0||(start<0)==false||end<0||end>=CollectionUtils.size(array);",
+        "start<0||(start<CollectionUtils.size(array))==false||end<0||end>=CollectionUtils.size(array);",
         "start<0||start>=CollectionUtils.size(array)||(end>=0)==false||end>=CollectionUtils.size(array);",
-        "start<0||start>=CollectionUtils.size(array)||end<0||(start<0)==false;"
+        "start<0||start>=CollectionUtils.size(array)||end<0||(end<CollectionUtils.size(array))==false;"
     ],
     "this.getEdgePath().contains(edge)?methodResultID==true:true;": [
         "(this.getEdgePath().contains(edge))?methodResultID==true:true;",
@@ -908,7 +908,7 @@
         "((p>0))==false&&p<=100;",
         "(p>0)==false&&(p<=100);",
         "((p<=0)==false)==false&&p<=100;",
-        "(p>0)==false&&((p>0)==false)==false;"
+        "(p>0)==false&&(p>0)==false;"
     ],
     "numberOfSuccesses>numberOfTrials;": [
         "(numberOfSuccesses>numberOfTrials);",
@@ -1250,7 +1250,7 @@
         "endIndex>=0&&endIndex>=startIndex&&(endIndex<CollectionUtils.size(array));",
         "(endIndex<0)==false&&endIndex>=startIndex&&endIndex<CollectionUtils.size(array);",
         "endIndex>=0&&(endIndex<startIndex)==false&&endIndex<CollectionUtils.size(array);",
-        "endIndex>=0&&endIndex>=startIndex&&(endIndex>=0)==false;"
+        "endIndex>=0&&endIndex>=startIndex&&(endIndex>=CollectionUtils.size(array))==false;"
     ],
     "(il==null)==false;": [
         "((il==null))==false;",
@@ -1630,7 +1630,7 @@
         "(index<0)||index>=CollectionUtils.size(e);",
         "index<0||(index>=CollectionUtils.size(e));",
         "(index>=0)==false||index>=CollectionUtils.size(e);",
-        "index<0||(index<0)==false;"
+        "index<0||(index<CollectionUtils.size(e))==false;"
     ],
     "start<0;": [
         "(start<0);",
@@ -1678,7 +1678,7 @@
         "(index>=0)&&index<IteratorUtils.size(iterator);",
         "index>=0&&(index<IteratorUtils.size(iterator));",
         "(index<0)==false&&index<IteratorUtils.size(iterator);",
-        "index>=0&&(index>=0)==false;"
+        "index>=0&&(index>=IteratorUtils.size(iterator))==false;"
     ],
     "iteratorChain==null||Arrays.stream(iteratorChain).anyMatch(jdVar->jdVar==null);": [
         "(iteratorChain==null)||Arrays.stream(iteratorChain).anyMatch(jdVar->jdVar==null);",
@@ -1863,7 +1863,7 @@
         "(index<0)||index>=this.getNumberOfParameters();",
         "index<0||(index>=this.getNumberOfParameters());",
         "(index>=0)==false||index>=this.getNumberOfParameters();",
-        "index<0||(index<0)==false;"
+        "index<0||(index<this.getNumberOfParameters())==false;"
     ],
     "source!=null;": [
         "(source!=null);",
@@ -1885,7 +1885,7 @@
         "(startIndex>=0)&&startIndex<CollectionUtils.size(array);",
         "startIndex>=0&&(startIndex<CollectionUtils.size(array));",
         "(startIndex<0)==false&&startIndex<CollectionUtils.size(array);",
-        "startIndex>=0&&(startIndex>=0)==false;"
+        "startIndex>=0&&(startIndex>=CollectionUtils.size(array))==false;"
     ],
     "graph==null;": [
         "(graph==null);",
@@ -2079,7 +2079,7 @@
         "(index<0)||index>=this.getNumberOfEquations();",
         "index<0||(index>=this.getNumberOfEquations());",
         "(index>=0)==false||index>=this.getNumberOfEquations();",
-        "index<0||(index<0)==false;"
+        "index<0||(index<this.getNumberOfEquations())==false;"
     ],
     "maxIter<=0;": [
         "(maxIter<=0);",
@@ -2380,7 +2380,7 @@
         "startIndex<0||startIndex>endIndex||(endIndex>=CollectionUtils.size(array));",
         "(startIndex>=0)==false||startIndex>endIndex||endIndex>=CollectionUtils.size(array);",
         "startIndex<0||(startIndex<=endIndex)==false||endIndex>=CollectionUtils.size(array);",
-        "startIndex<0||startIndex>endIndex||(startIndex<0)==false;"
+        "startIndex<0||startIndex>endIndex||(endIndex<CollectionUtils.size(array))==false;"
     ],
     "duration<0;": [
         "(duration<0);",
@@ -2792,7 +2792,7 @@
         "((offset<0)||offset>=IteratorUtils.size(iterator))==false;",
         "(offset<0||(offset>=IteratorUtils.size(iterator)))==false;",
         "((offset>=0)==false||offset>=IteratorUtils.size(iterator))==false;",
-        "(offset<0||(offset<0)==false)==false;"
+        "(offset<0||(offset<IteratorUtils.size(iterator))==false)==false;"
     ],
     "stickers==null||stickers.isEmpty()||stickers.size()>3||stickers.stream().anyMatch(jdVar->this.getJDA().retrieveSticker(jdVar).complete().getType()==StickerType.STANDARD||(this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().isAvailable())==false||this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().getGuildIdLong()!=this.getGuild().getIdLong());": [
         "(stickers==null)||stickers.isEmpty()||stickers.size()>3||stickers.stream().anyMatch(jdVar->this.getJDA().retrieveSticker(jdVar).complete().getType()==StickerType.STANDARD||(this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().isAvailable())==false||this.getJDA().retrieveSticker(jdVar).complete().asGuildSticker().getGuildIdLong()!=this.getGuild().getIdLong());",
@@ -3449,7 +3449,7 @@
         "(index>=0)||index<this.getNumberOfEquations();",
         "index>=0||(index<this.getNumberOfEquations());",
         "(index<0)==false||index<this.getNumberOfEquations();",
-        "index>=0||(index>=0)==false;"
+        "index>=0||(index>=this.getNumberOfEquations())==false;"
     ],
     "dataPoints==null;": [
         "(dataPoints==null);",
@@ -3807,8 +3807,8 @@
         "rowIndex<0||columnIndex<0||rowIndex>=this.rowKeyList().size()||(columnIndex>=this.columnKeyList().size());",
         "(rowIndex>=0)==false||columnIndex<0||rowIndex>=this.rowKeyList().size()||columnIndex>=this.columnKeyList().size();",
         "rowIndex<0||(columnIndex>=0)==false||rowIndex>=this.rowKeyList().size()||columnIndex>=this.columnKeyList().size();",
-        "rowIndex<0||columnIndex<0||(rowIndex<0)==false||columnIndex>=this.columnKeyList().size();",
-        "rowIndex<0||columnIndex<0||rowIndex>=this.rowKeyList().size()||(rowIndex<0)==false;"
+        "rowIndex<0||columnIndex<0||(rowIndex<this.rowKeyList().size())==false||columnIndex>=this.columnKeyList().size();",
+        "rowIndex<0||columnIndex<0||rowIndex>=this.rowKeyList().size()||(columnIndex<this.columnKeyList().size())==false;"
     ],
     "(probability==0)==false;": [
         "((probability==0))==false;",
@@ -3852,7 +3852,7 @@
     "(array.getClass().isArray())==false||start>end;": [
         "((array.getClass().isArray()))==false||start>end;",
         "(array.getClass().isArray())==false||(start>end);",
-        "(array.getClass().isArray())==false||((array.getClass().isArray())==false)==false;"
+        "(array.getClass().isArray())==false||(start<=end)==false;"
     ],
     "this.getNorm()==0;": [
         "(this.getNorm()==0);",
@@ -3983,7 +3983,7 @@
     "this.graph instanceof UndirectedGraph&&this.graph.getEdgeWeight(edge)<0;": [
         "(this.graph instanceof UndirectedGraph)&&this.graph.getEdgeWeight(edge)<0;",
         "this.graph instanceof UndirectedGraph&&(this.graph.getEdgeWeight(edge)<0);",
-        "this.graph instanceof UndirectedGraph&&(this.graph.getEdgeWeight(edge)>=0 instanceof UndirectedGraph)==false;"
+        "this.graph instanceof UndirectedGraph&&(this.graph.getEdgeWeight(edge)>=0)==false;"
     ],
     "newValue==null;": [
         "(newValue==null);",
@@ -4023,7 +4023,7 @@
         "(paramTypes==null&&args!=null)||(paramTypes!=null&&args==null)||(paramTypes!=null&&(args==null)==false&&paramTypes.length!=args.length);",
         "(paramTypes==null&&args!=null)||(paramTypes!=null&&args==null)||(paramTypes!=null&&args!=null&&(paramTypes.length==args.length)==false);",
         "((paramTypes!=null)==false&&args!=null)||(paramTypes!=null&&args==null)||(paramTypes!=null&&args!=null&&paramTypes.length!=args.length);",
-        "(paramTypes==null&&args!=null)||(paramTypes!=null&&(paramTypes!=null)==false)||(paramTypes!=null&&args!=null&&paramTypes.length!=args.length);"
+        "(paramTypes==null&&args!=null)||(paramTypes!=null&&(args!=null)==false)||(paramTypes!=null&&args!=null&&paramTypes.length!=args.length);"
     ],
     "window<1&&(window==DescriptiveStatistics.INFINITE_WINDOW)==false;": [
         "(window<1)&&(window==DescriptiveStatistics.INFINITE_WINDOW)==false;",
@@ -4416,9 +4416,9 @@
         "i<0||i>=this.getNumberOfParameters()||(j<0)||j>=this.getNumberOfParameters();",
         "i<0||i>=this.getNumberOfParameters()||j<0||(j>=this.getNumberOfParameters());",
         "(i>=0)==false||i>=this.getNumberOfParameters()||j<0||j>=this.getNumberOfParameters();",
-        "i<0||(i<0)==false||j<0||j>=this.getNumberOfParameters();",
+        "i<0||(i<this.getNumberOfParameters())==false||j<0||j>=this.getNumberOfParameters();",
         "i<0||i>=this.getNumberOfParameters()||(j>=0)==false||j>=this.getNumberOfParameters();",
-        "i<0||i>=this.getNumberOfParameters()||j<0||(i<0)==false;"
+        "i<0||i>=this.getNumberOfParameters()||j<0||(j<this.getNumberOfParameters())==false;"
     ],
     "p!=null;": [
         "(p!=null);",
@@ -4683,9 +4683,9 @@
         "i<0||i>=this.getNumberOfRows()||(j<0)||j>=this.getNumberOfColumns();",
         "i<0||i>=this.getNumberOfRows()||j<0||(j>=this.getNumberOfColumns());",
         "(i>=0)==false||i>=this.getNumberOfRows()||j<0||j>=this.getNumberOfColumns();",
-        "i<0||(i<0)==false||j<0||j>=this.getNumberOfColumns();",
+        "i<0||(i<this.getNumberOfRows())==false||j<0||j>=this.getNumberOfColumns();",
         "i<0||i>=this.getNumberOfRows()||(j>=0)==false||j>=this.getNumberOfColumns();",
-        "i<0||i>=this.getNumberOfRows()||j<0||(i<0)==false;"
+        "i<0||i>=this.getNumberOfRows()||j<0||(j<this.getNumberOfColumns())==false;"
     ],
     "true?methodResultID.equals(base):true;": [
         "true?(methodResultID.equals(base)):true;"
@@ -4924,13 +4924,13 @@
         "startIndex>=0&&startIndex<=endIndex&&(startIndex<CollectionUtils.size(array));",
         "(startIndex<0)==false&&startIndex<=endIndex&&startIndex<CollectionUtils.size(array);",
         "startIndex>=0&&(startIndex>endIndex)==false&&startIndex<CollectionUtils.size(array);",
-        "startIndex>=0&&startIndex<=endIndex&&(startIndex>=0)==false;"
+        "startIndex>=0&&startIndex<=endIndex&&(startIndex>=CollectionUtils.size(array))==false;"
     ],
     "startIndex<0||startIndex>=CollectionUtils.size(array);": [
         "(startIndex<0)||startIndex>=CollectionUtils.size(array);",
         "startIndex<0||(startIndex>=CollectionUtils.size(array));",
         "(startIndex>=0)==false||startIndex>=CollectionUtils.size(array);",
-        "startIndex<0||(startIndex<0)==false;"
+        "startIndex<0||(startIndex<CollectionUtils.size(array))==false;"
     ],
     "true?methodResultID==a*-1:true;": [
         "true?(methodResultID==a*-1):true;",
@@ -4973,7 +4973,7 @@
     "true?(methodResultID<start)==false||methodResultID==-1:true;": [
         "true?((methodResultID<start))==false||methodResultID==-1:true;",
         "true?(methodResultID<start)==false||(methodResultID==-1):true;",
-        "true?(methodResultID<start)==false||((methodResultID<start)==false)==false:true;",
+        "true?(methodResultID<start)==false||(methodResultID!=-1)==false:true;",
         "true?((methodResultID>=start)==false)==false||methodResultID==-1:true;"
     ],
     "start<0||start>array.length;": [
@@ -6269,7 +6269,7 @@
         "(iterators==null)==false&&iterators.length>0&&Arrays.stream(iterators).noneMatch(jdVar->(jdVar==null));",
         "((iterators!=null)==false)==false&&iterators.length>0&&Arrays.stream(iterators).noneMatch(jdVar->jdVar==null);",
         "(iterators==null)==false&&iterators.length>0&&Arrays.stream(iterators).noneMatch(jdVar->(jdVar!=null)==false);",
-        "(iterators==null)==false&&((iterators==null)==false)==false&&Arrays.stream(iterators).noneMatch(jdVar->jdVar==null);"
+        "(iterators==null)==false&&(iterators.length<=0)==false&&Arrays.stream(iterators).noneMatch(jdVar->jdVar==null);"
     ],
     "(predicates.length==closures.length)==false;": [
         "((predicates.length==closures.length))==false;",
@@ -6351,7 +6351,7 @@
         "(comparators==null)==false&&comparators.length>0&&Arrays.stream(comparators).noneMatch(jdVar->(jdVar==null));",
         "((comparators!=null)==false)==false&&comparators.length>0&&Arrays.stream(comparators).noneMatch(jdVar->jdVar==null);",
         "(comparators==null)==false&&comparators.length>0&&Arrays.stream(comparators).noneMatch(jdVar->(jdVar!=null)==false);",
-        "(comparators==null)==false&&((comparators==null)==false)==false&&Arrays.stream(comparators).noneMatch(jdVar->jdVar==null);"
+        "(comparators==null)==false&&(comparators.length<=0)==false&&Arrays.stream(comparators).noneMatch(jdVar->jdVar==null);"
     ],
     "true?methodResultID==a-a:true;": [
         "true?(methodResultID==a-a):true;",
@@ -6757,7 +6757,7 @@
         "(index<0)||index>=IteratorUtils.size(iterator);",
         "index<0||(index>=IteratorUtils.size(iterator));",
         "(index>=0)==false||index>=IteratorUtils.size(iterator);",
-        "index<0||(index<0)==false;"
+        "index<0||(index<IteratorUtils.size(iterator))==false;"
     ],
     "map==null||keyTransformer==null||valueTransformer==null;": [
         "(map==null)||keyTransformer==null||valueTransformer==null;",
