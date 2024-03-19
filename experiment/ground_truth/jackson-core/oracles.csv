@@ -1,0 +1,59 @@
+Package,Class,Method,Oracle,Oracle type,Info from source,Info from docs
+com.fasterxml.jackson.core,JsonFactory.Feature,public boolean enabledIn(int flags),true ? methodResultID == (flags & getMask()) != 0 : true;,POST,True,False
+com.fasterxml.jackson.core,JsonFactory.Feature,public int getMask(),true ? methodResultID == (1 << ordinal()) : true;,POST,True,False
+com.fasterxml.jackson.core,JsonFactory,protected void _checkInvalidCopy(Class<?> exp),this.getClass() != exp,EXCEPT,True,False
+com.fasterxml.jackson.core,JsonFactory,protected static <T> List<T> _copy(List<T> src),src == null ? methodResultID == null : true;,POST,True,False
+com.fasterxml.jackson.core,JsonFactory,public boolean requiresPropertyOrdering(),true ? methodResulID == false : true;,POST,True,False
+com.fasterxml.jackson.core,JsonFactory,public boolean canHandleBinaryNatively(),true ? methodResulID == false : true;,POST,True,False
+com.fasterxml.jackson.core,JsonFactory,public boolean canUseCharArrays(),true ? methodResulID == true : true;,POST,True,False
+com.fasterxml.jackson.core,JsonFactory,public Class<? extends FormatFeature> getFormatReadFeatureType(),true ? methodResulID == null : true;,POST,True,False
+com.fasterxml.jackson.core,JsonFactory,public Class<? extends FormatFeature> getFormatWriteFeatureType(),true ? methodResulID == null : true;,POST,True,False
+com.fasterxml.jackson.core,JsonFactory,public boolean canUseSchema(FormatSchema schema),schema == null ? methodResulID == false : true;,POST,True,True
+com.fasterxml.jackson.core,JsonFactory,public String getFormatName(),this.getClass() == JsonFactory.class ? methodResultID == JsonFactory.FORMAT_NAME_JSON : null;,POST,True,False
+com.fasterxml.jackson.core,JsonFactory,public MatchStrength hasFormat(InputAccessor acc) throws IOException,getClass() == JsonFactory.class ? methodResultID == this.hasJSONFormat(acc) : true;,POST,True,False
+com.fasterxml.jackson.core,JsonFactory,public boolean requiresCustomCodec(),true ? methodResultID == false : true;,POST,True,False
+com.fasterxml.jackson.core,JsonFactory,public Version version(),true ? methodResultID == PackageVersion.VERSION : true;,POST,True,False
+com.fasterxml.jackson.core,JsonFactory,"public final JsonFactory configure(JsonFactory.Feature f, boolean state)",state ? methodResultID == this.enable(f) : methodResultID == this.disable(f),POST,True,True
+com.fasterxml.jackson.core,JsonFactory,public final boolean isEnabled(JsonFactory.Feature f),true ? methodResultID == (this.getFactoryFeatures() & f.getMask()) != 0) : true;,POST,True,True
+com.fasterxml.jackson.core,JsonFactory,public int getFormatParserFeatures(),true ? methodResulID == 0 : true;,POST,True,False
+com.fasterxml.jackson.core,JsonFactory,public int getFormatGeneratorFeatures(),true ? methodResulID == 0 : true;,POST,True,False
+com.fasterxml.jackson.core,JsonFactory,public JsonFactory setStreamReadConstraints(StreamReadConstraints src),src != null,PRE,True,False
+com.fasterxml.jackson.core,JsonFactory,public JsonFactory setStreamReadConstraints(StreamReadConstraints src),src == null;,EXCEPT,True,False
+com.fasterxml.jackson.core,JsonFactory,public JsonFactory setErrorReportConfiguration(ErrorReportConfiguration src),src != null,PRE,True,False
+com.fasterxml.jackson.core,JsonFactory,public JsonFactory setErrorReportConfiguration(ErrorReportConfiguration src),src == null;,EXCEPT,True,False
+com.fasterxml.jackson.core,JsonFactory,public JsonFactory setStreamWriteConstraints(StreamWriteConstraints swc),src != null,PRE,True,False
+com.fasterxml.jackson.core,JsonFactory,public JsonFactory setStreamWriteConstraints(StreamWriteConstraints swc),src == null;,EXCEPT,True,False
+com.fasterxml.jackson.core,JsonFactory,"public final JsonFactory configure(JsonParser.Feature f, boolean state)",state ? methodResultID == this.enable(f) : methodResultID == this.disable(f),POST,True,True
+com.fasterxml.jackson.core,JsonFactory,public final boolean isEnabled(JsonParser.Feature f),true ? methodResultID == (this.getParserFeatures() & f.getMask()) != 0 : true;,POST,True,True
+com.fasterxml.jackson.core,JsonFactory,public final boolean isEnabled(StreamReadFeature f),true ? methodResultID == (this.getParserFeatures() & f.mappedFeature().getMask()) != 0 : true;,POST,True,True
+com.fasterxml.jackson.core,JsonFactory,"public final JsonFactory configure(JsonGenerator.Feature f, boolean state)",state ? methodResultID == this.enable(f) : methodResultID == this.disable(f),POST,True,True
+com.fasterxml.jackson.core,JsonFactory,public final boolean isEnabled(JsonGenerator.Feature f),true ? methodResultID == (this.getGeneratorFeatures() & f.getMask()) != 0 : true;,POST,True,True
+com.fasterxml.jackson.core,JsonFactory,public final boolean isEnabled(StreamWriteFeature f),true ? methodResultID == (this.getGeneratorFeatures() & f.mappedFeature().getMask()) != 0 : true;,POST,True,True
+com.fasterxml.jackson.core,JsonFactory,public JsonFactory setBufferRecyclerPool(BufferRecyclerPool p),p != null,PRE,True,False
+com.fasterxml.jackson.core,JsonFactory,public JsonFactory setBufferRecyclerPool(BufferRecyclerPool p),p == null,PRE,True,False
+com.fasterxml.jackson.core,JsonPointer,public static JsonPointer compile(String expr) throws IllegalArgumentException,expr.charAt(0) != '/',EXCEPT,True,True
+com.fasterxml.jackson.core,JsonPointer,public boolean matches(),true ? methodResultID == (this.tail() == null) : true;,POST,True,False
+com.fasterxml.jackson.core,JsonPointer,public boolean mayMatchProperty(),true ? methodResultID == (this.getMatchingProperty() != null) : true;,POST,True,True
+com.fasterxml.jackson.core,JsonPointer,public boolean mayMatchElement(),true ? methodResultID == (this.getMatchingIndex() >= 0) : true;,POST,True,True
+com.fasterxml.jackson.core,JsonPointer,public JsonPointer last(),this == this.EMPTY ? methodResultID == null : methodResultID != null;,POST,True,True
+com.fasterxml.jackson.core,JsonPointer,public JsonPointer append(JsonPointer tail),this == this.EMPTY ? methodResultID == tail : true;,POST,True,True
+com.fasterxml.jackson.core,JsonPointer,public JsonPointer append(JsonPointer tail),tail == this.EMPTY ? methodResultID == this : true;,POST,True,True
+com.fasterxml.jackson.core,JsonPointer,public JsonPointer appendProperty(String property),property == null || property.isEmpty() ? methodResultID == this : true;,POST,True,True
+com.fasterxml.jackson.core,JsonPointer,public JsonPointer appendIndex(int index),index < 0;,EXCEPT,True,True
+com.fasterxml.jackson.core,JsonPointer,public boolean matchesProperty(String name),true ? methodResultID == ((this.tail() != null) && getMatchingProperty.equals(name)) : true;,POST,True,True
+com.fasterxml.jackson.core,JsonPointer,public JsonPointer matchProperty(String name),((this.tail() != null) && getMatchingProperty.equals(name)) ? methodResultID == this.tail() : null;,POST,True,True
+com.fasterxml.jackson.core,JsonPointer,public boolean matchesElement(int index),true ? methodResultID == ((index == this.getMatchingIndex()) && (index >= 0)) ? true;,POST,True,True
+com.fasterxml.jackson.core,JsonPointer,public JsonPointer matchElement(int index),(index != this.getMatchingIndex()) || (index < 0) ? methodResultID == null : methodResultID == this.tail();,POST,True,True
+com.fasterxml.jackson.core.json,JsonReadFeature,public boolean enabledIn(int flags),true ? methodResultID == ((flags & this.getMask()) != 0) : true;,POST,True,True
+com.fasterxml.jackson.core.sym,NameN,"public static NameN construct(String name, int hash, int[] q, int qlen)",qlen < 4,EXCEPT,True,False
+com.fasterxml.jackson.core.sym,NameN,public boolean equals(int quad),true : methodResultID == false : true;,POST,True,True
+com.fasterxml.jackson.core.sym,NameN,"public boolean equals(int quad1, int quad2)",true : methodResultID == false : true;,POST,True,True
+com.fasterxml.jackson.core.sym,NameN,"public boolean equals(int quad1, int quad2, int quad3)",true : methodResultID == false : true;,POST,True,True
+com.fasterxml.jackson.core.sym,NameN,"public boolean equals(int[] quads, int len)",len != qlen ? methodResultID == false : true;,POST,True,False
+com.fasterxml.jackson.core.filter,TokenFilter,protected boolean _includeScalar(),true ? methodResultID == true : true;,POST,True,True
+com.fasterxml.jackson.core,Version,public boolean isSnapshot(),true ? methodResultID == ((_snapshotInfo != null && _snapshotInfo.length() > 0)) : true;,POST,True,True
+com.fasterxml.jackson.core,Version,public boolean equals(Object o),o == this ? methodResultID == true : true;,POST,True,False
+com.fasterxml.jackson.core,Version,public boolean equals(Object o),o == null || o.getClass() != this.getClass() ? methodResultID == false : true;,POST,True,False
+com.fasterxml.jackson.core,Version,public int compareTo(Version other),o == this ? methodResultID == 0 : true;,POST,True,False
+com.fasterxml.jackson.core,Version,public int compareTo(Version other),true ? methodResultID >= -1 && methodResultID <= 1 : true;,POST,True,False
+com.fasterxml.jackson.core.type,WritableTypeId.Inclusion,public boolean requiresObjectContext(),true ? methodResultID == ((this == this.METADATA_PROPERTY) || (this == this.PAYLOAD_PROPERTY)) : true;,POST,True,False

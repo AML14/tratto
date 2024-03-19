@@ -1,0 +1,40 @@
+Package,Class,Method,Oracle,Oracle type,Info from source,Info from docs
+org.mockito.internal.verification,Calls,public Calls(int wantedNumberOfInvocations),wantedNumberOfInvocations > 0;,PRE,True,False
+org.mockito.internal.verification,Calls,public Calls(int wantedNumberOfInvocations),wantedNumberOfInvocations <= 0;,EXCEPT,True,False
+org.mockito.internal.verification,Calls,public void verify(VerificationData data),true;,EXCEPT,True,False
+org.mockito.internal.creation,MockSettingsImpl,public MockSettings serializable(SerializableMode mode),true ? methodResultID == this : true;,POST,True,False
+org.mockito.internal.creation,MockSettingsImpl,public MockSettings extraInterfaces(Class<?>... extraInterfaces),extraInterfaces != null && extraInterfaces.length > 0,PRE,True,False
+org.mockito.internal.creation,MockSettingsImpl,public MockSettings extraInterfaces(Class<?>... extraInterfaces),extraInterfaces == null || extraInterfaces.length == 0,EXCEPT,True,False
+org.mockito.internal.creation,MockSettingsImpl,public MockSettings name(String name),true ? methodResultID == this : true;,POST,True,False
+org.mockito.internal.creation,MockSettingsImpl,public MockSettings spiedInstance(Object spiedInstance),true ? methodResultID == this : true;,POST,True,False
+org.mockito.internal.creation,MockSettingsImpl,public MockSettings defaultAnswer(Answer defaultAnswer),defaultAnswer != null;,PRE,True,False
+org.mockito.internal.creation,MockSettingsImpl,public MockSettings defaultAnswer(Answer defaultAnswer),defaultAnswer == null;,EXCEPT,True,False
+org.mockito.internal.creation,MockSettingsImpl,public MockSettings defaultAnswer(Answer defaultAnswer),true ? methodResultID == this : true;,POST,True,False
+org.mockito.internal.creation,MockSettingsImpl,public MockSettingsImpl<T> stubOnly(),true ? methodResultID == this : true;,POST,True,False
+org.mockito.internal.creation,MockSettingsImpl,public MockSettings useConstructor(Object... constructorArgs),constructorArgs == null;,PRE,True,False
+org.mockito.internal.creation,MockSettingsImpl,public MockSettings useConstructor(Object... constructorArgs),constructorArgs != null;,EXCEPT,True,False
+org.mockito.internal.creation,MockSettingsImpl,public MockSettings useConstructor(Object... constructorArgs),true ? methodResultID == this : true;,POST,True,False
+org.mockito.internal.creation,MockSettingsImpl,public MockSettings outerInstance(Object outerClassInstance),true ? methodResultID == this : true;,POST,True,False
+org.mockito.internal.creation,MockSettingsImpl,public MockSettings withoutAnnotations(),true ? methodResultID == this : true;,POST,True,False
+org.mockito.internal.creation,MockSettingsImpl,public MockSettings verboseLogging(),true ? methodResultID == this : true;,POST,True,False
+org.mockito.internal.creation,MockSettingsImpl,public MockSettings invocationListeners(InvocationListener... listeners),true ? methodResultID == this : true;,POST,True,False
+org.mockito.internal.creation,MockSettingsImpl,public MockSettings stubbingLookupListeners(StubbingLookupListener... listeners),true ? methodResultID == this : true;,POST,True,False
+org.mockito.internal.creation,MockSettingsImpl,"static <T> void addListeners(T[] listeners, List<T> container, String method)",listeners != null && listeners.length > 0 && Arrays.stream(listeners).allMatch(jdVar -> jdVar != null);,PRE,True,False
+org.mockito.internal.creation,MockSettingsImpl,"static <T> void addListeners(T[] listeners, List<T> container, String method)",listeners == null || listeners.length == 0 || Arrays.stream(listeners).anyMatch(jdVar -> jdVar == null);,EXCEPT,True,False
+org.mockito.internal.creation,MockSettingsImpl,public MockSettings verificationStartedListeners(VerificationStartedListener... listeners),true ? methodResultID == this : true;,POST,True,False
+org.mockito.internal.creation,MockSettingsImpl,public boolean hasInvocationListeners(),true ? methodResultID == this.getInvocationListeners().isEmpty() : true;,POST,True,False
+org.mockito.internal.creation,MockSettingsImpl,public MockSettings lenient(),true ? methodResultID == this : true;,POST,True,False
+org.mockito.internal.creation,MockSettingsImpl,public MockSettings strictness(Strictness strictness),strictness != null;,PRE,True,False
+org.mockito.internal.creation,MockSettingsImpl,public MockSettings strictness(Strictness strictness),strictness == null;,EXCEPT,True,False
+org.mockito.internal.creation,MockSettingsImpl,public MockSettings strictness(Strictness strictness),true ? methodResultID == this : true;,POST,True,False
+org.mockito.internal.creation,MockSettingsImpl,public MockSettings mockMaker(String mockMaker),true ? methodResultID == this : true;,POST,True,False
+org.mockito.internal.creation,MockSettingsImpl,public MockSettings genericTypeToMock(Type genericType),true ? methodResultID == this : true;,POST,True,False
+org.mockito.internal.creation,MockSettingsImpl,"private static <T> CreationSettings<T> validatedStaticSettings(Class<T> classToMock, CreationSettings<T> source)",classToMock.isPrimitive() == false;,PRE,True,False
+org.mockito.internal.creation,MockSettingsImpl,"private static <T> CreationSettings<T> validatedStaticSettings(Class<T> classToMock, CreationSettings<T> source)",classToMock.isPrimitive();,EXCEPT,True,False
+org.mockito.internal.creation,MockSettingsImpl,"private static <T> CreationSettings<T> validatedStaticSettings(Class<T> classToMock, CreationSettings<T> source)",source.getExtraInterfaces().isEmpty() && source.getSpiedInstance() == null,PRE,True,False
+org.mockito.internal.creation,MockSettingsImpl,"private static <T> CreationSettings<T> validatedStaticSettings(Class<T> classToMock, CreationSettings<T> source)",source.getExtraInterfaces().isEmpty() == false || source.getSpiedInstance() != null;,EXCEPT,True,False
+org.mockito.internal.util,Platform,"static String warnForVM(String current, String vmName1, String warnMessage1, String vmName2, String warnMessage2)",vmName1 != null && current.contains(vmName1) ? methodResultID == warnMessage1 : true;,POST,True,False
+org.mockito.internal.util,Platform,"static String warnForVM(String current, String vmName1, String warnMessage1, String vmName2, String warnMessage2)",vmName2 != null && current.contains(vmName2) ? methodResultID == warnMessage2 : true;,POST,True,False
+org.mockito.internal.util,Platform,"static String warnForVM(String current, String vmName1, String warnMessage1, String vmName2, String warnMessage2)","((vmName1 != null && current.contains(vmName1)) == false) && ((vmName2 != null && current.contains(vmName2)) == false) ? methodResultID == """" : true;",POST,True,False
+org.mockito.verification,Timeout,public VerificationMode atMost(int maxNumberOfInvocations),true;,EXCEPT,True,False
+org.mockito.verification,Timeout,public VerificationMode never(),true;,EXCEPT,True,False

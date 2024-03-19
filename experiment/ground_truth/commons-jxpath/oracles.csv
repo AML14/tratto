@@ -1,0 +1,52 @@
+Package,Class,Method,Oracle,Oracle type,Info from source,Info from docs
+org.apache.commons.jxpath.ri.compiler,CoreOperationNotEqual,public String getSymbol(),"true ? methodResultID == ""!="" : true;",POST,True,False
+org.apache.commons.jxpath.ri.compiler,CoreOperationSubtract,protected int getPrecedence(),true ? methodResultID == CoreOperation.CoreOperationADD_PRECEDENCE : true;,POST,True,False
+org.apache.commons.jxpath.ri.compiler,CoreOperationSubtract,protected boolean isSymmetric(),true ? methodResultID == false : true;,POST,True,False
+org.apache.commons.jxpath.ri.compiler,CoreOperationSubtract,public String getSymbol(),"true ? methodResultID == ""-"" : true;",POST,True,False
+org.apache.commons.jxpath.ri.model.dynamic,DynamicPointerFactory,"public NodePointer createNodePointer(final QName name, final Object bean, final Locale locale)",JXPathIntrospector.getBeanInfo(bean.getClass()).isDynamic() == false ? methodResultID == null ? true;,POST,True,False
+org.apache.commons.jxpath.ri.model.dynamic,DynamicPointerFactory,"public NodePointer createNodePointer(final NodePointer parent, final QName name, final Object bean)",bean != null;,PRE,True,False
+org.apache.commons.jxpath.ri.model.dynamic,DynamicPointerFactory,"public NodePointer createNodePointer(final NodePointer parent, final QName name, final Object bean)",bean == null;,EXCEPT,True,False
+org.apache.commons.jxpath.ri.model.dynamic,DynamicPointerFactory,"public NodePointer createNodePointer(final NodePointer parent, final QName name, final Object bean)",JXPathIntrospector.getBeanInfo(bean.getClass()).isDynamic() == false ? methodResultID == null ? true;,POST,True,False
+org.apache.commons.jxpath.ri.model.jdom,JDOMNodePointer,public NodePointer getNodePointer(),position == 0 && this.setPosition(1) == false ? methodResultID == null : true;,POST,True,False
+org.apache.commons.jxpath.ri.model.jdom,JDOMNodePointer,public String getNamespaceURI(final String prefix),(node instanceof Document == false) && (node instanceof Element == false) ? methodResultID == null : true;,POST,True,False
+org.apache.commons.jxpath.ri.model.jdom,JDOMNodePointer,"public int compareChildNodePointers(final NodePointer pointer1, final NodePointer pointer2)",pointer1.getBaseValue() == pointer2.getBaseValue() ? methodResultID == 0 : true;,POST,True,False
+org.apache.commons.jxpath.ri.model.jdom,JDOMNodePointer,"public int compareChildNodePointers(final NodePointer pointer1, final NodePointer pointer2)",pointer1.getBaseValue() instanceof Attribute && (pointer2 instanceof Attribute == false) ? methodResultID == -1 : true;,POST,True,False
+org.apache.commons.jxpath.ri.model.jdom,JDOMNodePointer,"public int compareChildNodePointers(final NodePointer pointer1, final NodePointer pointer2)",(pointer1.getBaseValue() instanceof Attribute == false) && pointer2 instanceof Attribute ? methodResultID == 1 : true;,POST,True,False
+org.apache.commons.jxpath.ri.model.jdom,JDOMNodePointer,"public int compareChildNodePointers(final NodePointer pointer1, final NodePointer pointer2)",this.getBaseValue() instanceof Element == false;,EXCEPT,True,False
+org.apache.commons.jxpath.ri.model.jdom,JDOMNodePointer,"public int compareChildNodePointers(final NodePointer pointer1, final NodePointer pointer2)",true ? methodResultID >= -1 && methodResultID <= 1 : true;,POST,True,False
+org.apache.commons.jxpath.ri.model.jdom,JDOMNodePointer,public static String getPrefix(final Object node),(node instanceof Element == false) && (node instanceof Attribute == false) ? methodResultID == null : true;,POST,True,False
+org.apache.commons.jxpath.ri.model.jdom,JDOMNodePointer,"protected static String findEnclosingAttribute(Object n, final String attrName, final Namespace ns)",n == null ? methodResultID == null : true;,POST,True,False
+org.apache.commons.jxpath.ri.model.jdom,JDOMNodePointer,"public NodePointer createAttribute(final JXPathContext context, final QName name)",getNamespaceResolver().getNamespaceURI(name.getPrefix()) == null;,EXCEPT,True,False
+org.apache.commons.jxpath.ri.model.jdom,JDOMNodePointer,"public NodePointer createChild(final JXPathContext context, final QName name, int index)","getAbstractFactory(context).createObject(context, this, this.getBaseValue(), name.toString(), index) == false;",EXCEPT,True,False
+org.apache.commons.jxpath.ri.model.jdom,JDOMNodePointer,public void remove(),this.nodeParent(this.getBaseValue()) == null;,EXCEPT,True,False
+org.apache.commons.jxpath.ri.model.jdom,JDOMNodePointer,public boolean equals(final Object object),object instanceof JDOMNodePointer == false ? methodResultID == false : true;,POST,True,False
+org.apache.commons.jxpath.ri.model.dom,NamespacePointer,public Object getBaseValue(),true? methodResultID == null : true;,POST,True,False
+org.apache.commons.jxpath.ri.model.dom,NamespacePointer,public boolean isCollection,true? methodResultID == false : true;,POST,True,False
+org.apache.commons.jxpath.ri.model.dom,NamespacePointer,public int getLength(),true? methodResultID == 1 : true;,POST,True,False
+org.apache.commons.jxpath.ri.model.dom,NamespacePointer,public boolean isLeaf(),true? methodResultID == true : true;,POST,True,False
+org.apache.commons.jxpath.ri.model.dom,NamespacePointer,public void setValue(final Object value),true;,EXCEPT,True,False
+org.apache.commons.jxpath.ri.model.dom,NamespacePointer,public boolean testNode(final NodeTest nodeTest),nodeTest == null ? methodResultID == true : true;,POST,True,False
+org.apache.commons.jxpath.ri.model.dom,NamespacePointer,public boolean equals(final Object object),object instanceof NamespacePointer == false ? methodResultID == false : true;,POST,True,False
+org.apache.commons.jxpath.ri.model.dom,NamespacePointer,"public int compareChildNodePointers(final NodePointer pointer1, final NodePointer pointer2)",true ? methodResultID == 0 : true;,POST,True,False
+org.apache.commons.jxpath.ri.model.beans,NullPropertyPointer,public void setValue(final Object value),parent == null || parent.isContainer();,EXCEPT,True,False
+org.apache.commons.jxpath.ri.model.beans,NullPropertyPointer,public void setValue(final Object value),(parent == null || parent.isContainer()) == false && (parent instanceof PropertyOwnerPointer && ((PropertyOwnerPointer) parent).isDynamicPropertyDeclarationSupported()) == false;,EXCEPT,True,False
+org.apache.commons.jxpath.ri.model.beans,NullPropertyPointer,public int getLength(),true ? methodResultID == 0 : true;,POST,True,False
+org.apache.commons.jxpath.ri.model.beans,NullPropertyPointer,public Object getBaseValue(),true? methodResultID == null : true;,POST,True,False
+org.apache.commons.jxpath.ri.model.beans,NullPropertyPointer,public Object getImmediateNode(),true? methodResultID == null : true;,POST,True,False
+org.apache.commons.jxpath.ri.model.beans,NullPropertyPointer,public boolean isLeaf(),true? methodResultID == true : true;,POST,True,False
+org.apache.commons.jxpath.ri.model.beans,NullPropertyPointer,public NodePointer getValuePointer(),true;,EXCEPT,True,False
+org.apache.commons.jxpath.ri.model.beans,NullPropertyPointer,protected boolean isActualProperty(),true? methodResultID == false : true;,POST,True,False
+org.apache.commons.jxpath.ri.model.beans,NullPropertyPointer,public boolean isActual(),true? methodResultID == false : true;,POST,True,False
+org.apache.commons.jxpath.ri.model.beans,NullPropertyPointer,public boolean isContainer(),true? methodResultID == true : true;,POST,True,False
+org.apache.commons.jxpath.ri.model.beans,NullPropertyPointer,"public NodePointer createPath(final JXPathContext context, final Object value)",parent instanceof NullPointer && parent.equals(newParent);,EXCEPT,True,False
+org.apache.commons.jxpath.ri.model.beans,NullPropertyPointer,public boolean isCollection(),this.getIndex() == this.WHOLE_COLLECTION;,POST,True,False
+org.apache.commons.jxpath.ri.model.beans,NullPropertyPointer,public int getPropertyCount(),true ? methodResultID == 0 : true;,POST,True,False
+org.apache.commons.jxpath.ri.compiler,Operation,public Expression[] getArguments(),true ? methodResultID == this.args : true;,POST,True,False
+org.apache.commons.jxpath.ri.compiler,Operation,public boolean computeContextDependent(),args != null && Arrays.stream(args).anyMatch(jdVar -> jdVar.isContextDependent()) ? methodResultID == true : methodResultID == false;,POST,True,False
+org.apache.commons.jxpath.ri.axes,RootContext,public int getCurrentPosition(),true;,EXCEPT,True,False
+org.apache.commons.jxpath.ri.axes,RootContext,public boolean nextNode(),true;,EXCEPT,True,False
+org.apache.commons.jxpath.ri.axes,RootContext,public boolean nextSet(),true;,EXCEPT,True,False
+org.apache.commons.jxpath.ri.axes,RootContext,public boolean setPosition(final int position),true;,EXCEPT,True,False
+org.apache.commons.jxpath.ri.axes,RootContext,public Object getRegisteredValue(final int id),registers == null || id >= MAX_REGISTER || id == -1 ? methodResultID == this.UNKNOWN_VALUE : true;,POST,True,False
+org.apache.commons.jxpath.ri.compiler,VariableReference,public boolean isContextDependent(),true? methodResultID == false : true;,POST,True,False
+org.apache.commons.jxpath.ri.compiler,VariableReference,public boolean computeContextDependent(),true? methodResultID == false : true;,POST,True,False

@@ -1,0 +1,99 @@
+Package,Class,Method,Oracle,Oracle type,Info from source,Info from docs
+com.fasterxml.jackson.databind.node,BinaryNode,public static BinaryNode valueOf(byte[] data),data == null ? methodResultID == null : true;,POST,True,False
+com.fasterxml.jackson.databind.node,BinaryNode,public static BinaryNode valueOf(byte[] data),data.length == 0 ? methodResultID.equals(BinaryNode.EMPTY_BINARY_NODE) : true;,POST,True,False
+com.fasterxml.jackson.databind.node,BinaryNode,public static BinaryNode valueOf(byte[] data),data.length != 0 ? methodResultID.binaryValue().equals(data) : true;,POST,True,False
+com.fasterxml.jackson.databind.node,BinaryNode,"public static BinaryNode valueOf(byte[] data, int offset, int length)",data == null ? methodResultID == null : true;,POST,True,False
+com.fasterxml.jackson.databind.node,BinaryNode,"public static BinaryNode valueOf(byte[] data, int offset, int length)",data.length == 0 ? methodResultID.equals(BinaryNode.EMPTY_BINARY_NODE) : true;,POST,True,False
+com.fasterxml.jackson.databind.node,BinaryNode,public static BinaryNode valueOf(byte[] data),data.length != 0 && offset == 0 && length == data.length ? methodResultID.binaryValue().equals(data) : true;,POST,True,
+com.fasterxml.jackson.databind.node,BinaryNode,public JsonNodeType getNodeType(),true ? methodResultID == JsonNodeType.BINARY : true;,POST,True,False
+com.fasterxml.jackson.databind.node,BinaryNode,public JsonToken asToken(),true ? methodResultID == JsonToken.VALUE_EMBEDDED_OBJECT : true;,POST,True,False
+com.fasterxml.jackson.databind.node,BinaryNode,public boolean equals(Object o),o == this ? methodResultID == true : true;,POST,True,False
+com.fasterxml.jackson.databind.node,BinaryNode,public boolean equals(Object o),o == null || ((o instanceof BinaryNode) == false) ? methodResultID == false : true;,POST,True,False
+com.fasterxml.jackson.databind.node,BinaryNode,public int hashCode(),(this.binaryValue() == null) ? -1 : this.binaryValue().length;,POST,True,False
+com.fasterxml.jackson.databind.util,EnumValues,"public static EnumValues constructFromName(MapperConfig<?> config, Class<Enum<?>> enumClass)",ClassUtil.findEnumType(enumClass).getEnumConstants() == null;,EXCEPT,True,False
+com.fasterxml.jackson.databind.util,EnumValues,"public static EnumValues constructFromToString(MapperConfig<?> config, Class<Enum<?>> enumClass)",ClassUtil.findEnumType(enumClass).getEnumConstants() == null;,EXCEPT,True,False
+com.fasterxml.jackson.databind.util,EnumValues,"public static EnumValues constructUsingEnumNamingStrategy(MapperConfig<?> config, Class<Enum<?>> enumClass, EnumNamingStrategy namingStrategy)",ClassUtil.findEnumType(enumClass).getEnumConstants() == null;,EXCEPT,True,False
+com.fasterxml.jackson.databind.util,EnumValues,protected static Enum<?>[] _enumConstants(Class<?> enumCls),ClassUtil.findEnumType(enumCls).getEnumConstants() == null;,EXCEPT,True,False
+com.fasterxml.jackson.databind.util,EnumValues,protected static Enum<?>[] _enumConstants(Class<?> enumCls),true ? methodResultID == ClassUtil.findEnumType(enumCls).getEnumConstants() : true;,POST,True,False
+com.fasterxml.jackson.databind.ser.std,IterableSerializer,public boolean hasSingleElement(Iterable<?> value),value == null ? methodResultID == false : true;,POST,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap,static void checkNotNull(Object o),o == null;,EXCEPT,True,True
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap,static void checkArgument(boolean expression),expression == true;,EXCEPT,True,True
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap,static void checkState(boolean expression),expression == true;,EXCEPT,True,True
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap,public long capacity(),true ? methodResultID >= 0 : true;,POST,True,True
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap,public void setCapacity(long capacity),capacity >= 0;,PRE,True,True
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap,public void setCapacity(long capacity),capacity < 0;,EXCEPT,True,True
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap,boolean hasOverflowed(),true ? methodResultID == (this.weightedSize.get() > this.capacity.get()) : true;,POST,True,True
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap,"boolean tryToRetire(Node<K, V> node, WeightedValue<V> expect)",expect.isAlive() == false ? methodResulID == false : true;,POST,True,True
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap,public boolean isEmpty(),true ? methodResultID == this.data.isEmpty() : true;,POST,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap,public int size(),true ? methodResultID == this.data.size() : true;,POST,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap,public boolean containsKey(Object key),true ? methodResultID == this.data.containsKey(key) : true;,POST,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap,public boolean containsValue(Object value),value == null;,EXCEPT,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap,public boolean containsValue(Object value),true ? methodResultID == this.data.values.stream().anyMatch(jdVar -> jdVar.getValue().equals(value)) : true;,POST,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap,public V get(Object key),this.data.get(key) == null ? methodResultID == null : true;,POST,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap,"public V put(K key, V value)",key != null;,PRE,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap,"public V put(K key, V value)",key == null;,EXCEPT,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap,"public V put(K key, V value)",value != null;,PRE,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap,"public V put(K key, V value)",value == null;,EXCEPT,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap,"public V putIfAbsent(K key, V value)",key != null;,PRE,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap,"public V putIfAbsent(K key, V value)",key == null;,EXCEPT,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap,"public V putIfAbsent(K key, V value)",value != null;,PRE,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap,"public V putIfAbsent(K key, V value)",value == null;,EXCEPT,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap,"V put(K key, V value, boolean onlyIfAbsent)",key != null;,PRE,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap,"V put(K key, V value, boolean onlyIfAbsent)",key == null;,EXCEPT,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap,"V put(K key, V value, boolean onlyIfAbsent)",value != null;,PRE,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap,"V put(K key, V value, boolean onlyIfAbsent)",value == null;,EXCEPT,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap,public V remove(Object key),key == null ? methodResultID == null : this.containsKey(key) == false;,POST,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap,"public boolean remove(Object key, Object value)",(this.data.get(key) == null) || (value == null) ? methodResultID == false : true;,POST,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap,"public V replace(K key, V value)",key != null;,PRE,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap,"public V replace(K key, V value)",key == null;,EXCEPT,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap,"public V replace(K key, V value)",value != null;,PRE,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap,"public V replace(K key, V value)",value == null;,EXCEPT,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap,"public V replace(K key, V value)",this.data.get(key) == null ? methodResultID == null : true;,POST,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap,"public boolean replace(K key, V oldValue, V newValue)",key != null;,PRE,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap,"public boolean replace(K key, V oldValue, V newValue)",key == null;,EXCEPT,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap,"public boolean replace(K key, V oldValue, V newValue)",oldValue != null;,PRE,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap,"public boolean replace(K key, V oldValue, V newValue)",oldValue == null;,EXCEPT,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap,"public boolean replace(K key, V oldValue, V newValue)",newValue != null;,PRE,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap,"public boolean replace(K key, V oldValue, V newValue)",newValue == null;,EXCEPT,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap,public Set<K> keySet(),this.keySet == null ? methodResultID.size() == 0 : methodResultID == this.keySet;,POST,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap,public Collection<V> values(),this.values == null ? methodResultID.size() == 0 : methodResultID == this.values;,POST,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap,"public Set<Entry<K, V>> entrySet()",this.entrySet == null ? methodResultID.size() == 0 : methodResultID == this.entrySet;,POST,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap.WeightedValue,boolean contains(Object o),true ? methodResultID == ((o == this.value) || this.value.equals(o)) : true;,POST,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap.WeightedValue,boolean isAlive(),true ? methodResultID == (this.weight > 0) : true;,POST,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap.KeySet,public int size(),true ? methodResultID == this.map.size() : true;,POST,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap.KeySet,public boolean contains(Object obj),true ? methodResultID == this.containsKey(obj) : true;,POST,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap.KeyIterator,public boolean remove(Object obj),true ? methodResultID == (map.remove(obj) != null) : true;,POST,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap.KeyIterator,public void remove(),current != null,PRE,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap.KeyIterator,public void remove(),current == null,EXCEPT,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap.ValueIterator,public void remove(),current != null,PRE,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap.ValueIterator,public void remove(),current == null,EXCEPT,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap.EntrySet,public int size(),true ? methodResultID == this.map.size() : true;,POST,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap.EntrySet,public boolean contains(Object obj),(obj instanceof Entry) == false ? methodResultID == false : true;,POST,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap.EntrySet,"public boolean add(Entry<K, V> entry)",true;,EXCEPT,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap.EntrySet,public boolean remove(Object obj),(obj instanceof Entry) == false ? methodResultID == false : true;,POST,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap.EntryIterator,public void remove(),current != null,PRE,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap.EntryIterator,public void remove(),current == null,EXCEPT,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap.Builder,"public Builder<K, V> initialCapacity(int initialCapacity)",initialCapacity >= 0;,PRE,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap.Builder,"public Builder<K, V> initialCapacity(int initialCapacity)",initialCapacity < 0;,EXCEPT,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap.Builder,"public Builder<K, V> maximumCapacity(long capacity)",capacity >= 0;,PRE,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap.Builder,"public Builder<K, V> maximumCapacity(long capacity)",capacity < 0;,EXCEPT,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap.Builder,"public Builder<K, V> concurrencyLevel(int concurrencyLevel)",concurrencyLevel >= 0;,PRE,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap.Builder,"public Builder<K, V> concurrencyLevel(int concurrencyLevel)",concurrencyLevel < 0;,EXCEPT,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap.Builder,"public PrivateMaxEntriesMap<K, V> build()",capacity >= 0;,PRE,True,False
+com.fasterxml.jackson.databind.util.internal,PrivateMaxEntriesMap.Builder,"public PrivateMaxEntriesMap<K, V> build()",capacity < 0;,EXCEPT,True,False
+com.fasterxml.jackson.databind.ser,PropertyBuilder,public Annotations getClassAnnotations(),true ? methodResultID == this._beanDesc.getClassAnnotations() : true;,POST,True,False
+com.fasterxml.jackson.databind.ser,PropertyBuilder,"protected JavaType findSerializationType(Annotated a, boolean useStaticTyping, JavaType declaredType)",declaredType.getRawClass().isAssignableFrom(serClass);,EXCEPT,True,False
+com.fasterxml.jackson.databind.ser,PropertyBuilder,protected Object getDefaultValue(JavaType type),true ? methodResultID == BeanUtil.getDefaultValue(type) : true;,POST,True,False
+com.fasterxml.jackson.databind.ser,PropertyBuilder,"protected Object _throwWrapped(Exception e, String propName, Object defaultBean)",true;,EXCEPT,True,False
+com.fasterxml.jackson.databind.jsontype.impl,TypeNameIdResolver,"public static TypeNameIdResolver construct(MapperConfig<?> config, JavaType baseType, Collection<NamedType> subtypes, boolean forSer, boolean forDeser)",forSer == forDeser;,EXCEPT,True,False
+com.fasterxml.jackson.databind.jsontype.impl,TypeNameIdResolver,public JsonTypeInfo.Id getMechanism(),true ? methodResultID == JsonTypeInfo.Id.NAME : true;,POST,True,False
+com.fasterxml.jackson.databind.jsontype.impl,TypeNameIdResolver,public String idFromValue(Object value),value.getClass() == null ? methodResultID == null : true;,POST,True,False
+com.fasterxml.jackson.databind.jsontype.impl,TypeNameIdResolver,public String idFromValue(Object value),value.getClass() != null && this._typeToId.get(value.getClass().getName()) != null ? methodResultID == this._typeToId.get(value.getClass().getName()) : true;,POST,True,False
+com.fasterxml.jackson.databind.jsontype.impl,TypeNameIdResolver,protected String idFromClass(Class<?> clazz),clazz == null ? methodResultID == null : true;,POST,True,False
+com.fasterxml.jackson.databind.jsontype.impl,TypeNameIdResolver,protected String idFromClass(Class<?> clazz),clazz != null && this._typeToId.get(clazz.getName()) != null ? methodResultID == this._typeToId.get(clazz.getName()) : true;,POST,True,False
+com.fasterxml.jackson.databind.jsontype.impl,TypeNameIdResolver,"public String idFromValueAndType(Object value, Class<?> type)",value == null && type == null ? methodResultID == null : true;,POST,True,False
+com.fasterxml.jackson.databind.jsontype.impl,TypeNameIdResolver,"public String idFromValueAndType(Object value, Class<?> type)",value == null && type != null && this._typeToId.get(type.getName()) != null ? methodResultID == this._typeToId.get(type.getName()) : true;,POST,True,False
+com.fasterxml.jackson.databind.jsontype.impl,TypeNameIdResolver,"public String idFromValueAndType(Object value, Class<?> type)",value != null && this._typeToId.get(value.getClass().getName()) != null ? methodResultID == this._typeToId.get(value.getClass() .getName()) : true;,POST,True,False
+com.fasterxml.jackson.databind.jsontype.impl,TypeNameIdResolver,protected JavaType _typeFromId(String id),this._caseInsensitive ? methodResultID == id.toLowerCase() : methodResultID == this._idToType.get(id);,POST,True,False
+com.fasterxml.jackson.databind.jsontype.impl,TypeNameIdResolver,protected static String _defaultTypeId(Class<?> cls),cls.getName().lastIndexOf('.') < 0 ? methodResultID == cls.getName() : methodResultID == cls.getName().substring(cls.getName().lastIndexOf('.') + 1);,POST,True,False
+com.fasterxml.jackson.databind.deser.std,UUIDDeserializer,"int _badChar(String uuidStr, int index, DeserializationContext ctxt, char c) throws JsonMappingException",true;,EXCEPT,True,False

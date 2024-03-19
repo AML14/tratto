@@ -1,0 +1,28 @@
+Package,Class,Method,Oracle,Oracle type,Info from source,Info from docs
+org.apache.commons.compress.archivers.zip,ExtraFieldParsingBehavior,"ZipExtraField createExtraField(final ZipShort headerId) throws ZipException, InstantiationException, IllegalAccessException",true ? methodResultID != null : true;,POST,FALSE,True
+org.apache.commons.compress.archivers.zip,ExtraFieldParsingBehavior,"ZipExtraField fill(ZipExtraField field, byte[] data, int off, int len, boolean local) throws ZipException",true ? methodResultID != null : true;,POST,FALSE,True
+org.apache.commons.compress.utils,IOUtils,"public static long copy(final InputStream input, final OutputStream output, final int buffersize) throws IOException",buffersize > 0;,PRE,True,True
+org.apache.commons.compress.utils,IOUtils,"public static long copy(final InputStream input, final OutputStream output, final int buffersize) throws IOException",buffersize < 1;,EXECPT,True,True
+org.apache.commons.compress.utils,IOUtils,"public static long copy(final InputStream input, final OutputStream output, final int buffersize) throws IOException",true ? methodResultID >= 0 : true;,POST,True,True
+org.apache.commons.compress.utils,IOUtils,"public static long copyRange(final InputStream input, final long len, final OutputStream output, final int buffersize) throws IOException",buffersize > 0;,PRE,True,True
+org.apache.commons.compress.utils,IOUtils,"public static long copyRange(final InputStream input, final long len, final OutputStream output, final int buffersize) throws IOException",buffersize < 1;,EXECPT,True,True
+org.apache.commons.compress.utils,IOUtils,"public static long copyRange(final InputStream input, final long len, final OutputStream output, final int buffersize) throws IOException",true ? methodResultID >= 0 : true;,POST,True,True
+org.apache.commons.compress.utils,IOUtils,"public static int readFully(final InputStream input, final byte[] array, final int offset, final int len)",len < 0 && len + offset >= 0;,PRE,True,FALSE
+org.apache.commons.compress.utils,IOUtils,"public static int readFully(final InputStream input, final byte[] array, final int offset, final int len)",offset < 0 && len + offset >= 0;,PRE,True,FALSE
+org.apache.commons.compress.utils,IOUtils,"public static int readFully(final InputStream input, final byte[] array, final int offset, final int len)",array.length >= len = offset;,PRE,True,FALSE
+org.apache.commons.compress.utils,IOUtils,"public static int readFully(final InputStream input, final byte[] array, final int offset, final int len)",len < 0 || offset < 0 || len + offset > array.length || len + offset < 0;,EXECPT,True,FALSE
+org.apache.commons.compress.utils,IOUtils,"public static int readFully(final InputStream input, final byte[] array, final int offset, final int len)",true ? methodResultID >= 0 : true;,POST,True,FALSE
+org.apache.commons.compress.utils,IOUtils,"public static byte[] readRange(final InputStream input, final int len) throws IOException",input == null;,EXECPT,FALSE,True
+org.apache.commons.compress.utils,IOUtils,"public static byte[] readRange(final InputStream input, final int len) throws IOException",input != null;,PRE,FALSE,True
+org.apache.commons.compress.utils,IOUtils,"public static byte[] readRange(final ReadableByteChannel input, final int len) throws IOException",input == null;,EXECPT,FALSE,True
+org.apache.commons.compress.utils,IOUtils,"public static byte[] readRange(final ReadableByteChannel input, final int len) throws IOException",input != null;,PRE,FALSE,True
+org.apache.commons.compress.utils,IOUtils,public static byte[] toByteArray(final InputStream input) throws IOException,input == null;,EXECPT,FALSE,True
+org.apache.commons.compress.utils,IOUtils,public static byte[] toByteArray(final InputStream input) throws IOException,input != null;,PRE,FALSE,True
+org.apache.commons.compress.archivers.tar,TarArchiveOutputStream,"public TarArchiveOutputStream(final OutputStream os, final int blockSize)",blockSize % 512 == 0;,PRE,FALSE,True
+org.apache.commons.compress.archivers.tar,TarArchiveOutputStream,"public TarArchiveOutputStream(final OutputStream os, final int blockSize, final int recordSize)",recordedSize == 512;,PRE,FALSE,True
+org.apache.commons.compress.archivers.tar,TarArchiveOutputStream,"public TarArchiveOutputStream(final OutputStream os, final int blockSize, final int recordSize)",recordedSize != 512;,EXCEPT,FALSE,True
+org.apache.commons.compress.archivers.tar,TarArchiveOutputStream,"public TarArchiveOutputStream(final OutputStream os, final int blockSize, final int recordSize, final String encoding)",recordedSize == 512;,PRE,FALSE,True
+org.apache.commons.compress.archivers.tar,TarArchiveOutputStream,"public TarArchiveOutputStream(final OutputStream os, final int blockSize, final int recordSize, final String encoding)",recordedSize != 512;,EXCEPT,FALSE,True
+org.apache.commons.compress.archivers.tar,TarArchiveOutputStream,"public TarArchiveOutputStream(final OutputStream os, final int blockSize, final String encoding)",blockSize % 512 == 0;,PRE,FALSE,True
+org.apache.commons.compress.archivers.tar,TarArchiveOutputStream,"public TarArchiveOutputStream(final OutputStream os, final int blockSize, final String encoding)",realBlockSize <= 0 || realBlockSize % 512 != 0;,EXCEPT,True,FALSE
+org.apache.commons.compress.archivers.tar,TarArchiveOutputStream,"public TarArchiveOutputStream(final OutputStream os, final int blockSize, final String encoding)",realBlockSize > 0 && realBlockSize % 512 == 0;,PRE,True,FALSE

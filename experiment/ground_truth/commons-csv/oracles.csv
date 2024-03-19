@@ -1,0 +1,47 @@
+Package,Class,Method,Oracle,Oracle type,Info from source,Info from docs
+org.apache.commons.csv,ExtendedBufferedReader,int getLastChar(),true ? (methodResultID >= 0 && methodResultID <= 65535) || methodResultID == Constants.UNDEFINED || methodResultID == Constants.END_OF_STREAM : true;,POST,FALSE,True
+org.apache.commons.csv,ExtendedBufferedReader,"public int read(final char[] buf, final int offset, final int length) throws IOException",length == 0 ? methodResultID == 0 : true;,POST,True,FALSE
+org.apache.commons.csv,ExtendedBufferedReader,public String readLine() throws IOException,lookAhead() == Constants.END_OF_STREAM ? methodResultID == null : true;,POST,True,True
+org.apache.commons.csv,IOUtils,"static long copy(final Reader input, final Appendable output) throws IOException",input == null || output == null;,EXCEPT,FALSE,True
+org.apache.commons.csv,IOUtils,"static long copy(final Reader input, final Appendable output, final CharBuffer buffer) throws IOException",input == null || output == null;,EXCEPT,FALSE,True
+org.apache.commons.csv,IOUtils,"static long copyLarge(final Reader input, final Writer output) throws IOException",input == null || output == null;,EXCEPT,FALSE,True
+org.apache.commons.csv,IOUtils,"static long copyLarge(final Reader input, final Writer output, final char[] buffer) throws IOException",input == null || output == null;,EXCEPT,FALSE,True
+org.apache.commons.csv,IOUtils,static <T extends Throwable> RuntimeException rethrow(final Throwable throwable) throws T,true;,EXCEPT,True,True
+org.apache.commons.csv,CSVRecord,public String get(final Enum<?> e),true ? methodResultID == this.get(e == null ? null : e.name()) : true;,POST,True,FALSE
+org.apache.commons.csv,CSVRecord,"private Map<String, Integer> getHeaderMapRaw()",this.getParser() == null ? methodResultID == null : methodResultID == this.getParser().getHeaderMapRaw();,POST,True,FALSE
+org.apache.commons.csv,CSVRecord,public Iterator<String> iterator(),true ? methodResultID == this.toList().iterator() : true;,POST,True,True
+org.apache.commons.csv,CSVRecord,public int size(),true ? methodResultID == this.values().length : true;,POST,True,True
+org.apache.commons.csv,CSVRecord,public Stream<String> stream(),true ? methodResultID == Stream.of(this.values()) : true;,POST,True,True
+org.apache.commons.csv,CSVRecord,public List<String> toList(),true ? methodResultID == this.stream().collect(Collectors.toList()) : true;,POST,True,True
+org.apache.commons.csv,CSVPrinter,"public CSVPrinter(final Appendable appendable, final CSVFormat format) throws IOException",appendable != null;,PRE,FALSE,True
+org.apache.commons.csv,CSVPrinter,"public CSVPrinter(final Appendable appendable, final CSVFormat format) throws IOException",format != null;,PRE,FALSE,True
+org.apache.commons.csv,CSVPrinter,"public CSVPrinter(final Appendable appendable, final CSVFormat format) throws IOException",format == null;,EXCEPT,FALSE,True
+org.apache.commons.csv,CSVPrinter,"public synchronized void printHeaders(final ResultSet resultSet) throws IOException, SQLException",resultSet.isClosed();,EXCEPT,FALSE,True
+org.apache.commons.csv,Lexer,boolean isEndOfFile(final int ch),ch == Constants.END_OF_STREAM ? methodResultID == true : methodResultID == false;,POST,True,True
+org.apache.commons.csv,Lexer,boolean isStartOfLine(final int ch),ch == Constants.LF || ch == Constants.CR || ch == Constants.UNDEFINED ? methodResultID == true : methodResultID == false;,POST,True,True
+org.apache.commons.csv,CSVParser.CSVRecordIterator,public void remove(),true;,EXCEPT,True,FALSE
+org.apache.commons.csv,CSVParser,"public static CSVParser parse(final File file, final Charset charset, final CSVFormat format) throws IOException",file != null;,PRE,FALSE,True
+org.apache.commons.csv,CSVParser,"public static CSVParser parse(final File file, final Charset charset, final CSVFormat format) throws IOException",format != null;,PRE,FALSE,True
+org.apache.commons.csv,CSVParser,"public static CSVParser parse(final File file, final Charset charset, final CSVFormat format) throws IOException",file == null || format == null;,EXCEPT,FALSE,True
+org.apache.commons.csv,CSVParser,"public static CSVParser parse(final InputStream inputStream, final Charset charset, final CSVFormat format) throws IOException",inputStream != null;,PRE,FALSE,True
+org.apache.commons.csv,CSVParser,"public static CSVParser parse(final InputStream inputStream, final Charset charset, final CSVFormat format) throws IOException",format != null;,PRE,FALSE,True
+org.apache.commons.csv,CSVParser,"public static CSVParser parse(final InputStream inputStream, final Charset charset, final CSVFormat format) throws IOException",inputStream == null || format == null;,EXCEPT,FALSE,True
+org.apache.commons.csv,CSVParser,"public static CSVParser parse(final Path path, final Charset charset, final CSVFormat format) throws IOException",path != null;,PRE,FALSE,True
+org.apache.commons.csv,CSVParser,"public static CSVParser parse(final Path path, final Charset charset, final CSVFormat format) throws IOException",format != null;,PRE,FALSE,True
+org.apache.commons.csv,CSVParser,"public static CSVParser parse(final Path path, final Charset charset, final CSVFormat format) throws IOException",path == null || format == null;,EXCEPT,FALSE,True
+org.apache.commons.csv,CSVParser,"public static CSVParser parse(final Reader reader, final CSVFormat format) throws IOException",reader != null;,PRE,FALSE,True
+org.apache.commons.csv,CSVParser,"public static CSVParser parse(final Reader reader, final CSVFormat format) throws IOException",format != null;,PRE,FALSE,True
+org.apache.commons.csv,CSVParser,"public static CSVParser parse(final Reader reader, final CSVFormat format) throws IOException",reader == null || format == null;,EXCEPT,FALSE,True
+org.apache.commons.csv,CSVParser,"public static CSVParser parse(final String string, final CSVFormat format) throws IOException",string != null;,PRE,FALSE,True
+org.apache.commons.csv,CSVParser,"public static CSVParser parse(final String string, final CSVFormat format) throws IOException",format != null;,PRE,FALSE,True
+org.apache.commons.csv,CSVParser,"public static CSVParser parse(final String string, final CSVFormat format) throws IOException",string == null || format == null;,EXCEPT,FALSE,True
+org.apache.commons.csv,CSVParser,"public static CSVParser parse(final URL url, final Charset charset, final CSVFormat format) throws IOException",url != null;,PRE,FALSE,True
+org.apache.commons.csv,CSVParser,"public static CSVParser parse(final URL url, final Charset charset, final CSVFormat format) throws IOException",charset != null;,PRE,FALSE,True
+org.apache.commons.csv,CSVParser,"public static CSVParser parse(final URL url, final Charset charset, final CSVFormat format) throws IOException",format != null;,PRE,FALSE,True
+org.apache.commons.csv,CSVParser,"public static CSVParser parse(final URL url, final Charset charset, final CSVFormat format) throws IOException",url == null || charset == null || format == null;,EXCEPT,FALSE,True
+org.apache.commons.csv,CSVParser,"public CSVParser(final Reader reader, final CSVFormat format) throws IOException",reader != null;,PRE,FALSE,True
+org.apache.commons.csv,CSVParser,"public CSVParser(final Reader reader, final CSVFormat format) throws IOException",format != null;,PRE,FALSE,True
+org.apache.commons.csv,CSVParser,"public CSVParser(final Reader reader, final CSVFormat format) throws IOException",reader == null || format == null;,EXCEPT,FALSE,True
+org.apache.commons.csv,CSVParser,"public CSVParser(final Reader reader, final CSVFormat format, final long characterOffset, final long recordNumber) throws IOException",reader != null;,PRE,FALSE,True
+org.apache.commons.csv,CSVParser,"public CSVParser(final Reader reader, final CSVFormat format, final long characterOffset, final long recordNumber) throws IOException",format != null;,PRE,FALSE,True
+org.apache.commons.csv,CSVParser,"public CSVParser(final Reader reader, final CSVFormat format, final long characterOffset, final long recordNumber) throws IOException",reader == null || format == null;,EXCEPT,FALSE,True

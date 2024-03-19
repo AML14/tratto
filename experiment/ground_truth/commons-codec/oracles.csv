@@ -1,0 +1,27 @@
+Package,Class,Method,Oracle,Oracle type,Info from source,Info from docs
+org.apache.commons.codec.binary,Base64,public static byte[] encodeInteger(final BigInteger bigInteger),bigInteger != null;,PRE,True,True
+org.apache.commons.codec.binary,Base64,public static byte[] encodeInteger(final BigInteger bigInteger),bigInteger == null;,EXCEPT,True,True
+org.apache.commons.codec.binary,Base64,"public Base64(final int lineLength, final byte[] lineSeparator)",this.containsAlphabetOrPad(lineSeparator) == false;,PRE,True,True
+org.apache.commons.codec.binary,Base64,"public Base64(final int lineLength, final byte[] lineSeparator)",this.containsAlphabetOrPad(lineSeparator);,EXCEPT,True,True
+org.apache.commons.codec.binary,Base64,"public Base64(final int lineLength, final byte[] lineSeparator, final boolean urlSafe)",this.containsAlphabetOrPad(lineSeparator) == false;,PRE,True,True
+org.apache.commons.codec.binary,Base64,"public Base64(final int lineLength, final byte[] lineSeparator, final boolean urlSafe)",this.containsAlphabetOrPad(lineSeparator);,EXCEPT,True,True
+org.apache.commons.codec.binary,Base64,"public Base64(final int lineLength, final byte[] lineSeparator, final boolean urlSafe, final CodecPolicy decodingPolicy)",this.containsAlphabetOrPad(lineSeparator) == false;,PRE,True,True
+org.apache.commons.codec.binary,Base64,"public Base64(final int lineLength, final byte[] lineSeparator, final boolean urlSafe, final CodecPolicy decodingPolicy)",this.containsAlphabetOrPad(lineSeparator);,EXCEPT,True,True
+org.apache.commons.codec.binary,Base64,"void decode(final byte[] input, int inPos, final int inAvail, final Context context)",context.modulus != 1 && context.modulus != 2 && context.modulus != 3;,EXCEPT,True,FALSE
+org.apache.commons.codec.binary,Base64,"void encode(final byte[] in, int inPos, final int inAvail, final Context context)",context.modulus != 1 && context.modulus != 2 && context.modulus != 3;,EXCEPT,True,FALSE
+org.apache.commons.codec.binary,Base64,"private void validateCharacter(final int emptyBitsMask, final Context context)",this.isStrictDecoding() && (context.ibitWorkArea & emptyBitsMask) != 0;,EXCEPT,True,True
+org.apache.commons.codec.binary,Base64,private void validateTrailingCharacter(),this.isStrictDecoding();,EXCEPT,True,True
+org.apache.commons.codec.language.bm,BeiderMorseEncoder,public Object encode(final Object source) throws EncoderException,source instanceof String;,EXCEPT,True,FALSE
+org.apache.commons.codec,Decoder,Object decode(Object source) throws DecoderException,source == null;,EXCEPT,FALSE,True
+org.apache.commons.codec.digest,Md5Crypt,"public static String apr1Crypt(final String keyBytes, final String salt)",salt.startWith(Md5Crypt.APR1_PREFIX);,PRE,True,True
+org.apache.commons.codec.digest,Md5Crypt,"public static String md5Crypt(final byte[] keyBytes, final String salt)",salt.startWith(Md5Crypt.MD5_PREFIX);,PRE,True,True
+org.apache.commons.codec.digest,Md5Crypt,"public static String md5Crypt(final byte[] keyBytes, final String salt, final String prefix)","salt.startWith(Md5Crypt.MD5_PREFIX) == false && salt.startWith(""rounds="") == false && salt.startWith(prefix);",PRE,True,True
+org.apache.commons.codec.digest,Md5Crypt,"public static String md5Crypt(final byte[] keyBytes, final String salt, final String prefix)",salt.startWith(prefix) == false;,EXCEPT,True,True
+org.apache.commons.codec.digest,Md5Crypt,"public static String md5Crypt(final byte[] keyBytes, final String salt, final String prefix, final Random random)","salt.startWith(Md5Crypt.MD5_PREFIX) == false && salt.startWith(""rounds="") == false && salt.startWith(prefix);",PRE,True,True
+org.apache.commons.codec.digest,Md5Crypt,"public static String md5Crypt(final byte[] keyBytes, final String salt, final String prefix, final Random random)",salt.startWith(prefix) == false;,EXCEPT,True,True
+org.apache.commons.codec.language,Nysiis,public Object encode(final Object obj) throws EncoderException,(obj instanceof String) == false;,EXCEPT,True,True
+org.apache.commons.codec.language,Nysiis,private static boolean isVowel(final char c),true ? methodResultID == (c == 'A' || c == 'E' || c == 'I' || c == 'O' || c == 'U') : true;,POST,True,True
+org.apache.commons.codec.language.bm,Rule,private static Phoneme parsePhoneme(final String ph),"ph.indexOf(""["") && (ph.endsWith(""]"") == false);",EXCEPT,True,True
+org.apache.commons.codec.language.bm,Rule,"public boolean patternAndContextMatches(final CharSequence input, final int i)",i < 0;,EXCEPT,True,FALSE
+org.apache.commons.codec.language,SoundexUtils,"static int difference(final StringEncoder encoder, final String s1, final String s2) throws EncoderException",true ? methodResultID >= 0 : true;,POST,True,True
+org.apache.commons.codec.language,SoundexUtils,"static int differenceEncoded(final String es1, final String es2)",true ? methodResultID >= 0 : true;,POST,True,True

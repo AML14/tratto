@@ -1,0 +1,113 @@
+Package,Class,Method,Oracle,Oracle type,Info from source,Info from docs
+org.jsoup.parser,CharacterReader,"public CharacterReader(Reader input, int sz)",input != null;,PRE,True,False
+org.jsoup.parser,CharacterReader,"public CharacterReader(Reader input, int sz)",input == null;,EXCEPT,True,False
+org.jsoup.parser,CharacterReader,"public CharacterReader(Reader input, int sz)",input.markSupported() == true;,PRE,True,False
+org.jsoup.parser,CharacterReader,"public CharacterReader(Reader input, int sz)",input.markSupported() != true;,EXCEPT,True,False
+org.jsoup.parser,CharacterReader,public int lineNumber(),this.isTrackNewlines() == false ? methodResultID == 1 :  methodResultID >= 0;,POST,True,True
+org.jsoup.parser,CharacterReader,int lineNumber(int pos),this.isTrackNewlines() == false ? methodResultID == 1 : methodResultID >= 0;,POST,True,True
+org.jsoup.parser,CharacterReader,public int columnNumber(),true ? methodResultID >= 1 : true;,POST,True,True
+org.jsoup.parser,CharacterReader,int columnNumber(int pos),true ? methodResultID >= 1 : true;,POST,True,True
+org.jsoup.parser,CharacterReader,"static boolean rangeEquals(final char[] charBuf, final int start, int count, final String cached)",(count == cached.length) == false ? methodResultID == false : true;,POST,True,False
+org.jsoup.nodes,FormElement,public Connection submit(),"(hasAttr(""action"") && absUrl(""action"").isEmpty()) || (absUrl(""action"") == false && baseUri().isEmpty());",POST,True,True
+org.jsoup.helper,HttpConnection,public Connection url(String url),url.isEmpty() == false;,PRE,True,False
+org.jsoup.helper,HttpConnection,public Connection url(String url),url.isEmpty() == true;,PRE,True,False
+org.jsoup.helper,HttpConnection,public Connection url(String url),true ? methodResultID == this : true;,POST,True,False
+org.jsoup.helper,HttpConnection,public Connection url(URL url),true ? methodResultID == this : true;,POST,True,False
+org.jsoup.helper,HttpConnection,public Connection proxy(@Nullable Proxy proxy),true ? methodResultID == this : true;,POST,True,False
+org.jsoup.helper,HttpConnection,"public Connection proxy(String host, int port)",true ? methodResultID == this : true;,POST,True,False
+org.jsoup.helper,HttpConnection,public Connection userAgent(String userAgent),true ? methodResultID == this : true;,POST,True,False
+org.jsoup.helper,HttpConnection,public Connection userAgent(String userAgent),userAgent != null;,PRE,True,False
+org.jsoup.helper,HttpConnection,public Connection userAgent(String userAgent),userAgent == null;,EXCEPT,True,False
+org.jsoup.helper,HttpConnection,public Connection timeout(int millis),true ? methodResultID == this : true;,POST,True,False
+org.jsoup.helper,HttpConnection,public Connection maxBodySize(int bytes),true ? methodResultID == this : true;,POST,True,False
+org.jsoup.helper,HttpConnection,public Connection followRedirects(boolean followRedirects),true ? methodResultID == this : true;,POST,True,False
+org.jsoup.helper,HttpConnection,public Connection referrer(String referrer),true ? methodResultID == this : true;,POST,True,False
+org.jsoup.helper,HttpConnection,public Connection referrer(String referrer),referrer != null;,PRE,True,False
+org.jsoup.helper,HttpConnection,public Connection referrer(String referrer),referrer == null;,EXCEPT,True,False
+org.jsoup.helper,HttpConnection,public Connection method(Method method),true ? methodResultID == this : true;,POST,True,False
+org.jsoup.helper,HttpConnection,public Connection ignoreHttpErrors(boolean ignoreHttpErrors),true ? methodResultID == this : true;,POST,True,False
+org.jsoup.helper,HttpConnection,public Connection ignoreContentType(boolean ignoreContentType),true ? methodResultID == this : true;,POST,True,False
+org.jsoup.helper,HttpConnection,"public Connection data(String key, String value)",true ? methodResultID == this : true;,POST,True,False
+org.jsoup.helper,HttpConnection,public Connection sslSocketFactory(SSLSocketFactory sslSocketFactory),true ? methodResultID == this : true;,POST,True,False
+org.jsoup.helper,HttpConnection,"public Connection data(String key, String filename, InputStream inputStream)",true ? methodResultID == this : true;,POST,True,False
+org.jsoup.helper,HttpConnection,"public Connection data(String key, String filename, InputStream inputStream, String contentType)",true ? methodResultID == this : true;,POST,True,False
+org.jsoup.helper,HttpConnection,"public Connection data(Map<String, String> data)",true ? methodResultID == this : true;,POST,True,False
+org.jsoup.helper,HttpConnection,"public Connection data(Map<String, String> data)",data != null;,PRE,True,False
+org.jsoup.helper,HttpConnection,"public Connection data(Map<String, String> data)",data == null;,EXCEPT,True,False
+org.jsoup.helper,HttpConnection,public Connection data(String... keyvals),true ? methodResultID == this : true;,POST,True,False
+org.jsoup.helper,HttpConnection,public Connection data(String... keyvals),keyvals != null;,PRE,True,False
+org.jsoup.helper,HttpConnection,public Connection data(String... keyvals),keyvals == null;,EXCEPT,True,False
+org.jsoup.helper,HttpConnection,public Connection data(String... keyvals),keyvals.length %2 == 0,PRE,True,False
+org.jsoup.helper,HttpConnection,public Connection data(String... keyvals),keyvals.length %2 != 0,EXCEPT,True,False
+org.jsoup.helper,HttpConnection,public Connection data(Collection<Connection.KeyVal> data),data != null;,PRE,True,False
+org.jsoup.helper,HttpConnection,public Connection data(Collection<Connection.KeyVal> data),data == null;,EXCEPT,True,False
+org.jsoup.helper,HttpConnection,public Connection data(Collection<Connection.KeyVal> data),true ? methodResultID == this : true;,POST,True,False
+org.jsoup.helper,HttpConnection,public Connection.KeyVal data(String key),key != null;,PRE,True,False
+org.jsoup.helper,HttpConnection,public Connection.KeyVal data(String key),key == null;,EXCEPT,True,False
+org.jsoup.helper,HttpConnection,public Connection requestBody(String body),true ? methodResultID == this : true;,POST,True,False
+org.jsoup.helper,HttpConnection,"public Connection header(String name, String value)",true ? methodResultID == this : true;,POST,True,False
+org.jsoup.helper,HttpConnection,"public Connection headers(Map<String,String> headers)",headers != null;,PRE,True,False
+org.jsoup.helper,HttpConnection,"public Connection headers(Map<String,String> headers)",headers == null;,EXCEPT,True,False
+org.jsoup.helper,HttpConnection,"public Connection headers(Map<String,String> headers)",true ? methodResultID == this : true;,POST,True,False
+org.jsoup.helper,HttpConnection,"public Connection cookie(String name, String value)",true ? methodResultID == this : true;,POST,True,False
+org.jsoup.helper,HttpConnection,"public Connection cookies(Map<String, String> cookies)",true ? methodResultID == this : true;,POST,True,False
+org.jsoup.helper,HttpConnection,"public Connection cookies(Map<String, String> cookies)",cookies != null;,PRE,True,False
+org.jsoup.helper,HttpConnection,"public Connection cookies(Map<String, String> cookies)",cookies == null;,EXCEPT,True,False
+org.jsoup.helper,HttpConnection,public Connection cookieStore(CookieStore cookieStore),true ? methodResultID == this : true;,POST,True,False
+org.jsoup.helper,HttpConnection,public Connection parser(Parser parser),true ? methodResultID == this : true;,POST,True,False
+org.jsoup.helper,HttpConnection,public Connection request(Connection.Request request),true ? methodResultID == this : true;,POST,True,False
+org.jsoup.helper,HttpConnection,public Connection response(Connection.Response response),true ? methodResultID == this : true;,POST,True,False
+org.jsoup.helper,HttpConnection,public Connection postDataCharset(String charset),true ? methodResultID == this : true;,POST,True,False
+org.jsoup.helper,HttpConnection.Request,public Request proxy(@Nullable Proxy proxy),true ? methodResultID == this : true;,POST,True,False
+org.jsoup.helper,HttpConnection.Request,"public Request proxy(String host, int port)",true ? methodResultID == this : true;,POST,True,False
+org.jsoup.helper,HttpConnection.Request,public Request timeout(int millis),true ? methodResultID == this : true;,POST,True,False
+org.jsoup.helper,HttpConnection.Request,public Request timeout(int millis),millis >= 0;,PRE,True,False
+org.jsoup.helper,HttpConnection.Request,public Request timeout(int millis),millis < 0;,EXCEPT,True,False
+org.jsoup.helper,HttpConnection.Request,public Connection.Request maxBodySize(int bytes),true ? methodResultID == this : true;,POST,True,False
+org.jsoup.helper,HttpConnection.Request,public Connection.Request maxBodySize(int bytes),bytes >= 0;,PRE,True,False
+org.jsoup.helper,HttpConnection.Request,public Connection.Request maxBodySize(int bytes),bytes < 0;,EXCEPT,True,False
+org.jsoup.helper,HttpConnection.Request,public Request data(Connection.KeyVal keyval),keyval != null;,PRE,True,False
+org.jsoup.helper,HttpConnection.Request,public Request data(Connection.KeyVal keyval),keyval == null;,EXCEPT,True,False
+org.jsoup.helper,HttpConnection.Request,public Request data(Connection.KeyVal keyval),true ? methodResultID == this : true;,POST,True,False
+org.jsoup.helper,HttpConnection.Request,public Connection.Request requestBody(@Nullable String body),true ? methodResultID == this : true;,POST,True,False
+org.jsoup.helper,HttpConnection.Request,public Request parser(Parser parser),true ? methodResultID == this : true;,POST,True,False
+org.jsoup.helper,HttpConnection.Request,public Connection.Request postDataCharset(String charset),charset != null;,PRE,True,False
+org.jsoup.helper,HttpConnection.Request,public Connection.Request postDataCharset(String charset),charset == null;,EXCEPT,True,False
+org.jsoup.helper,HttpConnection.Request,public Connection.Request postDataCharset(String charset),true ? methodResultID == this : true;,POST,True,False
+org.jsoup.helper,HttpConnection.Response,"static Response execute(HttpConnection.Request req, @Nullable Response previousResponse) throws IOException",req.executing == false;,PRE,True,False
+org.jsoup.helper,HttpConnection.Response,"static Response execute(HttpConnection.Request req, @Nullable Response previousResponse) throws IOException",req.executing != false;,EXCEPT,True,False
+org.jsoup.helper,HttpConnection.Response,"static Response execute(HttpConnection.Request req, @Nullable Response previousResponse) throws IOException",req != null;,PRE,True,False
+org.jsoup.helper,HttpConnection.Response,"static Response execute(HttpConnection.Request req, @Nullable Response previousResponse) throws IOException",req == null;,EXCEPT,True,False
+org.jsoup.helper,HttpConnection.Response,"static Response execute(HttpConnection.Request req, @Nullable Response previousResponse) throws IOException",req.url() != null;,PRE,True,False
+org.jsoup.helper,HttpConnection.Response,"static Response execute(HttpConnection.Request req, @Nullable Response previousResponse) throws IOException",req.url() == null;,EXCEPT,True,False
+org.jsoup.helper,HttpConnection.Response,"static Response execute(HttpConnection.Request req, @Nullable Response previousResponse) throws IOException","req.url()..getProtocol().equals(""http"") == false || req.url()..getProtocol().equals(""https"") == false;",EXCEPT,True,False
+org.jsoup.helper,HttpConnection.Response,"static Response execute(HttpConnection.Request req, @Nullable Response previousResponse) throws IOException",req.method().hasBody() == false && req.requestBody() != null;,EXCEPT,True,False
+org.jsoup.helper,HttpConnection.Response,static Response execute(HttpConnection.Request req) throws IOException,req.executing == false;,PRE,True,False
+org.jsoup.helper,HttpConnection.Response,static Response execute(HttpConnection.Request req) throws IOException,req.executing != false;,EXCEPT,True,False
+org.jsoup.helper,HttpConnection.Response,static Response execute(HttpConnection.Request req) throws IOException,req != null;,PRE,True,False
+org.jsoup.helper,HttpConnection.Response,static Response execute(HttpConnection.Request req) throws IOException,req == null;,EXCEPT,True,False
+org.jsoup.helper,HttpConnection.Response,static Response execute(HttpConnection.Request req) throws IOException,req.url() != null;,PRE,True,False
+org.jsoup.helper,HttpConnection.Response,static Response execute(HttpConnection.Request req) throws IOException,req.url() == null;,EXCEPT,True,False
+org.jsoup.helper,HttpConnection.Response,static Response execute(HttpConnection.Request req) throws IOException,"req.url()..getProtocol().equals(""http"") == false || req.url()..getProtocol().equals(""https"") == false;",EXCEPT,True,False
+org.jsoup.helper,HttpConnection.Response,static Response execute(HttpConnection.Request req) throws IOException,req.method().hasBody() == false && req.requestBody() != null;,EXCEPT,True,False
+org.jsoup.helper,HttpConnection.Response,public Response charset(String charset),true ? methodResultID == this : true;,POST,True,False
+org.jsoup.helper,HttpConnection.Response,public Connection.KeyVal contentType(String contentType),contentType != null;,PRE,True,False
+org.jsoup.helper,HttpConnection.Response,public Connection.KeyVal contentType(String contentType),contentType == null;,EXCEPT,True,False
+org.jsoup.helper,HttpConnection.Response,public Connection.KeyVal contentType(String contentType),true ? methodResultID == this : true;,POST,True,False
+org.jsoup.examples,ListLinks,public static void main(String[] args) throws IOException,args.length == 1,PRE,True,False
+org.jsoup.examples,ListLinks,public static void main(String[] args) throws IOException,args.length != 1,EXCEPT,True,False
+org.jsoup.parser,TokenQueue,public TokenQueue(String data),data != null;,PRE,True,False
+org.jsoup.parser,TokenQueue,public TokenQueue(String data),data == null;,EXCEPT,True,False
+org.jsoup.parser,TokenQueue,public boolean matchesAny(String... seq),seq.isEmpty() ? methodResultID == false : true;,POST,True,False
+org.jsoup.parser,TokenQueue,public boolean matchesAny(char... seq),this.isEmpty() || seq.isEmpty() ? methodResultID == false : true;,POST,True,False
+org.jsoup.parser,TokenQueue,public boolean matchChomp(String seq),this.matches(seq) == false ? methodResultID == false : true;,POST,True,False
+org.jsoup.parser,TokenQueue,public boolean matchesWhitespace(),true ? methodResultID == (this.isEmpty() && StringUtil.isWhitespace(queue.charAt(pos)) == false) : true;,POST,True,False
+org.jsoup.parser,TokenQueue,public boolean matchesWord(),true ? methodResultID == (isEmpty() && Character.isLetterOrDigit(queue.charAt(pos)) == false) : true;,POST,True,False
+org.jsoup.parser,TokenQueue,public void consume(String seq),this.matches(seq),PRE,True,False
+org.jsoup.parser,TokenQueue,public void consume(String seq),this.matches(seq) == false;,EXCEPT,True,False
+org.jsoup.nodes,XmlDeclaration,"public XmlDeclaration(String name, boolean isProcessingInstruction)",name != null;,PRE,True,False
+org.jsoup.nodes,XmlDeclaration,"public XmlDeclaration(String name, boolean isProcessingInstruction)",name == null;,EXCEPT,True,False
+org.jsoup.nodes,XmlDeclaration,public String nodeName(),"true ? methodResultID == ""#declaration"" : true;",POST,True,False
+org.jsoup.parser,XmlTreeBuilder,"protected void initialiseParse(Reader input, String baseUri, Parser parser)",input != null;,POST,True,False
+org.jsoup.parser,XmlTreeBuilder,"protected void initialiseParse(Reader input, String baseUri, Parser parser)",baseUri != null;,POST,True,False
+org.jsoup.parser,XmlTreeBuilder,"protected void initialiseParse(Reader input, String baseUri, Parser parser)",parser != null;,POST,True,False

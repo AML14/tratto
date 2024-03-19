@@ -1,0 +1,116 @@
+Package,Class,Method,Oracle,Oracle type,Info from source,Info from docs
+org.apache.commons.lang3,ObjectUtils,public static boolean allNotNull(final Object... values),values == null ? methodResultID == false : true;,EXCEPT,False,True
+org.apache.commons.lang4,ObjectUtils,public static boolean allNull(final Object... values),this.anyNotNull(values) == true ? methodResultID == false : methodResultID == true;,POST,True,True
+org.apache.commons.lang5,ObjectUtils,public static boolean anyNotNull(final Object... values),this.firstNonNull(values) == null ? methodResultID == false : methodResultID == true;,POST,True,True
+org.apache.commons.lang6,ObjectUtils,public static boolean anyNull(final Object... values),this.allNotNull(values) == true ? methodResultID == false : methodResultID == true;,POST,True,True
+org.apache.commons.lang7,ObjectUtils,public static <T> T clone(final T obj),(obj instanceof Cloneable) == false ? methodResultID == null : true;,POST,True,True
+org.apache.commons.lang8,ObjectUtils,public static <T> T clone(final T obj),obj == null ? methodResultID == null : true;,POST,False,True
+org.apache.commons.lang9,ObjectUtils,public static <T> T cloneIfPossible(final T obj),obj == null ? methodResultID == null : true;,POST,False,True
+org.apache.commons.lang10,ObjectUtils,"public static <T extends Comparable<? super T>> int compare(final T c1, final T c2)",c1 == c2 ? methodResultID == 0 : true;,POST,False,True
+org.apache.commons.lang11,ObjectUtils,"public static <T extends Comparable<? super T>> int compare(final T c1, final T c2)",c1 <= c2 ? methodResultID < 0 : true;,POST,False,True
+org.apache.commons.lang12,ObjectUtils,"public static <T extends Comparable<? super T>> int compare(final T c1, final T c2)",c1 >= c2 ? methodResultID > 0 : true;,POST,False,True
+org.apache.commons.lang13,ObjectUtils,"public static <T extends Comparable<? super T>> int compare(final T c1, final T c2, final boolean nullGreater)",c1 == c2 ? methodResultID == 0 : true;,POST,False,True
+org.apache.commons.lang14,ObjectUtils,"public static <T extends Comparable<? super T>> int compare(final T c1, final T c2, final boolean nullGreater)",c1 <= c2 ? methodResultID < 0 : true;,POST,False,True
+org.apache.commons.lang15,ObjectUtils,"public static <T extends Comparable<? super T>> int compare(final T c1, final T c2, final boolean nullGreater)",c1 >= c2 ? methodResultID > 0 : true;,POST,False,True
+org.apache.commons.lang16,ObjectUtils,public static boolean CONST(final boolean v),true ? methodResultID == v : true;,POST,True,True
+org.apache.commons.lang17,ObjectUtils,public static byte CONST(final byte v),true ? methodResultID == v : true;,POST,True,True
+org.apache.commons.lang18,ObjectUtils,public static char CONST(final char v),true ? methodResultID == v : true;,POST,True,True
+org.apache.commons.lang19,ObjectUtils,public static double CONST(final double v),true ? methodResultID == v : true;,POST,True,True
+org.apache.commons.lang20,ObjectUtils,public static float CONST(final float v),true ? methodResultID == v : true;,POST,True,True
+org.apache.commons.lang21,ObjectUtils,public static int CONST(final int v),true ? methodResultID == v : true;,POST,True,True
+org.apache.commons.lang22,ObjectUtils,public static long CONST(final long v),true ? methodResultID == v : true;,POST,True,True
+org.apache.commons.lang23,ObjectUtils,public static short CONST(final short v),true ? methodResultID == v : true;,POST,True,True
+org.apache.commons.lang24,ObjectUtils,public static <T> T CONST(final T v),true ? methodResultID == v : true;,POST,True,True
+org.apache.commons.lang25,ObjectUtils,public static byte CONST_BYTE(final int v),(v < Byte.MIN_VALUE || v > Byte.MAX_VALUE) == true;,EXCEPT,True,True
+org.apache.commons.lang26,ObjectUtils,public static short CONST_SHORT(final int v),(v < Short.MIN_VALUE || v > Short.MAX_VALUE) == true;,EXCEPT,True,True
+org.apache.commons.lang27,ObjectUtils,"public static <T> T defaultIfNull(final T object, final T defaultValue)",object != null ? methodResultID == object : true;,POST,True,True
+org.apache.commons.lang28,ObjectUtils,public static <T> Class<T> getClass(final T object),object == null ? methodResultID == null : true;,POST,True,False
+org.apache.commons.lang29,ObjectUtils,"public static <T> T getIfNull(final T object, final Supplier<T> defaultSupplier)",object != null ? methodResultID == object : true;,POST,True,True
+org.apache.commons.lang30,ObjectUtils,public static int hashCode(final Object obj),object == null ? methodResultID == 0 : true;,POST,False,True
+org.apache.commons.lang31,ObjectUtils,public static int hashCodeMulti(final Object... objects),object == null ? methodResultID == 0 : true;,POST,False,True
+org.apache.commons.lang32,ObjectUtils,public static String identityToString(final Object object),object == null ? methodResultID == null : true;,POST,True,True
+org.apache.commons.lang33,ObjectUtils,public static boolean isEmpty(final Object object),object == null ? methodResultID == true : methodResultID == false;,POST,True,True
+org.apache.commons.lang33,ObjectUtils,public static boolean isNotEmpty(final Object object),object != null ? methodResultID == true : methodResultID == false;,POST,True,True
+org.apache.commons.lang33,ObjectUtils,"public static <T> T median(final Comparator<T> comparator, final T... items)",comparator == null;,EXCEPT,False,True
+org.apache.commons.lang33,ObjectUtils,"public static <T> T median(final Comparator<T> comparator, final T... items)",items == null;,EXCEPT,False,True
+org.apache.commons.lang33,ObjectUtils,public static <T extends Comparable<? super T>> T median(final T... items),items == null;,EXCEPT,False,True
+org.apache.commons.lang33,ObjectUtils,public static <T> T  requireNonEmpty(final T obj),obj == null;,EXCEPT,False,True
+org.apache.commons.lang33,ObjectUtils,"public static <T> T requireNonEmpty(final T obj, final String message)",obj == null;,EXCEPT,False,True
+org.apache.commons.lang33,ObjectUtils,public static String toString(final Object obj),obj == null ? methodResultID == StringUtils.EMPTY : true;,POST,True,False
+org.apache.commons.lang3.exception,ExceptionContext,"ExceptionContext addContextValue(String label, Object value);",true ? methodResultID != null : true;,POST,False,True
+org.apache.commons.lang3.exception,ExceptionContext,"List<Pair<String, Object>> getContextEntries();",true ? methodResultID != null : true;,POST,False,True
+org.apache.commons.lang3.exception,ExceptionContext,Set<String> getContextLabels();,true ? methodResultID != null : true;,POST,False,True
+org.apache.commons.lang3.exception,ExceptionContext,List<Object> getContextValues(String label);,true ? methodResultID != null : true;,POST,False,True
+org.apache.commons.lang3.exception,ExceptionContext,String getFormattedExceptionMessage(String baseMessage);,true ? methodResultID != null : true;,POST,False,True
+org.apache.commons.lang3.exception,ExceptionContext,"ExceptionContext setContextValue(String label, Object value);",true ? methodResultID != null : true;,POST,False,True
+org.apache.commons.lang3.function,FailableLongToIntFunction,static <E extends Throwable> FailableLongToIntFunction<E> nop(),true ? methodResultID == this.NOP : true;,POST,True,True
+org.apache.commons.lang3.function,FailableToDoubleBiFunction,"static <T, U, E extends Throwable> FailableToDoubleBiFunction<T, U, E> nop()",true ? methodResultID == this.NOP : true;,POST,True,True
+org.apache.commons.lang3,JavaVersion,"JavaVersion(final float value, final String name)",name != null;,PRE,False,True
+org.apache.commons.lang4,JavaVersion,public boolean atLeast(final JavaVersion requiredVersion),requiredVersion != null;,PRE,False,True
+org.apache.commons.lang5,JavaVersion,public boolean atMost(final JavaVersion requiredVersion),requiredVersion != null;,PRE,False,True
+org.apache.commons.lang6,JavaVersion,public String toString(),name != null;,PRE,False,True
+org.apache.commons.lang3.reflect,MemberUtils,static boolean isPackageAccess(final int modifiers),true ? methodResultID == ((modifiers & this.ACCESS_TEST) == 0) :true;,POST,True,True
+org.apache.commons.lang3.reflect,MemberUtils,static boolean isPublic(final Member member),true ? methodResultID == (member != null && Modifier.isPublic(member.getModifiers())) : true;,POST,True,True
+org.apache.commons.lang3.reflect,MemberUtils,static boolean isStatic(final Member member),true ? methodResultID == (member != null && Modifier.isStatic(member.getModifiers())) : true;,POST,True,True
+org.apache.commons.lang3.reflect,MemberUtils,static boolean isAccessible(final Member member),true ? methodResultID(this.isPublic(member) && !member.isSynthetic()) : true;,POST,True,True
+org.apache.commons.lang3.tuple,MutableTriple,"public static <L, M, R> MutableTriple<L, M, R>[] emptyArray()",true ? methodResultID.length == 0 : true;,POST,True,True
+org.apache.commons.lang3.tuple,MutableTriple,"public static <L, M, R> MutableTriple<L, M, R> of(final L left, final M middle, final R right)",true ? methodResultID != null : true;,POST,False,True
+org.apache.commons.lang3.tuple,MutableTriple,"public static <L, M, R> MutableTriple<L, M, R> ofNonNull(final L left, final M middle, final R right)",true ? methodResultID != null : true;,POST,True,True
+org.apache.commons.lang3.tuple,MutableTriple,"public static <L, M, R> MutableTriple<L, M, R> ofNonNull(final L left, final M middle, final R right)",left != null;,PRE,True,True
+org.apache.commons.lang3.tuple,MutableTriple,"public static <L, M, R> MutableTriple<L, M, R> ofNonNull(final L left, final M middle, final R right)",middle != null;,PRE,True,True
+org.apache.commons.lang3.tuple,MutableTriple,"public static <L, M, R> MutableTriple<L, M, R> ofNonNull(final L left, final M middle, final R right)",right != null;,PRE,True,True
+org.apache.commons.lang3.tuple,MutableTriple,"public static <L, M, R> MutableTriple<L, M, R> ofNonNull(final L left, final M middle, final R right)",left == null || middle == null || right == null;,EXCEPT,True,True
+org.apache.commons.lang1,ThreadUtils.AlwaysTruePredicate,public boolean test(final Thread thread),true ? methodResultID == true : true;,POST,True,False
+org.apache.commons.lang2,ThreadUtils.AlwaysTruePredicate,public boolean test(final ThreadGroup threadGroup),true ? methodResultID == true : true;,POST,True,False
+org.apache.commons.lang3,ThreadUtils.NamePredicate,public NamePredicate(final String name),name != null;,PRE,True,True
+org.apache.commons.lang3,ThreadUtils.NamePredicate,public NamePredicate(final String name),name == null;,EXCEPT,True,True
+org.apache.commons.lang3,ThreadUtils.NamePredicate,public boolean test(final Thread thread),true ? methodResultID == (thread != null && thread.getName().equals(name)) : true;,POST,True,True
+org.apache.commons.lang3,ThreadUtils.NamePredicate,public boolean test(final ThreadGroup threadGroup),true ? methodResultID == (thread != null && thread.getName().equals(name)) : true;,POST,True,True
+org.apache.commons.lang4,ThreadUtils.ThreadIdPredicate,public ThreadIdPredicate(final long threadId),threadId > 0;,PRE,True,True
+org.apache.commons.lang4,ThreadUtils.ThreadIdPredicate,public ThreadIdPredicate(final long threadId),threadId <= 0;,EXCEPT,True,True
+org.apache.commons.lang4,ThreadUtils,private static <T> Predicate<T> alwaysTruePredicate(),true ? methodResultID == this.ALWAYS_True : true;,POST,True,True
+org.apache.commons.lang4,ThreadUtils,public static Thread findThreadById(final long threadId),threadId > 0;,PRE,True,True
+org.apache.commons.lang4,ThreadUtils,public static Thread findThreadById(final long threadId),threadId <= 0;,EXCEPT,True,True
+org.apache.commons.lang4,ThreadUtils,"public static Thread findThreadById(final long threadId, final String threadGroupName)",this.findThreadById(threadId) ? methodResultId == null : true;,POST,True,True
+org.apache.commons.lang4,ThreadUtils,"public static Thread findThreadById(final long threadId, final String threadGroupName)",threadGroupName != null,PRE,True,True
+org.apache.commons.lang4,ThreadUtils,"public static Thread findThreadById(final long threadId, final String threadGroupName)",threadGroupName == null,EXCEPT,True,True
+org.apache.commons.lang4,ThreadUtils,"public static Thread findThreadById(final long threadId, final String threadGroupName)",threadId > 0;,PRE,True,True
+org.apache.commons.lang4,ThreadUtils,"public static Thread findThreadById(final long threadId, final String threadGroupName)",threadId <= 0;,EXCEPT,True,True
+org.apache.commons.lang4,ThreadUtils,"public static Thread findThreadById(final long threadId, final ThreadGroup threadGroup)",threadGroup != null,PRE,True,True
+org.apache.commons.lang4,ThreadUtils,"public static Thread findThreadById(final long threadId, final ThreadGroup threadGroup)",threadGroup == null,EXCEPT,True,True
+org.apache.commons.lang4,ThreadUtils,"public static Thread findThreadById(final long threadId, final ThreadGroup threadGroup)",threadId > 0;,PRE,True,True
+org.apache.commons.lang4,ThreadUtils,"public static Thread findThreadById(final long threadId, final ThreadGroup threadGroup)",threadId <= 0;,EXCEPT,True,True
+org.apache.commons.lang4,ThreadUtils,"public static Collection<ThreadGroup> findThreadGroups(final ThreadGroup threadGroup, final boolean recurse, final Predicate<ThreadGroup> predicate)",threadGroup != null,PRE,True,True
+org.apache.commons.lang5,ThreadUtils,"public static Collection<ThreadGroup> findThreadGroups(final ThreadGroup threadGroup, final boolean recurse, final Predicate<ThreadGroup> predicate)",threadGroup == null,EXCEPT,True,True
+org.apache.commons.lang6,ThreadUtils,"public static Collection<ThreadGroup> findThreadGroups(final ThreadGroup threadGroup, final boolean recurse, final Predicate<ThreadGroup> predicate)",predicate != null,PRE,True,True
+org.apache.commons.lang7,ThreadUtils,"public static Collection<ThreadGroup> findThreadGroups(final ThreadGroup threadGroup, final boolean recurse, final Predicate<ThreadGroup> predicate)",predicate == null,EXCEPT,True,True
+org.apache.commons.lang8,ThreadUtils,"public static Collection<ThreadGroup> findThreadGroups(final ThreadGroup threadGroup, final boolean recurse, final ThreadGroupPredicate predicate)",threadGroup != null,PRE,False,True
+org.apache.commons.lang9,ThreadUtils,"public static Collection<ThreadGroup> findThreadGroups(final ThreadGroup threadGroup, final boolean recurse, final ThreadGroupPredicate predicate)",threadGroup == null,EXCEPT,False,True
+org.apache.commons.lang10,ThreadUtils,"public static Collection<ThreadGroup> findThreadGroups(final ThreadGroup threadGroup, final boolean recurse, final ThreadGroupPredicate predicate)",predicate != null,PRE,False,True
+org.apache.commons.lang11,ThreadUtils,"public static Collection<ThreadGroup> findThreadGroups(final ThreadGroup threadGroup, final boolean recurse, final ThreadGroupPredicate predicate)",predicate == null,EXCEPT,False,True
+org.apache.commons.lang11,ThreadUtils,public static Collection<ThreadGroup> findThreadGroups(final ThreadGroupPredicate predicate),predicate != null,PRE,False,True
+org.apache.commons.lang11,ThreadUtils,public static Collection<ThreadGroup> findThreadGroups(final ThreadGroupPredicate predicate),predicate == null,EXCEPT,False,True
+org.apache.commons.lang11,ThreadUtils,public static Collection<ThreadGroup> findThreadGroupsByName(final String threadGroupName),name != null,PRE,False,True
+org.apache.commons.lang11,ThreadUtils,public static Collection<ThreadGroup> findThreadGroupsByName(final String threadGroupName),name == null,EXCEPT,False,True
+org.apache.commons.lang11,ThreadUtils,public static Collection<Thread> findThreads(final Predicate<Thread> predicate),predicate != null,PRE,False,True
+org.apache.commons.lang11,ThreadUtils,public static Collection<Thread> findThreads(final Predicate<Thread> predicate),predicate == null,EXCEPT,False,True
+org.apache.commons.lang11,ThreadUtils,"public static Collection<Thread> findThreads(final ThreadGroup threadGroup, final boolean recurse, final Predicate<Thread> predicate)",threadGroup != null,PRE,True,True
+org.apache.commons.lang11,ThreadUtils,"public static Collection<Thread> findThreads(final ThreadGroup threadGroup, final boolean recurse, final Predicate<Thread> predicate)",threadGroup == null,EXCEPT,True,True
+org.apache.commons.lang11,ThreadUtils,"public static Collection<Thread> findThreads(final ThreadGroup threadGroup, final boolean recurse, final Predicate<Thread> predicate)",predicate != null,PRE,True,True
+org.apache.commons.lang11,ThreadUtils,"public static Collection<Thread> findThreads(final ThreadGroup threadGroup, final boolean recurse, final Predicate<Thread> predicate)",predicate == null,EXCEPT,True,True
+org.apache.commons.lang12,ThreadUtils,"public static Collection<Thread> findThreads(final ThreadGroup threadGroup, final boolean recurse, final ThreadPredicate predicate)",threadGroup != null,PRE,False,True
+org.apache.commons.lang13,ThreadUtils,"public static Collection<Thread> findThreads(final ThreadGroup threadGroup, final boolean recurse, final ThreadPredicate predicate)",threadGroup == null,EXCEPT,False,True
+org.apache.commons.lang14,ThreadUtils,"public static Collection<Thread> findThreads(final ThreadGroup threadGroup, final boolean recurse, final ThreadPredicate predicate)",predicate != null,PRE,False,True
+org.apache.commons.lang15,ThreadUtils,"public static Collection<Thread> findThreads(final ThreadGroup threadGroup, final boolean recurse, final ThreadPredicate predicate)",predicate == null,EXCEPT,False,True
+org.apache.commons.lang14,ThreadUtils,public static Collection<Thread> findThreads(final ThreadPredicate predicate),predicate != null,PRE,False,True
+org.apache.commons.lang15,ThreadUtils,public static Collection<Thread> findThreads(final ThreadPredicate predicate),predicate == null,EXCEPT,False,True
+org.apache.commons.lang15,ThreadUtils,public static Collection<Thread> findThreadsByName(final String threadName),threadName != null,PRE,False,True
+org.apache.commons.lang15,ThreadUtils,public static Collection<Thread> findThreadsByName(final String threadName),threadName == null,EXCEPT,False,True
+org.apache.commons.lang16,ThreadUtils,"public static Collection<Thread> findThreadsByName(final String threadName, final String threadGroupName)",threadName != null,PRE,True,True
+org.apache.commons.lang17,ThreadUtils,"public static Collection<Thread> findThreadsByName(final String threadName, final String threadGroupName)",threadName == null,EXCEPT,True,True
+org.apache.commons.lang18,ThreadUtils,"public static Collection<Thread> findThreadsByName(final String threadName, final String threadGroupName)",threadGroupName != null,PRE,True,True
+org.apache.commons.lang19,ThreadUtils,"public static Collection<Thread> findThreadsByName(final String threadName, final String threadGroupName)",threadGroupName == null,EXCEPT,True,True
+org.apache.commons.lang20,ThreadUtils,"public static Collection<Thread> findThreadsByName(final String threadName, final ThreadGroup threadGroup)",threadName != null,PRE,False,True
+org.apache.commons.lang20,ThreadUtils,"public static Collection<Thread> findThreadsByName(final String threadName, final ThreadGroup threadGroup)",threadName == null,EXCEPT,False,True
+org.apache.commons.lang20,ThreadUtils,"public static Collection<Thread> findThreadsByName(final String threadName, final ThreadGroup threadGroup)",threadGroup != null,PRE,False,True
+org.apache.commons.lang20,ThreadUtils,"public static Collection<Thread> findThreadsByName(final String threadName, final ThreadGroup threadGroup)",threadGroup == null,EXCEPT,False,True

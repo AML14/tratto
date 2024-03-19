@@ -1,0 +1,36 @@
+Package,Class,Method,Oracle,Oracle type,Info from source,Info from docs
+com.google.gson.internal.bind,ArrayTypeAdapter,public Object read(JsonReader in) throws IOException,in.peek() == JsonToken.NULL ? methodResultID == null : true;,POST,True,False
+com.google.gson.internal.bind,JavaVersion,public static boolean isJava9OrLater(),true ? methodResultID.getMajorJavaVersion() >= 9 : true;,POST,True,False
+com.google.json,JsonArray,public JsonArray(int capacity),capacity >= 0;,PRE,False,True
+com.google.json,JsonArray,public JsonArray(int capacity),capacity < 0;,EXCEPT,False,True
+com.google.json,JsonArray,"public JsonElement set(int index, JsonElement element)",index > = 0 && index < this.size();,PRE,True,True
+com.google.json,JsonArray,"public JsonElement set(int index, JsonElement element)",index < 0 || index >= this.size();,EXCEPT,True,True
+com.google.json,JsonArray,public JsonElement remove(int index),index > = 0 && index < this.size();,PRE,True,True
+com.google.json,JsonArray,public JsonElement remove(int index),index < 0 || index >= this.size();,EXCEPT,True,True
+com.google.json,JsonArray,public JsonElement get(int i),i > = 0 && i < this.size();,PRE,False,True
+com.google.json,JsonArray,public JsonElement get(int i),i < 0 || i >= this.size();,EXCEPT,False,True
+com.google.json,JsonArray,public void add(JsonElement element),element != null ? this.get(this.size() - 1) == element :  this.get(this.size() - 1).equals(JsonNull.INSTANCE);,POST,True,False
+com.google.json,JsonArray,public void addAll(JsonArray array),true ? this.asList().stream().forEach(jdVar1 -> array.asList().stream().anyMatch(jdVar2 -> jdVar1 == jdVar2)) : true;,POST,False,True
+com.google.json,JsonArray,public boolean remove(JsonElement element),true ? this.asList().stream().anyMatch(jdVar -> element == false) : true;,POST,False,True
+com.google.json,JsonArray,public Number getAsNumber(),this.isEmpty() || this.size() > 1;,EXCEPT,True,False
+com.google.json,JsonArray,public String getAsString(),this.isEmpty() || this.size() > 1;,EXCEPT,True,False
+com.google.json,JsonArray,public double getAsDouble(),this.isEmpty() || this.size() > 1;,EXCEPT,True,False
+com.google.json,JsonArray,public BigDecimal getAsBigDecimal(),this.isEmpty() || this.size() > 1;,EXCEPT,True,False
+com.google.json,JsonArray,public BigInteger getAsBigInteger(),this.isEmpty() || this.size() > 1;,EXCEPT,True,False
+com.google.json,JsonArray,public float getAsFloat(),this.isEmpty() || this.size() > 1;,EXCEPT,True,False
+com.google.json,JsonArray,public long getAsLong(),this.isEmpty() || this.size() > 1;,EXCEPT,True,False
+com.google.json,JsonArray,public int getAsInt(),this.isEmpty() || this.size() > 1;,EXCEPT,True,False
+com.google.json,JsonArray,public byte getAsByte(),this.isEmpty() || this.size() > 1;,EXCEPT,True,False
+com.google.json,JsonArray,public char getAsCharacter(),this.isEmpty() || this.size() > 1;,EXCEPT,True,False
+com.google.json,JsonArray,public short getAsShort(),this.isEmpty() || this.size() > 1;,EXCEPT,True,False
+com.google.json,JsonArray,public boolean getAsBoolean(),this.isEmpty() || this.size() > 1;,EXCEPT,True,False
+com.google.json,JsonArray,public List<JsonElement> asList(),this.contains(null) == false;,PRE,True,False
+com.google.json,JsonArray,public List<JsonElement> asList(),this.contains(null);,EXCEPT,True,False
+com.google.json,JsonObject,"public void add(String property, JsonElement value)",value != null ? this.get(key) == value : this.get(key).equals(JsonNull.INSTANCE);,POST,True,False
+com.google.json,JsonObject,public JsonElement remove(String property),true ? this.get(property) == null && methodResultID == null || methodResultID instanceof JsonElement : true;,POST,True,True
+com.google.json,JsonObject,"public void addProperty(String property, String value)",value != null ? this.get(key).equals(new JsonPrimitive(value)) : this.get(key).equals(JsonNull.INSTANCE);,POST,True,True
+com.google.json,JsonObject,"public void addProperty(String property, Number value)",value != null ? this.get(key).equals(new JsonPrimitive(value)) : this.get(key).equals(JsonNull.INSTANCE);,POST,True,True
+com.google.json,JsonObject,"public void addProperty(String property, Boolean value)",value != null ? this.get(key).equals(new JsonPrimitive(value)) : this.get(key).equals(JsonNull.INSTANCE);,POST,True,True
+com.google.json,JsonObject,"public void addProperty(String property, Character value)",value != null ? this.get(key).equals(new JsonPrimitive(value)) : this.get(key).equals(JsonNull.INSTANCE);,POST,True,True
+com.google.json,JsonObject,public Set<String> keySet(),true ? methodResultID.size() == this.size() : true;,POST,True,True
+com.google.gson.internal.sql,SqlTimeTypeAdapter,public Time read(JsonReader in) throws IOException,in.peek() == JsonToken.NULL ? methodResultID == null : true;,POST,True,False
