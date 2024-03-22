@@ -385,6 +385,10 @@ public class TogUtils {
         } else if (expr.isVariableDeclarationExpr()) {
             parsedExpr = expr.asVariableDeclarationExpr().getVariable(0).getInitializer().orElseThrow(() -> new IllegalStateException(String.format("[ERROR] - Last statement in test is a variable declaration, but the inizializer cannot be resolved.")));
         }
+        if (parsedExpr.isCastExpr()) {
+            // Get the expression of the cast expression
+            parsedExpr = parsedExpr.asCastExpr().getExpression();
+        }
         // Check if the last expression is a method call or a constructor call
         if (parsedExpr.isMethodCallExpr()) {
             return new Pair<>(parsedExpr, ExpressionType.METHOD_CALL);
@@ -396,21 +400,21 @@ public class TogUtils {
     }
 
     private static String getClassFullyQualifiedNameFromExpression(Expression expr) {
-        // Define the fully qualified name of the method from the expression. Initially empty.
-        String methodFQN = "";
         try {
             if (expr.isMethodCallExpr()) {
-                methodFQN = expr.asMethodCallExpr().resolve().getQualifiedName();
+                String methodFQN = expr.asMethodCallExpr().resolve().getQualifiedName();
+                if (methodFQN.contains("java.lang.Object")) {
+                    throw new IllegalStateException("[ERROR] - Unable to manage built-in java classes.");
+                }
+                return methodFQN.substring(0, methodFQN.lastIndexOf("."));
             } else if (expr.isObjectCreationExpr()) {
-                methodFQN = expr.asObjectCreationExpr().resolve().getQualifiedName();
+                return expr.asObjectCreationExpr().getType().resolve().describe();
             } else {
                 throw new IllegalStateException("[ERROR] - Unable to get the fully qualified name from the expression.");
             }
         } catch (UnsolvedSymbolException e) {
             throw new UnsolvedSymbolException("[ERROR] - Unable to resolve the expression and get the fully qualified name of the corresponding class.");
         }
-        String classFQN = methodFQN.substring(0, methodFQN.lastIndexOf("."));
-        return classFQN;
     }
 
     /**
@@ -523,7 +527,7 @@ public class TogUtils {
                     // Get the expression in the last expression statement
                     Expression lastExpression = lastExpressionStmt.getExpression();
 
-                    /*try {
+                    try {
                         String fullyQualifiedNameLastExpression = getClassFullyQualifiedNameFromExpression(parseExpression(lastExpression).a);
 
                         if (!fullyQualifiedNameLastExpression.equals(fullyQualifiedClassName)) {
@@ -532,7 +536,7 @@ public class TogUtils {
                             cuLastStatementClassFile = javaParser.parse(classFileLastExpressionPath).getResult().orElseThrow(() -> new IllegalStateException(String.format("Cannot parse class file %s of last statement.", fullyQualifiedClassNameLastExpressionPath.toString())));
                             togaErrBuilder.append(generateLogTogaInputError(testPrefix, fullyQualifiedClassName, "WARNING", new IllegalStateException("[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.")));
                         }
-                    } catch (UnsolvedSymbolException e) {}*/
+                    } catch (UnsolvedSymbolException | IllegalStateException e) {}
 
                     // Get the focal method
                     Pair<CallableDeclaration, List<Exception>> result = getCallableFocalMethod(cuLastStatementClassFile, lastExpression);
