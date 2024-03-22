@@ -372,7 +372,7 @@ public class TogUtils {
 
         Pair<Expression, ExpressionType> result = parseExpression(lastCallExpr);
         Expression parsedExpr = result.a;
-        ExpressionType exprType = parseExpression(lastCallExpr).b;
+        ExpressionType exprType = result.b;
         // Resolve the expression to a method/constructor declaration
         return resolveCallExpression(cuClassFile, parsedExpr, exprType);
     }
@@ -392,26 +392,6 @@ public class TogUtils {
             return new Pair<>(parsedExpr, ExpressionType.CONSTRUCTOR_CALL);
         } else {
             throw new IllegalStateException(String.format("[ERROR] - Unable to parse last statement as a MethodCallExpr or an ObjectCreationExpr statement."));
-        }
-    }
-
-    private static Pair<CallableDeclaration,List<Exception>> getMethodUsageFocalMethod(CompilationUnit cuClassFile, Expression lastCallExpr, String testName)  throws IllegalStateException {
-        // Define the focal method. Initially null.
-        MethodUsage focalMethod = null;
-        // Define list of warnings
-        List<Exception> warnings = new ArrayList<>();
-
-        if (lastCallExpr.isAssignExpr()) {
-            // Get the value of the assignment expression
-            lastCallExpr = lastCallExpr.asAssignExpr().getValue();
-        } else if (lastCallExpr.isVariableDeclarationExpr()) {
-            lastCallExpr = lastCallExpr.asVariableDeclarationExpr().getVariable(0).getInitializer().orElseThrow(() -> new IllegalStateException(String.format("[ERROR] - Last statement in test %s is a variable declaration, but the inizializer cannot be resolved.", testName)));
-        }
-        // Check if the last expression is a method call or a constructor call
-        if (lastCallExpr.isMethodCallExpr()) {
-            return resolveCallExpression(cuClassFile, lastCallExpr, ExpressionType.METHOD_CALL);
-        } else {
-            throw new IllegalStateException(String.format("[ERROR] - Last statement in test %s is not a MethodCallExpr as expected to be if getMethodUsageFocalMethod has been called.", testName));
         }
     }
 
