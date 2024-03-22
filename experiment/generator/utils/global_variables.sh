@@ -39,6 +39,7 @@ SERVER_PORT=5000
 # Github repositories
 JDOCTOR_GITHUB_REPO="https://github.com/albertogoffi/toradocu.git"
 TOGA_GITHUB_REPO="https://github.com/microsoft/toga.git"
+D4J_EVOSUITE_PREFIX_GITHUB_REPO="https://github.com/ezackr/defects4jprefix.git"
 
 # Links to resources
 TOGA_ASSERTION_MODEL_LINK="https://drive.google.com/u/0/uc?id=1TvZMlpXeN3DQUwwgOhlCRkn5-v1l_ZSK&export=download"
