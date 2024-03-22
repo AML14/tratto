@@ -98,7 +98,7 @@ while IFS=, read -r project_id bug_id modified_classes; do
           bash experiment.sh jdoctor "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${classpath}" "false" "${project_id}" ${bug_id}
         # Generate toga oracles
         elif [ "${tog}" == "toga" ]; then
-          bash experiment.sh toga "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${fat_jar_path}" "false" "${project_id}" ${bug_id}
+          bash toga_input.sh toga "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${fat_jar_path}" "false" "${project_id}" ${bug_id}
         # Generate tratto oracles
         elif [ "${tog}" == "tratto" ]; then
           bash experiment.sh tratto "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${fat_jar_path}" "false" "${project_id}" "${bug_id}"
@@ -106,12 +106,12 @@ while IFS=, read -r project_id bug_id modified_classes; do
           echo -e "tog.sh: Invalid TOG name, ${tog}"
           exit 1
         fi
-        cp -r "$OUTPUT_DIR/${tog}-oracles" "$output_fqn_path"
-        cp -r "$OUTPUT_DIR/${tog}-tests" "$output_fqn_path"
-        cp -r "$OUTPUT_DIR/${tog}-test-suite" "$output_fqn_path"
-        cp -r "$OUTPUT_DIR/${tog}_defects4joutput.json" "$output_fqn_path"
+        #cp -r "$OUTPUT_DIR/${tog}-oracles" "$output_fqn_path"
+        #cp -r "$OUTPUT_DIR/${tog}-tests" "$output_fqn_path"
+        #cp -r "$OUTPUT_DIR/${tog}-test-suite" "$output_fqn_path"
+        #cp -r "$OUTPUT_DIR/${tog}_defects4joutput.json" "$output_fqn_path"
         # Cleanup
-        rm -r "${OUTPUT_DIR}"
+        #rm -r "${OUTPUT_DIR}"
     done
 done < "$D4J_PROJECTS_BUGS"
 

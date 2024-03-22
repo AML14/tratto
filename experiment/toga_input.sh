@@ -32,32 +32,6 @@ qualifiers="${target_class%.*}"
 tog_oracles_output_dir="${ROOT_DIR}/output/${tog}-oracles/${qualifiers//.//}"
 evosuite_output_dir="${ROOT_DIR}/output/evosuite-tests/${qualifiers//.//}"
 
-
-# Check given arguments
-if [ ! -d "${src_dir}" ]; then
-  echo -e "The project source directory \"${src_dir}\" does not exist."
-  exit 1
-elif [ ! -d "${bin_dir}" ]; then
-  echo -e "The system binaries path \"${bin_dir}\" does not exist."
-  exit 1
-elif [ "$tog" == "tratto" ] && [ ! -e "${classpath_or_jar}" ]; then
-  echo -e "The project jar file \"${classpath_or_jar}\" does not exist."
-  exit 1
-fi
-# Check if given TOG is supported
-found=0
-valid_tog=("jdoctor" "toga" "tratto")
-for option in "${valid_tog[@]}"; do
-  if [ "${option}" = "${tog}" ]; then
-    found=1
-    break
-  fi
-done
-if [ ! $found -eq 1 ]; then
-  echo -e "The given TOG \"${1}\" is not supported. Must be one of: \"jdoctor\", \"toga\", or \"tratto\"."
-  exit 1
-fi
-
 # setup sdkman
 source "${UTILS_DIR}/init_sdkman.sh" "${SDKMAN_DIR}"
 
@@ -67,42 +41,5 @@ sdk use java "${JAVA17}"
 # Setup experiments
 bash "${UTILS_DIR}/experiment_setup.sh"
 
-if [ evosuite_flag == true ]; then
-  # Generate EvoSuite tests
-  echo "[1] Generate EvoSuite tests for class ${target_class}"
-  #{
-  bash ./generator/evosuite.sh "${target_class}" "${bin_dir}"
-  #} > /dev/null 2>&1
-  # Switch to Java 17
-  sdk use java "$JAVA17"
-  # Generate EvoSuite prefixes
-  java -jar "${EXPERIMENT_JAR}" "remove_oracles" "${target_class}"
-else
-  echo "[1] Generation of EvoSuite tests skipped for class ${target_class} (supposed has already been generated)."
-fi
 # Generate oracles using TOG
-if [ "${tog}" == "jdoctor" ]; then
-  bash ./generator/jdoctor.sh "${target_class}" "${src_dir}" "${classpath_or_jar}"
-elif [ "${tog}" == "toga" ]; then
-  bash ./generator/toga.sh "${target_class}" "${src_dir}" "${project_id}" "${bug_id}"
-elif [ "${tog}" == "tratto" ]; then
-  bash ./generator/tratto.sh "${target_class}" "${src_dir}" "${classpath_or_jar}"
-fi
-#cp "${oracle_output}" "${ROOT_DIR}/output/${tog}-oracles.json" #!!!
-# insert oracles into EvoSuite prefixes
-echo "[7] Insert oracles in test prefixes"
-evosuite_prefix_path="${OUTPUT_DIR}/evosuite-prefixes"
-tog_oracles_path="${OUTPUT_DIR}/${tog}-oracles"
-java -jar "${EXPERIMENT_JAR}" "insert_oracles" "${evosuite_prefix_path}" "${tog_oracles_path}" "${classpath_or_jar}"
-if [ "$project_id" != "none" ]; then
-  echo "[8] Running tests and generating test output"
-  bash ./runner_d4j.sh "$tog" "$project_id" "$bug_id" "${OUTPUT_DIR}/${tog}-test-suite"
-  if [ ! -d "${OUTPUT_DIR}/${tog}-tests/${project_id}/${bug_id}" ]; then
-    mkdir -p "${OUTPUT_DIR}/${tog}-tests/${project_id}/${bug_id}"
-  fi
-  mv "${OUTPUT_DIR}/${tog}-tests/"* "${OUTPUT_DIR}/${tog}-tests/${project_id}/${bug_id}"
-  java -jar "$EXPERIMENT_JAR" generate_defects4j_output "$tog" "${OUTPUT_DIR}/${tog}-tests" "${OUTPUT_DIR}/${tog}-test-suite"
-else
-  echo "[8] Running tests not yet implemented for non-defects4j projects."
-fi
-echo "[9] Experiment complete!"
+bash ./generator/toga_input.sh "${target_class}" "${src_dir}" "${project_id}" "${bug_id}"
