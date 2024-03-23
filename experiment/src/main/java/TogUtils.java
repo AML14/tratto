@@ -557,7 +557,7 @@ public class TogUtils {
                             if (matcher.group(1) != null) {
                                 javadocString = matcher.group(1).replace("\"", "\"\"").trim();;
                             }
-                            focalMethodBody = matcher.group(2).trim();
+                            focalMethodBody = matcher.group(2).replace("\"", "\"\"").trim();
                         }
                     } else {
                         methodName = focalMethod.getNameAsString();
@@ -568,7 +568,7 @@ public class TogUtils {
                             if (matcher.group(1) != null) {
                                 javadocString = matcher.group(1).replace("\"", "\"\"").trim();;
                             }
-                            focalMethodBody = matcher.group(2).trim();
+                            focalMethodBody = matcher.group(2).replace("\"", "\"\"").trim();
                         }
                     }
                     // If the focal method is found, get the test and the Javadoc of the focal method
