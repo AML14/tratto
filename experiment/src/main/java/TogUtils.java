@@ -27,16 +27,11 @@ import com.github.javaparser.symbolsolver.javassistmodel.JavassistMethodDeclarat
 import com.github.javaparser.symbolsolver.reflectionmodel.ReflectionMethodDeclaration;
 import com.github.javaparser.symbolsolver.utils.SymbolSolverCollectionStrategy;
 import com.github.javaparser.utils.Pair;
-import data.Defects4JOutput;
-import data.JDoctorOutput;
+import data.*;
 import data.JDoctorOutput.Parameter;
 import data.JDoctorOutput.ParamTag;
 import data.JDoctorOutput.ReturnTag;
 import data.JDoctorOutput.ThrowsTag;
-import data.TogType;
-import data.TrattoOutput;
-import data.OracleOutput;
-import data.OracleType;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
@@ -677,6 +672,32 @@ public class TogUtils {
             }
         }
         return "";
+    }
+
+    public static void countTestMethods(Path srcDirPath, String projectName, String projectBugID, String fullyQualifiedClassName) {
+        javaParser = getJavaParser(srcDirPath);
+        Path filePath = output.resolve(Paths.get("test_method_count.json"));
+        List<TestMethodsCount> testMethodsCountList = new ArrayList<>();
+        try {
+            testMethodsCountList = FileUtils.readJSONList(filePath, TestMethodsCount.class);
+        } catch (Error e) {}
+
+        Path fullyQualifiedClassNamePath = FileUtils.getFQNPath(fullyQualifiedClassName);
+        String className = FileUtils.getSimpleNameFromFQN(fullyQualifiedClassName);
+        int classNameIdx = fullyQualifiedClassNamePath.getNameCount() - 1;
+        Path fullyQualifiedTestClassNamePath = classNameIdx > 0 ?
+                fullyQualifiedClassNamePath.subpath(0, classNameIdx).resolve(className + "_ESTest.java") :
+                Paths.get(className);
+        Path testClassFilePath = evosuitePrefixPath.resolve(fullyQualifiedTestClassNamePath);
+        try {
+            CompilationUnit cuTestClassFile = javaParser.parse(testClassFilePath).getResult().orElseThrow();
+            int methodsNum = cuTestClassFile.findAll(MethodDeclaration.class).size();
+            testMethodsCountList.add(new TestMethodsCount(fullyQualifiedClassName, projectName, projectBugID, methodsNum));
+            FileUtils.writeJSON(filePath, testMethodsCountList);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new Error(e.getMessage());
+        }
     }
 
     /**

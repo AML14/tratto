@@ -96,6 +96,12 @@ public class Tog {
                     Paths.get(args[2]),
                     Paths.get(args[3])
             );
+            case COUNT_TEST_METHODS -> TogUtils.countTestMethods(
+                    Paths.get(args[1]),
+                    args[2],
+                    args[3],
+                    args[4]
+            );
             default -> throw new IllegalArgumentException("Unknown operation " + operationType);
         }
     }

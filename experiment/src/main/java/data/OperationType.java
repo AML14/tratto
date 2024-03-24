@@ -13,5 +13,6 @@ public enum OperationType {
     /** Post-processes the output of a TOG into an {@link OracleOutput}. */
     GENERATE_ORACLE_OUTPUT,
     /** Converts Defects4J run_bug_detection output into a {@link Defects4JOutput}. */
-    GENERATE_DEFECTS4J_OUTPUT
+    GENERATE_DEFECTS4J_OUTPUT,
+    COUNT_TEST_METHODS
 }
