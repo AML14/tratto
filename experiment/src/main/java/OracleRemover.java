@@ -262,7 +262,8 @@ public class OracleRemover {
         for (MethodDeclaration testCase : testCases) {
             int numOracles = getNumberOfOracles(testCase);
             if (numOracles == 0) {
-                testClass.addMember(testCase.clone());
+                String prefixTestName = testCase.getNameAsString() + testID++;
+                testClass.addMember(testCase.clone().setName(prefixTestName));
             }
             for (int i = 0; i < numOracles; i++) {
                 MethodDeclaration simpleTest = getSimpleTestCase(testCase, i);
