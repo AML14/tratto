@@ -250,7 +250,8 @@ public class OracleRemover {
     /**
      * Splits all test cases in a given test file into smaller subtests, each
      * with a single oracle from the original test case. The original tests
-     * with multiple assertions are removed. This method does not modify the
+     * with multiple assertions are removed. If a test does not contain any
+     * assertions, then it is directly copied. This method does not modify the
      * actual source file.
      *
      * @param testFile a JavaParser representation of a test file
@@ -260,6 +261,9 @@ public class OracleRemover {
         List<MethodDeclaration> testCases = testFile.findAll(MethodDeclaration.class);
         for (MethodDeclaration testCase : testCases) {
             int numOracles = getNumberOfOracles(testCase);
+            if (numOracles == 0) {
+                testClass.addMember(testCase.clone());
+            }
             for (int i = 0; i < numOracles; i++) {
                 MethodDeclaration simpleTest = getSimpleTestCase(testCase, i);
                 testClass.addMember(simpleTest);
