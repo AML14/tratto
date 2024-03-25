@@ -31,6 +31,7 @@ bug_id=${8-"none"}
 qualifiers="${target_class%.*}"
 tog_oracles_output_dir="${ROOT_DIR}/output/${tog}-oracles/${qualifiers//.//}"
 evosuite_output_dir="${ROOT_DIR}/output/evosuite-tests/${qualifiers//.//}"
+evosuite_prefix_path="${OUTPUT_DIR}/evosuite-prefixes"
 
 
 # Check given arguments
@@ -46,7 +47,7 @@ elif [ "$tog" == "tratto" ] && [ ! -e "${classpath_or_jar}" ]; then
 fi
 # Check if given TOG is supported
 found=0
-valid_tog=("jdoctor" "toga" "tratto")
+valid_tog=("jdoctor" "toga" "tratto", "baseline")
 for option in "${valid_tog[@]}"; do
   if [ "${option}" = "${tog}" ]; then
     found=1
@@ -54,7 +55,7 @@ for option in "${valid_tog[@]}"; do
   fi
 done
 if [ ! $found -eq 1 ]; then
-  echo -e "The given TOG \"${1}\" is not supported. Must be one of: \"jdoctor\", \"toga\", or \"tratto\"."
+  echo -e "The given TOG \"${1}\" is not supported. Must be one of: \"jdoctor\", \"toga\", \"tratto\", or \"baseline\"."
   exit 1
 fi
 
@@ -90,10 +91,19 @@ elif [ "${tog}" == "tratto" ]; then
 fi
 #cp "${oracle_output}" "${ROOT_DIR}/output/${tog}-oracles.json" #!!!
 # insert oracles into EvoSuite prefixes
-echo "[7] Insert oracles in test prefixes"
-evosuite_prefix_path="${OUTPUT_DIR}/evosuite-prefixes"
-tog_oracles_path="${OUTPUT_DIR}/${tog}-oracles"
-java -jar "${EXPERIMENT_JAR}" "insert_oracles" "${evosuite_prefix_path}" "${tog_oracles_path}" "${classpath_or_jar}"
+if [ "$tog" != "baseline" ]; then
+  echo "[7] Insert oracles in test prefixes"
+  tog_oracles_path="${OUTPUT_DIR}/${tog}-oracles"
+  java -jar "${EXPERIMENT_JAR}" "insert_oracles" "${evosuite_prefix_path}" "${tog_oracles_path}" "${classpath_or_jar}"
+else
+  echo "[7] Skipping oracle insertion in test prefixes for baseline"
+  baseline_tests_path="${OUTPUT_DIR}/${tog}-tests"
+  output_test_suite_path="${OUTPUT_DIR}/${tog}-test-suite"
+  mkdir -p "$baseline_tests_path"
+  mkdir -p "$output_test_suite_path"
+  cp -r "${evosuite_prefix_path}/"* "${baseline_tests_path}"
+fi
+# Run tests and generate output
 if [ "$project_id" != "none" ]; then
   echo "[8] Running tests and generating test output"
   bash ./runner_d4j.sh "$tog" "$project_id" "$bug_id" "${OUTPUT_DIR}/${tog}-test-suite"

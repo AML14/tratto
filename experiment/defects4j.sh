@@ -69,12 +69,11 @@ while IFS=, read -r project_id bug_id modified_classes; do
         evosuite_simple_test_fqn_file_path="${DEFECTS4J_DIR}/defects4jprefix/src/main/evosuite-simple-tests/${project_id}/${bug_id}/${fqn_path}_ESTest.java"
         evosuite_tests_fqn_file_path="${DEFECTS4J_DIR}/defects4jprefix/src/main/evosuite-tests/${project_id}/${bug_id}/${fqn_path}_ESTest.java"
         fat_jar_path="${DEFECTS4J_DIR}/defects4jprefix/src/main/project-jars/${project_id}/${bug_id}/${project_id}_${bug_id}b.jar"
-        output_tog_oracles_path="${OUTPUT_DIR}/${tog}-oracles"
         output_evosuite_prefix_path="${OUTPUT_DIR}/evosuite-prefixes"
         output_evosuite_prefix_fqn_path="${OUTPUT_DIR}/evosuite-prefixes/$(dirname "$fqn_path")"
         output_evosuite_simple_test_fqn_path="${OUTPUT_DIR}/evosuite-simple-tests/$(dirname "$fqn_path")"
         output_evosuite_tests_fqn_path="${OUTPUT_DIR}/evosuite-tests/$(dirname "$fqn_path")"
-        defects4j_output="${DEFECTS4J_DIR}/output"
+        defects4j_output="${DEFECTS4J_DIR}/output_${tog}"
         output_fqn_path="${defects4j_output}/${project_id}/${bug_id}/${fqn_path}"
         if [ ! -d "$output_evosuite_prefix_fqn_path" ]; then
             mkdir -p "$output_evosuite_prefix_fqn_path"
@@ -102,11 +101,16 @@ while IFS=, read -r project_id bug_id modified_classes; do
         # Generate tratto oracles
         elif [ "${tog}" == "tratto" ]; then
           bash experiment.sh tratto "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${fat_jar_path}" "false" "${project_id}" "${bug_id}"
+        # Execute baseline
+        elif [ "${tog}" == "baseline" ]; then
+          bash experiment.sh baseline "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${classpath}" "false" "${project_id}" ${bug_id}
         else
           echo -e "tog.sh: Invalid TOG name, ${tog}"
           exit 1
         fi
-        cp -r "$OUTPUT_DIR/${tog}-oracles" "$output_fqn_path"
+        if [ "$tog" != "baseline" ]; then
+          cp -r "$OUTPUT_DIR/${tog}-oracles" "$output_fqn_path"
+        fi
         cp -r "$OUTPUT_DIR/${tog}-tests" "$output_fqn_path"
         cp -r "$OUTPUT_DIR/${tog}-test-suite" "$output_fqn_path"
         cp -r "$OUTPUT_DIR/${tog}_defects4joutput.json" "$output_fqn_path"

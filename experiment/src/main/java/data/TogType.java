@@ -8,7 +8,9 @@ import java.util.List;
 public enum TogType {
     JDOCTOR,
     TOGA,
-    TRATTO;
+    TRATTO,
+
+    BASELINE;
 
     /** A list of all supported axiomatic test oracle generators. */
     public static final List<TogType> axiomaticTogs = List.of(
