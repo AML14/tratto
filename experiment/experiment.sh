@@ -35,10 +35,10 @@ evosuite_prefix_path="${OUTPUT_DIR}/evosuite-prefixes"
 
 
 # Check given arguments
-if [ ! -d "${src_dir}" ]; then
+if [ "$tog" != "baseline" ] && [ ! -d "${src_dir}" ]; then
   echo -e "The project source directory \"${src_dir}\" does not exist."
   exit 1
-elif [ ! -d "${bin_dir}" ]; then
+elif [ "$tog" != "baseline" ] && [ ! -d "${bin_dir}" ]; then
   echo -e "The system binaries path \"${bin_dir}\" does not exist."
   exit 1
 elif [ "$tog" == "tratto" ] && [ ! -e "${classpath_or_jar}" ]; then
