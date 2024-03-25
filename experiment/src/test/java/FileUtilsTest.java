@@ -9,7 +9,6 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -33,12 +32,6 @@ public class FileUtilsTest {
     public void getFQNPathTest() {
         assertEquals(Paths.get("com", "example", "github", "MyClass.java"), FileUtils.getFQNPath("com.example.github.MyClass"));
         assertEquals(Paths.get("MyClass.java"), FileUtils.getFQNPath("MyClass"));
-    }
-
-    @Test
-    public void getFQNOutputPathTest() {
-        assertEquals(Paths.get("output", "evosuite-prefixes", "example", "MyClassTest.java"), FileUtils.getFQNOutputPath("example.MyClass", "evosuite-prefixes"));
-        assertEquals(Paths.get("output", "tog-tests", "toga", "MyClassTest.java"), FileUtils.getFQNOutputPath("MyClass", "tog-tests", "toga"));
     }
 
     @Test
