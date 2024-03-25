@@ -296,6 +296,27 @@ public class OracleRemover {
     }
 
     /**
+     * Removes any duplicate test prefixes from a test prefix file. A
+     * duplicate prefix is defined as one which shares the body of another
+     * test prefix in the file.
+     *
+     * @param cu a compilation unit containing test prefixes
+     */
+    private static void removeDuplicatePrefixes(CompilationUnit cu) {
+        TypeDeclaration<?> prefixClass = cu.getPrimaryType().orElseThrow();
+        List<MethodDeclaration> prefixes = prefixClass.findAll(MethodDeclaration.class);
+        List<String> prefixBodies = new ArrayList<>();
+        for (MethodDeclaration prefix : prefixes) {
+            String prefixBody = prefix.getBody().toString();
+            if (prefixBodies.contains(prefixBody)) {
+                prefix.remove();
+            } else {
+                prefixBodies.add(prefixBody);
+            }
+        }
+    }
+
+    /**
      * Removes all assertions and exceptional oracles from a simple test
      * suite. This method assumes that
      * {@link OracleRemover#generateSimpleTests(Path)} has already been
@@ -314,6 +335,7 @@ public class OracleRemover {
                     CompilationUnit cu = FileUtils.getCompilationUnit(p);
                     removeExceptionalOracles(cu);
                     removeAssertionOracles(cu);
+                    removeDuplicatePrefixes(cu);
                     FileUtils.writeString(p, cu.toString());
                 }
             });
