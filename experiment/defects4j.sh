@@ -117,6 +117,10 @@ while IFS=, read -r project_id bug_id modified_classes; do
         if [ "$tog" != "baseline" ]; then
           cp -r "$OUTPUT_DIR/${tog}-oracles" "$output_fqn_path"
         fi
+        if [ "$tog" == "toga" ]; then
+          cp -r "$OUTPUT_DIR/${tog}-input" "$output_fqn_path"
+          cp -r "$OUTPUT_DIR/${tog}-err" "$output_fqn_path"
+        fi
         cp -r "$OUTPUT_DIR/${tog}-tests" "$output_fqn_path"
         cp -r "$OUTPUT_DIR/${tog}-test-suite" "$output_fqn_path"
         cp -r "$OUTPUT_DIR/${tog}_defects4joutput.json" "$output_fqn_path"
