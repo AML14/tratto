@@ -25,7 +25,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import static star.tratto.data.OracleDP2TokenDPs.oracleSoFarAndTokenToTokenDatapoints;
+import static star.tratto.data.OracleDP2TokenDPs.oracleSoFarAndTokenToTokenDatapoint;
 import static star.tratto.util.FileUtils.readString;
 import static star.tratto.util.StringUtils.getClassNameFromPath;
 import static star.tratto.util.javaparser.JavaParserUtils.getClassOrInterface;
@@ -66,7 +66,6 @@ public class Tratto {
         // Update each OracleDatapoint until the oracle is complete (ends with ';')
         for (OracleDatapoint oracleDatapoint : oracleDatapoints) {
             List<String> oracleSoFarTokens = new ArrayList<>();
-            List<String> tokenClassesSoFar = new ArrayList<>();
 
             logger.info("-------------------------------------------------------------------------");
             logger.info("Generating oracle for:\n\tMethod: {}\n\tJavadoc tag: {}\n\tOracle type: {}",
@@ -76,16 +75,15 @@ public class Tratto {
 
             while (!oracleDatapoint.getOracle().endsWith(";")) {
                 // Generate token datapoints and save to file
-                List<TokenDatapoint> tokenDatapoints = oracleSoFarAndTokenToTokenDatapoints(oracleDatapoint, oracleSoFarTokens, tokenClassesSoFar, "", TokenDPType.TOKEN);
+                TokenDatapoint tokenDatapoint = oracleSoFarAndTokenToTokenDatapoint(oracleDatapoint, oracleSoFarTokens, "");
                 FileOutputStream tokenDatapointsOutputStream = new FileOutputStream(TOKEN_DATAPOINTS_PATH);
-                tokenDatapointsOutputStream.write(objectMapper.writeValueAsBytes(tokenDatapoints));
+                tokenDatapointsOutputStream.write(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(tokenDatapoint));
                 tokenDatapointsOutputStream.close();
 
-                Pair<String, String> nextTokenValueClass = getNextTokenValueClass(); // HTTP call to ML-model API to get next token and class
+                String nextToken = getNextToken(); // HTTP call to ML-model API to get next token and class
 
-                oracleDatapoint.setOracle(compactExpression(oracleDatapoint.getOracle() + " " + nextTokenValueClass.getValue0()));
-                oracleSoFarTokens.add(nextTokenValueClass.getValue0());
-                tokenClassesSoFar.add(nextTokenValueClass.getValue1());
+                oracleDatapoint.setOracle(compactExpression(oracleDatapoint.getOracle() + " " + nextToken));
+                oracleSoFarTokens.add(nextToken);
 
                 logger.info("Oracle so far: {}", oracleDatapoint.getOracle());
             }
@@ -103,12 +101,12 @@ public class Tratto {
         logger.info("Finished generating oracles for: \n\tClass: {}\n\tProject source: {}\n\tProject JAR: {}", CLASS_PATH, PROJECT_SOURCE_PATH, PROJECT_JAR_PATH);
     }
 
-    private static Pair<String, String> getNextTokenValueClass() throws IOException {
+    private static String getNextToken() throws IOException {
         HttpURLConnection mlModelApiConn = (HttpURLConnection) new URL(ML_MODEL_API_URL).openConnection();
         mlModelApiConn.setRequestMethod("GET");
         mlModelApiConn.connect();
-        Pair<String, String> nextTokenValueClass = Pair.fromArray(new String(mlModelApiConn.getInputStream().readAllBytes(), StandardCharsets.UTF_8).split("\n"));
+        String nextToken = new String(mlModelApiConn.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
         mlModelApiConn.disconnect();
-        return nextTokenValueClass;
+        return nextToken;
     }
 }

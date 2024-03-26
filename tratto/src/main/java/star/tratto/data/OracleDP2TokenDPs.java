@@ -24,8 +24,6 @@ public class OracleDP2TokenDPs {
 
     private static final Parser parser = Parser.getInstance();
     private static long tokenIndex = 0;
-    private static int negativeSamples = 0;
-    private static int positiveSamples = 0;
     public static boolean CRASH_WRONG_ORACLE = true; // TODO: make it configurable
 
     /**
@@ -89,16 +87,7 @@ public class OracleDP2TokenDPs {
         }
     }
 
-    public static void resetSampleIndexes() {
-        negativeSamples = 0;
-        positiveSamples = 0;
-    }
-
-    public static int getNegativeSamples() {
-        return negativeSamples;
-    }
-
-    public static int getPositiveSamples() {
-        return positiveSamples;
+    public static long getTokenIndex() {
+        return tokenIndex;
     }
 }
