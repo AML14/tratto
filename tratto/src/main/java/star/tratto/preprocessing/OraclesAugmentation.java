@@ -69,6 +69,10 @@ public class OraclesAugmentation {
         alternateOracles.addAll(getAlternateOraclesSwitchEqOp(oracleString));
         alternateOracles.addAll(getAlternateOraclesSwitchNonEqIneqOp(oracleString));
 
+        if (alternateOracles.stream().anyMatch(ao -> Math.abs(ao.length() - oracleString.length()) > 10)) {
+            logger.warn("Alternate oracles have a length difference of more than 10 characters: {}", oracleString);
+        }
+
         return alternateOracles;
     }
 }
