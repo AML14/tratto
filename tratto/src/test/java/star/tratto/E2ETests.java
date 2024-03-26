@@ -79,7 +79,7 @@ public class E2ETests {
                 // Remove negative oracles to save disk space (especially for CI) and since they are not interesting to test
                 RemoveNegativeOracles.main(new String[] {});
                 // Augment oracles dataset with newly created oracles and existing Javadoc tags alternatives
-                DataAugmentation.main(new String[] {});
+//                DataAugmentation.main(new String[] {}); // While augmentation is only about Javadoc tags, skip this
                 // Generate tokens dataset based on oracles dataset (assertions are done as dataset is generated)
                 TokensDataset.main(new String[] {});
             });
