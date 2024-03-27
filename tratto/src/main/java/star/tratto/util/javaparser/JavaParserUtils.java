@@ -1004,7 +1004,7 @@ public class JavaParserUtils {
         // Consider JavaParserMethodDeclaration.
         if (methodDeclaration instanceof JavaParserMethodDeclaration jpMethodDeclaration) {
             MethodDeclaration jpMethod = jpMethodDeclaration.getWrappedNode();
-            return getMethodSignature(jpMethod);
+            return jpMethod.toString();
         }
         String methodModifiers = getMethodModifiers(methodDeclaration);
         List<String> typeParameterList = getTypeParameters(methodUsage);
