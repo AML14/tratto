@@ -1200,6 +1200,11 @@ public class JavaParserUtils {
                 isNonPrivateNonVoidMethod(methodUsage);
     }
 
+    public static List<String> getImports(String classSourceCode) {
+        CompilationUnit cu = javaParser.parse(classSourceCode).getResult().get();
+        return cu.getImports().stream().map(ImportDeclaration::getNameAsString).toList();
+    }
+
     /**
      * Unfortunately, JavaParser does not allow to parse constructors as method declarations. Since we don't
      * need the constructor declaration for anything, if the passed methodSourceCode is from a constructor,
