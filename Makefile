@@ -17,5 +17,5 @@ test:
 
 tags:
 	cd oracle-grammar && etags `find . -name '*.java'`
-	cd tratto && etags `find . -name '*.java'`
+	cd tratto && etags `find . -name '*.java' | grep -v 'src/main/resources' | grep -v '/target/'`
 	etags --include oracle-grammar/TAGS --include tratto/TAGS

@@ -98,21 +98,24 @@ public class FileUtils {
      * NOTE: This method does NOT perform the move. This method is different
      * from {@link Path#relativize(Path)}, which gives a path to the
      * destination, relative to the source.
+     * <p>
      *
-     * @param sourceDir the source directory
-     * @param destination the destination directory
-     * @param target the target file in the source directory
-     * @return the path of the target file if hypothetically moved from the
-     * source directory to the destination directory. For example, let
+     * For example, let
      * <pre>
      *     sourceDir = [sourcePath]
      *     destination = [destinationPath]
      *     target = [sourcePath]/[internalDirectories]/[fileName]
      * </pre>
-     * then the method outputs,
+     * then the method outputs
      * <pre>
      *     relativePath = [destinationPath]/[internalDirectories]/[fileName]
      * </pre>
+
+     * @param sourceDir the source directory
+     * @param destination the destination directory
+     * @param target the target file in the source directory
+     * @return the path of the target file if hypothetically moved from the
+     * source directory to the destination directory. 
      */
     private static Path getRelativePath(Path sourceDir, Path destination, Path target) {
         if (sourceDir.equals(target)) {
@@ -229,24 +232,24 @@ public class FileUtils {
      * then returns a list of unknown type (wildcard).
      *
      * @param jsonPath a JSON file
-     * @param type the class type of the elements to which the JSON data will
-     *             be deserialized
+     * @param clazz the class of the elements to which the JSON data will
+     *             be deserialized,
+     *             or null (in which case the list element type is arbitrary)
      * @return a list of objects
      * @param <T> the type of the list elements,
-     *             or null (in which case the list element type is arbitrary)
      */
-    public static <T> List<T> readJSONList(Path jsonPath, Class<T> type) {
+    public static <T> List<T> readJSONList(Path jsonPath, Class<T> clazz) {
         if (!Files.exists(jsonPath)) {
           throw new Error("JSON file " + jsonPath + " not found");
         }
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            if (type == null) {
+            if (clazz == null) {
                 return objectMapper.readValue(jsonPath.toFile(), new TypeReference<>() {});
             } else {
                 return objectMapper.readValue(
                         jsonPath.toFile(),
-                        objectMapper.getTypeFactory().constructCollectionType(List.class, type)
+                        objectMapper.getTypeFactory().constructCollectionType(List.class, clazz)
                 );
             }
         } catch (IOException e) {
