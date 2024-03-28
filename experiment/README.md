@@ -146,7 +146,7 @@ Consequently, each test case may have multiple oracles, and each oracle may be u
 
 #### B. Non-Axiomatic
 
-If the oracles are non-axiomatic, meaning they correspond to a test prefix, then we simply insert the oracle into its
+If an oracle is non-axiomatic, meaning it correspond to a specific test prefix, then we simply insert the oracle to the end of its
 corresponding test prefix.
 
 
