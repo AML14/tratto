@@ -77,18 +77,18 @@ Visit the [Defects4JPrefix](https://github.com/ezackr/defects4jprefix) repositor
 
 We provide a brief description of the relevant files in the experimental pipeline, alongside their functionality:
 
-- `generator`: this directory contains bash scripts for generating test oracles and inserting these oracles into a test prefix 
-  - `insert.sh`: a script for inserting oracles into a test prefix
+- `oracle-generator`: this directory contains bash scripts for generating test oracles and inserting these oracles into a test prefix 
+  - `insert_oracles.sh`: a script for inserting oracles into a test prefix
   - `jdoctor.sh`: a script that creates oracles using JDoctor
   - `toga.sh`: a script that creates oracles using TOGA
   - `tratto.sh`: a script that creates oracles using Tratto
 - `src/main/java`: this directory contains all Java functionality for the end-to-end experimental pipeline
   - `data`: a package with various enums and records used to represent data
-  - `FileUtils.java`: a class with all necessary utilities to read, write, and move files
-  - `OracleRemover.java`: a class for removing oracles from a test suite (used to generate Defects4J prefixes)
-  - `OracleInserter.java`: a class for inserting oracles into a test prefix
+  - `FileUtils.java`: utilities to read, write, and move files
+  - `OracleRemover.java`: removing oracles from a test suite (used to generate Defects4J prefixes)
+  - `OracleInserter.java`: inserting oracles into a test prefix
   - `Tog.java`: the main file for the `experiment.jar` build
-  - `TogUtils.java`: a class for tog utilities, such as preprocessing input and postprocessing output
+  - `TogUtils.java`: tog utilities, such as preprocessing input and postprocessing output
 - `defects4j.sh`: the end-to-end script for reproducing the Tratto experimental results
 
 
