@@ -14,25 +14,13 @@ This section outlines all requirements and corresponding setup instructions nece
 
 ## 1.1. SDKMan
 
-[Sdkman](https://sdkman.io/) is used to easily manage the multiple Java Development Kit(s) (JDKs) required by the different
-tools of the experimental pipeline. **Sdkman** is a Software Development Kit (SDK) manager.
-
-First of all, check to have **zip** and **unzip** packages installed in your machine. Otherwise, check these webpage to install
-them with the proper command ([zip](https://www.thegeekdiary.com/zip-command-not-found/) and [unzip](https://www.thegeekdiary.com/unzip-command-not-found/)).
+This project uses Sdkman ([link](https://sdkman.io)) to manage switching between different JDKs during the experimental pipeline. Firstly, make sure the `zip` and `unzip` packages are installed. Otherwise, use the commands at the following links: [zip link](https://www.thegeekdiary.com/zip-command-not-found/) and [unzip link](https://www.thegeekdiary.com/unzip-command-not-found/).
 
 Then, execute the command:
 
   ```shell
   bash ./generator/utils/init.sh
   ```
-
-To download and install a local version of **Sdkman**. The script will also install a local version of:
-
-* Java 8
-* Java 17
-* Maven 3.9.4
-* Ant 1.10.13
-* Gradle 8.3
 
 ## 1.2. JDoctor
 
