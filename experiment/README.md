@@ -94,7 +94,7 @@ We provide a brief description of the relevant files in the experimental pipelin
 
 ### 2.1.1. Oracles
 
-After running their corresponding bash scripts to generate test oracles, the new oracles are inserted as assertions into the pre-generated test prefixes. Our method for inserting oracles
+After running their corresponding bash scripts to generate test oracles, the new oracles are inserted as assertions into the pre-generated Defects4JPrefix test prefixes. Our method for inserting oracles
 varies based on whether the TOG generates [axiomatic](#a-axiomatic) or [non-axiomatic](#b-non-axiomatic) oracles.
 
 The new tests are saved as separate files in `experiment/output/[tog]-tests`, where `[tog]` is the corresponding TOG.
