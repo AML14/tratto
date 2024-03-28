@@ -9,7 +9,8 @@ import java.util.List;
  *
  * @param signature the signature of the method under test
  * @param name the name of the method under test
- * @param containingClass the declaring class {@link Type}
+ * @param containingClass the fully qualified name of the declaring
+ *                        class {@link Type}
  * @param targetClass the fully qualified declaring class name
  * @param isVarArgs true iff the method is a varargs
  * @param returnType the method return type
